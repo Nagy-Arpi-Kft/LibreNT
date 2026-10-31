@@ -188,7 +188,7 @@ RPCRTAPI HRESULT RPC_ENTRY
 
 HRESULT __cdecl __wine_register_resources(void);
 HRESULT __cdecl __wine_unregister_resources(void);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT __cdecl __wine_register_resources_module(HMODULE module);
 #endif
 

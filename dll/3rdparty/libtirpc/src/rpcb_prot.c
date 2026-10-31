@@ -42,7 +42,7 @@
 #include <rpc/types.h>
 #include <rpc/xdr.h>
 #include <rpc/rpcb_prot.h>
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 #include "rpc_com.h"
 #endif
 
@@ -57,7 +57,7 @@ xdr_rpcb(xdrs, objp)
 	if (!xdr_u_int32_t(xdrs, &objp->r_vers)) {
 		return (FALSE);
 	}
-#ifndef __REACTOS__ // CVE-2017-8779
+#ifndef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->r_netid, (u_int)~0)) {
 		return (FALSE);
 	}
@@ -175,7 +175,7 @@ xdr_rpcb_entry(xdrs, objp)
 	XDR *xdrs;
 	rpcb_entry *objp;
 {
-#ifndef __REACTOS__ // CVE-2017-8779
+#ifndef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->r_maddr, (u_int)~0)) {
 		return (FALSE);
 	}
@@ -193,7 +193,7 @@ xdr_rpcb_entry(xdrs, objp)
 	if (!xdr_u_int32_t(xdrs, &objp->r_nc_semantics)) {
 		return (FALSE);
 	}
-#ifndef __REACTOS__ // CVE-2017-8779
+#ifndef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->r_nc_protofmly, (u_int)~0)) {
 		return (FALSE);
 	}
@@ -326,7 +326,7 @@ xdr_rpcb_rmtcallres(xdrs, p)
 	bool_t dummy;
 	struct r_rpcb_rmtcallres *objp = (struct r_rpcb_rmtcallres *)(void *)p;
 
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->addr, RPC_MAXDATASIZE)) {
 #else
 	if (!xdr_string(xdrs, &objp->addr, (u_int)~0)) {
@@ -350,7 +350,7 @@ xdr_netbuf(xdrs, objp)
 	if (!xdr_u_int32_t(xdrs, (u_int32_t *) &objp->maxlen)) {
 		return (FALSE);
 	}
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 
 	if (objp->maxlen > RPC_MAXDATASIZE) {
 		return (FALSE);

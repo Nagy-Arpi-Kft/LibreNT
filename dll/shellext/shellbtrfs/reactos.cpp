@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         BtrFS FSD for ReactOS
+ * PROJECT:         BtrFS FSD for LibreNT
  * FILE:            dll/shellext/shellbtrfs/reactos.cpp
- * PURPOSE:         ReactOS glue for Win8.1
+ * PURPOSE:         LibreNT glue for Win8.1
  * PROGRAMMERS:     Pierre Schweitzer <pierre@reactos.org>
  */
 

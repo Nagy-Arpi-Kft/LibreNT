@@ -1,6 +1,6 @@
 #include "inetcpl.h"
 
-/* ReactOS localization and supplemental icons kept outside Wine-owned files. */
+/* LibreNT localization and supplemental icons kept outside Wine-owned files. */
 #define ICO_CERTIFICATES 1314
 #define ICO_HISTORY      1315
 #define ICO_HOME         1316

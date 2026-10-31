@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT Network Kernel Debugger Transport
+ * PROJECT:     LibreNT Network Kernel Debugger Transport
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Architecture hooks, ARM64: ARMv8.5 RNDR and no device tree
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include "../kdnet.h"
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 
 #if defined(_MSC_VER) && !defined(__clang__)
 BOOLEAN

@@ -2,7 +2,7 @@
 add_definitions(-D_ATL_VER=_ATL_VER_100)
 list(APPEND SOURCE atl.c testlist.c)
 add_executable(atl100_winetest ${SOURCE})
-target_include_directories(atl100_winetest BEFORE PRIVATE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+target_include_directories(atl100_winetest BEFORE PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 target_compile_definitions(atl100_winetest PRIVATE USE_WINE_TODOS)
 target_link_libraries(atl100_winetest uuid)
 set_module_type(atl100_winetest win32cui)

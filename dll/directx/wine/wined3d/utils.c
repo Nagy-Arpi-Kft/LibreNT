@@ -32,7 +32,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WINED3D_FORMAT_FOURCC_BASE (WINED3DFMT_P010_PLANAR + 1)
 #else
 #define WINED3D_FORMAT_FOURCC_BASE (WINED3DFMT_BC7_UNORM_SRGB + 1)
@@ -94,7 +94,7 @@ static const struct wined3d_format_channels formats[] =
     {WINED3DFMT_YV12,                       0,  0,  0,  0,   0,  0,  0,  0,    1,   0,  0},
     {WINED3DFMT_NV12,                       0,  0,  0,  0,   0,  0,  0,  0,    1,   0,  0},
     {WINED3DFMT_NV12_PLANAR,                0,  0,  0,  0,   0,  0,  0,  0,    1,   0,  0},
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {WINED3DFMT_P010_PLANAR,                0,  0,  0,  0,   0,  0,  0,  0,    2,   0,  0},
 #endif
     {WINED3DFMT_DXT1,                       0,  0,  0,  0,   0,  0,  0,  0,    1,   0,  0},
@@ -727,7 +727,7 @@ static const struct
 format_plane_info[] =
 {
     {WINED3DFMT_NV12_PLANAR, {WINED3DFMT_R8_UINT, WINED3DFMT_R8G8_UINT}, 2, 2},
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {WINED3DFMT_P010_PLANAR, {WINED3DFMT_R16_UINT, WINED3DFMT_R16G16_UINT}, 2, 2},
 #endif
 };
@@ -4065,7 +4065,7 @@ BOOL wined3d_adapter_no3d_init_format_info(struct wined3d_adapter *adapter)
         WINED3DFMT_P8_UINT,
     };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const enum wined3d_format_id vertex_formats[] =
     {
         WINED3DFMT_R32G32B32A32_FLOAT,
@@ -4084,7 +4084,7 @@ BOOL wined3d_adapter_no3d_init_format_info(struct wined3d_adapter *adapter)
 
         format->caps[WINED3D_GL_RES_TYPE_TEX_2D] |= WINED3D_FORMAT_CAP_BLIT;
         format->caps[WINED3D_GL_RES_TYPE_RB] |= WINED3D_FORMAT_CAP_BLIT;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (format->byte_count <= sizeof(DWORD) && format->red_size && format->green_size && format->blue_size)
         {
             format->caps[WINED3D_GL_RES_TYPE_TEX_2D] |= WINED3D_FORMAT_CAP_TEXTURE | WINED3D_FORMAT_CAP_FILTERING;
@@ -4097,7 +4097,7 @@ BOOL wined3d_adapter_no3d_init_format_info(struct wined3d_adapter *adapter)
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < ARRAY_SIZE(vertex_formats); ++i)
     {
         if (!(format = get_format_internal(adapter, vertex_formats[i])))
@@ -4226,7 +4226,7 @@ static void init_vulkan_format_info(struct wined3d_adapter *adapter, struct wine
         {WINED3DFMT_X32_TYPELESS_G8X24_UINT,    VK_FORMAT_D32_SFLOAT_S8_UINT,      },
         {WINED3DFMT_D24_UNORM_S8_UINT,          VK_FORMAT_D24_UNORM_S8_UINT,       },
         {WINED3DFMT_NV12_PLANAR,                VK_FORMAT_G8_B8R8_2PLANE_420_UNORM,},
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {WINED3DFMT_P010_PLANAR,                VK_FORMAT_G10X6_B10X6R10X6_2PLANE_420_UNORM_3PACK16,},
 #endif
     };
@@ -4693,7 +4693,7 @@ const char *debug_d3dformat(enum wined3d_format_id format_id)
         FMT_TO_STR(WINED3DFMT_R8G8_B8G8_UNORM);
         FMT_TO_STR(WINED3DFMT_G8R8_G8B8_UNORM);
         FMT_TO_STR(WINED3DFMT_NV12_PLANAR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FMT_TO_STR(WINED3DFMT_P010_PLANAR);
 #endif
         FMT_TO_STR(WINED3DFMT_BC1_TYPELESS);
@@ -5682,7 +5682,7 @@ static void compute_texture_matrix(const struct wined3d_matrix *matrix, uint32_t
 
 static unsigned int get_texcoord_attrib_count(const struct wined3d_vertex_declaration *decl, unsigned int index)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!decl)
         return 0;
 #endif
@@ -6672,7 +6672,7 @@ BOOL wined3d_array_reserve(void **elements, SIZE_T *capacity, SIZE_T count, SIZE
     if (new_capacity < count)
         new_capacity = count;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     old_size = *capacity * size;
     new_size = new_capacity * size;
     new_elements = realloc(*elements, new_size);
@@ -6682,7 +6682,7 @@ BOOL wined3d_array_reserve(void **elements, SIZE_T *capacity, SIZE_T count, SIZE
     if (!new_elements)
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset((BYTE *)new_elements + old_size, 0, new_size - old_size);
 #endif
     *elements = new_elements;

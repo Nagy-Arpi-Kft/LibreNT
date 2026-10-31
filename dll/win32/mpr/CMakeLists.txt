@@ -23,5 +23,5 @@ set_module_type(mpr win32dll ENTRYPOINT DllMain 12)
 target_link_libraries(mpr wine)
 add_importlibs(mpr advapi32 user32 ucrtbase kernel32 ntdll)
 add_pch(mpr precomp.h SOURCE)
-add_cd_file(TARGET mpr DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mpr DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(mpr) # CORE-5743: No ARRAY_SIZE macro

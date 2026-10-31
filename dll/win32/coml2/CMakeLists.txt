@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 spec2def(coml2.dll coml2.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -22,5 +22,5 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 endif()
 target_link_libraries(coml2 wine uuid pseh)
 add_importlibs(coml2 advapi32 ole32 oleaut32 user32 gdi32 rpcrt4 msvcrt kernel32 ntdll)
-add_cd_file(TARGET coml2 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET coml2 DESTINATION librent/system32 FOR all)
 set_wine_module(coml2)

@@ -139,7 +139,7 @@ extern "C" {
 /* FIXME: This value should be in the guarded block below */
 #define LOCALE_SNAME                92
 
-#if (WINVER >= 0x0600) || (defined(__REACTOS__) && defined(_KERNEL32_))
+#if (WINVER >= 0x0600) || (defined(__LIBRENT__) && defined(_KERNEL32_))
 #define LOCALE_IGEOID               91
 #define LOCALE_SNAME                92
 #define LOCALE_SDURATION            93

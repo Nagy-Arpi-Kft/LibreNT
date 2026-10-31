@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ATA Bus Driver
+ * PROJECT:     LibreNT ATA Bus Driver
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     ACPI interface with SATA ports, IDE controllers and drives
  * COPYRIGHT:   Copyright 2026 <di.sean@protonmail.com>

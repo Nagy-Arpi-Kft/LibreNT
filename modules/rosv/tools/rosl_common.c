@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT VMX Hypervisor Launcher (rosl.exe)
+ * PROJECT:     LibreNT VMX Hypervisor Launcher (rosl.exe)
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shared utilities and global variable definitions
  * COPYRIGHT:   Copyright 2025-2026 Ahmed Arif
@@ -421,7 +421,7 @@ static DWORD RoslFlushPendingVtSequence(UCHAR *Data, DWORD OutLen, DWORD OutSize
 
 /*
  * Track VT input mode state while suppressing DEC private mode toggles that
- * the ReactOS console still renders literally (for example ESC[?7l).
+ * the LibreNT console still renders literally (for example ESC[?7l).
  */
 DWORD RoslFeedTerminalOutput(UCHAR *Data, DWORD Length)
 {

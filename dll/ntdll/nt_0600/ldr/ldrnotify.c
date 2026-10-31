@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NT Layer/System API
+ * PROJECT:     LibreNT NT Layer/System API
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     DLL Load Notification Implementation
  * COPYRIGHT:   Copyright 2024 Ratin Gao <ratin@knsoft.org>

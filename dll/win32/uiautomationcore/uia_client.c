@@ -3129,7 +3129,7 @@ HRESULT WINAPI UiaHUiaNodeFromVariant(VARIANT *in_val, HUIANODE *huianode)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SAFEARRAY* WINAPI default_uia_provider_callback(HWND hwnd, enum ProviderType prov_type)
 #else
 static SAFEARRAY WINAPI *default_uia_provider_callback(HWND hwnd, enum ProviderType prov_type)

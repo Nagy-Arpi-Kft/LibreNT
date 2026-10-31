@@ -399,7 +399,7 @@ struct reader
     ULONG                        input_size;
     ULONG                        text_conv_offset;
     unsigned char               *stream_buf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL                         stream_charset_pending;
 #endif
     const WS_XML_DICTIONARY     *dict_static;
@@ -548,7 +548,7 @@ static HRESULT init_reader( struct reader *reader )
     read_insert_eof( reader, node );
     reader->input_enc     = WS_XML_READER_ENCODING_TYPE_TEXT;
     reader->input_charset = WS_CHARSET_UTF8;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     reader->stream_charset_pending = FALSE;
 #endif
     reader->dict_static   = NULL;
@@ -625,7 +625,7 @@ void WINAPI WsFreeReader( WS_XML_READER *handle )
     free_reader( reader );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL detect_stream_charset( struct reader *reader )
 {
     static const unsigned char utf8_bom[] = {0xef,0xbb,0xbf};
@@ -652,7 +652,7 @@ static HRESULT read_more_data( struct reader *reader, ULONG min_size, const WS_A
 {
     ULONG size = 0, max_size;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (reader->read_size - reader->read_pos >= min_size)
     {
         if (detect_stream_charset( reader ) && reader->read_size - reader->read_pos < min_size)
@@ -676,7 +676,7 @@ static HRESULT read_more_data( struct reader *reader, ULONG min_size, const WS_A
     reader->input_cb( reader->input_cb_state, reader->stream_buf + reader->read_size, max_size, &size, ctx, error );
     if (size < min_size) return WS_E_QUOTA_EXCEEDED;
     reader->read_size += size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (detect_stream_charset( reader ) && reader->read_size - reader->read_pos < min_size)
         return read_more_data( reader, min_size, ctx, error );
 #endif
@@ -750,7 +750,7 @@ HRESULT WINAPI WsGetNamespaceFromPrefix( WS_XML_READER *handle, const WS_XML_STR
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (reader->state == READER_STATE_INITIAL) hr = WS_E_INVALID_OPERATION;
 #else
     if (reader->state != READER_STATE_STARTELEMENT) hr = WS_E_INVALID_OPERATION;
@@ -775,7 +775,7 @@ HRESULT WINAPI WsGetNamespaceFromPrefix( WS_XML_READER *handle, const WS_XML_STR
         WS_XML_ELEMENT_NODE *elem = &reader->current->hdr;
         ULONG i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         for (i = 0; reader->state == READER_STATE_STARTELEMENT && i < elem->attributeCount; i++)
 #else
         for (i = 0; i < elem->attributeCount; i++)
@@ -839,7 +839,7 @@ HRESULT WINAPI WsGetReaderNode( WS_XML_READER *handle, const WS_XML_NODE **node,
 static HRESULT get_charset( struct reader *reader, void *buf, ULONG size )
 {
     if (!buf || size != sizeof(reader->input_charset)) return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (reader->stream_charset_pending) return WS_E_QUOTA_EXCEEDED;
 #endif
     if (!reader->input_charset) return WS_E_INVALID_FORMAT;
@@ -871,7 +871,7 @@ HRESULT WINAPI WsGetReaderProperty( WS_XML_READER *handle, WS_XML_READER_PROPERT
 
     if (!reader->input_type) hr = WS_E_INVALID_OPERATION;
     else if (id == WS_XML_READER_PROPERTY_CHARSET) hr = get_charset( reader, buf, size );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if ((id == WS_XML_READER_PROPERTY_UTF8_TRIM_SIZE || id == WS_XML_READER_PROPERTY_STREAM_BUFFER_SIZE) &&
              reader->input_type != WS_XML_READER_INPUT_TYPE_STREAM) hr = E_INVALIDARG;
 #endif
@@ -888,7 +888,7 @@ HRESULT WINAPI WsGetReaderProperty( WS_XML_READER *handle, WS_XML_READER_PROPERT
 HRESULT WINAPI WsGetXmlAttribute( WS_XML_READER *handle, const WS_XML_STRING *attr,
                                   WS_HEAP *heap, WCHAR **str, ULONG *len, WS_ERROR *error )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const WS_XML_STRING xml = {3, (BYTE *)"xml"};
     struct reader *reader = (struct reader *)handle;
     const struct node *node;
@@ -1234,7 +1234,7 @@ static HRESULT read_xmldecl( struct reader *reader )
     }
     if ((hr = read_cmp( reader, "<?xml ", 6 )) != S_OK) return hr;
     read_skip( reader, 6 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     read_skip_whitespace( reader );
     if ((hr = read_cmp( reader, "version", 7 )) != S_OK) return hr;
 #endif
@@ -1999,7 +1999,7 @@ static HRESULT read_attribute_bin( struct reader *reader, WS_XML_ATTRIBUTE **ret
                 hr = E_OUTOFMEMORY;
                 goto error;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             utf8->value.bytes = (BYTE *)(utf8 + 1);
 #endif
             attr->value = &utf8->text;
@@ -2020,7 +2020,7 @@ static HRESULT read_attribute_bin( struct reader *reader, WS_XML_ATTRIBUTE **ret
                 hr = E_OUTOFMEMORY;
                 goto error;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             utf8->value.bytes = (BYTE *)(utf8 + 1);
 #endif
             attr->value = &utf8->text;
@@ -2054,7 +2054,7 @@ static inline struct node *find_parent( struct reader *reader )
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_second_root( struct reader *reader, const struct node *parent )
 {
     const struct node *child;
@@ -2116,7 +2116,7 @@ static HRESULT read_attributes_text( struct reader *reader, WS_XML_ELEMENT_NODE 
         read_skip_whitespace( reader );
         if (read_cmp( reader, ">", 1 ) == S_OK || read_cmp( reader, "/>", 2 ) == S_OK) break;
         if ((hr = read_attribute_text( reader, &attr )) != S_OK) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (attr->isXmlNs)
         {
             ULONG i;
@@ -2181,7 +2181,7 @@ static HRESULT read_element_text( struct reader *reader )
     }
 
     if (!(parent = find_parent( reader ))) goto error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_second_root( reader, parent ))
     {
         hr = WS_E_INVALID_FORMAT;
@@ -2305,7 +2305,7 @@ static HRESULT read_element_bin( struct reader *reader )
         hr = WS_E_INVALID_FORMAT;
         goto error;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_second_root( reader, parent ))
     {
         hr = WS_E_INVALID_FORMAT;
@@ -3201,7 +3201,7 @@ static HRESULT read_node_text( struct reader *reader )
     {
         if (read_end_of_data( reader ))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (reader->state == READER_STATE_INITIAL) return WS_E_INVALID_FORMAT;
 #endif
             reader->current = LIST_ENTRY( list_tail( &reader->root->children ), struct node, entry );
@@ -3772,7 +3772,7 @@ HRESULT WINAPI WsMoveReader( WS_XML_READER *handle, WS_MOVE_TO move, BOOL *found
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!reader->input_buf) hr = WS_E_INVALID_OPERATION;
 #else
     if (reader->input_type != WS_XML_READER_INPUT_TYPE_BUFFER) hr = WS_E_INVALID_OPERATION;
@@ -3784,7 +3784,7 @@ HRESULT WINAPI WsMoveReader( WS_XML_READER *handle, WS_MOVE_TO move, BOOL *found
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT copy_input_nodes( WS_XML_READER *handle, WS_XML_WRITER_ENCODING_TYPE enc, struct list *nodes )
 {
     struct reader *reader = (struct reader *)handle;
@@ -3921,7 +3921,7 @@ static HRESULT str_to_bool( const unsigned char *str, ULONG len, BOOL *ret )
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT str_to_int64( const unsigned char *str, ULONG len, INT64 min, INT64 max, INT64 *ret )
 {
     INT64 acc_min = (min >= MIN_INT32 && max <= MAX_INT32) ? MIN_INT32 : MIN_INT64;
@@ -6036,7 +6036,7 @@ static HRESULT read_type_string( struct reader *reader, WS_TYPE_MAPPING mapping,
 
     if ((hr = get_text( reader, mapping, localname, ns, &text, found )) != S_OK) return hr;
     if (*found && (hr = text_to_string( text, heap, &val )) != S_OK) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*found && (option == WS_READ_REQUIRED_VALUE || option == WS_READ_REQUIRED_POINTER) &&
         !(val.chars = ws_alloc( heap, 0 ))) return WS_E_QUOTA_EXCEEDED;
 #endif
@@ -6121,7 +6121,7 @@ static HRESULT read_type_bytes( struct reader *reader, WS_TYPE_MAPPING mapping,
 
     if ((hr = get_text( reader, mapping, localname, ns, &text, found )) != S_OK) return hr;
     if (*found && (hr = text_to_bytes( text, heap, &val )) != S_OK) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*found && (option == WS_READ_REQUIRED_VALUE || option == WS_READ_REQUIRED_POINTER) &&
         !(val.bytes = ws_alloc( heap, 0 ))) return WS_E_QUOTA_EXCEEDED;
 #endif
@@ -6184,7 +6184,7 @@ static HRESULT read_type_xml_string( struct reader *reader, WS_TYPE_MAPPING mapp
 
     if ((hr = get_text( reader, mapping, localname, ns, &text, found )) != S_OK) return hr;
     if (*found && (hr = text_to_xml_string( text, heap, &val )) != S_OK) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*found && (option == WS_READ_REQUIRED_VALUE || option == WS_READ_REQUIRED_POINTER) &&
         !(val.bytes = ws_alloc( heap, 0 ))) return WS_E_QUOTA_EXCEEDED;
 #endif
@@ -6631,7 +6631,7 @@ static HRESULT read_type_array( struct reader *reader, const WS_FIELD_DESCRIPTIO
     }
 
     if (desc->localName && ((hr = read_type_next_node( reader )) != S_OK)) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (desc->localName && node_type( reader->current ) != WS_XML_NODE_TYPE_END_ELEMENT)
     {
         ws_free( heap, buf, nb_allocated * item_size );
@@ -6719,7 +6719,7 @@ static HRESULT read_type_field( struct reader *reader, const WS_STRUCT_DESCRIPTI
         if (desc->type != WS_UNION_TYPE || !desc->typeDescription ||
             (desc->options & (WS_FIELD_POINTER|WS_FIELD_NILLABLE))) return E_INVALIDARG;
         hr = read_type_union( reader, desc->typeDescription, heap, ptr, size, &found );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hr == S_OK && !found && !(desc->options & WS_FIELD_OPTIONAL) &&
             (hr = read_type_next_node( reader )) == S_OK) hr = WS_E_INVALID_FORMAT;
 #endif
@@ -7252,7 +7252,7 @@ HRESULT WINAPI WsReadType( WS_XML_READER *handle, WS_TYPE_MAPPING mapping, WS_TY
         default:
             break;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hr == S_OK && mapping != WS_ELEMENT_CONTENT_TYPE_MAPPING && !read_end_of_data( reader ))
             hr = WS_E_INVALID_FORMAT;
 #else
@@ -7399,7 +7399,7 @@ static inline BOOL is_utf16le( const unsigned char *data, ULONG size, ULONG *off
            (size >= 4 && data[0] == '<' && !data[1] && !(*offset = 0));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_valid_xmldecl( const unsigned char *data, ULONG size, WS_CHARSET charset )
 {
     static const char decl[] = "<?xml";
@@ -7435,7 +7435,7 @@ static WS_CHARSET detect_charset( const unsigned char *data, ULONG size, ULONG *
         FIXME( "charset not recognized\n" );
         return 0;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_valid_xmldecl( data + *offset, size - *offset, ret )) return 0;
 #endif
 
@@ -7543,7 +7543,7 @@ HRESULT WINAPI WsSetInput( WS_XML_READER *handle, const WS_XML_READER_ENCODING *
             if (text->charSet != WS_CHARSET_AUTO) reader->input_charset = text->charSet;
             else reader->input_charset = detect_charset( buf->encodedData, buf->encodedDataSize, &offset );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (input->inputType == WS_XML_READER_INPUT_TYPE_STREAM)
         {
             const WS_XML_READER_TEXT_ENCODING *text = (const WS_XML_READER_TEXT_ENCODING *)encoding;
@@ -7980,7 +7980,7 @@ HRESULT WINAPI WsReadXmlBuffer( WS_XML_READER *handle, WS_HEAP *heap, WS_XML_BUF
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!reader->input_type) hr = E_FAIL;
 #else
     if (!reader->input_type) hr = WS_E_INVALID_OPERATION;

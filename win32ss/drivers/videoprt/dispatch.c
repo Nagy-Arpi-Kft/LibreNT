@@ -667,7 +667,7 @@ IntVideoPortResetDisplayParameters(ULONG Columns, ULONG Rows)
 }
 
 /*
- * (Adapted for ReactOS/Win2k3 from an original comment
+ * (Adapted for LibreNT/Win2k3 from an original comment
  *  by Gé van Geldorp, June 2003, r4937)
  *
  * DISPLAY OWNERSHIP
@@ -689,7 +689,7 @@ IntVideoPortResetDisplayParameters(ULONG Columns, ULONG Rows)
  * modes is text mode -> graphics mode -> text mode (the latter hopefully
  * happening very infrequently).
  *
- * In ReactOS things are a little bit different. We want to have a functional
+ * In LibreNT things are a little bit different. We want to have a functional
  * interactive text mode. We should be able to switch back and forth from
  * text mode to graphics mode when a GUI app is started and then finished.
  * Also, when the system bugchecks in graphics mode we want to switch back to
@@ -837,7 +837,7 @@ IntVideoPortAddDevice(
     /* Get the initialization data we saved in VideoPortInitialize. */
     DriverExtension = IoGetDriverObjectExtension(DriverObject, DriverObject);
 
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM)
     /*
      * WDDM coexistence guard #1: if dxgkrnl already created an FDO above
      * this PDO, do not attach a second FDO.  Return STATUS_DEVICE_ALREADY_ATTACHED

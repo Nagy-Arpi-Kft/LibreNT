@@ -74,7 +74,7 @@ static HRESULT WINAPI WebBrowser_QueryInterface(IUnknown *iface, REFIID riid, vo
     }else if(IsEqualGUID(&IID_IPersistStorage, riid)) {
         TRACE("(%p)->(IID_IPersistStorage %p)\n", This, ppv);
         *ppv = &This->IPersistStorage_iface;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     }else if(IsEqualGUID(&IID_IPersistMemory, riid)) {
         TRACE("(%p)->(IID_IPersistStorage %p)\n", This, ppv);
         *ppv = &This->IPersistMemory_iface;
@@ -109,7 +109,7 @@ static HRESULT WINAPI WebBrowser_QueryInterface(IUnknown *iface, REFIID riid, vo
     }else if(IsEqualGUID(&IID_IDataObject, riid)) {
         *ppv = &This->IDataObject_iface;
         TRACE("(%p)->(IID_IDataObject %p)\n", This, ppv);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }else if(IsEqualGUID(&IID_IPersistStream, riid)) {
         TRACE("(%p)->(IID_IPersistStream %p)\n", This, ppv);
         *ppv = &This->IPersistStreamInit_iface;
@@ -1026,7 +1026,7 @@ static HRESULT WINAPI WebBrowser_get_RegisterAsDropTarget(IWebBrowser2 *iface,
 {
     WebBrowser *This = impl_from_IWebBrowser2(iface);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)->(%p)\n", This, pbRegister);
 #else
     FIXME("(%p)->(%p)\n", This, pbRegister);
@@ -1035,7 +1035,7 @@ static HRESULT WINAPI WebBrowser_get_RegisterAsDropTarget(IWebBrowser2 *iface,
     if(!pbRegister)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *pbRegister = This->register_drop_target;
 #else
     *pbRegister=0;
@@ -1048,7 +1048,7 @@ static HRESULT WINAPI WebBrowser_put_RegisterAsDropTarget(IWebBrowser2 *iface,
 {
     WebBrowser *This = impl_from_IWebBrowser2(iface);
     FIXME("(%p)->(%x)\n", This, bRegister);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->register_drop_target = bRegister ? VARIANT_TRUE : VARIANT_FALSE;
 #endif
     return S_OK;
@@ -1345,7 +1345,7 @@ static HRESULT create_webbrowser(int version, IUnknown *outer, REFIID riid, void
     WebBrowser_ViewObject_Init(ret);
     WebBrowser_Persist_Init(ret);
     WebBrowser_ClassInfo_Init(ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WebBrowser_Ext_Init(ret);
 #endif
 

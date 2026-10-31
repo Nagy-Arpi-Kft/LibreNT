@@ -153,7 +153,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH RoGetActivationFactory(HSTRING classid, REFIID 
     WCHAR *library;
     HMODULE module;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL tracked = FALSE;
 #endif
 
@@ -190,7 +190,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH RoGetActivationFactory(HSTRING classid, REFIID 
 
     TRACE("Found library %s for class %s\n", debugstr_w(library), debugstr_hstring(classid));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         struct apartment *apt;
 
@@ -203,7 +203,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH RoGetActivationFactory(HSTRING classid, REFIID 
 #endif
 
     hr = pDllGetActivationFactory(classid, &factory);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr))
     {
         ACTCTX_SECTION_KEYED_DATA data;
@@ -222,7 +222,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH RoGetActivationFactory(HSTRING classid, REFIID 
         if (SUCCEEDED(hr))
         {
             TRACE("Created interface %p\n", *class_factory);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!tracked)
 #endif
             module = NULL;
@@ -372,7 +372,7 @@ static HRESULT WINAPI marshal_object_in_context(ComCallData *arg)
     HRESULT hr;
 
     hr = marshal_object_in_agile_reference(params->impl, params->iid, params->impl->obj);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     IUnknown_Release(params->impl->obj);
     params->impl->obj = NULL;
 #endif
@@ -393,7 +393,7 @@ static HRESULT WINAPI agile_ref_Resolve(IAgileReference *iface, REFIID riid, voi
 
     if (FAILED(hr = CoGetContextToken((ULONG_PTR *)&cur_ctx)))
         return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (impl->option == AGILEREFERENCE_DELAYEDMARSHAL && cur_ctx == impl->ctx)
         return IUnknown_QueryInterface(impl->obj, riid, obj);
 #endif

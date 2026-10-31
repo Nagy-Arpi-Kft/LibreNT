@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/halarm64/acpi/halpnpdd.c
  * PURPOSE:         ARM64 hooks for the ACPI HAL bus driver
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

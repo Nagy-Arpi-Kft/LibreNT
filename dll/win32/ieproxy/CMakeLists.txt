@@ -26,4 +26,4 @@ add_idl_reg_scripts(ieproxy registry
     ieproxy_priv.idl)
 target_link_libraries(ieproxy uuid wine ${PSEH_LIB})
 add_importlibs(ieproxy rpcrt4 ole32 oleaut32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET ieproxy DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET ieproxy DESTINATION librent/system32 FOR all)

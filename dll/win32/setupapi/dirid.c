@@ -23,7 +23,7 @@
 #include "windef.h"
 #include "winbase.h"
 #include "winreg.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 #include "winerror.h"
@@ -35,7 +35,7 @@
 #include "setupapi_private.h"
 #include "wine/debug.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 #endif
 
@@ -107,7 +107,7 @@ static const WCHAR *create_system_dirid( int dirid )
         break;
     case DIRID_DRIVERS:
     case 13: /* DIRID_DRIVER_STORE */
-        /* ReactOS stages driver packages directly in system32\drivers. */
+        /* LibreNT stages driver packages directly in system32\drivers. */
         GetSystemDirectoryW( buffer, MAX_PATH );
         lstrcatW( buffer, L"\\drivers" );
         break;
@@ -280,7 +280,7 @@ static BOOL store_user_dirid( HINF hinf, int id, WCHAR *str )
 BOOL WINAPI SetupSetDirectoryIdA( HINF hinf, DWORD id, PCSTR dir )
 {
     UNICODE_STRING dirW;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *str;
 #endif
     int i;
@@ -303,7 +303,7 @@ BOOL WINAPI SetupSetDirectoryIdA( HINF hinf, DWORD id, PCSTR dir )
         SetLastError( ERROR_NOT_ENOUGH_MEMORY );
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     str = wcsdup( dirW.Buffer );
     RtlFreeUnicodeString( &dirW );
     if (!str)

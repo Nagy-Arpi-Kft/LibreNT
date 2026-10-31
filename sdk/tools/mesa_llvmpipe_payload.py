@@ -14,20 +14,20 @@ import zipfile
 CACHE_KEYS = (
     "CMAKE_TOOLCHAIN_FILE",
     "CMAKE_MAKE_PROGRAM",
-    "REACTOS_CLANG_LLVM_MINGW_ROOT",
-    "MESA_REACTOS_SDK",
+    "LIBRENT_CLANG_LLVM_MINGW_ROOT",
+    "MESA_LIBRENT_SDK",
     "Python3_EXECUTABLE",
     "BISON_EXECUTABLE",
     "FLEX_EXECUTABLE",
-    "REACTOS_SDK_ARCH",
-    "REACTOS_SDK_TRIPLE",
-    "REACTOS_SDK_ARCH_FLAGS",
-    "REACTOS_SDK_SOURCE_DIR",
-    "REACTOS_SDK_BUILD_DIR",
-    "REACTOS_SDK_LIBDIR",
-    "REACTOS_SDK_CXX_RUNTIME",
-    "MESA_REACTOS_SOURCE_DIR",
-    "MESA_REACTOS_BUILD_DIR",
+    "LIBRENT_SDK_ARCH",
+    "LIBRENT_SDK_TRIPLE",
+    "LIBRENT_SDK_ARCH_FLAGS",
+    "LIBRENT_SDK_SOURCE_DIR",
+    "LIBRENT_SDK_BUILD_DIR",
+    "LIBRENT_SDK_LIBDIR",
+    "LIBRENT_SDK_CXX_RUNTIME",
+    "MESA_LIBRENT_SOURCE_DIR",
+    "MESA_LIBRENT_BUILD_DIR",
     "MESA_ARCH",
 )
 WGL_NAME = "mesa_llvmpipe"
@@ -93,10 +93,10 @@ def sha256(path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build the LiberNT LLVMpipe/Lavapipe release payload")
+    parser = argparse.ArgumentParser(description="Build the LibreNT LLVMpipe/Lavapipe release payload")
     parser.add_argument("--arch", required=True, choices=("amd64", "arm64"))
-    parser.add_argument("--source-dir", required=True, help="LiberNT source tree")
-    parser.add_argument("--build-dir", required=True, help="LiberNT build directory that already built mesa_gallium")
+    parser.add_argument("--source-dir", required=True, help="LibreNT source tree")
+    parser.add_argument("--build-dir", required=True, help="LibreNT build directory that already built mesa_gallium")
     parser.add_argument("--llvm-root", required=True, help="Static Windows LLVM 22 install for the native architecture")
     parser.add_argument("--llvm-root-ec", help="Static Windows LLVM 22 install for ARM64EC (arm64 only)")
     parser.add_argument("--llvm-license", required=True, help="LLVM LICENSE.TXT")
@@ -144,7 +144,7 @@ def main():
     licenses = os.path.join(stage, "licenses")
     os.makedirs(system32)
     os.makedirs(licenses)
-    strip = os.path.join(cache["REACTOS_CLANG_LLVM_MINGW_ROOT"][1], "bin", "llvm-strip")
+    strip = os.path.join(cache["LIBRENT_CLANG_LLVM_MINGW_ROOT"][1], "bin", "llvm-strip")
     for path in (wgl, os.path.join(native_work, LVP_DLL)):
         target = os.path.join(system32, os.path.basename(path))
         shutil.copyfile(path, target)

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Test for EnumSystemCodePages
  * COPYRIGHT:   Copyright 2026 Aliaksandr Lebiadzevich <bsalex2025@gmail.com>

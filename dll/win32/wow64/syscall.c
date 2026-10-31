@@ -20,7 +20,7 @@
 
 #include <stdarg.h>
 #include <setjmp.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wchar.h>
 #endif
 
@@ -32,7 +32,7 @@
 #include "winnt.h"
 #include "winternl.h"
 #include "rtlsupportapi.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 #include "wine/asm.h"
@@ -52,7 +52,7 @@ USHORT current_machine = 0;
 ULONG_PTR args_alignment = 0;
 ULONG_PTR highest_user_address = 0x7ffeffff;
 ULONG_PTR default_zero_bits = 0x7fffffff;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 WCHAR wow64_windows_dir[MAX_PATH];
 WCHAR wow64_windows_prefix[MAX_PATH];
 WCHAR wow64_native_dir[MAX_PATH];
@@ -75,7 +75,7 @@ static BYTE syscall_args[ARRAY_SIZE(syscall_thunks)] =
 #undef SYSCALL_ENTRY
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const char * const syscall_names[] =
 {
 #define SYSCALL_ENTRY(id,name,args) #name,
@@ -100,7 +100,7 @@ static const struct reactos_syscall reactos_syscalls[] =
 #undef SVC_
 };
 
-/* thunks for ReactOS syscalls that are not in Wine's ALL_SYSCALLS32 list */
+/* thunks for LibreNT syscalls that are not in Wine's ALL_SYSCALLS32 list */
 static const struct
 {
     const char *name;
@@ -109,7 +109,7 @@ static const struct
 reactos_extra_syscalls[] =
 {
 #define ROS_SYSCALL_ENTRY(name) { #name, wow64_ ## name },
-    ALL_REACTOS_SYSCALLS
+    ALL_LIBRENT_SYSCALLS
 #undef ROS_SYSCALL_ENTRY
 };
 
@@ -145,7 +145,7 @@ struct user_callback_frame
     ULONG                      *ret_len;
     NTSTATUS                    status;
     jmp_buf                     jmpbuf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     I386_CONTEXT               *pop_context;
 #endif
 };
@@ -163,7 +163,7 @@ SYSTEM_DLL_INIT_BLOCK *pLdrSystemDllInitBlock = NULL;
 static WOW64INFO *wow64info;
 static WORD ss32_sel;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void init_reactos_wow64_paths(void)
 {
     const WCHAR *nt_system_root = (const WCHAR *)(ULONG_PTR)0x7ffe0030;
@@ -211,7 +211,7 @@ static void init_reactos_syscall_table(void)
     syscall_tables[0].ServiceLimit = ARRAY_SIZE(reactos_syscall_thunks);
     syscall_tables[0].ArgumentTable = reactos_syscall_args;
     if (missing)
-        WARN( "%u of %u ReactOS syscalls have no WoW64 thunk\n", missing, (UINT)ARRAY_SIZE(reactos_syscalls) );
+        WARN( "%u of %u LibreNT syscalls have no WoW64 thunk\n", missing, (UINT)ARRAY_SIZE(reactos_syscalls) );
 }
 #endif
 
@@ -224,7 +224,7 @@ static void     (WINAPI *pBTCpuProcessInit)(void);
 static NTSTATUS (WINAPI *pBTCpuSetContext)(HANDLE,HANDLE,void *,void *);
 static void     (WINAPI *pBTCpuThreadInit)(void);
 void     (WINAPI *pBTCpuSimulate)(void) = NULL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void *   (WINAPI *p__wine_get_unix_opcode)(void);
 #endif
 static void *   (WINAPI *pKiRaiseUserExceptionDispatcher)(void);
@@ -242,7 +242,7 @@ NTSTATUS (WINAPI *pBTCpuResetToConsistentState)( EXCEPTION_POINTERS * ) = NULL;
 void     (WINAPI *pBTCpuUpdateProcessorInformation)( SYSTEM_CPU_INFORMATION * ) = NULL;
 void     (WINAPI *pBTCpuProcessTerm)( HANDLE, BOOL, NTSTATUS ) = NULL;
 void     (WINAPI *pBTCpuThreadTerm)( HANDLE, LONG ) = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static NTSTATUS (WINAPI *pBTCpuSuspendLocalThread)( HANDLE, ULONG * );
 #endif
 
@@ -266,7 +266,7 @@ void DECLSPEC_NORETURN __cdecl __wine_spec_unimplemented_stub( const char *modul
     for (;;) RtlRaiseException( &record );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void DECLSPEC_NORETURN stub_syscall( const char *name )
 {
     __wine_spec_unimplemented_stub( "ntdll", name );
@@ -274,7 +274,7 @@ static void DECLSPEC_NORETURN stub_syscall( const char *name )
 
 #define SYSCALL_STUB(name) NTSTATUS WINAPI wow64_ ## name( UINT *args ) { stub_syscall( #name ); }
 ALL_SYSCALL_STUBS
-#endif  /* on ReactOS these five have real thunks in rossyscall.c */
+#endif  /* on LibreNT these five have real thunks in rossyscall.c */
 
 static EXCEPTION_RECORD *exception_record_32to64( const EXCEPTION_RECORD32 *rec32 )
 {
@@ -656,7 +656,7 @@ NTSTATUS WINAPI wow64_NtAlpcConnectPort( UINT *args )
     if (status == STATUS_SUCCESS)
     {
         put_handle( handle_ptr, handle );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wow64_csr_port_connected( &str, handle );
 #endif
         alpc_port_message_64to32( msg32, msg );
@@ -736,7 +736,7 @@ NTSTATUS WINAPI wow64_NtAlpcSendWaitReceivePort( UINT *args )
     ALPC_MESSAGE_ATTRIBUTES *recv_msg_attr;
     SIZE_T size = size32 ? (*size32 + sizeof(ALPC_PORT_MESSAGE) - sizeof(ALPC_PORT_MESSAGE32)) : 65535;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (wow64_csr_request( handle, flags, send_msg32, recv_msg32, size32, timeout, &status )) return status;
 #endif
 
@@ -769,7 +769,7 @@ NTSTATUS WINAPI wow64_NtCallbackReturn( UINT *args )
     *frame->ret_ptr = ret_ptr;
     *frame->ret_len = ret_len;
     frame->status = status;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status == STATUS_CALLBACK_POP_STACK && current_machine == IMAGE_FILE_MACHINE_I386 &&
         (frame->pop_context = RtlAllocateHeap( GetProcessHeap(), 0, sizeof(*frame->pop_context) )))
     {
@@ -1025,7 +1025,7 @@ static HMODULE load_64bit_module( const WCHAR *name )
     HMODULE module;
     UNICODE_STRING str;
     WCHAR path[MAX_PATH];
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     const WCHAR *dir = get_machine_wow64_dir( IMAGE_FILE_MACHINE_TARGET_HOST );
 
     swprintf( path, MAX_PATH, L"%s\\%s", dir, name );
@@ -1135,12 +1135,12 @@ static DWORD WINAPI process_init( RTL_RUN_ONCE *once, void *param, void **contex
     HMODULE module;
     UNICODE_STRING str = RTL_CONSTANT_STRING( L"ntdll.dll" );
     SYSTEM_BASIC_INFORMATION info;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ULONG *p__wine_syscall_dispatcher, *p__wine_unix_call_dispatcher;
 #endif
     const SYSTEM_SERVICE_TABLE *psdwhwin32;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     init_reactos_wow64_paths();
 #endif
     RtlWow64GetProcessMachines( GetCurrentProcess(), &current_machine, &native_machine );
@@ -1156,7 +1156,7 @@ static DWORD WINAPI process_init( RTL_RUN_ONCE *once, void *param, void **contex
     wow64info->EmulatedMachineType  = current_machine;
     NtCurrentTeb()->TlsSlots[WOW64_TLS_WOW64INFO] = wow64info;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     init_reactos_syscall_table();
     init_reactos_wow64_environment();
 #endif
@@ -1188,7 +1188,7 @@ static DWORD WINAPI process_init( RTL_RUN_ONCE *once, void *param, void **contex
     GET_PTR( BTCpuUpdateProcessorInformation );
     GET_PTR( BTCpuProcessTerm );
     GET_PTR( BTCpuThreadTerm );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GET_PTR( BTCpuSuspendLocalThread );
 #else
     GET_PTR( __wine_get_unix_opcode );
@@ -1203,7 +1203,7 @@ static DWORD WINAPI process_init( RTL_RUN_ONCE *once, void *param, void **contex
     module = (HMODULE)(ULONG_PTR)pLdrSystemDllInitBlock->ntdll_handle;
     init_image_mapping( module );
     GET_PTR( KiRaiseUserExceptionDispatcher );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     GET_PTR( __wine_syscall_dispatcher );
     GET_PTR( __wine_unix_call_dispatcher );
 
@@ -1232,7 +1232,7 @@ static DWORD WINAPI process_init( RTL_RUN_ONCE *once, void *param, void **contex
  */
 static void thread_init(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NtCurrentTeb()->TlsSlots[WOW64_TLS_WOW64INFO] = wow64info;
     if (pBTCpuThreadInit) pBTCpuThreadInit();
     NtCurrentTeb32()->WOW32Reserved = PtrToUlong( pBTCpuGetBopCode() );
@@ -1251,7 +1251,7 @@ static void thread_init(void)
             ULONG *stack;
 
             pBTCpuGetContext( GetCurrentThread(), GetCurrentProcess(), NULL, &ctx );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 PEB32 *peb32 = ULongToPtr( NtCurrentTeb32()->Peb );
                 IMAGE_NT_HEADERS32 *nt32 = (IMAGE_NT_HEADERS32 *)RtlImageNtHeader( ULongToPtr( peb32->ImageBaseAddress ) );
@@ -1271,7 +1271,7 @@ static void thread_init(void)
 #endif
             *ctx_ptr = ctx;
             stack = (ULONG *)ctx_ptr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *(--stack) = 0;
             *(--stack) = pLdrSystemDllInitBlock->ntdll_handle;
             *(--stack) = 0;
@@ -1284,7 +1284,7 @@ static void thread_init(void)
             *(--stack) = 0xdeadbabe;
 #endif
             ctx.Esp = PtrToUlong( stack );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ctx.Eip = pLdrSystemDllInitBlock->pKiUserApcDispatcher;
 #else
             ctx.Eip = pLdrSystemDllInitBlock->pLdrInitializeThunk;
@@ -1315,7 +1315,7 @@ static void thread_init(void)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL init_native_thread( CONTEXT *context )
 {
     TEB32 *teb32 = NtCurrentTeb32();
@@ -1593,7 +1593,7 @@ void WINAPI Wow64ApcRoutine( ULONG_PTR arg1, ULONG_PTR arg2, ULONG_PTR arg3, CON
                 UINT              arg1;          /* 004 */
                 UINT              arg2;          /* 008 */
                 UINT              arg3;          /* 00c */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 I386_CONTEXT      context;       /* 010 */
 #else
                 UINT              alertable;     /* 010 */
@@ -1604,7 +1604,7 @@ void WINAPI Wow64ApcRoutine( ULONG_PTR arg1, ULONG_PTR arg2, ULONG_PTR arg3, CON
             } *stack;
             I386_CONTEXT ctx = { CONTEXT_I386_FULL };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             C_ASSERT( offsetof(struct apc_stack_layout32, context) == 0x10 );
             C_ASSERT( sizeof(struct apc_stack_layout32) == 0x2dc );
 #else
@@ -1614,7 +1614,7 @@ void WINAPI Wow64ApcRoutine( ULONG_PTR arg1, ULONG_PTR arg2, ULONG_PTR arg3, CON
 
             pBTCpuGetContext( GetCurrentThread(), GetCurrentProcess(), NULL, &ctx );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             stack = (struct apc_stack_layout32 *)ULongToPtr( ((ctx.Esp & ~3) - 8) & ~3 ) - 1;
 #else
             stack = (struct apc_stack_layout32 *)ULongToPtr( ctx.Esp & ~3 ) - 1;
@@ -1623,11 +1623,11 @@ void WINAPI Wow64ApcRoutine( ULONG_PTR arg1, ULONG_PTR arg2, ULONG_PTR arg3, CON
             stack->arg1      = arg1;
             stack->arg2      = arg2;
             stack->arg3      = arg3;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             stack->alertable = TRUE;
 #endif
             stack->context   = ctx;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             stack->xctx.Legacy.Offset = -(LONG)sizeof(stack->context);
             stack->xctx.Legacy.Length = sizeof(stack->context);
             stack->xctx.All.Offset    = -(LONG)sizeof(stack->context);
@@ -1672,7 +1672,7 @@ void WINAPI Wow64ApcRoutine( ULONG_PTR arg1, ULONG_PTR arg2, ULONG_PTR arg3, CON
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void probe_stack32( ULONG esp, ULONG bottom )
 {
     ULONG page = esp & ~(wow64info->NativeSystemPageSize - 1);
@@ -1701,7 +1701,7 @@ NTSTATUS WINAPI Wow64KiUserCallbackDispatcher( ULONG id, void *args, ULONG len,
     frame.temp_list  = NtCurrentTeb()->TlsSlots[WOW64_TLS_TEMPLIST];
     frame.ret_ptr    = ret_ptr;
     frame.ret_len    = ret_len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     frame.pop_context = NULL;
 #endif
 
@@ -1732,7 +1732,7 @@ NTSTATUS WINAPI Wow64KiUserCallbackDispatcher( ULONG id, void *args, ULONG len,
             orig_ctx = ctx;
 
             stack = ULongToPtr( (ctx.Esp - offsetof(struct callback_stack_layout32,args_data[len])) & ~15 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             probe_stack32( ctx.Esp, PtrToUlong( stack ) );
 #endif
             stack->eip  = ctx.Eip;
@@ -1748,7 +1748,7 @@ NTSTATUS WINAPI Wow64KiUserCallbackDispatcher( ULONG id, void *args, ULONG len,
 
             if (!setjmp( frame.jmpbuf ))
                 cpu_simulate();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (frame.pop_context)
                 pBTCpuSetContext( GetCurrentThread(), GetCurrentProcess(), NULL, frame.pop_context );
 #endif
@@ -1783,14 +1783,14 @@ NTSTATUS WINAPI Wow64KiUserCallbackDispatcher( ULONG id, void *args, ULONG len,
         break;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!frame.pop_context) teb32->Tib.ExceptionList = teb_frame;
 #else
     teb32->Tib.ExceptionList = teb_frame;
 #endif
     NtCurrentTeb()->TlsSlots[WOW64_TLS_USERCALLBACKDATA] = frame.prev_frame;
     NtCurrentTeb()->TlsSlots[WOW64_TLS_TEMPLIST] = frame.temp_list;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (frame.pop_context)
     {
         cpu->Flags = flags | WOW64_CPURESERVED_FLAG_RESET_STATE;
@@ -1806,7 +1806,7 @@ NTSTATUS WINAPI Wow64KiUserCallbackDispatcher( ULONG id, void *args, ULONG len,
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI Wow64SuspendLocalThread( HANDLE thread, ULONG *count )
 {
     THREAD_BASIC_INFORMATION info;
@@ -1828,7 +1828,7 @@ void WINAPI Wow64LdrpInitialize( CONTEXT *context )
     static RTL_RUN_ONCE init_done;
 
     RtlRunOnceExecuteOnce( &init_done, process_init, NULL, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!init_native_thread( context )) return;
 #endif
     thread_init();
@@ -1881,7 +1881,7 @@ void WINAPI Wow64PrepareForException( EXCEPTION_RECORD *rec, CONTEXT *context )
 {
     EXCEPTION_POINTERS ptrs = { rec, context };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pBTCpuResetToConsistentState && NtCurrentTeb32()->WOW32Reserved)
         pBTCpuResetToConsistentState( &ptrs );
 #else
@@ -1894,7 +1894,7 @@ void WINAPI Wow64PrepareForException( EXCEPTION_RECORD *rec, CONTEXT *context )
 /**********************************************************************
  *           Wow64PassExceptionToGuest  (wow64.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL handle_guest_debug_print( const EXCEPTION_RECORD *rec )
 {
     static const BYTE debug_service[] = { 0xcd, 0x2d, 0xcc };
@@ -1932,7 +1932,7 @@ void WINAPI Wow64PassExceptionToGuest( EXCEPTION_POINTERS *ptrs )
 {
     EXCEPTION_RECORD32 rec32;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (handle_guest_debug_print( ptrs->ExceptionRecord )) return;
 #endif
     exception_record_64to32( &rec32, ptrs->ExceptionRecord );

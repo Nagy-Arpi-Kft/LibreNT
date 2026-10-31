@@ -28,7 +28,7 @@
 
 extern HINSTANCE COMDLG32_hInstance;
 extern HANDLE COMDLG32_hActCtx;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern CRITICAL_SECTION COMDLG32_OpenFileLock;
 #endif
 

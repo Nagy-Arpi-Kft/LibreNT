@@ -26,7 +26,7 @@ CHAR            gDate[] = __DATE__;
 
 /* DEFINITIONS ***********************************************************/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -57,7 +57,7 @@ DECLARE_EXIT(journal_exit);
  *           DriverObject = object describing this driver
  * RETURNS:  None
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -107,7 +107,7 @@ DriverUnload (IN PDRIVER_OBJECT DriverObject)
 
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -424,7 +424,7 @@ Ext2QueryRegistrySettings(IN PUNICODE_STRING  RegistryPath)
 
 #define NLS_OEM_LEAD_BYTE_INFO            (*NlsOemLeadByteInfo)
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define FsRtlIsLeadDbcsCharacter(DBCS_CHAR) (                      \
     (BOOLEAN)((UCHAR)(DBCS_CHAR) < 0x80 ? FALSE :                  \
               (NLS_MB_CODE_PAGE_TAG &&                             \
@@ -460,7 +460,7 @@ Ext2EresourceAlignmentChecking()
  *           RegistryPath = path to our configuration entries
  * RETURNS: Success or failure
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS

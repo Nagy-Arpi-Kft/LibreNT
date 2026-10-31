@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS
+# PROJECT:     LibreNT
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the synchronized Raspberry Pi PL011 serial driver
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -19,13 +19,13 @@ add_library(SerPL011 MODULE
     PL011.rc)
 set_module_type(SerPL011 kmdfdriver)
 target_include_directories(SerPL011 BEFORE PRIVATE
-    ${_rpi3winsync_root}/reactos-compat
+    ${_rpi3winsync_root}/librent-compat
     ${_rpi3winsync_root}/drivers/include
     ${_rpi3winsync_root}/drivers/shared/acpi
     ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_options(SerPL011 PRIVATE -Wno-unknown-pragmas -Wno-missing-braces -Wno-pragma-pack -Wno-unused-variable -Wno-unused-but-set-variable)
 target_link_libraries(SerPL011 sercx2stubs ntoskrnl_vista libcntpr ${PSEH_LIB})
 add_importlibs(SerPL011 ntoskrnl hal)
-add_cd_file(TARGET SerPL011 DESTINATION reactos/system32/drivers FOR all)
-add_driver_inf(SerPL011 ${_rpi3winsync_root}/reactos-compat/serpl011/SerPL011.inf)
+add_cd_file(TARGET SerPL011 DESTINATION librent/system32/drivers FOR all)
+add_driver_inf(SerPL011 ${_rpi3winsync_root}/librent-compat/serpl011/SerPL011.inf)
 set_target_properties(SerPL011 PROPERTIES FOLDER "Drivers/Platform/Raspberry Pi 3")

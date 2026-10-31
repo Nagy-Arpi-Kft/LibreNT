@@ -88,7 +88,7 @@ static HRESULT PROPVAR_ConvertNumber(REFPROPVARIANT pv, int dest_bits,
                                      BOOL dest_signed, LONGLONG *res)
 {
     BOOL src_signed;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL is_string = FALSE;
 #endif
 
@@ -127,7 +127,7 @@ static HRESULT PROPVAR_ConvertNumber(REFPROPVARIANT pv, int dest_bits,
         *res = pv->uhVal.QuadPart;
         break;
     case VT_EMPTY:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_NULL:
 #endif
         src_signed = FALSE;
@@ -138,7 +138,7 @@ static HRESULT PROPVAR_ConvertNumber(REFPROPVARIANT pv, int dest_bits,
         char *end;
         *res = strtoll(pv->pszVal, &end, 0);
         if (pv->pszVal == end)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return TYPE_E_TYPEMISMATCH;
         is_string = TRUE;
 #else
@@ -153,7 +153,7 @@ static HRESULT PROPVAR_ConvertNumber(REFPROPVARIANT pv, int dest_bits,
         WCHAR *end;
         *res = wcstol(pv->pwszVal, &end, 0);
         if (pv->pwszVal == end)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return TYPE_E_TYPEMISMATCH;
         is_string = TRUE;
 #else
@@ -173,7 +173,7 @@ static HRESULT PROPVAR_ConvertNumber(REFPROPVARIANT pv, int dest_bits,
         return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (*res < 0 && is_string && !dest_signed)
         return TYPE_E_TYPEMISMATCH;
 #endif
@@ -360,7 +360,7 @@ HRESULT WINAPI PropVariantToBoolean(REFPROPVARIANT propvarIn, BOOL *ret)
 
     hr = PROPVAR_ConvertNumber(propvarIn, 64, TRUE, &res);
     *ret = !!res;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hr == TYPE_E_TYPEMISMATCH)
         hr = DISP_E_TYPEMISMATCH;
 #endif
@@ -401,7 +401,7 @@ HRESULT WINAPI PropVariantToBuffer(REFPROPVARIANT propvarIn, void *ret, UINT cb)
             memcpy(ret, propvarIn->caub.pElems, cb);
             break;
         case VT_ARRAY|VT_UI1:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             void *data;
 
@@ -472,7 +472,7 @@ static HRESULT string_alloc_from_int(const PROPVARIANT *var, WCHAR **ret)
         case VT_I8:
             value = (negative = var->hVal.QuadPart < 0) ? -var->hVal.QuadPart : var->hVal.QuadPart;
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case VT_BOOL:
             value = (negative = var->boolVal < 0) ? -var->boolVal : var->boolVal;
             break;
@@ -514,7 +514,7 @@ static HRESULT string_alloc_from_int(const PROPVARIANT *var, WCHAR **ret)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT string_alloc_from_double(double value, WCHAR **ret)
 {
     WCHAR buffer[64];
@@ -670,13 +670,13 @@ HRESULT WINAPI PropVariantToStringAlloc(REFPROPVARIANT propvarIn, WCHAR **ret)
         case VT_UI2:
         case VT_UI4:
         case VT_UI8:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case VT_BOOL:
 #endif
             hr = string_alloc_from_int(propvarIn, &res);
             break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case VT_FILETIME:
         {
             SYSTEMTIME st;
@@ -732,7 +732,7 @@ HRESULT WINAPI PropVariantToStringAlloc(REFPROPVARIANT propvarIn, WCHAR **ret)
 #endif
 
         default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (propvarIn->vt & VT_VECTOR)
             {
                 hr = string_alloc_from_vector(propvarIn, &res);
@@ -801,7 +801,7 @@ HRESULT WINAPI VariantToString(REFVARIANT var, PWSTR ret, UINT cch)
 
     switch (V_VT(var))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case VT_EMPTY:
             return S_OK;
 #endif
@@ -826,7 +826,7 @@ HRESULT WINAPI VariantToString(REFVARIANT var, PWSTR ret, UINT cch)
 /******************************************************************
  *  PropVariantChangeType   (PROPSYS.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT propvar_change_type(PROPVARIANT *ppropvarDest, REFPROPVARIANT propvarSrc,
                                    PROPVAR_CHANGE_FLAGS flags, VARTYPE vt)
 #else
@@ -1024,7 +1024,7 @@ HRESULT WINAPI PropVariantChangeType(PROPVARIANT *ppropvarDest, REFPROPVARIANT p
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI PropVariantChangeType(PROPVARIANT *ppropvarDest, REFPROPVARIANT propvarSrc,
                                      PROPVAR_CHANGE_FLAGS flags, VARTYPE vt)
 {
@@ -1097,7 +1097,7 @@ HRESULT WINAPI InitPropVariantFromCLSID(REFCLSID clsid, PROPVARIANT *ppropvar)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI InitPropVariantFromFileTime(const FILETIME *ft, PROPVARIANT *ppropvar)
 {
     TRACE("(%p %p)\n", ft, ppropvar);
@@ -1274,7 +1274,7 @@ HRESULT WINAPI PropVariantToGUID(REFPROPVARIANT ppropvar, GUID *guid)
     case VT_CLSID:
         memcpy(guid, ppropvar->puuid, sizeof(*ppropvar->puuid));
         return S_OK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_EMPTY:
     case VT_NULL:
         memset(guid, 0, sizeof(*guid));
@@ -1296,7 +1296,7 @@ HRESULT WINAPI PropVariantToGUID(REFPROPVARIANT ppropvar, GUID *guid)
 
     default:
         FIXME("unsupported vt: %d\n", ppropvar->vt);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return E_INVALIDARG;
 #else
         return E_NOTIMPL;
@@ -1372,7 +1372,7 @@ INT WINAPI PropVariantCompareEx(REFPROPVARIANT propvar1, REFPROPVARIANT propvar2
         hr = PropVariantChangeType(&propvar2_static, propvar2, 0, propvar1->vt);
 
         if (FAILED(hr))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return (INT)propvar1->vt - (INT)propvar2->vt;
 #else
             return -1;
@@ -1418,7 +1418,7 @@ INT WINAPI PropVariantCompareEx(REFPROPVARIANT propvar1, REFPROPVARIANT propvar2
     case VT_UI8:
         CMP_NUM_VALUE(uhVal.QuadPart);
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_BOOL:
         CMP_NUM_VALUE(boolVal);
         break;
@@ -1520,7 +1520,7 @@ HRESULT WINAPI PropVariantToVariant(const PROPVARIANT *propvar, VARIANT *var)
         case VT_R8:
             V_R8(var) = propvar->dblVal;
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case VT_CLSID:
             var->vt = VT_BSTR;
             if (!(V_BSTR(var) = SysAllocStringLen(NULL, GUID_STR_LEN)))
@@ -1541,7 +1541,7 @@ HRESULT WINAPI PropVariantToVariant(const PROPVARIANT *propvar, VARIANT *var)
             break;
         default:
             FIXME("Unsupported type %d.\n", propvar->vt);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             var->vt = VT_EMPTY;
             return (propvar->vt & VT_RESERVED) ? E_OUTOFMEMORY : E_INVALIDARG;
 #else
@@ -1561,7 +1561,7 @@ HRESULT WINAPI VariantToPropVariant(const VARIANT *var, PROPVARIANT *propvar)
     if (!var || !propvar)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (var->vt == VT_ILLEGAL)
         return TYPE_E_TYPEMISMATCH;
     if (var->vt == VT_CLSID)
@@ -1702,7 +1702,7 @@ HRESULT WINAPI PropVariantToFileTime(REFPROPVARIANT propvar, PSTIME_FLAGS flags,
     {
     case VT_EMPTY:
         return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_FILETIME:
         if (flags & PSTF_LOCAL)
             return FileTimeToLocalFileTime(&propvar->filetime, timestamp) ? S_OK : HRESULT_FROM_WIN32(GetLastError());
@@ -1732,7 +1732,7 @@ HRESULT WINAPI PropVariantToUInt32Vector(REFPROPVARIANT propvar, ULONG *buffer, 
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static ULONG serialized_align(ULONG cb)
 {
     return (cb + 3) & ~3u;

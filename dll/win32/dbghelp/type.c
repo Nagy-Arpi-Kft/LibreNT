@@ -26,7 +26,7 @@
 #include <stdarg.h>
 #include <assert.h>
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "windef.h"
 #include "winbase.h"
 #include "winnls.h"

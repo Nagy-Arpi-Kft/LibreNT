@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS API tests
+ * PROJECT:         LibreNT API tests
  * LICENSE:         GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:         Tests for the RtlGetNtProductType API
  * COPYRIGHT:       Copyright 2020 George Bișoc <george.bisoc@reactos.org>
@@ -133,7 +133,7 @@ START_TEST(RtlGetNtProductType)
     /* Remove ReportAsWorkstation override during tests */
     DWORD ReportAsWorkstation = 0xbaadf00d;
     HKEY hKey;
-    if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\ReactOS\\Settings\\Version",
+    if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\LibreNT\\Settings\\Version",
                       0, KEY_READ | KEY_WRITE, &hKey) == ERROR_SUCCESS)
     {
         DWORD cb = sizeof(ReportAsWorkstation);
@@ -180,7 +180,7 @@ START_TEST(RtlGetNtProductType)
     ok_char(ChangeNtProductType(ProductType), TRUE);
 
     /* Restore ReportAsWorkstation */
-    if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\ReactOS\\Settings\\Version",
+    if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\LibreNT\\Settings\\Version",
                       0, KEY_WRITE, &hKey) == ERROR_SUCCESS)
     {
         if (ReportAsWorkstation != 0xbaadf00d)

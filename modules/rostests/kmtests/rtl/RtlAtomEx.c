@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Extended atom-table native-parity tests
  * COPYRIGHT:       Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -52,7 +52,7 @@ RtlQueryAtomInAtomTable(
 
 START_TEST(RtlAtomEx)
 {
-    static WCHAR AtomName[] = L"ReactOS-RtlAtomEx";
+    static WCHAR AtomName[] = L"LibreNT-RtlAtomEx";
     static const ULONG Flags[] = {0, 1, 2, MAXULONG};
     PRTL_ATOM_TABLE Table;
     RTL_ATOM Atom;

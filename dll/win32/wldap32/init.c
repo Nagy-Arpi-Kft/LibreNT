@@ -197,7 +197,7 @@ static char *urlify_hostnames( const char *scheme, char *hostnames, ULONG port )
 static LDAP *create_context( const char *url )
 {
     LDAP *ld;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int version = WLDAP32_LDAP_VERSION2;
 #else
     int version = WLDAP32_LDAP_VERSION3;
@@ -347,7 +347,7 @@ LDAP * CDECL ldap_initW( const PWCHAR hostname, ULONG portnumber )
     {
         if (!(hostnameW = wcsdup( hostname ))) return NULL;
         if (!(hostnameU = strWtoU( hostnameW ))) goto exit;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(url = urlify_hostnames( portnumber == LDAPS_PORT ? "ldaps://" : "ldap://", hostnameU, portnumber )))
             goto exit;
 #else
@@ -398,7 +398,7 @@ LDAP * CDECL ldap_openW( WCHAR *hostname, ULONG portnumber )
     {
         if (!(hostnameW = wcsdup( hostname ))) return NULL;
         if (!(hostnameU = strWtoU( hostnameW ))) goto exit;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(url = urlify_hostnames( portnumber == LDAPS_PORT ? "ldaps://" : "ldap://", hostnameU, portnumber )))
             goto exit;
 #else
@@ -450,7 +450,7 @@ LDAP * CDECL ldap_sslinitW( WCHAR *hostname, ULONG portnumber, int secure )
         if (!(hostnameW = wcsdup( hostname ))) return NULL;
         if (!(hostnameU = strWtoU( hostnameW ))) goto exit;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (secure || portnumber == LDAPS_PORT)
 #else
         if (secure)

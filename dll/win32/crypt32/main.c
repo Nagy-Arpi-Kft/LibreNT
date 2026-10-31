@@ -27,7 +27,7 @@
 #include "wincrypt.h"
 #include "winreg.h"
 #include "winuser.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "ntsecapi.h"
 #endif
 #include "i_cryptasn1tls.h"
@@ -223,7 +223,7 @@ HCRYPTPROV WINAPI DECLSPEC_HOTPATCH I_CryptGetDefaultCryptProv(ALG_ID algid)
 
     defprov = CRYPT_GetDefaultProvider();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (algid && algid != CALG_NO_SIGN && !is_supported_algid(defprov, algid))
 #else
     if (algid && !is_supported_algid(defprov, algid))
@@ -315,7 +315,7 @@ ASN1encoding_t WINAPI I_CryptGetAsn1Encoder(HCRYPTASN1MODULE x)
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI CryptProtectMemory(void *data, DWORD len, DWORD flags)
 {
     NTSTATUS status;

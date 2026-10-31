@@ -195,7 +195,7 @@ RPC_STATUS RPC_ENTRY MesEncodeFixedBufferHandleCreate(
     if (!pEncodedSize)
         return RPC_S_INVALID_ARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!BufferSize)
         return RPC_S_INVALID_ARG;
 #else

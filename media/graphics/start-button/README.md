@@ -1,4 +1,4 @@
-The three `reactos-start-*.svg` files are the supplied Start button artwork:
+The three `librent-start-*.svg` files are the supplied Start button artwork:
 `color` for normal, `hover` for hot, and `pressed` while clicked or the menu is open.
 
 `render.js` produces the transparent PNG resources consumed by Explorer's WIC
@@ -16,4 +16,4 @@ npm install --prefix "$orb_tools_dir" --no-audit --no-fund @resvg/resvg-js@2.6.2
 NODE_PATH="$orb_tools_dir/node_modules" node media/graphics/start-button/render.js
 ```
 
-Normal ReactOS builds use the checked-in PNGs and do not require Node.js or resvg.
+Normal LibreNT builds use the checked-in PNGs and do not require Node.js or resvg.

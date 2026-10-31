@@ -3,7 +3,7 @@ add_definitions(
     -DHAVE_ZLIB)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 
 spec2def(cabinet.dll cabinet.spec ADD_IMPORTLIB)
 
@@ -24,5 +24,5 @@ target_link_libraries(cabinet wine wine_dll_version zlib)
 target_compile_definitions(cabinet PRIVATE NO_SHLWAPI_REG)
 add_importlibs(cabinet msvcrt kernel32 ntdll)
 add_pch(cabinet precomp.h SOURCE)
-add_cd_file(TARGET cabinet DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET cabinet DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(cabinet)

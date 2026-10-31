@@ -28,8 +28,7 @@ list(APPEND SOURCE
     pdo.c
     power.c)
 
-# PowerPC PReP machines also wire PATA channels to ISA legacy ports.
-if(ARCH STREQUAL "i386" OR ARCH STREQUAL "ppc")
+if(ARCH STREQUAL "i386")
     add_definitions(-DATA_DETECT_LEGACY_DEVICES)
     list(APPEND SOURCE chipset/pata_legacy.c)
 endif()
@@ -42,4 +41,4 @@ add_library(pciidex MODULE
 add_pch(pciidex pciidex.h SOURCE)
 set_module_type(pciidex kernelmodedriver)
 add_importlibs(pciidex ntoskrnl hal)
-add_cd_file(TARGET pciidex DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET pciidex DESTINATION librent/system32/drivers NO_CAB FOR all)

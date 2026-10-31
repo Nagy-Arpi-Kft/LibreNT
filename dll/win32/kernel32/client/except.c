@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/kernel32/client/except.c
  * PURPOSE:         Exception functions
  * PROGRAMMER:      Ariadne (ariadne@xs4all.nl)
@@ -509,7 +509,7 @@ UnhandledExceptionFilter(IN PEXCEPTION_POINTERS ExceptionInfo)
 
     /* No debugger present, let's continue... */
 
-    /* ReactOS-specific: DPRINT a stack trace */
+    /* LibreNT-specific: DPRINT a stack trace */
     PrintStackTrace(ExceptionInfo);
 
     RealFilter = RtlDecodePointer(GlobalTopLevelExceptionFilter);
@@ -641,7 +641,7 @@ UnhandledExceptionFilter(IN PEXCEPTION_POINTERS ExceptionInfo)
         NtClose(KeyHandle);
     }
 
-    // TODO: Start a ReactOS Fault Reporter (unimplemented!)
+    // TODO: Start a LibreNT Fault Reporter (unimplemented!)
     //
     // For now we are doing the "old way" (aka Win2k), that is also the fallback
     // case for Windows XP/2003 in case it does not find faultrep.dll to display
@@ -692,7 +692,7 @@ UnhandledExceptionFilter(IN PEXCEPTION_POINTERS ExceptionInfo)
     if (!NT_SUCCESS(Status) || (ErrorResponse != ResponseCancel) || IsSecondChance)
         goto Quit;
 
-    /* If the exception comes from a CSR Server, kill it (this will lead to ReactOS shutdown) */
+    /* If the exception comes from a CSR Server, kill it (this will lead to LibreNT shutdown) */
     if (BaseRunningInServerProcess)
     {
         IsSecondChance = TRUE;

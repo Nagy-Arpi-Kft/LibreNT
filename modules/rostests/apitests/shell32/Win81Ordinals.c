@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-only (https://spdx.org/licenses/GPL-3.0-only)
  * PURPOSE:     ABI contract tests for the Windows 8.1 shell32 ordinals
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -50,7 +50,7 @@ Ord(WORD w, const char *pszWhat)
 {
     FARPROC fp = GetProcAddress(hShell32, (LPCSTR)(ULONG_PTR)w);
 
-    if (!fp && !IsReactOS())
+    if (!fp && !IsLibreNT())
     {
         trace("shell32.#%u (%s) is absent on this Windows build\n", w, pszWhat);
         return NULL;
@@ -226,7 +226,7 @@ START_TEST(Win81Ordinals)
 
     Test_AllOrdinalsResolve();
 
-    if (!IsReactOS())
+    if (!IsLibreNT())
     {
         /*
          * These are unnamed ordinals whose meaning is specific to the Windows

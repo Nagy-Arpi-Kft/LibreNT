@@ -1049,26 +1049,26 @@ HRESULT RuntimeHost_GetIUnknownForObject(RuntimeHost *This, MonoObject *obj,
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL get_utf8_args(int *argc, char ***argv)
 #else
 static void get_utf8_args(int *argc, char ***argv)
 #endif
 {
     WCHAR **argvw;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int size, i, len;
 #else
     int size=0, i;
 #endif
     char *current_arg;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *argc = 0;
     *argv = NULL;
 #endif
     argvw = CommandLineToArgvW(GetCommandLineW(), argc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!argvw) return FALSE;
     if (*argc < 0 || (SIZE_T)*argc >= MAXLONG / sizeof(char *))
         goto failed;
@@ -1077,7 +1077,7 @@ static void get_utf8_args(int *argc, char ***argv)
 
     for (i=0; i<*argc; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         len = WideCharToMultiByte(CP_UTF8, 0, argvw[i], -1, NULL, 0, NULL, NULL);
         if (!len || len > MAXLONG - size) goto failed;
         size += len;
@@ -1086,23 +1086,23 @@ static void get_utf8_args(int *argc, char ***argv)
         size += WideCharToMultiByte(CP_UTF8, 0, argvw[i], -1, NULL, 0, NULL, NULL);
 #endif
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     size += sizeof(char*);
 #endif
 
     *argv = malloc(size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*argv) goto failed;
 #endif
     current_arg = (char*)(*argv + *argc + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size -= ((SIZE_T)*argc + 1) * sizeof(char *);
 #endif
 
     for (i=0; i<*argc; i++)
     {
         (*argv)[i] = current_arg;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         len = WideCharToMultiByte(CP_UTF8, 0, argvw[i], -1, current_arg, size, NULL, NULL);
         if (!len) goto failed;
         current_arg += len;
@@ -1115,7 +1115,7 @@ static void get_utf8_args(int *argc, char ***argv)
     (*argv)[*argc] = NULL;
 
     LocalFree(argvw);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return TRUE;
 
 failed:
@@ -1470,7 +1470,7 @@ __int32 WINAPI _CorExeMain(void)
     HRESULT hr;
     int i, number_of_private_paths = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!get_utf8_args(&argc, &argv)) return -1;
 #else
     get_utf8_args(&argc, &argv);
@@ -1759,7 +1759,7 @@ end:
 
 #define CHARS_IN_GUID 39
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT check_monodata_assembly(REFCLSID clsid)
 {
     WCHAR path[CHARS_IN_GUID + 22], classname[350], filename[MAX_PATH];
@@ -1955,7 +1955,7 @@ HRESULT create_monodata(REFCLSID clsid, LPVOID *ppObj)
 
     *ppObj = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetFileAttributesW(filename) == INVALID_FILE_ATTRIBUTES)
     {
         hr = HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);

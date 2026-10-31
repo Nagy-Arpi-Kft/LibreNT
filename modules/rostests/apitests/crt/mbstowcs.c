@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS api tests
+ * PROJECT:         LibreNT api tests
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         Test for mbstowcs
  */
@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <specstrings.h>
 
-#define StrROS "ReactOS"
-#define LStrROS L"ReactOS"
+#define StrROS "LibreNT"
+#define LStrROS L"LibreNT"
 
 START_TEST(mbstowcs)
 {

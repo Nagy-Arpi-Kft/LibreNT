@@ -15,7 +15,7 @@ list(APPEND SOURCE
      write.c
 )
 
-set(EXPAND_SOURCE_DIR ${REACTOS_SOURCE_DIR}/base/applications/cmdutils/lntexpandstorage)
+set(EXPAND_SOURCE_DIR ${LIBRENT_SOURCE_DIR}/base/applications/cmdutils/lntexpandstorage)
 
 add_library(ntfs MODULE ${SOURCE} ${EXPAND_SOURCE_DIR}/expandcore.c ntfs.rc)
 set_module_type(ntfs kernelmodedriver)
@@ -29,4 +29,4 @@ if(GDB AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
 endif()
 add_importlibs(ntfs ntoskrnl hal)
 add_pch(ntfs ntfspch.h SOURCE)
-add_cd_file(TARGET ntfs DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET ntfs DESTINATION librent/system32/drivers NO_CAB FOR all)

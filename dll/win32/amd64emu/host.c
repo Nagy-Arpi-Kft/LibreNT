@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT AMD64 emulation host
+ * PROJECT:     LibreNT AMD64 emulation host
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Native image the loader starts beside an AMD64 process image
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -12,7 +12,7 @@
 #undef WIN32_NO_STATUS
 #include <ntstatus.h>
 #include <ndk/ntndk.h>
-#include <reactos/emulation.h>
+#include <librent/emulation.h>
 
 VOID
 NTAPI

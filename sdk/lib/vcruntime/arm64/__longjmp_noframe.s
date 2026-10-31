@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS vcruntime library
+ * PROJECT:     LibreNT vcruntime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     ARM64 longjmp helper
  */

@@ -51,17 +51,17 @@ static BOOL sensor_matches_filter(ISensor *sensor, enum sensor_filter_kind filte
     return SUCCEEDED(hr) && IsEqualGUID(&value, filter);
 }
 
-static BOOL sensor_provider_information_valid(const REACTOS_SENSOR_PROVIDER_INFORMATION *provider, DWORD bytes)
+static BOOL sensor_provider_information_valid(const LIBRENT_SENSOR_PROVIDER_INFORMATION *provider, DWORD bytes)
 {
     SIZE_T required_size;
     ULONG index;
 
-    if (bytes < FIELD_OFFSET(REACTOS_SENSOR_PROVIDER_INFORMATION, Channels) ||
-        provider->Version != REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION ||
-        provider->Size > bytes || provider->Size < FIELD_OFFSET(REACTOS_SENSOR_PROVIDER_INFORMATION, Channels) ||
-        provider->ChannelCount > REACTOS_SENSOR_PROVIDER_MAX_CHANNELS)
+    if (bytes < FIELD_OFFSET(LIBRENT_SENSOR_PROVIDER_INFORMATION, Channels) ||
+        provider->Version != LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION ||
+        provider->Size > bytes || provider->Size < FIELD_OFFSET(LIBRENT_SENSOR_PROVIDER_INFORMATION, Channels) ||
+        provider->ChannelCount > LIBRENT_SENSOR_PROVIDER_MAX_CHANNELS)
         return FALSE;
-    required_size = FIELD_OFFSET(REACTOS_SENSOR_PROVIDER_INFORMATION, Channels) + provider->ChannelCount * sizeof(provider->Channels[0]);
+    required_size = FIELD_OFFSET(LIBRENT_SENSOR_PROVIDER_INFORMATION, Channels) + provider->ChannelCount * sizeof(provider->Channels[0]);
     if (provider->Size < required_size)
         return FALSE;
     for (index = 0; index < provider->ChannelCount; index++)
@@ -74,7 +74,7 @@ static BOOL sensor_provider_information_valid(const REACTOS_SENSOR_PROVIDER_INFO
 
 static HRESULT sensor_manager_collect(enum sensor_filter_kind filter_kind, const GUID *filter, ISensorCollection **out)
 {
-    REACTOS_SENSOR_PROVIDER_INFORMATION provider;
+    LIBRENT_SENSOR_PROVIDER_INFORMATION provider;
     SP_DEVICE_INTERFACE_DETAIL_DATA_W *detail;
     SP_DEVICE_INTERFACE_DATA interface_data;
     ISensorCollection *collection;
@@ -96,7 +96,7 @@ static HRESULT sensor_manager_collect(enum sensor_filter_kind filter_kind, const
     hr = sensor_collection_create(&IID_ISensorCollection, (void **)&collection);
     if (FAILED(hr))
         return hr;
-    devices = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_REACTOS_SENSOR_PROVIDER, NULL, NULL, DIGCF_DEVICEINTERFACE | DIGCF_PRESENT);
+    devices = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_LIBRENT_SENSOR_PROVIDER, NULL, NULL, DIGCF_DEVICEINTERFACE | DIGCF_PRESENT);
     if (devices == INVALID_HANDLE_VALUE)
     {
         ISensorCollection_Release(collection);
@@ -106,7 +106,7 @@ static HRESULT sensor_manager_collect(enum sensor_filter_kind filter_kind, const
     {
         memset(&interface_data, 0, sizeof(interface_data));
         interface_data.cbSize = sizeof(interface_data);
-        if (!SetupDiEnumDeviceInterfaces(devices, NULL, &GUID_DEVINTERFACE_REACTOS_SENSOR_PROVIDER, device_index, &interface_data))
+        if (!SetupDiEnumDeviceInterfaces(devices, NULL, &GUID_DEVINTERFACE_LIBRENT_SENSOR_PROVIDER, device_index, &interface_data))
             break;
         required_size = 0;
         SetupDiGetDeviceInterfaceDetailW(devices, &interface_data, NULL, 0, &required_size, NULL);
@@ -132,18 +132,18 @@ static HRESULT sensor_manager_collect(enum sensor_filter_kind filter_kind, const
         }
         memset(&provider, 0, sizeof(provider));
         bytes = 0;
-        if (!DeviceIoControl(device, IOCTL_REACTOS_SENSOR_QUERY_PROVIDER, NULL, 0, &provider, sizeof(provider), &bytes, NULL) || !sensor_provider_information_valid(&provider, bytes))
+        if (!DeviceIoControl(device, IOCTL_LIBRENT_SENSOR_QUERY_PROVIDER, NULL, 0, &provider, sizeof(provider), &bytes, NULL) || !sensor_provider_information_valid(&provider, bytes))
         {
             CloseHandle(device);
             HeapFree(GetProcessHeap(), 0, detail);
             continue;
         }
         CloseHandle(device);
-        provider.Manufacturer[REACTOS_SENSOR_PROVIDER_STRING_LENGTH - 1] = 0;
-        provider.Model[REACTOS_SENSOR_PROVIDER_STRING_LENGTH - 1] = 0;
+        provider.Manufacturer[LIBRENT_SENSOR_PROVIDER_STRING_LENGTH - 1] = 0;
+        provider.Model[LIBRENT_SENSOR_PROVIDER_STRING_LENGTH - 1] = 0;
         for (channel_index = 0; channel_index < provider.ChannelCount; channel_index++)
         {
-            provider.Channels[channel_index].Name[REACTOS_SENSOR_PROVIDER_STRING_LENGTH - 1] = 0;
+            provider.Channels[channel_index].Name[LIBRENT_SENSOR_PROVIDER_STRING_LENGTH - 1] = 0;
             hr = sensor_create(detail->DevicePath, &provider, channel_index, &IID_ISensor, (void **)&sensor);
             if (FAILED(hr))
             {

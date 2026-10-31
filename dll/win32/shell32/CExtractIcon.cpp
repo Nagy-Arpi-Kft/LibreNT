@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Registry namespace extension
+ * PROJECT:         LibreNT Registry namespace extension
  * FILE:            dll/win32/shell32/extracticon.c
  * PURPOSE:         Icon extraction
  *

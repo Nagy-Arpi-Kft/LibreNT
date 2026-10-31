@@ -40,7 +40,7 @@ Revision History:
 #include <wdf.h>
 #include <ntstrsafe.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <spbcx.h>
 #else
 #include <SPBCx.h>

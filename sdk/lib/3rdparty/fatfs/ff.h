@@ -36,9 +36,9 @@ extern "C" {
 
 /* Integer types used for FatFs API */
 
-#if defined(FF_USE_REACTOS_TYPES)
+#if defined(FF_USE_LIBRENT_TYPES)
 #define FF_INTDEF 2
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <minwindef.h>
 #else
 #include <windef.h>
@@ -195,12 +195,12 @@ typedef struct {
 #endif
 #endif
 	BYTE	win[FF_MAX_SS];	/* Disk access window for directory, FAT (and file data in tiny cfg) */
-#if defined(__REACTOS__) && FF_FS_EXFAT && !FF_FS_READONLY
+#if defined(__LIBRENT__) && FF_FS_EXFAT && !FF_FS_READONLY
 	BYTE	bwin[FF_MAX_SS];	/* Disk access window for the allocation bitmap */
 	LBA_t	bwinsect;	/* Current sector appearing in the bwin[] */
 	BYTE	bwflag;		/* bwin[] status (b0:dirty) */
 #endif
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 	BYTE*	fseq;		/* FAT linearity digest, 2 bits per FAT sector (0:not allocated) */
 	DWORD	fseq_count;	/* Number of FAT sectors described by fseq[] */
 #endif

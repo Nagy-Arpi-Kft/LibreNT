@@ -1,5 +1,5 @@
 /*
- * ReactOS Management Console
+ * LibreNT Management Console
  * Copyright (C) 2006 - 2007 Thomas Weidenmueller
  *
  * This library is free software; you can redistribute it and/or
@@ -140,7 +140,7 @@ FrameOnCreate(HWND hwnd,
     {
         /* FIXME */
         Info->AppAuthorMode = TRUE;
-//        Info->lpConsoleTitle = TEXT("LiberNT Management Console");
+//        Info->lpConsoleTitle = TEXT("LibreNT Management Console");
     }
     else
     {
@@ -151,7 +151,7 @@ FrameOnCreate(HWND hwnd,
     SetMenu(Info->hwnd,
             Info->hMenuConsoleSmall);
 
-    SetWindowText(Info->hwnd, TEXT("LiberNT Management Console"));
+    SetWindowText(Info->hwnd, TEXT("LibreNT Management Console"));
 
     ccs.hWindowMenu = GetSubMenu(Info->hMenuConsoleLarge, 1);
     ccs.idFirstChild = IDM_MDI_FIRSTCHILD;

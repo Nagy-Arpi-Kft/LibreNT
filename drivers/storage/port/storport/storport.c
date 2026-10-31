@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Storport Driver
+ * PROJECT:     LibreNT Storport Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Storport driver main file
  * COPYRIGHT:   Copyright 2017 Eric Kohl (eric.kohl@reactos.org)
@@ -998,7 +998,7 @@ PortDispatchDeviceControl(
             Status = STATUS_SUCCESS;
             break;
 
-        case IOCTL_REACTOS_STORAGE_GET_DUMP_INTERFACE:
+        case IOCTL_LIBRENT_STORAGE_GET_DUMP_INTERFACE:
             if (ExtensionType != PdoExtension)
             {
                 Status = STATUS_INVALID_DEVICE_REQUEST;

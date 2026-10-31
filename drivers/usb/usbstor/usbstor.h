@@ -8,8 +8,8 @@
 #include <usbbusif.h>
 #include <usbdlib.h>
 #include <classpnp.h>
-#include <reactos/drivers/dumpstor.h>
-#include <reactos/drivers/dumpscsi.h>
+#include <librent/drivers/dumpstor.h>
+#include <librent/drivers/dumpscsi.h>
 
 #define USB_STOR_TAG 'sbsu'
 
@@ -191,7 +191,7 @@ typedef struct _USBSTOR_DUMP_CONTEXT
     ULONG Tag;
 } USBSTOR_DUMP_CONTEXT, *PUSBSTOR_DUMP_CONTEXT;
 
-// we need this to be compatible with ReactOS' classpnp (which is compiled with NTDDI_WIN8)
+// we need this to be compatible with LibreNT' classpnp (which is compiled with NTDDI_WIN8)
 typedef struct _STORAGE_ADAPTER_DESCRIPTOR_WIN8 {
     ULONG Version;
     ULONG Size;

@@ -159,7 +159,7 @@ typedef void (*VCHI_CALLBACK_T)( void *callback_param, //my service local param
  *    ...
  *
  */
-#if defined(__REACTOS__) && defined(WIN32)
+#if defined(__LIBRENT__) && defined(WIN32)
 #include <pshpack1.h>
 #endif
 
@@ -171,7 +171,7 @@ typedef struct vchi_msg_vector {
 #endif
 } VCHI_MSG_VECTOR_T;
 
-#if defined(__REACTOS__) && defined(WIN32)
+#if defined(__LIBRENT__) && defined(WIN32)
 #include <poppack.h>
 #endif
 

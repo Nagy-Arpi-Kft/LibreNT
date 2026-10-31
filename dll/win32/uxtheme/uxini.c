@@ -19,7 +19,7 @@
  */
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #endif
 
@@ -72,12 +72,12 @@ PUXINI_FILE UXINI_LoadINI(HMODULE hTheme, LPCWSTR lpName) {
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!hrsc) return NULL;
 #endif
     dwIniSize = SizeofResource(hTheme, hrsc) / sizeof(WCHAR);
     uf = malloc(sizeof(*uf));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!uf) return NULL;
 #endif
     uf->lpIni = lpThemesIni;
@@ -87,7 +87,7 @@ PUXINI_FILE UXINI_LoadINI(HMODULE hTheme, LPCWSTR lpName) {
     return uf;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PUXINI_FILE UXINI_LoadINIFile(LPCWSTR lpFileName)
 {
     HANDLE hFile;

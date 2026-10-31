@@ -1158,7 +1158,7 @@ static void reader_skipn(xmlreader *reader, int n)
 }
 
 /* [3] S ::= (#x20 | #x9 | #xD | #xA)+ */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL reader_at_nul(xmlreader *reader, BOOL input_end)
 {
     encoded_buffer *buffer = &reader->input->buffer->utf16;
@@ -1707,7 +1707,7 @@ static HRESULT reader_parse_whitespace(xmlreader *reader)
 
         reader_skipspaces(reader);
         if (is_reader_pending(reader)) return S_OK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (*reader_get_ptr(reader) != '<' && !reader_at_nul(reader, TRUE))
             return WC_E_SYNTAX;
 #endif
@@ -2295,7 +2295,7 @@ static HRESULT reader_parse_stag(xmlreader *reader, strval *prefix, strval *loca
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL reader_is_prefix_declared(xmlreader *reader, const strval *prefix)
 {
     return !prefix->len || strval_eq(reader, prefix, &strval_xml) || strval_eq(reader, prefix, &strval_xmlns) ||
@@ -2344,7 +2344,7 @@ static HRESULT reader_parse_element(xmlreader *reader)
         if (FAILED(hr)) return hr;
 
         /* FIXME: need to check for defined namespace to reject invalid prefix */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(hr = reader_check_prefixes(reader, &prefix))) return hr;
 #endif
 
@@ -2401,7 +2401,7 @@ static HRESULT reader_parse_endtag(xmlreader *reader)
     reader->nodetype = XmlNodeType_EndElement;
     reader->is_empty_element = FALSE;
     reader_set_strvalue(reader, StringValue_Prefix, &prefix);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     reader_set_strvalue(reader, StringValue_QualifiedName, &qname);
 #endif
 
@@ -2544,7 +2544,7 @@ static HRESULT reader_parse_content(xmlreader *reader)
 
     reader_shrink(reader);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (reader_at_nul(reader, TRUE))
         return MX_E_INPUTEND;
     if (reader_at_nul(reader, FALSE))
@@ -2666,7 +2666,7 @@ static HRESULT reader_parse_nextnode(xmlreader *reader)
                 return hr;
             break;
         case XmlReadInState_Element:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hr = reader_parse_element(reader);
             if (hr == S_FALSE && !is_reader_pending(reader))
                 hr = reader_at_nul(reader, TRUE) ? WC_E_ROOTELEMENT : WC_E_SYNTAX;
@@ -2680,7 +2680,7 @@ static HRESULT reader_parse_nextnode(xmlreader *reader)
             hr = reader_parse_misc(reader);
             if (hr != S_FALSE) return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (*reader_get_ptr(reader) || reader_at_nul(reader, FALSE))
 #else
             if (*reader_get_ptr(reader))
@@ -2975,7 +2975,7 @@ static HRESULT WINAPI xmlreader_GetNodeType(IXmlReader* iface, XmlNodeType *node
         return E_INVALIDARG;
 
     *node_type = reader_get_nodetype(This);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->state == XmlReadState_Error)
         return This->error;
     return This->state == XmlReadState_Closed || This->state == XmlReadState_EndOfFile ? S_FALSE : S_OK;
@@ -3185,7 +3185,7 @@ static HRESULT WINAPI xmlreader_GetQualifiedName(IXmlReader* iface, LPCWSTR *nam
         *name = emptyW;
         *len = 0;
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case XmlNodeType_XmlDeclaration:
     case XmlNodeType_DocumentType:
         *name = This->strvalues[StringValue_LocalName].str;
@@ -3206,7 +3206,7 @@ static HRESULT WINAPI xmlreader_GetQualifiedName(IXmlReader* iface, LPCWSTR *nam
         break;
 #endif
     case XmlNodeType_Element:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case XmlNodeType_EndElement:
 #endif
         element = reader_get_element(This);

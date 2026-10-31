@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS C runtime library
+ * PROJECT:     LibreNT C runtime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     AMD64 memset
  * COPYRIGHT:   Copyright 2005-2020 Rich Felker, et al.

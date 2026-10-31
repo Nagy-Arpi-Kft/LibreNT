@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS NT Library
+ * PROJECT:         LibreNT NT Library
  * FILE:            dll/ntdll/chpe.c
  * PURPOSE:         CHPE (ARM64EC) emulator integration for x64-on-ARM64
  * LICENSE:         LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
@@ -12,8 +12,8 @@
  */
 
 #include <ntdll.h>
-#include <reactos/chpe.h>
-#include <reactos/arm64/sysreg.h>
+#include <librent/chpe.h>
+#include <librent/arm64/sysreg.h>
 
 #define NDEBUG
 #include <debug.h>

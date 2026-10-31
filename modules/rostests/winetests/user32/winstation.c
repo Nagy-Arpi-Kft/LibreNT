@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include "wine/test.h"
@@ -26,7 +26,7 @@
 #include "wingdi.h"
 #include "winuser.h"
 #include "winnls.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef WIN32_NO_STATUS
 #include <ntndk.h>
 #else

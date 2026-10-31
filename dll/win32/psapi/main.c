@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Process Status Helper Library
+ * PROJECT:     LibreNT Process Status Helper Library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     PSAPI Win2k3 style entrypoint
  * COPYRIGHT:   Copyright 2013 Pierre Schweitzer <pierre@reactos.org>

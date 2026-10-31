@@ -1,5 +1,5 @@
 /*
- *  ReactOS W32 Subsystem
+ *  LibreNT W32 Subsystem
  *  Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify

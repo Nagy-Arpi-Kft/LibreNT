@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Tests for the private newdev device-install protocol
  */
@@ -162,7 +162,7 @@ START_TEST(protocol)
 
     if (!is_reactos())
     {
-        win_skip("The private batch protocol is ReactOS-only\n");
+        win_skip("The private batch protocol is LibreNT-only\n");
         FreeLibrary(Module);
         return;
     }

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ipconfig utility
+ * PROJECT:     LibreNT ipconfig utility
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     French resource file
  * TRANSLATORS: Copyright 2006 Sylvain Petreolle <spetreolle@yahoo.fr>
@@ -12,7 +12,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 
 STRINGTABLE
 BEGIN
-    IDS_HEADER "\nConfiguration IP de LiberNT\n\n"
+    IDS_HEADER "\nConfiguration IP de LibreNT\n\n"
     IDS_HOSTNAME            "\tNom d'hôte. . . . . . . . . . . . : %hs\n"
     IDS_PRIMARYDNSSUFFIX    "\tSuffixe DNS Primaire. . . . . . . : %hs\n"
     IDS_NODETYPEBCAST       "\tType de noeud . . . . . . . . . . : Broadcast\n"

@@ -1,6 +1,6 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
-add_rpc_files(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/dnsrslvr.idl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
+add_rpc_files(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/dnsrslvr.idl)
 
 list(APPEND SOURCE
     cache.c
@@ -22,4 +22,4 @@ endif()
 set_module_type(dnsrslvr win32dll UNICODE)
 add_importlibs(dnsrslvr advapi32 rpcrt4 dnsapi iphlpapi ws2_32 msvcrt kernel32 ntdll)
 add_pch(dnsrslvr precomp.h SOURCE)
-add_cd_file(TARGET dnsrslvr DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dnsrslvr DESTINATION librent/system32 FOR all)

@@ -194,7 +194,7 @@ HRESULT __RPC_STUB IEnumShellItems_Next_Stub(
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 HRESULT CALLBACK IEnumExplorerCommand_Next_Proxy(
     IEnumExplorerCommand *This,
@@ -222,7 +222,7 @@ HRESULT __RPC_STUB IEnumExplorerCommand_Next_Stub(
     return hr;
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 HRESULT CALLBACK IModalWindow_Show_Proxy(
     IModalWindow *This,
@@ -295,7 +295,7 @@ HRESULT __RPC_STUB IEnumObjects_Next_Stub(IEnumObjects *This, ULONG celt, REFIID
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define PIDL_ALIGN_LENGTH(len, align) (((len) + (align)) & ~(align))
 #define PIDL_ALIGN_POINTER(ptr, align) ((unsigned char *)PIDL_ALIGN_LENGTH((ULONG_PTR)(ptr), (align)))
 

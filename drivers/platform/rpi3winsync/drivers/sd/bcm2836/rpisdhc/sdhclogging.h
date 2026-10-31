@@ -13,7 +13,7 @@ extern "C" {
 // Defining control guids, including this is required to happen before
 // including the tmh file (if the WppRecorder API is used)
 //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wpprecorder.h>
 #else
 #include <WppRecorder.h>

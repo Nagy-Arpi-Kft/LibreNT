@@ -56,7 +56,7 @@
 #include "wingdi.h"
 #include "winreg.h"
 #include "winnls.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/winternl.h"
 #else
 #include "winternl.h"

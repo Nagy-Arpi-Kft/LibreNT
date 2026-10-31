@@ -31,7 +31,7 @@
 #include "npapi.h"
 #include "winreg.h"
 #include "winuser.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define WINE_MOUNTMGR_EXTENSIONS
 #include "ddk/mountmgr.h"
 #endif
@@ -62,7 +62,7 @@ typedef struct _WNetProvider
     PF_NPAddConnection addConnection;
     PF_NPAddConnection3 addConnection3;
     PF_NPCancelConnection cancelConnection;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PF_NPGetConnection getConnection;
 #endif
 } WNetProvider, *PWNetProvider;
@@ -222,7 +222,7 @@ static void _tryLoadProvider(PCWSTR provider)
                             provider->addConnection3 = MPR_GETPROC(NPAddConnection3);
                         if (connectCap & WNNC_CON_CANCELCONNECTION)
                             provider->cancelConnection = MPR_GETPROC(NPCancelConnection);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (connectCap & WNNC_CON_GETCONNECTIONS)
                             provider->getConnection = MPR_GETPROC(NPGetConnection);
 #endif
@@ -872,7 +872,7 @@ DWORD WINAPI WNetOpenEnumW( DWORD dwScope, DWORD dwType, DWORD dwUsage,
                             *lphEnum = _createRememberedEnumerator(dwScope, dwType, remembered);
                             ret = *lphEnum ? WN_SUCCESS : WN_OUT_OF_MEMORY;
                         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         else
                         {
                             *lphEnum = _createRememberedEnumerator(dwScope, dwType, NULL);
@@ -2028,7 +2028,7 @@ static DWORD wnet_use_connection( struct use_connection_context *ctxt )
     if (ctxt->flags & CONNECT_INTERACTIVE)
         return ERROR_BAD_NET_NAME;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ctxt->accessname && ctxt->buffer_size && !*ctxt->buffer_size)
         return ERROR_INVALID_PARAMETER;
 #endif
@@ -2427,7 +2427,7 @@ DWORD WINAPI WNetGetConnectionA( LPCSTR lpLocalName,
 /* find the network connection for a given drive; helper for WNetGetConnection */
 static DWORD get_drive_connection( WCHAR letter, LPWSTR remote, LPDWORD size )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     char buffer[1024];
     struct mountmgr_unix_drive *data = (struct mountmgr_unix_drive *)buffer;
     HANDLE mgr;
@@ -2580,7 +2580,7 @@ DWORD WINAPI WNetGetUniversalNameA ( LPCSTR lpLocalPath, DWORD dwInfoLevel,
     FIXME( "(%s, 0x%08lX, %p, %p): stub\n",
            debugstr_a(lpLocalPath), dwInfoLevel, lpBuffer, lpBufferSize);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpBufferSize)
     {
         SetLastError(WN_BAD_POINTER);
@@ -2635,7 +2635,7 @@ DWORD WINAPI WNetGetUniversalNameW ( LPCWSTR lpLocalPath, DWORD dwInfoLevel,
     FIXME( "(%s, 0x%08lX, %p, %p): stub\n",
            debugstr_w(lpLocalPath), dwInfoLevel, lpBuffer, lpBufferSize);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpBufferSize)
     {
         SetLastError(WN_BAD_POINTER);
@@ -2668,7 +2668,7 @@ DWORD WINAPI WNetGetUniversalNameW ( LPCWSTR lpLocalPath, DWORD dwInfoLevel,
         break;
     }
     case REMOTE_NAME_INFO_LEVEL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetDriveTypeW(lpLocalPath) != DRIVE_REMOTE)
         {
             err = WN_NOT_CONNECTED;

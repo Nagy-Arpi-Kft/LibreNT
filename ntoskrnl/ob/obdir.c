@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ob/obdir.c
  * PURPOSE:         Manages the Object Manager's Directory Implementation,

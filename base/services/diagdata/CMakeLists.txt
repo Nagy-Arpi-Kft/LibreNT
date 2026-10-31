@@ -9,5 +9,5 @@ configure_file(diagdata_channel.inf.in ${CMAKE_CURRENT_BINARY_DIR}/diagdata_chan
 add_executable(diagdata diagdata.c diagdata.rc)
 set_module_type(diagdata win32cui UNICODE)
 add_importlibs(diagdata winhttp setupapi rpcrt4 advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET diagdata DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET diagdata DESTINATION librent/system32 FOR all)
 add_registry_inf(diagdata_reg.inf ${CMAKE_CURRENT_BINARY_DIR}/diagdata_channel.inf)

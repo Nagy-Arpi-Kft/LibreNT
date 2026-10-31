@@ -23,8 +23,8 @@
 #include "ff.h"			/* Basic definitions and declarations of API */
 #include "diskio.h"		/* Declarations of MAI */
 
-#ifndef __REACTOS__
-#error This modified FatFs core requires __REACTOS__; see README.reactos.
+#ifndef __LIBRENT__
+#error This modified FatFs core requires __LIBRENT__; see README.librent.
 #endif
 
 /*--------------------------------------------------------------------------
@@ -1060,7 +1060,7 @@ static void clear_share (	/* Clear all lock entries of the volume */
 /*-----------------------------------------------------------------------*/
 /* Move/Flush disk access window in the filesystem object                */
 /*-----------------------------------------------------------------------*/
-#if defined(__REACTOS__) && FF_FS_EXFAT && !FF_FS_READONLY
+#if defined(__LIBRENT__) && FF_FS_EXFAT && !FF_FS_READONLY
 static FRESULT sync_bitmap_window (FATFS* fs);
 #endif
 
@@ -1072,7 +1072,7 @@ static FRESULT sync_window (	/* Returns FR_OK or FR_DISK_ERR */
 	FRESULT res = FR_OK;
 
 
-#if defined(__REACTOS__) && FF_FS_EXFAT
+#if defined(__LIBRENT__) && FF_FS_EXFAT
 	if (fs->fs_type == FS_EXFAT) {
 		res = sync_bitmap_window(fs);	/* Persist allocations before dependent FAT and directory updates */
 	}
@@ -1117,7 +1117,7 @@ static FRESULT move_window (	/* Returns FR_OK or FR_DISK_ERR */
 }
 
 
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 /*-----------------------------------------------------------------------*/
 /* FAT linearity digest                                                  */
 /*                                                                       */
@@ -1212,7 +1212,7 @@ static void fseq_examine (	/* Classify the FAT sector currently in fs->win */
 #endif
 
 
-#if defined(__REACTOS__) && FF_FS_EXFAT && !FF_FS_READONLY
+#if defined(__LIBRENT__) && FF_FS_EXFAT && !FF_FS_READONLY
 /*-----------------------------------------------------------------------*/
 /* Allocation bitmap window: keeps bitmap traffic out of fs->win so      */
 /* cluster allocation does not thrash between FAT and bitmap sectors     */
@@ -1381,7 +1381,7 @@ static DWORD get_fat (		/* 0xFFFFFFFF:Disk error, 1:Internal error, 2..0x7FFFFFF
 					if (obj->n_frag != 0) {	/* Is it on the growing edge? */
 						val = 0x7FFFFFFF;	/* Generate EOC */
 					} else {
-#if defined(__REACTOS__) && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_USE_LFN == 3
 						DWORD fsi = clst / (SS(fs) / 4);	/* FAT sector holding the entry */
 
 						fseq_init(fs);
@@ -1463,7 +1463,7 @@ static FRESULT put_fat (	/* FR_OK(0):succeeded, !=0:error */
 			}
 			st_32(fs->win + clst * 4 % SS(fs), val);
 			fs->wflag = 1;
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 			fseq_put(fs, clst / (SS(fs) / 4), FSEQ_UNKNOWN);	/* Digest of this sector is stale */
 #endif
 			break;
@@ -1501,7 +1501,7 @@ static DWORD find_bitmap (	/* 0:Not found, 2..:Cluster block found, 0xFFFFFFFF:D
 	if (clst >= fs->n_fatent - 2) clst = 0;
 	scl = val = clst; ctr = 0;
 	for (;;) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (move_bitmap_window(fs, fs->bitbase + val / 8 / SS(fs)) != FR_OK) return 0xFFFFFFFF;
 #else
 		if (move_window(fs, fs->bitbase + val / 8 / SS(fs)) != FR_OK) return 0xFFFFFFFF;
@@ -1509,7 +1509,7 @@ static DWORD find_bitmap (	/* 0:Not found, 2..:Cluster block found, 0xFFFFFFFF:D
 		i = val / 8 % SS(fs); bm = 1 << (val % 8);
 		do {
 			do {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				bv = fs->bwin[i] & bm; bm <<= 1;	/* Get bit value */
 #else
 				bv = fs->win[i] & bm; bm <<= 1;		/* Get bit value */
@@ -1546,7 +1546,7 @@ static FRESULT change_bitmap (
 	LBA_t sect;
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (!bv && sync_window(fs) != FR_OK) return FR_DISK_ERR;	/* Persist removed FAT links before freeing their clusters */
 #endif
 	clst -= 2;	/* The first bit corresponds to cluster #2 */
@@ -1554,14 +1554,14 @@ static FRESULT change_bitmap (
 	i = clst / 8 % SS(fs);					/* Byte offset in the sector */
 	bm = 1 << (clst % 8);					/* Bit mask in the byte */
 	for (;;) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (move_bitmap_window(fs, sect++) != FR_OK) return FR_DISK_ERR;
 #else
 		if (move_window(fs, sect++) != FR_OK) return FR_DISK_ERR;
 #endif
 		do {
 			do {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				if (bv == (int)((fs->bwin[i] & bm) != 0)) return FR_INT_ERR;	/* Is the bit expected value? */
 				fs->bwin[i] ^= bm;	/* Flip the bit */
 				fs->bwflag = 1;
@@ -1674,9 +1674,9 @@ static FRESULT remove_chain (	/* FR_OK(0):succeeded, !=0:error */
 		if (pclst == 0) {	/* Has the entire chain been removed? */
 			obj->stat = 0;		/* Change the chain status 'initial' */
 		} else {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			/* FAT-backed chains remain FAT-backed. Imported NoFatChain chains
-			/  are never stretched or converted (see README.reactos). */
+			/  are never stretched or converted (see README.librent). */
 #else
 			/* This comment will be replaced by optimized code after Patent
 			/  US8725772B2 (anticipated expiration date 2027-05-23) has expired. */
@@ -1713,7 +1713,7 @@ static DWORD create_chain (	/* 0:No free cluster, 1:Internal error, 0xFFFFFFFF:D
 		if (cs < 2) return 1;				/* Test for insanity */
 		if (cs == 0xFFFFFFFF) return cs;	/* Test for disk error */
 		if (cs < fs->n_fatent) return cs;	/* It is already followed by next cluster */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (FF_FS_EXFAT && fs->fs_type == FS_EXFAT && obj->stat == 2) return 1;	/* Imported NoFatChain objects must not be stretched or converted */
 #endif
 		scl = clst;							/* Cluster to start to find */
@@ -1727,9 +1727,9 @@ static DWORD create_chain (	/* 0:No free cluster, 1:Internal error, 0xFFFFFFFF:D
 		res = change_bitmap(fs, ncl, 1, 1);			/* Mark the cluster 'in use' */
 		if (res == FR_INT_ERR) return 1;
 		if (res == FR_DISK_ERR) return 0xFFFFFFFF;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		/* Chains are always kept on the FAT and never marked 'contiguous'
-		/  (NoFatChain), so the status never becomes 2 here (see README.reactos). */
+		/  (NoFatChain), so the status never becomes 2 here (see README.librent). */
 		if (clst == 0) {							/* Is it a new chain? */
 			obj->stat = 0;							/* Set status 'FAT chain is valid' */
 			obj->n_frag = 1;						/* FAT entry of the new cluster is set at the next fill_last_frag() */
@@ -1955,7 +1955,7 @@ static FRESULT dir_next (	/* FR_OK(0):succeeded, FR_NO_FILE:End of table, FR_DEN
 					if (!stretch) {								/* If no stretch, report EOT */
 						dp->sect = 0; return FR_NO_FILE;
 					}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 					if (FF_FS_EXFAT && fs->fs_type == FS_EXFAT && dp->obj.stat == 2) return FR_DENIED;	/* Do not stretch or convert an imported NoFatChain directory */
 #endif
 					clst = create_chain(&dp->obj, dp->clust);	/* Allocate a cluster */
@@ -2594,12 +2594,12 @@ static FRESULT dir_find (	/* FR_OK(0):succeeded, !=0:error */
 	if (fs->fs_type == FS_EXFAT) {	/* On the exFAT volume */
 		BYTE nc;
 		UINT di, ni;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		UINT len;
 
 		/* The NameHash field is set on entry creation but is not used to
 		/  pre-filter the search; every candidate is compared by name length
-		/  and characters only (see README.reactos). */
+		/  and characters only (see README.librent). */
 		for (len = 0; fs->lfnbuf[len]; len++) ;	/* Length of the name to find */
 #else
 		/* This comment will be replaced by optimized NameHash lookup code after
@@ -2611,7 +2611,7 @@ static FRESULT dir_find (	/* FR_OK(0):succeeded, !=0:error */
 #if FF_MAX_LFN < 255
 			if (fs->dirbuf[XDIR_NumName] > FF_MAX_LFN) continue;		/* Skip comparison if inaccessible object name */
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			if (fs->dirbuf[XDIR_NumName] != len) continue;	/* Skip comparison if name length mismatched */
 #else
 			/* This comment will be replaced by optimized NameHash lookup code after
@@ -3557,7 +3557,7 @@ static UINT check_fs (	/* 0:FAT/FAT32 VBR, 1:exFAT VBR, 2:Not FAT and valid BS, 
 
 
 	fs->wflag = 0; fs->winsect = (LBA_t)0 - 1;		/* Invaidate window */
-#if defined(__REACTOS__) && FF_FS_EXFAT && !FF_FS_READONLY
+#if defined(__LIBRENT__) && FF_FS_EXFAT && !FF_FS_READONLY
 	fs->bwflag = 0; fs->bwinsect = (LBA_t)0 - 1;	/* Invaidate bitmap window */
 #endif
 	if (move_window(fs, sect) != FR_OK) return 4;	/* Load the boot sector */
@@ -3684,7 +3684,7 @@ static FRESULT mount_volume (	/* FR_OK(0): successful, !=0: an error occurred */
 	/* The filesystem object is not valid. */
 	/* Following code attempts to mount the volume. (find an FAT volume, analyze the BPB and initialize the filesystem object) */
 
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 	fseq_free(fs);						/* Discard classifications from the previous medium */
 #endif
 	fs->fs_type = 0;					/* Invalidate the filesystem object */
@@ -3953,7 +3953,7 @@ FRESULT f_mount (
 		ff_mutex_delete(vol);
 #endif
 		cfs->fs_type = 0;		/* Invalidate the filesystem object to be unregistered */
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 		fseq_free(cfs);			/* Release the FAT linearity digest */
 #endif
 	}
@@ -3974,7 +3974,7 @@ FRESULT f_mount (
 #endif
 #endif
 		fs->fs_type = 0;		/* Invalidate the new filesystem object */
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 		fs->fseq = 0; fs->fseq_count = 0;	/* No digest for the new volume yet */
 #endif
 		FatFs[vol] = fs;		/* Register it */
@@ -4021,7 +4021,7 @@ FRESULT f_open (
 			if (dj.fn[NSFLAG] & NS_NONAME) {	/* Origin directory itself? */
 				res = FR_INVALID_NAME;
 			}
-#if defined(__REACTOS__) && FF_FS_EXFAT
+#if defined(__LIBRENT__) && FF_FS_EXFAT
 			else if (fs->fs_type == FS_EXFAT && (mode & FA_WRITE) && !(mode & FA_CREATE_NEW) && (fs->dirbuf[XDIR_GenFlags] & 2)) {
 				res = FR_DENIED;	/* Imported NoFatChain files are read-only */
 			}
@@ -4858,7 +4858,7 @@ FRESULT f_lseek (
 				fp->clust = clst;
 			}
 			if (clst != 0) {
-#if defined(__REACTOS__) && FF_FS_EXFAT
+#if defined(__LIBRENT__) && FF_FS_EXFAT
 				if (fs->fs_type == FS_EXFAT && !(fp->flag & FA_WRITE) && ofs > bcs) {
 					/* Only chains recorded on the FAT are batched here. Objects
 					/  carrying the on-disk NoFatChain flag fall through to the
@@ -5225,14 +5225,14 @@ FRESULT f_getfree (
 					i = 0;						/* Offset in the sector */
 					do {	/* Counts numbuer of clear bits (free clusters) in the bitmap */
 						if (i == 0) {	/* New sector? */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 							res = move_bitmap_window(fs, sect++);
 #else
 							res = move_window(fs, sect++);
 #endif
 							if (res != FR_OK) break;
 						}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 						for (b = 8, bm = ~fs->bwin[i]; b && clst; b--, clst--) {	/* Count clear bits in a byte */
 #else
 						for (b = 8, bm = ~fs->win[i]; b && clst; b--, clst--) {	/* Count clear bits in a byte */
@@ -5451,8 +5451,8 @@ FRESULT f_mkdir (
 			if (dcl == 0xFFFFFFFF) res = FR_DISK_ERR;	/* Disk error? */
 			tm = GET_FATTIME();
 			if (res == FR_OK) {
-#if defined(__REACTOS__) && FF_FS_EXFAT
-				if (fs->fs_type == FS_EXFAT) {	/* Keep the new directory chain on the FAT (see README.reactos) */
+#if defined(__LIBRENT__) && FF_FS_EXFAT
+				if (fs->fs_type == FS_EXFAT) {	/* Keep the new directory chain on the FAT (see README.librent) */
 					res = fill_last_frag(&sobj, dcl, 0xFFFFFFFF);	/* Set 'EOC' to the allocated cluster */
 				}
 #endif
@@ -5480,7 +5480,7 @@ FRESULT f_mkdir (
 					st_32(fs->dirbuf + XDIR_FstClus, dcl);	/* Table start cluster */
 					st_32(fs->dirbuf + XDIR_FileSize, (DWORD)fs->csize * SS(fs));	/* Directory size needs to be valid */
 					st_32(fs->dirbuf + XDIR_ValidFileSize, (DWORD)fs->csize * SS(fs));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 					fs->dirbuf[XDIR_GenFlags] = 1;			/* Initialize the object flag (NoFatChain is not set, the chain is on the FAT) */
 #else
 					/* This comment will be replaced by optimized code after Patent
@@ -6012,7 +6012,7 @@ FRESULT f_expand (
 		if (res == FR_OK) {	/* A contiguous free area is found */
 			if (opt) {		/* Allocate it now */
 				res = change_bitmap(fs, scl, tcl, 1);	/* Mark the cluster block 'in use' */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				for (clst = scl, n = tcl; res == FR_OK && n; clst++, n--) {	/* Create a cluster chain on the FAT (NoFatChain is not used) */
 					res = put_fat(fs, clst, (n == 1) ? 0xFFFFFFFF : clst + 1);
 				}
@@ -6062,7 +6062,7 @@ FRESULT f_expand (
 		if (opt) {	/* Is it allocated now? */
 			fp->obj.sclust = scl;		/* Update object allocation information */
 			fp->obj.objsize = fsz;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			if (FF_FS_EXFAT) fp->obj.stat = 0;	/* Set status 'FAT chain is valid' (the chain has been put on the FAT above) */
 #else
 			/* This comment will be replaced by optimized code after Patent
@@ -6337,7 +6337,7 @@ FRESULT f_mkfs (
 	vol = get_ldnumber(&path);					/* Get logical drive number to be formatted */
 	if (vol < 0) return FR_INVALID_DRIVE;
 	if (FatFs[vol]) {
-#if defined(__REACTOS__) && FF_FS_EXFAT && FF_USE_LFN == 3
+#if defined(__LIBRENT__) && FF_FS_EXFAT && FF_USE_LFN == 3
 		fseq_free(FatFs[vol]);
 #endif
 		FatFs[vol]->fs_type = 0;	/* Clear the fs object if mounted */

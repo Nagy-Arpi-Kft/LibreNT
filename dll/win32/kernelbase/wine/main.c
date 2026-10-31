@@ -39,7 +39,7 @@ BOOL is_wow64 = FALSE;
 /***********************************************************************
  *           DllMain
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 BOOL WINAPI DllMain( HINSTANCE hinst, DWORD reason, LPVOID reserved )
 {
     if (reason == DLL_PROCESS_ATTACH)
@@ -53,7 +53,7 @@ BOOL WINAPI DllMain( HINSTANCE hinst, DWORD reason, LPVOID reserved )
     }
     return TRUE;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 
 /***********************************************************************
@@ -182,13 +182,13 @@ static struct perf_provider *perf_provider_from_handle(HANDLE prov)
 /***********************************************************************
  *           PerfCreateInstance   (KERNELBASE.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PERF_COUNTERSET_INSTANCE * WINAPI PerfCreateInstance( HANDLE handle, const GUID *guid,
                                                       const WCHAR *name, ULONG id )
 #else
 PERF_COUNTERSET_INSTANCE WINAPI *PerfCreateInstance( HANDLE handle, const GUID *guid,
                                                      const WCHAR *name, ULONG id )
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 {
     struct perf_provider *prov = perf_provider_from_handle( handle );
     struct counterset_template *template;

@@ -494,7 +494,7 @@ static void check_copy_image(HBITMAP bitmap, UINT type, UINT flags, INT copyWidt
     BITMAP copyBitmap;
     BOOL copy_is_dib;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT display_bpp;
     HDC hdc;
 
@@ -576,7 +576,7 @@ static void check_copy_image(HBITMAP bitmap, UINT type, UINT flags, INT copyWidt
                 expectedWidth, copyBitmap.bmWidth);
         ok(copyBitmap.bmHeight == expectedHeight, "Expected height %u, got %ld\n",
                 expectedHeight, copyBitmap.bmHeight);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(copyBitmap.bmBitsPixel == expectedDepth || broken(copyBitmap.bmBitsPixel == display_bpp && expectedDepth == 32), "Expected depth %u, got %u\n",
                 expectedDepth, copyBitmap.bmBitsPixel);
 #else
@@ -823,7 +823,7 @@ static void test_icon_info_(HICON hIcon, UINT exp_cx, UINT exp_cy,
         ret = GetObjectA(info.hbmColor, sizeof(bmColor), &bmColor);
         ok_(__FILE__, line)(ret == sizeof(bmColor), "GetObject(info.hbmColor) failed, ret %lu\n", ret);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok_(__FILE__, line)(bmColor.bmBitsPixel == display_bpp || broken(!bmColor.bmBits && bmColor.bmBitsPixel == 32) /* Happens with PrivateExtractIcons test */,
            "bmColor.bmBitsPixel = %d\n", bmColor.bmBitsPixel);
 #else
@@ -2886,7 +2886,7 @@ static void test_monochrome_icon(void)
 
         handle = LoadImageA(NULL, "icon.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
         if (!monochrome && !use_core_info) ok(handle != NULL, "LoadImage() failed with %lu.\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else todo_wine ok(handle == NULL || broken(!use_core_info) /* Win7 */ || broken(GetLastError() == ERROR_SUCCESS) /* WS03 */, "LoadImage() failed with %lu.\n", GetLastError());
 #else
         else todo_wine ok(handle == NULL || broken(!use_core_info) /* Win7 */, "LoadImage() failed with %lu.\n", GetLastError());

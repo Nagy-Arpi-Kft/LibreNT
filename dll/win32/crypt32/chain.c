@@ -1907,7 +1907,7 @@ static BOOL CRYPT_IsCertVersionValid(PCCERT_CONTEXT cert)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void CRYPT_SetPreferredIssuerStatus(PCERT_SIMPLE_CHAIN chain)
 {
     BOOL all = TRUE;
@@ -2032,7 +2032,7 @@ static void CRYPT_CheckSimpleChain(CertificateChainEngine *engine,
         CRYPT_CheckRootCert(engine->hRoot, rootElement);
     }
     CRYPT_CombineTrustStatus(&chain->TrustStatus, &rootElement->TrustStatus);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CRYPT_SetPreferredIssuerStatus(chain);
 #endif
 }
@@ -3104,7 +3104,7 @@ static BOOL WINAPI verify_base_policy(LPCSTR szPolicyOID,
          CERT_TRUST_IS_UNTRUSTED_ROOT, &pPolicyStatus->lChainIndex,
          &pPolicyStatus->lElementIndex);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pPolicyStatus->dwError &&
      pChainContext->TrustStatus.dwErrorStatus & CERT_TRUST_IS_PARTIAL_CHAIN &&
      !(checks & CERT_CHAIN_POLICY_ALLOW_UNKNOWN_CA_FLAG))
@@ -3872,7 +3872,7 @@ static BOOL WINAPI verify_ms_root_policy(LPCSTR szPolicyOID,
     if (isMSRoot)
         pPolicyStatus->dwError = 0;
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         pPolicyStatus->dwError = CERT_E_UNTRUSTEDROOT;
         pPolicyStatus->lChainIndex = pChainContext->cChain - 1;

@@ -53,11 +53,11 @@ SOFTWARE.
 #include <wdf.h>
 #include <ntstrsafe.h>
 #include <wdm.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <Ntstrsafe.h>
 #endif
 #else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <windows.h>
 #else
 #include <Windows.h>
@@ -95,7 +95,7 @@ SOFTWARE.
 #endif
 #include "vchiq_if.h"
 
-#if defined(__REACTOS__) && defined(WIN32)
+#if defined(__LIBRENT__) && defined(WIN32)
 #include <pshpack1.h>
 #endif
 
@@ -194,8 +194,8 @@ typedef struct {
 #define VCHIQ_IOC_QUEUE_MESSAGE        _IOW(VCHIQ_IOC_MAGIC,  4, VCHIQ_QUEUE_MESSAGE_T)
 #define VCHIQ_IOC_QUEUE_BULK_TRANSMIT  _IOWR(VCHIQ_IOC_MAGIC, 5, VCHIQ_QUEUE_BULK_TRANSFER_T)
 #ifdef WIN32
-#ifdef __REACTOS__
-/* The ReactOS driver retrieves an output MDL for the receive payload. */
+#ifdef __LIBRENT__
+/* The LibreNT driver retrieves an output MDL for the receive payload. */
 #define VCHIQ_IOC_QUEUE_BULK_RECEIVE   _IOW(VCHIQ_IOC_MAGIC, 6, VCHIQ_QUEUE_BULK_TRANSFER_T)
 #else
 #define VCHIQ_IOC_QUEUE_BULK_RECEIVE   _IO(VCHIQ_IOC_MAGIC, 6)
@@ -216,7 +216,7 @@ typedef struct {
 #define VCHIQ_IOC_CLOSE_DELIVERED      _IO(VCHIQ_IOC_MAGIC,   17)
 #define VCHIQ_IOC_MAX                  17
 
-#if defined(__REACTOS__) && defined(WIN32)
+#if defined(__LIBRENT__) && defined(WIN32)
 #include <poppack.h>
 #endif
 

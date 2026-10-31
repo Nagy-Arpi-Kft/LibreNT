@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Tests for Rtl LCID functions
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

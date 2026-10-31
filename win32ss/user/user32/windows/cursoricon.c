@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS user32.dll
+ * PROJECT:     LibreNT user32.dll
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     cursor and icons implementation
  * COPYRIGHT:   Copyright Jérôme Gardou <jerome.gardou@reactos.org>
@@ -3255,7 +3255,7 @@ HICON WINAPI CreateIconFromResourceEx(
         /* It is possible to pass Icon Directories to this API */
         int wResId = LookupIconIdFromDirectoryEx(pbIconBits, fIcon, cxDesired, cyDesired, uFlags);
         HANDLE ResHandle = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (wResId && (pbIconBits[4] != sizeof(BITMAPINFOHEADER)))
 #else
         if(wResId)

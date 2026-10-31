@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            ntoskrnl/ex/sysinfo.c
  * PURPOSE:         System information functions
  *
@@ -12,7 +12,7 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 #endif
 #include <wmidata.h>
 #include <wmistr.h>
@@ -1283,7 +1283,7 @@ QSI_DEF(SystemPathInformation)
      */
 #if DBG
     DPRINT1("EX: SystemPathInformation now available via SharedUserData\n");
-    // DbgBreakPoint(); // Not needed in ReactOS.
+    // DbgBreakPoint(); // Not needed in LibreNT.
 #endif
     return STATUS_NOT_IMPLEMENTED;
 }

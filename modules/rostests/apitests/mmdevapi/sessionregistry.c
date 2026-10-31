@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Torture tests for the Core Audio shared session registry
@@ -145,10 +145,10 @@ static void TestRegisterContract(void)
     ok_hr(hr, S_OK);
     ok_eq_uint(Snapshot.channel_count, 5);
     hr = reactos_audio_session_register(EndpointAlt, &SessionGuidAlt,
-                                        REACTOS_AUDIO_SESSION_MAX_CHANNELS * 4,
+                                        LIBRENT_AUDIO_SESSION_MAX_CHANNELS * 4,
                                         &Again, &Snapshot);
     ok_hr(hr, S_OK);
-    ok_eq_uint(Snapshot.channel_count, REACTOS_AUDIO_SESSION_MAX_CHANNELS);
+    ok_eq_uint(Snapshot.channel_count, LIBRENT_AUDIO_SESSION_MAX_CHANNELS);
 
     hr = reactos_audio_session_register(EndpointAlt, &SessionGuidMain, 2, &Again, &Snapshot);
     ok_hr(hr, S_OK);
@@ -224,7 +224,7 @@ static void TestVolumeLevels(void)
         0x40000000, 0x7f800000, 0xff800000, 0x7fc00000
     };
     struct reactos_audio_session_snapshot Snapshot;
-    float Channels[REACTOS_AUDIO_SESSION_MAX_CHANNELS];
+    float Channels[LIBRENT_AUDIO_SESSION_MAX_CHANNELS];
     HRESULT hr;
     UINT32 i;
 
@@ -258,7 +258,7 @@ static void TestVolumeLevels(void)
 
     hr = reactos_audio_session_set_channel(&MainId, TEST_TUPLE_CHANNELS, 0.5f);
     ok_hr(hr, E_INVALIDARG);
-    hr = reactos_audio_session_set_channel(&MainId, REACTOS_AUDIO_SESSION_MAX_CHANNELS, 0.5f);
+    hr = reactos_audio_session_set_channel(&MainId, LIBRENT_AUDIO_SESSION_MAX_CHANNELS, 0.5f);
     ok_hr(hr, E_INVALIDARG);
     hr = reactos_audio_session_set_channel(&MainId, 0xffffffff, 0.5f);
     ok_hr(hr, E_INVALIDARG);
@@ -273,7 +273,7 @@ static void TestVolumeLevels(void)
     ok_hr(hr, E_INVALIDARG);
     hr = reactos_audio_session_set_channels(&MainId, TEST_TUPLE_CHANNELS + 1, Channels);
     ok_hr(hr, E_INVALIDARG);
-    hr = reactos_audio_session_set_channels(&MainId, REACTOS_AUDIO_SESSION_MAX_CHANNELS + 1,
+    hr = reactos_audio_session_set_channels(&MainId, LIBRENT_AUDIO_SESSION_MAX_CHANNELS + 1,
                                             Channels);
     ok_hr(hr, E_INVALIDARG);
 

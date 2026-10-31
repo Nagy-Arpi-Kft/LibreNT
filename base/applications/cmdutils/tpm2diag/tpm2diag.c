@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT TPM 2.0 Diagnostic Utility
+ * PROJECT:     LibreNT TPM 2.0 Diagnostic Utility
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  */
 
@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <initguid.h>
-#include <reactos/drivers/tpm2.h>
+#include <librent/drivers/tpm2.h>
 
 #define TPM2DIAG_RESPONSE_SIZE 65536
 #define TPM2DIAG_HEADER_SIZE 10
@@ -31,12 +31,12 @@ Tpm2DiagOpenDevice(VOID)
     DWORD RequiredSize = 0;
     HANDLE Device = INVALID_HANDLE_VALUE;
 
-    DeviceInfo = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_REACTOS_TPM2, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+    DeviceInfo = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_LIBRENT_TPM2, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     if (DeviceInfo == INVALID_HANDLE_VALUE)
         return INVALID_HANDLE_VALUE;
     ZeroMemory(&InterfaceData, sizeof(InterfaceData));
     InterfaceData.cbSize = sizeof(InterfaceData);
-    if (!SetupDiEnumDeviceInterfaces(DeviceInfo, NULL, &GUID_DEVINTERFACE_REACTOS_TPM2, 0, &InterfaceData))
+    if (!SetupDiEnumDeviceInterfaces(DeviceInfo, NULL, &GUID_DEVINTERFACE_LIBRENT_TPM2, 0, &InterfaceData))
         goto Cleanup;
     SetupDiGetDeviceInterfaceDetailW(DeviceInfo, &InterfaceData, NULL, 0, &RequiredSize, NULL);
     if (GetLastError() != ERROR_INSUFFICIENT_BUFFER || RequiredSize < sizeof(*DetailData))

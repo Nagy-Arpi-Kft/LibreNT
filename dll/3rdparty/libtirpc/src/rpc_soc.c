@@ -83,7 +83,7 @@ clnt_com_create(raddr, prog, vers, sockp, sendsz, recvsz, tp)
 	struct sockaddr_in *raddr;
 	rpcprog_t prog;
 	rpcvers_t vers;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET *sockp;
 #else
     int *sockp;
@@ -311,7 +311,7 @@ svc_com_create(fd, sendsize, recvsize, netid)
 
 SVCXPRT *
 svctcp_create(fd, sendsize, recvsize)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET fd;
 #else
     int fd;
@@ -327,7 +327,7 @@ svctcp_create(fd, sendsize, recvsize)
 
 SVCXPRT *
 svcudp_bufcreate(fd, sendsz, recvsz)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET fd;
 #else
     int fd;
@@ -342,7 +342,7 @@ svcudp_bufcreate(fd, sendsz, recvsz)
 
 SVCXPRT *
 svcfd_create(fd, sendsize, recvsize)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET fd;
 #else
     int fd;
@@ -357,7 +357,7 @@ svcfd_create(fd, sendsize, recvsize)
 
 SVCXPRT *
 svcudp_create(fd)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET fd;
 #else
     int fd;
@@ -542,7 +542,7 @@ clntunix_create(raddr, prog, vers, sockp, sendsz, recvsz)
 	struct sockaddr_un *raddr;
 	u_long prog;
 	u_long vers;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET *sockp;
 #else
     int *sockp;
@@ -595,7 +595,7 @@ done:
  */
 SVCXPRT *
 svcunix_create(sock, sendsize, recvsize, path)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET sock;
 #else
     int sock;
@@ -660,7 +660,7 @@ done:
  */
 SVCXPRT *
 svcunixfd_create(fd, sendsize, recvsize)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET fd;
 #else
     int fd;

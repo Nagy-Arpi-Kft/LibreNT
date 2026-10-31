@@ -54,7 +54,7 @@
 // This is exported from the kernel.  It is used to point
 // to the address that the kernel debugger is using.
 //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern "C" PUCHAR* KdComPortInUse;
 #else
 extern "C" extern PUCHAR* KdComPortInUse;
@@ -506,7 +506,7 @@ PL011pReadDeviceSpecificData(
     ACPI_EVAL_OUTPUT_BUFFER UNALIGNED* clckObjOutputBufferPtr = nullptr;
     UINT32 clockFrequency = 0;
     NTSTATUS status;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const ACPI_METHOD_ARGUMENT UNALIGNED* devicePropertiesPkgPtr;
     const ACPI_METHOD_ARGUMENT UNALIGNED* currentPairEntryPtr;
 #endif
@@ -519,7 +519,7 @@ PL011pReadDeviceSpecificData(
         goto done;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     devicePropertiesPkgPtr = nullptr;
 #else
     const ACPI_METHOD_ARGUMENT UNALIGNED* devicePropertiesPkgPtr = nullptr;
@@ -532,7 +532,7 @@ PL011pReadDeviceSpecificData(
         goto done;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     currentPairEntryPtr = nullptr;
 #else
     const ACPI_METHOD_ARGUMENT UNALIGNED* currentPairEntryPtr = nullptr;

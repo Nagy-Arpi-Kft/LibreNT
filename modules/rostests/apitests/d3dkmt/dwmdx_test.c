@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Windows parity for the DWM D3DKMT window redirection surface
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -16,7 +16,7 @@
 #include <winioctl.h>
 #include <winreg.h>
 #include <wchar.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 
 #ifndef STATUS_INVALID_HANDLE
 #define STATUS_INVALID_HANDLE           ((NTSTATUS)0xC0000008L)
@@ -82,7 +82,7 @@ LoadDwmDxProcs(void)
 }
 
 static BOOL
-RunningOnReactOS(void)
+RunningOnLibreNT(void)
 {
     static int Cached = -1;
     WCHAR Product[64];
@@ -103,7 +103,7 @@ RunningOnReactOS(void)
             Type == REG_SZ)
         {
             Product[ARRAYSIZE(Product) - 1] = L'\0';
-            if (wcsstr(Product, L"LiberNT") != NULL)
+            if (wcsstr(Product, L"LibreNT") != NULL)
                 Cached = 1;
         }
         RegCloseKey(Key);
@@ -672,9 +672,9 @@ Cleanup:
     CloseAdapter(hAdapter);
 }
 
-/* Exercise the ReactOS producer independently of the compositor.  Windows
+/* Exercise the LibreNT producer independently of the compositor.  Windows
  * receives its surface from DWM; this private runtime-data request is the
- * ReactOS CDD contract and must not be sent to an arbitrary Windows UMD. */
+ * LibreNT CDD contract and must not be sent to an arbitrary Windows UMD. */
 static void
 TestCreateRedirectionSurface(void)
 {
@@ -696,7 +696,7 @@ TestCreateRedirectionSurface(void)
     NTSTATUS CapsStatus = STATUS_NOT_IMPLEMENTED;
     NTSTATUS Status;
 
-    if (!RunningOnReactOS())
+    if (!RunningOnLibreNT())
         return;
 
     pfnCreateDevice = (PFN_D3DKMTCreateDevice)LoadD3DKMTProc("D3DKMTCreateDevice");
@@ -1209,9 +1209,9 @@ START_TEST(dwmdxntuser)
     LUID Luid;
     NTSTATUS Status;
 
-    if (!RunningOnReactOS())
+    if (!RunningOnLibreNT())
     {
-        skip("the DWM exchange rides a ReactOS-private NtUserCallOneParam "
+        skip("the DWM exchange rides a LibreNT-private NtUserCallOneParam "
              "routine number\n");
         return;
     }

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Direct3D 11 runtime
+ * PROJECT:     LibreNT Direct3D 11 runtime
  * LICENSE:     GPL-3.0-or-later
  * PURPOSE:     WDDM 2.0 build 9 device DDI declarations
  *

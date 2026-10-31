@@ -1,5 +1,5 @@
 /*
- *  ReactOS applications
+ *  LibreNT applications
  *  Copyright (C) 2001, 2002, 2003 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS "Welcome"/AutoRun application
+ * PROJECT:     LibreNT "Welcome"/AutoRun application
  * FILE:        base/setup/welcome/welcome.c
  * PROGRAMMERS: Eric Kohl
  *              Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -40,7 +40,7 @@
 #include <shellapi.h>
 #include <strsafe.h>
 
-#include <reactos/buildno.h>
+#include <librent/buildno.h>
 
 #include "resource.h"
 
@@ -211,7 +211,7 @@ VOID TranslateEscapes(IN OUT LPTSTR lpString)
 }
 
 /*
- * Expands the path for the ReactOS Installer "reactos.exe".
+ * Expands the path for the LibreNT Installer "reactos.exe".
  * See also base/system/userinit/userinit.c!ExpandInstallerPath()
  */
 BOOL
@@ -316,7 +316,7 @@ ExpandInstallerPath(
 
     /*
      * We failed. Try to find the installer from either the current
-     * ReactOS installation directory, or from our current directory.
+     * LibreNT installation directory, or from our current directory.
      */
     *lpInstallerPath = 0;
     if (GetWindowsDirectory(lpInstallerPath, PathSize - cchInstallerNameLen - 1))
@@ -402,8 +402,8 @@ AddNewTopicEx(
     {
         pTopic->bIsCommand = TRUE;
 
-        /* Check for special applications: ReactOS Installer */
-        if (_tcsicmp(szCommand, TEXT("libernt.exe")) == 0)
+        /* Check for special applications: LibreNT Installer */
+        if (_tcsicmp(szCommand, TEXT("librent.exe")) == 0)
         {
             ExpandInstallerPath(szCommand, pTopic->szCommand, ARRAYSIZE(pTopic->szCommand));
         }
@@ -432,7 +432,7 @@ AddNewTopicEx(
         }
         else
         {
-            /* Check for special applications: ReactOS Shell */
+            /* Check for special applications: LibreNT Shell */
             if (/* pTopic->szCommand && */ *pTopic->szCommand &&
                 _tcsicmp(pTopic->szCommand, TEXT("explorer.exe")) == 0)
             {
@@ -563,7 +563,7 @@ LoadLocalizedResourcesFromINI(LCID Locale, LPTSTR lpResPath)
     }
 
     /* Try to load the default localized strings */
-    GetPrivateProfileString(TEXT("Defaults"), TEXT("AppTitle"), TEXT("LiberNT - Welcome") /* default */,
+    GetPrivateProfileString(TEXT("Defaults"), TEXT("AppTitle"), TEXT("LibreNT - Welcome") /* default */,
                             szAppTitle, ARRAYSIZE(szAppTitle), szIniPath);
     GetPrivateProfileString(TEXT("Defaults"), TEXT("DefaultTopicTitle"), TEXT("") /* default */,
                             szDefaultTitle, ARRAYSIZE(szDefaultTitle), szIniPath);
@@ -658,7 +658,7 @@ LoadConfiguration(VOID)
      * They can be redefined by the localized INI files.
      */
     if (!LoadString(hInstance, IDS_APPTITLE, szAppTitle, ARRAYSIZE(szAppTitle)))
-        StringCchCopy(szAppTitle, ARRAYSIZE(szAppTitle), TEXT("LiberNT - Welcome"));
+        StringCchCopy(szAppTitle, ARRAYSIZE(szAppTitle), TEXT("LibreNT - Welcome"));
     if (!LoadString(hInstance, IDS_DEFAULT_TOPIC_TITLE, szDefaultTitle, ARRAYSIZE(szDefaultTitle)))
         *szDefaultTitle = 0;
     if (!LoadString(hInstance, IDS_DEFAULT_TOPIC_DESC, szDefaultDesc, ARRAYSIZE(szDefaultDesc)))
@@ -1010,7 +1010,7 @@ RunAction(INT nTopic)
 
         if (!_tcsnicmp(Command, TEXT("<msg>"), 5))
         {
-            MessageBox(hWndMain, Command + 5, TEXT("LiberNT"), MB_OK | MB_TASKMODAL);
+            MessageBox(hWndMain, Command + 5, TEXT("LibreNT"), MB_OK | MB_TASKMODAL);
             return TRUE;
         }
     }
@@ -1360,7 +1360,7 @@ OnPaint(HWND hWnd, WPARAM wParam, LPARAM lParam)
 
     /* Draw version information */
     StringCchCopy(szVersion, ARRAYSIZE(szVersion),
-                  TEXT("LiberNT ") TEXT(KERNEL_VERSION_STR));
+                  TEXT("LibreNT ") TEXT(KERNEL_VERSION_STR));
 
     /*
      * Compute the original rect (position & size) of the version info,

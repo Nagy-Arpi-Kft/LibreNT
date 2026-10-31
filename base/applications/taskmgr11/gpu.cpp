@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Task Manager
+ * PROJECT:     LibreNT Task Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     GPU data collection for the Performance page
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>

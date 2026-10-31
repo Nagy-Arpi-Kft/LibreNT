@@ -14,7 +14,7 @@
 /* INCLUDES *************************************************************/
 #include <linux/module.h>
 #include <ntdddisk.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ndk/rtlfuncs.h>
 #include <pseh/pseh2.h>
 typedef IO_STACK_LOCATION EXTENDED_IO_STACK_LOCATION, *PEXTENDED_IO_STACK_LOCATION;
@@ -216,7 +216,7 @@ _InterlockedXor (
 
 #if EXT2_DEBUG
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SetLongFlag(_F,_SF)   Ext2SetFlag((PULONG)&(_F), (ULONG)(_SF))
 #define ClearLongFlag(_F,_SF) Ext2ClearFlag((PULONG)&(_F), (ULONG)(_SF))
 #else
@@ -224,7 +224,7 @@ _InterlockedXor (
 #define ClearLongFlag(_F,_SF) Ext2ClearFlag(&(_F), (ULONG)(_SF))
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 __inline
@@ -235,7 +235,7 @@ Ext2SetFlag(PULONG Flags, ULONG FlagBit)
     ASSERT(*Flags == (_ret | FlagBit));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 __inline
@@ -487,7 +487,7 @@ typedef PVOID   PBCB;
 // Data that is not specific to a mounted volume
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef VOID (NTAPI *EXT2_REAPER_RELEASE)(PVOID);
 #else
 typedef VOID (*EXT2_REAPER_RELEASE)(PVOID);
@@ -969,7 +969,7 @@ struct _EXT2_MCB {
 #define Ext2ReferXcb(_C)  InterlockedIncrement(_C)
 #define Ext2DerefXcb(_C)  DEC_OBJ_CNT(_C)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 __inline ULONG DEC_OBJ_CNT(PULONG _C) {
@@ -1142,7 +1142,7 @@ typedef struct _EXT2_EXTENT {
 // memory allocation statistics
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 __inline
@@ -1159,7 +1159,7 @@ Ext2TraceMemory(BOOLEAN _n, int _i, PVOID _p, LONG _s)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 __inline
@@ -1278,7 +1278,7 @@ Ext2Close (IN PEXT2_IRP_CONTEXT IrpContext);
 VOID
 Ext2QueueCloseRequest (IN PEXT2_IRP_CONTEXT IrpContext);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1289,7 +1289,7 @@ Ext2DeQueueCloseRequest (IN PVOID Context);
 // Cmcb.c
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -1297,14 +1297,14 @@ BOOLEAN
 Ext2AcquireForLazyWrite (
     IN PVOID    Context,
     IN BOOLEAN  Wait );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
 #endif
 Ext2ReleaseFromLazyWrite (IN PVOID Context);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -1313,14 +1313,14 @@ Ext2AcquireForReadAhead (
     IN PVOID    Context,
     IN BOOLEAN  Wait );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
 #endif
 Ext2ReleaseFromReadAhead (IN PVOID Context);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -1329,7 +1329,7 @@ Ext2NoOpAcquire (
     IN PVOID Fcb,
     IN BOOLEAN Wait );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1619,7 +1619,7 @@ Ext2IsDirectoryEmpty (
 // Dispatch.c
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1629,7 +1629,7 @@ Ext2OplockComplete (
     IN PIRP Irp
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1642,7 +1642,7 @@ Ext2LockIrp (
 NTSTATUS
 Ext2QueueRequest (IN PEXT2_IRP_CONTEXT IrpContext);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1652,7 +1652,7 @@ Ext2DeQueueRequest (IN PVOID Context);
 NTSTATUS
 Ext2DispatchRequest (IN PEXT2_IRP_CONTEXT IrpContext);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -2108,7 +2108,7 @@ Ext2IsFastIoPossible(
     IN PEXT2_FCB Fcb
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2125,7 +2125,7 @@ Ext2FastIoCheckIfPossible (
 );
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2139,7 +2139,7 @@ Ext2FastIoRead (IN PFILE_OBJECT FileObject,
                 OUT PIO_STATUS_BLOCK    IoStatus,
                 IN PDEVICE_OBJECT       DeviceObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2154,7 +2154,7 @@ Ext2FastIoWrite (
     OUT PIO_STATUS_BLOCK    IoStatus,
     IN PDEVICE_OBJECT       DeviceObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2166,7 +2166,7 @@ Ext2FastIoQueryBasicInfo (
     OUT PIO_STATUS_BLOCK        IoStatus,
     IN PDEVICE_OBJECT           DeviceObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2178,7 +2178,7 @@ Ext2FastIoQueryStandardInfo (
     OUT PIO_STATUS_BLOCK            IoStatus,
     IN PDEVICE_OBJECT               DeviceObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2195,7 +2195,7 @@ Ext2FastIoLock (
     IN PDEVICE_OBJECT       DeviceObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2210,7 +2210,7 @@ Ext2FastIoUnlockSingle (
     IN PDEVICE_OBJECT       DeviceObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2222,14 +2222,14 @@ Ext2FastIoUnlockAll (
     IN PDEVICE_OBJECT       DeviceObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
 #endif
 Ext2FastIoUnlockAllByKey (
     IN PFILE_OBJECT         FileObject,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IN PVOID                Process,
 #else
     IN PEPROCESS            Process,
@@ -2240,7 +2240,7 @@ Ext2FastIoUnlockAllByKey (
 );
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2252,7 +2252,7 @@ Ext2FastIoQueryNetworkOpenInfo (
     OUT PIO_STATUS_BLOCK                IoStatus,
     IN PDEVICE_OBJECT                   DeviceObject );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -2264,7 +2264,7 @@ Ext2FastIoQueryNetworkOpenInfo (
     OUT PIO_STATUS_BLOCK                IoStatus,
     IN PDEVICE_OBJECT                   DeviceObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -2273,7 +2273,7 @@ Ext2AcquireForCreateSection (
     IN PFILE_OBJECT FileObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -2282,7 +2282,7 @@ Ext2ReleaseForCreateSection (
     IN PFILE_OBJECT FileObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -2294,7 +2294,7 @@ Ext2AcquireFileForModWrite (
     IN PDEVICE_OBJECT DeviceObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -2305,7 +2305,7 @@ Ext2ReleaseFileForModWrite (
     IN PDEVICE_OBJECT DeviceObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -2315,7 +2315,7 @@ Ext2AcquireFileForCcFlush (
     IN PDEVICE_OBJECT DeviceObject
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -2326,7 +2326,7 @@ Ext2ReleaseFileForCcFlush (
 );
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -2607,7 +2607,7 @@ struct buffer_head *ext3_bread(struct ext2_icb *icb, struct inode *inode,
 int add_dirent_to_buf(struct ext2_icb *icb, struct dentry *dentry,
                       struct inode *inode, struct ext3_dir_entry_2 *de,
                       struct buffer_head *bh);
-#if !defined(__REACTOS__) || (defined(_MSC_VER) && !defined(__clang__))
+#if !defined(__LIBRENT__) || (defined(_MSC_VER) && !defined(__clang__))
 /* FIXME: Inspect the clang-cl code path */
 struct ext3_dir_entry_2 *
             do_split(struct ext2_icb *icb, struct inode *dir,
@@ -2632,7 +2632,7 @@ Ext2QueryGlobalParameters(IN PUNICODE_STRING RegistryPath);
 BOOLEAN
 Ext2QueryRegistrySettings(IN PUNICODE_STRING  RegistryPath);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -2696,7 +2696,7 @@ Ext2LockControl (IN PEXT2_IRP_CONTEXT IrpContext);
 // Memory.c
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -2705,7 +2705,7 @@ Ext2FcbReaperThread(
     PVOID   Context
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -2714,7 +2714,7 @@ Ext2McbReaperThread(
     PVOID   Context
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -3024,7 +3024,7 @@ Ext2FirstUnusedMcb(
     ULONG       Number
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -3035,7 +3035,7 @@ Ext2ReaperThread(
 
 NTSTATUS
 Ext2StartReaper(PEXT2_REAPER, EXT2_REAPER_RELEASE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID

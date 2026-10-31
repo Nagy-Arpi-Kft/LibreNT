@@ -3,7 +3,7 @@
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            tools/nandflash/main.c
  * PURPOSE:         Flashes OmapLDR, FreeLDR and a Root FS into a NAND image
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
@@ -13,7 +13,7 @@
 /* GLOBALS ********************************************************************/
 
 /* File Names */
-PCHAR NandImageName       = "reactos.bin";
+PCHAR NandImageName       = "librent.bin";
 PCHAR LlbImageName        = "./output-arm/boot/armllb/armllb.bin";
 PCHAR BootLdrImageName    = "./output-arm/boot/freeldr/freeldr/freeldr.sys";
 PCHAR FsImageName         = "ramdisk.img";

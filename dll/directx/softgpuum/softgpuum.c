@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT softgpu user-mode display driver
+ * PROJECT:     LibreNT softgpu user-mode display driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Linear 2D user-mode half of the softgpu WDDM driver
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -14,7 +14,7 @@
 #include <windows.h>
 #include <d3dkmthk.h>
 #include <d3dumddi.h>
-#include <reactos/drivers/directx/softgpu_2d_shared.h>
+#include <librent/drivers/directx/softgpu_2d_shared.h>
 
 #include "softgpuum_backend.h"
 

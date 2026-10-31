@@ -10,7 +10,7 @@
 #include <windows.h>
 #include <shlwapi.h>
 #include <winnt.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntndk.h>
 #else
 #include <winternl.h>

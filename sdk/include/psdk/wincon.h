@@ -3,7 +3,7 @@
  *
  * Console API definitions
  *
- * This file is part of the ReactOS PSDK package.
+ * This file is part of the LibreNT PSDK package.
  *
  * Contributors:
  *   Hermès Bélusca-Maïto <hermes.belusca-maito@reactos.org>

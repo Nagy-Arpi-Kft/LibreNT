@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Explorer
+ * PROJECT:     LibreNT Explorer
  * LICENSE:     GPL-3.0-or-later
  * PURPOSE:     Persistent taskbar pin storage helpers
  * COPYRIGHT:   Copyright 2026 Ahmed Arif
@@ -887,7 +887,7 @@ TaskbarPin_CreateRelaunch(PCWSTR pszCommand, PCWSTR pszName, PCWSTR pszAppId, CS
 }
 
 #define TASKBAR_PIN_ORDER_KEY   L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Taskband"
-#define TASKBAR_PIN_ORDER_VALUE L"ReactOSPinOrder"
+#define TASKBAR_PIN_ORDER_VALUE L"LibreNTPinOrder"
 #define TASKBAR_PIN_ORDER_MAX   0x10000
 
 HRESULT

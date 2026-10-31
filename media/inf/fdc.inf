@@ -4,11 +4,11 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = FDC
 ClassGUID  = {4D36E969-E325-11CE-BFC1-08002BE10318}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 08/15/2005,1.01.0.0
 
 [DestinationDirs]
@@ -29,24 +29,6 @@ HKR,,NoInstallClass,,1
 ;FIXME: We do not have a driver yet
 %*PNP0700.DeviceDesc% = NO_DRV,*PNP0700
 
-;----------------------------- FDC DRIVER -----------------------------
-
-[fdc_Inst.NT]
-CopyFiles = fdc_CopyFiles.NT
-
-[fdc_CopyFiles.NT]
-fdc.sys
-
-[fdc_Inst.NT.Services]
-AddService = fdc, 0x00000002, fdc_Service_Inst
-
-[fdc_Service_Inst]
-ServiceType    = 1
-StartType      = 3
-ErrorControl   = 1
-ServiceBinary  = %12%\fdc.sys
-LoadOrderGroup = System Bus Extender
-
 ;----------------------------- NO DRIVER REQ ----------------------------
 
 [NO_DRV]
@@ -58,7 +40,7 @@ AddService = , 0x00000002
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 ; Localizable
 FDCClassName = "Floppy disk controllers"

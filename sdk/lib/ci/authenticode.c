@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Code Integrity
+ * PROJECT:     LibreNT Code Integrity
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Bounded PE Authenticode and RFC 3161 verification
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF
@@ -8,7 +8,7 @@
  * RSA and certificate-chain validation are provided by Mbed TLS.
  */
 
-#include <reactos/ci.h>
+#include <librent/ci.h>
 #include <string.h>
 #include <mbedtls/md.h>
 #include <mbedtls/oid.h>

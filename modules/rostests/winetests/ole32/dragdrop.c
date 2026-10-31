@@ -825,7 +825,7 @@ START_TEST(dragdrop)
     }
 
     test_Register_Revoke();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!winetest_interactive && !strcmp(winetest_platform, "windows"))
         skip("ROSTESTS-182: Skipping test_DoDragDrop because it hangs on WHS-Testbot.\n");
     else

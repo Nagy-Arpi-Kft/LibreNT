@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * PURPOSE:          Native DirectDraw implementation
  * FILE:             win32ss/reactx/ntddraw/ddraw.c
  * PROGRAMER:        Magnus olsen (magnus@greatlord.com)
@@ -39,7 +39,7 @@ DxDdStartupDxGraphics(  ULONG ulc1,
                         PULONG DirectDrawContext,
                         PEPROCESS Proc)
 {
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM)
     /* The XDDM DirectX kernel (dxg.sys) was removed in Windows 8; a WDDM
      * build keeps gpDxFuncs empty so every legacy Dd DDI reports
      * DDHAL_DRIVER_NOTHANDLED and user mode stays on the D3DKMT path. */
@@ -62,12 +62,12 @@ DxDdStartupDxGraphics(  ULONG ulc1,
      * no code have been writen for it yet
      */
 
-    /* FIXME: ReactOS does not loading the dxapi.sys or import functions from it yet */
+    /* FIXME: LibreNT does not loading the dxapi.sys or import functions from it yet */
     // DxApiGetVersion()
 
     /* Loading the kernel interface of DirectX for win32k */
 
-    DPRINT1("Warning: trying loading xp/2003/windows7/reactos dxg.sys\n");
+    DPRINT1("Warning: trying loading xp/2003/windows7/librent dxg.sys\n");
     ghDxGraphics = EngLoadImage(L"\\SystemRoot\\System32\\drivers\\dxg.sys");
     if ( ghDxGraphics == NULL)
     {

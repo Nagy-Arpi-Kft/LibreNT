@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(settingsyncpolicy MODULE ${SOURCE})
 set_module_type(settingsyncpolicy win32dll ENTRYPOINT DllMain 12)
 add_importlibs(settingsyncpolicy msvcrt kernel32 ntdll)
-add_cd_file(TARGET settingsyncpolicy DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET settingsyncpolicy DESTINATION librent/system32 FOR all)

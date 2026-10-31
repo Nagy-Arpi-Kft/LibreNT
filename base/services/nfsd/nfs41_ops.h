@@ -887,7 +887,7 @@ enum secinfo_no_name_type {
 };
 
 typedef struct __nfs41_secinfo_noname_args {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t type;
 #else
     enum secinfo_noname_type type;

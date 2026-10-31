@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Media Foundation decoders
+ * PROJECT:     LibreNT Media Foundation decoders
  * FILE:        dll/win32/msmpeg2vdec/msmpeg2vdec_classes.idl
  * PURPOSE:     COM classes of the H.264 and AAC decoders
  *

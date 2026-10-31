@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Font Shell Extension
+ * PROJECT:     LibreNT Font Shell Extension
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Fonts folder shell extension background menu
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -68,7 +68,7 @@ STDMETHODIMP CFontBackgroundMenu::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
         {
             // Show error message
             CStringW text(MAKEINTRESOURCEW(IDS_INSTALL_FAILED));
-            CStringW title(MAKEINTRESOURCEW(IDS_REACTOS_FONTS_FOLDER));
+            CStringW title(MAKEINTRESOURCEW(IDS_LIBRENT_FONTS_FOLDER));
             MessageBoxW(m_hwnd, text, title, MB_ICONERROR);
             return E_FAIL;
         }

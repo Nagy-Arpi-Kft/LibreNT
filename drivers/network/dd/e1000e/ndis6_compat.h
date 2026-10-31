@@ -1,13 +1,13 @@
 /*
- * PROJECT:     LiberNT Intel PRO/1000 Driver
+ * PROJECT:     LibreNT Intel PRO/1000 Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS 6.x Compatibility Layer
  * COPYRIGHT:       2026 Ahmed ARIF (arif.ing@outlook.com)
  *
  * This header provides NDIS 6.x API declarations and compatibility
- * definitions that may be missing from ReactOS headers.
+ * definitions that may be missing from LibreNT headers.
  *
- * When ReactOS fully supports NDIS 6.x, this file can be removed.
+ * When LibreNT fully supports NDIS 6.x, this file can be removed.
  */
 
 #pragma once

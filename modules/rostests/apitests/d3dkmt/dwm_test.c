@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DWM compositor ExtEscape integration tests
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -34,9 +34,9 @@ static void Test_CursorSuppressExtEscape(void)
     }
 
     /*
-     * The DWM cursor-suppress escape is a ReactOS WDDM compositor private
+     * The DWM cursor-suppress escape is a LibreNT WDDM compositor private
      * interface. ExtEscape returns 0 for an escape the display driver does not
-     * implement, so on Win11 (which has no such escape) we skip; on the ReactOS
+     * implement, so on Win11 (which has no such escape) we skip; on the LibreNT
      * compositor (Phase B) it returns 1 and we validate the contract.
      */
     suppress = 1;
@@ -73,7 +73,7 @@ static void Test_CompositionSyncExtEscape(void)
         return;
     }
 
-    /* Begin composition sync (ReactOS compositor private escape; see above) */
+    /* Begin composition sync (LibreNT compositor private escape; see above) */
     sync = 1;
     ret = ExtEscape(hDcScreen, DWM_ESCAPE_COMPOSITION_SYNC,
                     sizeof(sync), (LPCSTR)&sync, 0, NULL);
@@ -166,7 +166,7 @@ static void Test_CompositionSyncUnderLoad(void)
 
     hOldBitmap = (HBITMAP)SelectObject(hDcMem, hBitmap);
 
-    /* Begin composition sync (ReactOS compositor private escape; see above) */
+    /* Begin composition sync (LibreNT compositor private escape; see above) */
     sync = 1;
     ret = ExtEscape(hDcScreen, DWM_ESCAPE_COMPOSITION_SYNC,
                     sizeof(sync), (LPCSTR)&sync, 0, NULL);

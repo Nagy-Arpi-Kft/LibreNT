@@ -4,7 +4,7 @@ add_definitions(
 
 spec2def(d3dcompiler_39.dll d3dcompiler_39.spec ADD_IMPORTLIB)
 
-set(D3DCOMPILER_SOURCE_DIR ${REACTOS_SOURCE_DIR}/dll/directx/wine/d3dcompiler_43)
+set(D3DCOMPILER_SOURCE_DIR ${LIBRENT_SOURCE_DIR}/dll/directx/wine/d3dcompiler_43)
 
 list(APPEND SOURCE
     ${D3DCOMPILER_SOURCE_DIR}/asmparser.c
@@ -40,4 +40,4 @@ target_include_directories(d3dcompiler_39 PRIVATE
 target_link_libraries(d3dcompiler_39 vkd3d_compiler dx10guid uuid wine)
 add_importlibs(d3dcompiler_39 msvcrt kernel32 ntdll)
 add_dependencies(d3dcompiler_39 d3d_idl_headers)
-add_cd_file(TARGET d3dcompiler_39 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET d3dcompiler_39 DESTINATION librent/system32 FOR all)

@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/ke/i386/traphdlr.c
  * PURPOSE:         Kernel Trap Handlers
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

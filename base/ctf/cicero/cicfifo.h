@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Cicero
+ * PROJECT:     LibreNT Cicero
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Cicero FIFO (First-In-First-Out)
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>

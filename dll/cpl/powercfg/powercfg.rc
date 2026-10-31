@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Power Configuration Applet
+ * PROJECT:     LibreNT Power Configuration Applet
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Resource file
  * COPYRIGHT:   Copyright 2006 Alexander Wurzinger <lohnegrim@gmx.net>
@@ -15,11 +15,11 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Power Management Control Panel"
-#define REACTOS_STR_INTERNAL_NAME     "powercfg"
-#define REACTOS_STR_ORIGINAL_FILENAME "powercfg.cpl"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Power Management Control Panel"
+#define LIBRENT_STR_INTERNAL_NAME     "powercfg"
+#define LIBRENT_STR_ORIGINAL_FILENAME "powercfg.cpl"
+#include <librent/version.rc>
 
 IDI_AC ICON "resources/ac.ico"
 IDI_ACDC ICON "resources/acdc.ico"
@@ -42,7 +42,7 @@ IDI_BAT_DISCHRG_FULL ICON "resources/batteryfull.ico"
 IDI_BAT_UNKNOWN ICON "resources/batteryunknown.ico"
 IDI_BAT_NONE    ICON "resources/nobattery.ico"
 
-#include <reactos/manifest_hosted.rc>
+#include <librent/manifest_hosted.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

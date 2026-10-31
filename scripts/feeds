@@ -8,13 +8,13 @@
 
 set -u
 
-REACTOS_SOURCE_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
-FEEDS_DIR="$REACTOS_SOURCE_DIR/submodules"
+LIBRENT_SOURCE_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+FEEDS_DIR="$LIBRENT_SOURCE_DIR/submodules"
 
-if [ -f "$REACTOS_SOURCE_DIR/feeds.conf" ]; then
-	FEEDS_CONF="$REACTOS_SOURCE_DIR/feeds.conf"
+if [ -f "$LIBRENT_SOURCE_DIR/feeds.conf" ]; then
+	FEEDS_CONF="$LIBRENT_SOURCE_DIR/feeds.conf"
 else
-	FEEDS_CONF="$REACTOS_SOURCE_DIR/feeds.conf.default"
+	FEEDS_CONF="$LIBRENT_SOURCE_DIR/feeds.conf.default"
 fi
 
 fail() {

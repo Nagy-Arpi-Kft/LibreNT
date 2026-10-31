@@ -270,7 +270,7 @@ typedef struct _tagChecksumCheckResult
     };
 }tChecksumCheckResult;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
 for simplicity, we use for NDIS5 the same statistics as native NDIS6 uses
 */
@@ -297,7 +297,7 @@ typedef struct _tagNdisStatistics
 }NDIS_STATISTICS_INFO;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef PNET_BUFFER tPacketType;
 typedef PNET_BUFFER_LIST tPacketHolderType;
 typedef PNET_BUFFER_LIST tPacketIndicationType;
@@ -307,7 +307,7 @@ typedef PNDIS_PACKET tPacketHolderType;
 typedef PNDIS_PACKET tPacketIndicationType;
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _tagNdisOffloadParams
 {
     UCHAR   IPv4Checksum;
@@ -497,7 +497,7 @@ typedef struct _tagPARANDIS_ADAPTER
     ULONG                       ulTxMessage;
     ULONG                       ulControlMessage;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NDIS_HANDLE                 InterruptHandle;
     NDIS_HANDLE                 ReceiveNblPool;
     NDIS_HANDLE                 DmaHandle;
@@ -512,7 +512,7 @@ typedef struct _tagPARANDIS_ADAPTER
     LIST_ENTRY                  SendQueue;
     LIST_ENTRY                  TxWaitingList;
     NDIS_EVENT                  HaltEvent;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NDIS_HANDLE                 ConnectTimer;
     NDIS_HANDLE                 DPCPostProcessTimer;
 #else

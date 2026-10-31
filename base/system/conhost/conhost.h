@@ -71,7 +71,7 @@ struct edit_line
     unsigned int           ctrl_mask;           /* mask for ctrl characters for completion */
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct console_alias
 {
     struct console_alias *next;
@@ -126,12 +126,12 @@ struct console
     unsigned int           tty_cursor_y;
     unsigned int           tty_attr;            /* current tty char attributes */
     int                    tty_cursor_visible;  /* tty cursor visibility flag */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct console_alias_exe *alias_exes;
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct cell_color
 {
     COLORREF fg;
@@ -160,7 +160,7 @@ struct screen_buffer
     RECT                   win;                 /* current visible window on the screen buffer */
     struct font_info       font;                /* console font information */
     struct wine_rb_entry   entry;               /* map entry */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct vt_state       *vt;
     struct cell_color     *colors;
     unsigned int           vt_cursor_size;
@@ -175,7 +175,7 @@ NTSTATUS write_console_input( struct console *console, const INPUT_RECORD *recor
 
 void notify_screen_buffer_size( struct screen_buffer *screen_buffer );
 NTSTATUS change_screen_buffer_size( struct screen_buffer *screen_buffer, int new_width, int new_height );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void set_vt_console_title( struct console *console, const WCHAR *title, size_t size );
 
 void resize_cell_colors( struct screen_buffer *screen_buffer, unsigned int new_width, unsigned int new_height );
@@ -213,7 +213,7 @@ void init_message_window( struct console *console );
 void update_window_region( struct console *console, const RECT *update );
 void update_window_config( struct console *console, BOOL delay );
 void teardown_window( struct console *console );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void set_window_quick_edit( struct console *console, BOOL enable );
 void update_window_title( struct console *console );
 #endif
@@ -228,7 +228,7 @@ static inline unsigned int get_bounded_cursor_x( struct screen_buffer *screen_bu
     return min( screen_buffer->cursor_x, screen_buffer->width - 1 );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline void reset_cell_colors( struct screen_buffer *screen_buffer, unsigned int first, unsigned int count )
 {
     if (screen_buffer->colors)

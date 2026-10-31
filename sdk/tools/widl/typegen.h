@@ -58,7 +58,7 @@ enum typegen_type
     TGT_STRUCT,
     TGT_UNION,
     TGT_RANGE,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TGT_SYSTEM_HANDLE,
 #endif
 };

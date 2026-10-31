@@ -302,7 +302,7 @@ FxDevice::PdoInitialize(
             pPkgPdo->m_AllowForwardRequestToParent = TRUE;
         }
 
-        // status = m_PkgWmi->PostCreateDeviceInitialize(); __REACTOS__
+        // status = m_PkgWmi->PostCreateDeviceInitialize(); __LIBRENT__
         // if (!NT_SUCCESS(status)) {
         //     return status;
         // }

@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/include/internal/hdl.h
  * PURPOSE:         Internal header for the Configuration Manager
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 #pragma once
@@ -57,7 +57,7 @@ typedef enum _HEADLESS_LOG_MESSAGE
     HeadlessLogGroupOrderListFailed,
     HeadlessLogGroupTableFailed
     //
-    // There are more, but not applicable to ReactOS, I believe
+    // There are more, but not applicable to LibreNT, I believe
     //
 } HEADLESS_LOG_MESSAGE;
 

@@ -20,13 +20,13 @@
 #include "private.h"
 
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/list.h"
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL( bluetooth );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct watcher_handler
 {
     struct list entry;

@@ -13,7 +13,7 @@ struct sensor_data_report
     LONG refs;
     PROPERTYKEY data_key;
     double scale;
-    REACTOS_SENSOR_READING reading;
+    LIBRENT_SENSOR_READING reading;
     FILETIME timestamp;
 };
 
@@ -138,7 +138,7 @@ static const ISensorDataReportVtbl sensor_data_report_vtbl =
     sensor_data_report_GetSensorValues,
 };
 
-HRESULT sensor_data_report_create(const PROPERTYKEY *key, double scale, const REACTOS_SENSOR_READING *reading, REFIID iid, void **out)
+HRESULT sensor_data_report_create(const PROPERTYKEY *key, double scale, const LIBRENT_SENSOR_READING *reading, REFIID iid, void **out)
 {
     struct sensor_data_report *report;
     ULARGE_INTEGER timestamp;

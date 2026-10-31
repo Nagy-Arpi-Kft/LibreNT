@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/boot/freeldr)
+include_directories(${LIBRENT_SOURCE_DIR}/boot/freeldr)
 
 if(ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64")
 

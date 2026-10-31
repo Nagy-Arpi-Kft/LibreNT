@@ -70,7 +70,7 @@ BOOL fill_stubless_table( IUnknownVtbl *vtbl, DWORD num )
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL fill_stubless_null_entries( IUnknownVtbl *vtbl, DWORD num )
 {
     size_t entry_size = (char *)ObjectStublessClient4 - (char *)ObjectStublessClient3;

@@ -1430,13 +1430,13 @@ static void test_WaitForMultipleObjects(void)
 
     /* a manual-reset event remains signaled, an auto-reset event is cleared */
     status = pNtWaitForMultipleObjects(MAXIMUM_WAIT_OBJECTS, maxevents, TRUE, FALSE, NULL);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     ok(status == STATUS_WAIT_0 || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */, "should signal lowest handle first, got %08lx\n", status);
 #else
     ok(status == STATUS_WAIT_0, "should signal lowest handle first, got %08lx\n", status);
 #endif
     status = pNtWaitForMultipleObjects(MAXIMUM_WAIT_OBJECTS, maxevents, TRUE, FALSE, NULL);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     ok(status == STATUS_WAIT_0 || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */, "should signal handle #0 first, got %08lx\n", status);
 #else
     ok(status == STATUS_WAIT_0, "should signal handle #0 first, got %08lx\n", status);
@@ -1446,7 +1446,7 @@ static void test_WaitForMultipleObjects(void)
     {
         /* the lowest index is checked first and remaining events are untouched */
         status = pNtWaitForMultipleObjects(MAXIMUM_WAIT_OBJECTS, maxevents, TRUE, FALSE, NULL);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
         ok(status == STATUS_WAIT_0 + i || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */, "should signal handle #%d first, got %08lx\n", i, status);
 #else
         ok(status == STATUS_WAIT_0 + i, "should signal handle #%d first, got %08lx\n", i, status);
@@ -1462,7 +1462,7 @@ static void test_WaitForMultipleObjects(void)
     SetLastError(0xdeadbeef);
     r = WaitForMultipleObjects(1, maxevents, FALSE, 100);
     todo_wine ok(r == WAIT_FAILED, "expected WAIT_FAILED, got %lu\n", r);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     todo_wine ok(GetLastError() == ERROR_INVALID_HANDLE || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */,
 #else
     todo_wine ok(GetLastError() == ERROR_INVALID_HANDLE,
@@ -1473,7 +1473,7 @@ static void test_WaitForMultipleObjects(void)
     SetLastError(0xdeadbeef);
     r = WaitForMultipleObjects(1, maxevents, FALSE, 100);
     todo_wine ok(r == WAIT_FAILED, "expected WAIT_FAILED, got %lu\n", r);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     todo_wine ok(GetLastError() == ERROR_INVALID_HANDLE || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */,
 #else
     todo_wine ok(GetLastError() == ERROR_INVALID_HANDLE,
@@ -1483,7 +1483,7 @@ static void test_WaitForMultipleObjects(void)
     timeout.QuadPart = -1000000;
     maxevents[0] = GetCurrentProcess();
     status = pNtWaitForMultipleObjects(1, maxevents, TRUE, FALSE, &timeout);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     todo_wine ok(status == STATUS_INVALID_HANDLE || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */, "expected STATUS_INVALID_HANDLE, got %08lx\n", status);
 #else
     todo_wine ok(status == STATUS_INVALID_HANDLE, "expected STATUS_INVALID_HANDLE, got %08lx\n", status);
@@ -1492,7 +1492,7 @@ static void test_WaitForMultipleObjects(void)
     timeout.QuadPart = -1000000;
     maxevents[0] = GetCurrentThread();
     status = pNtWaitForMultipleObjects(1, maxevents, TRUE, FALSE, &timeout);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     todo_wine ok(status == STATUS_INVALID_HANDLE || broken(status == STATUS_INVALID_PARAMETER_3) /* x86_64 */, "expected STATUS_INVALID_HANDLE, got %08lx\n", status);
 #else
     todo_wine ok(status == STATUS_INVALID_HANDLE, "expected STATUS_INVALID_HANDLE, got %08lx\n", status);
@@ -2983,7 +2983,7 @@ static void test_QueueUserAPC(void)
     SetLastError(0xdeadbeef);
     ret = QueueUserAPC(user_apc, thread, 0);
     ok(!ret, "QueueUserAPC should fail\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(GetLastError() == ERROR_GEN_FAILURE || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got %lu\n", GetLastError());
 #else
     ok(GetLastError() == ERROR_GEN_FAILURE, "got %lu\n", GetLastError());
@@ -3075,7 +3075,7 @@ START_TEST(sync)
     test_WaitForMultipleObjects();
     test_initonce();
     test_condvars_base(&aligned_cv);
-#if !defined(__REACTOS__) || defined(__i386__) || defined(__x86_64__)
+#if !defined(__LIBRENT__) || defined(__i386__) || defined(__x86_64__)
     test_condvars_base(&unaligned_cv.cv);
 #endif
     test_condvars_consumer_producer();

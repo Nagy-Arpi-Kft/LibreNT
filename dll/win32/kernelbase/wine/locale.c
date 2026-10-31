@@ -1613,7 +1613,7 @@ static int get_locale_info( const NLS_LOCALE_DATA *locale, LCID lcid, LCTYPE typ
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct japanese_era
 {
     UINT  year;
@@ -1666,7 +1666,7 @@ static int get_calendar_info( const NLS_LOCALE_DATA *locale, CALID id, CALTYPE t
 {
     unsigned int i, val = 0;
     const struct calendar *cal;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct japanese_era era;
 #endif
 
@@ -1693,7 +1693,7 @@ static int get_calendar_info( const NLS_LOCALE_DATA *locale, CALID id, CALTYPE t
         return locale_return_strarray( locale->calnames, id - 1, type, buffer, len );
 
     case CAL_IYEAROFFSETRANGE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (id == CAL_JAPAN && get_japanese_era( &era ))
             return cal_return_number( era.year, type, buffer, len, value );
 #endif
@@ -1707,7 +1707,7 @@ static int get_calendar_info( const NLS_LOCALE_DATA *locale, CALID id, CALTYPE t
 
     case CAL_SERASTRING:
         if (id == CAL_GREGORIAN) return locale_return_string( locale->serastring, type, buffer, len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (id == CAL_JAPAN && get_japanese_era( &era ))
             return locale_return_data( era.name, wcslen( era.name ) + 1, type, buffer, len );
 #endif
@@ -1805,7 +1805,7 @@ static int get_calendar_info( const NLS_LOCALE_DATA *locale, CALID id, CALTYPE t
 
     case CAL_SABBREVERASTRING:
         if (id == CAL_GREGORIAN) return locale_return_string( locale->sabbreverastring, type, buffer, len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (id == CAL_JAPAN && get_japanese_era( &era ))
             return locale_return_data( era.abbrev, wcslen( era.abbrev ) + 1, type, buffer, len );
 #endif
@@ -1835,7 +1835,7 @@ invalid:
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR *get_geo_friendly_name( const struct geo_id *geo )
 {
     UINT i;
@@ -1897,7 +1897,7 @@ static int get_geo_info( const struct geo_id *geo, enum SYSGEOTYPE type,
     case GEO_CURRENCYSYMBOL:
         str = geo->currsymbol;
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case GEO_NAME:
         str = geo->iso2;
         break;
@@ -2012,7 +2012,7 @@ void init_locale( HMODULE module )
     USHORT utf8[2] = { 0, CP_UTF8 };
     USHORT *ansi_ptr, *oem_ptr;
     WCHAR bufferW[LOCALE_NAME_MAX_LENGTH];
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DYNAMIC_TIME_ZONE_INFORMATION timezone;
     const WCHAR *user_locale_name;
     DWORD count;
@@ -2037,7 +2037,7 @@ void init_locale( HMODULE module )
     user_lcid = user_locale->ilanguage;
     if (user_lcid == LOCALE_CUSTOM_UNSPECIFIED) user_lcid = LOCALE_CUSTOM_DEFAULT;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (GetEnvironmentVariableW( L"WINEUNIXCP", bufferW, ARRAY_SIZE(bufferW) )) unix_cp = wcstoul( bufferW, NULL, 10 );
 #endif
 
@@ -2048,7 +2048,7 @@ void init_locale( HMODULE module )
     RtlInitCodePageTable( ansi_ptr, &ansi_cpinfo );
     RtlInitCodePageTable( oem_ptr, &oem_cpinfo );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegOpenKeyExW( HKEY_LOCAL_MACHINE, L"System\\CurrentControlSet\\Control\\Nls", 0, KEY_READ, &nls_key );
     RegOpenKeyExW( HKEY_LOCAL_MACHINE, L"Software\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones", 0, KEY_READ, &tz_key );
     RegOpenKeyExW( HKEY_CURRENT_USER, L"Control Panel\\International", 0, KEY_ALL_ACCESS, &intl_key );
@@ -5112,7 +5112,7 @@ DWORD WINAPI DECLSPEC_HOTPATCH EnumDynamicTimeZoneInformation( DWORD index,
 
     lstrcpyW( info->TimeZoneKeyName, tz.TimeZoneKeyName );
     info->DynamicDaylightTimeDisabled = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         HKEY key;
 
@@ -5422,7 +5422,7 @@ INT WINAPI DECLSPEC_HOTPATCH FindStringOrdinal( DWORD flag, const WCHAR *src, IN
     return -1;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 /******************************************************************************
  *	FoldStringW   (kernelbase.@)
@@ -5495,7 +5495,7 @@ static const WCHAR *get_message( DWORD flags, const void *src, UINT id, UINT lan
             /* Fold win32 hresult to its embedded error code. */
             if (HRESULT_SEVERITY(id) == SEVERITY_ERROR && HRESULT_FACILITY(id) == FACILITY_WIN32)
                 id = HRESULT_CODE( id );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             status = RtlFindMessage( GetModuleHandleW( L"kernel32.dll" ), RT_MESSAGETABLE, lang, id, &entry );
 #else
             status = RtlFindMessage( kernelbase_handle, RT_MESSAGETABLE, lang, id, &entry );
@@ -5651,7 +5651,7 @@ DWORD WINAPI DECLSPEC_HOTPATCH FormatMessageW( DWORD flags, const void *source, 
             if (!status)
             {
                 if (retsize <= sizeof(WCHAR)) HeapFree( GetProcessHeap(), 0, result );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 else
                 {
                     WCHAR *shrunk = HeapReAlloc( GetProcessHeap(), HEAP_REALLOC_IN_PLACE_ONLY,
@@ -5686,7 +5686,7 @@ DWORD WINAPI DECLSPEC_HOTPATCH FormatMessageW( DWORD flags, const void *source, 
     return retsize / sizeof(WCHAR) - 1;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 /******************************************************************************
  *	GetACP   (kernelbase.@)
@@ -5792,7 +5792,7 @@ INT WINAPI DECLSPEC_HOTPATCH GetCalendarInfoEx( const WCHAR *name, CALID calenda
     return get_calendar_info( locale, calendar, type, buffer, len, value );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 static CRITICAL_SECTION tzname_section;
 static CRITICAL_SECTION_DEBUG tzname_section_debug =
@@ -5945,7 +5945,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetFileMUIInfo( DWORD flags, const WCHAR *path,
                                               FILEMUIINFO *info, DWORD *size )
 {
     DWORD off, mui_size, type = MUI_FILETYPE_NOT_LANGUAGE_NEUTRAL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD query_size;
 #endif
     struct mui_resource *mui = NULL;
@@ -6011,7 +6011,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetFileMUIInfo( DWORD flags, const WCHAR *path,
         off += type == MUI_FILETYPE_LANGUAGE_NEUTRAL_MAIN ?
             mui->fallback_lang_size : mui->lang_size;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     query_size = max( off, sizeof(*info) );
 #endif
     if (flags & MUI_QUERY_RESOURCE_TYPES)
@@ -6025,7 +6025,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetFileMUIInfo( DWORD flags, const WCHAR *path,
     if (!info || info->dwSize < off)
     {
         FreeLibrary( hmod );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *size = info ? off : query_size;
 #else
         *size = off;
@@ -6110,7 +6110,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetFileMUIInfo( DWORD flags, const WCHAR *path,
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 /******************************************************************************
  *	GetFileMUIPath   (kernelbase.@)
@@ -6167,7 +6167,7 @@ INT WINAPI DECLSPEC_HOTPATCH GetGeoInfoEx( WCHAR *location, GEOTYPE type, WCHAR 
     return get_geo_info( ptr, type, data, data_count, 0 );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /******************************************************************************
@@ -6313,7 +6313,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetNLSVersionEx( NLS_FUNCTION func, const WCHAR *l
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /******************************************************************************
@@ -6398,7 +6398,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetStringTypeExW( LCID locale, DWORD type, const W
     return GetStringTypeW( type, src, count, chartype );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /***********************************************************************
@@ -6459,7 +6459,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetThreadPreferredUILanguages( DWORD flags, ULONG 
     return set_ntstatus( RtlGetThreadPreferredUILanguages( flags, count, buffer, size ));
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /***********************************************************************
@@ -6848,7 +6848,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH IsNormalizedString( NORM_FORM form, const WCHAR *s
     return res;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /******************************************************************************
@@ -7166,7 +7166,7 @@ INT WINAPI DECLSPEC_HOTPATCH LCMapStringW( LCID lcid, DWORD flags, const WCHAR *
 LCID WINAPI DECLSPEC_HOTPATCH LocaleNameToLCID( const WCHAR *name, DWORD flags )
 {
     LCID lcid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const NLS_LOCALE_DATA *locale;
 
     if (flags & ~LOCALE_ALLOW_NEUTRAL_NAMES)
@@ -7200,7 +7200,7 @@ INT WINAPI DECLSPEC_HOTPATCH MultiByteToWideChar( UINT codepage, DWORD flags, co
     const CPTABLEINFO *info;
     int ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!src || !srclen || (!dst && dstlen) || dstlen < 0 || (dstlen && (const void *)src == (const void *)dst))
 #else
     if (!src || !srclen || (!dst && dstlen) || dstlen < 0)
@@ -7219,7 +7219,7 @@ INT WINAPI DECLSPEC_HOTPATCH MultiByteToWideChar( UINT codepage, DWORD flags, co
     case CP_UTF7:
         ret = mbstowcs_utf7( flags, src, srclen, dst, dstlen );
         break;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case CP_UNIXCP:
         codepage = unix_cp;
         /* fall through */
@@ -7310,7 +7310,7 @@ INT WINAPI DECLSPEC_HOTPATCH ResolveLocaleName( LPCWSTR name, LPWSTR buffer, INT
     return datalen;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /******************************************************************************
@@ -7428,7 +7428,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetThreadPreferredUILanguages( DWORD flags, PCZZWS
     return set_ntstatus( RtlSetThreadPreferredUILanguages( flags, buffer, count ));
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /***********************************************************************
@@ -7470,7 +7470,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetUserGeoID( GEOID id )
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 
 /***********************************************************************
@@ -7560,7 +7560,7 @@ DWORD WINAPI DECLSPEC_HOTPATCH VerLanguageNameW( DWORD lang, LPWSTR buffer, DWOR
     return GetLocaleInfoW( MAKELCID( lang, SORT_DEFAULT ), LOCALE_SENGLANGUAGE, buffer, size );
 }
 
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 /***********************************************************************
  *	WideCharToMultiByte   (kernelbase.@)
@@ -7571,7 +7571,7 @@ INT WINAPI DECLSPEC_HOTPATCH WideCharToMultiByte( UINT codepage, DWORD flags, LP
     const CPTABLEINFO *info;
     int ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!src || !srclen || (!dst && dstlen) || dstlen < 0 || (const void *)src == (const void *)dst)
 #else
     if (!src || !srclen || (!dst && dstlen) || dstlen < 0)
@@ -7591,7 +7591,7 @@ INT WINAPI DECLSPEC_HOTPATCH WideCharToMultiByte( UINT codepage, DWORD flags, LP
     case CP_UTF7:
         ret = wcstombs_utf7( flags, src, srclen, dst, dstlen, defchar, used );
         break;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case CP_UNIXCP:
         codepage = unix_cp;
         /* fall through */
@@ -7620,7 +7620,7 @@ INT WINAPI DECLSPEC_HOTPATCH WideCharToMultiByte( UINT codepage, DWORD flags, LP
 
 
 /* kernel32 forwards these two exports to kernelbase, so their Wine
- * implementations must remain active on ReactOS to avoid circular imports. */
+ * implementations must remain active on LibreNT to avoid circular imports. */
 
 /***********************************************************************
  *	GetUserDefaultGeoName  (kernelbase.@)
@@ -7683,7 +7683,7 @@ BOOL WINAPI SetUserGeoName(PWSTR geo_name)
     return SetUserGeoID( geo->id );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 static void grouping_to_string( UINT grouping, WCHAR *buffer )
 {
@@ -8582,4 +8582,4 @@ int WINAPI GetTimeFormatEx( const WCHAR *name, DWORD flags, const SYSTEMTIME *sy
     TRACE( "(%s,%lx,%p,%s,%p,%d)\n", debugstr_w(name), flags, systime, debugstr_w(format), buffer, len );
     return get_time_format( locale, flags, systime, format, buffer, len );
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

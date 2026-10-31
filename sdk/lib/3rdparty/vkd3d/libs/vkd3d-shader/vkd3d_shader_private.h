@@ -60,7 +60,7 @@
 #endif
 #include <locale.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "reactos_math.h"
 #endif
 

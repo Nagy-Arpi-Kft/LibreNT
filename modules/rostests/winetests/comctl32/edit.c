@@ -867,7 +867,7 @@ static void test_edit_control_2(void)
 
     /* try setting the caret before it's visible */
     r = SetCaretPos(0, 0);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     ok(0 == r, "SetCaretPos succeeded unexpectedly, expected: 0, got: %ld\n", r);
@@ -3730,7 +3730,7 @@ static void test_ime(void)
     HKL hkl;
     MSG msg;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     composition_todo = FALSE;
 #endif
 

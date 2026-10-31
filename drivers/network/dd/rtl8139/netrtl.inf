@@ -4,11 +4,11 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = Net
 ClassGUID  = {4D36E972-E325-11CE-BFC1-08002BE10318}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 07/03/2013,1.00
 
 [DestinationDirs]
@@ -71,7 +71,7 @@ LoadOrderGroup = NDIS
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 RealtekMfg = "Realtek"
 AcctonMfg = "Accton"

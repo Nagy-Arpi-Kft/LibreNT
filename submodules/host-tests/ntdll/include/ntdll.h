@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/ntdll/include/ntdll.h
  * PURPOSE:     NTDLL host-test types and runtime declarations
  *

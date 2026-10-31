@@ -679,7 +679,7 @@ static void wined3d_cs_exec_present(struct wined3d_cs *cs, const void *data)
     swapchain = op->swapchain;
     desc = &swapchain->state.desc;
     back_buffer = swapchain->back_buffers[0];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* A DirectComposition target owns the destination HWND. Present packets
      * use a NULL override for composition swapchains; interpreting that as
      * the device window would detach every committed visual again. */
@@ -3526,7 +3526,7 @@ static void wined3d_cs_exec_execute_command_list(struct wined3d_cs *cs, const vo
 
     TRACE("Executing command list %p.\n", op->list);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     queue = cs->queue ? &cs->queue[WINED3D_CS_QUEUE_MAP] : NULL;
 #else
     queue = &cs->queue[WINED3D_CS_QUEUE_MAP];
@@ -3536,7 +3536,7 @@ static void wined3d_cs_exec_execute_command_list(struct wined3d_cs *cs, const vo
         const struct wined3d_cs_packet *packet;
         enum wined3d_cs_op opcode;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (queue && !wined3d_cs_queue_is_empty(cs, queue))
 #else
         while (!wined3d_cs_queue_is_empty(cs, queue))
@@ -3680,7 +3680,7 @@ struct wined3d_cs *wined3d_cs_create(struct wined3d_device *device,
     {
         cs->c.ops = &wined3d_cs_mt_ops;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(cs->queue = calloc(WINED3D_CS_QUEUE_COUNT, sizeof(*cs->queue))))
         {
             ERR("Failed to allocate command stream queues.\n");
@@ -3729,7 +3729,7 @@ struct wined3d_cs *wined3d_cs_create(struct wined3d_device *device,
     return cs;
 
 fail:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(cs->queue);
 #endif
     wined3d_state_destroy(cs->c.state);
@@ -3751,7 +3751,7 @@ void wined3d_cs_destroy(struct wined3d_cs *cs)
     wined3d_state_destroy(cs->c.state);
     state_cleanup(&cs->state);
     free(cs->data);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(cs->queue);
 #endif
     free(cs);

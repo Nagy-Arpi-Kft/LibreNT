@@ -17,8 +17,8 @@ typedef struct _stub {
 void usage( char *name ) {
     fprintf( stderr,
              "Usage: %s [-n nm] [-m make] libs...\n"
-             "nm   -- The command used to run nm on reactos objects\n"
-             "make -- The command used to build reactos\n\n"
+             "nm   -- The command used to run nm on LibreNT objects\n"
+             "make -- The command used to build LibreNT\n\n"
              "libs are import libraries (.a files) typically from\n"
              "dk/lib/nkm and dk/lib/w32\n",
              name );

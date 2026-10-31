@@ -164,7 +164,7 @@ static HRESULT WINAPI ApplicationAssociationRegistration_QueryCurrentDefault(IAp
         return hr;
     }
 
-    /* ReactOS does not yet merge per-user classes into every HKCR query.
+    /* LibreNT does not yet merge per-user classes into every HKCR query.
      * Resolve the effective class explicitly, retaining user precedence and
      * keeping machine-only queries independent of the user's defaults. */
     first = level == AL_MACHINE ? 1 : 0;

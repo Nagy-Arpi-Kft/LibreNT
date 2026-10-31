@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Console Utilities Library
+ * PROJECT:     LibreNT Console Utilities Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Provides simple abstraction wrappers around CRT streams or
  *              Win32 console API I/O functions, to deal with i18n + Unicode
@@ -12,10 +12,10 @@
  * @file    conutils.h
  * @ingroup ConUtils
  *
- * @defgroup ConUtils   ReactOS Console Utilities Library
+ * @defgroup ConUtils   LibreNT Console Utilities Library
  *
  * @brief   This library contains common functions used in many places inside
- *          the ReactOS console utilities and the ReactOS Command-Line Interpreter.
+ *          the LibreNT console utilities and the LibreNT Command-Line Interpreter.
  *          Most of these functions are related with internationalisation and
  *          the problem of correctly displaying Unicode text on the console.
  *          Besides those, helpful functions for retrieving strings and messages

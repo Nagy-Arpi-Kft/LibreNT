@@ -1,8 +1,8 @@
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x603)
 
-include_directories(${REACTOS_SOURCE_DIR}/drivers/filesystems/btrfs)
+include_directories(${LIBRENT_SOURCE_DIR}/drivers/filesystems/btrfs)
 
 spec2def(shellbtrfs.dll shellbtrfs.spec)
 
@@ -23,10 +23,10 @@ list(APPEND SOURCE
 
 list(APPEND PCH_SKIP_SOURCE
     guid.c
-    ${REACTOS_SOURCE_DIR}/drivers/filesystems/btrfs/crc32c.c)
+    ${LIBRENT_SOURCE_DIR}/drivers/filesystems/btrfs/crc32c.c)
 
 if((ARCH STREQUAL "i386") OR (ARCH STREQUAL "amd64"))
-    list(APPEND ASM_SOURCE ${REACTOS_SOURCE_DIR}/drivers/filesystems/btrfs/crc32c.S)
+    list(APPEND ASM_SOURCE ${LIBRENT_SOURCE_DIR}/drivers/filesystems/btrfs/crc32c.S)
     add_asm_files(btrfs_asm ${ASM_SOURCE})
 endif()
 
@@ -47,4 +47,4 @@ target_link_libraries(shellbtrfs uuid cppstl)
 set_target_cpp_properties(shellbtrfs WITH_EXCEPTIONS)
 add_importlibs(shellbtrfs advapi32 advapi32_vista ole32 shell32 shlwapi user32 comctl32 uxtheme setupapi comdlg32 gdi32 msvcrt kernel32_vista kernel32 ntdll)
 add_pch(shellbtrfs precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET shellbtrfs DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET shellbtrfs DESTINATION librent/system32 FOR all)

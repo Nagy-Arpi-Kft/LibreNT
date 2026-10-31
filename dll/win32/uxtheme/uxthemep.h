@@ -17,7 +17,7 @@
 #include <windowsx.h>
 #include <undocuser.h>
 #include <undocgdi.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 #include <uxtheme.h>
 #include <uxundoc.h>
 #include <vfwmsgs.h>

@@ -541,7 +541,7 @@ void processRequest(void *lpParam)
                 MYDWORD iip = ntohl(req.client.sin_addr.s_addr);
                 bool allowed = false;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 for (MYWORD j = 0; j < _countof(cfig.hostRanges) && cfig.hostRanges[j].rangeStart; j++)
 #else
                 for (int j = 0; j <= 32 && cfig.hostRanges[j].rangeStart; j++)
@@ -756,7 +756,7 @@ void processRequest(void *lpParam)
                 continue;
             }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             for (int i = 0; i < MAX_SERVERS; i++)
 #else
             for (int i = 0; i < 8; i++)
@@ -1896,7 +1896,7 @@ void init(void *lpParam)
                 }
                 else if (name[0] && strlen(name) < 64 && value[0])
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     for (int i = 0; i < MAX_SERVERS; i++)
 #else
                     for (int i = 0; i < 8; i++)
@@ -2059,7 +2059,7 @@ void init(void *lpParam)
 
     if ((f = openSection("ALLOWED-CLIENTS", 1, iniFile)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MYWORD i = 0;
 #else
         int i = 0;
@@ -2067,7 +2067,7 @@ void init(void *lpParam)
 
         while (readSection(raw, f))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (i < _countof(cfig.hostRanges))
 #else
             if (i < 32)
@@ -2119,7 +2119,7 @@ void init(void *lpParam)
     {
         char temp[128];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         for (MYWORD i = 0; i < _countof(cfig.hostRanges) && cfig.hostRanges[i].rangeStart; i++)
 #else
         for (MYWORD i = 0; i <= sizeof(cfig.hostRanges) && cfig.hostRanges[i].rangeStart; i++)
@@ -2437,7 +2437,7 @@ bool detectChange()
     MYDWORD eventWait = UINT_MAX;
 
     if (cfig.failureCount)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         eventWait = 10000 * (1 << cfig.failureCount);
 #else
         eventWait = 10000 * pow(2, cfig.failureCount);

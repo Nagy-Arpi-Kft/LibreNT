@@ -25,7 +25,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d11);
 
-#if defined(__REACTOS__) && defined(REACTOS_D3D11_NATIVE_UMD)
+#if defined(__LIBRENT__) && defined(LIBRENT_D3D11_NATIVE_UMD)
 HRESULT d3d11_native_on12_create_device(IUnknown *device, UINT flags,
         const D3D_FEATURE_LEVEL *feature_levels, UINT feature_level_count, IUnknown * const *queues,
         UINT queue_count, UINT node_mask, ID3D11Device **d3d11_device, ID3D11DeviceContext **d3d11_context,
@@ -151,7 +151,7 @@ HRESULT WINAPI D3D11CoreCreateDevice(IDXGIFactory *factory, IDXGIAdapter *adapte
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT d3d11_create_null_adapter(IDXGIAdapter **adapter)
 {
     HRESULT (WINAPI *create)(REFIID iid, void **adapter);
@@ -193,7 +193,7 @@ static HRESULT d3d11_create_device(IDXGIAdapter *adapter, D3D_DRIVER_TYPE driver
     if (immediate_context)
         *immediate_context = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (flags & D3D11_CREATE_DEVICE_DEBUG)
     {
         WARN("The Direct3D 11 SDK layers are not installed.\n");
@@ -227,11 +227,11 @@ static HRESULT d3d11_create_device(IDXGIAdapter *adapter, D3D_DRIVER_TYPE driver
 
         switch(driver_type)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case D3D_DRIVER_TYPE_NULL:
 #endif
             case D3D_DRIVER_TYPE_WARP:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 IDXGIFactory4 *factory4;
 
@@ -277,7 +277,7 @@ static HRESULT d3d11_create_device(IDXGIAdapter *adapter, D3D_DRIVER_TYPE driver
                 break;
             }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             case D3D_DRIVER_TYPE_NULL:
                 FIXME("NULL device not implemented, falling back to refrast.\n");
                 /* fall through, for now */
@@ -287,7 +287,7 @@ static HRESULT d3d11_create_device(IDXGIAdapter *adapter, D3D_DRIVER_TYPE driver
                 HMODULE refrast = LoadLibraryA("d3d11ref.dll");
                 if (!refrast)
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     WARN("Failed to load refrast, returning DXGI_ERROR_UNSUPPORTED.\n");
                     IDXGIFactory_Release(factory);
                     return DXGI_ERROR_UNSUPPORTED;
@@ -338,7 +338,7 @@ static HRESULT d3d11_create_device(IDXGIAdapter *adapter, D3D_DRIVER_TYPE driver
         feature_levels = default_feature_levels;
         levels = ARRAY_SIZE(default_feature_levels);
     }
-#if defined(__REACTOS__) && defined(REACTOS_D3D11_NATIVE_UMD)
+#if defined(__LIBRENT__) && defined(LIBRENT_D3D11_NATIVE_UMD)
     hr = driver_type != D3D_DRIVER_TYPE_HARDWARE && driver_type != D3D_DRIVER_TYPE_UNKNOWN ? DXGI_ERROR_UNSUPPORTED
             : d3d11_native_create_device(adapter, flags, feature_levels, levels, &device);
     if (hr == DXGI_ERROR_UNSUPPORTED)
@@ -468,8 +468,8 @@ HRESULT WINAPI D3D11On12CreateDevice(IUnknown *device, UINT flags,
         ID3D11Device **d3d11_device, ID3D11DeviceContext **d3d11_immediate_context,
         D3D_FEATURE_LEVEL *obtained_feature_level)
 {
-#ifdef __REACTOS__
-#ifdef REACTOS_D3D11_NATIVE_UMD
+#ifdef __LIBRENT__
+#ifdef LIBRENT_D3D11_NATIVE_UMD
     HRESULT hr = d3d11_native_on12_create_device(device, flags, feature_levels, feature_level_count, queues,
             queue_count, node_mask, d3d11_device, d3d11_immediate_context, obtained_feature_level);
 

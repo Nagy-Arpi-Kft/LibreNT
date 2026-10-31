@@ -111,7 +111,7 @@ static HRESULT parse_resource( const WCHAR *resource, WCHAR **server, WCHAR **na
         if (*p == '\\' || *p == '/') return WBEM_E_INVALID_PARAMETER;
         q = p + 1;
         while (*q && *q != '\\' && *q != '/') q++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!*q)
         {
             if (p - resource == 2 && !is_local_machine( p ))
@@ -185,7 +185,7 @@ static HRESULT WINAPI wbem_locator_ConnectServer(
         FIXME("remote computer not supported\n");
         free( server );
         free( namespace );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return HRESULT_FROM_WIN32( RPC_S_SERVER_UNAVAILABLE );
 #else
         return WBEM_E_TRANSPORT_FAILURE;

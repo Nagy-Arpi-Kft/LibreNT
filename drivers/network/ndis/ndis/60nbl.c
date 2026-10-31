@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NDIS library
+ * PROJECT:     LibreNT NDIS library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        drivers/network/ndis/ndis/60nbl.c
  * PURPOSE:     NDIS 6 NET_BUFFER / NET_BUFFER_LIST allocation.
@@ -2317,7 +2317,7 @@ Ndis6CopyDerivedNetBufferListInfo(
 #endif
 
     /* WfpNetBufferListInfo is refcounted by the Windows filtering platform.
-     * ReactOS has no matching ownership helper, so never raw-copy that slot. */
+     * LibreNT has no matching ownership helper, so never raw-copy that slot. */
 }
 
 PNET_BUFFER_LIST

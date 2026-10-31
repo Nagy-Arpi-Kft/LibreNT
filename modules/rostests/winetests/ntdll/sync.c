@@ -26,7 +26,7 @@
 #include "winternl.h"
 #include "wine/test.h"
 
-#if defined (__REACTOS__) && (DLL_EXPORT_VERSION < 0x601)
+#if defined (__LIBRENT__) && (DLL_EXPORT_VERSION < 0x601)
 static
 NTSTATUS
 WINAPI
@@ -952,7 +952,7 @@ static DWORD WINAPI test_completion_port_scheduling_thread(void *param)
     else
         ok( err == ERROR_ABANDONED_WAIT_0, "got error %#lx.\n", err );
 
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x601)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x601)
     /* Port is being closed. */
     ret = WaitForSingleObject( p->ready, INFINITE );
     ok( ret == WAIT_OBJECT_0, "got %#lx.\n", ret );
@@ -980,10 +980,10 @@ static void test_completion_port_scheduling(void)
     ULONG_PTR key;
     BOOL bret;
 
-#if defined(__REACTOS__)
+#if defined(__LIBRENT__)
     if ((GetNTVersion() < _WIN32_WINNT_WIN7) || is_reactos())
     {
-        skip("Skipping completion port scheduling test, because it hangs on Windows 2003, Vista and ReactOS\n");
+        skip("Skipping completion port scheduling test, because it hangs on Windows 2003, Vista and LibreNT\n");
         return;
     }
 #endif

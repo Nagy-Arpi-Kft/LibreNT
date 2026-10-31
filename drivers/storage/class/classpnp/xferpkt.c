@@ -828,7 +828,7 @@ VOID SetupReadWriteTransferPacket(  PTRANSFER_PACKET Pkt,
     Pkt->NumRetries = fdoData->MaxNumberOfIoRetries;
     Pkt->SyncEventPtr = NULL;
     Pkt->CompleteOriginalIrpWhenLastPacketCompletes = TRUE;
-#if !defined(__REACTOS__) && NTDDI_VERSION >= NTDDI_WINBLUE
+#if !defined(__LIBRENT__) && NTDDI_VERSION >= NTDDI_WINBLUE
     Pkt->NumIoTimeoutRetries = fdoData->MaxNumberOfIoRetries;
     Pkt->NumThinProvisioningRetries = 0;
 #endif
@@ -928,7 +928,7 @@ NTSTATUS SubmitTransferPacket(PTRANSFER_PACKET Pkt)
 
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 TransferPktComplete(IN PDEVICE_OBJECT NullFdo, IN PIRP Irp, IN PVOID Context)
 {
     PTRANSFER_PACKET pkt = (PTRANSFER_PACKET)Context;
@@ -960,7 +960,7 @@ TransferPktComplete(IN PDEVICE_OBJECT NullFdo, IN PIRP Irp, IN PVOID Context)
     //
 
 #ifdef _WIN64
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     lastIoCompletionTime = ReadULong64NoFence((volatile ULONG64*)&fdoData->LastIoCompletionTime.QuadPart);
     WriteULong64NoFence((volatile ULONG64*)&fdoData->LastIoCompletionTime.QuadPart,
                         completionTime.QuadPart);
@@ -1529,7 +1529,7 @@ VOID SetupDriveCapacityTransferPacket(   TRANSFER_PACKET *Pkt,
 
     Pkt->OriginalIrp = OriginalIrp;
     Pkt->NumRetries = NUM_DRIVECAPACITY_RETRIES;
-#if !defined(__REACTOS__) && NTDDI_VERSION >= NTDDI_WINBLUE
+#if !defined(__LIBRENT__) && NTDDI_VERSION >= NTDDI_WINBLUE
     Pkt->NumIoTimeoutRetries = NUM_DRIVECAPACITY_RETRIES;
 #endif
 
@@ -1587,7 +1587,7 @@ VOID SetupDriveCapacityTransferPacket(   TRANSFER_PACKET *Pkt,
 
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CleanupTransferPacketToWorkingSetSizeWorker(
     _In_ PVOID Fdo,
     _In_opt_ PVOID Context,

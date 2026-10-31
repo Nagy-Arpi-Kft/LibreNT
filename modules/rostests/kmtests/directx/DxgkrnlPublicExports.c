@@ -1,11 +1,11 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Windows 11 dxgkrnl public D3DKMT export routing test
  */
 
 #include <kmt_test.h>
-#include <reactos/rddm/rxgkntgdi.h>
+#include <librent/rddm/rxgkntgdi.h>
 
 #define RXGK_STRING_INNER(Value) #Value
 #define RXGK_STRING(Value) RXGK_STRING_INNER(Value)

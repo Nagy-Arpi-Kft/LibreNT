@@ -988,7 +988,7 @@ BOOL TABLE_Exists( MSIDATABASE *db, LPCWSTR name )
     UINT r, table_id, i;
     MSITABLE *table;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( !wcscmp( name, L"_Tables" ) || !wcscmp( name, L"_Columns" ) ||
         (!db->memory_only && (!wcscmp( name, L"_Streams" ) || !wcscmp( name, L"_Storages" ))) )
         return TRUE;
@@ -1633,7 +1633,7 @@ static UINT TABLE_get_column_info( struct tagMSIVIEW *view,
 
 static UINT table_find_row( struct table_view *, MSIRECORD *, UINT *, UINT * );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL table_row_matches_record( struct table_view *tv, UINT row, MSIRECORD *rec )
 {
     UINT i, x, value;
@@ -1975,7 +1975,7 @@ static UINT TABLE_modify( struct tagMSIVIEW *view, MSIMODIFY eModifyMode,
             if (r == ERROR_SUCCESS)
                 r = TABLE_insert_row( view, rec, -1, FALSE );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (!table_row_matches_record( tv, frow, rec ))
             r = ERROR_FUNCTION_FAILED;
 #endif
@@ -2097,7 +2097,7 @@ static UINT TABLE_release(struct tagMSIVIEW *view)
 
         if (!tv->table->col_count)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             MSIVIEW *tables;
             MSIRECORD *rec;
             UINT row;
@@ -2296,7 +2296,7 @@ UINT TABLE_CreateView( MSIDATABASE *db, LPCWSTR name, MSIVIEW **view )
 
     TRACE("%p %s %p\n", db, debugstr_w(name), view );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ( !db->memory_only && !wcscmp( name, L"_Streams" ) )
         return STREAMS_CreateView( db, view );
     else if ( !db->memory_only && !wcscmp( name, L"_Storages" ) )
@@ -2991,7 +2991,7 @@ static UINT TransformView_Create( MSIDATABASE *db, string_table *st, LPCWSTR nam
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void msi_add_system_strings( MSIDATABASE *db )
 {
     UINT i;
@@ -3054,13 +3054,13 @@ UINT MSI_CommitTables( MSIDATABASE *db )
     UINT r, bytes_per_strref;
     HRESULT hr;
     MSITABLE *table = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT *refs;
 #endif
 
     TRACE("%p\n",db);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     r = count_string_refs( db, &refs );
     if (r != ERROR_SUCCESS)
     {

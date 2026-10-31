@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     PnP dispatch for the dxgkrnl control device object and
  *              child PDO enumeration (monitor/output device objects)
@@ -25,9 +25,9 @@
 #include "vidsch.h"
 #include "hotplug_work_core.h"
 #include <ntstrsafe.h>
-#include <reactos/rddm/rxgkmonitor.h>
+#include <librent/rddm/rxgkmonitor.h>
 #include <acpiioct.h>
-#include <reactos/drivers/acpi/acpipci.h>
+#include <librent/drivers/acpi/acpipci.h>
 
 static CONST GUID DxgkpGuidDevinterfaceBrightness =
     { 0xFDE5BBA4, 0xB3F9, 0x46FB, { 0xBD, 0xAA, 0x07, 0x28, 0xCE, 0x31, 0x00, 0xB4 } };

@@ -4,7 +4,7 @@
  * Windows Filtering Platform — version identifiers and well-known GUIDs
  * for built-in providers, sublayers, and layers.
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created for the dev-nt6-1 branch as part of the NT 5.2 -> NT 6.1 upgrade.

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Intel PMC Diagnostic Utility
+ * PROJECT:     LibreNT Intel PMC Diagnostic Utility
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  */
 
@@ -7,7 +7,7 @@
 #include <setupapi.h>
 #include <stdio.h>
 #include <initguid.h>
-#include <reactos/drivers/intelpmc.h>
+#include <librent/drivers/intelpmc.h>
 
 static
 HANDLE
@@ -19,12 +19,12 @@ PmcCtlOpenDevice(VOID)
     DWORD RequiredSize = 0;
     HANDLE Device = INVALID_HANDLE_VALUE;
 
-    DeviceInfo = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_REACTOS_INTEL_PMC, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+    DeviceInfo = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_LIBRENT_INTEL_PMC, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     if (DeviceInfo == INVALID_HANDLE_VALUE)
         return INVALID_HANDLE_VALUE;
     ZeroMemory(&InterfaceData, sizeof(InterfaceData));
     InterfaceData.cbSize = sizeof(InterfaceData);
-    if (!SetupDiEnumDeviceInterfaces(DeviceInfo, NULL, &GUID_DEVINTERFACE_REACTOS_INTEL_PMC, 0, &InterfaceData))
+    if (!SetupDiEnumDeviceInterfaces(DeviceInfo, NULL, &GUID_DEVINTERFACE_LIBRENT_INTEL_PMC, 0, &InterfaceData))
         goto Cleanup;
     SetupDiGetDeviceInterfaceDetailW(DeviceInfo, &InterfaceData, NULL, 0, &RequiredSize, NULL);
     if (GetLastError() != ERROR_INSUFFICIENT_BUFFER || RequiredSize < sizeof(*DetailData))

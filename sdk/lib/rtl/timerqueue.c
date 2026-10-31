@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS system libraries
+ * PROJECT:           LibreNT system libraries
  * PURPOSE:           Timer Queue implementation
  * FILE:              lib/rtl/timerqueue.c
  * PROGRAMMER:
@@ -204,7 +204,7 @@ static void queue_timer_expire(struct timer_queue *q)
             ++t->runcount;
             if (t->period)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 next = now + t->period;
 #else
                 next = t->expire + t->period;

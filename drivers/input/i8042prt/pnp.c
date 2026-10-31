@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS i8042 (ps/2 keyboard-mouse controller) driver
+ * PROJECT:     LibreNT i8042 (ps/2 keyboard-mouse controller) driver
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/input/i8042prt/pnp.c
  * PURPOSE:     IRP_MJ_PNP operations
@@ -147,7 +147,7 @@ i8042DetectKeyboard(
         WARN_(I8042PRT, "Warning: can't write SET_LEDS (0x%08lx)\n", Status);
     }
 
-    /* Turn on translation and SF (Some machines don't reboot if SF is not set, see ReactOS bug CORE-1713) */
+    /* Turn on translation and SF (Some machines don't reboot if SF is not set, see LibreNT bug CORE-1713) */
     if (!i8042ChangeMode(DeviceExtension, 0, CCB_TRANSLATE | CCB_SYSTEM_FLAG))
         return;
 

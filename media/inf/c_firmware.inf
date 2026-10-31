@@ -1,10 +1,10 @@
 [Version]
 Signature = "$WINDOWS NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class     = Firmware
 ClassGuid = {f2e7dd72-6468-4e36-b6f1-6488f42c1b52}
-Provider  = %ReactOS%
+Provider  = %LibreNT%
 DriverVer = 10/18/2026,1.00
 
 [ClassInstall32]
@@ -43,7 +43,7 @@ HKR, , FirmwareVersion, 0x00010001, 0
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 ; Localizable
 FirmwareClassName = "Firmware"

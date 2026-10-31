@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         NetAPI DLL
- * FILE:            reactos/dll/win32/netapi32/schedule.c
+ * FILE:            librent/dll/win32/netapi32/schedule.c
  * PURPOSE:         Scheduler service interface code
  *
  * PROGRAMMERS:     Eric Kohl

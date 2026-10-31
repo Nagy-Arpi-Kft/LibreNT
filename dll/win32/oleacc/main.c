@@ -26,7 +26,7 @@
 
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wchar.h>
 #include <winnls.h>
 #endif

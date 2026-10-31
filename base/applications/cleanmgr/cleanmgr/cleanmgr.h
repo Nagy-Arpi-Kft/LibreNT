@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Disk Cleanup
+ * PROJECT:     LibreNT Disk Cleanup
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Main header file
  * COPYRIGHT:   Copyright 2023-2025 Mark Jansen <mark.jansen@reactos.org>
@@ -36,8 +36,8 @@
 using namespace ATL;
 
 #define NDEBUG
-#include <reactos/debug.h>
-#include <reactos/shellutils.h>
+#include <librent/debug.h>
+#include <librent/shellutils.h>
 #include <ui/rosdlgs.h>
 
 

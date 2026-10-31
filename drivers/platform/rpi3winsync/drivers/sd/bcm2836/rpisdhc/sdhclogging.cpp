@@ -5,7 +5,7 @@
 #include "precomp.hpp"
 #pragma hdrstop
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "sdhclogging.h"
 #else
 #include "SdhcLogging.h"

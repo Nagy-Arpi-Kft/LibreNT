@@ -1,5 +1,5 @@
 /*
- * PROJECT:    ReactOS NetSh
+ * PROJECT:    LibreNT NetSh
  * LICENSE:    GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:    Network Shell WMI info functions
  * COPYRIGHT:  Copyright 2026 Eric Kohl <eric.kohl@reactos.org>

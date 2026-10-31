@@ -586,7 +586,7 @@ static void test_mbcp(void)
 
     _setmbcp(1361);
     expect_eq(_ismbblead(0x80), 0, int, "%d");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     expect_eq(_ismbblead(0x81), 1, int, "%d");
     expect_eq(_ismbblead(0x83), 1, int, "%d");
 #else
@@ -1771,7 +1771,7 @@ static void test_ismbclegal(void) {
             break;
         }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!err, "_ismbclegal (1361) : Expected 0x%x, got 0x%x (0x%x)\n", exp, ret, i);
 #else
     todo_wine ok(!err, "_ismbclegal (1361) : Expected 0x%x, got 0x%x (0x%x)\n", exp, ret, i);
@@ -3664,13 +3664,13 @@ static void test__wcstoi64(void)
 
     for (i = 0; i < ARRAY_SIZE(tests); i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((i == 20) && (_winver < 0x600))
         {
             skip("Skipping test with i = 20, because it fails on Windows 2003\n");
             continue;
         }
-#endif // __REACTOS__
+#endif // __LIBRENT__
         res = p_wcstoi64( tests[i].str, &endpos, tests[i].base );
         ok( res == tests[i].res, "%u: %s res %s\n",
             i, wine_dbgstr_w(tests[i].str), wine_dbgstr_longlong(res) );
@@ -4717,7 +4717,7 @@ static void test___STRINGTOLD(void)
     {
         errno = 0xdeadbeef;
         r = __STRINGTOLD(&v, &endptr, tests[i].str, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(r == tests[i].r, "%d) r = %d\n", i, r);
 #else
         todo_wine_if(tests[i].todo)

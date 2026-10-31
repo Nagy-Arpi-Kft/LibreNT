@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         LGPLv2+ - See COPYING.LIB in the top level directory
  * PURPOSE:         Kernel-Mode Test Suite Pools test routines KM-Test
  * PROGRAMMER:      Aleksey Bragin <aleksey@reactos.org>
@@ -194,7 +194,7 @@ TestPoolQuota(VOID)
 
 #ifdef _WIN64
     // Win7 x64 successfully serves the 2GB ExAllocatePoolWithQuotaTag request
-    // without raising (ReactOS raised STATUS_INSUFFICIENT_RESOURCES). Accept either
+    // without raising (LibreNT raised STATUS_INSUFFICIENT_RESOURCES). Accept either
     // outcome, but if no exception is raised the allocation must have succeeded.
     {
         NTSTATUS ExceptionStatus = STATUS_SUCCESS;

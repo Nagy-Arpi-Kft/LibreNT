@@ -21,13 +21,13 @@
  */
 
 #include "d3d9_private.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <float.h>
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d9);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void d3d9_device_hide_dxva_overlay(struct d3d9_device *device);
 #endif
 
@@ -737,7 +737,7 @@ static ULONG WINAPI DECLSPEC_HOTPATCH d3d9_device_Release(IDirect3DDevice9Ex *if
         unsigned i;
         device->in_destruction = TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         d3d9_device_hide_dxva_overlay(device);
 #endif
 
@@ -1146,7 +1146,7 @@ static HRESULT d3d9_device_reset(struct d3d9_device *device,
         return D3DERR_DEVICELOST;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     d3d9_device_hide_dxva_overlay(device);
 #endif
 
@@ -1877,7 +1877,7 @@ static HRESULT WINAPI d3d9_device_UpdateSurface(IDirect3DDevice9Ex *iface,
     TRACE("iface %p, src_surface %p, src_rect %s, dst_surface %p, dst_point %p.\n",
             iface, src_surface, wine_dbgstr_rect(src_rect), dst_surface, dst_point);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = d3d9_surface_prepare_dxva_composition(src, 0)) ||
             FAILED(hr = d3d9_surface_prepare_dxva_fallback(dst, 0)))
         return hr;
@@ -1966,7 +1966,7 @@ static HRESULT WINAPI d3d9_device_GetRenderTargetData(IDirect3DDevice9Ex *iface,
     if (!render_target || !dst_surface)
         return D3DERR_INVALIDCALL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = d3d9_surface_prepare_dxva_composition(rt_impl, 0)) ||
             FAILED(hr = d3d9_surface_prepare_dxva_fallback(dst_impl, 0)))
         return hr;
@@ -2000,7 +2000,7 @@ static HRESULT WINAPI d3d9_device_GetFrontBufferData(IDirect3DDevice9Ex *iface,
 
     TRACE("iface %p, swapchain %u, dst_surface %p.\n", iface, swapchain, dst_surface);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = d3d9_surface_prepare_dxva_fallback(dst_impl, 0)))
         return hr;
 #endif
@@ -2014,20 +2014,20 @@ static HRESULT WINAPI d3d9_device_GetFrontBufferData(IDirect3DDevice9Ex *iface,
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void d3d9_device_hide_dxva_overlay(struct d3d9_device *device)
 {
-    IReactOSDxvaSurfaceFence *binding;
+    ILibreNTDxvaSurfaceFence *binding;
 
     AcquireSRWLockExclusive(&device->dxva_overlay_lock);
     binding = device->dxva_overlay_binding;
     device->dxva_overlay_binding = NULL;
     if (binding)
-        IReactOSDxvaSurfaceFence_Hide(binding);
+        ILibreNTDxvaSurfaceFence_Hide(binding);
     ReleaseSRWLockExclusive(&device->dxva_overlay_lock);
 
     if (binding)
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
 }
 
 static BOOL d3d9_device_windowed_overlay_is_fullscreen(HWND window,
@@ -2065,8 +2065,8 @@ static HRESULT d3d9_device_present_dxva_overlay(struct d3d9_device *device,
         struct d3d9_surface *src, struct d3d9_surface *dst,
         const RECT *source, const RECT *destination)
 {
-    IReactOSDxvaSurfaceFence *binding;
-    IReactOSDxvaSurfaceFence *old_binding;
+    ILibreNTDxvaSurfaceFence *binding;
+    ILibreNTDxvaSurfaceFence *old_binding;
     struct wined3d_swapchain_desc swapchain_desc;
     RECT client_rect;
     RECT screen_destination;
@@ -2084,8 +2084,8 @@ static HRESULT d3d9_device_present_dxva_overlay(struct d3d9_device *device,
     }
     if (!dst->swapchain)
     {
-        IReactOSDxvaSurfaceFence_Hide(binding);
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Hide(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return D3DERR_NOTAVAILABLE;
     }
 
@@ -2102,8 +2102,8 @@ static HRESULT d3d9_device_present_dxva_overlay(struct d3d9_device *device,
             !ClientToScreen(swapchain_desc.device_window, &client_origin))
     {
         d3d9_device_hide_dxva_overlay(device);
-        IReactOSDxvaSurfaceFence_Hide(binding);
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Hide(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return D3DERR_NOTAVAILABLE;
     }
 
@@ -2112,8 +2112,8 @@ static HRESULT d3d9_device_present_dxva_overlay(struct d3d9_device *device,
     if (client_width <= 0 || client_height <= 0)
     {
         d3d9_device_hide_dxva_overlay(device);
-        IReactOSDxvaSurfaceFence_Hide(binding);
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Hide(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return D3DERR_NOTAVAILABLE;
     }
 
@@ -2126,8 +2126,8 @@ static HRESULT d3d9_device_present_dxva_overlay(struct d3d9_device *device,
                     swapchain_desc.device_window, &client_rect, &client_origin))
     {
         d3d9_device_hide_dxva_overlay(device);
-        IReactOSDxvaSurfaceFence_Hide(binding);
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Hide(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return D3DERR_NOTAVAILABLE;
     }
 
@@ -2146,28 +2146,28 @@ static HRESULT d3d9_device_present_dxva_overlay(struct d3d9_device *device,
         device->dxva_overlay_binding = NULL;
         if (old_binding)
         {
-            IReactOSDxvaSurfaceFence_Hide(old_binding);
-            IReactOSDxvaSurfaceFence_Release(old_binding);
+            ILibreNTDxvaSurfaceFence_Hide(old_binding);
+            ILibreNTDxvaSurfaceFence_Release(old_binding);
         }
     }
 
-    hr = IReactOSDxvaSurfaceFence_Present(binding, source, &screen_destination, 0);
+    hr = ILibreNTDxvaSurfaceFence_Present(binding, source, &screen_destination, 0);
     if (SUCCEEDED(hr) && device->dxva_overlay_binding != binding)
     {
-        IReactOSDxvaSurfaceFence_AddRef(binding);
+        ILibreNTDxvaSurfaceFence_AddRef(binding);
         device->dxva_overlay_binding = binding;
     }
     if (FAILED(hr))
     {
-        IReactOSDxvaSurfaceFence_Hide(binding);
+        ILibreNTDxvaSurfaceFence_Hide(binding);
         if (device->dxva_overlay_binding == binding)
         {
             device->dxva_overlay_binding = NULL;
-            IReactOSDxvaSurfaceFence_Release(binding);
+            ILibreNTDxvaSurfaceFence_Release(binding);
         }
     }
     ReleaseSRWLockExclusive(&device->dxva_overlay_lock);
-    IReactOSDxvaSurfaceFence_Release(binding);
+    ILibreNTDxvaSurfaceFence_Release(binding);
     return hr;
 }
 #endif
@@ -2179,7 +2179,7 @@ static HRESULT WINAPI d3d9_device_StretchRect(IDirect3DDevice9Ex *iface, IDirect
     struct d3d9_surface *src = unsafe_impl_from_IDirect3DSurface9(src_surface);
     struct d3d9_surface *dst = unsafe_impl_from_IDirect3DSurface9(dst_surface);
     struct wined3d_sub_resource_desc src_desc, dst_desc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL dxva_composition = FALSE;
     BOOL dxva_consumed = FALSE;
 #endif
@@ -2189,7 +2189,7 @@ static HRESULT WINAPI d3d9_device_StretchRect(IDirect3DDevice9Ex *iface, IDirect
     TRACE("iface %p, src_surface %p, src_rect %s, dst_surface %p, dst_rect %s, filter %#x.\n",
             iface, src_surface, wine_dbgstr_rect(src_rect), dst_surface, wine_dbgstr_rect(dst_rect), filter);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = d3d9_surface_prepare_dxva_fallback(dst, 0)))
         return hr;
 #endif
@@ -2257,7 +2257,7 @@ static HRESULT WINAPI d3d9_device_StretchRect(IDirect3DDevice9Ex *iface, IDirect
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wined3d_mutex_unlock();
     hr = d3d9_device_present_dxva_overlay(device, src, dst, src_rect, dst_rect);
     if (SUCCEEDED(hr))
@@ -2275,13 +2275,13 @@ static HRESULT WINAPI d3d9_device_StretchRect(IDirect3DDevice9Ex *iface, IDirect
         hr = D3DERR_INVALIDCALL;
     if (SUCCEEDED(hr) && dst->texture)
         d3d9_texture_flag_auto_gen_mipmap(dst->texture);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dxva_consumed = dxva_composition && SUCCEEDED(hr);
 #endif
 
 done:
     wined3d_mutex_unlock();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (dxva_consumed && FAILED(hr = d3d9_surface_mark_dxva_consumed(src, 0)))
         return hr;
 #endif
@@ -2309,7 +2309,7 @@ static HRESULT WINAPI d3d9_device_ColorFill(IDirect3DDevice9Ex *iface,
     if (!surface)
         return D3DERR_INVALIDCALL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = d3d9_surface_prepare_dxva_fallback(surface_impl, 0)))
         return hr;
 #endif
@@ -2432,7 +2432,7 @@ static HRESULT WINAPI d3d9_device_SetRenderTarget(IDirect3DDevice9Ex *iface, DWO
         return D3DERR_INVALIDCALL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (surface_impl && FAILED(hr = d3d9_surface_prepare_dxva_fallback(surface_impl, 0)))
         return hr;
 #endif
@@ -2498,7 +2498,7 @@ static HRESULT WINAPI d3d9_device_SetDepthStencilSurface(IDirect3DDevice9Ex *ifa
 
     TRACE("iface %p, depth_stencil %p.\n", iface, depth_stencil);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ds_impl && FAILED(hr = d3d9_surface_prepare_dxva_fallback(ds_impl, 0)))
         return hr;
 #endif
@@ -4920,7 +4920,7 @@ static void CDECL device_parent_activate(struct wined3d_device_parent *device_pa
     if (!device->d3d_parent)
         return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!activate)
         d3d9_device_hide_dxva_overlay(device);
 #endif
@@ -4980,7 +4980,7 @@ static void setup_fpu(void)
     __asm__ volatile ("fnstcw %0" : "=m" (cw));
     cw = (cw & ~0xf3f) | 0x3f;
     __asm__ volatile ("fldcw %0" : : "m" (cw));
-#elif defined(__REACTOS__) && defined(__aarch64__)
+#elif defined(__LIBRENT__) && defined(__aarch64__)
     /* ARM64 has fixed precision; preserve denormal handling and reset only
      * exception masks and rounding, as required without FPU_PRESERVE. */
     _control87(_MCW_EM | _RC_NEAR, _MCW_EM | _MCW_RC);
@@ -5025,7 +5025,7 @@ HRESULT device_init(struct d3d9_device *device, struct d3d9 *parent, struct wine
     device->device_parent.ops = &d3d9_wined3d_device_parent_ops;
     device->adapter_ordinal = adapter;
     device->refcount = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitializeSRWLock(&device->dxva_overlay_lock);
 #endif
 

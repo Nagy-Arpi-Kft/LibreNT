@@ -2,10 +2,10 @@
 
 #include "resource.h"
 
-#define REACTOS_STR_FILE_DESCRIPTION  "TCP/IP Ping Command"
-#define REACTOS_STR_INTERNAL_NAME     "ping.exe"
-#define REACTOS_STR_ORIGINAL_FILENAME "ping.exe"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION  "TCP/IP Ping Command"
+#define LIBRENT_STR_INTERNAL_NAME     "ping.exe"
+#define LIBRENT_STR_ORIGINAL_FILENAME "ping.exe"
+#include <librent/version.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

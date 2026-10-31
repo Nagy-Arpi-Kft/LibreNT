@@ -4,20 +4,20 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = System
 ClassGUID  = {4D36E97D-E325-11CE-BFC1-08002BE10318}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 12/07/2005,1.00
 
 [DestinationDirs]
 DefaultDestDir = 12
 
 [Manufacturer]
-%ReactOSMfg% = ReactOSMfg
+%LibreNTMfg% = LibreNTMfg
 
-[ReactOSMfg]
+[LibreNTMfg]
 %KEYBOARD.DeviceDesc% = Keyboard_Inst,GREEN\KEYBOARD
 %SCREEN.DeviceDesc% = Screen_Inst,GREEN\SCREEN
 
@@ -88,8 +88,8 @@ AddService = green, 0x00000002, green_Service_Inst
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
-ReactOSMfg = "(ReactOS Project)"
+LibreNT = "LibreNT Project"
+LibreNTMfg = "(LibreNT Project)"
 
 ; Localizable
 GREEN.DriverDesc = "VT100 server emulator"

@@ -26,16 +26,16 @@
 #include <string.h>
 #include <assert.h>
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "ntstatus.h"
 #define WIN32_NO_STATUS
 #endif
 #include "dbghelp_private.h"
 #include "image_private.h"
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "winternl.h"
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <symz.h>
 #endif
 #elif defined(_MSC_VER)
@@ -552,7 +552,7 @@ static BOOL pe_load_coff_symbol_table(struct module* module)
     return TRUE;
 }
 
-#if defined(__REACTOS__) && !defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && !defined(DBGHELP_STATIC_LIB)
 struct symz_symbol
 {
     ULONG rva;
@@ -793,7 +793,7 @@ static BOOL pe_load_dwarf(struct module* module)
     return ret;
 }
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 /******************************************************************
  *		pe_load_dbg_file
  *
@@ -955,7 +955,7 @@ static BOOL pe_load_export_debug_info(struct module* module)
  */
 BOOL pe_load_debug_info(struct module* module)
 {
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
     BOOL ret = FALSE;
 
     if (!(dbghelp_options & SYMOPT_PUBLICS_ONLY) && !module->dont_load_symbols)
@@ -1022,7 +1022,7 @@ BOOL pe_load_debug_info(struct module* module)
             ret = pe_load_dwarf(module) ||
                 pe_load_stabs(module) ||
                 pe_load_msc_debug_info(module) ||
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 pe_load_symz(module) ||
 #endif
                 pe_load_coff_symbol_table(module);
@@ -1118,7 +1118,7 @@ struct module* pe_load_native_module(struct process* pcs, const WCHAR* name,
     }
     else
     {
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
         if (name) lstrcpyW(loaded_name, name);
 #else
         ULONG sz = sizeof(OBJECT_NAME_INFORMATION) + MAX_PATH * sizeof(WCHAR), needed;
@@ -1152,7 +1152,7 @@ struct module* pe_load_native_module(struct process* pcs, const WCHAR* name,
         if (pe_map_file(hFile, &modfmt->u.pe_info->fmap))
         {
             struct builtin_search builtin = { NULL };
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
             if (opened && modfmt->u.pe_info->fmap.u.pe.builtin &&
                 search_dll_path(pcs, loaded_name, modfmt->u.pe_info->fmap.u.pe.file_header.Machine, search_builtin_pe, &builtin))
             {
@@ -1329,7 +1329,7 @@ DWORD pe_get_file_indexinfo(void* image, DWORD size, SYMSRV_INDEX_INFOW* info)
         const IMAGE_NT_HEADERS32* nthdr32 = (const IMAGE_NT_HEADERS32*)nthdr;
         info->size = nthdr32->OptionalHeader.SizeOfImage;
     }
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
     return ERROR_BAD_EXE_FORMAT;
 #else
     return msc_get_file_indexinfo(image, dbg, dirsize / sizeof(*dbg), info);

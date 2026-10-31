@@ -688,7 +688,7 @@
     SVC_(UserSetDbgTagCount, 1)	//
     SVC_(UserSetRipFlags, 1)	//
     SVC_(UserSetScrollBarInfo, 3)	//
-// ReactOS Display Driver Model
+// LibreNT Display Driver Model
     SVC_(GdiDdDDICheckExclusiveOwnership, 0)
     SVC_(GdiDdDDICreateAllocation, 1)
     SVC_(GdiDdDDICheckMonitorPowerState, 1)
@@ -757,7 +757,7 @@
     SVC_(UserGetThreadDpiAwarenessContext, 0)
     SVC_(UserGetWindowDpiAwarenessContext, 1)
     SVC_(UserSetThreadDpiAwarenessContext, 1)
-    /* WDDM 2.0 D3DKMT additions (ReactOS) */
+    /* WDDM 2.0 D3DKMT additions (LibreNT) */
     SVC_(GdiDdDDICreateSynchronizationObject2, 1)
     SVC_(GdiDdDDIWaitForSynchronizationObject2, 1)
     SVC_(GdiDdDDISignalSynchronizationObject2, 1)

@@ -19,7 +19,7 @@
  */
 
 
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
 #include "dbghelp_private.h"
 #include "wdbgexts.h"
 #else
@@ -75,13 +75,13 @@ BOOL       dbghelp_opt_native = FALSE;
 BOOL       dbghelp_opt_extension_api = FALSE;
 BOOL       dbghelp_opt_real_path = FALSE;
 BOOL       dbghelp_opt_source_actual_path = FALSE;
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 SYSTEM_INFO sysinfo;
 #endif
 
 static struct process* process_first /* = NULL */;
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
 {
     switch (reason)
@@ -141,7 +141,7 @@ void* fetch_buffer(struct process* pcs, unsigned size)
     return pcs->buffer;
 }
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 const char* wine_dbgstr_addr(const ADDRESS64* addr)
 {
     if (!addr) return "(null)";
@@ -169,7 +169,7 @@ extern struct cpu       cpu_riscv64;
 extern struct cpu       cpu_ppc;
 #endif
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 static struct cpu*      dbghelp_cpus[] = {
     &cpu_i386, &cpu_x86_64, &cpu_arm, &cpu_arm64,
 #if defined(__riscv) && __riscv_xlen == 64
@@ -190,11 +190,11 @@ static struct cpu*      dbghelp_cpus[] = {&cpu_arm64, NULL};
 #error Unsupported host dbghelp target architecture
 #endif
 struct cpu*             dbghelp_current_cpu =
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB) && defined(TARGET_i386)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB) && defined(TARGET_i386)
     &cpu_i386
-#elif defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB) && defined(TARGET_amd64)
+#elif defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB) && defined(TARGET_amd64)
     &cpu_x86_64
-#elif defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB) && defined(TARGET_arm64)
+#elif defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB) && defined(TARGET_arm64)
     &cpu_arm64
 #elif defined(__i386__)
     &cpu_i386
@@ -371,7 +371,7 @@ const struct cpu* process_get_cpu(const struct process* pcs)
     return (m) ? m->cpu : dbghelp_current_cpu;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /******************************************************************
  *		check_live_target
  *
@@ -544,7 +544,7 @@ BOOL WINAPI SymInitializeW(HANDLE hProcess, PCWSTR UserSearchPath, BOOL fInvadeP
     pcs->next = process_first;
     process_first = pcs;
     
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pcs->loader = &empty_loader_ops;
     if (fInvadeProcess && !module_refresh_list(pcs))
     {

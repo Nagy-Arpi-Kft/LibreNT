@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/dpc.c
  * PURPOSE:         Deferred Procedure Call (DPC) Support
@@ -11,7 +11,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 #define NDEBUG
 #include <debug.h>
 

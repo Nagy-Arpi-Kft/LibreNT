@@ -21,7 +21,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <limits.h>
 #endif
 
@@ -37,7 +37,7 @@
 #include "oleauto.h"
 
 #include "msipriv.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -71,7 +71,7 @@ struct format
     BOOL propfailed;
     BOOL groupfailed;
     int groups;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT error;
 #endif
 };
@@ -91,11 +91,11 @@ struct stack
     struct list items;
 };
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static struct stack *create_stack(void)
 {
     struct stack *stack = malloc(sizeof(*stack));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!stack) return NULL;
 #endif
     list_init(&stack->items);
@@ -104,7 +104,7 @@ static struct stack *create_stack(void)
 
 static void free_stack(struct stack *stack)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!stack) return;
 #endif
     while (!list_empty(&stack->items))
@@ -158,7 +158,7 @@ static const WCHAR *get_formstr_data(struct format *format, struct form_str *str
     return &format->deformatted[str->n];
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *format_alloc( struct format *format, size_t len )
 {
     WCHAR *ret;
@@ -186,13 +186,13 @@ static WCHAR *format_strdup( struct format *format, const WCHAR *str )
 }
 
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static WCHAR *dup_formstr( struct format *format, struct form_str *str, int *ret_len )
 {
     WCHAR *val;
 
     if (!str->len) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((val = format_alloc( format, str->len )))
 #else
     if ((val = malloc( (str->len + 1) * sizeof(WCHAR) )))
@@ -212,7 +212,7 @@ static WCHAR *deformat_index( struct format *format, struct form_str *str, int *
     DWORD len;
     int field;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(val = format_alloc( format, str->len ))) return NULL;
 #else
     if (!(val = malloc( (str->len + 1) * sizeof(WCHAR) ))) return NULL;
@@ -224,11 +224,11 @@ static WCHAR *deformat_index( struct format *format, struct form_str *str, int *
     if (MSI_RecordIsNull( format->record, field ) ||
         MSI_RecordGetStringW( format->record, field, NULL, &len )) return NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(ret = format_alloc( format, len ))) return NULL;
 #endif
     len++;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (!(ret = malloc( len * sizeof(WCHAR) ))) return NULL;
 #endif
     ret[0] = 0;
@@ -247,7 +247,7 @@ static WCHAR *deformat_property( struct format *format, struct form_str *str, in
     DWORD len = 0;
     UINT r;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(prop = format_alloc( format, str->len ))) return NULL;
 #else
     if (!(prop = malloc( (str->len + 1) * sizeof(WCHAR) ))) return NULL;
@@ -258,12 +258,12 @@ static WCHAR *deformat_property( struct format *format, struct form_str *str, in
     if (r != ERROR_SUCCESS && r != ERROR_MORE_DATA)
     {
         free( prop );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (r == ERROR_OUTOFMEMORY) format->error = r;
 #endif
         return NULL;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((ret = format_alloc( format, len )))
     {
         len++;
@@ -281,7 +281,7 @@ static WCHAR *deformat_property( struct format *format, struct form_str *str, in
         msi_get_property( format->package->db, prop, ret, &len );
 #endif
     free( prop );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *ret_len = ret ? len : 0;
 #else
     *ret_len = len;
@@ -294,7 +294,7 @@ static WCHAR *deformat_component( struct format *format, struct form_str *str, i
     WCHAR *key, *ret;
     MSICOMPONENT *comp;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(key = format_alloc( format, str->len ))) return NULL;
 #else
     if (!(key = malloc( (str->len + 1) * sizeof(WCHAR) ))) return NULL;
@@ -309,13 +309,13 @@ static WCHAR *deformat_component( struct format *format, struct form_str *str, i
     if (comp->Action == INSTALLSTATE_SOURCE)
         ret = msi_resolve_source_folder( format->package, comp->Directory, NULL );
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = format_strdup( format, msi_get_target_folder( format->package, comp->Directory ) );
 #else
         ret = wcsdup( msi_get_target_folder( format->package, comp->Directory ) );
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ret)
     {
         size_t len = wcslen(ret);
@@ -342,7 +342,7 @@ static WCHAR *deformat_file( struct format *format, struct form_str *str, BOOL s
     const MSIFILE *file;
     DWORD len = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(key = format_alloc( format, str->len ))) return NULL;
 #else
     if (!(key = malloc( (str->len + 1) * sizeof(WCHAR) ))) return NULL;
@@ -352,7 +352,7 @@ static WCHAR *deformat_file( struct format *format, struct form_str *str, BOOL s
     if (!(file = msi_get_loaded_file( format->package, key ))) goto done;
     if (!shortname)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((ret = format_strdup( format, file->TargetPath ))) len = wcslen( ret );
 #else
         if ((ret = wcsdup( file->TargetPath ))) len = lstrlenW( ret );
@@ -361,14 +361,14 @@ static WCHAR *deformat_file( struct format *format, struct form_str *str, BOOL s
     }
     if (!(len = GetShortPathNameW(file->TargetPath, NULL, 0)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((ret = format_strdup( format, file->TargetPath ))) len = wcslen( ret );
 #else
         if ((ret = wcsdup( file->TargetPath ))) len = lstrlenW( ret );
 #endif
         goto done;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((ret = format_alloc( format, len )))
     {
         DWORD size = len + 1;
@@ -387,7 +387,7 @@ static WCHAR *deformat_file( struct format *format, struct form_str *str, BOOL s
 
 done:
     free( key );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *ret_len = ret ? len : 0;
 #else
     *ret_len = len;
@@ -400,7 +400,7 @@ static WCHAR *deformat_environment( struct format *format, struct form_str *str,
     WCHAR *key, *ret = NULL;
     DWORD len;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(key = format_alloc( format, str->len ))) return NULL;
 #else
     if (!(key = malloc((str->len + 1) * sizeof(WCHAR)))) return NULL;
@@ -409,7 +409,7 @@ static WCHAR *deformat_environment( struct format *format, struct form_str *str,
 
     if ((len = GetEnvironmentVariableW( key, NULL, 0 )))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((ret = format_alloc( format, len )))
         {
             DWORD size = len + 1;
@@ -431,7 +431,7 @@ static WCHAR *deformat_environment( struct format *format, struct form_str *str,
     return ret;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static WCHAR *deformat_literal( struct format *format, struct form_str *str, BOOL *propfound,
                                 int *type, int *len )
 {
@@ -457,7 +457,7 @@ static WCHAR *deformat_literal( struct format *format, struct form_str *str, BOO
     {
         if (str->len != 1)
             replaced = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if ((replaced = format_alloc( format, 0 )))
 #else
         else if ((replaced = malloc( sizeof(WCHAR) )))
@@ -479,7 +479,7 @@ static WCHAR *deformat_literal( struct format *format, struct form_str *str, BOO
         case '#':
             replaced = deformat_file( format, str, FALSE, len ); break;
         case '!':
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             replaced = deformat_file( format, str, format->package && format->package->short_file_names, len ); break;
 #else
             replaced = deformat_file( format, str, TRUE, len ); break;
@@ -528,7 +528,7 @@ static WCHAR *build_default_format( const MSIRECORD *record )
     return ret;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static BOOL format_is_number(WCHAR x)
 {
     return ((x >= '0') && (x <= '9'));
@@ -645,14 +645,14 @@ static struct form_str *format_replace( struct format *format, BOOL propfound, B
 {
     struct form_str *ret;
     LPWSTR str, ptr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t size = 0;
 #else
     DWORD size = 0;
 #endif
     int n;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (format->n < 0 || format->n > format->len || oldsize < 0 ||
         oldsize > format->len - format->n || len < 0)
     {
@@ -669,7 +669,7 @@ static struct form_str *format_replace( struct format *format, BOOL propfound, B
             size = len;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size += format->len - oldsize + 1;
 #else
     size -= oldsize;
@@ -684,7 +684,7 @@ static struct form_str *format_replace( struct format *format, BOOL propfound, B
         return NULL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     str = format_alloc( format, size - 1 );
 #else
     str = malloc(size * sizeof(WCHAR));
@@ -723,12 +723,12 @@ static struct form_str *format_replace( struct format *format, BOOL propfound, B
 
     ret = calloc(1, sizeof(*ret));
     if (!ret)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         format->error = ERROR_OUTOFMEMORY;
 #endif
         return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -746,7 +746,7 @@ static WCHAR *replace_stack_group( struct format *format, struct stack *values,
                                    int *oldsize, int *type, int *len )
 {
     WCHAR *replaced;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct form_str content = {0}, *node;
 #else
     struct form_str *content, *node;
@@ -774,7 +774,7 @@ static WCHAR *replace_stack_group( struct format *format, struct stack *values,
         free(node);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     content.n = n;
     content.len = *oldsize;
     content.type = FORMAT_LITERAL;
@@ -788,12 +788,12 @@ static WCHAR *replace_stack_group( struct format *format, struct stack *values,
     if (!format->groupfailed && (*oldsize == 2 ||
         (format->propfailed && !*nonprop)))
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         free(content);
 #endif
         return NULL;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (format->deformatted[content.n + 1] == '{' &&
              format->deformatted[content.n + content.len - 2] == '}')
 #else
@@ -802,7 +802,7 @@ static WCHAR *replace_stack_group( struct format *format, struct stack *values,
 #endif
     {
         format->groupfailed = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         content.len = 0;
 #else
         content->len = 0;
@@ -811,7 +811,7 @@ static WCHAR *replace_stack_group( struct format *format, struct stack *values,
     else if (*propfound && !*nonprop &&
              !format->groupfailed && format->groups == 0)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         content.n++;
         content.len -= 2;
 #else
@@ -827,7 +827,7 @@ static WCHAR *replace_stack_group( struct format *format, struct stack *values,
         *nonprop = TRUE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     replaced = dup_formstr( format, &content, len );
     *type = content.type;
 #else
@@ -847,7 +847,7 @@ static WCHAR *replace_stack_prop( struct format *format, struct stack *values,
                                   int *oldsize, int *type, int *len )
 {
     WCHAR *replaced;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct form_str content = {0}, *node;
 #else
     struct form_str *content, *node;
@@ -874,7 +874,7 @@ static WCHAR *replace_stack_prop( struct format *format, struct stack *values,
         free(node);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     content.n = n + 1;
     content.len = *oldsize - 2;
     content.type = *type;
@@ -887,7 +887,7 @@ static WCHAR *replace_stack_prop( struct format *format, struct stack *values,
 
     if (*type == FORMAT_NUMBER && format->record)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         replaced = deformat_index( format, &content, len );
 #else
         replaced = deformat_index( format, content, len );
@@ -903,7 +903,7 @@ static WCHAR *replace_stack_prop( struct format *format, struct stack *values,
     }
     else if (format->package)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         replaced = deformat_literal( format, &content, propfound, type, len );
 #else
         replaced = deformat_literal( format, content, propfound, type, len );
@@ -912,7 +912,7 @@ static WCHAR *replace_stack_prop( struct format *format, struct stack *values,
     else
     {
         *nonprop = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         content.n--;
         content.len += 2;
         replaced = dup_formstr( format, &content, len );
@@ -922,7 +922,7 @@ static WCHAR *replace_stack_prop( struct format *format, struct stack *values,
         replaced = dup_formstr( format, content, len );
 #endif
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     free(content);
 #endif
     return replaced;
@@ -948,7 +948,7 @@ static UINT replace_stack(struct format *format, struct stack *stack, struct sta
                                         &nonprop, &oldsize, &type, &len );
         group = TRUE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (format->error)
     {
         free(replaced);
@@ -959,7 +959,7 @@ static UINT replace_stack(struct format *format, struct stack *stack, struct sta
     format->n = n;
     beg = format_replace( format, propfound, nonprop, oldsize, type, replaced, len );
     free(replaced);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (format->error)
     {
         free(beg);
@@ -1034,25 +1034,25 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
     struct stack *stack, *temp;
     struct form_str *node;
     int type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t length;
     UINT r = ERROR_SUCCESS;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *data = NULL;
     *len = 0;
 #endif
     if (!ptr)
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         *data = NULL;
         *len = 0;
 #endif
         return ERROR_SUCCESS;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     length = wcslen(ptr);
     if (length >= INT_MAX || length >= (size_t)-1 / sizeof(WCHAR))
         return ERROR_OUTOFMEMORY;
@@ -1074,7 +1074,7 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
 
     stack = create_stack();
     temp = create_stack();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!stack || !temp)
     {
         r = ERROR_OUTOFMEMORY;
@@ -1101,7 +1101,7 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
             }
 
             stack_push(stack, str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             str = NULL;
 #endif
         }
@@ -1111,7 +1111,7 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
                 format.groups--;
 
             stack_push(stack, str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             str = NULL;
 #endif
 
@@ -1123,7 +1123,7 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
                     stack_push(temp, node);
                 } while (node->type != left_type(type));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 r = replace_stack(&format, stack, temp);
                 if (r != ERROR_SUCCESS) break;
 #else
@@ -1131,7 +1131,7 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
 #endif
             }
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else
         {
             r = type == FORMAT_FAIL ? ERROR_OUTOFMEMORY : ERROR_INVALID_PARAMETER;
@@ -1140,7 +1140,7 @@ static DWORD deformat_string_internal(MSIPACKAGE *package, LPCWSTR ptr,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     if (r != ERROR_SUCCESS)
     {
@@ -1156,7 +1156,7 @@ done:
     free_stack(stack);
     free_stack(temp);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return r;
 #else
     return ERROR_SUCCESS;
@@ -1300,7 +1300,7 @@ static UINT format_key( struct format *format, enum format_pass pass, WCHAR *key
         case '#':
             value = deformat_file( format, &str, FALSE, &value_len ); break;
         case '!':
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             value = deformat_file( format, &str, format->package && format->package->short_file_names, &value_len ); break;
 #else
             value = deformat_file( format, &str, TRUE, &value_len ); break;
@@ -1453,12 +1453,12 @@ UINT MSI_FormatRecordW( MSIPACKAGE* package, MSIRECORD* record, LPWSTR buffer,
     WCHAR *format, *deformated = NULL;
     UINT rc = ERROR_INVALID_PARAMETER;
     DWORD len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MSIRECORD *record_deformated = NULL;
 #else
     MSIRECORD *record_deformated;
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     int field_count, i;
 #endif
 
@@ -1466,11 +1466,11 @@ UINT MSI_FormatRecordW( MSIPACKAGE* package, MSIRECORD* record, LPWSTR buffer,
 
     if (!(format = msi_dup_record_field( record, 0 )))
         format = build_default_format( record );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!format) return ERROR_OUTOFMEMORY;
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     field_count = MSI_RecordGetFieldCount(record);
 #endif
     record_deformated = MSI_CloneRecord(record);
@@ -1479,13 +1479,13 @@ UINT MSI_FormatRecordW( MSIPACKAGE* package, MSIRECORD* record, LPWSTR buffer,
         rc = ERROR_OUTOFMEMORY;
         goto end;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     rc = MSI_RecordSetStringW(record_deformated, 0, format);
     if (rc != ERROR_SUCCESS) goto end;
 #else
     MSI_RecordSetStringW(record_deformated, 0, format);
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     for (i = 1; i <= field_count; i++)
     {
         if (MSI_RecordGetString(record, i))
@@ -1497,7 +1497,7 @@ UINT MSI_FormatRecordW( MSIPACKAGE* package, MSIRECORD* record, LPWSTR buffer,
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     rc = deformat_string_internal(package, format, &deformated, &len, record_deformated);
     if (rc != ERROR_SUCCESS) goto end;
 #else
@@ -1507,7 +1507,7 @@ UINT MSI_FormatRecordW( MSIPACKAGE* package, MSIRECORD* record, LPWSTR buffer,
     {
         if (*size>len)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (len) memcpy(buffer,deformated,len*sizeof(WCHAR));
 #else
             memcpy(buffer,deformated,len*sizeof(WCHAR));
@@ -1528,11 +1528,11 @@ UINT MSI_FormatRecordW( MSIPACKAGE* package, MSIRECORD* record, LPWSTR buffer,
     else rc = ERROR_SUCCESS;
 
     *size = len;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     msiobj_release(&record_deformated->hdr);
 #endif
 end:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (record_deformated) msiobj_release(&record_deformated->hdr);
 #endif
     free( format );
@@ -1638,13 +1638,13 @@ UINT WINAPI MsiFormatRecordA(MSIHANDLE hinst, MSIHANDLE hrec, char *buf, DWORD *
 
     r = MSI_FormatRecordW(package, rec, NULL, &len);
     if (r != ERROR_SUCCESS)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto done;
 #else
         return r;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (len == MAXDWORD || (size_t)len >= (size_t)-1 / sizeof(WCHAR))
     {
         r = ERROR_OUTOFMEMORY;
@@ -1655,12 +1655,12 @@ UINT WINAPI MsiFormatRecordA(MSIHANDLE hinst, MSIHANDLE hrec, char *buf, DWORD *
     value = malloc(++len * sizeof(WCHAR));
 #endif
     if (!value)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         r = ERROR_OUTOFMEMORY;
 #endif
         goto done;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
     len++;
 #endif
@@ -1679,7 +1679,7 @@ done:
 /* wrapper to resist a need for a full rewrite right now */
 DWORD deformat_string( MSIPACKAGE *package, const WCHAR *fmt, WCHAR **data )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD len = 0;
 #else
     DWORD len;
@@ -1690,7 +1690,7 @@ DWORD deformat_string( MSIPACKAGE *package, const WCHAR *fmt, WCHAR **data )
     if (!fmt) return 0;
     if (!(rec = MSI_CreateRecord( 1 ))) return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (MSI_RecordSetStringW( rec, 0, fmt ) != ERROR_SUCCESS) goto done;
     if (MSI_FormatRecordW( package, rec, NULL, &len ) != ERROR_SUCCESS) goto done;
     if (len == MAXDWORD || (size_t)len >= (size_t)-1 / sizeof(WCHAR)) goto done;
@@ -1703,7 +1703,7 @@ DWORD deformat_string( MSIPACKAGE *package, const WCHAR *fmt, WCHAR **data )
     if (!(*data = malloc( ++len * sizeof(WCHAR) )))
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free( *data );
         *data = NULL;
 #else
@@ -1711,13 +1711,13 @@ DWORD deformat_string( MSIPACKAGE *package, const WCHAR *fmt, WCHAR **data )
         return 0;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #else
     MSI_FormatRecordW( package, rec, *data, &len );
 #endif
     msiobj_release( &rec->hdr );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return *data ? len : 0;
 #else
     return len;

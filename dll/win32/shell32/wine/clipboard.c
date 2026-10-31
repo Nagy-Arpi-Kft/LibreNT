@@ -58,7 +58,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(shell);
 HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsigned int cidl)
 {
 	UINT i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	int size = 0;
 #else
 	int rootlen = 0,size = 0;
@@ -68,13 +68,13 @@ HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsign
 	HGLOBAL hGlobal = NULL;
 	DROPFILES *pDropFiles;
 	int offset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	LPITEMIDLIST *pidls;
 #endif
 
 	TRACE("(%p,%p,%u)\n", pidlRoot, apidl, cidl);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	pidls = HeapAlloc(GetProcessHeap(), 0, cidl * sizeof(*pidls));
 	if (!pidls)
 		goto cleanup;
@@ -83,7 +83,7 @@ HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsign
 	/* get the size needed */
 	size = sizeof(DROPFILES);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SHGetPathFromIDListW(pidlRoot, wszRootPath);
 	PathAddBackslashW(wszRootPath);
 	rootlen = lstrlenW(wszRootPath);
@@ -91,7 +91,7 @@ HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsign
 
 	for (i=0; i<cidl;i++)
 	{
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  pidls[i] = ILCombine(pidlRoot, apidl[i]);
 	  SHGetPathFromIDListW(pidls[i], wszFileName);
 	  size += (lstrlenW(wszFileName) + 1) * sizeof(WCHAR);
@@ -105,7 +105,7 @@ HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsign
 
 	/* Fill the structure */
 	hGlobal = GlobalAlloc(GHND|GMEM_SHARE, size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (!hGlobal) goto cleanup;
 #else
 	if(!hGlobal) return hGlobal;
@@ -116,13 +116,13 @@ HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsign
         pDropFiles->pFiles = offset * sizeof(WCHAR);
         pDropFiles->fWide = TRUE;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	lstrcpyW(wszFileName, wszRootPath);
 #endif
 
 	for (i=0; i<cidl;i++)
 	{
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  SHGetPathFromIDListW(pidls[i], wszFileName);
 	  lstrcpyW(((WCHAR*)pDropFiles)+offset, wszFileName);
 	  offset += lstrlenW(wszFileName) + 1;
@@ -137,7 +137,7 @@ HGLOBAL RenderHDROP(const ITEMIDLIST *pidlRoot, const ITEMIDLIST **apidl, unsign
 	((WCHAR*)pDropFiles)[offset] = 0;
 	GlobalUnlock(hGlobal);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 cleanup:
 	HeapFree(GetProcessHeap(), 0, pidls);
 #endif

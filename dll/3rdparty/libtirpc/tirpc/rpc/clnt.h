@@ -411,7 +411,7 @@ extern CLIENT *clnt_tli_create(const SOCKET, const struct netconfig *,
 /*
  * Low level clnt create routine for connectionful transports, e.g. tcp.
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern CLIENT *clnt_vc_create(const SOCKET, const struct netbuf *,
 			      const rpcprog_t, const rpcvers_t,
 			      u_int, u_int, int (*cb_xdr)(void *, void *),

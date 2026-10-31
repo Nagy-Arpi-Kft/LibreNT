@@ -1,7 +1,7 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl
     ${CMAKE_CURRENT_BINARY_DIR})
 
 add_definitions(
@@ -48,5 +48,5 @@ target_link_libraries(setupapi uuid wine ${PSEH_LIB} oldnames)
 add_delay_importlibs(setupapi comdlg32 shell32 winspool.drv wintrust)
 add_importlibs(setupapi cabinet cfgmgr32 gdi32 comctl32 advapi32 user32 rpcrt4 version msvcrt kernel32 ntdll)
 add_pch(setupapi setupapi_private.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET setupapi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET setupapi DESTINATION librent/system32 FOR all)
 add_neutral_resource_file(setupapi setupapi.rc setupapi_mun.rc)

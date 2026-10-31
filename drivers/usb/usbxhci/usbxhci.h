@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT USB Port Driver
+ * PROJECT:     LibreNT USB Port Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * COPYRIGHT:   Copyright 2025 Ahmed ARIF <arif.ing@outlook.com>
  */
@@ -233,7 +233,7 @@ typedef struct _XHCI_EXTENSION {
   ULONG BounceBufferSize;
   ULONG BounceBuffersInUseMask;
   KSPIN_LOCK BounceBufferLock;
-  /* MSI/MSI-X discovery (message interrupts not yet connected on ReactOS) */
+  /* MSI/MSI-X discovery (message interrupts not yet connected on LibreNT) */
   BOOLEAN MsiSupported;
     BOOLEAN MsixSupported;
     BOOLEAN MsiEnabled;

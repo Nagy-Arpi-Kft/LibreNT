@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/ke/arm64/interrupt.c
  * PURPOSE:         ARM64 interrupt bring-up stubs and initialization
@@ -12,12 +12,12 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 #endif
 #define NDEBUG
 #include <debug.h>
 #include <arm64pl011.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 
 /* HAL extension: not yet declared in public headers for ARM64 */
 extern ULONG FASTCALL HalGetInterruptSource(VOID);

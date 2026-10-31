@@ -258,7 +258,7 @@ static void test_create_syslink(void)
     LITEM item;
     BOOL visible_todo = TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     visible_todo = FALSE;
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         I/O register access functions for export
  * NOTE:            These functions are exported from ntoskrnl for binary

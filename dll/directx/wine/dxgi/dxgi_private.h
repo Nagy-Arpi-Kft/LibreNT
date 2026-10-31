@@ -38,8 +38,8 @@
 #endif
 #include "wine/wined3d.h"
 #include "wine/winedxgi.h"
-#ifdef __REACTOS__
-#include "reactos/dxgi_dcomp.h"
+#ifdef __LIBRENT__
+#include "librent/dxgi_dcomp.h"
 #endif
 
 enum dxgi_frame_latency
@@ -113,7 +113,7 @@ HRESULT dxgi_set_private_data_interface(struct wined3d_private_store *store,
         REFGUID guid, const IUnknown *object);
 
 /* IDXGIFactory */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct dxgi_window_association
 {
     HWND window;
@@ -128,7 +128,7 @@ struct dxgi_factory
     struct wined3d_private_store private_store;
     struct wined3d *wined3d;
     BOOL extended;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL software;
     BOOL null_driver;
     struct dxgi_window_association *associations;
@@ -170,7 +170,7 @@ struct dxgi_output
 
 HRESULT dxgi_output_create(struct dxgi_adapter *adapter, unsigned int output_idx,
         struct dxgi_output **output);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT dxgi_output_duplication_create(IDXGIOutput *output, IUnknown *device,
         IDXGIOutputDuplication **duplication);
 #endif
@@ -185,7 +185,7 @@ struct dxgi_adapter
     struct wined3d_private_store private_store;
     UINT ordinal;
     struct dxgi_factory *factory;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LUID wddm_luid;
     BOOL wddm_foreign;
 #endif
@@ -207,7 +207,7 @@ struct d3d11_swapchain
     IWineDXGIFactory *factory;
 
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullscreen_desc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DXGI_ALPHA_MODE alpha_mode;
     UINT flags;
     DXGI_USAGE usage;
@@ -231,7 +231,7 @@ HRESULT d3d12_swapchain_create(IWineDXGIFactory *factory, ID3D12CommandQueue *qu
         const DXGI_SWAP_CHAIN_DESC1 *swapchain_desc, const DXGI_SWAP_CHAIN_FULLSCREEN_DESC *fullscreen_desc,
         IDXGISwapChain1 **swapchain);
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
 HRESULT dxgi_get_wddm_adapter_desc(LUID luid, DXGI_ADAPTER_DESC3 *desc);
 HRESULT dxgi_query_wddm_video_memory_info(LUID luid, UINT node_index, DXGI_MEMORY_SEGMENT_GROUP segment_group,
         DXGI_QUERY_VIDEO_MEMORY_INFO *info);

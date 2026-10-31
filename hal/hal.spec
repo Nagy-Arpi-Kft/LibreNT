@@ -182,7 +182,7 @@
 
 ; Win11 hal.dll ABI export-table parity (name-set match with Win11 ARM64 hal.dll).
 ; In Win11 these names are FORWARDERS to ntoskrnl (HAL merged into the kernel
-; since Win10). ReactOS ntoskrnl exports none of them, so they are provided as
+; since Win10). LibreNT ntoskrnl exports none of them, so they are provided as
 ; local stubs (kernstubs.c; HalDma*CrashDumpRegistersEx in common sysinfo_stubs.c)
 ; and exported here by bare name. Pure ABI-completeness exports: none are invoked
 ; on the ARM64 boot path, so they are boot-neutral.
@@ -211,7 +211,7 @@
 @ stdcall -arch=arm64 KxRestoreFloatingPointState(ptr) ntoskrnl.KxRestoreFloatingPointState
 
 
-; ReactOS-private kernel/HAL bridge on RISC-V.
+; LibreNT-private kernel/HAL bridge on RISC-V.
 @ stdcall -arch=riscv64 HalpRiscvClockInterrupt(ptr)
 @ stdcall -arch=riscv64 HalpRiscvProfileInterrupt(ptr)
 @ stdcall -arch=riscv64 HalpRiscvSuspendClockTick()

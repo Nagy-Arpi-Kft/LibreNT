@@ -15,7 +15,7 @@
 #define _COM_MEMCPY_S(dest,destsize,src,count) memcpy(dest,src,count)
 
 /* Use of wsprintf might be impossible, if strsafe.h is included. */
-#if !defined(__STDC_SECURE_LIB__) || defined(__REACTOS__)
+#if !defined(__STDC_SECURE_LIB__) || defined(__LIBRENT__)
 #define _COM_PRINTF_S_1(dest,destsize,format,arg1) wsprintf(dest,format,arg1)
 #elif defined(UNICODE)
 #define _COM_PRINTF_S_1(dest,destsize,format,arg1) swprintf_s(dest,destsize,format,arg1)

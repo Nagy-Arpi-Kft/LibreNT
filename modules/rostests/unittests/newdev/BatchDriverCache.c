@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT New Device Installer Unit Tests
+ * PROJECT:     LibreNT New Device Installer Unit Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Batch driver-cache key and concurrency tests
  */
@@ -22,7 +22,7 @@ static const WCHAR ProcessorCompatibleIds[] = L"ACPI\\Processor\0*Processor\0";
 static const WCHAR ProcessorCompatibleIdsLower[] = L"acpi\\processor\0*processor\0";
 static const WCHAR ProcessorCompatibleIdsReordered[] = L"*Processor\0ACPI\\Processor\0";
 static const WCHAR PowerIds[] = L"ACPI\\ACPI_PWR\0";
-static const WCHAR ProcessorInf[] = L"C:\\ReactOS\\inf\\pnpcpu.inf";
+static const WCHAR ProcessorInf[] = L"C:\\LibreNT\\inf\\pnpcpu.inf";
 
 typedef struct _SAME_KEY_CONTEXT
 {

@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/crt/include)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/include)
 
 list(APPEND SOURCE
     assert_compat.c

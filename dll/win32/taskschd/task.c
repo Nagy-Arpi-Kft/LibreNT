@@ -31,13 +31,13 @@
 #include "taskschd_private.h"
 
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <sddl.h>
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(taskschd);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT task_get_string(const WCHAR *value, BSTR *str)
 {
     if (!str) return E_POINTER;
@@ -298,7 +298,7 @@ typedef struct {
     WCHAR *start_boundary;
     WCHAR *end_boundary;
     BOOL enabled;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *id;
     WCHAR *execution_time_limit;
     WCHAR *random_delay;
@@ -357,7 +357,7 @@ static ULONG WINAPI DailyTrigger_Release(IDailyTrigger *iface)
         TRACE("destroying %p\n", iface);
         free(This->start_boundary);
         free(This->end_boundary);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(This->id);
         free(This->execution_time_limit);
         free(This->random_delay);
@@ -402,7 +402,7 @@ static HRESULT WINAPI DailyTrigger_Invoke(IDailyTrigger *iface, DISPID dispid, R
 
 static HRESULT WINAPI DailyTrigger_get_Type(IDailyTrigger *iface, TASK_TRIGGER_TYPE2 *type)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, type);
@@ -420,7 +420,7 @@ static HRESULT WINAPI DailyTrigger_get_Type(IDailyTrigger *iface, TASK_TRIGGER_T
 
 static HRESULT WINAPI DailyTrigger_get_Id(IDailyTrigger *iface, BSTR *id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, id);
@@ -435,7 +435,7 @@ static HRESULT WINAPI DailyTrigger_get_Id(IDailyTrigger *iface, BSTR *id)
 
 static HRESULT WINAPI DailyTrigger_put_Id(IDailyTrigger *iface, BSTR id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(id));
@@ -450,7 +450,7 @@ static HRESULT WINAPI DailyTrigger_put_Id(IDailyTrigger *iface, BSTR id)
 
 static HRESULT WINAPI DailyTrigger_get_Repetition(IDailyTrigger *iface, IRepetitionPattern **repeat)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, repeat);
@@ -486,7 +486,7 @@ static HRESULT WINAPI DailyTrigger_put_Repetition(IDailyTrigger *iface, IRepetit
 
 static HRESULT WINAPI DailyTrigger_get_ExecutionTimeLimit(IDailyTrigger *iface, BSTR *limit)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, limit);
@@ -501,7 +501,7 @@ static HRESULT WINAPI DailyTrigger_get_ExecutionTimeLimit(IDailyTrigger *iface, 
 
 static HRESULT WINAPI DailyTrigger_put_ExecutionTimeLimit(IDailyTrigger *iface, BSTR limit)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(limit));
@@ -617,7 +617,7 @@ static HRESULT WINAPI DailyTrigger_put_DaysInterval(IDailyTrigger *iface, short 
 
 static HRESULT WINAPI DailyTrigger_get_RandomDelay(IDailyTrigger *iface, BSTR *pRandomDelay)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, pRandomDelay);
@@ -632,7 +632,7 @@ static HRESULT WINAPI DailyTrigger_get_RandomDelay(IDailyTrigger *iface, BSTR *p
 
 static HRESULT WINAPI DailyTrigger_put_RandomDelay(IDailyTrigger *iface, BSTR randomDelay)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DailyTrigger *This = impl_from_IDailyTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(randomDelay));
@@ -686,7 +686,7 @@ static HRESULT DailyTrigger_create(ITrigger **trigger)
     daily_trigger->start_boundary = NULL;
     daily_trigger->end_boundary = NULL;
     daily_trigger->enabled = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     daily_trigger->id = NULL;
     daily_trigger->execution_time_limit = NULL;
     daily_trigger->random_delay = NULL;
@@ -701,7 +701,7 @@ typedef struct {
     IRegistrationTrigger IRegistrationTrigger_iface;
     BOOL enabled;
     LONG ref;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *id;
     WCHAR *start_boundary;
     WCHAR *end_boundary;
@@ -760,7 +760,7 @@ static ULONG WINAPI RegistrationTrigger_Release(IRegistrationTrigger *iface)
     if(!ref)
     {
         TRACE("destroying %p\n", iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(This->id);
         free(This->start_boundary);
         free(This->end_boundary);
@@ -807,7 +807,7 @@ static HRESULT WINAPI RegistrationTrigger_Invoke(IRegistrationTrigger *iface, DI
 
 static HRESULT WINAPI RegistrationTrigger_get_Type(IRegistrationTrigger *iface, TASK_TRIGGER_TYPE2 *type)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, type);
@@ -825,7 +825,7 @@ static HRESULT WINAPI RegistrationTrigger_get_Type(IRegistrationTrigger *iface, 
 
 static HRESULT WINAPI RegistrationTrigger_get_Id(IRegistrationTrigger *iface, BSTR *id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, id);
@@ -840,7 +840,7 @@ static HRESULT WINAPI RegistrationTrigger_get_Id(IRegistrationTrigger *iface, BS
 
 static HRESULT WINAPI RegistrationTrigger_put_Id(IRegistrationTrigger *iface, BSTR id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(id));
@@ -855,7 +855,7 @@ static HRESULT WINAPI RegistrationTrigger_put_Id(IRegistrationTrigger *iface, BS
 
 static HRESULT WINAPI RegistrationTrigger_get_Repetition(IRegistrationTrigger *iface, IRepetitionPattern **repeat)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, repeat);
@@ -891,7 +891,7 @@ static HRESULT WINAPI RegistrationTrigger_put_Repetition(IRegistrationTrigger *i
 
 static HRESULT WINAPI RegistrationTrigger_get_ExecutionTimeLimit(IRegistrationTrigger *iface, BSTR *limit)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, limit);
@@ -906,7 +906,7 @@ static HRESULT WINAPI RegistrationTrigger_get_ExecutionTimeLimit(IRegistrationTr
 
 static HRESULT WINAPI RegistrationTrigger_put_ExecutionTimeLimit(IRegistrationTrigger *iface, BSTR limit)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(limit));
@@ -921,7 +921,7 @@ static HRESULT WINAPI RegistrationTrigger_put_ExecutionTimeLimit(IRegistrationTr
 
 static HRESULT WINAPI RegistrationTrigger_get_StartBoundary(IRegistrationTrigger *iface, BSTR *start)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, start);
@@ -936,7 +936,7 @@ static HRESULT WINAPI RegistrationTrigger_get_StartBoundary(IRegistrationTrigger
 
 static HRESULT WINAPI RegistrationTrigger_put_StartBoundary(IRegistrationTrigger *iface, BSTR start)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(start));
@@ -951,7 +951,7 @@ static HRESULT WINAPI RegistrationTrigger_put_StartBoundary(IRegistrationTrigger
 
 static HRESULT WINAPI RegistrationTrigger_get_EndBoundary(IRegistrationTrigger *iface, BSTR *end)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, end);
@@ -966,7 +966,7 @@ static HRESULT WINAPI RegistrationTrigger_get_EndBoundary(IRegistrationTrigger *
 
 static HRESULT WINAPI RegistrationTrigger_put_EndBoundary(IRegistrationTrigger *iface, BSTR end)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(end));
@@ -1003,7 +1003,7 @@ static HRESULT WINAPI RegistrationTrigger_put_Enabled(IRegistrationTrigger *ifac
 
 static HRESULT WINAPI RegistrationTrigger_get_Delay(IRegistrationTrigger *iface, BSTR *pDelay)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, pDelay);
@@ -1018,7 +1018,7 @@ static HRESULT WINAPI RegistrationTrigger_get_Delay(IRegistrationTrigger *iface,
 
 static HRESULT WINAPI RegistrationTrigger_put_Delay(IRegistrationTrigger *iface, BSTR delay)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RegistrationTrigger *This = impl_from_IRegistrationTrigger(iface);
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(delay));
@@ -1067,7 +1067,7 @@ static HRESULT RegistrationTrigger_create(ITrigger **trigger)
     registration_trigger->IRegistrationTrigger_iface.lpVtbl = &RegistrationTrigger_vtbl;
     registration_trigger->ref = 1;
     registration_trigger->enabled = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     registration_trigger->id = NULL;
     registration_trigger->start_boundary = NULL;
     registration_trigger->end_boundary = NULL;
@@ -1090,7 +1090,7 @@ typedef struct {
     WCHAR *start_boundary;
     WCHAR *end_boundary;
     WCHAR *delay;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IRepetitionPattern *repetition;
 #endif
 } LogonTrigger;
@@ -1149,7 +1149,7 @@ static ULONG WINAPI LogonTrigger_Release(ILogonTrigger *iface)
         free(This->start_boundary);
         free(This->end_boundary);
         free(This->delay);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->repetition) IRepetitionPattern_Release(This->repetition);
 #endif
         free(This);
@@ -1230,7 +1230,7 @@ static HRESULT WINAPI LogonTrigger_put_Id(ILogonTrigger *iface, BSTR id)
 
 static HRESULT WINAPI LogonTrigger_get_Repetition(ILogonTrigger *iface, IRepetitionPattern **repeat)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LogonTrigger *This = impl_from_ILogonTrigger(iface);
 
     TRACE("(%p)->(%p)\n", This, repeat);
@@ -1465,7 +1465,7 @@ static HRESULT LogonTrigger_create(ITrigger **trigger)
     logon_trigger->start_boundary = NULL;
     logon_trigger->end_boundary = NULL;
     logon_trigger->delay = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     logon_trigger->repetition = NULL;
 #endif
 
@@ -1477,7 +1477,7 @@ typedef struct
 {
     ITriggerCollection ITriggerCollection_iface;
     LONG ref;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ITrigger **items;
     LONG count;
 #endif
@@ -1525,7 +1525,7 @@ static ULONG WINAPI TriggerCollection_Release(ITriggerCollection *iface)
 
     TRACE("(%p) ref=%ld\n", This, ref);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!ref)
     {
         while (This->count)
@@ -1574,7 +1574,7 @@ static HRESULT WINAPI TriggerCollection_Invoke(ITriggerCollection *iface, DISPID
 
 static HRESULT WINAPI TriggerCollection_get_Count(ITriggerCollection *iface, LONG *count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trigger_collection *This = impl_from_ITriggerCollection(iface);
 
     TRACE("(%p)->(%p)\n", This, count);
@@ -1592,7 +1592,7 @@ static HRESULT WINAPI TriggerCollection_get_Count(ITriggerCollection *iface, LON
 
 static HRESULT WINAPI TriggerCollection_get_Item(ITriggerCollection *iface, LONG index, ITrigger **trigger)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trigger_collection *This = impl_from_ITriggerCollection(iface);
 
     TRACE("(%p)->(%ld %p)\n", This, index, trigger);
@@ -1619,7 +1619,7 @@ static HRESULT WINAPI TriggerCollection_get__NewEnum(ITriggerCollection *iface, 
 
 static HRESULT WINAPI TriggerCollection_Create(ITriggerCollection *iface, TASK_TRIGGER_TYPE2 type, ITrigger **trigger)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trigger_collection *This = impl_from_ITriggerCollection(iface);
     ITrigger *created, **items;
     HRESULT hr;
@@ -1689,7 +1689,7 @@ static HRESULT WINAPI TriggerCollection_Create(ITriggerCollection *iface, TASK_T
 
 static HRESULT WINAPI TriggerCollection_Remove(ITriggerCollection *iface, VARIANT index)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trigger_collection *This = impl_from_ITriggerCollection(iface);
     VARIANT v;
     LONG i;
@@ -1714,7 +1714,7 @@ static HRESULT WINAPI TriggerCollection_Remove(ITriggerCollection *iface, VARIAN
 
 static HRESULT WINAPI TriggerCollection_Clear(ITriggerCollection *iface)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trigger_collection *This = impl_from_ITriggerCollection(iface);
 
     TRACE("(%p)\n", This);
@@ -1750,7 +1750,7 @@ typedef struct
     IRegistrationInfo IRegistrationInfo_iface;
     LONG ref;
     WCHAR *description, *author, *version, *date, *documentation, *uri, *source;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *sddl;
 #endif
 } registration_info;
@@ -1781,7 +1781,7 @@ static ULONG WINAPI RegistrationInfo_Release(IRegistrationInfo *iface)
         free(reginfo->documentation);
         free(reginfo->uri);
         free(reginfo->source);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(reginfo->sddl);
 #endif
         free(reginfo);
@@ -2013,7 +2013,7 @@ static HRESULT WINAPI RegistrationInfo_put_URI(IRegistrationInfo *iface, BSTR ur
 
 static HRESULT WINAPI RegistrationInfo_get_SecurityDescriptor(IRegistrationInfo *iface, VARIANT *sddl)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     registration_info *reginfo = impl_from_IRegistrationInfo(iface);
 
     TRACE("%p,%p\n", iface, sddl);
@@ -2035,7 +2035,7 @@ static HRESULT WINAPI RegistrationInfo_get_SecurityDescriptor(IRegistrationInfo 
 
 static HRESULT WINAPI RegistrationInfo_put_SecurityDescriptor(IRegistrationInfo *iface, VARIANT sddl)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     registration_info *reginfo = impl_from_IRegistrationInfo(iface);
     WCHAR *str = NULL;
 
@@ -2129,7 +2129,7 @@ static HRESULT RegistrationInfo_create(IRegistrationInfo **obj)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     IIdleSettings IIdleSettings_iface;
@@ -2510,7 +2510,7 @@ typedef struct
     BOOL hidden;
     BOOL run_only_if_idle;
     BOOL wake_to_run;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IIdleSettings *idle_settings;
     INetworkSettings *network_settings;
 #endif
@@ -2538,7 +2538,7 @@ static ULONG WINAPI TaskSettings_Release(ITaskSettings *iface)
         free(taskset->restart_interval);
         free(taskset->execution_time_limit);
         free(taskset->delete_expired_task_after);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IIdleSettings_Release(taskset->idle_settings);
         INetworkSettings_Release(taskset->network_settings);
 #endif
@@ -2993,7 +2993,7 @@ static HRESULT WINAPI TaskSettings_put_Hidden(ITaskSettings *iface, VARIANT_BOOL
 
 static HRESULT WINAPI TaskSettings_get_IdleSettings(ITaskSettings *iface, IIdleSettings **settings)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TaskSettings *taskset = impl_from_ITaskSettings(iface);
 
     TRACE("%p,%p\n", iface, settings);
@@ -3012,7 +3012,7 @@ static HRESULT WINAPI TaskSettings_get_IdleSettings(ITaskSettings *iface, IIdleS
 
 static HRESULT WINAPI TaskSettings_put_IdleSettings(ITaskSettings *iface, IIdleSettings *settings)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TaskSettings *taskset = impl_from_ITaskSettings(iface);
 
     TRACE("%p,%p\n", iface, settings);
@@ -3080,7 +3080,7 @@ static HRESULT WINAPI TaskSettings_put_WakeToRun(ITaskSettings *iface, VARIANT_B
 
 static HRESULT WINAPI TaskSettings_get_NetworkSettings(ITaskSettings *iface, INetworkSettings **settings)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TaskSettings *taskset = impl_from_ITaskSettings(iface);
 
     TRACE("%p,%p\n", iface, settings);
@@ -3099,7 +3099,7 @@ static HRESULT WINAPI TaskSettings_get_NetworkSettings(ITaskSettings *iface, INe
 
 static HRESULT WINAPI TaskSettings_put_NetworkSettings(ITaskSettings *iface, INetworkSettings *settings)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TaskSettings *taskset = impl_from_ITaskSettings(iface);
     HRESULT hr;
 
@@ -3178,7 +3178,7 @@ static HRESULT TaskSettings_create(ITaskSettings **obj)
     taskset = malloc(sizeof(*taskset));
     if (!taskset) return E_OUTOFMEMORY;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(IdleSettings_create(&taskset->idle_settings)))
     {
         free(taskset);
@@ -3224,7 +3224,7 @@ typedef struct
 {
     IPrincipal IPrincipal_iface;
     LONG ref;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *id;
     WCHAR *display_name;
     WCHAR *user_id;
@@ -3253,7 +3253,7 @@ static ULONG WINAPI Principal_Release(IPrincipal *iface)
     if (!ref)
     {
         TRACE("destroying %p\n", iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(principal->id);
         free(principal->display_name);
         free(principal->user_id);
@@ -3312,7 +3312,7 @@ static HRESULT WINAPI Principal_Invoke(IPrincipal *iface, DISPID dispid, REFIID 
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT principal_get_account(const WCHAR *value, BSTR *str)
 {
     WCHAR name[256], domain[256];
@@ -3337,7 +3337,7 @@ static HRESULT principal_get_account(const WCHAR *value, BSTR *str)
 #endif
 static HRESULT WINAPI Principal_get_Id(IPrincipal *iface, BSTR *id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%p\n", iface, id);
@@ -3351,7 +3351,7 @@ static HRESULT WINAPI Principal_get_Id(IPrincipal *iface, BSTR *id)
 
 static HRESULT WINAPI Principal_put_Id(IPrincipal *iface, BSTR id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%s\n", iface, debugstr_w(id));
@@ -3365,7 +3365,7 @@ static HRESULT WINAPI Principal_put_Id(IPrincipal *iface, BSTR id)
 
 static HRESULT WINAPI Principal_get_DisplayName(IPrincipal *iface, BSTR *name)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%p\n", iface, name);
@@ -3379,7 +3379,7 @@ static HRESULT WINAPI Principal_get_DisplayName(IPrincipal *iface, BSTR *name)
 
 static HRESULT WINAPI Principal_put_DisplayName(IPrincipal *iface, BSTR name)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%s\n", iface, debugstr_w(name));
@@ -3393,7 +3393,7 @@ static HRESULT WINAPI Principal_put_DisplayName(IPrincipal *iface, BSTR name)
 
 static HRESULT WINAPI Principal_get_UserId(IPrincipal *iface, BSTR *user_id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%p\n", iface, user_id);
@@ -3407,7 +3407,7 @@ static HRESULT WINAPI Principal_get_UserId(IPrincipal *iface, BSTR *user_id)
 
 static HRESULT WINAPI Principal_put_UserId(IPrincipal *iface, BSTR user_id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%s\n", iface, debugstr_w(user_id));
@@ -3421,7 +3421,7 @@ static HRESULT WINAPI Principal_put_UserId(IPrincipal *iface, BSTR user_id)
 
 static HRESULT WINAPI Principal_get_LogonType(IPrincipal *iface, TASK_LOGON_TYPE *logon_type)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%p\n", iface, logon_type);
@@ -3439,7 +3439,7 @@ static HRESULT WINAPI Principal_get_LogonType(IPrincipal *iface, TASK_LOGON_TYPE
 
 static HRESULT WINAPI Principal_put_LogonType(IPrincipal *iface, TASK_LOGON_TYPE logon_type)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%u\n", iface, logon_type);
@@ -3457,7 +3457,7 @@ static HRESULT WINAPI Principal_put_LogonType(IPrincipal *iface, TASK_LOGON_TYPE
 
 static HRESULT WINAPI Principal_get_GroupId(IPrincipal *iface, BSTR *group_id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%p\n", iface, group_id);
@@ -3471,7 +3471,7 @@ static HRESULT WINAPI Principal_get_GroupId(IPrincipal *iface, BSTR *group_id)
 
 static HRESULT WINAPI Principal_put_GroupId(IPrincipal *iface, BSTR group_id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%s\n", iface, debugstr_w(group_id));
@@ -3485,7 +3485,7 @@ static HRESULT WINAPI Principal_put_GroupId(IPrincipal *iface, BSTR group_id)
 
 static HRESULT WINAPI Principal_get_RunLevel(IPrincipal *iface, TASK_RUNLEVEL_TYPE *run_level)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%p\n", iface, run_level);
@@ -3503,7 +3503,7 @@ static HRESULT WINAPI Principal_get_RunLevel(IPrincipal *iface, TASK_RUNLEVEL_TY
 
 static HRESULT WINAPI Principal_put_RunLevel(IPrincipal *iface, TASK_RUNLEVEL_TYPE run_level)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Principal *principal = impl_from_IPrincipal(iface);
 
     TRACE("%p,%u\n", iface, run_level);
@@ -3549,7 +3549,7 @@ static HRESULT Principal_create(IPrincipal **obj)
 
     principal->IPrincipal_iface.lpVtbl = &Principal_vtbl;
     principal->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     principal->id = NULL;
     principal->display_name = NULL;
     principal->user_id = NULL;
@@ -3820,7 +3820,7 @@ typedef struct
 {
     IActionCollection IActionCollection_iface;
     LONG ref;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IAction **items;
     LONG count;
     WCHAR *context;
@@ -3846,7 +3846,7 @@ static ULONG WINAPI Actions_Release(IActionCollection *iface)
     if (!ref)
     {
         TRACE("destroying %p\n", iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (actions->count)
             IAction_Release(actions->items[--actions->count]);
         free(actions->items);
@@ -3907,7 +3907,7 @@ static HRESULT WINAPI Actions_Invoke(IActionCollection *iface, DISPID dispid, RE
 
 static HRESULT WINAPI Actions_get_Count(IActionCollection *iface, LONG *count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
 
     TRACE("%p,%p\n", iface, count);
@@ -3924,7 +3924,7 @@ static HRESULT WINAPI Actions_get_Count(IActionCollection *iface, LONG *count)
 
 static HRESULT WINAPI Actions_get_Item(IActionCollection *iface, LONG index, IAction **action)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
 
     TRACE("%p,%ld,%p\n", iface, index, action);
@@ -3961,7 +3961,7 @@ static HRESULT WINAPI Actions_put_XmlText(IActionCollection *iface, BSTR xml)
 
 static HRESULT WINAPI Actions_Create(IActionCollection *iface, TASK_ACTION_TYPE type, IAction **action)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
     IAction *created, **items;
     HRESULT hr;
@@ -4017,7 +4017,7 @@ static HRESULT WINAPI Actions_Create(IActionCollection *iface, TASK_ACTION_TYPE 
 
 static HRESULT WINAPI Actions_Remove(IActionCollection *iface, VARIANT index)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
     VARIANT v;
     LONG i;
@@ -4041,7 +4041,7 @@ static HRESULT WINAPI Actions_Remove(IActionCollection *iface, VARIANT index)
 
 static HRESULT WINAPI Actions_Clear(IActionCollection *iface)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
 
     TRACE("%p\n", iface);
@@ -4057,7 +4057,7 @@ static HRESULT WINAPI Actions_Clear(IActionCollection *iface)
 
 static HRESULT WINAPI Actions_get_Context(IActionCollection *iface, BSTR *ctx)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
 
     TRACE("%p,%p\n", iface, ctx);
@@ -4071,7 +4071,7 @@ static HRESULT WINAPI Actions_get_Context(IActionCollection *iface, BSTR *ctx)
 
 static HRESULT WINAPI Actions_put_Context(IActionCollection *iface, BSTR ctx)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Actions *actions = impl_from_IActionCollection(iface);
 
     TRACE("%p,%s\n", iface, debugstr_w(ctx));
@@ -4113,7 +4113,7 @@ static HRESULT Actions_create(IActionCollection **obj)
 
     actions->IActionCollection_iface.lpVtbl = &Actions_vtbl;
     actions->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     actions->items = NULL;
     actions->count = 0;
     actions->context = NULL;
@@ -4251,7 +4251,7 @@ static HRESULT WINAPI TaskDefinition_put_RegistrationInfo(ITaskDefinition *iface
 
     TRACE("%p,%p\n", iface, info);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (info)
         IRegistrationInfo_AddRef(info);
 
@@ -4286,7 +4286,7 @@ static HRESULT WINAPI TaskDefinition_get_Triggers(ITaskDefinition *iface, ITrigg
         if (!collection) return E_OUTOFMEMORY;
 
         collection->ITriggerCollection_iface.lpVtbl = &TriggerCollection_vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         collection->items = NULL;
         collection->count = 0;
 #endif
@@ -4304,7 +4304,7 @@ static HRESULT WINAPI TaskDefinition_put_Triggers(ITaskDefinition *iface, ITrigg
 
     TRACE("%p,%p\n", iface, triggers);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (triggers)
         ITriggerCollection_AddRef(triggers);
 
@@ -4352,7 +4352,7 @@ static HRESULT WINAPI TaskDefinition_put_Settings(ITaskDefinition *iface, ITaskS
 
     TRACE("%p,%p\n", iface, settings);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (settings)
         ITaskSettings_AddRef(settings);
 
@@ -4439,7 +4439,7 @@ static HRESULT WINAPI TaskDefinition_put_Principal(ITaskDefinition *iface, IPrin
 
     TRACE("%p,%p\n", iface, principal);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (principal)
         IPrincipal_AddRef(principal);
 
@@ -4487,7 +4487,7 @@ static HRESULT WINAPI TaskDefinition_put_Actions(ITaskDefinition *iface, IAction
 
     TRACE("%p,%p\n", iface, actions);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (actions)
         IActionCollection_AddRef(actions);
 
@@ -4690,7 +4690,7 @@ static HRESULT write_registration_info(IStream *stream, IRegistrationInfo *regin
             VariantClear(&var);
             if (hr != S_OK) return hr;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (V_VT(&var) != VT_EMPTY)
 #else
         else
@@ -4703,7 +4703,7 @@ static HRESULT write_registration_info(IStream *stream, IRegistrationInfo *regin
     return write_element_end(stream, L"RegistrationInfo");
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT principal_get_stored_ids(IPrincipal *iface, BSTR *user_id, BSTR *group_id)
 {
     HRESULT hr;
@@ -4949,7 +4949,7 @@ const WCHAR *string_from_instances_policy(TASK_INSTANCES_POLICY policy)
     return L"<error>";
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT write_idle_settings(IStream *stream, IIdleSettings *idle)
 {
     VARIANT_BOOL bval;
@@ -5083,7 +5083,7 @@ static HRESULT write_settings(IStream *stream, ITaskSettings *settings)
     }
     if (SUCCEEDED(hr = TaskSettings_get_IdleSettings(settings, &idle_settings)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = write_idle_settings(stream, idle_settings);
         IIdleSettings_Release(idle_settings);
         if (FAILED(hr))
@@ -5095,7 +5095,7 @@ static HRESULT write_settings(IStream *stream, ITaskSettings *settings)
     }
     if (SUCCEEDED(hr = TaskSettings_get_NetworkSettings(settings, &network_settings)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = S_OK;
         if (SUCCEEDED(TaskSettings_get_RunOnlyIfNetworkAvailable(settings, &bval)) && bval)
             hr = write_network_settings(stream, network_settings);
@@ -5128,7 +5128,7 @@ static HRESULT write_settings(IStream *stream, ITaskSettings *settings)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT write_open_element(IStream *stream, const WCHAR *name, const WCHAR *attr, const WCHAR *value)
 {
     if (!value || !*value)
@@ -5310,7 +5310,7 @@ static HRESULT write_action(IStream *stream, IAction *action)
 #endif
 static HRESULT write_triggers(IStream *stream, ITriggerCollection *triggers)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG count = 0, i;
     HRESULT hr;
 
@@ -5346,7 +5346,7 @@ static HRESULT write_triggers(IStream *stream, ITriggerCollection *triggers)
 
 static HRESULT write_actions(IStream *stream, IActionCollection *actions)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG count = 0, i;
     HRESULT hr;
     BSTR str;
@@ -5409,7 +5409,7 @@ static HRESULT WINAPI TaskDefinition_get_XmlText(ITaskDefinition *iface, BSTR *x
         return hr;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = write_stringW(stream, L"<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n");
     if (hr != S_OK) goto failed;
 
@@ -5520,7 +5520,7 @@ static HRESULT read_int_value(IXmlReader *reader, int *int_val)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT skip_element(IXmlReader *reader)
 {
     XmlNodeType type;
@@ -5837,7 +5837,7 @@ static HRESULT read_exec_action(IXmlReader *reader, IActionCollection *actions)
 #endif
 static HRESULT read_triggers(IXmlReader *reader, ITaskDefinition *taskdef)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL empty = IXmlReader_IsEmptyElement(reader);
     ITriggerCollection *triggers;
     const WCHAR *name;
@@ -5931,7 +5931,7 @@ static HRESULT read_principal(IXmlReader *reader, IPrincipal *principal)
     XmlNodeType type;
     const WCHAR *name;
     WCHAR *value;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL logon_seen = FALSE;
     BSTR str;
 
@@ -5962,7 +5962,7 @@ static HRESULT read_principal(IXmlReader *reader, IPrincipal *principal)
             TRACE("/%s\n", debugstr_w(name));
 
             if (!lstrcmpW(name, L"Principal"))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 if (logon_seen)
                     return S_OK;
@@ -6006,7 +6006,7 @@ static HRESULT read_principal(IXmlReader *reader, IPrincipal *principal)
 
                     if (!lstrcmpW(value, L"InteractiveToken"))
                         logon = TASK_LOGON_INTERACTIVE_TOKEN;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     else if (!lstrcmpW(value, L"Password"))
                         logon = TASK_LOGON_PASSWORD;
                     else if (!lstrcmpW(value, L"S4U"))
@@ -6017,7 +6017,7 @@ static HRESULT read_principal(IXmlReader *reader, IPrincipal *principal)
                     else
                         FIXME("unhandled LogonType %s\n", debugstr_w(value));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (SUCCEEDED(IPrincipal_put_LogonType(principal, logon)))
                         logon_seen = TRUE;
 #else
@@ -6034,7 +6034,7 @@ static HRESULT read_principal(IXmlReader *reader, IPrincipal *principal)
 
                     if (!lstrcmpW(value, L"LeastPrivilege"))
                         level = TASK_RUNLEVEL_LUA;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     else if (!lstrcmpW(value, L"HighestAvailable"))
                         level = TASK_RUNLEVEL_HIGHEST;
 #endif
@@ -6044,7 +6044,7 @@ static HRESULT read_principal(IXmlReader *reader, IPrincipal *principal)
                     IPrincipal_put_RunLevel(principal, level);
                 }
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (!lstrcmpW(name, L"GroupId"))
             {
                 hr = read_text_value(reader, &value);
@@ -6140,7 +6140,7 @@ static HRESULT read_principals(IXmlReader *reader, ITaskDefinition *taskdef)
 
 static HRESULT read_actions(IXmlReader *reader, ITaskDefinition *taskdef)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL empty = IXmlReader_IsEmptyElement(reader);
     IActionCollection *actions;
     const WCHAR *name;
@@ -6205,7 +6205,7 @@ static HRESULT read_actions(IXmlReader *reader, ITaskDefinition *taskdef)
 
 static HRESULT read_idle_settings(IXmlReader *reader, ITaskSettings *taskset)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     VARIANT_BOOL bool_val;
     IIdleSettings *idle;
     XmlNodeType type;
@@ -6285,7 +6285,7 @@ static HRESULT read_idle_settings(IXmlReader *reader, ITaskSettings *taskset)
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT read_network_settings(IXmlReader *reader, ITaskSettings *taskset)
 {
     INetworkSettings *network;
@@ -6476,7 +6476,7 @@ static HRESULT read_settings(IXmlReader *reader, ITaskSettings *taskset)
                 hr = read_idle_settings(reader, taskset);
                 if (hr != S_OK) return hr;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (!lstrcmpW(name, L"NetworkSettings"))
             {
                 hr = read_network_settings(reader, taskset);
@@ -6578,7 +6578,7 @@ static HRESULT read_registration_info(IXmlReader *reader, IRegistrationInfo *inf
                 if (hr == S_OK)
                     IRegistrationInfo_put_Source(info, value);
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (!lstrcmpW(name, L"SecurityDescriptor"))
             {
                 hr = read_text_value(reader, &value);
@@ -6784,7 +6784,7 @@ static HRESULT read_xml(IXmlReader *reader, ITaskDefinition *taskdef)
                 return read_task(reader, taskdef);
             }
             else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 return SCHED_E_UNEXPECTEDNODE;
 #else
                 FIXME("unhandled XML element %s\n", debugstr_w(name));

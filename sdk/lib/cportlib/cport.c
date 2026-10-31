@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ComPort Library
+ * PROJECT:     LibreNT ComPort Library
  * LICENSE:     BSD - See COPYING.ARM in the top level directory
  * PURPOSE:     Provides a serial port library for KDCOM, INIT, and FREELDR
  * COPYRIGHT:   Copyright 2010 ReactOS Portable Systems Group

@@ -1622,7 +1622,7 @@ static HRESULT ddraw_surface_blt(struct ddraw_surface *dst_surface, const RECT *
         return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* DDBLT_WAIT waits until the blit can be queued, not until the GPU has
      * completed it. The command stream admission above already provides that
      * guarantee; draining the entire queue here serializes rendering and
@@ -7033,7 +7033,7 @@ HRESULT ddraw_surface_create(struct ddraw *ddraw, const DDSURFACEDESC2 *surface_
              * right after creation. */
             desc->ddsCaps.dwCaps |= DDSCAPS_LOCALVIDMEM | DDSCAPS_VIDEOMEMORY;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (FAILED(wined3d_check_device_format(ddraw->wined3d,
                 ddraw->wined3d_adapter, WINED3D_DEVICE_TYPE_HAL, mode.format_id,
                 0, WINED3D_BIND_SHADER_RESOURCE, WINED3D_RTYPE_TEXTURE_2D,

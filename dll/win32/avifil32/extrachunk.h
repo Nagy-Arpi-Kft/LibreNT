@@ -34,7 +34,7 @@ typedef struct _EXTRACHUNKS {
   DWORD  cb;
 } EXTRACHUNKS, *LPEXTRACHUNKS;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void *avifile_recalloc(void *mem, SIZE_T count, SIZE_T size);
 #define _recalloc avifile_recalloc
 #endif

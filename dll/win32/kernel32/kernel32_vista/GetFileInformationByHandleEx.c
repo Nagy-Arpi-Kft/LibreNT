@@ -96,7 +96,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetFileInformationByHandleEx(HANDLE handle, FILE_I
         return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!NT_SUCCESS(status))
     {
         SetLastError(RtlNtStatusToDosError(status));

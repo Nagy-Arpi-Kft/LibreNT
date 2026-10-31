@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Test for local delivery of UDP broadcasts
  * COPYRIGHT:   Copyright 2026 Justin Miller <justinmiller100@gmail.com>

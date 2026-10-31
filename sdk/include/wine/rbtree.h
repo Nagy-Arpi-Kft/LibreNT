@@ -421,7 +421,7 @@ static inline void rb_replace(struct rb_tree *tree, struct rb_entry *dst, struct
 #define WINE_RB_ENTRY_VALUE RB_ENTRY_VALUE
 #define WINE_RB_FOR_EACH_ENTRY RB_FOR_EACH_ENTRY
 #define WINE_RB_FOR_EACH_ENTRY_DESTRUCTOR RB_FOR_EACH_ENTRY_DESTRUCTOR
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define wine_rb_clear rb_destroy
 #endif
 

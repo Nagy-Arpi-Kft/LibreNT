@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/core/t_ntpaging.c
  * PURPOSE:     NT paging I/O host-native regression tests
  *

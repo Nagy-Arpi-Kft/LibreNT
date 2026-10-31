@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/kd64/kddata.c
  * PURPOSE:         Contains all global variables and settings for KD64
@@ -66,7 +66,7 @@ VOID NTAPI RtlpBreakWithStatusInstruction(VOID);
 
 #elif defined(_M_RISCV64)
 
-/* ReactOS-private KPCR (ndk/riscv64/ketypes.h): no self pointer, the PRCB is
+/* LibreNT-private KPCR (ndk/riscv64/ketypes.h): no self pointer, the PRCB is
  * contained, and the stack bounds live in the thread, not the PCR. */
 #define KPCR_SELF_PCR_OFFSET           0
 #define KPCR_CURRENT_PRCB_OFFSET       FIELD_OFFSET(KPCR, Prcb)
@@ -77,7 +77,7 @@ VOID NTAPI RtlpBreakWithStatusInstruction(VOID);
 
 #elif defined(_M_PPC)
 
-/* ReactOS-private KPCR (ndk/ppc/ketypes.h): no self pointer, the PRCB is
+/* LibreNT-private KPCR (ndk/ppc/ketypes.h): no self pointer, the PRCB is
  * contained, and the stack bounds live in the thread, not the PCR. */
 #define KPCR_SELF_PCR_OFFSET           0
 #define KPCR_CURRENT_PRCB_OFFSET       FIELD_OFFSET(KPCR, Prcb)
@@ -288,7 +288,7 @@ ULONG Kd_MM_Mask;
 ULONG Kd_DFSC_Mask;
 ULONG Kd_WOW64_Mask;
 //
-// Components specified in Vista+, some of which we also use in ReactOS
+// Components specified in Vista+, some of which we also use in LibreNT
 //
 ULONG Kd_ALPC_Mask;
 ULONG Kd_WDI_Mask;
@@ -460,7 +460,7 @@ PULONG KdComponentTable[MAX_KD_COMPONENT_TABLE_ENTRIES] =
     &Kd_DFSC_Mask,
     &Kd_WOW64_Mask,
 //
-// Components specified in Vista+, some of which we also use in ReactOS
+// Components specified in Vista+, some of which we also use in LibreNT
 //
     &Kd_ALPC_Mask,
     &Kd_WDI_Mask,
@@ -680,7 +680,7 @@ KDDEBUGGER_DATA64 KdDebuggerDataBlock =
     FIELD_OFFSET(KPRCB, CpuType),
     FIELD_OFFSET(KPRCB, VendorString),
 #else
-    // The other ReactOS-private KPRCBs carry no CPU type or vendor string
+    // The other LibreNT-private KPRCBs carry no CPU type or vendor string
     0,
     0,
 #endif

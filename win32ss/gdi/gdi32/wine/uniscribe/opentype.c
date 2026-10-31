@@ -20,13 +20,13 @@
  */
 #include <stdarg.h>
 #include <stdlib.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <math.h>
 #endif
 
 #include "windef.h"
 #include "winbase.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/ntgdi.h"
 #else
 #include "ntgdi.h"
@@ -34,7 +34,7 @@
 #include "winuser.h"
 #include "winnls.h"
 #include "usp10.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 
@@ -1265,7 +1265,7 @@ static INT GSUB_apply_ChainContextSubst(const OT_LookupList* lookup, const OT_Lo
         ccsf1 = (const GSUB_ChainContextSubstFormat1*)GSUB_get_subtable(look, j);
         if (GET_BE_WORD(ccsf1->SubstFormat) == 1)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             const GSUB_ChainSubClassSet *crs;
             int index, i;
             WORD count;
@@ -1639,7 +1639,7 @@ int OpenType_apply_GSUB_lookup(const void *table, unsigned int lookup_index, WOR
     return GSUB_apply_lookup(lookup, lookup_index, glyphs, glyph_index, write_dir, glyph_count);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void OpenType_GSUB_SubstituteSingleGlyph(const void *table, const LoadedFeature *feature, LONG param, WORD *glyph)
 {
     const GSUB_Header *header = (const GSUB_Header *)table;
@@ -2742,7 +2742,7 @@ unsigned int OpenType_apply_GPOS_lookup(const ScriptCache *script_cache, const O
             lookup_index, glyphs, glyph_index, glyph_count, goffset);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void OpenType_GPOS_PositionSingleGlyph(const ScriptCache *script_cache, const LoadedFeature *feature, WORD glyph,
         int *advance, GOFFSET *goffset)
 {
@@ -2785,7 +2785,7 @@ void OpenType_GPOS_PositionSingleGlyph(const ScriptCache *script_cache, const Lo
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static CRITICAL_SECTION cs_opentype_cache;
 static CRITICAL_SECTION_DEBUG cs_opentype_cache_dbg =
 {
@@ -2861,7 +2861,7 @@ static void _initialize_script_cache(ScriptCache *script_cache)
     const GPOS_Header *gpos_header;
     const GSUB_Header *gsub_header;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&cs_opentype_cache);
     if (script_cache->scripts_initialized)
     {
@@ -2882,7 +2882,7 @@ static void _initialize_script_cache(ScriptCache *script_cache)
                 (const OT_ScriptList *)((const BYTE *)gpos_header + GET_BE_WORD(gpos_header->ScriptList)));
 
     script_cache->scripts_initialized = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&cs_opentype_cache);
 #endif
 }
@@ -2990,7 +2990,7 @@ static void _initialize_language_cache(LoadedScript *script)
 {
     const OT_Script *list;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&cs_opentype_cache);
     if (script->languages_initialized)
     {
@@ -3008,7 +3008,7 @@ static void _initialize_language_cache(LoadedScript *script)
         usp10_script_add_language_list(script, USP10_LANGUAGE_TABLE_GPOS, list);
 
     script->languages_initialized = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&cs_opentype_cache);
 #endif
 }
@@ -3106,7 +3106,7 @@ static void _initialize_feature_cache(ScriptCache *psc, LoadedLanguage *language
     const OT_FeatureList *feature_list;
     const OT_LangSys *lang;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&cs_opentype_cache);
     if (language->features_initialized)
     {
@@ -3131,7 +3131,7 @@ static void _initialize_feature_cache(ScriptCache *psc, LoadedLanguage *language
     }
 
     language->features_initialized = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&cs_opentype_cache);
 #endif
 }

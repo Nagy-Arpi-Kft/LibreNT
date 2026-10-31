@@ -44,7 +44,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(path);
 #define TRACE(...)
 #endif /* !STATIC_PATHCCH */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 /* The PathCch functions use size_t, but Wine's implementation uses SIZE_T,
  * so temporarily change the define'd SIZE_T type to the compatible one... */
@@ -61,7 +61,7 @@ static inline size_t compat_wcsnlen(const wchar_t* str, size_t size)
 #define wcsnlen compat_wcsnlen
 #endif /* _WIN32_WINNT || DLL_EXPORT_VERSION */
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #ifndef STATIC_PATHCCH
 
@@ -983,7 +983,7 @@ BOOL WINAPI PathIsUNCA(const char *path)
 {
     TRACE("%s\n", wine_dbgstr_a(path));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!path || path[0] != '\\' || path[1] != '\\')
         return FALSE;
     if (path[2] == '?' && (path[3] == '\\' || !path[3]))
@@ -998,7 +998,7 @@ BOOL WINAPI PathIsUNCW(const WCHAR *path)
 {
     TRACE("%s\n", wine_dbgstr_w(path));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!path || path[0] != '\\' || path[1] != '\\')
         return FALSE;
     if (path[2] == '?' && (path[3] == '\\' || !path[3]))
@@ -1404,7 +1404,7 @@ BOOL WINAPI PathCanonicalizeW(WCHAR *buffer, const WCHAR *path)
             *dst++ = *src++;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WCHAR *seg = dst;
         BOOL dots_only = TRUE;
@@ -1891,7 +1891,7 @@ BOOL WINAPI PathIsUNCServerA(const char *path)
     if (!(path && path[0] == '\\' && path[1] == '\\'))
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (path[2] == '?' && (path[3] == '\\' || !path[3]))
         return FALSE;
 #endif
@@ -1913,7 +1913,7 @@ BOOL WINAPI PathIsUNCServerW(const WCHAR *path)
     if (!(path && path[0] == '\\' && path[1] == '\\'))
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (path[2] == '?' && (path[3] == '\\' || !path[3]))
         return FALSE;
 #endif
@@ -4358,7 +4358,7 @@ static HRESULT url_guess_scheme(const WCHAR *url, WCHAR *out, DWORD *out_len)
             j = ChrCmpIW(Wxx, Wyy);
             if (j) break;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((i == value_len) && !j && url[value_len])
 #else
         if ((i == value_len) && !j)

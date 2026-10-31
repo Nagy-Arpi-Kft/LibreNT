@@ -6,8 +6,8 @@ add_definitions(
     -DPNG_BUILD_DLL)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libpng
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libpng
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 
 spec2def(libpng.dll libpng.spec ADD_IMPORTLIB)
 
@@ -35,4 +35,4 @@ if(ARCH STREQUAL "arm64")
 endif()
 target_link_libraries(libpng zlib ${PSEH_LIB})
 add_importlibs(libpng msvcrt kernel32 ntdll)
-add_cd_file(TARGET libpng DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET libpng DESTINATION librent/system32 FOR all)

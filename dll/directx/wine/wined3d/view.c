@@ -1134,7 +1134,7 @@ static void wined3d_shader_resource_view_gl_cs_init(void *object)
     }
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static
 #endif
 HRESULT wined3d_shader_resource_view_init(struct wined3d_shader_resource_view *view,

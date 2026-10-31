@@ -1,7 +1,7 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 3 VC4 WDDM miniport
+ * PROJECT:     LibreNT Raspberry Pi 3 VC4 WDDM miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
- * PURPOSE:     Linux VC4 validator compatibility contract for ReactOS
+ * PURPOSE:     Linux VC4 validator compatibility contract for LibreNT
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
  */
 
@@ -253,7 +253,7 @@ drm_gem_cma_create(
     _In_ struct drm_device *Device,
     _In_ size_t Size);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct drm_gem_cma_object *
 drm_gem_cma_create_uninitialized(
     _In_ struct drm_device *Device,

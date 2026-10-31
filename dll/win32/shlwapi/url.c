@@ -39,7 +39,7 @@ HRESULT WINAPI MLBuildResURLW(LPCWSTR,HMODULE,DWORD,LPCWSTR,LPWSTR,DWORD);
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*************************************************************************
  *      SHAutoComplete  	[SHLWAPI.@]
  *

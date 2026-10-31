@@ -1,11 +1,11 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/evtlib
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/evtlib
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl
     ${CMAKE_CURRENT_BINARY_DIR})
 
-add_rpc_files(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/eventlogrpc.idl)
+add_rpc_files(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/eventlogrpc.idl)
 spec2def(wevtsvc.dll wevtsvc.spec)
 
 list(APPEND SOURCE
@@ -27,4 +27,4 @@ endif()
 set_module_type(wevtsvc win32dll UNICODE)
 target_link_libraries(wevtsvc evtlib)
 add_importlibs(wevtsvc advapi32 rpcrt4 msvcrt kernel32 ntdll)
-add_cd_file(TARGET wevtsvc DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wevtsvc DESTINATION librent/system32 FOR all)

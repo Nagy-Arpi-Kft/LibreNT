@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 list(APPEND SOURCE
     allocsup.c
@@ -37,7 +37,7 @@ set_module_type(cdfs kernelmodedriver)
 target_link_libraries(cdfs ${PSEH_LIB} memcmp libcntpr)
 add_importlibs(cdfs ntoskrnl hal)
 
-add_cd_file(TARGET cdfs DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET cdfs DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(cdfs_reg.inf)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

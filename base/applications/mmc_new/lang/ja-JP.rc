@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Management Console
+ * PROJECT:     LibreNT Management Console
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Japanese resource file
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -18,7 +18,7 @@ BEGIN
     END
     POPUP "ヘルプ(&H)"
     BEGIN
-        MENUITEM "ReactOS 管理コンソールのバージョン情報(&A)", IDM_HELP_ABOUT_MMC
+        MENUITEM "LibreNT 管理コンソールのバージョン情報(&A)", IDM_HELP_ABOUT_MMC
     END
 END
 
@@ -71,7 +71,7 @@ BEGIN
     BEGIN
         MENUITEM "ヘルプ トピック(&H)", IDM_HELP_TOPICS
         MENUITEM SEPARATOR
-        MENUITEM "ReactOS 管理コンソールのバージョン情報(&A)", IDM_HELP_ABOUT_MMC
+        MENUITEM "LibreNT 管理コンソールのバージョン情報(&A)", IDM_HELP_ABOUT_MMC
     END
 END
 
@@ -194,7 +194,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APPTITLE "ReactOS 管理コンソール"
+    IDS_APPTITLE "LibreNT 管理コンソール"
     IDS_CONSOLETITLE "コンソール%1!u!"
     IDS_MODULE "モジュール"
     IDS_VENDOR "ベンダー"

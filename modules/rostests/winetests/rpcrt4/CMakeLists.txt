@@ -1,5 +1,5 @@
 
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT} -D_WIN32_WINNT=${REACTOS_TARGET_NT})
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT} -D_WIN32_WINNT=${LIBRENT_TARGET_NT})
 
 add_definitions(
     -DCONST_VTABLE

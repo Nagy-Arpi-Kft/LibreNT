@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ARM64 NUMA node topology
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -30,10 +30,10 @@ static VOID Arm64NumaCheckCpu(ULONG *NodeOut)
     if (Node == NULL)
     {
         /* Win11's KPRCB does not expose a KNODE* at this offset (the field is a
-         * ReactOS extension that lands in Win11's PrcbPad4 padding). Treat as
-         * not-applicable on Win11 instead of failing; ReactOS populates it and
-         * is fully validated when running on ReactOS. */
-        trace("cpu %lu: ParentNode not populated (ReactOS-private/Win11 padding); NUMA checks skipped\n",
+         * LibreNT extension that lands in Win11's PrcbPad4 padding). Treat as
+         * not-applicable on Win11 instead of failing; LibreNT populates it and
+         * is fully validated when running on LibreNT. */
+        trace("cpu %lu: ParentNode not populated (LibreNT-private/Win11 padding); NUMA checks skipped\n",
               MyNumber);
         return;
     }

@@ -54,7 +54,7 @@ typedef struct
     property_t prop;
 } property_list_entry_t;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const property_t default_props[] =
 {
     {"X-Newsgroup",                  PID_HDR_NEWSGROUP,    0,                               VT_LPSTR},
@@ -245,7 +245,7 @@ typedef struct MimeBody
     void *data;
     IID data_iid;
     BODYOFFSETS body_offsets;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL text_body;
 #endif
 } MimeBody;
@@ -1121,7 +1121,7 @@ static HRESULT WINAPI MimeBody_GetPropInfo(
         if(pInfo->dwMask & PIM_CHARSET)
             pInfo->hCharset = 0;
         if(pInfo->dwMask & PIM_FLAGS)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             pInfo->dwFlags = header->prop->flags | 0x10000000 |
                              (find_default_prop(header->prop->name) ? 0x80000000 : 0);
 #else
@@ -1369,7 +1369,7 @@ static HRESULT WINAPI MimeBody_GetCharset(
                                  LPHCHARSET phCharset)
 {
     MimeBody *This = impl_from_IMimeBody(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     header_t *header;
     param_t *param;
 
@@ -1555,7 +1555,7 @@ static HRESULT WINAPI MimeBody_IsType(
     {
     case IBT_EMPTY:
         return This->data ? S_FALSE : S_OK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case IBT_ATTACHMENT:
         return This->text_body ? S_FALSE : S_OK;
 #endif
@@ -1869,7 +1869,7 @@ static HRESULT WINAPI MimeBody_SetData(
 
     IMimeBody_SetCurrentEncoding(iface, ietEncoding);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         const char *pri = pszPriType ? pszPriType : "application";
         const char *sub = pszSubType ? pszSubType : "octet-stream";
@@ -2067,7 +2067,7 @@ static MimeBody *mimebody_create(void)
     This->encoding = IET_7BIT;
     This->data = NULL;
     This->data_iid = IID_NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->text_body = FALSE;
 #endif
 
@@ -2115,7 +2115,7 @@ typedef struct MimeMessage
 
     struct list body_tree;
     DWORD next_index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     VARIANT_BOOL hide_tnef_attachments;
 #endif
 } MimeMessage;
@@ -2371,7 +2371,7 @@ static body_t *create_sub_body(MimeMessage *msg, IStream *pStm, BODYOFFSETS *off
     return body;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static MimeBody *find_text_body(struct list *list)
 {
     body_t *body;
@@ -2433,7 +2433,7 @@ static HRESULT WINAPI MimeMessage_Load(IMimeMessage *iface, IStream *pStm)
     MimeBody_set_offsets(root_body->mime_body, &offsets);
 
     list_add_head(&This->body_tree, &root_body->entry);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         MimeBody *text_body = find_text_body(&This->body_tree);
 
@@ -2951,7 +2951,7 @@ static HRESULT WINAPI MimeMessage_SetOption(
     switch(oid)
     {
     case OID_HIDE_TNEF_ATTACHMENTS:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         impl_from_IMimeMessage(iface)->hide_tnef_attachments = pValue->boolVal;
 #else
         FIXME("OID_HIDE_TNEF_ATTACHMENTS (value %d): ignoring\n", pValue->boolVal);
@@ -2979,7 +2979,7 @@ static HRESULT WINAPI MimeMessage_GetOption(
     const TYPEDID oid,
     LPPROPVARIANT pValue)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MimeMessage *This = impl_from_IMimeMessage(iface);
 
     TRACE("(%p)->(%08lx, %p)\n", iface, oid, pValue);
@@ -3322,7 +3322,7 @@ HRESULT MimeMessage_create(IUnknown *outer, void **obj)
     This->IMimeMessage_iface.lpVtbl = &MimeMessageVtbl;
     This->ref = 1;
     This->stream = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->hide_tnef_attachments = TRUE;
 #endif
     list_init(&This->body_tree);

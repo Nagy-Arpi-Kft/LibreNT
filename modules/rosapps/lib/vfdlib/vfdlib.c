@@ -28,7 +28,7 @@
 // DLL Global variables
 //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern HINSTANCE	g_hDllModule = NULL;	// Handle to this DLL itself
 extern UINT			g_cDllRefCnt = 0;		// Reference count of this DLL
 extern UINT			g_nNotifyMsg = 0;		// VFD notification message

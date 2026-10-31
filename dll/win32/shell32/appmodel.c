@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell
+ * PROJECT:     LibreNT Shell
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Modern shell compatibility entry points
  * COPYRIGHT:   Adapted from corresponding Wine shell32 and shcore implementations

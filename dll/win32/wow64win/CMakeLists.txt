@@ -1,8 +1,8 @@
 spec2def(wow64win.dll wow64win.spec ADD_IMPORTLIB)
 
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
-    ${REACTOS_SOURCE_DIR}/win32ss/w32ksvc32.h
-    ${REACTOS_SOURCE_DIR}/win32ss/win32u/win32u.spec
+    ${LIBRENT_SOURCE_DIR}/win32ss/w32ksvc32.h
+    ${LIBRENT_SOURCE_DIR}/win32ss/win32u/win32u.spec
     ${CMAKE_CURRENT_SOURCE_DIR}/d3dkmt.c
     ${CMAKE_CURRENT_SOURCE_DIR}/gdi.c
     ${CMAKE_CURRENT_SOURCE_DIR}/user.c)
@@ -17,14 +17,14 @@ foreach(_source d3dkmt.c gdi.c user.c)
 endforeach()
 
 set(_wow64win_exports)
-file(STRINGS ${REACTOS_SOURCE_DIR}/win32ss/win32u/win32u.spec _lines REGEX "^@ .*Nt(User|Gdi)")
+file(STRINGS ${LIBRENT_SOURCE_DIR}/win32ss/win32u/win32u.spec _lines REGEX "^@ .*Nt(User|Gdi)")
 foreach(_line ${_lines})
     string(REGEX MATCH " (Nt(User|Gdi)[A-Za-z0-9_]+)\\(" _match "${_line}")
     list(APPEND _wow64win_exports ${CMAKE_MATCH_1})
 endforeach()
 
 set(_wow64win_missing_exports)
-set(_wow64win_native_stubs "/* Generated for Wine thunks without a ReactOS win32u export. */\n\n")
+set(_wow64win_native_stubs "/* Generated for Wine thunks without a LibreNT win32u export. */\n\n")
 foreach(_name IN LISTS _wow64win_wrappers)
     list(FIND _wow64win_exports ${_name} _export_index)
     if(_export_index EQUAL -1)
@@ -45,7 +45,7 @@ set(_wow64win_skip FALSE)
 set(_wow64win_missing_service_exports)
 set(_wow64win_missing_service_wrappers)
 
-file(STRINGS ${REACTOS_SOURCE_DIR}/win32ss/w32ksvc32.h _lines)
+file(STRINGS ${LIBRENT_SOURCE_DIR}/win32ss/w32ksvc32.h _lines)
 foreach(_line ${_lines})
     string(STRIP "${_line}" _line)
     if(_line STREQUAL "#ifdef _WIN64")
@@ -95,13 +95,13 @@ string(REPLACE ";" "\n" _wow64win_missing_service_exports_text "${_wow64win_miss
 string(REPLACE ";" "\n" _wow64win_missing_service_wrappers_text "${_wow64win_missing_service_wrappers}")
 set(_wow64win_parity_report "${CMAKE_CURRENT_BINARY_DIR}/win32u-parity.txt")
 file(WRITE ${_wow64win_parity_report}
-    "Wine wrappers without ReactOS win32u exports (${_wow64win_missing_export_count})\n${_wow64win_missing_exports_text}\n\n"
-    "ReactOS services with a Wine wrapper but no win32u export (${_wow64win_missing_service_export_count})\n${_wow64win_missing_service_exports_text}\n\n"
-    "ReactOS services without a Wine wrapper (${_wow64win_missing_service_wrapper_count})\n${_wow64win_missing_service_wrappers_text}\n")
+    "Wine wrappers without LibreNT win32u exports (${_wow64win_missing_export_count})\n${_wow64win_missing_exports_text}\n\n"
+    "LibreNT services with a Wine wrapper but no win32u export (${_wow64win_missing_service_export_count})\n${_wow64win_missing_service_exports_text}\n\n"
+    "LibreNT services without a Wine wrapper (${_wow64win_missing_service_wrapper_count})\n${_wow64win_missing_service_wrappers_text}\n")
 message(STATUS "WoW64 win32u parity: ${_wow64win_missing_service_export_count} service export gaps, ${_wow64win_missing_service_wrapper_count} missing Wine wrappers")
 add_custom_target(wow64win_parity COMMAND ${CMAKE_COMMAND} -E cat ${_wow64win_parity_report} VERBATIM)
 
-set(_wow64win_header "/* Generated from ReactOS w32ksvc32.h. */\n\n#define WOW64WIN_LIST_END\n\n")
+set(_wow64win_header "/* Generated from LibreNT w32ksvc32.h. */\n\n#define WOW64WIN_LIST_END\n\n")
 macro(_wow64win_add_fragment _name _variable)
     string(APPEND _wow64win_header "#define ${_name} ")
     string(APPEND _wow64win_header "\\")
@@ -148,7 +148,7 @@ set_module_type(wow64win win32dll ENTRYPOINT DllMain 12)
 target_compile_definitions(wow64win PRIVATE __WINESRC__)
 add_importlibs(wow64win wow64 win32u ntdll)
 add_dependencies(wow64win wow64 psdk)
-add_cd_file(TARGET wow64win DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wow64win DESTINATION librent/system32 FOR all)
 set_wine_module(wow64win)
 
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")

@@ -74,7 +74,7 @@ typedef struct {
 
     IBindStatusCallback *callback;
     IServiceProvider *service_provider;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IInternetProtocol *service_protocol;
     BOOL service_protocol_queried;
     BOOL start_not_impl;
@@ -181,7 +181,7 @@ static void stop_binding(Binding *binding, HRESULT hres, LPCWSTR str)
         binding->state &= ~BINDING_LOCKED;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(hres == S_OK && binding->start_not_impl) {
         hres = S_FALSE;
         if(IsEqualGUID(&binding->clsid, &CLSID_NULL))
@@ -300,7 +300,7 @@ static HRESULT create_mime_object(Binding *binding, const CLSID *clsid, LPCWSTR 
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void query_code_install_window(Binding *binding)
 {
     IWindowForBindingUI *window_ui = NULL;
@@ -343,7 +343,7 @@ static void create_object(Binding *binding)
         hres = REGDB_E_CLASSNOTREG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(hres == REGDB_E_CLASSNOTREG)
         query_code_install_window(binding);
 #endif
@@ -889,7 +889,7 @@ static ULONG WINAPI Binding_Release(IBinding *iface)
             IInternetProtocolEx_Release(&This->protocol->IInternetProtocolEx_iface);
         if(This->service_provider)
             IServiceProvider_Release(This->service_provider);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(This->service_protocol)
             IInternetProtocol_Release(This->service_protocol);
 #endif
@@ -1215,7 +1215,7 @@ static HRESULT WINAPI InternetProtocolSink_ReportResult(IInternetProtocolSink *i
 
     TRACE("(%p)->(%08lx %ld %s)\n", This, hrResult, dwError, debugstr_w(szResult));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(hrResult != S_OK && IsEqualGUID(&This->clsid, &CLSID_NULL))
         This->clsid = IsEqualGUID(&This->protocol->clsid, &CLSID_NULL) ? CLSID_FtpProtocol : This->protocol->clsid;
 #endif
@@ -1428,7 +1428,7 @@ static HRESULT WINAPI ServiceProvider_QueryService(IServiceProvider *iface,
 
     TRACE("(%p)->(%s %s %p)\n", This, debugstr_guid(guidService), debugstr_guid(riid), ppv);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(This->service_protocol_queried && IsEqualGUID(&IID_IInternetProtocol, guidService)) {
         if(!This->service_protocol) {
             *ppv = NULL;
@@ -1616,7 +1616,7 @@ static HRESULT start_binding(IMoniker *mon, Binding *binding_ctx, IUri *uri, IBi
     if(FAILED(hres))
         return hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!binding_ctx) {
         IInternetProtocol *service_protocol = NULL;
 
@@ -1639,12 +1639,12 @@ static HRESULT start_binding(IMoniker *mon, Binding *binding_ctx, IUri *uri, IBi
         return hres;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(binding->service_provider) {
         IUnknown *unk;
 
-        if(SUCCEEDED(IServiceProvider_QueryService(binding->service_provider, &SID_LiberNTStartNotImplemented,
-                                                   &SID_LiberNTStartNotImplemented, (void**)&unk))) {
+        if(SUCCEEDED(IServiceProvider_QueryService(binding->service_provider, &SID_LibreNTStartNotImplemented,
+                                                   &SID_LibreNTStartNotImplemented, (void**)&unk))) {
             IUnknown_Release(unk);
             binding->start_not_impl = TRUE;
         }
@@ -1666,7 +1666,7 @@ static HRESULT start_binding(IMoniker *mon, Binding *binding_ctx, IUri *uri, IBi
         TRACE("start ret %08lx\n", hres);
 
         if(FAILED(hres) && hres != E_PENDING) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(hres == MK_E_SYNTAX) {
                 BOOL has_scheme;
 

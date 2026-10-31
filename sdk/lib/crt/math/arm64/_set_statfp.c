@@ -1,11 +1,11 @@
 /*
- * PROJECT:     ReactOS CRT library
+ * PROJECT:     LibreNT CRT library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     ARM64 implementation of _set_statfp for libm
  */
 
 #include <stdint.h>
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 
 void _set_statfp(uintptr_t mask)
 {

@@ -1,5 +1,5 @@
 /*
- *  ReactOS RosPerf - ReactOS GUI performance test program (gradient.c)
+ *  LibreNT RosPerf - LibreNT GUI performance test program (gradient.c)
  *
  *  Copyright 2006 Timo Kreuzer <timo.kreuzer@web.de>
  *

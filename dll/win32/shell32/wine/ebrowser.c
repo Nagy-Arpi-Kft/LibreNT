@@ -32,7 +32,7 @@
 
 #include "shell32_main.h"
 #include "pidl.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <olectl.h>
 #include <perhist.h>
 #include <urlhist.h>
@@ -101,7 +101,7 @@ typedef struct _ExplorerBrowserImpl {
     ICommDlgBrowser2 *pcdb2_site;
     ICommDlgBrowser3 *pcdb3_site;
     IExplorerPaneVisibility *pepv_site;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IFolderViewHost IFolderViewHost_iface;
     IServiceProvider IServiceProvider_iface;
     IOleInPlaceUIWindow IOleInPlaceUIWindow_iface;
@@ -348,7 +348,7 @@ static void update_layout(ExplorerBrowserImpl *This)
 static void size_panes(ExplorerBrowserImpl *This)
 {
     int splitter_width = MulDiv(SPLITTER_WIDTH, This->dpix, USER_DEFAULT_SCREEN_DPI);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->navpane.hwnd_splitter)
 #endif
     MoveWindow(This->navpane.hwnd_splitter,
@@ -356,7 +356,7 @@ static void size_panes(ExplorerBrowserImpl *This)
                splitter_width, This->navpane.rc.bottom - This->navpane.rc.top,
                TRUE);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->hwnd_sv)
 #endif
     MoveWindow(This->hwnd_sv,
@@ -372,7 +372,7 @@ static HRESULT create_new_shellview(ExplorerBrowserImpl *This, IShellItem *psi)
     IShellView *psv;
     HWND hwnd_new;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPITEMIDLIST view_pidl = NULL;
 #endif
 
@@ -384,7 +384,7 @@ static HRESULT create_new_shellview(ExplorerBrowserImpl *This, IShellItem *psi)
         hr = IShellFolder_CreateViewObject(psf, This->hwnd_main, &IID_IShellView, (void**)&psv);
         if(SUCCEEDED(hr))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(This->punk_filter)
             {
                 IFolderFilterSite *pffs;
@@ -395,7 +395,7 @@ static HRESULT create_new_shellview(ExplorerBrowserImpl *This, IShellItem *psi)
                 }
             }
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(This->hwnd_sv)
             {
                 if(!(This->eb_options & EBO_NOPERSISTVIEWSTATE))
@@ -416,7 +416,7 @@ static HRESULT create_new_shellview(ExplorerBrowserImpl *This, IShellItem *psi)
 
             This->fs.fFlags |= FWF_USESEARCHFOLDER | FWF_FULLROWSELECT | FWF_NOCLIENTEDGE;
             hr = IShellView_CreateViewWindow(psv, This->psv, &This->fs, psb, &This->sv_rc, &hwnd_new);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             This->view_pidl = NULL;
             ILFree(view_pidl);
 #endif
@@ -851,7 +851,7 @@ static HRESULT WINAPI IExplorerBrowser_fnQueryInterface(IExplorerBrowser *iface,
     {
         *ppvObject = &This->IInputObject_iface;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if(IsEqualIID(riid, &IID_IFolderViewHost))
     {
         *ppvObject = &This->IFolderViewHost_iface;
@@ -925,7 +925,7 @@ static ULONG WINAPI IExplorerBrowser_fnRelease(IExplorerBrowser *iface)
             IExplorerBrowser_Destroy(iface);
 
         IObjectWithSite_SetSite(&This->IObjectWithSite_iface, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(This->punk_filter)
             IUnknown_Release(This->punk_filter);
 #endif
@@ -975,7 +975,7 @@ static HRESULT WINAPI IExplorerBrowser_fnInitialize(IExplorerBrowser *iface,
 
     This->navpane.width = MulDiv(NP_DEFAULT_WIDTH, This->dpix, USER_DEFAULT_SCREEN_DPI);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     style = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 #else
     style = WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS;
@@ -1006,7 +1006,7 @@ static HRESULT WINAPI IExplorerBrowser_fnDestroy(IExplorerBrowser *iface)
 
     if(This->psv)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(This->hwnd_sv && !(This->eb_options & EBO_NOPERSISTVIEWSTATE))
             IShellView_SaveViewState(This->psv);
 #endif
@@ -1448,7 +1448,7 @@ static HRESULT WINAPI IShellBrowser_fnContextSensitiveHelp(IShellBrowser *iface,
                                                            BOOL fEnterMode)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%d)\n", This, fEnterMode);
 
     return S_OK;
@@ -1496,7 +1496,7 @@ static HRESULT WINAPI IShellBrowser_fnSetStatusTextSB(IShellBrowser *iface,
                                                       LPCOLESTR pszStatusText)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%s)\n", This, debugstr_w(pszStatusText));
 
     return S_OK;
@@ -1511,7 +1511,7 @@ static HRESULT WINAPI IShellBrowser_fnEnableModelessSB(IShellBrowser *iface,
                                                        BOOL fEnable)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%d)\n", This, fEnable);
 
     return S_OK;
@@ -1526,7 +1526,7 @@ static HRESULT WINAPI IShellBrowser_fnTranslateAcceleratorSB(IShellBrowser *ifac
                                                              MSG *pmsg, WORD wID)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%p, 0x%x)\n", This, pmsg, wID);
 
     return S_FALSE;
@@ -1551,7 +1551,7 @@ static HRESULT WINAPI IShellBrowser_fnGetViewStateStream(IShellBrowser *iface,
                                                          IStream **ppStrm)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (0x%lx, %p)\n", This, grfMode, ppStrm);
 #else
     FIXME("stub, %p (0x%lx, %p)\n", This, grfMode, ppStrm);
@@ -1576,7 +1576,7 @@ static HRESULT WINAPI IShellBrowser_fnSendControlMsg(IShellBrowser *iface,
                                                      LRESULT *pret)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%d, %d, %Ix, %Ix, %p)\n", This, id, uMsg, wParam, lParam, pret);
     if (pret) *pret = 0;
 
@@ -1607,7 +1607,7 @@ static HRESULT WINAPI IShellBrowser_fnOnViewWindowActive(IShellBrowser *iface,
                                                          IShellView *pshv)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%p)\n", This, pshv);
 
     return S_OK;
@@ -1623,7 +1623,7 @@ static HRESULT WINAPI IShellBrowser_fnSetToolbarItems(IShellBrowser *iface,
                                                       UINT nButtons, UINT uFlags)
 {
     ExplorerBrowserImpl *This = impl_from_IShellBrowser(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%p, %d, 0x%x)\n", This, lpButtons, nButtons, uFlags);
 
     return S_OK;
@@ -2186,7 +2186,7 @@ static ULONG WINAPI IInputObject_fnRelease(IInputObject *iface)
 static HRESULT WINAPI IInputObject_fnUIActivateIO(IInputObject *iface, BOOL fActivate, MSG *pMsg)
 {
     ExplorerBrowserImpl *This = impl_from_IInputObject(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%d, %p)\n", This, fActivate, pMsg);
     if (This->psv)
         IShellView_UIActivate(This->psv, fActivate ? SVUIA_ACTIVATE_FOCUS : SVUIA_DEACTIVATE);
@@ -2200,7 +2200,7 @@ static HRESULT WINAPI IInputObject_fnUIActivateIO(IInputObject *iface, BOOL fAct
 static HRESULT WINAPI IInputObject_fnHasFocusIO(IInputObject *iface)
 {
     ExplorerBrowserImpl *This = impl_from_IInputObject(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HWND hwnd_view = NULL, hwnd_focus;
 
     TRACE("%p\n", This);
@@ -2217,7 +2217,7 @@ static HRESULT WINAPI IInputObject_fnHasFocusIO(IInputObject *iface)
 static HRESULT WINAPI IInputObject_fnTranslateAcceleratorIO(IInputObject *iface, MSG *pMsg)
 {
     ExplorerBrowserImpl *This = impl_from_IInputObject(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p (%p)\n", This, pMsg);
     if (!This->psv)
         return E_FAIL;
@@ -2237,7 +2237,7 @@ static IInputObjectVtbl vt_IInputObject = {
     IInputObject_fnTranslateAcceleratorIO
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline ExplorerBrowserImpl *impl_from_IFolderViewHost(IFolderViewHost *iface)
 {
     return CONTAINING_RECORD(iface, ExplorerBrowserImpl, IFolderViewHost_iface);
@@ -2970,7 +2970,7 @@ HRESULT WINAPI ExplorerBrowser_Constructor(IUnknown *pUnkOuter, REFIID riid, voi
     eb->IObjectWithSite_iface.lpVtbl  = &vt_IObjectWithSite;
     eb->INameSpaceTreeControlEvents_iface.lpVtbl = &vt_INameSpaceTreeControlEvents;
     eb->IInputObject_iface.lpVtbl     = &vt_IInputObject;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     eb->IFolderViewHost_iface.lpVtbl = &vt_IFolderViewHost;
     eb->IServiceProvider_iface.lpVtbl = &vt_IServiceProvider;
     eb->IOleInPlaceUIWindow_iface.lpVtbl = &vt_IOleInPlaceUIWindow;

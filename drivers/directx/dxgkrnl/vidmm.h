@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Video Memory Manager (VidMm) private types and prototypes
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -419,7 +419,7 @@ typedef struct _DXGKVMM_ALLOCATION
      * the list because the owner is assigned after lifetime initialization. */
     BOOLEAN             ImplicitResidencyReference;
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /*
      * One charge entry per process that currently references this physical
      * placement. Open/shared aliases resolve here, so every process receives
@@ -1115,7 +1115,7 @@ DxgkVidMmInvalidateReferencedAllocationCache(
     _In_ ULONGLONG Offset,
     _In_ ULONGLONG Length);
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 NTSTATUS
 DxgkVidMmCopyResourcePresentPrivateDriverData(
     _In_ D3DKMT_HANDLE ResourceHandle,
@@ -1144,7 +1144,7 @@ DxgkVidMmReclaimReferencedAllocation(
     _In_ PDXGKVMM_ALLOCATION Allocation,
     _Out_ PBOOLEAN Discarded);
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 NTSTATUS
 DxgkVidMmReclaimReferencedAllocation3(
     _In_ PDXGKVMM_ALLOCATION Allocation,

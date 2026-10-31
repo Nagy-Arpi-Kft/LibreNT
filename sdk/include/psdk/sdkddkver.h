@@ -1,4 +1,4 @@
-/* ReactOS PSDK/DDK
+/* LibreNT PSDK/DDK
 
 This file is in the public domain.
 
@@ -232,7 +232,7 @@ Abstract:
 #endif
 
 /* Make Sure NTDDI_VERSION and _WIN32_WINNT Match */
-#if !defined(__REACTOS__) && ((NTDDI_VERSION >> 16) != _WIN32_WINNT)
+#if !defined(__LIBRENT__) && ((NTDDI_VERSION >> 16) != _WIN32_WINNT)
 #error NTDDI_VERSION and _WIN32_WINNT mismatch!
 #endif
 

@@ -1,10 +1,10 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl
     ${CMAKE_CURRENT_BINARY_DIR})
 
-add_rpc_files(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/svcctl.idl)
+add_rpc_files(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/svcctl.idl)
 
 list(APPEND SOURCE
     config.c
@@ -25,4 +25,4 @@ target_link_libraries(services ${PSEH_LIB})
 set_module_type(services win32gui UNICODE)
 add_importlibs(services userenv user32 advapi32 advapi32_vista rpcrt4 msvcrt kernel32 ntdll)
 add_pch(services services.h SOURCE)
-add_cd_file(TARGET services DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET services DESTINATION librent/system32 FOR all)

@@ -17,7 +17,7 @@
 /* @makedep: msxml3.manifest */
 WINE_MANIFEST 24 msxml3.manifest
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 1 TYPELIB "msxml3_v1.tlb"
 1 WINE_REGISTRY "msxml3_v1.rgs"
@@ -36,4 +36,4 @@ WINE_MANIFEST 24 msxml3.manifest
 
 #include "wine/wine_common_ver.rc"
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

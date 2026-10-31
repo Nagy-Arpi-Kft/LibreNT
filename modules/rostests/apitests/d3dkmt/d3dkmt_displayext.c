@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     In-depth D3DKMT display / VidPN parity tests (Win11 ARM64 green)
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -397,7 +397,7 @@ static void Test_CheckVidPnExclusiveOwnership(void)
 /* ---- QueryVidPnExclusiveOwnership: WDDM 2.0 process/window ownership ---- */
 static void Test_QueryVidPnExclusiveOwnership(void)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     D3DKMT_QUERYVIDPNEXCLUSIVEOWNERSHIP QueryData;
     D3DKMT_OPENADAPTERFROMGDIDISPLAYNAME OpenAdapter;
     D3DKMT_SETVIDPNSOURCEOWNER OwnerData;

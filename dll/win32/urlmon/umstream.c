@@ -35,7 +35,7 @@ typedef struct ProxyBindStatusCallback
     IBindStatusCallback IBindStatusCallback_iface;
 
     IBindStatusCallback *pBSC;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IStream *data;
 #endif
 } ProxyBindStatusCallback;
@@ -47,7 +47,7 @@ static inline ProxyBindStatusCallback *impl_from_IBindStatusCallback(IBindStatus
 
 static HRESULT WINAPI ProxyBindStatusCallback_QueryInterface(IBindStatusCallback *iface, REFIID riid, void **ppv)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ProxyBindStatusCallback *This = impl_from_IBindStatusCallback(iface);
 #endif
 
@@ -59,7 +59,7 @@ static HRESULT WINAPI ProxyBindStatusCallback_QueryInterface(IBindStatusCallback
         return S_OK;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(&IID_IServiceProvider, riid) && This->pBSC)
         return IBindStatusCallback_QueryInterface(This->pBSC, riid, ppv);
 #endif
@@ -173,7 +173,7 @@ static HRESULT WINAPI ProxyBindStatusCallback_OnObjectAvailable(IBindStatusCallb
 static HRESULT WINAPI BlockingBindStatusCallback_OnDataAvailable(IBindStatusCallback *iface, DWORD grfBSCF,
                                                                  DWORD dwSize, FORMATETC* pformatetc, STGMEDIUM* pstgmed)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ProxyBindStatusCallback *This = impl_from_IBindStatusCallback(iface);
 
     if(This->data && pstgmed && pstgmed->tymed == TYMED_ISTREAM && pstgmed->pstm)
@@ -331,7 +331,7 @@ HRESULT WINAPI URLOpenBlockingStreamW(LPUNKNOWN pCaller, LPCWSTR szURL,
     blocking_bsc.IBindStatusCallback_iface.lpVtbl = &BlockingBindStatusCallbackVtbl;
     blocking_bsc.pBSC = lpfnCB;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         LARGE_INTEGER zero = {{0}};
         HRESULT hr;
@@ -402,7 +402,7 @@ HRESULT WINAPI URLOpenStreamW(LPUNKNOWN pCaller, LPCWSTR szURL, DWORD dwReserved
 
     async_bsc.IBindStatusCallback_iface.lpVtbl = &AsyncBindStatusCallbackVtbl;
     async_bsc.pBSC = lpfnCB;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     async_bsc.data = NULL;
 #endif
 

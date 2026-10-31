@@ -1816,7 +1816,7 @@ HRESULT WINAPI AVISaveVW(LPCWSTR szFile, CLSID *pclsidHandler,
 	    hres = AVIStreamRead(pInStreams[curStream], lStart[curStream],
 				 lFirstVideo - lStart[curStream], lpBuffer,
 				 cbBuffer, &lReadBytes, &lReadSamples);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (hres == AVIERR_BUFFERTOOSMALL) {
 	      LPVOID newBuffer;
 	      if (cbBuffer > MAXLONG / 2 ||
@@ -1899,7 +1899,7 @@ HRESULT WINAPI AVISaveVW(LPCWSTR szFile, CLSID *pclsidHandler,
 	    lReadSamples = 0;
 	    hres = AVIStreamRead(pInStreams[curStream],sInfo.dwStart,lSamples,
 				 lpBuffer,cbBuffer,&lReadBytes,&lReadSamples);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (hres == AVIERR_BUFFERTOOSMALL) {
 	      LPVOID newBuffer;
 	      if (cbBuffer > MAXLONG / 2 ||
@@ -1959,7 +1959,7 @@ HRESULT WINAPI AVISaveVW(LPCWSTR szFile, CLSID *pclsidHandler,
 	    lReadBytes   = cbBuffer;
 	    hres = AVIStreamRead(pInStreams[curStream], sInfo.dwStart, 1,
 				 lpBuffer, cbBuffer,&lReadBytes,&lReadSamples);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (hres == AVIERR_BUFFERTOOSMALL) {
 	      LPVOID newBuffer;
 	      if (cbBuffer > MAXLONG / 2 ||

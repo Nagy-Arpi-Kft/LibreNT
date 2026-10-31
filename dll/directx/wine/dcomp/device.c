@@ -28,10 +28,10 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(dcomp);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include "dcomp_private.h"
-#include "reactos/dxgi_dcomp.h"
+#include "librent/dxgi_dcomp.h"
 #include "wine/list.h"
 #include "d3d11.h"
 #include "d2d1_1.h"
@@ -894,7 +894,7 @@ static HRESULT dcomp_surface_present(struct dcomp_surface *surface,
     HRESULT hr;
 
     if (FAILED(hr = IDXGISwapChain1_SetPrivateData(surface->swapchain,
-            &GUID_ReactOSDXGICompositionWindow, sizeof(*target), target)))
+            &GUID_LibreNTDXGICompositionWindow, sizeof(*target), target)))
         return hr;
     if (surface->drawing)
         return S_OK;
@@ -1156,7 +1156,7 @@ static HRESULT dcomp_commit_visual(struct dcomp_visual *visual, HWND window,
                 return hr;
 
             hr = IDXGIObject_SetPrivateData(dxgi_object,
-                    &GUID_ReactOSDXGICompositionWindow, sizeof(composition_target),
+                    &GUID_LibreNTDXGICompositionWindow, sizeof(composition_target),
                     &composition_target);
             IDXGIObject_Release(dxgi_object);
             if (FAILED(hr))
@@ -1682,7 +1682,7 @@ HRESULT WINAPI DCompositionCreateDevice3(IUnknown *rendering_device, REFIID iid,
     return dcomp_create_device(rendering_device, iid, device);
 }
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 HRESULT WINAPI DCompositionCreateDevice(IDXGIDevice *dxgi_device, REFIID iid, void **device)
 {
@@ -1702,7 +1702,7 @@ HRESULT WINAPI DCompositionCreateDevice3(IUnknown *rendering_device, REFIID iid,
     return E_NOTIMPL;
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 HRESULT WINAPI DllCanUnloadNow(void)
 {

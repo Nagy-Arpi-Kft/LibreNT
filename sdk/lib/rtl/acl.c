@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * PURPOSE:         Security manager
  * FILE:            lib/rtl/acl.c
  * PROGRAMER:       David Welch <welch@cwcom.net>
@@ -1000,7 +1000,7 @@ RtlValidAcl(IN PACL Acl)
                                         GuidSize + FIELD_OFFSET(SID, SubAuthority);
                 if (Ace->AceSize < RequiredObjectAceSize)
                 {
-                    DPRINT1("LiberNT: Object ACE is too small for its GUIDs and SID header\n");
+                    DPRINT1("LibreNT: Object ACE is too small for its GUIDs and SID header\n");
                     _SEH2_YIELD(return FALSE);
                 }
 

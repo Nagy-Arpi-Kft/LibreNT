@@ -11,4 +11,4 @@ add_library(dxcore MODULE
 set_module_type(dxcore win32dll UNICODE)
 target_link_libraries(dxcore cpprt uuid)
 add_importlibs(dxcore gdi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET dxcore DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dxcore DESTINATION librent/system32 FOR all)

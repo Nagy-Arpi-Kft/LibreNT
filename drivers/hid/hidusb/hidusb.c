@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Universal Serial Bus Human Interface Device Driver
+ * PROJECT:     LibreNT Universal Serial Bus Human Interface Device Driver
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/usb/hidusb/hidusb.c
  * PURPOSE:     HID USB Interface Driver
@@ -441,7 +441,7 @@ HidUsb_RegisterDebuggerKeyboard(
     Keyboard->InterfaceNumber = HidDeviceExtension->InterfaceInfo->InterfaceNumber;
 
     KeInitializeEvent(&Event, NotificationEvent, FALSE);
-    Irp = IoBuildDeviceIoControlRequest(IOCTL_INTERNAL_REACTOS_USB_GET_KEYBOARD_INTERFACE,
+    Irp = IoBuildDeviceIoControlRequest(IOCTL_INTERNAL_LIBRENT_USB_GET_KEYBOARD_INTERFACE,
                                         DeviceExtension->NextDeviceObject,
                                         NULL,
                                         0,

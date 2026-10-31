@@ -629,7 +629,7 @@ void nfs41_delegation_remove_srvopen(
 int nfs41_delegation_return(
     IN nfs41_session *session,
     IN nfs41_path_fh *file,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     IN enum open_delegation_type4 access,
 #else
     IN int access,

@@ -23,11 +23,11 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d9);
 
-#ifdef __REACTOS__
-static const GUID reactos_dxva_surface_fence_guid = REACTOS_DXVA_SURFACE_FENCE_GUID_INIT;
+#ifdef __LIBRENT__
+static const GUID reactos_dxva_surface_fence_guid = LIBRENT_DXVA_SURFACE_FENCE_GUID_INIT;
 
 static HRESULT d3d9_surface_get_dxva_color_space(
-        IReactOSDxvaSurfaceFence *binding,
+        ILibreNTDxvaSurfaceFence *binding,
         enum wined3d_yuv_color_space *color_space)
 {
     DWORD flags;
@@ -35,16 +35,16 @@ static HRESULT d3d9_surface_get_dxva_color_space(
 
     if (!color_space)
         return D3DERR_INVALIDCALL;
-    if (FAILED(hr = IReactOSDxvaSurfaceFence_GetPresentationFlags(binding, &flags)))
+    if (FAILED(hr = ILibreNTDxvaSurfaceFence_GetPresentationFlags(binding, &flags)))
         return hr;
-    if (flags & ~REACTOS_DXVA_SURFACE_PRESENT_ALLOWED)
+    if (flags & ~LIBRENT_DXVA_SURFACE_PRESENT_ALLOWED)
         return D3DERR_INVALIDCALL;
 
-    if (flags & REACTOS_DXVA_SURFACE_PRESENT_BT709)
-        *color_space = flags & REACTOS_DXVA_SURFACE_PRESENT_LIMITED_RGB
+    if (flags & LIBRENT_DXVA_SURFACE_PRESENT_BT709)
+        *color_space = flags & LIBRENT_DXVA_SURFACE_PRESENT_LIMITED_RGB
                 ? WINED3D_YUV_BT709_LIMITED : WINED3D_YUV_BT709_FULL;
     else
-        *color_space = flags & REACTOS_DXVA_SURFACE_PRESENT_LIMITED_RGB
+        *color_space = flags & LIBRENT_DXVA_SURFACE_PRESENT_LIMITED_RGB
                 ? WINED3D_YUV_BT601_LIMITED : WINED3D_YUV_BT601_FULL;
     return D3D_OK;
 }
@@ -186,19 +186,19 @@ static HRESULT WINAPI d3d9_surface_SetPrivateData(IDirect3DSurface9 *iface, REFG
         const void *data, DWORD data_size, DWORD flags)
 {
     struct d3d9_surface *surface = impl_from_IDirect3DSurface9(iface);
-#ifdef __REACTOS__
-    IReactOSDxvaSurfaceFence *binding;
+#ifdef __LIBRENT__
+    ILibreNTDxvaSurfaceFence *binding;
     enum wined3d_yuv_color_space color_space;
     HRESULT hr;
 #endif
     TRACE("iface %p, guid %s, data %p, data_size %lu, flags %#lx.\n",
             iface, debugstr_guid(guid), data, data_size, flags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(guid, &reactos_dxva_surface_fence_guid))
     {
         if (!(flags & D3DSPD_IUNKNOWN) || data_size != sizeof(binding) ||
-                !(binding = (IReactOSDxvaSurfaceFence *)data))
+                !(binding = (ILibreNTDxvaSurfaceFence *)data))
             return D3DERR_INVALIDCALL;
         if (FAILED(hr = d3d9_surface_get_dxva_color_space(binding, &color_space)))
             return hr;
@@ -249,12 +249,12 @@ static HRESULT WINAPI d3d9_surface_GetPrivateData(IDirect3DSurface9 *iface, REFG
 static HRESULT WINAPI d3d9_surface_FreePrivateData(IDirect3DSurface9 *iface, REFGUID guid)
 {
     struct d3d9_surface *surface = impl_from_IDirect3DSurface9(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
     TRACE("iface %p, guid %s.\n", iface, debugstr_guid(guid));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(guid, &reactos_dxva_surface_fence_guid) &&
             FAILED(hr = d3d9_surface_detach_dxva_memory(surface)))
         return hr;
@@ -280,7 +280,7 @@ static void WINAPI d3d9_surface_PreLoad(IDirect3DSurface9 *iface)
 
     TRACE("iface %p.\n", iface);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(d3d9_surface_prepare_dxva_composition(surface, 0)))
         return;
 #endif
@@ -336,9 +336,9 @@ static HRESULT WINAPI d3d9_surface_GetDesc(IDirect3DSurface9 *iface, D3DSURFACE_
     return D3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT d3d9_surface_get_dxva_binding(struct d3d9_surface *surface,
-        IReactOSDxvaSurfaceFence **binding)
+        ILibreNTDxvaSurfaceFence **binding)
 {
     DWORD size = sizeof(*binding);
     HRESULT hr;
@@ -360,7 +360,7 @@ HRESULT d3d9_surface_get_dxva_binding(struct d3d9_surface *surface,
 HRESULT d3d9_surface_prepare_dxva_fallback(struct d3d9_surface *surface,
         DWORD flags)
 {
-    IReactOSDxvaSurfaceFence *binding;
+    ILibreNTDxvaSurfaceFence *binding;
     HRESULT hr;
 
     hr = d3d9_surface_get_dxva_binding(surface, &binding);
@@ -371,20 +371,20 @@ HRESULT d3d9_surface_prepare_dxva_fallback(struct d3d9_surface *surface,
 
     if (FAILED(hr = d3d9_surface_detach_dxva_memory(surface)))
     {
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return hr;
     }
 
-    hr = IReactOSDxvaSurfaceFence_PrepareFallback(binding, flags);
-    IReactOSDxvaSurfaceFence_Release(binding);
+    hr = ILibreNTDxvaSurfaceFence_PrepareFallback(binding, flags);
+    ILibreNTDxvaSurfaceFence_Release(binding);
     return hr;
 }
 
 HRESULT d3d9_surface_prepare_dxva_composition(struct d3d9_surface *surface,
         DWORD flags)
 {
-    IReactOSDxvaSurfaceFence *binding;
-    REACTOS_DXVA_SURFACE_MEMORY memory;
+    ILibreNTDxvaSurfaceFence *binding;
+    LIBRENT_DXVA_SURFACE_MEMORY memory;
     struct wined3d_planar_memory_desc desc;
     HRESULT hr;
 
@@ -395,16 +395,16 @@ HRESULT d3d9_surface_prepare_dxva_composition(struct d3d9_surface *surface,
         return hr;
 
     memset(&memory, 0, sizeof(memory));
-    hr = IReactOSDxvaSurfaceFence_GetSharedMemory(binding, flags, &memory);
+    hr = ILibreNTDxvaSurfaceFence_GetSharedMemory(binding, flags, &memory);
     if (hr == E_NOTIMPL)
     {
-        hr = IReactOSDxvaSurfaceFence_PrepareFallback(binding, flags);
-        IReactOSDxvaSurfaceFence_Release(binding);
+        hr = ILibreNTDxvaSurfaceFence_PrepareFallback(binding, flags);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return hr;
     }
     if (FAILED(hr))
     {
-        IReactOSDxvaSurfaceFence_Release(binding);
+        ILibreNTDxvaSurfaceFence_Release(binding);
         return hr;
     }
 
@@ -427,7 +427,7 @@ HRESULT d3d9_surface_prepare_dxva_composition(struct d3d9_surface *surface,
         wined3d_mutex_lock();
         hr = wined3d_texture_set_planar_memory(surface->wined3d_texture,
                 surface->sub_resource_idx, &desc,
-                !(memory.Flags & REACTOS_DXVA_SURFACE_MEMORY_DEFERRED_UPLOAD));
+                !(memory.Flags & LIBRENT_DXVA_SURFACE_MEMORY_DEFERRED_UPLOAD));
         wined3d_mutex_unlock();
         if (SUCCEEDED(hr))
         {
@@ -435,14 +435,14 @@ HRESULT d3d9_surface_prepare_dxva_composition(struct d3d9_surface *surface,
             surface->dxva_shared_generation = memory.Generation;
         }
     }
-    IReactOSDxvaSurfaceFence_Release(binding);
+    ILibreNTDxvaSurfaceFence_Release(binding);
     return hr;
 }
 
 HRESULT d3d9_surface_mark_dxva_consumed(struct d3d9_surface *surface,
         DWORD flags)
 {
-    IReactOSDxvaSurfaceFence *binding;
+    ILibreNTDxvaSurfaceFence *binding;
     HRESULT hr;
 
     hr = d3d9_surface_get_dxva_binding(surface, &binding);
@@ -451,8 +451,8 @@ HRESULT d3d9_surface_mark_dxva_consumed(struct d3d9_surface *surface,
     if (FAILED(hr))
         return hr;
 
-    hr = IReactOSDxvaSurfaceFence_MarkConsumed(binding, flags);
-    IReactOSDxvaSurfaceFence_Release(binding);
+    hr = ILibreNTDxvaSurfaceFence_MarkConsumed(binding, flags);
+    ILibreNTDxvaSurfaceFence_Release(binding);
     return hr;
 }
 #endif
@@ -468,11 +468,11 @@ static HRESULT WINAPI d3d9_surface_LockRect(IDirect3DSurface9 *iface,
     TRACE("iface %p, locked_rect %p, rect %s, flags %#lx.\n",
             iface, locked_rect, wine_dbgstr_rect(rect), flags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = d3d9_surface_prepare_dxva_fallback(
              surface,
              flags & D3DLOCK_DONOTWAIT
-                 ? REACTOS_DXVA_SURFACE_FENCE_DONOTWAIT
+                 ? LIBRENT_DXVA_SURFACE_FENCE_DONOTWAIT
                  : 0);
     if (FAILED(hr))
         return hr;
@@ -527,7 +527,7 @@ static HRESULT WINAPI d3d9_surface_GetDC(IDirect3DSurface9 *iface, HDC *dc)
 
     TRACE("iface %p, dc %p.\n", iface, dc);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = d3d9_surface_prepare_dxva_fallback(surface, 0)))
         return hr;
 #endif

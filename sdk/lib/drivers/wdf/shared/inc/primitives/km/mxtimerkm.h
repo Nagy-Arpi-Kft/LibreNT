@@ -94,7 +94,7 @@ MxTimer::~MxTimer(
     VOID
     )
 {
-    // __REACTOS__ Ex timers are not supported
+    // __LIBRENT__ Ex timers are not supported
     // BOOLEAN wasCancelled;
 
     // if (m_Timer.m_IsExtTimer &&
@@ -200,7 +200,7 @@ Returns:
     // m_Timer.m_IsExtTimer = TRUE;
 
     // return status;
-    return STATUS_NOT_IMPLEMENTED; // __REACTOS__ Ex timers are not supported
+    return STATUS_NOT_IMPLEMENTED; // __LIBRENT__ Ex timers are not supported
 }
 
 
@@ -212,7 +212,7 @@ MxTimer::StartWithReturn(
     )
 {
     if (m_Timer.m_IsExtTimer) {
-        // __REACTOS__ Ex timers are not supported
+        // __LIBRENT__ Ex timers are not supported
         // EXT_SET_PARAMETERS parameters;
 
         // ExInitializeSetTimerParameters(&parameters);
@@ -278,7 +278,7 @@ MxTimer::Stop(
 
     if (m_Timer.m_IsExtTimer) {
         bRetVal = FALSE;
-        // bRetVal = ExCancelTimer(m_Timer.m_KernelExTimer, NULL); // __REACTOS__ Ex timers are not supported
+        // bRetVal = ExCancelTimer(m_Timer.m_KernelExTimer, NULL); // __LIBRENT__ Ex timers are not supported
 
     } else {
         bRetVal = KeCancelTimer(&(m_Timer.KernelTimer));

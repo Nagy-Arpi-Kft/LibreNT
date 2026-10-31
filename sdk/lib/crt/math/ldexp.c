@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT library
+ * PROJECT:     LibreNT CRT library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Portable implementation of ldexp()
  * COPYRIGHT:   Imported from musl libc

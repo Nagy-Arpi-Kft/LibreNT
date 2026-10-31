@@ -23,7 +23,7 @@
 #include <ntstatus.h>
 #include <devpropdef.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef FASTCALL
 #define FASTCALL __fastcall
 #endif
@@ -2104,7 +2104,7 @@ static inline void *MmGetSystemAddressForMdlSafe(MDL *mdl, ULONG priority)
 #endif /* WINE_UNIX_LIB */
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pop_macro("FORCEINLINE")
 #endif
 #endif

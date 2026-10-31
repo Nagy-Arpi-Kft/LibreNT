@@ -115,7 +115,7 @@ FxWmiTraceMessage(
     va_start(va, MessageNumber);
 
 #pragma prefast(suppress:__WARNING_BUFFER_OVERFLOW, "Recommneded by EndClean");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     status = WmiTraceMessageVa(LoggerHandle,
                                MessageFlags,
                                MessageGuid,

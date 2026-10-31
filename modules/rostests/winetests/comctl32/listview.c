@@ -7871,7 +7871,7 @@ static void test_WM_PAINT(void)
     WNDPROC oldproc;
     LRESULT lr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     todo = FALSE;
 #endif
 

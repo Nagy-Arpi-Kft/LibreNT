@@ -18,7 +18,7 @@
 #pragma once
 
 /* C++ backwards-compatibility */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if defined(_MSC_VER) && (_MSC_VER < 1900)
 #define noexcept
 #endif
@@ -27,12 +27,12 @@
 #define ISOLATION_AWARE_ENABLED 1
 #define STRSAFE_NO_DEPRECATE
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define WINVER 0x0A00 // Windows 10
 #define _WIN32_WINNT 0x0A00
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #include <winternl.h>
 #else
@@ -45,13 +45,13 @@
 #include <ndk/rtlfuncs.h>
 #endif
 #include <string>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define string_view string
 #define wstring_view wstring
 #endif
 #include <vector>
 #include <stdint.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfs.h"
 #include "../btrfsioctl.h"
 #else
@@ -61,7 +61,7 @@
 
 using namespace std;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define STATUS_SUCCESS                  (NTSTATUS)0x00000000
 #define STATUS_BUFFER_OVERFLOW          (NTSTATUS)0x80000005
 #define STATUS_END_OF_FILE              (NTSTATUS)0xc0000011
@@ -103,7 +103,7 @@ using namespace std;
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS NTAPI NtReadFile(HANDLE FileHandle, HANDLE Event, PIO_APC_ROUTINE ApcRoutine, PVOID ApcContext, PIO_STATUS_BLOCK IoStatusBlock, PVOID Buffer,
                           ULONG Length, PLARGE_INTEGER ByteOffset, PULONG Key);
 
@@ -160,7 +160,7 @@ NTSTATUS NTAPI NtQueryVolumeInformationFile(HANDLE FileHandle, PIO_STATUS_BLOCK 
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _REPARSE_DATA_BUFFER {
     ULONG ReparseTag;
     USHORT ReparseDataLength;
@@ -226,7 +226,7 @@ typedef struct _FSCTL_SET_INTEGRITY_INFORMATION_BUFFER {
 class win_handle {
 public:
     win_handle() {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         h = INVALID_HANDLE_VALUE;
 #endif
     }
@@ -258,7 +258,7 @@ public:
     }
 
 private:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     HANDLE h = INVALID_HANDLE_VALUE;
 #else
     HANDLE h;
@@ -268,7 +268,7 @@ private:
 class fff_handle {
 public:
     fff_handle() {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         h = INVALID_HANDLE_VALUE;
 #endif
     }
@@ -300,7 +300,7 @@ public:
     }
 
 private:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     HANDLE h = INVALID_HANDLE_VALUE;
 #else
     HANDLE h;
@@ -310,7 +310,7 @@ private:
 class nt_handle {
 public:
     nt_handle() {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         h = INVALID_HANDLE_VALUE;
 #endif
     }
@@ -342,7 +342,7 @@ public:
     }
 
 private:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     HANDLE h = INVALID_HANDLE_VALUE;
 #else
     HANDLE h;
@@ -388,7 +388,7 @@ private:
     string msg;
 };
 
-#if defined(__REACTOS__) && !defined(__clang__) && !(defined(__GNUC__) && __GNUC__ >= 15)
+#if defined(__LIBRENT__) && !defined(__clang__) && !(defined(__GNUC__) && __GNUC__ >= 15)
 inline wstring to_wstring(uint8_t a) { WCHAR buffer[16]; swprintf(buffer, L"%d", a); return wstring(buffer); }
 inline wstring to_wstring(uint16_t a) { WCHAR buffer[16]; swprintf(buffer, L"%d", a); return wstring(buffer); }
 inline wstring to_wstring(uint32_t a) { WCHAR buffer[32]; swprintf(buffer, L"%ld", a); return wstring(buffer); }

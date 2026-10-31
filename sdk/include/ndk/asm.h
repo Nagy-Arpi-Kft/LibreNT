@@ -18,12 +18,12 @@ Author:
 
 #if defined(_M_IX86)
 #include <i386/asm.h>
-#elif defined(_M_AMD64) || defined(_M_ARM) || defined(_M_PPC) || defined(_M_ARM64) || defined(_M_RISCV64)
+#elif defined(_M_AMD64) || defined(_M_ARM) || defined(_M_ARM64) || defined(_M_RISCV64)
 //
-// AMD64, ARM and PPC ports don't use asm.h
+// AMD64, ARM, ARM64 and RISC-V64 ports don't use asm.h
 //
-#if defined(_M_ARM64) && defined(__GNUC__) && !defined(__clang__) && defined(__ASM__) && !defined(__REACTOS_GNU_ARM64_SEH_MACROS)
-#define __REACTOS_GNU_ARM64_SEH_MACROS
+#if defined(_M_ARM64) && defined(__GNUC__) && !defined(__clang__) && defined(__ASM__) && !defined(__LIBRENT_GNU_ARM64_SEH_MACROS)
+#define __LIBRENT_GNU_ARM64_SEH_MACROS
 /* GNU as emits absolute IMAGE_REL_ARM64_ADDR32 relocations for ARM64 SEH
  * procedure records. They overflow for normal 64-bit image bases, so accept
  * all Windows unwind annotations as no-ops until the toolchain can emit RVAs. */

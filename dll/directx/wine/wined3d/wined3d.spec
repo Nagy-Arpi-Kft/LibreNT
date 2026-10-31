@@ -318,7 +318,7 @@
 @ cdecl wined3d_swapchain_set_gamma_ramp(ptr long ptr)
 @ cdecl wined3d_swapchain_set_max_frame_latency(ptr long)
 @ cdecl wined3d_swapchain_set_palette(ptr ptr)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 @ cdecl wined3d_swapchain_set_composition(ptr long long long long ptr)
 #endif
 @ cdecl wined3d_swapchain_set_window(ptr ptr)
@@ -349,7 +349,7 @@
 @ cdecl wined3d_texture_release_dc(ptr long ptr)
 @ cdecl wined3d_texture_set_color_key(ptr long ptr)
 @ cdecl wined3d_texture_set_lod(ptr long)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 @ cdecl wined3d_texture_set_planar_memory(ptr long ptr)
 @ cdecl wined3d_texture_set_yuv_color_space(ptr long)
 #endif

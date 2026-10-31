@@ -42,7 +42,7 @@ unavailable. Inspect per-domain status even after a successful SDK call.
 
 ## SDK use
 
-Include `reactos/dwmprof.h` and link the generated `libdwmprof.a` import library.
+Include `librent/dwmprof.h` and link the generated `libdwmprof.a` import library.
 The runtime dependency is `dwmprof.dll`, not the graphics ICD or `dwmcore.dll`.
 
 ```c

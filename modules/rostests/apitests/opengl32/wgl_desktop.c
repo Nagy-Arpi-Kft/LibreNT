@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later
  * PURPOSE:     Exercise a windowed WGL producer through DWM and display scanout.
  */
@@ -7,8 +7,8 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include <wine/test.h>
-#include <reactos/dwmprof.h>
-#include <reactos/dwmpresenttracenames.h>
+#include <librent/dwmprof.h>
+#include <librent/dwmpresenttracenames.h>
 
 static const WCHAR class_name[] = L"WglDesktopRegression";
 static const COLORREF background = RGB(32, 48, 64), cover_color = RGB(208, 48, 160);

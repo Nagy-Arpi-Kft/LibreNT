@@ -1,6 +1,6 @@
 #pragma once
 
-#if __REACTOS__
+#if __LIBRENT__
 #define UACPI_STATIC_ASSERT _STATIC_ASSERT
 #else
 #ifdef __cplusplus
@@ -10,7 +10,7 @@
 #endif
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define UACPI_BUILD_BUG_ON_WITH_MSG(expr, msg) UACPI_STATIC_ASSERT(!(expr))
 #else
 #define UACPI_BUILD_BUG_ON_WITH_MSG(expr, msg) UACPI_STATIC_ASSERT(!(expr), msg)

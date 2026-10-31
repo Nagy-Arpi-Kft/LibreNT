@@ -8,7 +8,7 @@ add_definitions(
 
 include_directories(
     BEFORE include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys)
 
 list(APPEND SOURCE
     ldr/ldrinit.c
@@ -25,4 +25,4 @@ if(ARCH STREQUAL "arm")
 endif()
 add_importlibs(ntdll_vista ntdll)
 add_dependencies(ntdll_vista psdk)
-add_cd_file(TARGET ntdll_vista DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET ntdll_vista DESTINATION librent/system32 FOR all)

@@ -82,7 +82,7 @@
 # define __ASM_BLOCK_END
 #endif
 
-/* ReactOS */
+/* LibreNT */
 #if defined(_MSC_VER)
 # define __ASM_DEFINE_FUNC(name,code)
 #elif defined(__GNUC__)
@@ -178,10 +178,10 @@
 
 # ifdef _MSC_VER
 
-#if defined(__REACTOS__) && defined(__ASM_EXTERN_THISCALL_WRAPPER)
+#if defined(__LIBRENT__) && defined(__ASM_EXTERN_THISCALL_WRAPPER)
 #  define DEFINE_THISCALL_WRAPPER(func,args) \
     extern void __thiscall_##func(void);
-#elif defined(__REACTOS__)
+#elif defined(__LIBRENT__)
 #  define DEFINE_THISCALL_WRAPPER(func,args) \
     __declspec(naked) void __thiscall_##func(void) \
     { \

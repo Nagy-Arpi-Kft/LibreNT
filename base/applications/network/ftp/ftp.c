@@ -73,7 +73,7 @@ int	ptflag = 0;
 int	allbinary;
 struct	sockaddr_in myctladdr;
 uid_t	getuid();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void lostpeer(void);
 #else
 sig_t	lostpeer();

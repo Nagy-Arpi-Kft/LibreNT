@@ -53,7 +53,7 @@ struct ifproxy
     IRpcProxyBuffer *proxy;  /* interface proxy (RO) */
     ULONG refs;              /* imported (public) references (LOCK) */
     IRpcChannelBuffer *chan; /* channel to object (CS parent->cs) */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD imp_level;
 #endif
 };
@@ -77,7 +77,7 @@ struct proxy_manager
     HANDLE remoting_mutex;    /* mutex used for synchronizing access to IRemUnknown */
     MSHCTX dest_context;      /* context used for activating optimisations (LOCK) */
     void *dest_context_data;  /* reserved context value (LOCK) */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD imp_level;
     IRpcOptions IRpcOptions_iface;
     ICallFactory ICallFactory_iface;
@@ -191,7 +191,7 @@ static HRESULT WINAPI ftmarshaler_inner_QueryInterface(IUnknown *iface, REFIID r
         *obj = &marshaler->IUnknown_inner;
     else if (IsEqualIID(&IID_IMarshal, riid))
         *obj = &marshaler->IMarshal_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (IsEqualIID(&IID_IAgileObject, riid))
         *obj = &marshaler->IMarshal_iface;
 #endif
@@ -570,7 +570,7 @@ cleanup:
  * The function leaves the stream pointer at the start of the data written
  * to the stream by the IMarshal* object.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT read_std_objref_payload(IStream *stream, BOOL handler, struct OR_STANDARD *obj)
 {
     LARGE_INTEGER skip;
@@ -618,7 +618,7 @@ static HRESULT get_unmarshaler_from_stream(IStream *stream, IMarshal **marshal, 
 
     if (iid) *iid = objref.iid;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *handler = FALSE;
     if (objref.flags & OBJREF_HANDLER)
     {
@@ -674,7 +674,7 @@ static HRESULT get_unmarshaler_from_stream(IStream *stream, IMarshal **marshal, 
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT std_release_marshal_data_ex(IStream *stream, BOOL handler)
 #else
 static HRESULT std_release_marshal_data(IStream *stream)
@@ -683,12 +683,12 @@ static HRESULT std_release_marshal_data(IStream *stream)
     struct stub_manager *stubmgr;
     struct OR_STANDARD  obj;
     struct apartment *apt;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ULONG res;
 #endif
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = read_std_objref_payload(stream, handler, &obj);
 #else
     hr = IStream_Read(stream, &obj, FIELD_OFFSET(struct OR_STANDARD, saResAddr.aStringArray), &res);
@@ -734,20 +734,20 @@ HRESULT WINAPI CoReleaseMarshalData(IStream *stream)
 {
     IMarshal *marshal;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL handler;
 #endif
 
     TRACE("%p\n", stream);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = get_unmarshaler_from_stream_ex(stream, &marshal, NULL, NULL, &handler);
 #else
     hr = get_unmarshaler_from_stream(stream, &marshal, NULL);
 #endif
     if (hr == S_FALSE)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = std_release_marshal_data_ex(stream, handler);
 #else
         hr = std_release_marshal_data(stream);
@@ -768,7 +768,7 @@ HRESULT WINAPI CoReleaseMarshalData(IStream *stream)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT std_unmarshal_interface_ex(MSHCTX dest_context, void *dest_context_data,
         IStream *stream, REFIID riid, void **ppv, BOOL dest_context_known, BOOL handler)
 #else
@@ -781,7 +781,7 @@ static HRESULT std_unmarshal_interface(MSHCTX dest_context, void *dest_context_d
     ULONG res;
     HRESULT hres;
     struct apartment *apt, *stub_apt;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     OXID_INFO stub_oxid_info;
     const OXID_INFO *oxid_info = NULL;
 #endif
@@ -796,7 +796,7 @@ static HRESULT std_unmarshal_interface(MSHCTX dest_context, void *dest_context_d
     }
 
     /* read STDOBJREF from wire */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = read_std_objref_payload(stream, handler, &obj);
     (void)res;
 #else
@@ -824,7 +824,7 @@ static HRESULT std_unmarshal_interface(MSHCTX dest_context, void *dest_context_d
 
         /* unref the ifstub. FIXME: only do this on success? */
         if (!stub_manager_is_table_marshaled(stubmgr, &obj.std.ipid))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             stub_manager_ext_release_ipid(stubmgr, &obj.std.ipid, obj.std.cPublicRefs, obj.std.flags & SORFP_TABLEWEAK, FALSE);
 #else
             stub_manager_ext_release(stubmgr, obj.std.cPublicRefs, obj.std.flags & SORFP_TABLEWEAK, FALSE);
@@ -854,7 +854,7 @@ static HRESULT std_unmarshal_interface(MSHCTX dest_context, void *dest_context_d
             WARN("Couldn't find object for OXID %s, OID %s, assuming disconnected\n",
                 wine_dbgstr_longlong(obj.std.oxid),
                 wine_dbgstr_longlong(obj.std.oid));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (apartment_getoxid(apt) == obj.std.oxid)
                 hres = CO_E_OBJNOTCONNECTED;
             else if (!obj.std.cPublicRefs)
@@ -880,7 +880,7 @@ static HRESULT std_unmarshal_interface(MSHCTX dest_context, void *dest_context_d
         TRACE("Treating unmarshal from OXID %s as inter-process\n",
             wine_dbgstr_longlong(obj.std.oxid));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (stubmgr) oxid_info = &stubmgr->oxid_info;
     if (hres == S_OK)
         hres = unmarshal_object(&obj.std, apt, dest_context,
@@ -912,7 +912,7 @@ HRESULT WINAPI CoUnmarshalInterface(IStream *stream, REFIID riid, void **ppv)
     IUnknown *object;
     HRESULT hr;
     IID iid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct apartment *apt;
     ULARGE_INTEGER start_pos;
     CLSID handler_clsid;
@@ -924,13 +924,13 @@ HRESULT WINAPI CoUnmarshalInterface(IStream *stream, REFIID riid, void **ppv)
     if (!stream || !ppv)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(apt = apartment_get_current_or_mta()))
         return CO_E_NOTINITIALIZED;
     apartment_release(apt);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         LARGE_INTEGER zero;
         zero.QuadPart = 0;
@@ -1080,7 +1080,7 @@ HRESULT marshal_object(struct apartment *apt, STDOBJREF *stdobjref, REFIID riid,
             if (!ifstub)
                 hr = E_OUTOFMEMORY;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (stub && !ifstub) IRpcStubBuffer_Disconnect(stub);
 #endif
         if (stub) IRpcStubBuffer_Release(stub);
@@ -1094,7 +1094,7 @@ HRESULT marshal_object(struct apartment *apt, STDOBJREF *stdobjref, REFIID riid,
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!tablemarshal)
     {
         stdobjref->cPublicRefs = NORMALEXTREFS;
@@ -1181,13 +1181,13 @@ static HRESULT WINAPI ClientIdentity_QueryMultipleInterfaces(IMultiQI *iface, UL
     IID *iids = malloc(cMQIs * sizeof(*iids));
     /* mapping of RemQueryInterface index to QueryMultipleInterfaces index */
     ULONG *mapping = malloc(cMQIs * sizeof(*mapping));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct apartment *apt;
 #endif
 
     TRACE("cMQIs: %ld\n", cMQIs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     apt = apartment_get_current_or_mta();
     if (apt) apartment_release(apt);
     if (This->parent && apt != This->parent)
@@ -1554,7 +1554,7 @@ static ULONG WINAPI ProxyCliSec_Release(IClientSecurity *iface)
     return IMultiQI_Release(&This->IMultiQI_iface);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT proxy_manager_create_ifproxy(struct proxy_manager *This, const STDOBJREF *stdobjref, REFIID riid,
                                             IRpcChannelBuffer *channel, struct ifproxy **iif_out);
 
@@ -1596,7 +1596,7 @@ static HRESULT WINAPI ProxyCliSec_QueryBlanket(IClientSecurity *iface,
                                                void **pAuthInfo,
                                                DWORD *pCapabilities)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct proxy_manager *This = impl_from_IClientSecurity(iface);
     DWORD *imp_level;
 
@@ -1655,7 +1655,7 @@ static HRESULT WINAPI ProxyCliSec_SetBlanket(IClientSecurity *iface,
                                              void *pAuthInfo,
                                              DWORD Capabilities)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct proxy_manager *This = impl_from_IClientSecurity(iface);
     DWORD *imp_level;
 
@@ -1683,7 +1683,7 @@ static HRESULT WINAPI ProxyCliSec_SetBlanket(IClientSecurity *iface,
 static HRESULT WINAPI ProxyCliSec_CopyProxy(IClientSecurity *iface,
                                             IUnknown *pProxy, IUnknown **ppCopy)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct proxy_manager *This = impl_from_IClientSecurity(iface);
     struct ifproxy *source, *copy;
     IRpcChannelBuffer *chan;
@@ -1731,7 +1731,7 @@ static const IClientSecurityVtbl ProxyCliSec_Vtbl =
     ProxyCliSec_CopyProxy
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline struct proxy_manager *impl_from_IRpcOptions(IRpcOptions *iface)
 {
     return CONTAINING_RECORD(iface, struct proxy_manager, IRpcOptions_iface);
@@ -1997,7 +1997,7 @@ static void ifproxy_destroy(struct ifproxy * This)
 
     if (This->chan)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->proxy) IRpcProxyBuffer_Disconnect(This->proxy);
 #endif
         IRpcChannelBuffer_Release(This->chan);
@@ -2045,7 +2045,7 @@ static HRESULT proxy_manager_construct(
     This->IMultiQI_iface.lpVtbl = &ClientIdentity_Vtbl;
     This->IMarshal_iface.lpVtbl = &ProxyMarshal_Vtbl;
     This->IClientSecurity_iface.lpVtbl = &ProxyCliSec_Vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->IRpcOptions_iface.lpVtbl = &ProxyRpcOptions_Vtbl;
     This->ICallFactory_iface.lpVtbl = &ProxyCallFactory_Vtbl;
     This->IForegroundTransfer_iface.lpVtbl = &ProxyForegroundTransfer_Vtbl;
@@ -2079,7 +2079,7 @@ static HRESULT proxy_manager_construct(
      * overwritten in proxy_manager_set_context */
     This->dest_context = MSHCTX_INPROC;
     This->dest_context_data = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->imp_level = RPC_C_IMP_LEVEL_DEFAULT;
 #endif
 
@@ -2183,7 +2183,7 @@ static HRESULT proxy_manager_query_local_interface(struct proxy_manager * This, 
         IClientSecurity_AddRef(&This->IClientSecurity_iface);
         return S_OK;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualIID(riid, &IID_IMarshal2))
     {
         *ppv = &This->IMarshal_iface;
@@ -2238,7 +2238,7 @@ static HRESULT proxy_manager_create_ifproxy(
     ifproxy->iid = *riid;
     ifproxy->refs = 0;
     ifproxy->proxy = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ifproxy->imp_level = RPC_C_IMP_LEVEL_DEFAULT;
 #endif
 
@@ -2565,7 +2565,7 @@ static HRESULT WINAPI StdMarshalImpl_GetUnmarshalClass(IMarshal *iface, REFIID r
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL get_handler_clsid(void *pv, DWORD dest_context, void *dest_context_data, CLSID *clsid)
 {
     IStdMarshalInfo *info;
@@ -2583,7 +2583,7 @@ static BOOL get_handler_clsid(void *pv, DWORD dest_context, void *dest_context_d
 static HRESULT WINAPI StdMarshalImpl_GetMarshalSizeMax(IMarshal *iface, REFIID riid, void *pv,
         DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, DWORD *pSize)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CLSID clsid;
 
     if (get_handler_clsid(pv, dwDestContext, pvDestContext, &clsid))
@@ -2625,7 +2625,7 @@ static HRESULT WINAPI StdMarshalImpl_MarshalInterface(IMarshal *iface, IStream *
         return hr;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         CLSID clsid;
 
@@ -2694,7 +2694,7 @@ HRESULT unmarshal_object(const STDOBJREF *stdobjref, struct apartment *apt, MSHC
 
         if (hr == S_OK)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             IRemUnknown *remunk;
 
             if (stdobjref->cPublicRefs && !IsEqualGUID(&ifproxy->stdobjref.ipid, &stdobjref->ipid))
@@ -2750,7 +2750,7 @@ static HRESULT WINAPI StdMarshalImpl_UnmarshalInterface(IMarshal *iface, IStream
         return RPC_E_INVALID_OBJREF;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(objref.flags & (OBJREF_STANDARD | OBJREF_HANDLER)))
 #else
     if (!(objref.flags & OBJREF_STANDARD))
@@ -2760,7 +2760,7 @@ static HRESULT WINAPI StdMarshalImpl_UnmarshalInterface(IMarshal *iface, IStream
         return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return std_unmarshal_interface_ex(marshal->dest_context, marshal->dest_context_data, stream, riid, ppv, TRUE,
             !!(objref.flags & OBJREF_HANDLER));
 #else
@@ -2789,7 +2789,7 @@ static HRESULT WINAPI StdMarshalImpl_ReleaseMarshalData(IMarshal *iface, IStream
         return RPC_E_INVALID_OBJREF;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(objref.flags & (OBJREF_STANDARD | OBJREF_HANDLER)))
 #else
     if (!(objref.flags & OBJREF_STANDARD))
@@ -2799,7 +2799,7 @@ static HRESULT WINAPI StdMarshalImpl_ReleaseMarshalData(IMarshal *iface, IStream
         return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return std_release_marshal_data_ex(stream, !!(objref.flags & OBJREF_HANDLER));
 #else
     return std_release_marshal_data(stream);
@@ -2850,7 +2850,7 @@ HRESULT WINAPI InternalCoStdMarshalObject(REFIID riid, DWORD dest_context, void 
     return StdMarshalImpl_Construct(riid, dest_context, dest_context_data, ppvObject);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct stdmarshal_aggregate
 {
     IUnknown IUnknown_inner;

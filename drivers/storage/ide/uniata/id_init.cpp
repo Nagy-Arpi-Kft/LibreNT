@@ -658,7 +658,7 @@ for_ugly_chips:
             }
             break;
         default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* I assume:
              * - RangeStart == 0LL, "always". (CORE-13346)
              * - It will be updated by UniataAhciDetect() a few lines below...
@@ -2564,7 +2564,7 @@ AtapiChipInit(
                 *
                 * http://www.reactos.org/bugzilla/show_bug.cgi?id=6500
                 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 // New URL is https://jira.reactos.org/browse/CORE-5897
 #endif
 

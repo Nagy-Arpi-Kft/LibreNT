@@ -680,7 +680,7 @@
     //Stray syscalls (must be placed here to be correct for both checked/free builds)
     SVC_(GdiMakeObjectXferable, 2)
     SVC_(DxEngGetRedirectionBitmap, 1)
-    // ReactOS-specific syscalls (must be at the end to not interfere!)
+    // LibreNT-specific syscalls (must be at the end to not interfere!)
     SVC_(GdiSetViewportOrgEx, 4)
     SVC_(GdiSetWindowOrgEx, 4)
     SVC_(GdiGetFontFamilyInfo, 4)
@@ -694,7 +694,7 @@
 // For Wine DX
     SVC_(GdiDdDDICreateDCFromMemory, 1)
     SVC_(GdiDdDDIDestroyDCFromMemory, 1)
-// ReactOS Display Driver Model
+// LibreNT Display Driver Model
     SVC_(GdiDdDDICheckExclusiveOwnership, 0)
     SVC_(GdiDdDDICreateAllocation, 1)
     SVC_(GdiDdDDICheckMonitorPowerState, 1)
@@ -763,7 +763,7 @@
     SVC_(UserGetThreadDpiAwarenessContext, 0)
     SVC_(UserGetWindowDpiAwarenessContext, 1)
     SVC_(UserSetThreadDpiAwarenessContext, 1)
-    /* WDDM 2.0 D3DKMT additions (ReactOS) */
+    /* WDDM 2.0 D3DKMT additions (LibreNT) */
     SVC_(GdiDdDDICreateSynchronizationObject2, 1)
     SVC_(GdiDdDDIWaitForSynchronizationObject2, 1)
     SVC_(GdiDdDDISignalSynchronizationObject2, 1)

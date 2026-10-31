@@ -1,6 +1,6 @@
 
 add_definitions(-D_WINE)
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 spec2def(dwrite.dll dwrite.spec ADD_IMPORTLIB)
 
@@ -32,5 +32,5 @@ target_compile_definitions(dwrite PRIVATE __WINESRC__)
 set_module_type(dwrite win32dll)
 target_link_libraries(dwrite wine freetype)
 add_importlibs(dwrite user32 gdi32 advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET dwrite DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dwrite DESTINATION librent/system32 FOR all)
 set_wine_module(dwrite)

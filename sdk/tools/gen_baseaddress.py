@@ -1,5 +1,5 @@
 '''
-PROJECT:     ReactOS baseaddress updater
+PROJECT:     LibreNT baseaddress updater
 LICENSE:     MIT (https://spdx.org/licenses/MIT)
 PURPOSE:     Update baseaddresses of all modules
 COPYRIGHT:   Copyright 2017,2018 Mark Jansen (mark.jansen@reactos.org)
@@ -11,7 +11,7 @@ USAGE = """
 This script will update the baseaddresses of all modules, based on the build output.
 
 Specify the build output dir as commandline argument to the script:
-`python gen_baseaddress.py C:\\Users\\Mark\\reactos\\output-MinGW-i386`
+`python gen_baseaddress.py C:\\Users\\Mark\\librent\\output-MinGW-i386`
 
 Multiple directories can be specified:
 `python gen_baseaddress r:/build/msvc r:/build/gcc`

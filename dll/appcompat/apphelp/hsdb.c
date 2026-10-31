@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Application compatibility module
+ * PROJECT:     LibreNT Application compatibility module
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Shim matching / data (un)packing
  * COPYRIGHT:   Copyright 2011 André Hentschel
@@ -25,7 +25,7 @@ typedef struct _ShimData
     DWORD dwMagic;
     SDBQUERYRESULT Query;
     WCHAR szLayer[MAX_LAYER_LENGTH];
-    // Start ReactOS specific
+    // Start LibreNT specific
     DWORD dwRosProcessCompatVersion;
 #ifdef _M_AMD64
     PVOID RtlGetCurrentDirectory_U_RtlpMsysDecoy;
@@ -33,14 +33,14 @@ typedef struct _ShimData
 } ShimData;
 
 #define SHIMDATA_MAGIC  0xAC0DEDAB
-#define REACTOS_COMPATVERSION_IGNOREMANIFEST 0xffffffff
+#define LIBRENT_COMPATVERSION_IGNOREMANIFEST 0xffffffff
 
-C_ASSERT(SHIMDATA_MAGIC == REACTOS_SHIMDATA_MAGIC);
-C_ASSERT(sizeof(ShimData) == sizeof(ReactOS_ShimData));
-C_ASSERT(offsetof(ShimData, dwMagic) == offsetof(ReactOS_ShimData, dwMagic));
-C_ASSERT(offsetof(ShimData, dwRosProcessCompatVersion) == offsetof(ReactOS_ShimData, dwRosProcessCompatVersion));
+C_ASSERT(SHIMDATA_MAGIC == LIBRENT_SHIMDATA_MAGIC);
+C_ASSERT(sizeof(ShimData) == sizeof(LibreNT_ShimData));
+C_ASSERT(offsetof(ShimData, dwMagic) == offsetof(LibreNT_ShimData, dwMagic));
+C_ASSERT(offsetof(ShimData, dwRosProcessCompatVersion) == offsetof(LibreNT_ShimData, dwRosProcessCompatVersion));
 #ifdef _M_AMD64
-C_ASSERT(offsetof(ShimData, RtlGetCurrentDirectory_U_RtlpMsysDecoy) == offsetof(ReactOS_ShimData, RtlGetCurrentDirectory_U_RtlpMsysDecoy));
+C_ASSERT(offsetof(ShimData, RtlGetCurrentDirectory_U_RtlpMsysDecoy) == offsetof(LibreNT_ShimData, RtlGetCurrentDirectory_U_RtlpMsysDecoy));
 #endif
 
 static BOOL WINAPI SdbpFileExists(LPCWSTR path)
@@ -760,7 +760,7 @@ BOOL WINAPI SdbPackAppCompatData(HSDB hsdb, PSDBQUERYRESULT pQueryResult, PVOID*
         if (SdbQueryData(hsdb, pQueryResult->atrLayers[n], L"SHIMVERSIONNT", &dwType, &dwValue, &dwValueSize) == ERROR_SUCCESS &&
             dwType == REG_DWORD && dwValueSize == sizeof(dwValue))
         {
-            if (dwValue != REACTOS_COMPATVERSION_IGNOREMANIFEST)
+            if (dwValue != LIBRENT_COMPATVERSION_IGNOREMANIFEST)
                 dwValue = (dwValue % 100) | ((dwValue / 100) << 8);
             if (dwValue > pData->dwRosProcessCompatVersion)
                 pData->dwRosProcessCompatVersion = dwValue;

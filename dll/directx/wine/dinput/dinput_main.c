@@ -29,8 +29,8 @@
 #include "windef.h"
 #include "winbase.h"
 #include "winuser.h"
-#ifdef __REACTOS__
-#include <reactos/user32_vista.h>
+#ifdef __LIBRENT__
+#include <librent/user32_vista.h>
 #endif
 #include "winerror.h"
 #include "objbase.h"

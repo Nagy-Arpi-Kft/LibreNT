@@ -7,4 +7,4 @@ add_library(twain_32 MODULE
 
 set_module_type(twain_32 win32dll)
 add_importlibs(twain_32 twaindsm msvcrt kernel32 ntdll)
-add_cd_file(TARGET twain_32 DESTINATION reactos FOR all)
+add_cd_file(TARGET twain_32 DESTINATION librent FOR all)

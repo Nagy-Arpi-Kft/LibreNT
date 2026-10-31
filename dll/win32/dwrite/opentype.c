@@ -6721,7 +6721,7 @@ static void opentype_font_var_add_static_axis(struct dwrite_var_axis **axis, uns
     entry->attributes = 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL opentype_has_font_variations(const struct file_stream_desc *stream_desc)
 {
     const struct fvar_header *header;

@@ -48,7 +48,7 @@ void dump_D3dTextureFormats(DDSURFACEDESC *puD3dTextureFormats, int dwNum, char 
         }
 
 
-#if !defined(__REACTOS__)
+#if !defined(__LIBRENT__)
 
 #define win_syscall(inValue,outValue,syscallid) \
                     __asm { mov     eax, syscallid }; \

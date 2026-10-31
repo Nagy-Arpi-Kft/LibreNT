@@ -1,4 +1,4 @@
-/* Minimal Wine debug compatibility for ReactOS WoW64 imports. */
+/* Minimal Wine debug compatibility for LibreNT WoW64 imports. */
 
 #pragma once
 

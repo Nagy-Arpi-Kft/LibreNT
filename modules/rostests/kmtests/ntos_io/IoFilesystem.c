@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         LGPLv2.1+ - See COPYING.LIB in the top level directory
  * PURPOSE:         Kernel-Mode Test Suite File System test
  * PROGRAMMER:      Thomas Faber <thomas.faber@reactos.org>
@@ -331,7 +331,7 @@ Substitute(
     _In_ PCWSTR SystemRootName)
 {
     UNICODE_STRING SystemDriveTemplate = RTL_CONSTANT_STRING(L"C:");
-    UNICODE_STRING SystemRootTemplate = RTL_CONSTANT_STRING(L"ReactOS");
+    UNICODE_STRING SystemRootTemplate = RTL_CONSTANT_STRING(L"LibreNT");
     ULONG SystemDriveLength;
     ULONG SystemRootLength;
     PWCHAR Dest = Buffer;
@@ -405,51 +405,51 @@ TestRelativeNames(VOID)
         { NULL,                         L"C:\\",                            TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS, TRUE },
         { NULL,                         L"C:\\\\",                          TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS, TRUE },
         { NULL,                         L"C:\\\\\\",                        TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_OBJECT_NAME_INVALID,TRUE },
-        { NULL,                         L"C:\\ReactOS",                     TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS},
-        { NULL,                         L"C:\\ReactOS\\",                   TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS, },
-        { NULL,                         L"C:\\ReactOS\\\\",                 TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_OBJECT_NAME_INVALID},
-        { NULL,                         L"C:\\ReactOS\\\\\\",               TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_OBJECT_NAME_INVALID},
-        { NULL,                         L"C:\\\\ReactOS",                   TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS},
-        { NULL,                         L"C:\\\\ReactOS\\",                 TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
-        { NULL,                         L"C:\\ReactOS\\explorer.exe",       FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS},
-        { NULL,                         L"C:\\ReactOS\\\\explorer.exe",     FALSE,  STATUS_OBJECT_NAME_INVALID,     FALSE,  STATUS_OBJECT_NAME_INVALID },
-        { NULL,                         L"C:\\ReactOS\\explorer.exe\\",     FALSE,  STATUS_OBJECT_NAME_INVALID,     FALSE,  STATUS_OBJECT_NAME_INVALID, FALSE, TRUE },
-        { NULL,                         L"C:\\ReactOS\\explorer.exe\\file", FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND },
-        { NULL,                         L"C:\\ReactOS\\explorer.exe\\\\",   FALSE,  STATUS_OBJECT_NAME_INVALID,     TRUE,  STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT",                     TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS},
+        { NULL,                         L"C:\\LibreNT\\",                   TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS, },
+        { NULL,                         L"C:\\LibreNT\\\\",                 TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_OBJECT_NAME_INVALID},
+        { NULL,                         L"C:\\LibreNT\\\\\\",               TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_OBJECT_NAME_INVALID},
+        { NULL,                         L"C:\\\\LibreNT",                   TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS},
+        { NULL,                         L"C:\\\\LibreNT\\",                 TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
+        { NULL,                         L"C:\\LibreNT\\explorer.exe",       FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS},
+        { NULL,                         L"C:\\LibreNT\\\\explorer.exe",     FALSE,  STATUS_OBJECT_NAME_INVALID,     FALSE,  STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\explorer.exe\\",     FALSE,  STATUS_OBJECT_NAME_INVALID,     FALSE,  STATUS_OBJECT_NAME_INVALID, FALSE, TRUE },
+        { NULL,                         L"C:\\LibreNT\\explorer.exe\\file", FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND },
+        { NULL,                         L"C:\\LibreNT\\explorer.exe\\\\",   FALSE,  STATUS_OBJECT_NAME_INVALID,     TRUE,  STATUS_OBJECT_NAME_INVALID },
         /* This will never return STATUS_NOT_A_DIRECTORY. IsDirectory=TRUE is a little hacky but achieves that without special handling */
-        { NULL,                         L"C:\\ReactOS\\explorer.exe\\\\\\", TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\explorer.exe\\\\\\", TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_OBJECT_NAME_INVALID },
         { L"C:\\",                      L"",                                TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
         { L"C:\\",                      L"\\",                              TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_INVALID_PARAMETER },
-        { L"C:\\",                      L"ReactOS",                         TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
-        { L"C:\\",                      L"\\ReactOS",                       TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_INVALID_PARAMETER },
-        { L"C:\\",                      L"ReactOS\\",                       TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
-        { L"C:\\",                      L"\\ReactOS\\",                     TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_INVALID_PARAMETER },
-        { L"C:\\ReactOS",               L"",                                TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
-        { L"C:\\ReactOS",               L"explorer.exe",                    FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS },
-        { L"C:\\ReactOS\\explorer.exe", L"",                                FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS },
-        { L"C:\\ReactOS\\explorer.exe", L"file",                            FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND },
+        { L"C:\\",                      L"LibreNT",                         TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
+        { L"C:\\",                      L"\\LibreNT",                       TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_INVALID_PARAMETER },
+        { L"C:\\",                      L"LibreNT\\",                       TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
+        { L"C:\\",                      L"\\LibreNT\\",                     TRUE,   STATUS_OBJECT_NAME_INVALID,     TRUE,   STATUS_INVALID_PARAMETER },
+        { L"C:\\LibreNT",               L"",                                TRUE,   STATUS_SUCCESS,                 TRUE,   STATUS_SUCCESS },
+        { L"C:\\LibreNT",               L"explorer.exe",                    FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS },
+        { L"C:\\LibreNT\\explorer.exe", L"",                                FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS },
+        { L"C:\\LibreNT\\explorer.exe", L"file",                            FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND },
         /* Let's try some nonexistent things */
-        { NULL,                         L"C:\\ReactOS\\IDoNotExist",        FALSE,  STATUS_OBJECT_NAME_NOT_FOUND,   FALSE,  STATUS_OBJECT_NAME_NOT_FOUND },
-        { NULL,                         L"C:\\ReactOS\\IDoNotExist\\file",  FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND  },
-        { NULL,                         L"C:\\ReactOS\\IDoNotExist\\file?", FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND },
-        { NULL,                         L"C:\\ReactOS\\IDoNotExist\\file\\\\",TRUE, STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { NULL,                         L"C:\\ReactOS\\IDoNotExist\\file\\\\\\",TRUE,STATUS_OBJECT_PATH_NOT_FOUND,  TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { NULL,                         L"C:\\ReactOS\\AmIInvalid?",        FALSE,  STATUS_OBJECT_NAME_INVALID,     FALSE,  STATUS_OBJECT_NAME_INVALID },
-        { NULL,                         L"C:\\ReactOS\\.",                  TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { NULL,                         L"C:\\ReactOS\\..",                 TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { NULL,                         L"C:\\ReactOS\\...",                TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_NOT_FOUND },
-        { NULL,                         L"C:\\ReactOS\\.\\system32",        TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_PATH_NOT_FOUND },
-        { NULL,                         L"C:\\ReactOS\\..\\ReactOS",        TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\IDoNotExist",        FALSE,  STATUS_OBJECT_NAME_NOT_FOUND,   FALSE,  STATUS_OBJECT_NAME_NOT_FOUND },
+        { NULL,                         L"C:\\LibreNT\\IDoNotExist\\file",  FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND  },
+        { NULL,                         L"C:\\LibreNT\\IDoNotExist\\file?", FALSE,  STATUS_OBJECT_PATH_NOT_FOUND,   FALSE,  STATUS_OBJECT_PATH_NOT_FOUND },
+        { NULL,                         L"C:\\LibreNT\\IDoNotExist\\file\\\\",TRUE, STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\IDoNotExist\\file\\\\\\",TRUE,STATUS_OBJECT_PATH_NOT_FOUND,  TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\AmIInvalid?",        FALSE,  STATUS_OBJECT_NAME_INVALID,     FALSE,  STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\.",                  TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\..",                 TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { NULL,                         L"C:\\LibreNT\\...",                TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_NOT_FOUND },
+        { NULL,                         L"C:\\LibreNT\\.\\system32",        TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_PATH_NOT_FOUND },
+        { NULL,                         L"C:\\LibreNT\\..\\LibreNT",        TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
         { L"C:\\",                      L".",                               TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
         { L"C:\\",                      L"..",                              TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
         { L"C:\\",                      L"...",                             TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_NOT_FOUND },
-        { L"C:\\",                      L".\\ReactOS",                      TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_PATH_NOT_FOUND },
-        { L"C:\\",                      L"..\\ReactOS",                     TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { L"C:\\ReactOS",               L".",                               TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { L"C:\\ReactOS",               L"..",                              TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
-        { L"C:\\ReactOS",               L"...",                             TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_NOT_FOUND },
-        { L"C:\\ReactOS",               L".\\system32",                     TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_PATH_NOT_FOUND },
-        { L"C:\\ReactOS",               L"..\\ReactOS",                     TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { L"C:\\",                      L".\\LibreNT",                      TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_PATH_NOT_FOUND },
+        { L"C:\\",                      L"..\\LibreNT",                     TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { L"C:\\LibreNT",               L".",                               TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { L"C:\\LibreNT",               L"..",                              TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
+        { L"C:\\LibreNT",               L"...",                             TRUE,   STATUS_OBJECT_NAME_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_NOT_FOUND },
+        { L"C:\\LibreNT",               L".\\system32",                     TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_PATH_NOT_FOUND },
+        { L"C:\\LibreNT",               L"..\\LibreNT",                     TRUE,   STATUS_OBJECT_PATH_NOT_FOUND,   TRUE,   STATUS_OBJECT_NAME_INVALID },
         /* Volume open */
         { NULL,                         L"C:",                              FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS, TRUE },
         { L"C:",                        L"",                                FALSE,  STATUS_SUCCESS,                 FALSE,  STATUS_SUCCESS, TRUE },
@@ -722,8 +722,8 @@ TestQueryAttributesMissing(VOID)
         NTSTATUS ExpectedStatus;
     } Tests[] =
     {
-        { L"\\SystemRoot\\ReactOS-Kmtest-Missing", STATUS_OBJECT_NAME_NOT_FOUND },
-        { L"\\SystemRoot\\ReactOS-Kmtest-Missing\\file", STATUS_OBJECT_PATH_NOT_FOUND },
+        { L"\\SystemRoot\\LibreNT-Kmtest-Missing", STATUS_OBJECT_NAME_NOT_FOUND },
+        { L"\\SystemRoot\\LibreNT-Kmtest-Missing\\file", STATUS_OBJECT_PATH_NOT_FOUND },
     };
     FILE_NETWORK_OPEN_INFORMATION Information;
     OBJECT_ATTRIBUTES ObjectAttributes;

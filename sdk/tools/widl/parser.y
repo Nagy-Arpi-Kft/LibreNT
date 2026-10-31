@@ -60,7 +60,7 @@ static void append_chain_type(declarator_t *decl, type_t *type, enum type_qualif
 static void append_chain_callconv( struct location where, type_t *chain, char *callconv );
 static warning_list_t *append_warning(warning_list_t *, int);
 static version_t *make_version( unsigned short major, unsigned short minor );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static system_handle_attr_t *make_system_handle_attr( struct location where, const char *name, const expr_t *access );
 static type_t *make_system_handle_type( const type_t *handle, attr_t *attr );
 #endif
@@ -411,7 +411,7 @@ imp_decl_statements
 	: %empty				{ $$ = NULL; }
 	| imp_decl_statements tINTERFACE qualified_type '<' parameterized_type_args '>' ';'
 						{
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 						  type_t *existing = NULL;
 						  if (winmd_merges_imports())
 						  {
@@ -543,7 +543,7 @@ cppquote: tCPPQUOTE '(' aSTRING ')'		{ $$ = $3; }
 import_start: tIMPORT aSTRING ';'		{ $$ = $2; push_import( $2, &yylloc ); }
 	;
 import: import_start imp_statements aEOF	{
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 						  record_import_statements($1, $2);
 #endif
 						  yylloc = pop_import(); }
@@ -1895,7 +1895,7 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, declarator
       error_loc("%s: too many expressions in length_is attribute\n", v->name);
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (is_attr(v->attrs, ATTR_SYSTEMHANDLE))
   {
     attr_t *attr;
@@ -1929,7 +1929,7 @@ static var_t *declare_var(attr_list_t *attrs, decl_spec_t *decl_spec, declarator
   return v;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static system_handle_attr_t *make_system_handle_attr( struct location where, const char *name, const expr_t *access )
 {
   static const struct
@@ -2267,7 +2267,7 @@ static type_t *reg_typedefs( struct location where, decl_spec_t *decl_spec, decl
         type->attrs = attrs;
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   /* Propagate the switch type from a typedef to its non-encapsulated union. */
   if (type_get_type_detect_alias(type) == TYPE_UNION &&
       is_attr(attrs, ATTR_SWITCHTYPE) &&
@@ -2656,7 +2656,7 @@ static void check_field_common(const type_t *container_type,
             if (!type_is_complete(type))
                 error_at( &arg->where, "undefined type declaration \"enum %s\"\n", type->name );
         case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case TGT_SYSTEM_HANDLE:
 #endif
         case TGT_IFACE_POINTER:
@@ -2826,7 +2826,7 @@ static void check_remoting_args(const var_t *func)
             case TGT_UNION:
             case TGT_CTXT_HANDLE:
             case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case TGT_SYSTEM_HANDLE:
 #endif
                 error_at( &arg->where, "out parameter \'%s\' of function \'%s\' is not a pointer\n", arg->name, funcname );
@@ -3018,7 +3018,7 @@ static void check_async_uuid(type_t *iface)
     iface->details.iface->async_iface = async_iface->details.iface->async_iface = async_iface;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static unsigned int parameterized_stmt_depth(const statement_t *stmt)
 {
     const typeref_list_t *params = stmt->u.type->details.parameterized.params;
@@ -3056,7 +3056,7 @@ static statement_list_t *append_parameterized_type_stmts(statement_list_t *stmts
 {
     statement_t *stmt, *next;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (stmts && parameterized_type_stmts && winmd_merges_imports())
     {
         unsigned int depth, max_depth = 0;

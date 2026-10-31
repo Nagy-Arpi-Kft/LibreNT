@@ -26,7 +26,7 @@
 #include <ntddndis.h>
 
 #ifndef IPHLPAPI_DLL_LINKAGE
-#if defined(__REACTOS__) && defined(__GNUC__)
+#if defined(__LIBRENT__) && defined(__GNUC__)
 /* FIXME: CORE-6504 */
 #define IPHLPAPI_DLL_LINKAGE
 #else

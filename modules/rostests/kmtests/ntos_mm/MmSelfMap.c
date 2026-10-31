@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ARM64 self-map invariants test
  */
@@ -42,10 +42,10 @@ VOID Test_MmSelfMap(VOID);
 #define ARM64_TEST_LEVEL_PTE        3
 
 /*
- * These constants describe the NT-style ARM64 self-map layout ReactOS now
+ * These constants describe the NT-style ARM64 self-map layout LibreNT now
  * exposes. The executable contract still discovers the recursive slot
  * dynamically and derives all addresses from that slot; the constants are
- * reference probes so the log shows when ReactOS drifts from the Win11 dump.
+ * reference probes so the log shows when LibreNT drifts from the Win11 dump.
  */
 #define ARM64_TEST_PXE_SELFMAP_INDEX 493ULL
 #define ARM64_TEST_NO_SELFMAP_INDEX  ((ULONGLONG)-1)
@@ -275,7 +275,7 @@ ProbeUlong64(
 
 static
 BOOLEAN
-IsReactOS(VOID)
+IsLibreNT(VOID)
 {
     ULONG Marker;
     NTSTATUS Status;
@@ -1296,7 +1296,7 @@ TestSystemRangeStartInvalidContract(
 
 static
 VOID
-TestObsoleteReactOSSelfMapConstantsContract(
+TestObsoleteLibreNTSelfMapConstantsContract(
     _In_ ULONGLONG SelfMapIndex)
 {
     ULONGLONG Ttbr1 = Arm64ReadTtbr1();
@@ -1306,7 +1306,7 @@ TestObsoleteReactOSSelfMapConstantsContract(
     NTSTATUS Status;
 
     ok(SelfMapIndex != ARM64_TEST_OBSOLETE_PXE_SELFMAP_INDEX,
-       "ARM64 self-map still uses the obsolete ReactOS fixed slot %I64u\n",
+       "ARM64 self-map still uses the obsolete LibreNT fixed slot %I64u\n",
        ARM64_TEST_OBSOLETE_PXE_SELFMAP_INDEX);
     if (SelfMapIndex == ARM64_TEST_OBSOLETE_PXE_SELFMAP_INDEX)
         return;
@@ -1602,7 +1602,7 @@ TestDynamicPagedPoolUpperLevelAllocation(
 
     /*
      * Span an L2/PDE boundary with real pages. This is the NT-visible ABI
-     * shape ReactOS needs to follow: page-table hierarchy entries are readable
+     * shape LibreNT needs to follow: page-table hierarchy entries are readable
      * through the dynamic recursive slot and leaf PFNs agree with the memory
      * manager's physical translation.
      */
@@ -1803,7 +1803,7 @@ TraceSelfMapCandidates(VOID)
 static
 VOID
 TraceTranslationState(
-    _In_ BOOLEAN ReactOS)
+    _In_ BOOLEAN LibreNT)
 {
     ULONGLONG Ttbr0 = Arm64ReadTtbr0();
     ULONGLONG Ttbr1 = Arm64ReadTtbr1();
@@ -1814,7 +1814,7 @@ TraceTranslationState(
     ULONG T1sz = (ULONG)((Tcr >> 16) & 0x3f);
 
     dump_trace("[arm64][MmSelfMap] survey reactos=%u nt=0x%lx pageSize=0x%lx pageShift=%ld ptrSize=%Iu cpu=%lu\n",
-          ReactOS,
+          LibreNT,
           GetNTVersion(),
           (ULONG)PAGE_SIZE,
           (LONG)PAGE_SHIFT,
@@ -2024,14 +2024,14 @@ TracePoolSurvey(
 static
 ULONGLONG
 TraceSelfMapSurvey(
-    _In_ BOOLEAN ReactOS)
+    _In_ BOOLEAN LibreNT)
 {
     ULONGLONG SelfMapIndex;
     ULONG_PTR StackSample = (ULONG_PTR)&SelfMapIndex;
     PVOID UserAfterHighest = (PVOID)((ULONG_PTR)MmHighestUserAddress + 1);
     PVOID SystemBeforeStart = (PVOID)((ULONG_PTR)MmSystemRangeStart - PAGE_SIZE);
 
-    TraceTranslationState(ReactOS);
+    TraceTranslationState(LibreNT);
     TraceMemoryGlobals();
     TraceAddressIndices("code", (PVOID)Test_MmSelfMap);
     TraceAddressIndices("data", (PVOID)&KmtDriverObject);
@@ -2045,7 +2045,7 @@ TraceSelfMapSurvey(
     SelfMapIndex = TraceSelfMapCandidates();
     if (SelfMapIndex == ARM64_TEST_NO_SELFMAP_INDEX)
     {
-        if (!ReactOS)
+        if (!LibreNT)
         {
             dump_trace("[arm64][MmSelfMap] no TTBR1-root recursive slot found on NT\n");
             TracePoolSurvey(SelfMapIndex);
@@ -2089,11 +2089,11 @@ START_TEST(MmSelfMap)
 {
     PUCHAR PoolPage;
     PVOID StackPage;
-    BOOLEAN ReactOS;
+    BOOLEAN LibreNT;
     ULONGLONG SelfMapIndex;
 
-    ReactOS = IsReactOS();
-    SelfMapIndex = TraceSelfMapSurvey(ReactOS);
+    LibreNT = IsLibreNT();
+    SelfMapIndex = TraceSelfMapSurvey(LibreNT);
     TestNtArm64TranslationRegisterContract();
     TestNtArm64MemoryAttributeContract();
     TestNtArm64MemoryGlobalContract();
@@ -2105,7 +2105,7 @@ START_TEST(MmSelfMap)
     TestSelfMapArithmeticContract(SelfMapIndex);
     TestInvalidUserBoundaryContract(SelfMapIndex);
     TestSystemRangeStartInvalidContract(SelfMapIndex);
-    TestObsoleteReactOSSelfMapConstantsContract(SelfMapIndex);
+    TestObsoleteLibreNTSelfMapConstantsContract(SelfMapIndex);
 
     TestSelectedSelfMapRanges(SelfMapIndex);
     TestSelectedSelfMapRoot(SelfMapIndex);

@@ -1,5 +1,5 @@
 
-set(FATFS_SOURCE_DIR ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/fatfs)
+set(FATFS_SOURCE_DIR ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/fatfs)
 
 add_library(fatfs_host STATIC
     ${FATFS_SOURCE_DIR}/ff.c

@@ -1,6 +1,6 @@
 function(add_d3dx9_winetest __version)
     set(module d3dx9_${__version}_winetest)
-    set(source_dir ${REACTOS_SOURCE_DIR}/modules/rostests/winetests/d3dx9_36)
+    set(source_dir ${LIBRENT_SOURCE_DIR}/modules/rostests/winetests/d3dx9_36)
 
     add_executable(${module}
         ${source_dir}/asm.c

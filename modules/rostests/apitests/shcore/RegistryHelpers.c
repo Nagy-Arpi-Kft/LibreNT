@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-only (https://spdx.org/licenses/GPL-3.0-only)
  * PURPOSE:     Torture tests for the shcore registry/policy helpers
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -58,7 +58,7 @@ Resolve(_In_opt_ PCSTR pszName, _In_ WORD wOrdinal, _In_ PCSTR pszWhat)
     return fp;
 }
 
-static const WCHAR szTestKey[] = L"Software\\ReactOS\\shcore_apitest";
+static const WCHAR szTestKey[] = L"Software\\LibreNT\\shcore_apitest";
 static const WCHAR szValue[] = L"TortureValue";
 
 static BOOL
@@ -146,7 +146,7 @@ Test_GetValueFromHKCUHKLM(void)
 
     /* A missing key must not fault */
     cbData = sizeof(dwData);
-    err = pSHRegGetValueFromHKCUHKLM(L"Software\\ReactOS\\NoSuchKeyAtAll", szValue,
+    err = pSHRegGetValueFromHKCUHKLM(L"Software\\LibreNT\\NoSuchKeyAtAll", szValue,
                                      SRRF_RT_DWORD, &dwType, &dwData, &cbData);
     ok(err != ERROR_SUCCESS, "a missing key must fail, got %ld\n", err);
 }
@@ -336,7 +336,7 @@ START_TEST(RegistryHelpers)
     pSHWindowsPolicy = (FN_SHWindowsPolicy)
         Resolve(NULL, ORD_SHWindowsPolicy, "SHWindowsPolicy");
 
-    if (!IsReactOS())
+    if (!IsLibreNT())
     {
         /*
          * On Windows these ordinals are unnamed and their meaning is release

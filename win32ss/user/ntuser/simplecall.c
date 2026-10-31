@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * PURPOSE:          NtUserCallXxx call stubs
  * FILE:             win32ss/user/ntuser/simplecall.c
  * PROGRAMERS:       Ge van Geldorp (ge@gse.nl)
@@ -8,9 +8,9 @@
  */
 
 #include <win32k.h>
-#include <reactos/dwmframe.h>
-#include <reactos/usertouch.h>
-#include <reactos/wtssession.h>
+#include <librent/dwmframe.h>
+#include <librent/usertouch.h>
+#include <librent/wtssession.h>
 
 DBG_DEFAULT_CHANNEL(UserMisc);
 
@@ -154,7 +154,7 @@ NtUserCallNoParam(DWORD Routine)
             Result = !!gfIMEShowStatus;
             break;
 
-        /* this is a ReactOS only case and is needed for gui-on-demand */
+        /* this is a LibreNT only case and is needed for gui-on-demand */
         case NOPARAM_ROUTINE_ISCONSOLEMODE:
             Result = (ScreenDeviceContext == NULL);
             break;

@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* Control Panel management
  *
  * Copyright 2001 Eric Pouech
@@ -917,7 +917,7 @@ void WINAPI RunDLL_CallEntry16( DWORD proc, HWND hwnd, HINSTANCE inst,
 
     pRunDLL_CallEntry16( proc, hwnd, inst, cmdline, cmdshow );
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /* Control Panel management
  *
  * Copyright 2001 Eric Pouech
@@ -971,7 +971,7 @@ void Control_UnloadApplet(CPlApplet* applet)
 
     if (applet->proc) applet->proc(applet->hWnd, CPL_EXIT, 0L, 0L);
     FreeLibrary(applet->hModule);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     list_remove( &applet->entry );
 #endif
     HeapFree(GetProcessHeap(), 0, applet->cmd);
@@ -980,7 +980,7 @@ void Control_UnloadApplet(CPlApplet* applet)
 
 CPlApplet*	Control_LoadApplet(HWND hWnd, LPCWSTR cmd, CPanel* panel)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ACTCTXW ActCtx = {sizeof(ACTCTX), ACTCTX_FLAG_RESOURCE_NAME_VALID};
     ULONG_PTR cookie;
     BOOL bActivated;
@@ -1013,7 +1013,7 @@ CPlApplet*	Control_LoadApplet(HWND hWnd, LPCWSTR cmd, CPanel* panel)
 
     applet->hWnd = hWnd;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     StringCchCopy(fileBuffer, MAX_PATH, applet->cmd);
     if (PathIsFileSpecW(fileBuffer))
         SearchPath(NULL, fileBuffer, NULL, MAX_PATH, fileBuffer, NULL);
@@ -1055,7 +1055,7 @@ CPlApplet*	Control_LoadApplet(HWND hWnd, LPCWSTR cmd, CPanel* panel)
 	*/
        applet->proc(hWnd, CPL_INQUIRE, i, (LPARAM)&info);
        applet->info[i].data = info.lData;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        applet->info[i].idIcon = info.idIcon;
 #endif
 
@@ -1114,12 +1114,12 @@ CPlApplet*	Control_LoadApplet(HWND hWnd, LPCWSTR cmd, CPanel* panel)
        }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (bActivated)
         DeactivateActCtx(0, cookie);
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     list_add_head( &panel->applets, &applet->entry );
 #endif
 
@@ -1132,7 +1132,7 @@ CPlApplet*	Control_LoadApplet(HWND hWnd, LPCWSTR cmd, CPanel* panel)
     return NULL;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 #define IDC_LISTVIEW        1000
 #define IDC_STATUSBAR       1001
@@ -1652,7 +1652,7 @@ static	void	Control_DoWindow(CPanel* panel, HWND hWnd, HINSTANCE hInst)
 #else
 static	void	Control_DoWindow(CPanel* panel, HWND hWnd, HINSTANCE hInst)
 {
-    /* NOTE: If Explorer shell is not available, use ReactOS's alternative file browser instead */
+    /* NOTE: If Explorer shell is not available, use LibreNT's alternative file browser instead */
     ShellExecuteW(NULL,
                   L"open",
                   GetShellWindow() ? L"explorer.exe" : L"filebrowser.exe",
@@ -1662,7 +1662,7 @@ static	void	Control_DoWindow(CPanel* panel, HWND hWnd, HINSTANCE hInst)
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 /** Structure for in and out data when
  *  search for the cpl dialog of first instance
@@ -1784,7 +1784,7 @@ Control_ShowAppletInTaskbar(CPlApplet* applet, UINT index)
     CoUninitialize();
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 static	void	Control_DoLaunch(CPanel* panel, HWND hWnd, LPCWSTR wszCmd)
    /* forms to parse:
@@ -1796,7 +1796,7 @@ static	void	Control_DoLaunch(CPanel* panel, HWND hWnd, LPCWSTR wszCmd)
     *   "a path\foo.cpl"
     */
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     LPWSTR	buffer;
     LPWSTR	beg = NULL;
     LPWSTR	end;
@@ -2103,7 +2103,7 @@ void WINAPI Control_RunDLLW(HWND hWnd, HINSTANCE hInst, LPCWSTR cmd, DWORD nCmdS
     TRACE("(%p, %p, %s, 0x%08x)\n",
 	  hWnd, hInst, debugstr_w(cmd), nCmdShow);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     memset(&panel, 0, sizeof(panel));
     list_init( &panel.applets );
 #endif
@@ -2150,7 +2150,7 @@ HRESULT WINAPI Control_FillCache_RunDLLA(HWND hWnd, HANDLE hModule, DWORD w, DWO
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  * RunDll_CallEntry16                [SHELL32.122]
  * the name is OK (when written with Dll, and not DLL as in Wine!)
@@ -2170,7 +2170,7 @@ void WINAPI RunDll_CallEntry16( DWORD proc, HWND hwnd, HINSTANCE inst,
  * hMod("DeskCp16.Dll"), pFunc("CplApplet"), 0, 1, 0xc, 0
  *
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 DWORD WINAPI CallCPLEntry16(HMODULE hMod, FARPROC pFunc, DWORD dw3, DWORD dw4, DWORD dw5, DWORD dw6)
 #else
 DECLARE_HANDLE(FARPROC16);
@@ -2180,4 +2180,4 @@ LRESULT WINAPI CallCPLEntry16(HINSTANCE hMod, FARPROC16 pFunc, HWND dw3, UINT dw
     FIXME("(%p, %p, %08x, %08x, %08x, %08x): stub.\n", hMod, pFunc, dw3, dw4, dw5, dw6);
     return 0x0deadbee;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

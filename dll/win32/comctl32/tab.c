@@ -278,7 +278,7 @@ static LRESULT TAB_SetCurFocus (TAB_INFO *infoPtr, INT iItem)
   if (iItem < 0) {
       infoPtr->uFocus = -1;
       if (infoPtr->iSelected != -1) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           TAB_GetItem(infoPtr, infoPtr->iSelected)->dwState &= ~TCIS_BUTTONPRESSED;
 #endif
           infoPtr->iSelected = -1;
@@ -309,7 +309,7 @@ static LRESULT TAB_SetCurFocus (TAB_INFO *infoPtr, INT iItem)
         NotifyWinEvent(EVENT_OBJECT_FOCUS, infoPtr->hwnd, OBJID_CLIENT, iItem + 1);
       }
     } else {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       INT oldItem = infoPtr->iSelected;
 #endif
       INT oldFocus = infoPtr->uFocus;
@@ -317,12 +317,12 @@ static LRESULT TAB_SetCurFocus (TAB_INFO *infoPtr, INT iItem)
         infoPtr->uFocus = iItem;
         if (oldFocus != -1) {
           if (!TAB_SendSimpleNotify(infoPtr, TCN_SELCHANGING))  {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (oldItem != -1)
               TAB_GetItem(infoPtr, oldItem)->dwState &= ~TCIS_BUTTONPRESSED;
 #endif
             infoPtr->iSelected = iItem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             TAB_GetItem(infoPtr, iItem)->dwState |= TCIS_BUTTONPRESSED;
 #endif
             TAB_SendSimpleNotify(infoPtr, TCN_SELCHANGE);
@@ -1252,7 +1252,7 @@ static INT TAB_SetItemBounds (TAB_INFO *infoPtr)
       SIZE size;
       HRESULT hr = E_FAIL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!(infoPtr->dwStyle & TCS_BUTTONS))
       {
         HTHEME theme = GetWindowTheme(infoPtr->hwnd);
@@ -1599,7 +1599,7 @@ TAB_DrawItemInterior(const TAB_INFO *infoPtr, HDC hdc, INT iItem, RECT *drawRect
   HPEN   holdPen;
   INT    oldBkMode;
   HFONT  hOldFont;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
 HTHEME    theme = GetWindowTheme (infoPtr->hwnd);
 #endif
   
@@ -1818,7 +1818,7 @@ HTHEME    theme = GetWindowTheme (infoPtr->hwnd);
     /* get the rectangle that the text fits in */
     if (item->pszText)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       HRESULT hr = E_FAIL;
       HTHEME textTheme = GetWindowTheme(infoPtr->hwnd);
 
@@ -1993,7 +1993,7 @@ HTHEME    theme = GetWindowTheme (infoPtr->hwnd);
       TRACE("for <%s>, c_o_h=%d, c_o_v=%d, draw=(%s), textlen=%ld\n",
 	  debugstr_w(item->pszText), center_offset_h, center_offset_v,
           wine_dbgstr_rect(drawRect), (rcText.right-rcText.left));
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
       if (theme && item->pszText)
       {
           int partIndex = iItem == infoPtr->iSelected ? TABP_TABITEM : TABP_TOPTABITEM;
@@ -2075,7 +2075,7 @@ static void TAB_DrawItemThemeBackground(const TAB_INFO *infoPtr, HDC hdc, INT iI
     if (selectedRect->right == rect.right)
         partIndex += 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!IsWindowEnabled(infoPtr->hwnd))
         stateId = TIS_DISABLED;
     else
@@ -2887,7 +2887,7 @@ TAB_SetItemT (TAB_INFO *infoPtr, INT iItem, LPTCITEMW tabItem, BOOL bUnicode)
 
   /* Update and repaint tabs */
   TAB_SetItemBounds(infoPtr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   InvalidateRect(infoPtr->hwnd, NULL, TRUE);
 #else
   TAB_InvalidateTabArea(infoPtr);

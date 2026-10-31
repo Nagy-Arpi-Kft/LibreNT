@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * PURPOSE:         Switch to boot stack and enter C wrapper
  */
 

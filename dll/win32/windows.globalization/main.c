@@ -341,7 +341,7 @@ static HRESULT hstring_vector_create(HSTRING *values, SIZE_T count, IVectorView_
     impl->IVectorView_HSTRING_iface.lpVtbl = &hstring_vector_vtbl;
     impl->IIterable_HSTRING_iface.lpVtbl = &iterable_view_hstring_vtbl;
     impl->count = count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (count) memcpy(impl->values, values, count * sizeof(HSTRING));
 #else
     memcpy(impl->values, values, count * sizeof(HSTRING));
@@ -729,7 +729,7 @@ static HRESULT STDMETHODCALLTYPE globalization_preferences_GetTrustLevel(
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT hstring_vector_create_one(const WCHAR *str, IVectorView_HSTRING **out)
 {
     HSTRING hstring;
@@ -745,7 +745,7 @@ static HRESULT hstring_vector_create_one(const WCHAR *str, IVectorView_HSTRING *
 static HRESULT STDMETHODCALLTYPE globalization_preferences_get_Calendars(
         IGlobalizationPreferencesStatics *iface, IVectorView_HSTRING **out)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *name;
     DWORD type = CAL_GREGORIAN;
 
@@ -776,7 +776,7 @@ static HRESULT STDMETHODCALLTYPE globalization_preferences_get_Calendars(
 static HRESULT STDMETHODCALLTYPE globalization_preferences_get_Clocks(
         IGlobalizationPreferencesStatics *iface, IVectorView_HSTRING **out)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR format[80];
 
     TRACE("iface %p, out %p.\n", iface, out);
@@ -794,7 +794,7 @@ static HRESULT STDMETHODCALLTYPE globalization_preferences_get_Clocks(
 static HRESULT STDMETHODCALLTYPE globalization_preferences_get_Currencies(
         IGlobalizationPreferencesStatics *iface, IVectorView_HSTRING **out)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR currency[16];
 
     TRACE("iface %p, out %p.\n", iface, out);

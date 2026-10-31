@@ -31,7 +31,7 @@
 
 #include "setupapi_private.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 #endif
 
@@ -278,7 +278,7 @@ BOOL WINAPI SetupQueryDrivesInDiskSpaceListW(HDSKSPC handle, PWSTR buffer, DWORD
         {
             for (copied = 0; copied + 3 <= size && copied + 3 < len; copied += 3)
                 memcpy(buffer + copied, drives + copied, 3 * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (required_size)
                 *required_size = min(len, copied + 4);
 #endif
@@ -319,7 +319,7 @@ BOOL WINAPI SetupQueryDrivesInDiskSpaceListA(HDSKSPC handle, PSTR buffer, DWORD 
             buffer[i] = (char)drives[i];
         if (size < len)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (required_size)
                 *required_size = min(len, copied + 4);
 #endif
@@ -359,7 +359,7 @@ BOOL WINAPI SetupAddToDiskSpaceListA(HDSKSPC handle, const char *file,
 {
     WCHAR *fileW = strdupAtoW(file);
     BOOL ret = SetupAddToDiskSpaceListW(handle, fileW, size, op, reserved1, reserved2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HeapFree(GetProcessHeap(), 0, fileW);
 #else
     free(fileW);

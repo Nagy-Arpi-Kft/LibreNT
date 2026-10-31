@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Raspberry Pi 5 (BCM2712) display miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 (BCM2712) display miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     BCM2712 HVS (Hardware Video Scaler) programming -
  *              multi-plane display-list generation and scanout ownership.

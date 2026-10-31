@@ -138,7 +138,7 @@ VideoPortNotification(
         case RequestComplete:
             /*
              * The miniport has completed processing a VRP (video request
-             * packet). In the synchronous ReactOS model, HwStartIO returns
+             * packet). In the synchronous LibreNT model, HwStartIO returns
              * after filling in the status block, so this is a no-op.
              * On Windows this signals the port driver to complete the
              * associated IRP.
@@ -148,7 +148,7 @@ VideoPortNotification(
         case NextRequest:
             /*
              * The miniport is ready to process the next IOCTL/VRP.
-             * ReactOS dispatches IOCTLs synchronously so this is a no-op.
+             * LibreNT dispatches IOCTLs synchronously so this is a no-op.
              */
             break;
 

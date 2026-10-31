@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Management Console
+ * PROJECT:     LibreNT Management Console
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Recent file entry class
  * COPYRIGHT:   Copyright 2026 Eric Kohl (eric.kohl@reactos.org)

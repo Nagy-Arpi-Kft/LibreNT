@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     dxgkrnl-side client for the typed dxgmms2 provider ABI v3 boundary
  */
@@ -7,7 +7,7 @@
 #ifndef _DXGKRNL_DXGMMS2_CLIENT_H_
 #define _DXGKRNL_DXGMMS2_CLIENT_H_
 
-#include <reactos/drivers/directx/dxgmms2.h>
+#include <librent/drivers/directx/dxgmms2.h>
 
 NTSTATUS DxgkpMms2Initialize(VOID);
 NTSTATUS DxgkpMms2Uninitialize(VOID);

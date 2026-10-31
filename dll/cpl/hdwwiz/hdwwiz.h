@@ -12,7 +12,7 @@
 #include <rpc.h>
 #include <setupapi.h>
 #include <cfgmgr32.h>
-#include <reactos/dll/devmgr/devmgr.h>
+#include <librent/dll/devmgr/devmgr.h>
 #include <cpl.h>
 
 #define NDEBUG

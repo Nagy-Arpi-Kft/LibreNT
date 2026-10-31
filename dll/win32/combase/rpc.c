@@ -34,7 +34,7 @@
 
 #include "irpcss.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/irot.h>
 #endif
 
@@ -126,7 +126,7 @@ struct message_state
     /* client only */
     HWND target_hwnd;
     DWORD target_tid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     OXID target_oxid;
 #endif
     struct dispatch_params params;
@@ -382,7 +382,7 @@ HRESULT rpc_revoke_local_server(unsigned int cookie)
     RPCSS_CALL_END
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG CALLBACK server_invoke_filter(EXCEPTION_POINTERS *eptr)
 {
     ULONG_PTR mode = get_global_option(COMGLB_EXCEPTION_HANDLING);
@@ -406,7 +406,7 @@ static HRESULT rpcss_get_class_object(REFCLSID rclsid, PMInterfacePointer *objre
     RPCSS_CALL_END
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT create_local_service(REFCLSID rclsid)
 {
     TRACE("Attempting to start Local service for %s\n", debugstr_guid(rclsid));
@@ -766,7 +766,7 @@ static HRESULT unmarshal_ORPCTHAT(RPC_MESSAGE *msg, ORPCTHAT *orpcthat, ORPC_EXT
 static ULONG ChannelHooks_ClientGetSize(SChannelHookCallInfo *info, struct channel_hook_buffer_data **data,
         unsigned int *hook_count, ULONG *extension_count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SChannelHookCallInfo hook_iid;
 #endif
     struct channel_hook_entry *entry;
@@ -776,7 +776,7 @@ static ULONG ChannelHooks_ClientGetSize(SChannelHookCallInfo *info, struct chann
     *hook_count = 0;
     *extension_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&hook_iid, 0, sizeof(hook_iid));
     hook_iid.iid = info->iid;
 #endif
@@ -795,7 +795,7 @@ static ULONG ChannelHooks_ClientGetSize(SChannelHookCallInfo *info, struct chann
     {
         ULONG extension_size = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IChannelHook_ClientGetSize(entry->hook, &entry->id, &hook_iid.iid, &extension_size);
 #else
         IChannelHook_ClientGetSize(entry->hook, &entry->id, &info->iid, &extension_size);
@@ -826,12 +826,12 @@ static unsigned char * ChannelHooks_ClientFillBuffer(SChannelHookCallInfo *info,
     unsigned char *buffer, struct channel_hook_buffer_data *data,
     unsigned int hook_count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SChannelHookCallInfo hook_iid;
 #endif
     struct channel_hook_entry *entry;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&hook_iid, 0, sizeof(hook_iid));
     hook_iid.iid = info->iid;
 #endif
@@ -852,7 +852,7 @@ static unsigned char * ChannelHooks_ClientFillBuffer(SChannelHookCallInfo *info,
         if (!extension_size)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IChannelHook_ClientFillBuffer(entry->hook, &entry->id, &hook_iid.iid,
             &extension_size, buffer + FIELD_OFFSET(WIRE_ORPC_EXTENT, data[0]));
 #else
@@ -879,13 +879,13 @@ static void ChannelHooks_ServerNotify(SChannelHookCallInfo *info,
     DWORD lDataRep, WIRE_ORPC_EXTENT *first_wire_orpc_extent,
     ULONG extension_count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SChannelHookCallInfo hook_iid;
 #endif
     struct channel_hook_entry *entry;
     ULONG i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&hook_iid, 0, sizeof(hook_iid));
     hook_iid.iid = info->iid;
 #endif
@@ -904,7 +904,7 @@ static void ChannelHooks_ServerNotify(SChannelHookCallInfo *info,
         }
         if (i == extension_count) wire_orpc_extent = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IChannelHook_ServerNotify(entry->hook, &entry->id, &hook_iid.iid,
 #else
         IChannelHook_ServerNotify(entry->hook, &entry->id, &info->iid,
@@ -921,7 +921,7 @@ static ULONG ChannelHooks_ServerGetSize(SChannelHookCallInfo *info,
                                         struct channel_hook_buffer_data **data, unsigned int *hook_count,
                                         ULONG *extension_count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SChannelHookCallInfo hook_iid;
 #endif
     struct channel_hook_entry *entry;
@@ -931,7 +931,7 @@ static ULONG ChannelHooks_ServerGetSize(SChannelHookCallInfo *info,
     *hook_count = 0;
     *extension_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&hook_iid, 0, sizeof(hook_iid));
     hook_iid.iid = info->iid;
 #endif
@@ -950,7 +950,7 @@ static ULONG ChannelHooks_ServerGetSize(SChannelHookCallInfo *info,
     {
         ULONG extension_size = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IChannelHook_ServerGetSize(entry->hook, &entry->id, &hook_iid.iid, S_OK,
                                    &extension_size);
 #else
@@ -983,12 +983,12 @@ static unsigned char * ChannelHooks_ServerFillBuffer(SChannelHookCallInfo *info,
                                                      unsigned char *buffer, struct channel_hook_buffer_data *data,
                                                      unsigned int hook_count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SChannelHookCallInfo hook_iid;
 #endif
     struct channel_hook_entry *entry;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&hook_iid, 0, sizeof(hook_iid));
     hook_iid.iid = info->iid;
 #endif
@@ -1009,7 +1009,7 @@ static unsigned char * ChannelHooks_ServerFillBuffer(SChannelHookCallInfo *info,
         if (!extension_size)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IChannelHook_ServerFillBuffer(entry->hook, &entry->id, &hook_iid.iid,
                                       &extension_size, buffer + FIELD_OFFSET(WIRE_ORPC_EXTENT, data[0]),
                                       S_OK);
@@ -1038,13 +1038,13 @@ static void ChannelHooks_ClientNotify(SChannelHookCallInfo *info,
                                       DWORD lDataRep, WIRE_ORPC_EXTENT *first_wire_orpc_extent,
                                       ULONG extension_count, HRESULT hrFault)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SChannelHookCallInfo hook_iid;
 #endif
     struct channel_hook_entry *entry;
     ULONG i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&hook_iid, 0, sizeof(hook_iid));
     hook_iid.iid = info->iid;
 #endif
@@ -1063,7 +1063,7 @@ static void ChannelHooks_ClientNotify(SChannelHookCallInfo *info,
         }
         if (i == extension_count) wire_orpc_extent = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IChannelHook_ClientNotify(entry->hook, &entry->id, &hook_iid.iid,
                                   wire_orpc_extent ? wire_orpc_extent->size : 0,
                                   wire_orpc_extent ? wire_orpc_extent->data : NULL,
@@ -1321,7 +1321,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_GetBuffer(LPRPCCHANNELBUFFER iface,
     message_state->channel_hook_info.pObject = NULL; /* only present on server-side */
     message_state->target_hwnd = NULL;
     message_state->target_tid = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     message_state->target_oxid = 0;
 #endif
     memset(&message_state->params, 0, sizeof(message_state->params));
@@ -1359,7 +1359,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_GetBuffer(LPRPCCHANNELBUFFER iface,
             message_state->params.bypass_rpcrt = TRUE;
             message_state->target_hwnd = apartment_getwindow(apt);
             message_state->target_tid = apt->tid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             message_state->target_oxid = apartment_getoxid(apt);
 #endif
             /* we assume later on that this being non-NULL is the indicator that
@@ -1440,7 +1440,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_GetBuffer(LPRPCCHANNELBUFFER iface,
 
     TRACE("-- %ld\n", status);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status == RPC_S_UNKNOWN_IF)
         return RPC_E_DISCONNECTED;
 #endif
@@ -1495,7 +1495,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_SendReceive(LPRPCCHANNELBUFFER ifac
 
     TRACE("%p, iMethod %ld\n", olemsg, olemsg->iMethod);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!apt)
         return CO_E_NOTINITIALIZED;
 #endif
@@ -1541,7 +1541,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_SendReceive(LPRPCCHANNELBUFFER ifac
     message_state->params.msg = olemsg;
     if (message_state->params.bypass_rpcrt)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         struct apartment *target_apt;
         BOOL posted = FALSE;
 #endif
@@ -1549,7 +1549,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_SendReceive(LPRPCCHANNELBUFFER ifac
 
         msg->ProcNum &= ~RPC_FLAGS_VALID_BIT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         target_apt = apartment_findfromoxid(message_state->target_oxid);
         if (target_apt)
         {
@@ -1612,7 +1612,7 @@ static HRESULT WINAPI ClientRpcChannelBuffer_SendReceive(LPRPCCHANNELBUFFER ifac
     orpcthat.extensions = NULL;
 
     TRACE("RPC call status: %#lx\n", status);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status == RPC_S_UNKNOWN_IF)
         hr = RPC_E_DISCONNECTED;
     else
@@ -2123,7 +2123,7 @@ void rpc_execute_call(struct dispatch_params *params)
     old_causality_id = tlsdata->causality_id;
     tlsdata->causality_id = orpcthis.cid;
     tlsdata->pending_call_count_server++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     __TRY
     {
         params->hr = IRpcStubBuffer_Invoke(params->stub, params->msg, params->chan);
@@ -2194,14 +2194,14 @@ static void __RPC_STUB dispatch_rpc(RPC_MESSAGE *msg)
      * apartment (i.e. the one that pumps messages to the window) */
     if (!apt->multi_threaded)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         BOOL posted;
 #endif
         params->handle = CreateEventW(NULL, FALSE, FALSE, NULL);
 
         TRACE("Calling apartment thread %#lx...\n", apt->tid);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         EnterCriticalSection(&apt->cs);
         posted = !apt->leaving && PostMessageW(apartment_getwindow(apt), DM_EXECUTERPC, 0, (LPARAM)params);
         LeaveCriticalSection(&apt->cs);

@@ -317,7 +317,7 @@ Return Value:
                 // Set audio clock configuration to use a 100 MHz PWM clock.
                 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 // PLLC follows the core clock; use the fixed 500 MHz PLLD source.
                 deviceContext->pwmClockConfig.ClockSource = BCM_PWM_CLOCKSOURCE_PLLD;
                 deviceContext->pwmClockConfig.Divisor = 5;
@@ -365,7 +365,7 @@ Return Value:
                 // Note: We do not calculate at runtime to prevent usage of floating point operations.
                 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 NT_ASSERT(deviceContext->pwmClockConfig.ClockSource == BCM_PWM_CLOCKSOURCE_PLLD);
                 NT_ASSERT(deviceContext->pwmClockConfig.Divisor == 5);
 #else
@@ -455,7 +455,7 @@ Return Value:
                     // Finally we set all NEXTCONBK values in the packet list to 0.
                     //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     deviceContext->dmaPacketLinkInfo[packetIndex].LinkValue =
                         deviceContext->dmaCbPa.LowPart +
                         packetIndex * 2 * sizeof(DMA_CB) +

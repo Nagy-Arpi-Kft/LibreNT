@@ -31,7 +31,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 WINE_DECLARE_DEBUG_CHANNEL(string);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DECLSPEC_HIDDEN HINSTANCE shlwapi_hInstance = 0;
 DECLSPEC_HIDDEN DWORD SHLWAPI_ThreadRef_index = TLS_OUT_OF_INDEXES;
 extern CRITICAL_SECTION g_csZoneMgrLock;
@@ -164,7 +164,7 @@ int WINAPIV wnsprintfW(LPWSTR lpOut, int cchLimitIn, LPCWSTR lpFmt, ...)
  */
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID fImpLoad)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	TRACE("%p 0x%x %p\n", hinstDLL, fdwReason, fImpLoad);
 	switch (fdwReason)
 	{
@@ -261,7 +261,7 @@ UINT WINAPI WhichPlatform(void)
     return state;
 }
 
-#ifndef __REACTOS__ /* See propbag.cpp */
+#ifndef __LIBRENT__ /* See propbag.cpp */
 /***********************************************************************
  *             SHGetViewStatePropertyBag [SHLWAPI.515]
  */
@@ -278,7 +278,7 @@ HRESULT WINAPI SHGetViewStatePropertyBag(PCIDLIST_ABSOLUTE pidl, PCWSTR bag_name
  */
 BOOL WINAPI SHIsLowMemoryMachine(DWORD type)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MEMORYSTATUS status;
     static int is_low = -1;
     TRACE("(0x%08x)\n", type);

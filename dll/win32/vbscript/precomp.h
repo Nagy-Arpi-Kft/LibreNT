@@ -2,7 +2,7 @@
 #ifndef _VBSCRIPT_PRECOMP_H
 #define _VBSCRIPT_PRECOMP_H
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/config.h>
 #include <math.h>
 #include <wine/port.h>
@@ -17,7 +17,7 @@ double __cdecl trunc(double);
 
 #include "vbscript.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wingdi.h>
 #endif
 #include <winnls.h>

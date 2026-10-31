@@ -26,13 +26,13 @@
 #include "netiodef.h"
 #include "wine/nsi.h"
 #include "wine/debug.h"
-#ifdef __REACTOS__
-#include "nsi_reactos.h"
+#ifdef __LIBRENT__
+#include "nsi_librent.h"
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(nsi);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HANDLE nsi_device = INVALID_HANDLE_VALUE;
 static HANDLE nsi_device_async = INVALID_HANDLE_VALUE;
 #endif
@@ -43,12 +43,12 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, void *reserved)
     {
         case DLL_PROCESS_ATTACH:
             DisableThreadLibraryCalls( hinst );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!nsi_reactos_init()) return FALSE;
 #endif
             break;
         case DLL_PROCESS_DETACH:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!reserved) nsi_reactos_cleanup();
 #else
             if (nsi_device != INVALID_HANDLE_VALUE) CloseHandle( nsi_device );
@@ -59,7 +59,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, void *reserved)
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static inline HANDLE get_nsi_device( BOOL async )
 {
     HANDLE *cached_device = async ? &nsi_device_async : &nsi_device;
@@ -132,7 +132,7 @@ err:
 
 DWORD WINAPI NsiCancelChangeNotification( OVERLAPPED *ovr )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return nsi_reactos_cancel_change_notification( ovr );
 #else
     DWORD err = ERROR_SUCCESS;
@@ -181,7 +181,7 @@ DWORD WINAPI NsiEnumerateObjectsAllParameters( DWORD unk, DWORD unk2, const NPI_
 
 DWORD WINAPI NsiEnumerateObjectsAllParametersEx( struct nsi_enumerate_all_ex *params )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return nsi_reactos_enumerate_all( params );
 #else
     DWORD out_size, received, err = ERROR_SUCCESS;
@@ -266,7 +266,7 @@ DWORD WINAPI NsiGetAllParameters( DWORD unk, const NPI_MODULEID *module, DWORD t
 
 DWORD WINAPI NsiGetAllParametersEx( struct nsi_get_all_parameters_ex *params )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return nsi_reactos_get_all( params );
 #else
     HANDLE device = get_nsi_device( FALSE );
@@ -339,7 +339,7 @@ DWORD WINAPI NsiGetParameter( DWORD unk, const NPI_MODULEID *module, DWORD table
 
 DWORD WINAPI NsiGetParameterEx( struct nsi_get_parameter_ex *params )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return nsi_reactos_get_parameter( params );
 #else
     HANDLE device = get_nsi_device( FALSE );
@@ -384,7 +384,7 @@ DWORD WINAPI NsiRequestChangeNotification( DWORD unk, const NPI_MODULEID *module
 
 DWORD WINAPI NsiRequestChangeNotificationEx( struct nsi_request_change_notification_ex *params )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return nsi_reactos_request_change_notification( params );
 #else
     HANDLE device = get_nsi_device( TRUE );

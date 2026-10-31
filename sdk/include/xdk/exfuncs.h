@@ -778,7 +778,7 @@ ExInitializeDriverRuntime(
   _In_ ULONG RuntimeFlags)
 {
   /*
-   * ReactOS's ExAllocatePoolZero fallback always clears allocations itself.
+   * LibreNT's ExAllocatePoolZero fallback always clears allocations itself.
    * The current pool implementation does not yet expose the per-image NX
    * opt-in variables used by the down-level Windows WDK inline.
    */

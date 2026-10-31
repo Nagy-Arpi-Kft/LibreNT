@@ -8,7 +8,7 @@
 #include <ks.h>
 #include <ksmedia.h>
 #include <mmsystem.h>
-#include <reactos/libs/sound/wavefmt.h>
+#include <librent/libs/sound/wavefmt.h>
 
 #include "mmixer.h"
 

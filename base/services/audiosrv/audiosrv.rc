@@ -1,4 +1,4 @@
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Audio Service"
-#define REACTOS_STR_INTERNAL_NAME     "audiosrv"
-#define REACTOS_STR_ORIGINAL_FILENAME "audiosrv.dll"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Audio Service"
+#define LIBRENT_STR_INTERNAL_NAME     "audiosrv"
+#define LIBRENT_STR_ORIGINAL_FILENAME "audiosrv.dll"
+#include <librent/version.rc>

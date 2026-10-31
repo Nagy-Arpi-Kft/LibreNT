@@ -69,7 +69,7 @@ static const LPCWSTR LocalizedKeys[] =
     L"CA",
     L"ADDRESSBOOK",
     L"TrustedPublisher",
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     L"Disallowed",
     L"Trust",
     L"UserDS",

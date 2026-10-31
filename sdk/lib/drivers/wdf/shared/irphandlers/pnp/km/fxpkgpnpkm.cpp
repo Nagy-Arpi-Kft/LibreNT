@@ -307,7 +307,7 @@ FxPkgPnp::WriteStateToRegistry(
     ZwSetValueKey(RegKey, ValueName, 0, REG_DWORD, &Value, sizeof(Value));
 }
 
-// NTSTATUS __REACTOS__
+// NTSTATUS __LIBRENT__
 // FxPkgPnp::UpdateWmiInstanceForS0Idle(
 //     __in FxWmiInstanceAction Action
 //     )
@@ -401,7 +401,7 @@ FxPkgPnp::ReadRegistryS0Idle(
     }
 }
 
-// NTSTATUS __REACTOS__
+// NTSTATUS __LIBRENT__
 // FxPkgPnp::UpdateWmiInstanceForSxWake(
 //     __in FxWmiInstanceAction Action
 //     )

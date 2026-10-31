@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Process-manager state used by modern graphics drivers
  * COPYRIGHT:       Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -31,7 +31,7 @@ static
 VOID
 TestProcessFaultState(VOID)
 {
-    BOOLEAN IsReactOS;
+    BOOLEAN IsLibreNT;
     UCHAR BeforeCounts = 0;
     UCHAR ExpectedCounts;
     ULONG BeforeFlags = 0;
@@ -40,8 +40,8 @@ TestProcessFaultState(VOID)
     ULONG ReturnLength;
     NTSTATUS Status;
 
-    IsReactOS = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
-    if (IsReactOS)
+    IsLibreNT = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
+    if (IsLibreNT)
     {
         BeforeCounts = ProcessFaultCounts(PsGetCurrentProcess());
         BeforeFlags = PsGetCurrentProcess()->Flags3;
@@ -61,7 +61,7 @@ TestProcessFaultState(VOID)
     trace("ProcessFaultInformation after returned 0x%08lx, length %lu, value 0x%08lx\n", Status, ReturnLength, FaultQuery);
     ok_eq_hex(Status, STATUS_INVALID_INFO_CLASS);
 
-    if (skip(IsReactOS, "native EPROCESS fields are intentionally opaque\n"))
+    if (skip(IsLibreNT, "native EPROCESS fields are intentionally opaque\n"))
         return;
 
     ExpectedCounts = BeforeCounts | 0x40;

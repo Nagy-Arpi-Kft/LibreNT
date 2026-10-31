@@ -21,7 +21,7 @@ Revision History:
 
 --*/
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "stddef.h"
 #include "ntddk.h"
 #include "scsi.h"
@@ -36,7 +36,7 @@ Revision History:
 #include "classp.h"
 #include <wmistr.h>
 #include <wmidata.h>
-// #include <classlog.h> __REACTOS__
+// #include <classlog.h> __LIBRENT__
 
 #ifdef DEBUG_USE_WPP
 #include "classwmi.tmh"
@@ -87,7 +87,7 @@ ClassFindInternalGuid(
 #pragma alloc_text(PAGE, ClassFindInternalGuid)
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define MSStorageDriver_ClassErrorLogGuid {0xD5A9A51E, 0x03F9, 0x404d, {0x97, 0x22, 0x15, 0xF9, 0x0E, 0xB0, 0x70, 0x38}}
 #endif
 
@@ -217,7 +217,7 @@ Return Value:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassSystemControl(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
@@ -816,7 +816,7 @@ Return Value:
 --*/
 {
     NTSTATUS status;
-#ifndef __REACTOS__ // WMI in not a thing on ReactOS yet
+#ifndef __LIBRENT__ // WMI in not a thing on LibreNT yet
     ULONG sizeNeeded = 0, i;
     PFUNCTIONAL_DEVICE_EXTENSION fdoExt = DeviceObject->DeviceExtension;
     if (GuidIndex == MSStorageDriver_ClassErrorLogGuid_Index) {
@@ -1005,7 +1005,7 @@ Return Value:
 --*/
 SCSIPORT_API
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassWmiCompleteRequest(
     _In_ PDEVICE_OBJECT DeviceObject,
     _Inout_ PIRP Irp,
@@ -1167,7 +1167,7 @@ Return Value:
 --*/
 _IRQL_requires_max_(DISPATCH_LEVEL)
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassWmiFireEvent(
     _In_ PDEVICE_OBJECT DeviceObject,
     _In_ LPGUID Guid,

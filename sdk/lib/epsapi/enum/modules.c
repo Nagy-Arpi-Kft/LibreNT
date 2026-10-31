@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
  * LICENSE:     See LGPL.txt in the top level directory
- * PROJECT:     ReactOS system libraries
- * FILE:        reactos/lib/epsapi/enum/module.c
+ * PROJECT:     LibreNT system libraries
+ * FILE:        librent/lib/epsapi/enum/module.c
  * PURPOSE:     Enumerate process modules
  * PROGRAMMER:  KJK::Hyperion <noog@libero.it>
  * UPDATE HISTORY:

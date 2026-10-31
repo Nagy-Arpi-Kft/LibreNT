@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2005 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /*
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            ntoskrnl/kdbg/kdb_cli.c
  * PURPOSE:         Kernel debugger command line interface
  * PROGRAMMER:      Gregor Anich (blight@blight.eu.org)
@@ -420,7 +420,7 @@ ComponentTable[] =
     KD_DEBUG_PRINT_FILTER(DFSC),
     KD_DEBUG_PRINT_FILTER(WOW64),
 //
-// Components specified in Vista+, some of which we also use in ReactOS
+// Components specified in Vista+, some of which we also use in LibreNT
 //
     KD_DEBUG_PRINT_FILTER(ALPC),
     KD_DEBUG_PRINT_FILTER(WDI),
@@ -7877,7 +7877,7 @@ KdbpCmdVersion(ULONG Argc, PCHAR Argv[])
         return TRUE;
     }
 
-    KdbpPrint("ReactOS NT %lu.%lu build %lu  kernel %p  processors %u  current %u\n", NtMajorVersion, NtMinorVersion, NtBuildNumber & 0xffff, &__ImageBase, (ULONG)(UCHAR)KeNumberProcessors, KeGetCurrentProcessorNumber());
+    KdbpPrint("LibreNT NT %lu.%lu build %lu  kernel %p  processors %u  current %u\n", NtMajorVersion, NtMinorVersion, NtBuildNumber & 0xffff, &__ImageBase, (ULONG)(UCHAR)KeNumberProcessors, KeGetCurrentProcessorNumber());
     KdbpPrint("KD %u.%u protocol %u secondary %u machine 0x%04x flags 0x%04x kernbase %p\n",
               KdVersionBlock.MajorVersion,
               KdVersionBlock.MinorVersion,

@@ -81,7 +81,7 @@ static struct winetest_shared_data *test_data;
 static HANDLE monitor_thread, monitor_stop;
 static HANDLE test_data_mapping;
 static HANDLE okfile;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR okfile_path[MAX_PATH];
 #endif
 
@@ -3744,7 +3744,7 @@ void dinput_test_init_( const char *file, int line )
     test_data->winetest_report_success = winetest_report_success;
     test_data->winetest_debug = winetest_debug;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetWindowsDirectoryW( okfile_path, ARRAY_SIZE(okfile_path) );
     lstrcatW( okfile_path, L"\\winetest_dinput_okfile" );
     okfile = CreateFileW( okfile_path, GENERIC_READ | GENERIC_WRITE,
@@ -3768,7 +3768,7 @@ void dinput_test_exit(void)
     UnmapViewOfFile( test_data );
     CloseHandle( test_data_mapping );
     CloseHandle( okfile );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DeleteFileW( okfile_path );
 #else
     DeleteFileW( L"C:\\windows\\winetest_dinput_okfile" );

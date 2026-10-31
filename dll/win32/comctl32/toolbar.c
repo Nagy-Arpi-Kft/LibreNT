@@ -68,7 +68,7 @@
  *
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define COBJMACROS
 #endif
 #include <stdarg.h>
@@ -83,7 +83,7 @@
 #include "commctrl.h"
 #include "comctl32.h"
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "ole2.h"
 #endif
 
@@ -142,7 +142,7 @@ typedef struct
     INT      nOldHit;
     INT      nHotItem;        /* index of the "hot" item */
     SIZE     szPadding;       /* padding values around button */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SIZE     szBarPadding;    /* padding values around the toolbar */
     SIZE     szSpacing;       /* spacing values between buttons */
     BOOL     bHotArrow;
@@ -183,7 +183,7 @@ typedef struct
 #if __WINE_COMCTL32_VERSION == 6
     HTHEME   hTheme;            /* theme */
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IDropTarget IDropTarget_iface;
     IDataObject *pDragData;
     IDropTarget *pDropTarget;
@@ -271,7 +271,7 @@ static LRESULT TOOLBAR_SetButtonInfo(TOOLBAR_INFO *infoPtr, INT Id,
 
 static inline int default_top_margin(const TOOLBAR_INFO *infoPtr)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Native v6 toolbars use the TBMETRICS bar padding as their top margin. */
     if (infoPtr->iVersion == 6)
         return infoPtr->szBarPadding.cy;
@@ -299,7 +299,7 @@ static BOOL TOOLBAR_IsThemed(const TOOLBAR_INFO *infoPtr)
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline DWORD TOOLBAR_GetButtonDTFlags(const TOOLBAR_INFO *infoPtr, const TBUTTON_INFO *btnPtr)
 {
     DWORD flags = infoPtr->dwDTFlags;
@@ -404,7 +404,7 @@ static void free_string( TBUTTON_INFO *btn )
 * issues FIXMEs warning of possible problems. In a perfect world this
 * function should be null.
 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void
 TOOLBAR_CheckStyle (TOOLBAR_INFO *infoPtr)
 {
@@ -661,7 +661,7 @@ TOOLBAR_DrawArrow (HDC hdc, INT left, INT top, COLORREF clr)
  */
 static void
 TOOLBAR_DrawString (const TOOLBAR_INFO *infoPtr, RECT *rcText, LPCWSTR lpText,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     const TBUTTON_INFO *btnPtr,
 #endif
                     const NMTBCUSTOMDRAW *tbcd, DWORD dwItemCDFlag)
@@ -679,7 +679,7 @@ TOOLBAR_DrawString (const TOOLBAR_INFO *infoPtr, RECT *rcText, LPCWSTR lpText,
               wine_dbgstr_rect(rcText));
 
 	hOldFont = SelectObject (hdc, infoPtr->hFont);
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
         if (infoPtr->hTheme)
         {
             DWORD textFlags2 = 0;
@@ -1002,7 +1002,7 @@ TOOLBAR_DrawSeparator (const TOOLBAR_INFO *infoPtr, TBUTTON_INFO *btnPtr, HDC hd
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL TOOLBAR_HotOverDropDownArrow(const TOOLBAR_INFO *infoPtr, const TBUTTON_INFO *btnPtr, const POINT *pt)
 {
     int right;
@@ -1052,7 +1052,7 @@ static void TOOLBAR_DrawButtonFrame (const TOOLBAR_INFO *infoPtr, TBUTTON_INFO *
                 stateId = (tbcd->nmcd.uItemState & CDIS_HOT) ? TS_HOTCHECKED : TS_CHECKED;
             else if ((tbcd->nmcd.uItemState & CDIS_HOT)
                      || (drawSepDropDownArrow && btnPtr->bDropDownPressed))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 if (drawSepDropDownArrow &&
                     (btnPtr->bDropDownPressed || infoPtr->bHotArrow) &&
@@ -1091,7 +1091,7 @@ static void TOOLBAR_DrawSepDropDownArrow (const TOOLBAR_INFO *infoPtr, TBUTTON_I
         else if (tbcd->nmcd.uItemState & CDIS_CHECKED)
             stateId = (tbcd->nmcd.uItemState & CDIS_HOT) ? TS_HOTCHECKED : TS_CHECKED;
         else if (tbcd->nmcd.uItemState & CDIS_HOT)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             if (!infoPtr->bHotArrow && TOOLBAR_ThemeHasSplitHotStates(infoPtr))
                 stateId = TS_NEARHOT;
@@ -1278,7 +1278,7 @@ TOOLBAR_DrawButton (const TOOLBAR_INFO *infoPtr, TBUTTON_INFO *btnPtr, HDC hdc, 
     oldBkMode = SetBkMode (hdc, tbcd.nStringBkMode);
     if (!(infoPtr->dwExStyle & TBSTYLE_EX_MIXEDBUTTONS) || (btnPtr->fsStyle & BTNS_SHOWTEXT))
         TOOLBAR_DrawString (infoPtr, &rcText, lpText,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             btnPtr,
 #endif
                             &tbcd, dwItemCDFlag);
@@ -1912,7 +1912,7 @@ TOOLBAR_LayoutToolbar(TOOLBAR_INFO *infoPtr)
 	{
             if (btnPtr->cx)
               cx = btnPtr->cx;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* Keep mixed toolbars compact. See CORE-9970. */
             else if ((infoPtr->dwExStyle & TBSTYLE_EX_MIXEDBUTTONS) ||
                      (btnPtr->fsStyle & BTNS_AUTOSIZE))
@@ -1936,7 +1936,7 @@ TOOLBAR_LayoutToolbar(TOOLBAR_INFO *infoPtr)
                   TOOLBAR_IsValidBitmapIndex(infoPtr, infoPtr->buttons[i].iBitmap),
                   validImageList);
               cx = sizeButton.cx;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               if (sz.cx && button_has_ddarrow(infoPtr, btnPtr))
                   cx += infoPtr->iDropDownGap;
 #endif
@@ -1974,7 +1974,7 @@ TOOLBAR_LayoutToolbar(TOOLBAR_INFO *infoPtr)
 	if( bWrap )
 	{
 	    if ( !(btnPtr->fsStyle & BTNS_SEP) )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	        y += cy + infoPtr->szSpacing.cy;
 #else
 	        y += cy;
@@ -1985,7 +1985,7 @@ TOOLBAR_LayoutToolbar(TOOLBAR_INFO *infoPtr)
                     y += cy + ( (btnPtr->cx > 0 ) ?
                                 btnPtr->cx : SEPARATOR_WIDTH) * 2 /3;
 		else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    y += cy + infoPtr->szSpacing.cy;
 #else
 		    y += cy;
@@ -2003,7 +2003,7 @@ TOOLBAR_LayoutToolbar(TOOLBAR_INFO *infoPtr)
 		nRows++;
 	}
 	else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    x += cx + infoPtr->szSpacing.cx;
 #else
 	    x += cx;
@@ -2051,7 +2051,7 @@ TOOLBAR_InternalHitTest (const TOOLBAR_INFO *infoPtr, const POINT *lpPt, BOOL *b
     return TOOLBAR_NOWHERE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline TOOLBAR_INFO *impl_from_IDropTarget(IDropTarget *iface)
 {
     return CONTAINING_RECORD(iface, TOOLBAR_INFO, IDropTarget_iface);
@@ -3931,7 +3931,7 @@ TOOLBAR_GetMaxSize (const TOOLBAR_INFO *infoPtr, LPSIZE lpSize)
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LRESULT TOOLBAR_GetMetrics(const TOOLBAR_INFO *infoPtr, TBMETRICS *metrics)
 {
     if (!metrics || metrics->cbSize != sizeof(*metrics))
@@ -5212,7 +5212,7 @@ TOOLBAR_SetMaxTextRows (TOOLBAR_INFO *infoPtr, INT nMaxRows)
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LRESULT TOOLBAR_SetMetrics(TOOLBAR_INFO *infoPtr, const TBMETRICS *metrics)
 {
     BOOL changed = FALSE;
@@ -5689,7 +5689,7 @@ TOOLBAR_GetIdealSize (const TOOLBAR_INFO *infoPtr, WPARAM wParam, LPARAM lParam)
 
 static LRESULT TOOLBAR_Unkwn464(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOOLBAR_INFO *infoPtr = (TOOLBAR_INFO *)GetWindowLongPtrW(hwnd, 0);
 
     infoPtr->iDropDownGap = (INT)wParam;
@@ -5721,7 +5721,7 @@ TOOLBAR_Create (HWND hwnd, const CREATESTRUCTW *lpcs)
     infoPtr->hFont = infoPtr->hDefaultFont = CreateFontIndirectW (&logFont);
 
 #if __WINE_COMCTL32_VERSION == 6
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     infoPtr->hTheme = OpenThemeDataForDpi (hwnd, L"Toolbar", GetDpiForWindow (hwnd));
 #else
     infoPtr->hTheme = OpenThemeDataForDpi (NULL, L"Toolbar", GetDpiForWindow (hwnd));
@@ -5739,7 +5739,7 @@ TOOLBAR_Destroy (TOOLBAR_INFO *infoPtr)
 {
     INT i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOOLBAR_DropRelease(infoPtr);
     if (infoPtr->bDropRegistered)
     {
@@ -6421,7 +6421,7 @@ TOOLBAR_MouseMove (TOOLBAR_INFO *infoPtr, WPARAM wParam, LPARAM lParam)
     if (((infoPtr->dwStyle & TBSTYLE_FLAT) || TOOLBAR_IsThemed(infoPtr)) && (!infoPtr->bAnchor || button))
         TOOLBAR_SetHotItemEx(infoPtr, button ? nHit : TOOLBAR_NOWHERE, HICF_MOUSE);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (infoPtr->nHotItem >= 0)
     {
         TBUTTON_INFO *hotPtr = &infoPtr->buttons[infoPtr->nHotItem];
@@ -6532,7 +6532,7 @@ TOOLBAR_NCCreate (HWND hwnd, WPARAM wParam, const CREATESTRUCTW *lpcs)
     infoPtr->iVersion = 0;
 #endif
     infoPtr->hwndSelf = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     infoPtr->IDropTarget_iface.lpVtbl = &ToolbarDropTargetVtbl;
     infoPtr->nDropItem = -1;
 #endif
@@ -6541,7 +6541,7 @@ TOOLBAR_NCCreate (HWND hwnd, WPARAM wParam, const CREATESTRUCTW *lpcs)
     infoPtr->clrBtnShadow = CLR_DEFAULT;
     infoPtr->szPadding.cx = DEFPAD_CX;
     infoPtr->szPadding.cy = DEFPAD_CY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     infoPtr->szBarPadding.cx = 0;
     infoPtr->szBarPadding.cy = 0;
     infoPtr->szSpacing.cx = 0;
@@ -7028,7 +7028,7 @@ static LRESULT theme_changed (TOOLBAR_INFO *infoPtr)
 {
 #if __WINE_COMCTL32_VERSION == 6
     CloseThemeData (infoPtr->hTheme);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     infoPtr->hTheme = OpenThemeDataForDpi (infoPtr->hwndSelf, L"Toolbar", GetDpiForWindow (infoPtr->hwndSelf));
 #else
     infoPtr->hTheme = OpenThemeDataForDpi (NULL, L"Toolbar", GetDpiForWindow (infoPtr->hwndSelf));
@@ -7143,7 +7143,7 @@ ToolbarWindowProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	case TB_GETMAXSIZE:
 	    return TOOLBAR_GetMaxSize (infoPtr, (LPSIZE)lParam);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	case TB_GETMETRICS:
 	    return TOOLBAR_GetMetrics (infoPtr, (TBMETRICS*)lParam);
 #endif
@@ -7288,7 +7288,7 @@ ToolbarWindowProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case TB_SETMAXTEXTROWS:
 	    return TOOLBAR_SetMaxTextRows (infoPtr, wParam);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	case TB_SETMETRICS:
 	    return TOOLBAR_SetMetrics (infoPtr, (const TBMETRICS*)lParam);
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Video Scheduler (VidSch) — GPU engine state machine and
  *              DMA command lifecycle management
@@ -14,7 +14,7 @@
  *   4. Processing completions in DPC context and retiring finished packets.
  *   5. Providing idle-wait capability for adapter teardown.
  *
- * Windows 11 routes this work through dxgmms2.sys. This ReactOS implementation
+ * Windows 11 routes this work through dxgmms2.sys. This LibreNT implementation
  * provides the engine state machine, command submission, interrupt/DPC
  * completion, and fence tracking used by dxgkrnl.
  *
@@ -55,7 +55,7 @@
  * Internal helpers
  * ====================================================================== */
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /* A GPU page fault and a rejected virtual submission are both terminal for
  * the device: none of its later packets may run or complete successfully. */
 static BOOLEAN
@@ -274,7 +274,7 @@ VidSchpScheduler(_In_opt_ PDXGKRNL_ADAPTER Adapter)
 static VOID VidSchpDereferencePacket(_In_ PVIDSCH_DMA_PACKET Packet);
 static ULONG VidSchpDrainRetirements(_In_ PDXGKRNL_ADAPTER Adapter);
 static VOID VidSchpFinalizeDequeuedPacket(_Inout_ PVIDSCH_DMA_PACKET Packet, _In_ NTSTATUS CompletionStatus);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static VOID VidSchpQueueFaultCleanup(_Inout_ PVIDSCH_DMA_PACKET Packet, _In_ NTSTATUS CompletionStatus);
 #endif
 
@@ -284,7 +284,7 @@ VidSchpPacketFromCookie(_In_ ULONGLONG Cookie)
     return (PVIDSCH_DMA_PACKET)(ULONG_PTR)Cookie;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static PVIDSCH_DMA_PACKET
 VidSchpFirstActivePacketLocked(
     _In_ PVIDSCH_ENGINE Engine)
@@ -676,7 +676,7 @@ VidSchpDrainRetirements(_In_ PDXGKRNL_ADAPTER Adapter)
         for (Index = 0; Index < Count; ++Index)
         {
             PVIDSCH_DMA_PACKET Packet = VidSchpPacketFromCookie(Records[Index].PacketCookie);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             NTSTATUS FaultStatus;
             BOOLEAN Faulted;
 #endif
@@ -702,7 +702,7 @@ VidSchpDrainRetirements(_In_ PDXGKRNL_ADAPTER Adapter)
                    Records[Index].Reason == Dxgmms2RetireCompleted, 0);
             Packet->PresentationRetireTrace.Epoch = 0;
             VidSchAccountNodeRetire(Packet);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             Faulted =
                 VidSchpUnpublishTerminalPacket(Packet, &FaultStatus);
             if (!Faulted &&
@@ -866,7 +866,7 @@ BOOLEAN VidSchIsContextOrderPacketDispatchable(_In_ PVIDSCH_DMA_PACKET Packet)
     Sched = VidSchpScheduler(Engine->Adapter);
     if (Sched == NULL)
         return FALSE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* A root association may change only while this context is idle. Leave
      * the packet unclaimed until completion kicks its stream again. Other
      * contexts on the engine do not prevent this context's root update. */
@@ -996,11 +996,11 @@ VOID VidSchDispatchClaimedContextOrderPacket(_Inout_ PVIDSCH_DMA_PACKET Packet)
 
 static VOID VidSchpSubmitVirtualPacket(_In_ PVIDSCH_ENGINE Engine, _Inout_ PVIDSCH_DMA_PACKET Packet);
 static VOID NTAPI VidSchpDestroyPacketWorker(_In_ PVOID Parameter);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static VOID NTAPI VidSchpFaultCleanupWorker(_In_ PVOID Parameter);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /*
  * Print the submit-time copy of the faulted batch head and decode its
  * STATE_BASE_ADDRESS (Gen8+ layout: DW1-2 general, DW4-5 surface, DW6-7
@@ -1545,7 +1545,7 @@ static VOID VidSchpFinalizeDequeuedPacket(_Inout_ PVIDSCH_DMA_PACKET Packet, _In
     VidSchpDereferencePacket(Packet);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static VOID
 VidSchpQueueFaultCleanup(
     _Inout_ PVIDSCH_DMA_PACKET Packet,
@@ -1768,7 +1768,7 @@ VidSchpFaultCleanupWorker(
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /*
  * Mark only the exact packet currently published to this engine. QueueLock
  * closes the race with retirement: either retirement unpublishes first and
@@ -2241,7 +2241,7 @@ VidSchpProcessCompletion(
                 PDXGKRNL_NODE_STATISTICS OwnerStatistics;
 
                 InterlockedIncrement64(&NodeStatistics->PreemptionsCompleted);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
                 PVIDSCH_DMA_PACKET ActivePacket =
                     VidSchpFirstActivePacketLocked(Engine);
 
@@ -2260,7 +2260,7 @@ VidSchpProcessCompletion(
                 UNREFERENCED_PARAMETER(OwnerStatistics);
 #endif
             }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             while (!IsListEmpty(&Engine->ActivePacketList))
             {
                 PLIST_ENTRY Entry =
@@ -2320,7 +2320,7 @@ VidSchpProcessCompletion(
     /* Turn the retirement records into dxgkrnl terminal cleanup. */
     VidSchpDrainRetirements(Engine->Adapter);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /*
      * A miniport may publish an earlier successful watermark and then one
      * exact page fault before this DPC runs. Retire that success first, then
@@ -2389,7 +2389,7 @@ VidSchpSubmitVirtualPacket(
     KeAcquireSpinLock(&Engine->QueueLock, &OldIrql);
     if (Packet != NULL && Packet->SchedulerClaimToken != 0 && Packet->VirtualAddressing && (Packet->ContextOrderOperation == NULL || InterlockedCompareExchange(&Packet->ContextOrderState, 0, 0) == VIDSCH_CONTEXT_ORDER_DISPATCHING || (InterlockedCompareExchange(&Packet->ContextOrderState, 0, 0) == VIDSCH_CONTEXT_ORDER_SUBMITTED && InterlockedCompareExchange(&Packet->ContextOrderResubmissionPending, 0, 0) != 0)))
     {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         if (Packet->Device != NULL &&
             VidSchpDeviceDmaFaulted(Packet->Device))
         {
@@ -2446,7 +2446,7 @@ VidSchpSubmitVirtualPacket(
         if (Sched != NULL)
         {
             (VOID)Sched->PublishDispatch(Sched->SchedulerHandle, Engine->SchedulerOrdinal, Packet->SchedulerClaimToken);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             VidSchpPublishActivePacket(Packet);
 #endif
         }
@@ -2481,7 +2481,7 @@ VidSchpSubmitVirtualPacket(
             DXGKRNL_ERR("VidSch: virtual submission rejected 0x%08lX context=%p va=0x%I64x bytes=%u fence=%u\n",
                         Status, SubmitArgs.hContext, SubmitArgs.DmaBufferVirtualAddress,
                         SubmitArgs.DmaBufferSize, SubmitArgs.SubmissionFenceId);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             if (Status != STATUS_INVALID_PARAMETER)
                 KeBugCheckEx(0x119, 0x2, (ULONG_PTR)Status, (ULONG_PTR)&SubmitArgs, (ULONG_PTR)Engine);
 
@@ -2665,7 +2665,7 @@ VidSchpKickEngine(
             (VOID)Sched->CompleteDispatch(Sched->SchedulerHandle, Engine->SchedulerOrdinal, ClaimToken, STATUS_SUCCESS);
             return DispatchedAny;
         }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         if (Packet->Device != NULL &&
             VidSchpDeviceDmaFaulted(Packet->Device))
         {
@@ -2791,7 +2791,7 @@ VidSchpKickEngine(
         if (KmdCallAcquired)
         {
             (VOID)Sched->PublishDispatch(Sched->SchedulerHandle, Engine->SchedulerOrdinal, ClaimToken);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             VidSchpPublishActivePacket(Packet);
 #endif
             VidSchAccountNodeDispatch(Packet);
@@ -2996,7 +2996,7 @@ VidSchInitialize(
         Engine->NextFenceId = 1;
 
         KeInitializeSpinLock(&Engine->QueueLock);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         InitializeListHead(&Engine->ActivePacketList);
 #endif
         KeInitializeEvent(&Engine->CompletionEvent, SynchronizationEvent, FALSE);
@@ -3243,7 +3243,7 @@ VidSchpPrepareSubmit(
         &Packet->DestroyWorkItem,
         VidSchpDestroyPacketWorker,
         Packet);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     ExInitializeWorkItem(
         &Packet->CleanupWorkItem,
         VidSchpFaultCleanupWorker,
@@ -4060,7 +4060,7 @@ VidSchNotifyInterrupt(
         return;
 
     Ctx = (PVIDSCH_CONTEXT)Adapter->VidSchContext;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (NotifyData->InterruptType ==
         DXGK_INTERRUPT_DMA_PAGE_FAULTED)
     {
@@ -4630,7 +4630,7 @@ VidSchPreemptEngine(
             PDXGKRNL_NODE_STATISTICS OwnerStatistics;
 
             InterlockedIncrement64(&Adapter->NodeStatistics[NodeOrdinal].PreemptionsRequested);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             KeAcquireSpinLock(&Engine->QueueLock, &OldIrql);
             OwnerStatistics = VidSchpPacketOwnerNodeStatistics(
                                   Adapter,

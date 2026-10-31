@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Test Folder PIDL command-template dispatch
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -29,9 +29,9 @@ static BOOL read_capture(LPCWSTR path, WCHAR *buffer, DWORD count)
 
 START_TEST(FolderExecute)
 {
-    static const WCHAR verb[] = L"ReactOSFolderExecuteTest";
+    static const WCHAR verb[] = L"LibreNTFolderExecuteTest";
     static const WCHAR command_path[] =
-        L"Software\\Classes\\Folder\\shell\\ReactOSFolderExecuteTest\\command";
+        L"Software\\Classes\\Folder\\shell\\LibreNTFolderExecuteTest\\command";
     WCHAR module[MAX_PATH], helper[MAX_PATH], output[MAX_PATH], command[4 * MAX_PATH];
     WCHAR capture[4 * MAX_PATH];
     SHELLEXECUTEINFOW sei = {sizeof(sei)};
@@ -99,5 +99,5 @@ START_TEST(FolderExecute)
 
     DeleteFileW(output);
     RegDeleteTreeW(HKEY_LOCAL_MACHINE,
-                   L"Software\\Classes\\Folder\\shell\\ReactOSFolderExecuteTest");
+                   L"Software\\Classes\\Folder\\shell\\LibreNTFolderExecuteTest");
 }

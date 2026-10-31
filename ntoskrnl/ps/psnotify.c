@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ps/psnotify.c
  * PURPOSE:         Process Manager: Callbacks to Registered Clients (Drivers)
@@ -144,7 +144,7 @@ PsSetCreateProcessNotifyRoutineEx(IN PCREATE_PROCESS_NOTIFY_ROUTINE_EX NotifyRou
  * @implemented
  *
  * Windows currently defines one Ex2 notification class. It uses the extended
- * callback signature and includes processes from every subsystem. ReactOS has
+ * callback signature and includes processes from every subsystem. LibreNT has
  * no non-Win32 process subsystem to distinguish here, so it shares the Ex
  * callback registry and dispatcher.
  */

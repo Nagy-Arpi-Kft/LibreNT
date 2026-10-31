@@ -594,7 +594,7 @@ BOOL WINAPI BluetoothIsDiscoverable( HANDLE radio )
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct discovery_lease
 {
     struct list entry;
@@ -689,7 +689,7 @@ BOOL WINAPI BluetoothEnableDiscovery( HANDLE radio, BOOL enabled )
 
         params.flag = LOCAL_RADIO_DISCOVERABLE;
         params.enable = !!enabled;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             HANDLE lease = discovery_lease( radio, enabled );
 
@@ -1152,7 +1152,7 @@ DWORD WINAPI BluetoothAuthenticateDeviceEx( HWND parent, HANDLE handle_radio, BL
     BTH_ADDR device_addr;
     BOOL success;
     DWORD ret, bytes;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE auth_radio;
 #endif
 
@@ -1218,7 +1218,7 @@ DWORD WINAPI BluetoothAuthenticateDeviceEx( HWND parent, HANDLE handle_radio, BL
     }
     ReleaseSRWLockExclusive( &bluetooth_auth_lock );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     auth_radio = ReOpenFile( handle_radio, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
                              FILE_FLAG_OVERLAPPED );
     if (auth_radio == INVALID_HANDLE_VALUE)

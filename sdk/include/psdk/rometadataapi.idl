@@ -41,7 +41,7 @@ typedef mdToken mdAssembly;
 typedef mdToken mdAssemblyRef;
 typedef mdToken mdTypeSpec;
 typedef mdToken mdString;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef mdToken mdGenericParam;
 typedef mdToken mdMethodSpec;
 typedef mdToken mdGenericParamConstraint;
@@ -340,7 +340,7 @@ interface IMetaDataImport : IUnknown
     HRESULT IsGlobal([in] mdToken token, [out] int *is_global);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 [
     local,
     object,

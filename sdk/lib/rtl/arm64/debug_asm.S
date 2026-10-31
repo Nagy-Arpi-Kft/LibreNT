@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Run-Time Library
+ * PROJECT:     LibreNT Run-Time Library
  * LICENSE:     GPL-3.0-or-later
  * PURPOSE:     ARM64 debug service entry points
  */

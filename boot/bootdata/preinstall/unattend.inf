@@ -1,8 +1,8 @@
 [Unattend]
-Signature = "$ReactOS$"
+Signature = "$LibreNT$"
 
 ; Unattended 2nd stage setup for pre-installed disk image
-; First boot runs InstallReactOS() automatically
+; First boot runs InstallLibreNT() automatically
 UnattendSetupEnabled = no
 
 ; Install to \Device\Harddisk0\Partition1\Windows
@@ -10,8 +10,8 @@ DestinationDiskNumber = 0
 DestinationPartitionNumber = 1
 InstallationDirectory=Windows
 
-FullName="ReactOS User"
-ComputerName="REACTOS"
+FullName="LibreNT User"
+ComputerName="LIBRENT"
 
 ; TimeZone is set GMT as default
 TimeZoneIndex=85
@@ -22,8 +22,8 @@ TimeZoneIndex=85
 LocaleID = 409
 
 ; set product option
-; 0: ReactOS Server
-; 1: ReactOS Workstation
+; 0: LibreNT Server
+; 1: LibreNT Workstation
 ProductOption = 1
 
 ; disable Gecko install for faster setup

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Intel PRO/1000 Driver
+ * PROJECT:     LibreNT Intel PRO/1000 Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS 6.x Driver initialization and miniport registration
  * COPYRIGHT:       2026 Ahmed ARIF (arif.ing@outlook.com)
@@ -69,7 +69,7 @@ DriverEntry(
     NDIS_MINIPORT_DRIVER_CHARACTERISTICS MiniportChars;
 
     DPRINT1("E1000: ========== DRIVER ENTRY ==========\n");
-    DPRINT1("E1000: ReactOS Intel PRO/1000 NDIS 6.x Driver\n");
+    DPRINT1("E1000: LibreNT Intel PRO/1000 NDIS 6.x Driver\n");
     DPRINT1("E1000: Version %u.%u, Build Date: " __DATE__ " " __TIME__ "\n",
              DRIVER_VERSION >> 8, DRIVER_VERSION & 0xFF);
     DPRINT1("E1000: NDIS Version: %u.%u\n", NDIS_MINIPORT_MAJOR_VERSION, NDIS_MINIPORT_MINOR_VERSION);

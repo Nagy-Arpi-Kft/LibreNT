@@ -20,6 +20,6 @@
 
 /* @makedep: combase.manifest */
 1 RT_MANIFEST combase.manifest
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 wine.combase.test.dll TESTDLL "wine.combase.test.dll"
 #endif

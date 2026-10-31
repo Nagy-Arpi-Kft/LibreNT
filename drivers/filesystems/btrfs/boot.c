@@ -17,7 +17,7 @@
 
 #include "btrfs_drv.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef _MSC_VER
 #include <ntstrsafe.h>
 #endif

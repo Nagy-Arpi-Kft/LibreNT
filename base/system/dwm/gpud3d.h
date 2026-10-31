@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Desktop Window Manager
+ * PROJECT:     LibreNT Desktop Window Manager
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Direct3D compositor backend
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -8,7 +8,7 @@
 #pragma once
 
 #include <windows.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 #include "gpucomp.h"
 
 #ifdef __cplusplus

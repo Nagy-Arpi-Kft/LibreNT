@@ -24,7 +24,7 @@
 #include "windef.h"
 #include "winbase.h"
 #include "winnls.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define UNICODE
 #endif
 #include "windns.h"

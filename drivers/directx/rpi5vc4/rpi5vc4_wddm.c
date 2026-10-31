@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 5 WDDM miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 WDDM miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Full-WDDM render/memory/scheduling DDIs: adapter caps and
  *              the VRAM segment, device/context/allocation objects, the
@@ -14,10 +14,10 @@
 #include "rpi5vc4_crtc.h"
 #include "rpi5vc4_hvs.h"
 #include "rpi5vc4_mbox.h"
-#include <reactos/vc4cle.h>
+#include <librent/vc4cle.h>
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 C_ASSERT(RPI5VC4_V3D_OVERFLOW_CHUNK_COUNT <= sizeof(ULONG) * 8);
 C_ASSERT((RPI5VC4_V3D_OVERFLOW_SIZE %

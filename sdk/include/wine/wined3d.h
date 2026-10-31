@@ -254,7 +254,7 @@ enum wined3d_format_id
     WINED3DFMT_BC7_TYPELESS,
     WINED3DFMT_BC7_UNORM,
     WINED3DFMT_BC7_UNORM_SRGB,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WINED3DFMT_P010_PLANAR,
 #endif
     /* FOURCC formats. */
@@ -926,7 +926,7 @@ enum wined3d_memory_segment_group
 /* Allow the swapchain flag, but not actual locking */
 #define WINED3D_SWAPCHAIN_ALLOW_MS_LOCKABLE_BACKBUFFER          0x00200000u
 #define WINED3D_SWAPCHAIN_FRAME_LATENCY_WAITABLE_OBJECT         0x00400000u
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WINED3D_SWAPCHAIN_DXGI_WINDOW_STYLE                     0x80000000u
 #endif
 
@@ -1362,7 +1362,7 @@ enum wined3d_memory_segment_group
 #define WINED3D_LEGACY_CUBEMAP_FILTERING                        0x00001000
 #define WINED3D_NORMALIZED_DEPTH_BIAS                           0x00002000
 #define WINED3D_NO_DRAW_INDIRECT                                0x00004000
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WINED3D_NULL_DRIVER                                     0x00008000
 #endif
 
@@ -2047,7 +2047,7 @@ struct wined3d_color_key
                                             * to be treated as Color Key, inclusive */
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 enum wined3d_yuv_color_space
 {
     WINED3D_YUV_BT601_LIMITED,
@@ -2669,7 +2669,7 @@ unsigned int __cdecl wined3d_output_get_mode_count(struct wined3d_output *output
         enum wined3d_format_id format_id, enum wined3d_scanline_ordering scanline_ordering, bool cached);
 HRESULT __cdecl wined3d_output_get_raster_status(const struct wined3d_output *output,
         struct wined3d_raster_status *raster_status);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT __cdecl wined3d_output_wait_vblank(const struct wined3d_output *output);
 #endif
 void __cdecl wined3d_output_release_ownership(const struct wined3d_output *output);
@@ -2677,7 +2677,7 @@ HRESULT __cdecl wined3d_output_set_display_mode(struct wined3d_output *output,
         const struct wined3d_display_mode *mode);
 HRESULT __cdecl wined3d_output_set_gamma_ramp(struct wined3d_output *output, const struct wined3d_gamma_ramp *ramp);
 HRESULT __cdecl wined3d_output_take_ownership(const struct wined3d_output *output, BOOL exclusive);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL __cdecl wined3d_output_is_exclusively_owned(const struct wined3d_output *output);
 HRESULT __cdecl wined3d_output_query_gamma_ramp(struct wined3d_output *output, struct wined3d_gamma_ramp *ramp);
 #endif
@@ -2970,7 +2970,7 @@ HRESULT __cdecl wined3d_swapchain_set_gamma_ramp(const struct wined3d_swapchain 
         uint32_t flags, const struct wined3d_gamma_ramp *ramp);
 HRESULT __cdecl wined3d_swapchain_set_max_frame_latency(struct wined3d_swapchain *swapchain, unsigned int latency);
 void __cdecl wined3d_swapchain_set_palette(struct wined3d_swapchain *swapchain, struct wined3d_palette *palette);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void __cdecl wined3d_swapchain_set_composition(struct wined3d_swapchain *swapchain,
         BOOL composition, BOOL premultiplied_alpha, int offset_x, int offset_y,
         const RECT *clip_rect);
@@ -3017,7 +3017,7 @@ ULONG __cdecl wined3d_texture_incref(struct wined3d_texture *texture);
 HRESULT __cdecl wined3d_texture_release_dc(struct wined3d_texture *texture, unsigned int sub_resource_idx, HDC dc);
 HRESULT __cdecl wined3d_texture_set_color_key(struct wined3d_texture *texture,
         uint32_t flags, const struct wined3d_color_key *color_key);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT __cdecl wined3d_texture_set_planar_memory(struct wined3d_texture *texture,
         unsigned int sub_resource_idx, const struct wined3d_planar_memory_desc *desc,
         BOOL synchronize);

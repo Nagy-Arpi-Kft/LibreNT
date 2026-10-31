@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM miniport registration, adapter PnP/Power lifecycle,
  *              and DxgkCb* callbacks exported to miniport drivers
@@ -66,9 +66,9 @@
 #include <ntpoapi.h>
 #include <drivers/acpi/acpi.h>
 #include <drivers/acpi/acpisystem.h>
-#include <reactos/arc/arc.h>
-#include <reactos/drivers/acpi/acpipci.h>
-#include <reactos/drivers/cmreslist.h>
+#include <librent/arc/arc.h>
+#include <librent/drivers/acpi/acpipci.h>
+#include <librent/drivers/cmreslist.h>
 #define DXGKP_BUGCHECK_VIDEO_DXGKRNL_FATAL_ERROR 0x113
 #define DXGKP_FATAL_SURPRISE_REMOVAL_SUBTYPE 0x19
 #define DXGKP_FATAL_MMS2_LIFECYCLE_SUBTYPE 0x1A
@@ -480,7 +480,7 @@ DxgkpRetainAndStopBasicDisplayFallback(
 }
 
 /*
- * ReactOS exposes one XPDM-style win32ss display bridge.  A miniport owns that
+ * LibreNT exposes one XPDM-style win32ss display bridge.  A miniport owns that
  * bridge only after it has claimed POST display ownership through the public
  * callback.  A full WDDM adapter that deliberately starts without claiming
  * POST remains available through its adapter interface, while BasicDisplay (or
@@ -2990,7 +2990,7 @@ static VOID NTAPI DxgkpTrackedWorkPublishSignal(_In_opt_ PVOID Context)
 
     if (Entry != NULL &&
         Entry->SignalSyncObjectReference != NULL
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         && !Entry->SignalWrittenByGpu
 #endif
         )
@@ -3091,7 +3091,7 @@ DxgkPrepareTrackedDmaBuffer(
     Entry->NodeOrdinal = Args->NodeOrdinal;
     Entry->EngineOrdinal = Args->EngineOrdinal;
     Entry->SignalFenceValue = Args->SignalFenceValue;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     Entry->SignalWrittenByGpu = Args->SignalWrittenByGpu;
     if (Entry->SignalWrittenByGpu &&
         Args->SignalSyncObjectReference == NULL)
@@ -3147,7 +3147,7 @@ DxgkPrepareTrackedDmaBuffer(
             return Status;
         }
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (Args->SignalSyncObjectReference != NULL)
     {
         Status =
@@ -3469,7 +3469,7 @@ DxgkCommitTrackedDmaBuffer(
     }
     if (RetiredNow)
     {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         Entry->CleanupAsCompleted = TRUE;
 #endif
         InsertTailList(&Adapter->SubmitDmaRetireListHead, &Entry->ListEntry);
@@ -3554,7 +3554,7 @@ DxgkCancelTrackedDmaBuffer(
     DxgkpFreeTrackedDmaBufferEntry(Adapter, Entry, FALSE, FreeDmaBuffer, TRUE);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /*
  * Terminalize one miniport-accepted DMA buffer without pretending that its
  * fence completed.  The tracked-work cancellation is DPC-safe and owns the
@@ -4031,7 +4031,7 @@ DxgkpRetireSubmittedDmaBuffersWorker(
         while (!IsListEmpty(&FreeList))
         {
             PDXGKRNL_SUBMIT_DMA_BUFFER Entry = CONTAINING_RECORD(RemoveHeadList(&FreeList), DXGKRNL_SUBMIT_DMA_BUFFER, ListEntry);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             BOOLEAN Completed = Entry->CleanupAsCompleted;
 #else
             BOOLEAN Completed = TRUE;
@@ -4102,7 +4102,7 @@ DxgkRetireCompletedDmaBuffers(
             {
                 if (DxgkTrackedWorkCoreRetire(&Entry->TrackedWork))
                 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
                     Entry->CleanupAsCompleted = TRUE;
 #endif
                     RemoveEntryList(Link);
@@ -4200,7 +4200,7 @@ DxgkReleaseTrackedDmaBuffers(
         DxgkpFreeTrackedDmaBufferEntry(
             Adapter,
             Entry,
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             Entry->CleanupAsCompleted,
 #else
             TRUE,
@@ -4447,7 +4447,7 @@ DxgkpPeriodicInterruptHandoffSupported(
 {
 #if (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM2_2)
     return Adapter != NULL &&
-           REACTOS_WDDM_TARGET_LEVEL >=
+           LIBRENT_WDDM_TARGET_LEVEL >=
                DXGK_CAPS_CORE_LEVEL_WDDM_2_2 &&
            Adapter->MiniportContext != NULL &&
            !Adapter->MiniportContext->UseDodLayout &&
@@ -4466,7 +4466,7 @@ DxgkpPeriodicInterruptHandoffSupported(
 #endif
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 static BOOLEAN
 DxgkpMonitoredFenceInterruptSupported(
     _In_opt_ PDXGKRNL_ADAPTER Adapter)
@@ -4475,7 +4475,7 @@ DxgkpMonitoredFenceInterruptSupported(
            Adapter->MiniportContext != NULL &&
            !Adapter->MiniportContext->UseDodLayout &&
            DxgkMonitoredInterruptCoreSupported(
-               REACTOS_WDDM_TARGET_LEVEL,
+               LIBRENT_WDDM_TARGET_LEVEL,
                DxgkCapsCoreInterfaceVersionToLevel(
                    Adapter->MiniportContext->InitData.s.Version),
                Adapter->NodeCount);
@@ -4562,7 +4562,7 @@ DxgkpEnablePeriodicInterruptHandoff(
             &Adapter->PeriodicInterruptCore);
     }
     Adapter->PeriodicInterruptOverflowReported = FALSE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     InterlockedExchange(
         &Adapter->MonitoredFencePendingNodes,
         0);
@@ -4579,7 +4579,7 @@ DxgkpDisablePeriodicInterruptHandoff(
     OldIrql = DxgkpAcquireAdapterInterruptLock(Adapter);
     DxgkPeriodicInterruptCoreDisableLocked(
         &Adapter->PeriodicInterruptCore);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     InterlockedExchange(
         &Adapter->MonitoredFencePendingNodes,
         0);
@@ -4677,7 +4677,7 @@ DxgkpDrainDpcNotifications(
 
     VidSchNotifyDpc(Adapter);
     DxgkpDrainPeriodicInterruptHandoff(Adapter);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     DxgkpDrainMonitoredFenceInterruptHandoff(Adapter);
 #endif
 
@@ -4810,7 +4810,7 @@ NTSTATUS APIENTRY DxgkCbWriteDeviceSpace(HANDLE, ULONG, PVOID, ULONG, ULONG, PUL
  * DXGK_INTERFACE callbacks supplied to WDDM miniports.
  *
  * A callback with an explicit "Unavailable" suffix is a deliberate failure
- * boundary for a subsystem that ReactOS does not yet provide.  Keep such
+ * boundary for a subsystem that LibreNT does not yet provide.  Keep such
  * callbacks deterministic and never turn them into success placeholders.
  * ====================================================================== */
 
@@ -5080,7 +5080,7 @@ DxgkCbGetCaptureAddress(
 }
 
 /*
- * ReactOS has no graphics ETW provider yet.  The WDDM callback has no return
+ * LibreNT has no graphics ETW provider yet.  The WDDM callback has no return
  * value, so retain the ABI slot while deliberately dropping the event.  Do
  * not advertise this as diagnostic parity.
  */
@@ -5594,7 +5594,7 @@ DxgkpPowerRuntimeDevicePowerRequiredCallback(
     PDXGKRNL_ADAPTER Adapter = (PDXGKRNL_ADAPTER)Context;
 
     /*
-     * ReactOS does not yet drive a D-state request from here.  Reporting the
+     * LibreNT does not yet drive a D-state request from here.  Reporting the
      * device as powered on keeps PoFx's device-level state consistent with
      * the adapter, which is started and in D0 for the whole registration
      * lifetime; the alternative would be to leave PoFx waiting forever.
@@ -5813,7 +5813,7 @@ DxgkpInitializePowerManagement(
         Target->IdleStateCount = Info->StateCount;
         Target->IdleStates = States;
         /* The deepest state a component can be woken from is the deepest it
-         * declares; ReactOS has no per-state wake capability to narrow it. */
+         * declares; LibreNT has no per-state wake capability to narrow it. */
         Target->DeepestWakeableIdleState = Info->StateCount - 1;
         if (Info->Flags.TransitionTo_F0_OnDx)
             Target->Flags |= PO_FX_COMPONENT_FLAG_F0_ON_DX;
@@ -6111,7 +6111,7 @@ DxgkCbCompleteFStateTransition(
     }
 }
 
-/* Reserved system callback; ReactOS owns no P-state transition transaction. */
+/* Reserved system callback; LibreNT owns no P-state transition transaction. */
 static VOID
 APIENTRY
 DxgkCbCompletePStateTransitionSuppressed(
@@ -6329,7 +6329,7 @@ DxgkCbMitigatedRangeUpdateSuppressed(
 }
 
 /*
- * Hardware-context invalidation is a scheduler-owned operation.  ReactOS
+ * Hardware-context invalidation is a scheduler-owned operation.  LibreNT
  * does not advertise hardware queues or own their invalidation/cleanup
  * transaction, so validate the public envelope and fail without changing
  * an ordinary context.
@@ -6728,7 +6728,7 @@ DxgkCbUnmapMdlFromIoMmuSuppressed(
 }
 
 /*
- * ReactOS has no bounded diagnostic ingestion sink.  Validate the public
+ * LibreNT has no bounded diagnostic ingestion sink.  Validate the public
  * WDDM envelope at the callback's DISPATCH_LEVEL ceiling, but never claim
  * that an event was recorded.
  */
@@ -7147,7 +7147,7 @@ static BOOLEAN
 DxgkpKmdCpuEventFeatureAvailable(
     _In_ PDXGKRNL_ADAPTER Adapter)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM3_0)
     if (Adapter == NULL ||
         Adapter->MiniportContext == NULL ||
@@ -7465,7 +7465,7 @@ DxgkpFillInterface(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM2_5)
     if (DxgkCapsCoreInterfaceVersionAtLeast(
             Interface->Version, DXGK_CAPS_CORE_LEVEL_WDDM_2_5))
@@ -7474,7 +7474,7 @@ DxgkpFillInterface(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2600) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2600) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM2_6)
     if (DxgkCapsCoreInterfaceVersionAtLeast(
             Interface->Version, DXGK_CAPS_CORE_LEVEL_WDDM_2_6))
@@ -7485,7 +7485,7 @@ DxgkpFillInterface(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2800) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2800) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM2_8)
     if (DxgkCapsCoreInterfaceVersionAtLeast(
             Interface->Version, DXGK_CAPS_CORE_LEVEL_WDDM_2_8))
@@ -7495,7 +7495,7 @@ DxgkpFillInterface(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2900) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2900) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM2_9)
     if (DxgkCapsCoreInterfaceVersionAtLeast(
             Interface->Version, DXGK_CAPS_CORE_LEVEL_WDDM_2_9))
@@ -7518,7 +7518,7 @@ DxgkpFillInterface(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3100) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3100) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM3_1)
     if (DxgkCapsCoreInterfaceVersionAtLeast(
             Interface->Version, DXGK_CAPS_CORE_LEVEL_WDDM_3_1))
@@ -7631,7 +7631,7 @@ DxgkCbNotifyInterrupt(
         InterlockedExchange(&Adapter->LastDmaCompletedFence,
                             (LONG)NotifyInterruptData->DmaCompleted.SubmissionFenceId);
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     else if (NotifyInterruptData->InterruptType ==
              DXGK_INTERRUPT_DMA_PAGE_FAULTED)
     {
@@ -7681,7 +7681,7 @@ DxgkCbNotifyInterrupt(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (NotifyInterruptData->InterruptType ==
         DXGK_INTERRUPT_MONITORED_FENCE_SIGNALED)
     {
@@ -7716,7 +7716,7 @@ DxgkCbNotifyInterrupt(
         }
     }
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     if (NotifyInterruptData->InterruptType == DXGK_INTERRUPT_NATIVE_FENCE_SIGNALED &&
         Adapter->MiniportContext != NULL &&
         DxgkCapsCoreInterfaceVersionAtLeast(Adapter->MiniportContext->InitData.s.Version, DXGK_CAPS_CORE_LEVEL_WDDM_3_2) &&
@@ -8490,7 +8490,7 @@ DxgkCbFreeContiguousMemory(
  * DxgkCbAllocatePagesForMdl
  *
  * Provides the WDDM 2.4 MmAllocatePagesForMdlEx-equivalent allocation
- * service.  ReactOS does not yet expose a graphics IOMMU domain, so the
+ * service.  LibreNT does not yet expose a graphics IOMMU domain, so the
  * IOMMU map/unmap callbacks are explicit unavailable boundaries and adapters
  * continue to report the IOMMU capability as unsupported.  On that truthful
  * identity-domain path, the MDL returned here describes the physical pages
@@ -8580,7 +8580,7 @@ DxgkCbAllocatePagesForMdl(
 
     /*
      * Large-page-cache and hot-remove allocations are hard requirements that
-     * ReactOS Mm cannot yet honor.  PREFER_CONTIGUOUS and TRIM_IF_NECESSARY
+     * LibreNT Mm cannot yet honor.  PREFER_CONTIGUOUS and TRIM_IF_NECESSARY
      * remain best-effort preferences, while NO_WAIT is already satisfied by
      * the nonblocking allocator.
      */
@@ -8627,7 +8627,7 @@ DxgkCbAllocatePagesForMdl(
     }
 
     /*
-     * ReactOS Mm accepts only the two material flags below.  Enforce the
+     * LibreNT Mm accepts only the two material flags below.  Enforce the
      * WDDM callback's always-fully-required rule explicitly after allocation.
      */
     ContiguousVa = NULL;
@@ -10701,10 +10701,10 @@ DxgkCbIndicateChildStatus(
  * DxgkCbQueryServices
  *
  * Returns only service interfaces backed by an actual dxgkrnl provider.
- * Debug-report, AGP, and the former ReactOS selector-1 bus extension remain
+ * Debug-report, AGP, and the former LibreNT selector-1 bus extension remain
  * unavailable rather than publishing callback tables with no consumer.
  */
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 /*
  * System Firmware Table interface (DxgkServicesFirmwareTable)
  *
@@ -10992,9 +10992,9 @@ DxgkpFirmwareTableReadTable(
 
     return Status;
 }
-#endif /* REACTOS_WDDM_TARGET_LEVEL >= 3200 */
+#endif /* LIBRENT_WDDM_TARGET_LEVEL >= 3200 */
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 static VOID
 NTAPI
 DxgkpFeatureInterfaceReferenceNop(
@@ -11053,7 +11053,7 @@ DxgkpFeatureQueryInterface(
     ExReleaseRundownProtection(&Adapter->ReverseCallbackRundownRef);
 
     /*
-     * None of the OS-side features ReactOS currently enables has a
+     * None of the OS-side features LibreNT currently enables has a
      * feature-specific callback table. In particular, KMD-signaled CPU
      * events use the main DXGK_INTERFACE callback.
      */
@@ -11068,7 +11068,7 @@ DxgkpFeatureQueryInterface(
  * transitions in a timed operation so the OS can bound them.  The deadline
  * runs from TimedOperationStart on the interrupt-time clock and is capped at
  * DXGK_TIMED_OPERATION_TIMEOUT_MAX_SECONDS.  Windows escalates an OsHandled
- * expiry into a TDR; ReactOS reports it once, marks the operation and
+ * expiry into a TDR; LibreNT reports it once, marks the operation and
  * returns STATUS_TIMEOUT so the miniport's own fallback runs.
  */
 static VOID
@@ -11377,7 +11377,7 @@ DxgkpTimedOperationWaitForSingleObject(
  * DxgkServicesDebugReport
  *
  * A miniport files a report when it decides hardware or firmware misbehaved.
- * Windows spools it for Online Crash Analysis; ReactOS has no consumer, so
+ * Windows spools it for Online Crash Analysis; LibreNT has no consumer, so
  * the code and arguments go to the debug log -- where a failed start is
  * diagnosed anyway -- and the secondary data is only counted.
  */
@@ -11556,7 +11556,7 @@ DxgkCbQueryServices(
         goto Done;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     if (ServicesType == DxgkServicesFeature)
     {
         PDXGK_FEATURE_INTERFACE FeatureInterface =
@@ -11593,7 +11593,7 @@ DxgkCbQueryServices(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     if (ServicesType == DxgkServicesFirmwareTable)
     {
         PDXGK_FIRMWARE_TABLE_INTERFACE FirmwareInterface =
@@ -11879,7 +11879,7 @@ DxgkpAcquirePostDisplayOwnership(
              * cold-start its display pipeline.  Native
              * DpiAcquirePostDisplayOwnership returns the empty descriptor for
              * a non-POST device; it does not make the software fallback the
-             * permanent display owner.  ReactOS has one win32ss bridge, so
+             * permanent display owner.  LibreNT has one win32ss bridge, so
              * hand that bridge to the first full miniport even when the
              * firmware supplied no framebuffer.  The retained fallback is
              * restarted if claimant startup subsequently fails.
@@ -14174,7 +14174,7 @@ DxgkAdapterStart(
      * matching display driver.
      *
      * On Windows, dxgkrnl registers with the display subsystem through a
-     * different mechanism; on ReactOS we emulate the XPDM device discovery
+     * different mechanism; on LibreNT we emulate the XPDM device discovery
      * path that win32ss expects.
      */
     if (DxgkAdapterStartRoleRequiresDisplayPipeline(Role))
@@ -15419,7 +15419,7 @@ DxgkpDeleteRemovedAdapterFdo(_In_ PDXGKRNL_ADAPTER Adapter)
 }
 
 /* A native Windows dump rooted at dxgkrnl!DpiFdoHandleSurpriseRemoval uses
- * VIDEO_DXGKRNL_FATAL_ERROR (0x113), subtype 0x19.  ReactOS has no dxgkrnl
+ * VIDEO_DXGKRNL_FATAL_ERROR (0x113), subtype 0x19.  LibreNT has no dxgkrnl
  * graceful-reboot handoff, so this is the closest non-silent containment for
  * the documented "no more miniport DDIs and reboot" failure contract. */
 static DECLSPEC_NORETURN VOID
@@ -17054,8 +17054,8 @@ UninitializeUnlock:
  * DxgkInitializeEx / DxgkInitialize — miniport registration entry points
  * ====================================================================== */
 
-#ifndef REACTOS_WDDM_TARGET_LEVEL
-#define REACTOS_WDDM_TARGET_LEVEL DXGK_CAPS_CORE_LEVEL_WDDM_2_0
+#ifndef LIBRENT_WDDM_TARGET_LEVEL
+#define LIBRENT_WDDM_TARGET_LEVEL DXGK_CAPS_CORE_LEVEL_WDDM_2_0
 #endif
 
 /*
@@ -17390,10 +17390,10 @@ DxgkpInitializeMiniport(
         return STATUS_REVISION_MISMATCH;
     }
     if (!DxgkCapsCoreInterfaceVersionPermitted(
-            Version, REACTOS_WDDM_TARGET_LEVEL))
+            Version, LIBRENT_WDDM_TARGET_LEVEL))
     {
         DXGKRNL_ERR("DxgkpInitializeMiniport: DDI selector 0x%lX level %lu is outside the Win11 miniport range %lu..%lu\n",
-                    Version, VersionLevel, (ULONG)DXGK_CAPS_CORE_LEVEL_WDDM_2_0, (ULONG)REACTOS_WDDM_TARGET_LEVEL);
+                    Version, VersionLevel, (ULONG)DXGK_CAPS_CORE_LEVEL_WDDM_2_0, (ULONG)LIBRENT_WDDM_TARGET_LEVEL);
         return STATUS_REVISION_MISMATCH;
     }
 
@@ -17629,7 +17629,7 @@ DxgkInitializeEx(
  * Size-less wrapper around DxgkInitializeEx.  Derives the readable append-only
  * prefix from the caller's declared DDI version instead of using dxgkrnl's
  * compile-time structure size.
- * Reached through the public displib entry, which resolves this ReactOS-owned
+ * Reached through the public displib entry, which resolves this LibreNT-owned
  * registration target through the dxgkrnl control-device protocol.
  *
  * IRQL: PASSIVE_LEVEL

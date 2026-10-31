@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS twinapi.dll
+ * PROJECT:     LibreNT twinapi.dll
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Immersive shell support
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>

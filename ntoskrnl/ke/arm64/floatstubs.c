@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Windows-compatible ARM64 FP/NEON feature policy.
  * COPYRIGHT:       Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -50,6 +50,6 @@ RtlGetEnabledExtendedFeatures(
 {
     UNREFERENCED_PARAMETER(FeatureMask);
 
-    /* ReactOS exposes no optional ARM64 XState feature (Windows bit 2). */
+    /* LibreNT exposes no optional ARM64 XState feature (Windows bit 2). */
     return 0;
 }

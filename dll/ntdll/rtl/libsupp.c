@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS NT User-Mode DLL
+ * PROJECT:         LibreNT NT User-Mode DLL
  * FILE:            lib/ntdll/rtl/libsup.c
  * PURPOSE:         RTL Support Routines
  * PROGRAMMERS:     Alex Ionescu (alex@relsoft.net)
@@ -13,7 +13,7 @@
 #include <apisets.h>
 
 #ifdef WOW64_I386_RUNTIME
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 #define EXPLICIT_64BIT
 #include <ndk/peb_teb.h>
 #undef EXPLICIT_64BIT

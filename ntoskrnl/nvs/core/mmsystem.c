@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NT Virtual Memory Subsystem
+ * PROJECT:     LibreNT NT Virtual Memory Subsystem
  * FILE:        ntoskrnl/nvs/core/mmsystem.c
  * PURPOSE:     Shared memory manager system initialization
  *

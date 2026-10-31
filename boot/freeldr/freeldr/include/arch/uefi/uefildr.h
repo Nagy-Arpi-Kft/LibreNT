@@ -26,7 +26,7 @@
 #include <machuefi.h>
 
 //TODO: this version of the struct is temporary
-typedef struct _REACTOS_INTERNAL_BGCONTEXT
+typedef struct _LIBRENT_INTERNAL_BGCONTEXT
 {
     ULONG_PTR    BaseAddress;
     ULONG        BufferSize;
@@ -34,7 +34,7 @@ typedef struct _REACTOS_INTERNAL_BGCONTEXT
     UINT32       ScreenHeight;
     UINT32       PixelsPerScanLine;
     UINT32       PixelFormat;
-} REACTOS_INTERNAL_BGCONTEXT, *PREACTOS_INTERNAL_BGCONTEXT;
+} LIBRENT_INTERNAL_BGCONTEXT, *PLIBRENT_INTERNAL_BGCONTEXT;
 
 VOID __cdecl BootMain(IN PCCH CmdLine);
 VOID StallExecutionProcessor(ULONG Microseconds);

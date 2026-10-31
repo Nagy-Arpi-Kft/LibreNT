@@ -1,9 +1,9 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl
     ${CMAKE_CURRENT_BINARY_DIR})
 
-add_rpc_files(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/winreg.idl)
+add_rpc_files(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/winreg.idl)
 
 list(APPEND SOURCE
     environment.c
@@ -25,4 +25,4 @@ target_link_libraries(winlogon wine win32ksys ${PSEH_LIB})
 set_module_type(winlogon win32gui)
 add_importlibs(winlogon user32 advapi32 userenv secur32 rpcrt4 mpr msvcrt kernel32 ntdll)
 add_pch(winlogon winlogon.h SOURCE)
-add_cd_file(TARGET winlogon DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winlogon DESTINATION librent/system32 FOR all)

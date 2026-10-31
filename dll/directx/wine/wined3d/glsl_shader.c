@@ -9178,7 +9178,7 @@ static void shader_glsl_ffp_vertex_lighting(struct wined3d_string_buffer *buffer
         shader_addline(buffer, "ffp_varying_specular = ffp_attrib_specular;\n");
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static uint32_t shader_glsl_ffp_vertex_input_mask(const struct wined3d_ffp_vs_settings *settings)
 {
     uint32_t mask = (1u << (WINED3D_FFP_SPECULAR + 1)) - 1;
@@ -9224,7 +9224,7 @@ static GLuint shader_glsl_generate_ffp_vertex_shader(struct shader_glsl_priv *pr
     struct wined3d_string_buffer *buffer = &priv->shader_buffer;
     BOOL output_legacy_fogcoord = legacy_syntax;
     BOOL legacy_lighting = priv->legacy_lighting;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t input_mask = shader_glsl_ffp_vertex_input_mask(settings);
 #endif
     GLuint shader_obj;
@@ -9243,7 +9243,7 @@ static GLuint shader_glsl_generate_ffp_vertex_shader(struct shader_glsl_priv *pr
     {
         const char *type = i < ARRAY_SIZE(attrib_info) ? attrib_info[i].type : "vec4";
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(input_mask & (1u << i)))
             continue;
 #endif
@@ -10609,7 +10609,7 @@ static void set_glsl_shader_program(const struct wined3d_context_gl *context_gl,
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         struct wined3d_ffp_vs_settings settings;
 
         wined3d_ffp_get_vs_settings(state, &context_gl->c.stream_info, d3d_info, &settings);
@@ -12253,7 +12253,7 @@ struct glsl_blitter_args
     GLenum texture_type;
     struct color_fixup_desc fixup;
     unsigned short use_colour_key;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned short yuv_color_space;
 #endif
 };
@@ -12598,7 +12598,7 @@ static void glsl_blitter_generate_yuv_shader(struct wined3d_string_buffer *buffe
      * of which only matches the frame if the reduced range is used, so we side
      * with the reduced range here. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     switch (args->yuv_color_space)
     {
         case WINED3D_YUV_BT709_LIMITED:
@@ -12666,7 +12666,7 @@ static void glsl_blitter_generate_yuv_shader(struct wined3d_string_buffer *buffe
      * http://www.fourcc.org/fccyvrgb.php. Note that the chroma
      * ranges from -0.5 to 0.5. */
     shader_addline(buffer, "\n    chroma.xy -= 0.5;\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     shader_addline(buffer, "    luminance = (luminance - yuv_luma.x) * yuv_luma.y;\n");
 #else
     shader_addline(buffer, "    luminance = (luminance - 0.063) * 1.164;\n");
@@ -12874,7 +12874,7 @@ static struct glsl_blitter_program *glsl_blitter_get_program(struct wined3d_glsl
     args.texture_type = texture_gl->target;
     args.fixup = texture_gl->t.resource.format->color_fixup;
     args.use_colour_key = use_colour_key;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     args.yuv_color_space = texture_gl->t.yuv_color_space;
 #endif
 
@@ -13059,7 +13059,7 @@ static DWORD glsl_blitter_blit(struct wined3d_blitter *blitter, enum wined3d_bli
         wined3d_texture_upload_from_texture(staging_texture, 0, 0, 0, 0,
                 src_texture, src_sub_resource_idx, &upload_box);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         staging_texture->yuv_color_space = src_texture->yuv_color_space;
 #endif
         src_texture = staging_texture;

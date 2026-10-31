@@ -26,7 +26,7 @@
 #include "dispex.h"
 
 #include "wine/list.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winnls.h"
 #endif
 
@@ -197,7 +197,7 @@ enum domnode_flags
     DOMNODE_PARSED_VALUE = 0x8,
     DOMNODE_NS_DECL = 0x10,
     DOMNODE_NO_PARENT = 0x20,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DOMNODE_EXPLICIT_END_TAG = 0x40,
 #endif
 };
@@ -220,7 +220,7 @@ struct domdoc_properties
     bool normalize_attribute_values;
     int max_element_depth;
     IUri *uri;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bool free_threaded;
 #endif
 };
@@ -395,7 +395,7 @@ extern HRESULT node_get_xml(struct domnode *, BSTR*);
 extern HRESULT node_clone(struct domnode*,VARIANT_BOOL,IXMLDOMNode**);
 extern HRESULT node_get_prefix(struct domnode*,BSTR*);
 extern HRESULT node_get_base_name(struct domnode*,BSTR*);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HRESULT node_get_declaration_xml(const struct domnode *node, BSTR *p);
 #endif
 extern HRESULT node_get_namespaceURI(struct domnode*, BSTR *);
@@ -424,7 +424,7 @@ extern HRESULT node_replace_data(struct domnode *, LONG, LONG, BSTR);
 
 extern UINT get_codepage_for_encoding(const WCHAR *encoding);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HRESULT SchemaCache_validate_tree(IXMLDOMSchemaCollection2*, xmlNodePtr, BSTR*);
 #else
 extern HRESULT SchemaCache_validate_tree(IXMLDOMSchemaCollection2*, xmlNodePtr);
@@ -461,7 +461,7 @@ static inline BSTR bstr_from_xmlChar(const xmlChar *str)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline BSTR bstr_from_xml_error(const xmlError *error)
 {
     const char *message;

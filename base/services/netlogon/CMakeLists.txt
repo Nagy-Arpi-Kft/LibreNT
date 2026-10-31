@@ -1,6 +1,6 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
-add_rpc_files(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/netlogon.idl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
+add_rpc_files(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/netlogon.idl)
 spec2def(netlogon.dll netlogon.spec ADD_IMPORTLIB)
 
 add_definitions(-DWIN32_LEAN_AND_MEAN=)
@@ -21,4 +21,4 @@ set_module_type(netlogon win32dll UNICODE)
 target_link_libraries(netlogon wine ${PSEH_LIB})
 add_importlibs(netlogon advapi32 rpcrt4 msvcrt kernel32 ntdll)
 add_pch(netlogon precomp.h SOURCE)
-add_cd_file(TARGET netlogon DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET netlogon DESTINATION librent/system32 FOR all)

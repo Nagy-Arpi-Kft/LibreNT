@@ -1,9 +1,9 @@
 
 # Replace the old CRT include directory with the UCRT include directory
 get_property(INCLUDE_DIRS DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
-list(REMOVE_ITEM INCLUDE_DIRS "${REACTOS_SOURCE_DIR}/sdk/include/crt")
+list(REMOVE_ITEM INCLUDE_DIRS "${LIBRENT_SOURCE_DIR}/sdk/include/crt")
 set_property(DIRECTORY . PROPERTY INCLUDE_DIRECTORIES ${INCLUDE_DIRS})
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/ucrt)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/ucrt)
 
 include_directories(inc)
 
@@ -58,22 +58,6 @@ elseif(${ARCH} STREQUAL "arm64")
         arm64/__longjmp_noframe.s
         arm64/guardcf.S
         arm64/_setjmp.s
-    )
-elseif(${ARCH} STREQUAL "riscv64")
-    list(APPEND VCRT_SETJMP_SOURCES
-        riscv64/longjmp.c
-    )
-    list(APPEND VCRT_SETJMP_ASM_SOURCES
-        riscv64/__longjmp_noframe.s
-        riscv64/_setjmp.s
-    )
-elseif(${ARCH} STREQUAL "ppc")
-    list(APPEND VCRT_SETJMP_SOURCES
-        ppc/longjmp.c
-    )
-    list(APPEND VCRT_SETJMP_ASM_SOURCES
-        ppc/__longjmp_noframe.s
-        ppc/_setjmp.s
     )
 endif()
 add_asm_files(vcrt_setjmp_asm ${VCRT_SETJMP_ASM_SOURCES})

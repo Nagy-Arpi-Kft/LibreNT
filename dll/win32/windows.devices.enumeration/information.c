@@ -20,7 +20,7 @@
 #include "private.h"
 
 #include "roapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "devquery.h"
 #include "devpkey.h"
 #include "cfgmgr32.h"
@@ -39,7 +39,7 @@ struct device_information
 
     IMap_HSTRING_IInspectable *properties;
     HSTRING id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DEV_OBJECT_TYPE type;
 #endif
 };
@@ -119,7 +119,7 @@ static HRESULT WINAPI device_information_get_Id( IDeviceInformation *iface, HSTR
     return WindowsDuplicateString( impl->id, id );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL device_information_get_property( struct device_information *impl, const DEVPROPKEY *key, DEVPROPTYPE type,
                                              void *buffer, ULONG size )
 {
@@ -148,7 +148,7 @@ static BOOL device_information_get_property( struct device_information *impl, co
 
 static HRESULT WINAPI device_information_get_Name( IDeviceInformation *iface, HSTRING *name )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct device_information *impl = impl_from_IDeviceInformation( iface );
     WCHAR buffer[256];
 
@@ -170,7 +170,7 @@ static HRESULT WINAPI device_information_get_Name( IDeviceInformation *iface, HS
 
 static HRESULT WINAPI device_information_get_IsEnabled( IDeviceInformation *iface, boolean *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct device_information *impl = impl_from_IDeviceInformation( iface );
     DEVPROP_BOOLEAN enabled = DEVPROP_FALSE;
 
@@ -188,7 +188,7 @@ static HRESULT WINAPI device_information_get_IsEnabled( IDeviceInformation *ifac
 
 static HRESULT WINAPI device_information_IsDefault( IDeviceInformation *iface, boolean *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct device_information *impl = impl_from_IDeviceInformation( iface );
     WCHAR default_iface[512];
     DEVPROPTYPE type;
@@ -427,7 +427,7 @@ HRESULT device_information_create( const DEV_OBJECT *obj, IDeviceInformation **i
     if (!(impl = calloc( 1, sizeof(*impl) ))) return E_OUTOFMEMORY;
     impl->IDeviceInformation_iface.lpVtbl = &device_information_vtbl;
     impl->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     impl->type = obj->ObjectType;
 #endif
     if (FAILED(hr = create_device_properties( obj->pProperties, obj->cPropertyCount, &impl->properties )))

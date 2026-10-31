@@ -11,7 +11,7 @@
 #include <uefildr.h>
 #include <arch/uefi/machuefi.h>
 #include <arch/uefi/uefisym.h>
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 #include <debug.h>
 
 /* External UEFI globals */

@@ -138,7 +138,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_adapter_EnumOutputs(IWineDXGIAdapter *ifac
     if (!output)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (adapter->factory->null_driver)
     {
         *output = NULL;
@@ -146,7 +146,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_adapter_EnumOutputs(IWineDXGIAdapter *ifac
     }
 #endif
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     if (!adapter->factory->software && FAILED(hr = dxgi_get_wddm_output_index(
             adapter->wined3d_adapter, adapter->wddm_foreign ? &adapter->wddm_luid : NULL, output_idx, &output_idx)))
     {
@@ -203,7 +203,7 @@ static HRESULT dxgi_adapter_get_desc(struct dxgi_adapter *adapter, DXGI_ADAPTER_
     desc->DedicatedSystemMemory = 0; /* FIXME */
     desc->SharedSystemMemory = adapter_id.shared_system_memory;
     desc->AdapterLuid = adapter_id.adapter_luid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (adapter->wddm_foreign)
         desc->AdapterLuid = adapter->wddm_luid;
     if (adapter->factory->software)
@@ -226,7 +226,7 @@ static HRESULT dxgi_adapter_get_desc(struct dxgi_adapter *adapter, DXGI_ADAPTER_
     desc->GraphicsPreemptionGranularity = 0; /* FIXME */
     desc->ComputePreemptionGranularity = 0; /* FIXME */
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     if (!adapter->factory->software)
         dxgi_get_wddm_adapter_desc(desc->AdapterLuid, desc);
 #endif
@@ -273,7 +273,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_adapter_CheckInterfaceSupport(IWineDXGIAda
     adapter_id.driver_size = 0;
     adapter_id.description_size = 0;
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     wined3d_mutex_lock();
     hr = wined3d_adapter_get_identifier(adapter->wined3d_adapter, 0, &adapter_id);
     wined3d_mutex_unlock();
@@ -361,7 +361,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_adapter_QueryVideoMemoryInfo(IWineDXGIAdap
     TRACE("iface %p, node_index %u, segment_group %#x, info %p.\n",
             iface, node_index, segment_group, info);
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     if (!adapter->factory->software && segment_group <= DXGI_MEMORY_SEGMENT_GROUP_NON_LOCAL)
     {
         struct wined3d_adapter_identifier adapter_id = {0};
@@ -449,7 +449,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_adapter_get_adapter_info(IWineDXGIAdapter 
         info->vendor_id = adapter_id.vendor_id;
         info->device_id = adapter_id.device_id;
         info->luid = adapter_id.adapter_luid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (adapter->wddm_foreign)
         {
             DXGI_ADAPTER_DESC3 desc;
@@ -524,7 +524,7 @@ static void dxgi_adapter_init(struct dxgi_adapter *adapter, struct dxgi_factory 
     wined3d_private_store_init(&adapter->private_store);
     adapter->ordinal = ordinal;
     adapter->factory = factory;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&adapter->wddm_luid, 0, sizeof(adapter->wddm_luid));
     adapter->wddm_foreign = FALSE;
 #endif

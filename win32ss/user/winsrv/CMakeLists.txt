@@ -1,7 +1,7 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
-    ${REACTOS_SOURCE_DIR}/win32ss/include)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
+    ${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 spec2def(winsrv.dll winsrv.spec)
 
@@ -28,4 +28,4 @@ target_link_libraries(winsrv win32ksys libcntpr ${PSEH_LIB})
 add_delay_importlibs(winsrv ${USERSRV_DELAY_IMPORT_LIBS} advapi32)
 add_importlibs(winsrv ${USERSRV_IMPORT_LIBS} csrsrv gdi32 user32 kernel32 ntdll)
 add_dependencies(winsrv bugcodes xdk)
-add_cd_file(TARGET winsrv DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winsrv DESTINATION librent/system32 FOR all)

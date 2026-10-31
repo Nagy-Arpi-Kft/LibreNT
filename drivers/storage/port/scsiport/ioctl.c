@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Storage Stack / SCSIPORT storage port library
+ * PROJECT:     LibreNT Storage Stack / SCSIPORT storage port library
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     IOCTL handlers
  * COPYRIGHT:   Eric Kohl (eric.kohl@reactos.org)
@@ -643,7 +643,7 @@ ScsiPortDeviceControl(
 
     switch (IoControlCode)
     {
-        case IOCTL_REACTOS_STORAGE_GET_DUMP_INTERFACE:
+        case IOCTL_LIBRENT_STORAGE_GET_DUMP_INTERFACE:
         {
             if (comExt->IsFDO)
             {

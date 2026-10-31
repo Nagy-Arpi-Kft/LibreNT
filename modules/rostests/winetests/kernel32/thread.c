@@ -926,7 +926,7 @@ static VOID test_thread_processor(void)
     {
         SetLastError(0xdeadbeef);
         ret = SetThreadIdealProcessor(GetCurrentThread(), MAXIMUM_PROCESSORS+1);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
         ok(ret == ~0u || broken(ret == 0) /* x86_64 */, "Unexpected return value %lu.\n", ret);
         ok(GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* x86_64 */, "Unexpected error %ld.\n", GetLastError());
 #else
@@ -1904,7 +1904,7 @@ static inline unsigned long get_fpu_cw(void)
     WORD cw = 0;
     unsigned int sse = 0;
 #ifdef _MSC_VER
-#if defined(__REACTOS__) && defined (__x86_64__)
+#if defined(__LIBRENT__) && defined (__x86_64__)
     extern void get_fpu_cw_raw(WORD *cw, unsigned int *sse);
     get_fpu_cw_raw(&cw, &sse);
 #else
@@ -2036,7 +2036,7 @@ static void test_thread_fpu_cw(void)
     _control87( _EM_INEXACT | _RC_CHOP | _PC_24, _MCW_EM | _MCW_RC | _MCW_PC );
     cw = _control87( 0, 0 );
     fpu_cw = get_fpu_cw();
-#if defined(__REACTOS__) && defined(__aarch64__)
+#if defined(__LIBRENT__) && defined(__aarch64__)
     if (!(fpu_cw & 0x9f00))
     {
         skip("The processor does not implement the FPCR trap enable bits\n");
@@ -2349,7 +2349,7 @@ static void test_thread_info(void)
         case ThreadBasicInformation:
         case ThreadAmILastThread:
         case ThreadPriorityBoost:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(status == STATUS_SUCCESS || broken(status == STATUS_ACCESS_DENIED && (i == 0 || i == 14)) /* WS03 */, "for info %lu expected STATUS_SUCCESS, got %08lx (ret_len %lu)\n", i, status, ret_len);
 #else
             ok(status == STATUS_SUCCESS, "for info %lu expected STATUS_SUCCESS, got %08lx (ret_len %lu)\n", i, status, ret_len);
@@ -2364,7 +2364,7 @@ static void test_thread_info(void)
 #endif
 
         case ThreadTimes:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(status == STATUS_SUCCESS || broken(status == STATUS_ACCESS_DENIED) /* WS03 */, "for info %lu expected STATUS_SUCCESS, got %08lx (ret_len %lu)\n", i, status, ret_len);
 #else
             ok(status == STATUS_SUCCESS, "for info %lu expected STATUS_SUCCESS, got %08lx (ret_len %lu)\n", i, status, ret_len);

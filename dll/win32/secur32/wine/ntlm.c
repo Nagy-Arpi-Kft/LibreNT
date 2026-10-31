@@ -108,7 +108,7 @@ SECURITY_STATUS SEC_ENTRY ntlm_AcquireCredentialsHandleW(
     PNtlmCredentials ntlm_cred = NULL;
     LPWSTR domain = NULL, user = NULL, password = NULL;
     PSEC_WINNT_AUTH_IDENTITY_W auth_data = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SEC_WINNT_AUTH_IDENTITY_W ex_view;
 #endif
 
@@ -134,7 +134,7 @@ SECURITY_STATUS SEC_ENTRY ntlm_AcquireCredentialsHandleW(
         case SECPKG_CRED_OUTBOUND:
         case SECPKG_CRED_BOTH:
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 auth_data = SECUR32_identityView(pAuthData, &ex_view);
 #else
                 auth_data = pAuthData;
@@ -259,7 +259,7 @@ static SECURITY_STATUS SEC_ENTRY ntlm_AcquireCredentialsHandleA(
     
     PSEC_WINNT_AUTH_IDENTITY_W pAuthDataW = NULL;
     PSEC_WINNT_AUTH_IDENTITY_A identity  = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SEC_WINNT_AUTH_IDENTITY_W ex_view;
 #endif
 
@@ -280,7 +280,7 @@ static SECURITY_STATUS SEC_ENTRY ntlm_AcquireCredentialsHandleA(
     
     if(pAuthData != NULL)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         identity = SECUR32_identityView(pAuthData, &ex_view);
 
         if(identity->Flags & SEC_WINNT_AUTH_IDENTITY_ANSI)

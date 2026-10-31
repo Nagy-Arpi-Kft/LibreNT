@@ -19,7 +19,7 @@
 #define STRSAFE_NO_DEPRECATE
 
 #include "shellext.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #include <strsafe.h>
 #include <winternl.h>
@@ -41,7 +41,7 @@
 
 #define SUBVOL_ROOT_INODE 0x100
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef __MINGW32__ // in winternl.h in mingw
 
 typedef struct _FILE_ACCESS_INFORMATION {
@@ -89,7 +89,7 @@ void BtrfsPropSheet::do_search(const wstring& fn) {
     wstring ss;
     WIN32_FIND_DATAW ffd;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ss = fn + L"\\*"s;
 #else
     ss = fn + wstring(L"\\*");
@@ -103,7 +103,7 @@ void BtrfsPropSheet::do_search(const wstring& fn) {
         if (ffd.cFileName[0] != '.' || ((ffd.cFileName[1] != 0) && (ffd.cFileName[1] != '.' || ffd.cFileName[2] != 0))) {
             wstring fn2;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             fn2 = fn + L"\\"s + ffd.cFileName;
 #else
             fn2 = fn + wstring(L"\\") + ffd.cFileName;
@@ -896,7 +896,7 @@ void BtrfsPropSheet::open_as_admin(HWND hwndDlg) {
             wstring t;
             SHELLEXECUTEINFOW sei;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             t = L"\""s + modfn + L"\",ShowPropSheet "s + fn;
 #else
             t = wstring(L"\"") + modfn + wstring(L"\",ShowPropSheet ") + fn;

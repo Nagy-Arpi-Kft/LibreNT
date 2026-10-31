@@ -224,7 +224,7 @@ AcpiOsMapMemory (
     ACPI_SIZE               Length);
 #endif
 
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
 void *
 AcpiOsMapOperationRegion (
     ACPI_PHYSICAL_ADDRESS   Where,

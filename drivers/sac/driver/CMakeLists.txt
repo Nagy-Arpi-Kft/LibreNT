@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR})
+include_directories(${LIBRENT_SOURCE_DIR})
 
 list(APPEND SOURCE
     chanmgr.c
@@ -21,5 +21,5 @@ set_module_type(sacdrv kernelmodedriver)
 add_importlibs(sacdrv ntoskrnl hal)
 add_dependencies(sacdrv sacmsg)
 add_pch(sacdrv sacdrv.h SOURCE)
-add_cd_file(TARGET sacdrv DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET sacdrv DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(sacdrv_reg.inf)

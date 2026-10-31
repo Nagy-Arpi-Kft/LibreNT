@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Settings
+ * PROJECT:     LibreNT Settings
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Personalization pages: mode, effects, background, taskbar and fonts
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -34,7 +34,7 @@ SetDarkMode(bool dark)
 {
     DwmSettingsWriteColorScheme(dark ? DWM_COLOR_SCHEME_DARK : DWM_COLOR_SCHEME_LIGHT);
     BroadcastSetting(L"ImmersiveColorSet");
-    BroadcastSetting(REACTOS_DWM_SETTINGS_KEY);
+    BroadcastSetting(LIBRENT_DWM_SETTINGS_KEY);
 }
 
 static void

@@ -376,7 +376,7 @@ void NS_ReplyToEnumSessionsRequest( const void *lpcMsg, void **lplpReplyData, DW
   *lpdwReplySize = lpDP->dp2->spData.dwSPHeaderSize +
                      sizeof( *rmsg ) + dwVariableSize;
   *lplpReplyData = calloc( 1, *lpdwReplySize );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!*lplpReplyData)
   {
     *lpdwReplySize = 0;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Win32k subsystem
+ * PROJECT:         LibreNT Win32k subsystem
  * LICENSE:         GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:         Security infrastructure of NTUSER component of Win32k
  * COPYRIGHT:       Copyright 2022 George Bișoc <george.bisoc@reactos.org>

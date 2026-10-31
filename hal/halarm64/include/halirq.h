@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/halarm64/include/halirq.h
  * PURPOSE:         IRQ/Vector translation stubs for the GIC

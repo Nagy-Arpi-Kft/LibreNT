@@ -2733,7 +2733,7 @@ static void test_session_creation(void)
 
     hr = IAudioSessionManager_QueryInterface(sesm, &IID_IAudioSessionManager2, (void **)&sesm2);
     ok(hr == S_OK, "got %#lx.\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = IAudioSessionManager2_GetSessionEnumerator(sesm2, &sess_enum);
 #else
     hr = IAudioSessionManager2_GetSessionEnumerator((void *)sesm2, &sess_enum);

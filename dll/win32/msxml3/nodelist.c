@@ -76,7 +76,7 @@ static HRESULT WINAPI xmlnodelist_QueryInterface(IXMLDOMNodeList *iface, REFIID 
 
     TRACE("%p, %s, %p.\n", iface, debugstr_guid(riid), ppvObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ppvObject)
         return E_INVALIDARG;
 #endif

@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/win32ss ../gditools)
+include_directories(${LIBRENT_SOURCE_DIR}/win32ss ../gditools)
 
 list(APPEND SOURCE
     AddFontMemResourceEx.c

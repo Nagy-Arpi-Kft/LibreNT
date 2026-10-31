@@ -15,7 +15,7 @@ add_executable(appsmoke_apitest
     taskdialog.c
     testlist.c)
 
-target_include_directories(appsmoke_apitest PRIVATE ${REACTOS_SOURCE_DIR}/modules/rostests/apitests/include)
+target_include_directories(appsmoke_apitest PRIVATE ${LIBRENT_SOURCE_DIR}/modules/rostests/apitests/include)
 set_module_type(appsmoke_apitest win32cui)
 target_link_libraries(appsmoke_apitest uuid)
 add_importlibs(appsmoke_apitest user32 gdi32 ws2_32 shell32 shlwapi comdlg32 ole32 advapi32 msvcrt kernel32 ntdll)

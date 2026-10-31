@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Compile-time parity between the tests and mmdevapi's private layout
@@ -15,7 +15,7 @@
 
 #include <mmdevapi_private.h>
 
-C_ASSERT(REACTOS_AUDIO_SESSION_MAX_CHANNELS == 32);
+C_ASSERT(LIBRENT_AUDIO_SESSION_MAX_CHANNELS == 32);
 C_ASSERT(sizeof(struct reactos_audio_session_id) == 20);
 C_ASSERT(sizeof(struct reactos_audio_session_snapshot) == 1488);
 C_ASSERT(FIELD_OFFSET(struct reactos_audio_session_id, instance_guid) == 4);

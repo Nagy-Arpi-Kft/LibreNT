@@ -1,6 +1,6 @@
 /*
  *  COPYRIGHT:        See COPYING in the top level directory
- *  PROJECT:          ReactOS Win32k subsystem
+ *  PROJECT:          LibreNT Win32k subsystem
  *  PURPOSE:          Desktops
  *  FILE:             subsystems/win32/win32k/ntuser/desktop.c
  *  PROGRAMMER:       Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -9,7 +9,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <win32k.h>
-#include <reactos/buildno.h>
+#include <librent/buildno.h>
 #include <ndk/inbvfuncs.h>
 DBG_DEFAULT_CHANNEL(UserDesktop);
 
@@ -471,7 +471,7 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* String for Safe Mode */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"LiberNT \u00b7 Development Preview (Target: Windows 11 24H2 %u.%u%s) %wZ-%.*S\n",
+                                     L"LibreNT \u00b7 Development Preview (Target: Windows 11 24H2 %u.%u%s) %wZ-%.*S\n",
                                      (VerInfo.dwBuildNumber & 0xFFFF),
                                      (ULONG)VER_PRODUCTBUILD_QFE,
                                      VersionBuffer,
@@ -484,7 +484,7 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* Multi-string for Normal Mode */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"LiberNT \u00b7 Development Preview\n"
+                                     L"LibreNT \u00b7 Development Preview\n"
                                      L"Target: Windows 11 24H2 %u.%u%s\n"
                                      L"Build %wZ-%.*S\n",
                                      (VerInfo.dwBuildNumber & 0xFFFF),
@@ -500,7 +500,7 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* Fall-back string */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"LiberNT \u00b7 Development Preview %wZ-%.*S\n",
+                                     L"LibreNT \u00b7 Development Preview %wZ-%.*S\n",
                                      &BuildLabString,
                                      ArchLength,
                                      Arch);
@@ -1408,7 +1408,7 @@ IntSetFocusMessageQueue(PUSER_MESSAGE_QUEUE NewQueue)
     {
         gpqForeground = NULL;
         TRACE("ptiLastInput is CLEARED!!\n");
-        ptiLastInput = NULL; // ReactOS hacks... should check for process death.
+        ptiLastInput = NULL; // LibreNT hacks... should check for process death.
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS SDK
+ * PROJECT:     LibreNT SDK
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     shlwapi header
  * COPYRIGHT:   Copyright 2025 Carl Bialorucki (carl.bialorucki@reactos.org)
@@ -138,7 +138,7 @@ STDAPI DllInstall(BOOL, _In_opt_ LPCWSTR) DECLSPEC_HIDDEN;
 typedef struct
 {
     const IID *piid;
-#if defined(__REACTOS__) || (WINVER >= _WIN32_WINNT_WIN10)
+#if defined(__LIBRENT__) || (WINVER >= _WIN32_WINNT_WIN10)
     DWORD dwOffset;
 #else
     int dwOffset;

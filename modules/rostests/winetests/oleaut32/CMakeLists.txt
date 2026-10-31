@@ -9,7 +9,7 @@ add_definitions(
     -Dstrcasecmp=_stricmp
 )
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/ucrt)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/ucrt)
 
 add_idl_Headers(oleaut32_idlheaders test_reg.idl test_tlb.idl tmarshal.idl test_simple.idl)
 generate_idl_iids(test_reg.idl test_tlb.idl tmarshal.idl test_simple.idl)

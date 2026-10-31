@@ -39,6 +39,6 @@ add_importlibs(lwipcore ntoskrnl)
 
 target_include_directories(ip BEFORE
     PRIVATE ${LWIP_INCLUDE_DIRS}
-    PRIVATE ${REACTOS_SOURCE_DIR}/drivers/network/tcpip/include)
+    PRIVATE ${LIBRENT_SOURCE_DIR}/drivers/network/tcpip/include)
 
 add_pch(ip precomp.h SOURCE)

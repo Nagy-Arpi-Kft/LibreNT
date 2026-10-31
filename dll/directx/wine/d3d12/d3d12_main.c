@@ -24,7 +24,7 @@
 #include <dxgi.h>
 #include <vkd3d.h>
 
-#ifdef REACTOS_D3D12_NATIVE_UMD
+#ifdef LIBRENT_D3D12_NATIVE_UMD
 HRESULT d3d12_native_create_device(IUnknown *adapter, D3D_FEATURE_LEVEL minimum_feature_level, BOOL independent,
         D3D12_DRED_ENABLEMENT auto_breadcrumbs, D3D12_DRED_ENABLEMENT page_fault, UINT configuration, REFIID iid,
         void **device);
@@ -131,7 +131,7 @@ static HRESULT
 d3d12_create_configured_device(IUnknown *adapter, D3D_FEATURE_LEVEL minimum_feature_level,
         const struct vkd3d_device_configuration_info *configuration, REFIID iid, void **device)
 {
-#ifdef REACTOS_D3D12_NATIVE_UMD
+#ifdef LIBRENT_D3D12_NATIVE_UMD
     HRESULT hr = configuration
             ? d3d12_native_create_device(adapter, minimum_feature_level, TRUE, configuration->dred_auto_breadcrumbs,
                     configuration->dred_page_fault, configuration->configuration_flags, iid, device)

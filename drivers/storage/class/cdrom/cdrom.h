@@ -58,11 +58,11 @@ Revision History:
     #define WPP_CONTROL_GUIDS   WPP_CONTROL_GUIDS_NORMAL_FLAGS(WPP_GUID_CDROM)
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <pseh/pseh2.h>
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef MdlMappingNoExecute
 #define MdlMappingNoExecute 0
 #define NonPagedPoolNx NonPagedPool
@@ -76,7 +76,7 @@ Revision History:
 _IRQL_requires_max_(DISPATCH_LEVEL)
 NTKERNELAPI
 BOOLEAN
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 PsIsThreadTerminating(
     _In_ PETHREAD Thread
     );
@@ -807,7 +807,7 @@ VOID
 #define CLEAR_FLAG(Flags, Bit)  ((Flags) &= ~(Bit))
 #define TEST_FLAG(Flags, Bit)   (((Flags) & (Bit)) != 0)
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 BOOLEAN
 ValidChar(UCHAR Ch)
 {
@@ -821,7 +821,7 @@ ValidChar(UCHAR Ch)
 }
 
 // could be #define, but this allows typechecking
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 BOOLEAN
 PORT_ALLOCATED_SENSE(
     _In_ PCDROM_DEVICE_EXTENSION  DeviceExtension,
@@ -834,7 +834,7 @@ PORT_ALLOCATED_SENSE(
             );
 }
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 VOID
 FREE_PORT_ALLOCATED_SENSE_BUFFER(
     _In_ PCDROM_DEVICE_EXTENSION  DeviceExtension,
@@ -890,7 +890,7 @@ EVT_WDF_IO_QUEUE_IO_DEFAULT CreateQueueEvtIoDefault;
 // We do not use KMDF annotation for the following function, because it handles
 // both read and write requests and there is no single annotation for that.
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 SequentialQueueEvtIoReadWrite(
     _In_ WDFQUEUE     Queue,
     _In_ WDFREQUEST   Request,
@@ -1509,7 +1509,7 @@ FORCEINLINE ULONG CountOfSetBitsUlongPtr(ULONG_PTR _X)
                     { ULONG i = 0; while (_X) { _X &= _X - 1; i++; } return i; }
 
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 BOOLEAN
 IsVolumeMounted(
     _In_ PDEVICE_OBJECT DeviceObject
@@ -1549,7 +1549,7 @@ ConvertSectorsPerSecondTo100nsUnitsFor64kWrite(
     return 320000000 / SectorsPerSecond;
 }
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 UCHAR
 RequestGetCurrentStackLocationFlags(
     _In_ WDFREQUEST Request
@@ -1564,7 +1564,7 @@ RequestGetCurrentStackLocationFlags(
     return currentStack->Flags;
 }
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 ULONG
 TimeOutValueGetCapValue(
     _In_ ULONG  TimeOutValue,

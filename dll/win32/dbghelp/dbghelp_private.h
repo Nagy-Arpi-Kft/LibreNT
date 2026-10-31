@@ -24,7 +24,7 @@
 #pragma once
 
 #include <stdarg.h>
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
 #include <string.h>
 #include "compat.h"
 #include "wine/list.h"
@@ -36,7 +36,7 @@
 #include "dbghelp.h"
 #include "objbase.h"
 #include "oaidl.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "oleauto.h"
 #endif
 #include "winnls.h"
@@ -129,7 +129,7 @@ extern BOOL     dbghelp_opt_native;
 extern BOOL     dbghelp_opt_extension_api;
 extern BOOL     dbghelp_opt_real_path;
 extern BOOL     dbghelp_opt_source_actual_path;
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 extern SYSTEM_INFO sysinfo;
 #endif
 

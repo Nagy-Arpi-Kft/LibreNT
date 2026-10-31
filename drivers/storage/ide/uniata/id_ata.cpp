@@ -570,7 +570,7 @@ AtapiSuckPortBuffer2(
     return i;
 } // AtapiSuckPortBuffer2()
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID
 DDKFASTAPI
 FillDeviceIdentificationString(
@@ -901,7 +901,7 @@ AtapiSoftReset(
         }
 
         i = 30 * 1000;
-        // ReactOS modification: Already stop looping when we know that the drive has finished resetting.
+        // LibreNT modification: Already stop looping when we know that the drive has finished resetting.
         // Not all controllers clear the IDE_STATUS_BUSY flag (e.g. not the VMware one), so ensure that
         // the maximum waiting time (30 * i = 0.9 seconds) does not exceed the one of the original
         // implementation. (which is around 1 second)
@@ -6227,7 +6227,7 @@ CompleteRequest:
             } else { // srb->Cdb[0] == SCSIOP_REQUEST_SENSE)
 
                 PSENSE_DATA senseData = (PSENSE_DATA) srb->DataBuffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 (void)senseData;
 #endif
 
@@ -8400,7 +8400,7 @@ default_no_prep:
             inquiryData->CommandQueue = 1;
 
             // Fill in vendor identification fields.
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             FillDeviceIdentificationString(inquiryData, identifyData);
 #else
             for (i = 0; i < 24; i += 2) {
@@ -8465,7 +8465,7 @@ default_no_prep:
             } else {
                 RtlZeroMemory(modeData, sizeof(MODE_POWER_CONDITION_PAGE));
                 modeData->PageCode = MODE_PAGE_POWER_CONDITION;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 modeData->PageLength = sizeof(MODE_POWER_CONDITION_PAGE)-sizeof(MODE_PARAMETER_HEADER);
 #else
                 modeData->PageLength = sizeof(MODE_PAGE_POWER_CONDITION)-sizeof(MODE_PARAMETER_HEADER);
@@ -9550,7 +9550,7 @@ reject_srb:
                    (Srb->Cdb[0] != SCSIOP_ATA_PASSTHROUGH)/* &&
                    (Srb->Cdb[0] != SCSIOP_REPORT_LUNS)*/) {
                     KdPrint3((PRINT_PREFIX "Try ATAPI send %x\n", Srb->Cdb[0]));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     status = SRB_STATUS_BUSY;
 
                     if (Srb->Cdb[0] == SCSIOP_INQUIRY &&
@@ -10686,7 +10686,7 @@ DriverEntry(
     PUNICODE_STRING        RegistryPath = (PUNICODE_STRING)Argument2;
     BOOLEAN                ReEnter = FALSE;
 //    WCHAR                  a;
-#ifndef USE_REACTOS_DDK
+#ifndef USE_LIBRENT_DDK
     NTSTATUS               status;
 #endif
 
@@ -10751,8 +10751,8 @@ DriverEntry(
 
     if(!SavedDriverObject) {
         SavedDriverObject = (PDRIVER_OBJECT)DriverObject;
-#ifdef USE_REACTOS_DDK
-        KdPrint(("UniATA Init: OS should be ReactOS\n"));
+#ifdef USE_LIBRENT_DDK
+        KdPrint(("UniATA Init: OS should be LibreNT\n"));
         MajorVersion=0x04;
         MinorVersion=0x01;
         BuildNumber=1;
@@ -10766,7 +10766,7 @@ DriverEntry(
             return status;
         }
         CPU_num = *KeNumberProcessors;
-#endif // USE_REACTOS_DDK
+#endif // USE_LIBRENT_DDK
         KdPrint(("UniATA Init: OS ver %x.%x (%d), %d CPU(s)\n", MajorVersion, MinorVersion, BuildNumber, CPU_num));
 
         KeQuerySystemTime(&t0);
@@ -10803,7 +10803,7 @@ DriverEntry(
     }
 
     if(WinVer_Id() >= WinVer_2k) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if(AtapiRegCheckParameterValue(NULL, L"Paramaters\\PnpInterface", L"1", 0)) {
 #else
         if(AtapiRegCheckParameterValue(NULL, L"Parameters\\PnpInterface", L"1", 0)) {
@@ -10811,7 +10811,7 @@ DriverEntry(
             KdPrint(("UniATA: Behave as WDM, mlia (1)\n"));
             WinVer_WDM_Model = TRUE;
         }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if(AtapiRegCheckParameterValue(NULL, L"Paramaters\\PnpInterface", L"5", 0)) {
 #else
         if(AtapiRegCheckParameterValue(NULL, L"Parameters\\PnpInterface", L"5", 0)) {
@@ -10937,7 +10937,7 @@ DriverEntry(
             // Note: this call may (but not 'must' or 'can') cause IO resource
             // reallocation and switch to native mode if HAL supports this
             newStatus = (ULONG)UniataClaimLegacyPCIIDE(i);
-            // Special check for NT3.51/NT4 (not ReactOS !!!)
+            // Special check for NT3.51/NT4 (not LibreNT !!!)
             if(((NTSTATUS)newStatus == STATUS_CONFLICTING_ADDRESSES) &&
                //(BMList[i].ChanInitOk & 0x40) &&
                /*CPU_num > 1 &&*/
@@ -10945,7 +10945,7 @@ DriverEntry(
                 // Some NT3/4 SMP (but not only) HALs cannot reallocate IO resources of
                 // BusMaster PCI controller
                 // Since nobody claimed Primary/Secondary yet, try init and claim them
-                // However it is not 100% safe way, especially under ReactOS, which doesn't resolve
+                // However it is not 100% safe way, especially under LibreNT, which doesn't resolve
                 // conflicts yet.
                 // We relay on ScsiPort internal checks
                 KdPrint2((PRINT_PREFIX "Can't acquire PCI part of BusMaster on SMP NT3/4 system, try init anyway.\n"));
@@ -11112,7 +11112,7 @@ DriverEntry(
             // It stops scanning PCI bus when reaches empty PCI Function inside Slot
             // However, this PCI Slot may have higher non-empty Functions
             // UniATA will perform all staff instead of ScsiPort under NT,
-            // but for ReactOS it is better to patch ScsiPort.
+            // but for LibreNT it is better to patch ScsiPort.
             KdPrint2((PRINT_PREFIX "STATUS_DEVICE_DOES_NOT_EXIST, try workaround\n"));
             hwInitializationData.comm.AdapterInterfaceType = Isa;
             newStatus = ScsiPortInitialize(DriverObject,

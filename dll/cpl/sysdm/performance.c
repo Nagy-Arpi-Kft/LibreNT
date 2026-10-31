@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS System Control Panel Applet
+ * PROJECT:     LibreNT System Control Panel Applet
  * LICENSE:     LGPL-2.1+ (https://spdx.org/licenses/LGPL-2.1+)
  * FILE:        dll/cpl/sysdm/performance.c
  * PURPOSE:     Performance settings property sheets

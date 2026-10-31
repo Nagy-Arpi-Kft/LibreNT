@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
@@ -39,7 +39,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(win);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef __i386__
 /* Some apps pass a non-stdcall proc to EnumChildWindows,
  * so we need a small assembly wrapper to call the proc.
@@ -627,7 +627,7 @@ BOOL WINAPI IsWindowUnicode( HWND hwnd )
 /***********************************************************************
  *		GetWindowDpiAwarenessContext  (USER32.@)
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 DPI_AWARENESS_CONTEXT WINAPI GetWindowDpiAwarenessContext( HWND hwnd )
 {
     return LongToHandle( NtUserGetWindowDpiAwarenessContext( hwnd ) );
@@ -678,7 +678,7 @@ static LONG_PTR set_dialog_proc( HWND hwnd, LONG_PTR newval, BOOL ansi )
 /***********************************************************************
  *              GetDpiForWindow   (USER32.@)
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 UINT WINAPI GetDpiForWindow( HWND hwnd )
 {
     return NtUserGetDpiForWindow( hwnd );

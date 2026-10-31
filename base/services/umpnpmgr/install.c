@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2005 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * FILE:             base/services/umpnpmgr/install.c
  * PURPOSE:          Device installer
  * PROGRAMMER:       Eric Kohl (eric.kohl@reactos.org)
@@ -567,7 +567,7 @@ InstallDevice(PCWSTR DeviceInstance, BOOL ShowWizard)
         goto cleanup;
 
     /* I couldn't figure out what the following value means under WinXP. It's usually 0 in my tests, but was also 5 once.
-       Therefore the following line is entirely ReactOS-specific. We use the value here to pass the ShowWizard variable. */
+       Therefore the following line is entirely LibreNT-specific. We use the value here to pass the ShowWizard variable. */
     if (!WriteToInstallPipe(hPipe, ProcessInfo.hProcess, &ShowWizard, sizeof(ShowWizard)))
         goto cleanup;
 

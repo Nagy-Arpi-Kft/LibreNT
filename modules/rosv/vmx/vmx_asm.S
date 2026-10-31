@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS VMX Hypervisor Driver
+ * PROJECT:     LibreNT VMX Hypervisor Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Assembly stubs for VMX instructions (amd64, Intel syntax via asm.inc)
  * COPYRIGHT:   Copyright 2025 Ahmed Arif

@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT VMX Hypervisor Launcher (rosl.exe)
+ * PROJECT:     LibreNT VMX Hypervisor Launcher (rosl.exe)
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Terminal bridge - PTY I/O with VT pass-through
  * COPYRIGHT:   Copyright 2025-2026 Ahmed Arif
  *
  * This module implements the host-side terminal for PTY-based console I/O.
  * Most VT/ANSI escape sequences pass through, but DEC private mode toggles
- * that ReactOS prints literally are consumed locally.
+ * that LibreNT prints literally are consumed locally.
  */
 
 #include <windows.h>

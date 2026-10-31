@@ -145,7 +145,7 @@ static HRESULT on_mime_message_available(MimeHtmlProtocol *protocol, IMimeMessag
         PropVariantClear(&value);
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* FIXME: Create and report cache file. */
 #endif
 
@@ -153,7 +153,7 @@ static HRESULT on_mime_message_available(MimeHtmlProtocol *protocol, IMimeMessag
     if(FAILED(hres))
         return report_result(protocol, hres);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WCHAR dir[MAX_PATH], path[MAX_PATH];
         LARGE_INTEGER zero = {{0}};
@@ -680,7 +680,7 @@ static HRESULT WINAPI MimeHtmlProtocolInfo_CombineUrl(IInternetProtocolInfo *ifa
         return hres;
 
     if(!wcsnicmp(pwzRelativeUrl, mhtml_prefixW, len)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         const WCHAR *result = wcschr(pwzRelativeUrl, '!') ? pwzRelativeUrl : pwzRelativeUrl + len;
 
         len = lstrlenW(result);

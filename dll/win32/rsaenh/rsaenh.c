@@ -3262,7 +3262,7 @@ static BOOL import_public_key(HCRYPTPROV hProv, const BYTE *pbData, DWORD dwData
      * available, so only signature verification is possible.
      */
     algID = pBlobHeader->aiKeyAlg;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         const PROV_ENUMALGS_EX *info = get_algid_info(hProv, algID);
 
@@ -3607,7 +3607,7 @@ BOOL WINAPI RSAENH_CPGenKey(HCRYPTPROV hProv, ALG_ID Algid, DWORD dwFlags, HCRYP
                 setup_key(pCryptKey);
                 release_and_install_key(hProv, *phKey,
                                         &pKeyContainer->hSignatureKeyPair,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                         !(pKeyContainer->dwFlags & CRYPT_VERIFYCONTEXT));
 #else
                                         FALSE);
@@ -3623,7 +3623,7 @@ BOOL WINAPI RSAENH_CPGenKey(HCRYPTPROV hProv, ALG_ID Algid, DWORD dwFlags, HCRYP
                 setup_key(pCryptKey);
                 release_and_install_key(hProv, *phKey,
                                         &pKeyContainer->hKeyExchangeKeyPair,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                         !(pKeyContainer->dwFlags & CRYPT_VERIFYCONTEXT));
 #else
                                         FALSE);

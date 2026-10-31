@@ -1,8 +1,8 @@
-# PROJECT:     ReactOS Raspberry Pi 3 VC4 OpenGL ICD packaging
+# PROJECT:     LibreNT Raspberry Pi 3 VC4 OpenGL ICD packaging
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
 
-set(RPI3VC4_MESA_VC4_ICD "$ENV{REACTOS_MESA_VC4_ICD}" CACHE FILEPATH
+set(RPI3VC4_MESA_VC4_ICD "$ENV{LIBRENT_MESA_VC4_ICD}" CACHE FILEPATH
     "Override: external Mesa VC4 WGL ICD to deploy instead of building Mesa")
 
 if(TARGET mesa_gallium AND NOT RPI3VC4_MESA_VC4_ICD)
@@ -63,5 +63,5 @@ add_custom_target(rpi3vc4_mesa_icd_stage
 add_cd_file(
     FILE "${RPI3VC4_MESA_ICD_STAGE}"
     TARGET rpi3vc4_mesa_icd_stage
-    DESTINATION reactos/system32
+    DESTINATION librent/system32
     FOR all)

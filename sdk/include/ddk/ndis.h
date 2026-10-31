@@ -3,7 +3,7 @@
  *
  * Network Device Interface Specification definitions
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created by Casper S. Hornstrup <chorns@users.sourceforge.net>
@@ -9342,7 +9342,7 @@ typedef PROTOCOL_DIRECT_OID_REQUEST_COMPLETE (*PROTOCOL_DIRECT_OID_REQUEST_COMPL
 #endif
 
 /* Canonical WDK callback pointer names. Keep the PROTOCOL_*_HANDLER names
- * above as source-compatible aliases for existing ReactOS consumers. */
+ * above as source-compatible aliases for existing LibreNT consumers. */
 typedef PROTOCOL_BIND_ADAPTER_EX (*BIND_HANDLER_EX);
 typedef PROTOCOL_UNBIND_ADAPTER_EX (*UNBIND_HANDLER_EX);
 typedef PROTOCOL_OPEN_ADAPTER_COMPLETE_EX (*OPEN_ADAPTER_COMPLETE_HANDLER_EX);

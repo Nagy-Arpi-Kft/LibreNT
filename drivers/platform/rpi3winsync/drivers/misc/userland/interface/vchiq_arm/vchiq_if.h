@@ -91,7 +91,7 @@ typedef enum
    VCHIQ_SERVICE_OPTION_TRACE
 } VCHIQ_SERVICE_OPTION_T;
 
-#if defined(__REACTOS__) && defined(WIN32)
+#if defined(__LIBRENT__) && defined(WIN32)
 #include <pshpack1.h>
 #endif
 
@@ -154,7 +154,7 @@ typedef struct vchiq_config_struct {
    short version_min;  /* The minimum compatible version of VCHIQ */
 } VCHIQ_CONFIG_T;
 
-#if defined(__REACTOS__) && defined(WIN32)
+#if defined(__LIBRENT__) && defined(WIN32)
 #include <poppack.h>
 #endif
 

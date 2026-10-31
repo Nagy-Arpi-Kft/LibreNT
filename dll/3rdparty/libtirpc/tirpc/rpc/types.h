@@ -60,7 +60,7 @@
 #define _TIRPC_TYPES_H
 
 #include <sys/types.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <windef.h>
 #endif
 //#include <sys/_null.h>
@@ -87,7 +87,7 @@ typedef UINT64   u_quad_t;
 
 typedef UINT     uid_t;
 typedef UINT     gid_t;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef DWORD    pid_t;
 #endif
 
@@ -127,7 +127,7 @@ typedef   int32_t rpc_inline_t;
 //#include <sys/param.h>
 #include <stdlib.h>
 #include <netconfig.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ws2def.h>
 #include <winsock2.h>
 #endif

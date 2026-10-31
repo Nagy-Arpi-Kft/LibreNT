@@ -27,13 +27,13 @@
 
 #include <audiopolicy.h>
 #include <mmdeviceapi.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <winver.h>
 #endif
 #include <winternl.h>
 
 #include <wine/debug.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <wine/unixlib.h>
 #endif
 
@@ -149,7 +149,7 @@ static HRESULT adjust_timing(struct audio_client *client, const BOOLEAN force_de
             else if (flags & AUDCLNT_STREAMFLAGS_EVENTCALLBACK) {
                 if (*duration != *period)
                     return AUDCLNT_E_BUFDURATION_PERIOD_NOT_EQUAL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
                 FIXME("EXCLUSIVE mode with EVENTCALLBACK\n");
 
@@ -502,7 +502,7 @@ static HRESULT stream_init(struct audio_client *client, const BOOLEAN force_def_
     params.fmt           = fmt;
     params.channel_count = &channel_count;
     params.stream        = &stream;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     params.aligned_frames = 0;
 #endif
 
@@ -511,7 +511,7 @@ static HRESULT stream_init(struct audio_client *client, const BOOLEAN force_def_
     free(name);
 
     if (FAILED(params.result)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (params.result == AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED)
             client->aligned_frames = params.aligned_frames;
 #endif
@@ -539,7 +539,7 @@ exit:
         client->stream = stream;
         client->channel_count = channel_count;
         set_stream_volumes(client);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         publish_audio_session_state(client->session);
 #endif
     }
@@ -716,7 +716,7 @@ static ULONG WINAPI client_Release(IAudioClient3 *iface)
         if (This->session) {
             sessions_lock();
             list_remove(&This->entry);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             publish_audio_session_state(This->session);
 #endif
             sessions_unlock();
@@ -757,7 +757,7 @@ static HRESULT WINAPI client_GetBufferSize(IAudioClient3 *iface, UINT32 *out)
     if (!out)
         return E_POINTER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!This->stream && This->aligned_frames) {
         *out = This->aligned_frames;
         return S_OK;
@@ -945,7 +945,7 @@ static HRESULT WINAPI client_Start(IAudioClient3 *iface)
     params.stream = This->stream;
     wine_unix_call(start, &params);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(params.result))
         publish_audio_session_state(This->session);
 #endif
@@ -967,11 +967,11 @@ static HRESULT WINAPI client_Stop(IAudioClient3 *iface)
 
     params.stream = This->stream;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
 #endif
     wine_unix_call(stop, &params);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     publish_audio_session_state(This->session);
     sessions_unlock();
 #endif
@@ -1510,14 +1510,14 @@ static HRESULT WINAPI render_ReleaseBuffer(IAudioRenderClient *iface, UINT32 wri
     params.written_frames = written_frames;
     params.flags          = flags;
     params.peak           = 0.0f;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     if (This->session && sync_audio_session(This->session))
         set_stream_volumes(This);
     sessions_unlock();
 #endif
     wine_unix_call(release_render_buffer, &params);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(params.result) && This->session && This->session->shared_valid)
         reactos_audio_session_set_peak(&This->session->shared_id, params.peak);
 #endif

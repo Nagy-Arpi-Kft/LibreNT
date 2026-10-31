@@ -1,5 +1,5 @@
 /*
- * ReactOS ATL
+ * LibreNT ATL
  *
  * Copyright 2009 Andrew Hill <ash77@reactos.org>
  *
@@ -22,7 +22,7 @@
 
 #include <malloc.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     #define WIN32_NO_STATUS
     #define _INC_WINDOWS
     #define COM_NO_WINDOWS_H

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Winlogon
+ * PROJECT:         LibreNT Winlogon
  * FILE:            base/system/winlogon/sas.c
  * PURPOSE:         Secure Attention Sequence
  * PROGRAMMERS:     Thomas Weidenmueller (w3seek@users.sourceforge.net)
@@ -20,7 +20,7 @@
 #include <userenv.h>
 #include <ndk/setypes.h>
 #include <ndk/sefuncs.h>
-#include <reactos/desktopready.h>
+#include <librent/desktopready.h>
 
 /* GLOBALS ******************************************************************/
 
@@ -44,7 +44,7 @@ typedef struct tagLOGOFF_SHUTDOWN_DATA
     PWLSESSION Session;
 } LOGOFF_SHUTDOWN_DATA, *PLOGOFF_SHUTDOWN_DATA;
 
-static BOOL ExitReactOSInProgress = FALSE;
+static BOOL ExitLibreNTInProgress = FALSE;
 static UINT ExitWindowsFlags = 0;
 
 LUID LuidNone = {0, 0};
@@ -166,7 +166,7 @@ CreateUserDesktopReadyEvent(
             ERR("WL: Could not impersonate the user for the desktop ready event (error %lu)\n", GetLastError());
     }
 
-    ReadyEvent = CreateEventW(NULL, TRUE, FALSE, REACTOS_USER_DESKTOP_READY_EVENT);
+    ReadyEvent = CreateEventW(NULL, TRUE, FALSE, LIBRENT_USER_DESKTOP_READY_EVENT);
     if (Impersonated && !RevertToSelf())
         ERR("WL: RevertToSelf failed (error %lu)\n", GetLastError());
     if (!ReadyEvent)
@@ -195,15 +195,15 @@ WaitForUserDesktopReady(
         Result = MsgWaitForMultipleObjects(1,
                                            &ReadyEvent,
                                            FALSE,
-                                           Elapsed < REACTOS_USER_DESKTOP_READY_TIMEOUT_MS ?
-                                               REACTOS_USER_DESKTOP_READY_TIMEOUT_MS - Elapsed : 0,
+                                           Elapsed < LIBRENT_USER_DESKTOP_READY_TIMEOUT_MS ?
+                                               LIBRENT_USER_DESKTOP_READY_TIMEOUT_MS - Elapsed : 0,
                                            QS_SENDMESSAGE);
         if (Result != WAIT_OBJECT_0 + 1)
             break;
     }
 
     if (Result == WAIT_TIMEOUT)
-        WARN("WL: The user desktop was not ready after %lu ms\n", (DWORD)REACTOS_USER_DESKTOP_READY_TIMEOUT_MS);
+        WARN("WL: The user desktop was not ready after %lu ms\n", (DWORD)LIBRENT_USER_DESKTOP_READY_TIMEOUT_MS);
     else if (Result != WAIT_OBJECT_0)
         ERR("WL: Waiting for the user desktop failed (result %lu, error %lu)\n", Result, GetLastError());
 }
@@ -1046,9 +1046,9 @@ LogoffShutdownThread(
                               EWX_FORCE | EWX_FORCEIFHUNG));
 
     TRACE("In LogoffShutdownThread with uFlags == 0x%x; exit_in_progress == %s\n",
-        uFlags, ExitReactOSInProgress ? "TRUE" : "FALSE");
+        uFlags, ExitLibreNTInProgress ? "TRUE" : "FALSE");
 
-    ExitReactOSInProgress = TRUE;
+    ExitLibreNTInProgress = TRUE;
 
     /* Close processes of the interactive user */
     if (!ExitWindowsEx(uFlags, 0))
@@ -2051,7 +2051,7 @@ SASWindowProc(
                         ERR("Unhandled EWX_* action flags: 0x%x\n", Action);
 
                     TRACE("In LN_LOGOFF, exit_in_progress == %s\n",
-                        ExitReactOSInProgress ? "TRUE" : "FALSE");
+                        ExitLibreNTInProgress ? "TRUE" : "FALSE");
 
                     /*
                      * In case a parallel shutdown request is done (while we are
@@ -2064,8 +2064,8 @@ SASWindowProc(
 // etc... and as a result you just get explorer opening "My Documents". And
 // if you try now a shut down, it won't work because winlogon thinks it is
 // still in the middle of a shutdown.
-// Maybe we also need to reset ExitReactOSInProgress somewhere else??
-                    if (ExitReactOSInProgress && (lParam & EWX_CALLER_WINLOGON) == 0)
+// Maybe we also need to reset ExitLibreNTInProgress somewhere else??
+                    if (ExitLibreNTInProgress && (lParam & EWX_CALLER_WINLOGON) == 0)
                     {
                         break;
                     }
@@ -2079,9 +2079,9 @@ SASWindowProc(
                 case LN_LOGOFF_CANCELED:
                 {
                     ERR("Logoff canceled! Before: exit_in_progress == %s; After: FALSE\n",
-                        ExitReactOSInProgress ? "TRUE" : "FALSE");
+                        ExitLibreNTInProgress ? "TRUE" : "FALSE");
 
-                    ExitReactOSInProgress = FALSE;
+                    ExitLibreNTInProgress = FALSE;
                     TerminateSystemShutdown();
                     return 1;
                 }

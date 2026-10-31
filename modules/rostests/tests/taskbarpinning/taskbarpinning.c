@@ -3,7 +3,7 @@
  * Copyright 2026 Ahmed Arif
  *
  * Interactive, opt-in disposable-VM test. The same executable drives the
- * shell's visible menus and checks their effects on Windows and ReactOS.
+ * shell's visible menus and checks their effects on Windows and LibreNT.
  * --boot-suite deliberately restarts Explorer and reboots the guest once.
  * A host UI driver selects the requested visible menu commands and buttons.
  */

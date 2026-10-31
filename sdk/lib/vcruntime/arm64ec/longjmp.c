@@ -1,11 +1,11 @@
 /*
- * PROJECT:     ReactOS vcruntime library
+ * PROJECT:     LibreNT vcruntime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     ARM64EC longjmp with mixed x64/EC frame unwinding
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  *
- * Adapted from ReactOS' AMD64 vcruntime longjmp implementation.
+ * Adapted from LibreNT' AMD64 vcruntime longjmp implementation.
  */
 
 #include <setjmp.h>

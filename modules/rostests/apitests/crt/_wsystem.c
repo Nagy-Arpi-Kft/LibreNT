@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT
+ * PROJECT:     LibreNT CRT
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Tests for _wsystem()
  * COPYRIGHT:   Copyright 2023 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -13,7 +13,7 @@ START_TEST(_wsystem)
     int ret;
     WCHAR szCmdExe[MAX_PATH];
 
-    /* ReactOS behaves like Vista here */
+    /* LibreNT behaves like Vista here */
     DWORD dwOsVer = is_reactos() ? _WIN32_WINNT_VISTA : GetNTVersion();
 
     GetSystemDirectoryW(szCmdExe, _countof(szCmdExe));

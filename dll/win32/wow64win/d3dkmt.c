@@ -1,5 +1,5 @@
 /*
- * ReactOS WoW64 D3DKMT functions
+ * LibreNT WoW64 D3DKMT functions
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@
 #include "winbase.h"
 
 /*
- * gdi.c uses Wine's D3DKMT declarations.  Keep ReactOS additions in a
+ * gdi.c uses Wine's D3DKMT declarations.  Keep LibreNT additions in a
  * separate translation unit so that the current native WDDM structures can
  * be used without changing the Wine-synced source.
  */

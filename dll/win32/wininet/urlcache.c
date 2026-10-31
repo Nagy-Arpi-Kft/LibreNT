@@ -202,11 +202,11 @@ static inline char *strdupWtoUTF8(const WCHAR *str)
 
     if(str) {
         DWORD size = WideCharToMultiByte(CP_UTF8, 0, str, -1, NULL, 0, NULL, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!size) return NULL;
 #endif
         ret = malloc(size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(ret) {
             if(!WideCharToMultiByte(CP_UTF8, 0, str, -1, ret, size, NULL, NULL)) {
                 DWORD error = GetLastError();
@@ -291,7 +291,7 @@ static DWORD urlcache_entry_alloc(urlcache_header *header, DWORD blocks_needed, 
 {
     DWORD block, block_size;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!blocks_needed) return ERROR_INVALID_PARAMETER;
     if(blocks_needed > MAX_BLOCK_NO) return ERROR_NOT_ENOUGH_MEMORY;
     if(header->capacity_in_blocks > MAX_BLOCK_NO) return ERROR_INVALID_DATA;
@@ -561,7 +561,7 @@ static BOOL cache_container_is_valid(urlcache_header *header, DWORD file_size)
     if(file_size < FILE_SIZE(MIN_BLOCK_NO))
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(file_size > FILE_SIZE(MAX_BLOCK_NO) || header->capacity_in_blocks < MIN_BLOCK_NO
             || header->capacity_in_blocks > MAX_BLOCK_NO || header->dirs_no > MAX_DIR_NO)
         return FALSE;
@@ -787,7 +787,7 @@ static void cache_containers_init(void)
         path_len = lstrlenW(wszCachePath);
         suffix_len = lstrlenW(DefaultContainerData[i].shpath_suffix);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (path_len + suffix_len + (suffix_len ? 3 : 2) > MAX_PATH)
 #else
         if (path_len + suffix_len + 2 > MAX_PATH)
@@ -813,12 +813,12 @@ static void cache_containers_init(void)
                     NULL, 0, NULL, &def_char) || def_char)
         {
             WCHAR tmp[MAX_PATH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             DWORD short_len;
 #endif
 
             /* cannot convert path to ANSI code page */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!(short_len = GetShortPathNameW(wszCachePath, tmp, ARRAY_SIZE(tmp))) ||
                 short_len >= ARRAY_SIZE(tmp) ||
                 !WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, tmp, short_len,
@@ -829,7 +829,7 @@ static void cache_containers_init(void)
                     NULL, 0, NULL, &def_char) || def_char)
                 ERR("Can't create container path accessible by ANSI functions\n");
             else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 memcpy(wszCachePath, tmp, (short_len+1)*sizeof(WCHAR));
 #else
                 memcpy(wszCachePath, tmp, (path_len+1)*sizeof(WCHAR));
@@ -963,7 +963,7 @@ static urlcache_header* cache_container_lock_index(cache_container *pContainer)
         pHeader = (urlcache_header*)pIndexData;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(pHeader->size != pContainer->file_size || pHeader->capacity_in_blocks < MIN_BLOCK_NO
             || pHeader->capacity_in_blocks > MAX_BLOCK_NO || pHeader->dirs_no > MAX_DIR_NO
             || FILE_SIZE(pHeader->capacity_in_blocks) != pContainer->file_size) {
@@ -1112,20 +1112,20 @@ static BOOL urlcache_create_file_pathA(
 /* Just like FileTimeToDosDateTime, except that it also maps the special
  * case of a filetime of (0,0) to a DOS date/time of (0,0).
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL file_time_to_dos_date_time(const FILETIME *ft, WORD *fatdate,
 #else
 static void file_time_to_dos_date_time(const FILETIME *ft, WORD *fatdate,
 #endif
                                            WORD *fattime)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ft->dwLowDateTime && !ft->dwHighDateTime) {
 #else
     if (!ft->dwLowDateTime && !ft->dwHighDateTime)
 #endif
         *fatdate = *fattime = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return TRUE;
     }
     if (FileTimeToDosDateTime(ft, fatdate, fattime)) return TRUE;
@@ -1159,7 +1159,7 @@ static DWORD urlcache_delete_file(const cache_container *container,
 
     if(!GetFileAttributesExW(path, GetFileExInfoStandard, &attr))
         goto succ;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!file_time_to_dos_date_time(&attr.ftLastWriteTime, &date, &time))
         goto succ;
 #else
@@ -1205,7 +1205,7 @@ static BOOL urlcache_clean_leaked_entries(cache_container *container, urlcache_h
     while(*leak_off) {
         entry_url *url_entry = (entry_url*)((LPBYTE)header + *leak_off);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(urlcache_delete_file(container, header, url_entry) == ERROR_SUCCESS) {
 #else
         if(SUCCEEDED(urlcache_delete_file(container, header, url_entry))) {
@@ -1269,7 +1269,7 @@ static void dos_date_time_to_file_time(WORD fatdate, WORD fattime,
 {
     if (!fatdate && !fattime)
         ft->dwLowDateTime = ft->dwHighDateTime = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if(!DosDateTimeToFileTime(fatdate, fattime, ft))
         ft->dwLowDateTime = ft->dwHighDateTime = 0;
 #else
@@ -1543,7 +1543,7 @@ static DWORD urlcache_hash_key(LPCSTR lpszKey)
     };
     const BYTE *input = (const BYTE *)lpszKey;
     BYTE key[4];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD i, hash;
 #else
     DWORD i;
@@ -1559,7 +1559,7 @@ static DWORD urlcache_hash_key(LPCSTR lpszKey)
                 key[i] = lookupTable[*input ^ key[i]];
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&hash, key, sizeof(hash));
     return hash;
 #else
@@ -2021,24 +2021,24 @@ static BOOL urlcache_encode_url_alloc(const WCHAR *url, char **encoded_url)
         return FALSE;
 
     ret = malloc(encoded_len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!ret) {
         SetLastError(ERROR_OUTOFMEMORY);
 #else
     if(!ret)
 #endif
         return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
     encoded_len = urlcache_encode_url(url, ret, encoded_len);
     if(!encoded_len) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD error = GetLastError();
 #endif
         free(ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError(error);
 #endif
         return FALSE;
@@ -2824,7 +2824,7 @@ static BOOL urlcache_entry_create(const char *url, const char *ext, WCHAR *full_
     }
 
     for(i=0; i<255 && !generate_name; i++) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wsprintfW(full_path+full_path_len, L"[%d]%s", i, extW);
 #else
         wsprintfW(full_path+full_path_len, L"[%u]%s", i, extW);
@@ -2919,7 +2919,7 @@ BOOL WINAPI CreateUrlCacheEntryW(LPCWSTR lpszUrlName, DWORD dwExpectedFileSize,
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL urlcache_entry_add_size(DWORD *size, size_t len)
 {
     if(*size > MAX_BLOCK_NO * BLOCKSIZE || len > MAX_BLOCK_NO * BLOCKSIZE - *size)
@@ -2936,7 +2936,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
 {
     cache_container *container;
     urlcache_header *header;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct hash_entry *hash_entry = NULL;
 #else
     struct hash_entry *hash_entry;
@@ -3002,7 +3002,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
 
         hit_rate = url_entry->hit_rate;
         exempt_delta = url_entry->exempt_delta;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         urlcache_entry_delete(container, header, hash_entry);
 #endif
     }
@@ -3014,7 +3014,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
 
     if(file_name) {
         BOOL bFound = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int name_len;
 #endif
 
@@ -3028,7 +3028,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
         /* skip container path prefix */
         file_name += lstrlenW(container->path);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         name_len = WideCharToMultiByte(CP_ACP, 0, file_name, -1, file_name_no_container,
                 ARRAY_SIZE(file_name_no_container), NULL, NULL);
         if(!name_len) {
@@ -3041,7 +3041,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
 	local_file_name = file_name_no_container;
 
         if(header->dirs_no) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(name_len <= DIR_LENGTH + 2 || (local_file_name[DIR_LENGTH] != '\\'
                     && local_file_name[DIR_LENGTH] != '/')) {
                 error = ERROR_INVALID_PARAMETER;
@@ -3067,14 +3067,14 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!urlcache_entry_add_size(&size, strlen(url) + 1)) goto too_large;
 #else
     size = DWORD_ALIGN(size + strlen(url) + 1);
 #endif
     if(file_name) {
         file_name_off = size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!urlcache_entry_add_size(&size, strlen(local_file_name) + 1)) goto too_large;
 #else
         size = DWORD_ALIGN(size + strlen(local_file_name) + 1);
@@ -3082,13 +3082,13 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
     }
     if(header_info && header_size) {
         header_info_off = size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!urlcache_entry_add_size(&size, header_size)) goto too_large;
 #else
         size = DWORD_ALIGN(size + header_size);
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(file_ext && *file_ext) {
 #else
     if(file_ext && (file_ext_off = strlen(file_ext))) {
@@ -3096,7 +3096,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
 
 #endif
         file_ext_off = size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!urlcache_entry_add_size(&size, strlen(file_ext) + 1)) goto too_large;
 #else
         size = DWORD_ALIGN(size + len + 1);
@@ -3109,7 +3109,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
         size += BLOCKSIZE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(hash_entry && !urlcache_entry_delete(container, header, hash_entry)) {
         error = GetLastError();
         goto failed;
@@ -3198,7 +3198,7 @@ static BOOL urlcache_entry_commit(const char *url, const WCHAR *file_name,
 
     cache_container_unlock_index(container, header);
     return TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 too_large:
     error = ERROR_NOT_ENOUGH_MEMORY;
@@ -3218,7 +3218,7 @@ BOOL WINAPI CommitUrlCacheEntryA(LPCSTR lpszUrlName, LPCSTR lpszLocalFileName,
 {
     WCHAR *file_name = NULL;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error;
 #endif
 
@@ -3230,11 +3230,11 @@ BOOL WINAPI CommitUrlCacheEntryA(LPCSTR lpszUrlName, LPCSTR lpszLocalFileName,
 
     ret = urlcache_entry_commit(lpszUrlName, file_name, ExpireTime, LastModifiedTime,
             CacheEntryType, lpHeaderInfo, dwHeaderSize, lpszFileExtension, lpszOriginalUrl);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     error = GetLastError();
 #endif
     free(file_name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!ret) SetLastError(error);
 #endif
     return ret;
@@ -3247,7 +3247,7 @@ BOOL WINAPI CommitUrlCacheEntryW(LPCWSTR lpszUrlName, LPCWSTR lpszLocalFileName,
         FILETIME ExpireTime, FILETIME LastModifiedTime, DWORD CacheEntryType,
         LPWSTR lpHeaderInfo, DWORD dwHeaderSize, LPCWSTR lpszFileExtension, LPCWSTR lpszOriginalUrl)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char *url = NULL, *original_url=NULL, *file_ext=NULL, *header_info=NULL;
     BOOL ret = FALSE;
     DWORD error;
@@ -3262,7 +3262,7 @@ BOOL WINAPI CommitUrlCacheEntryW(LPCWSTR lpszUrlName, LPCWSTR lpszLocalFileName,
     if(lpHeaderInfo) {
         header_info = strdupWtoUTF8(lpHeaderInfo);
         if(!header_info) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SetLastError(ERROR_OUTOFMEMORY);
             goto done;
 #else
@@ -3275,7 +3275,7 @@ BOOL WINAPI CommitUrlCacheEntryW(LPCWSTR lpszUrlName, LPCWSTR lpszLocalFileName,
 
     if(lpszFileExtension) {
         file_ext = strdupWtoA(lpszFileExtension);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!file_ext) goto done;
 #else
         if(!file_ext) {
@@ -3286,7 +3286,7 @@ BOOL WINAPI CommitUrlCacheEntryW(LPCWSTR lpszUrlName, LPCWSTR lpszLocalFileName,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(lpszOriginalUrl && !urlcache_encode_url_alloc(lpszOriginalUrl, &original_url)) goto done;
 #else
     if(lpszOriginalUrl && !urlcache_encode_url_alloc(lpszOriginalUrl, &original_url)) {
@@ -3299,7 +3299,7 @@ BOOL WINAPI CommitUrlCacheEntryW(LPCWSTR lpszUrlName, LPCWSTR lpszLocalFileName,
 
     ret = urlcache_entry_commit(url, lpszLocalFileName, ExpireTime, LastModifiedTime,
             CacheEntryType, (BYTE*)header_info, dwHeaderSize, file_ext, original_url);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     error = GetLastError();
 #endif
@@ -3307,7 +3307,7 @@ done:
     free(header_info);
     free(file_ext);
     free(original_url);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!ret) SetLastError(error);
 #endif
     return ret;
@@ -3657,7 +3657,7 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryA(LPCSTR lpszUrlSearchPattern,
  LPINTERNET_CACHE_ENTRY_INFOA lpFirstCacheEntryInfo, LPDWORD lpdwFirstCacheEntryInfoBufferSize)
 {
     find_handle *pEntryHandle;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error;
 #endif
 
@@ -3665,12 +3665,12 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryA(LPCSTR lpszUrlSearchPattern,
 
     pEntryHandle = malloc(sizeof(*pEntryHandle));
     if (!pEntryHandle)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         SetLastError(ERROR_OUTOFMEMORY);
 #endif
         return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -3681,7 +3681,7 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryA(LPCSTR lpszUrlSearchPattern,
         if (!pEntryHandle->url_search_pattern)
         {
             free(pEntryHandle);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SetLastError(ERROR_OUTOFMEMORY);
 #endif
             return NULL;
@@ -3695,12 +3695,12 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryA(LPCSTR lpszUrlSearchPattern,
 
     if (!FindNextUrlCacheEntryA(pEntryHandle, lpFirstCacheEntryInfo, lpdwFirstCacheEntryInfoBufferSize))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         error = GetLastError();
         free(pEntryHandle->url_search_pattern);
 #endif
         free(pEntryHandle);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError(error);
 #endif
         return NULL;
@@ -3716,7 +3716,7 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryW(LPCWSTR lpszUrlSearchPattern,
  LPINTERNET_CACHE_ENTRY_INFOW lpFirstCacheEntryInfo, LPDWORD lpdwFirstCacheEntryInfoBufferSize)
 {
     find_handle *pEntryHandle;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error;
 #endif
 
@@ -3724,12 +3724,12 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryW(LPCWSTR lpszUrlSearchPattern,
 
     pEntryHandle = malloc(sizeof(*pEntryHandle));
     if (!pEntryHandle)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         SetLastError(ERROR_OUTOFMEMORY);
 #endif
         return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -3739,11 +3739,11 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryW(LPCWSTR lpszUrlSearchPattern,
         pEntryHandle->url_search_pattern = strdupWtoA(lpszUrlSearchPattern);
         if (!pEntryHandle->url_search_pattern)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             error = GetLastError();
 #endif
             free(pEntryHandle);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SetLastError(error);
 #endif
             return NULL;
@@ -3757,12 +3757,12 @@ INTERNETAPI HANDLE WINAPI FindFirstUrlCacheEntryW(LPCWSTR lpszUrlSearchPattern,
 
     if (!FindNextUrlCacheEntryW(pEntryHandle, lpFirstCacheEntryInfo, lpdwFirstCacheEntryInfoBufferSize))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         error = GetLastError();
         free(pEntryHandle->url_search_pattern);
 #endif
         free(pEntryHandle);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError(error);
 #endif
         return NULL;

@@ -17,5 +17,5 @@ add_library(vmbus MODULE
 set_module_type(vmbus kernelmodedriver)
 target_link_libraries(vmbus wdmguid ntoskrnl_vista)
 add_importlibs(vmbus ntoskrnl hal)
-add_cd_file(TARGET vmbus DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET vmbus DESTINATION librent/system32/drivers FOR all)
 add_driver_inf(vmbus vmbus.inf)

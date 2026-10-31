@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Raspberry Pi 5 WDDM miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 WDDM miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Bounded V3D 7.1 render-and-readback execution boundary
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -22,7 +22,7 @@
 #include "rpi5vc4_hvs.h"
 #include "rpi5vc4_crtc.h"
 #include "rpi5vc4_v3d_terrain_shaders.h"
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 #include <initguid.h>
 #include <poclass.h>
 #include <acpiioct.h>

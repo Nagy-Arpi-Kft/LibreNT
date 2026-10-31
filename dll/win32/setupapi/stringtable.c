@@ -31,7 +31,7 @@
 
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define StringTableInitializeEx   stringtable_initialize
 #define StringTableDestroy        stringtable_destroy
 #define StringTableDuplicate      stringtable_duplicate
@@ -140,7 +140,7 @@ static inline int get_aligned16_size(int size)
     return (size + 15) & ~15;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL lock_table(struct stringtable *table)
 {
     DWORD wait = WaitForMultipleObjects(2, table->lock, FALSE, INFINITE);
@@ -176,7 +176,7 @@ static BOOL create_table_lock(struct stringtable *table)
  *     Success: Handle to the string table
  *     Failure: NULL
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HSTRING_TABLE StringTableInitializeEx(ULONG max_extra_size, DWORD reserved)
 #else
 HSTRING_TABLE WINAPI StringTableInitializeEx(ULONG max_extra_size, DWORD reserved)
@@ -197,7 +197,7 @@ HSTRING_TABLE WINAPI StringTableInitializeEx(ULONG max_extra_size, DWORD reserve
     }
 
     table->nextoffset = BUCKET_COUNT*sizeof(DWORD);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!create_table_lock(table)) {
         MyFree(table->data);
         MyFree(table);
@@ -231,7 +231,7 @@ HSTRING_TABLE WINAPI StringTableInitializeEx(ULONG max_extra_size, DWORD reserve
  */
 HSTRING_TABLE WINAPI StringTableInitialize(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return pSetupStringTableInitializeEx(0, 0);
 #else
     return StringTableInitializeEx(0, 0);
@@ -249,7 +249,7 @@ HSTRING_TABLE WINAPI StringTableInitialize(void)
  * RETURNS
  *     None
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void StringTableDestroy(HSTRING_TABLE hTable)
 #else
 void WINAPI StringTableDestroy(HSTRING_TABLE hTable)
@@ -262,7 +262,7 @@ void WINAPI StringTableDestroy(HSTRING_TABLE hTable)
     if (!table)
         return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CloseHandle(table->lock[0]);
     CloseHandle(table->lock[1]);
 #endif
@@ -283,7 +283,7 @@ void WINAPI StringTableDestroy(HSTRING_TABLE hTable)
  *     Failure: NULL
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HSTRING_TABLE StringTableDuplicate(HSTRING_TABLE hTable)
 #else
 HSTRING_TABLE WINAPI StringTableDuplicate(HSTRING_TABLE hTable)
@@ -306,7 +306,7 @@ HSTRING_TABLE WINAPI StringTableDuplicate(HSTRING_TABLE hTable)
         MyFree(dest);
         return NULL;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!create_table_lock(dest)) {
         MyFree(dest->data);
         MyFree(dest);
@@ -333,7 +333,7 @@ HSTRING_TABLE WINAPI StringTableDuplicate(HSTRING_TABLE hTable)
  *     Success: TRUE
  *     Failure: FALSE
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL StringTableGetExtraData(HSTRING_TABLE hTable, ULONG id, void *extra, ULONG extra_size)
 #else
 BOOL WINAPI StringTableGetExtraData(HSTRING_TABLE hTable, ULONG id, void *extra, ULONG extra_size)
@@ -378,7 +378,7 @@ BOOL WINAPI StringTableGetExtraData(HSTRING_TABLE hTable, ULONG id, void *extra,
  *     Success: String ID
  *     Failure: -1
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD StringTableLookUpStringEx(HSTRING_TABLE hTable, LPWSTR string, DWORD flags,
     void *extra, ULONG extra_size)
 #else
@@ -442,7 +442,7 @@ DWORD WINAPI StringTableLookUpStringEx(HSTRING_TABLE hTable, LPWSTR string, DWOR
  */
 DWORD WINAPI StringTableLookUpString(HSTRING_TABLE hTable, LPWSTR string, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return pSetupStringTableLookUpStringEx(hTable, string, flags, NULL, 0);
 #else
     return StringTableLookUpStringEx(hTable, string, flags, NULL, 0);
@@ -471,7 +471,7 @@ DWORD WINAPI StringTableLookUpString(HSTRING_TABLE hTable, LPWSTR string, DWORD 
  *     be added again. The ID of the existing string will be returned in
  *     this case.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD StringTableAddStringEx(HSTRING_TABLE hTable, LPWSTR string,
                        DWORD flags, void *extra, DWORD extra_size)
 #else
@@ -497,7 +497,7 @@ DWORD WINAPI StringTableAddStringEx(HSTRING_TABLE hTable, LPWSTR string,
 
     /* needed space for new record */
     len = sizeof(DWORD) + (lstrlenW(string)+1)*sizeof(WCHAR) + table->max_extra_size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (table->nextoffset + len >= table->allocated) {
         char *data = MyRealloc(table->data, table->allocated << 1);
 
@@ -565,7 +565,7 @@ DWORD WINAPI StringTableAddStringEx(HSTRING_TABLE hTable, LPWSTR string,
  */
 DWORD WINAPI StringTableAddString(HSTRING_TABLE hTable, LPWSTR string, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return pSetupStringTableAddStringEx(hTable, string, flags, NULL, 0);
 #else
     return StringTableAddStringEx(hTable, string, flags, NULL, 0);
@@ -587,7 +587,7 @@ DWORD WINAPI StringTableAddString(HSTRING_TABLE hTable, LPWSTR string, DWORD fla
  *     Success: TRUE
  *     Failure: FALSE
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL StringTableSetExtraData(HSTRING_TABLE hTable, DWORD id, void *extra, ULONG extra_size)
 #else
 BOOL WINAPI StringTableSetExtraData(HSTRING_TABLE hTable, DWORD id, void *extra, ULONG extra_size)
@@ -630,7 +630,7 @@ BOOL WINAPI StringTableSetExtraData(HSTRING_TABLE hTable, DWORD id, void *extra,
  *     Success: Pointer to the string
  *     Failure: NULL
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LPWSTR StringTableStringFromId(HSTRING_TABLE hTable, ULONG id)
 #else
 LPWSTR WINAPI StringTableStringFromId(HSTRING_TABLE hTable, ULONG id)
@@ -665,7 +665,7 @@ LPWSTR WINAPI StringTableStringFromId(HSTRING_TABLE hTable, ULONG id)
  *     Success: TRUE
  *     Failure: FALSE
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL StringTableStringFromIdEx(HSTRING_TABLE hTable, ULONG id, LPWSTR buff, DWORD *buflen)
 #else
 BOOL WINAPI StringTableStringFromIdEx(HSTRING_TABLE hTable, ULONG id, LPWSTR buff, DWORD *buflen)
@@ -716,7 +716,7 @@ void WINAPI StringTableTrim(HSTRING_TABLE hTable)
     FIXME("%p\n", hTable);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HSTRING_TABLE WINAPI pSetupStringTableInitializeEx(DWORD max_extra_size, DWORD reserved)
 {
     return stringtable_initialize(max_extra_size, reserved);

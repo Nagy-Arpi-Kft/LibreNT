@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT
+ * PROJECT:     LibreNT CRT
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of nextafter.
  * COPYRIGHT:   Imported from musl libc

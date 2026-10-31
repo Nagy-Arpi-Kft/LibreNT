@@ -33,7 +33,7 @@ typedef struct _SURFACE
     DWORD       dwOffset;
     //UINT       unk_078;
 
-  /* reactos specific */
+  /* LibreNT specific */
     DWORD biClrImportant;
 } SURFACE, *PSURFACE;
 

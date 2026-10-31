@@ -1,5 +1,5 @@
 /*
- * ReactOS Japanese (JIS 106) keyboard layout
+ * LibreNT Japanese (JIS 106) keyboard layout
  * Copyright (C) 2003 ReactOS
  * License: LGPL, see: LGPL.txt
  *
@@ -350,9 +350,9 @@ ROSDATA VSC_LPWSTR extended_key_names[] = {
   { 0x51, L"Page Down" },
   { 0x52, L"Insert" },
   { 0x53, L"Delete" },
-  { 0x54, L"<LiberNT>" },
-  { 0x5b, L"Left <LiberNT>" },
-  { 0x5c, L"Right <LiberNT>" },
+  { 0x54, L"<LibreNT>" },
+  { 0x5b, L"Left <LibreNT>" },
+  { 0x5c, L"Right <LibreNT>" },
   { 0x5d, L"Application" },
   { 0, NULL },
 };

@@ -4,12 +4,12 @@
 
 #include "resources.h"
 
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Sound Volume Control"
-#define REACTOS_STR_INTERNAL_NAME     "sndvol32"
-#define REACTOS_STR_ORIGINAL_FILENAME "sndvol32.exe"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Sound Volume Control"
+#define LIBRENT_STR_INTERNAL_NAME     "sndvol32"
+#define LIBRENT_STR_ORIGINAL_FILENAME "sndvol32.exe"
+#include <librent/version.rc>
 
-#include <reactos/manifest_exe.rc>
+#include <librent/manifest_exe.rc>
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 

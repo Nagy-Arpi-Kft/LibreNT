@@ -25,7 +25,7 @@
 #include "d3dkmthk.h"
 #include "d3dumddi.h"
 #include "dxva2api.h"
-#include <reactos/dxva_surface_fence.h>
+#include <librent/dxva_surface_fence.h>
 
 #include "decoder.h"
 #include "wine/debug.h"
@@ -35,7 +35,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(dxva2);
 #define DXVA2_MAX_CAP_ENTRIES 256u
 #define DXVA2_BUFFER_TYPE_COUNT 9u
 
-static const GUID reactos_dxva_surface_fence_guid = REACTOS_DXVA_SURFACE_FENCE_GUID_INIT;
+static const GUID reactos_dxva_surface_fence_guid = LIBRENT_DXVA_SURFACE_FENCE_GUID_INIT;
 
 typedef HRESULT (WINAPI *PFN_D3DUMDRT_CREATE_DEVICE_CALLBACKS)(
         D3DKMT_HANDLE adapter, D3DKMT_HANDLE device, D3DDDI_DEVICECALLBACKS *callbacks,
@@ -66,7 +66,7 @@ struct dxva2_decoder_buffer
 
 struct dxva2_surface_fence
 {
-    IReactOSDxvaSurfaceFence IReactOSDxvaSurfaceFence_iface;
+    ILibreNTDxvaSurfaceFence ILibreNTDxvaSurfaceFence_iface;
     LONG refcount;
     CRITICAL_SECTION lock;
     HANDLE event;
@@ -156,14 +156,14 @@ static HRESULT dxva2_decoder_get_presentation_flags(
 
     if (nominal_range == DXVA2_NominalRange_Unknown ||
             nominal_range == DXVA2_NominalRange_16_235)
-        *flags |= REACTOS_DXVA_SURFACE_PRESENT_LIMITED_RGB;
+        *flags |= LIBRENT_DXVA_SURFACE_PRESENT_LIMITED_RGB;
     else if (nominal_range != DXVA2_NominalRange_0_255)
         return E_NOTIMPL;
 
     if (transfer_matrix == DXVA2_VideoTransferMatrix_BT709 ||
             (transfer_matrix == DXVA2_VideoTransferMatrix_Unknown &&
              decoder->video_desc.SampleHeight > 576))
-        *flags |= REACTOS_DXVA_SURFACE_PRESENT_BT709;
+        *flags |= LIBRENT_DXVA_SURFACE_PRESENT_BT709;
     else if (transfer_matrix != DXVA2_VideoTransferMatrix_Unknown &&
             transfer_matrix != DXVA2_VideoTransferMatrix_BT601)
         return E_NOTIMPL;
@@ -171,15 +171,15 @@ static HRESULT dxva2_decoder_get_presentation_flags(
     return S_OK;
 }
 
-static struct dxva2_surface_fence *impl_from_IReactOSDxvaSurfaceFence(
-        IReactOSDxvaSurfaceFence *iface)
+static struct dxva2_surface_fence *impl_from_ILibreNTDxvaSurfaceFence(
+        ILibreNTDxvaSurfaceFence *iface)
 {
     return CONTAINING_RECORD(iface, struct dxva2_surface_fence,
-            IReactOSDxvaSurfaceFence_iface);
+            ILibreNTDxvaSurfaceFence_iface);
 }
 
 static HRESULT WINAPI dxva2_surface_fence_QueryInterface(
-        IReactOSDxvaSurfaceFence *iface, REFIID iid, void **object)
+        ILibreNTDxvaSurfaceFence *iface, REFIID iid, void **object)
 {
     if (!object)
         return E_POINTER;
@@ -190,20 +190,20 @@ static HRESULT WINAPI dxva2_surface_fence_QueryInterface(
     }
 
     *object = iface;
-    IReactOSDxvaSurfaceFence_AddRef(iface);
+    ILibreNTDxvaSurfaceFence_AddRef(iface);
     return S_OK;
 }
 
-static ULONG WINAPI dxva2_surface_fence_AddRef(IReactOSDxvaSurfaceFence *iface)
+static ULONG WINAPI dxva2_surface_fence_AddRef(ILibreNTDxvaSurfaceFence *iface)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
 
     return InterlockedIncrement(&fence->refcount);
 }
 
-static ULONG WINAPI dxva2_surface_fence_Release(IReactOSDxvaSurfaceFence *iface)
+static ULONG WINAPI dxva2_surface_fence_Release(ILibreNTDxvaSurfaceFence *iface)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     ULONG refcount = InterlockedDecrement(&fence->refcount);
 
     if (!refcount)
@@ -217,9 +217,9 @@ static ULONG WINAPI dxva2_surface_fence_Release(IReactOSDxvaSurfaceFence *iface)
 }
 
 static HRESULT WINAPI dxva2_surface_fence_GetPresentationFlags(
-        IReactOSDxvaSurfaceFence *iface, DWORD *flags)
+        ILibreNTDxvaSurfaceFence *iface, DWORD *flags)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder *decoder;
     UINT surface_index;
     HRESULT hr;
@@ -265,7 +265,7 @@ static void dxva2_surface_fence_end_call(struct dxva2_surface_fence *fence)
 static HRESULT dxva2_surface_fence_wait_internal(
         struct dxva2_surface_fence *fence, DWORD flags)
 {
-    if (flags & ~REACTOS_DXVA_SURFACE_FENCE_DONOTWAIT)
+    if (flags & ~LIBRENT_DXVA_SURFACE_FENCE_DONOTWAIT)
         return E_INVALIDARG;
 
     for (;;)
@@ -288,7 +288,7 @@ static HRESULT dxva2_surface_fence_wait_internal(
         LeaveCriticalSection(&fence->lock);
 
         wait_status = WaitForSingleObject(fence->event,
-                flags & REACTOS_DXVA_SURFACE_FENCE_DONOTWAIT ? 0 : INFINITE);
+                flags & LIBRENT_DXVA_SURFACE_FENCE_DONOTWAIT ? 0 : INFINITE);
         if (wait_status == WAIT_TIMEOUT)
             return D3DERR_WASSTILLDRAWING;
         if (wait_status != WAIT_OBJECT_0)
@@ -297,9 +297,9 @@ static HRESULT dxva2_surface_fence_wait_internal(
 }
 
 static HRESULT WINAPI dxva2_surface_fence_Wait(
-        IReactOSDxvaSurfaceFence *iface, DWORD flags)
+        ILibreNTDxvaSurfaceFence *iface, DWORD flags)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder *decoder;
     UINT surface_index;
     HRESULT hr;
@@ -314,10 +314,10 @@ static HRESULT WINAPI dxva2_surface_fence_Wait(
 }
 
 static HRESULT WINAPI dxva2_surface_fence_GetSharedMemory(
-        IReactOSDxvaSurfaceFence *iface, DWORD flags,
-        REACTOS_DXVA_SURFACE_MEMORY *memory)
+        ILibreNTDxvaSurfaceFence *iface, DWORD flags,
+        LIBRENT_DXVA_SURFACE_MEMORY *memory)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder_surface *surface;
     struct dxva2_decoder *decoder;
     ULONGLONG chroma_offset;
@@ -329,7 +329,7 @@ static HRESULT WINAPI dxva2_surface_fence_GetSharedMemory(
     if (!memory)
         return E_POINTER;
     memset(memory, 0, sizeof(*memory));
-    if (flags & ~REACTOS_DXVA_SURFACE_FENCE_DONOTWAIT)
+    if (flags & ~LIBRENT_DXVA_SURFACE_FENCE_DONOTWAIT)
         return E_INVALIDARG;
     if (FAILED(hr = dxva2_surface_fence_begin_call(fence, &decoder, &surface_index)))
         return hr;
@@ -394,7 +394,7 @@ static HRESULT WINAPI dxva2_surface_fence_GetSharedMemory(
     memory->PlanePitches[1] = surface->shared_lock.Pitch;
     memory->Generation = surface->generation;
     if (surface->reuse_query)
-        memory->Flags |= REACTOS_DXVA_SURFACE_MEMORY_DEFERRED_UPLOAD;
+        memory->Flags |= LIBRENT_DXVA_SURFACE_MEMORY_DEFERRED_UPLOAD;
     hr = S_OK;
 
 unlock:
@@ -405,15 +405,15 @@ done:
 }
 
 static HRESULT WINAPI dxva2_surface_fence_PrepareFallback(
-        IReactOSDxvaSurfaceFence *iface, DWORD flags)
+        ILibreNTDxvaSurfaceFence *iface, DWORD flags)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder *decoder;
     UINT surface_index;
     ULONG generation;
     HRESULT hr;
 
-    if (flags & ~REACTOS_DXVA_SURFACE_FENCE_DONOTWAIT)
+    if (flags & ~LIBRENT_DXVA_SURFACE_FENCE_DONOTWAIT)
         return E_INVALIDARG;
     if ((DWORD)InterlockedCompareExchange(&fence->producer_thread_id, 0, 0) ==
             GetCurrentThreadId())
@@ -450,9 +450,9 @@ done:
 }
 
 static HRESULT WINAPI dxva2_surface_fence_MarkConsumed(
-        IReactOSDxvaSurfaceFence *iface, DWORD flags)
+        ILibreNTDxvaSurfaceFence *iface, DWORD flags)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder_surface *surface;
     struct dxva2_decoder *decoder;
     UINT surface_index;
@@ -481,10 +481,10 @@ static HRESULT WINAPI dxva2_surface_fence_MarkConsumed(
 }
 
 static HRESULT WINAPI dxva2_surface_fence_Present(
-        IReactOSDxvaSurfaceFence *iface, const RECT *source,
+        ILibreNTDxvaSurfaceFence *iface, const RECT *source,
         const RECT *destination, DWORD flags)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder *decoder;
     D3DDDI_OVERLAYINFO overlay_info;
     UINT surface_index;
@@ -495,7 +495,7 @@ static HRESULT WINAPI dxva2_surface_fence_Present(
             destination->left < 0 || destination->top < 0 ||
             destination->right <= destination->left ||
             destination->bottom <= destination->top ||
-            (flags & ~REACTOS_DXVA_SURFACE_PRESENT_ALLOWED))
+            (flags & ~LIBRENT_DXVA_SURFACE_PRESENT_ALLOWED))
         return E_INVALIDARG;
     if (FAILED(hr = dxva2_surface_fence_begin_call(fence, &decoder, &surface_index)))
         return hr;
@@ -524,9 +524,9 @@ static HRESULT WINAPI dxva2_surface_fence_Present(
     overlay_info.SrcRect = *source;
     overlay_info.DstRect = *destination;
     overlay_info.Flags.LimitedRGB =
-            !!(flags & REACTOS_DXVA_SURFACE_PRESENT_LIMITED_RGB);
+            !!(flags & LIBRENT_DXVA_SURFACE_PRESENT_LIMITED_RGB);
     overlay_info.Flags.YCbCrBT709 =
-            !!(flags & REACTOS_DXVA_SURFACE_PRESENT_BT709);
+            !!(flags & LIBRENT_DXVA_SURFACE_PRESENT_BT709);
 
     EnterCriticalSection(&decoder->copy_lock);
     if (!decoder->overlay)
@@ -580,9 +580,9 @@ done:
 }
 
 static HRESULT WINAPI dxva2_surface_fence_Hide(
-        IReactOSDxvaSurfaceFence *iface)
+        ILibreNTDxvaSurfaceFence *iface)
 {
-    struct dxva2_surface_fence *fence = impl_from_IReactOSDxvaSurfaceFence(iface);
+    struct dxva2_surface_fence *fence = impl_from_ILibreNTDxvaSurfaceFence(iface);
     struct dxva2_decoder *decoder;
     UINT surface_index;
     HRESULT hr;
@@ -597,7 +597,7 @@ static HRESULT WINAPI dxva2_surface_fence_Hide(
     return hr;
 }
 
-static const IReactOSDxvaSurfaceFenceVtbl dxva2_surface_fence_vtbl =
+static const ILibreNTDxvaSurfaceFenceVtbl dxva2_surface_fence_vtbl =
 {
     dxva2_surface_fence_QueryInterface,
     dxva2_surface_fence_AddRef,
@@ -618,7 +618,7 @@ static struct dxva2_surface_fence *dxva2_surface_fence_create(
 
     if (!(fence = calloc(1, sizeof(*fence))))
         return NULL;
-    fence->IReactOSDxvaSurfaceFence_iface.lpVtbl = &dxva2_surface_fence_vtbl;
+    fence->ILibreNTDxvaSurfaceFence_iface.lpVtbl = &dxva2_surface_fence_vtbl;
     fence->refcount = 1;
     fence->result = S_OK;
     fence->decoder = decoder;
@@ -1300,8 +1300,8 @@ static void dxva2_decoder_destroy(struct dxva2_decoder *decoder)
     {
         if (decoder->surfaces[i].fence)
         {
-            IReactOSDxvaSurfaceFence_Release(
-                    &decoder->surfaces[i].fence->IReactOSDxvaSurfaceFence_iface);
+            ILibreNTDxvaSurfaceFence_Release(
+                    &decoder->surfaces[i].fence->ILibreNTDxvaSurfaceFence_iface);
         }
         if (decoder->surfaces[i].reuse_query)
             IDirect3DQuery9_Release(decoder->surfaces[i].reuse_query);
@@ -1966,7 +1966,7 @@ HRESULT dxva2_decoder_create(IDirectXVideoDecoderService *service, IDirect3DDevi
     {
         if (FAILED(hr = IDirect3DSurface9_SetPrivateData(render_targets[i],
                 &reactos_dxva_surface_fence_guid,
-                &decoder->surfaces[i].fence->IReactOSDxvaSurfaceFence_iface,
+                &decoder->surfaces[i].fence->ILibreNTDxvaSurfaceFence_iface,
                 sizeof(IUnknown *), D3DSPD_IUNKNOWN)))
             goto failed;
         decoder->surfaces[i].fence_attached = TRUE;

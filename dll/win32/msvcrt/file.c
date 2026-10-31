@@ -2819,7 +2819,7 @@ static int read_utf8(ioinfo *fdinfo, wchar_t *buf, unsigned int count)
         }
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* NOTE: this case is broken in native dll, reading
      *        sometimes fails when small buffer is passed
      */

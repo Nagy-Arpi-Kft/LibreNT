@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT VMX Hypervisor Launcher (rosl.exe)
+ * PROJECT:     LibreNT VMX Hypervisor Launcher (rosl.exe)
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Entry point, argument parsing, and VM bootstrap
  * COPYRIGHT:   Copyright 2025-2026 Ahmed Arif
@@ -182,7 +182,7 @@ const char *ResolveDiskBootKernelPath(const char *defaultKernelPath,
         diskImagePath[0] >= 'A' && diskImagePath[0] <= 'Z' &&
         diskImagePath[1] == ':')
     {
-        /* Probe 2: standard ReactOS installation path on the data drive */
+        /* Probe 2: standard LibreNT installation path on the data drive */
         _snprintf(fallbackBuf, fallbackBufSize,
                   "%c:\\Windows\\system32\\rosv\\vmlinuz", diskImagePath[0]);
         fallbackBuf[fallbackBufSize - 1] = '\0';
@@ -222,7 +222,7 @@ int main(int argc, char *argv[])
     int posCount;
     ROSL_INITRD_INFO initrdInfo;
 
-    RoslLog("=== rosl - ReactOS VMX Hypervisor Launcher ===\n\n");
+    RoslLog("=== rosl - LibreNT VMX Hypervisor Launcher ===\n\n");
 
     if (0)
     {
@@ -454,7 +454,7 @@ int main(int argc, char *argv[])
 
             /* Pass 3: final broad scan including CD fallback.
              * A cleaner long-term direction is volume-GUID enumeration once
-             * those APIs are consistently available on ReactOS. */
+             * those APIs are consistently available on LibreNT. */
             if (g_DiskImagePath == NULL)
             {
                 DWORD logicalDrives = GetLogicalDrives();

@@ -1,9 +1,9 @@
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x602)
 
 add_definitions(-DUNICODE -D_UNICODE -D_NTOSKRNL_ -D_NTSYSTEM_)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/rtl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/rtl)
 
 list(APPEND SOURCE
     etw.c
@@ -11,7 +11,7 @@ list(APPEND SOURCE
     io.c
     po.c
     ke.c
-    ${REACTOS_SOURCE_DIR}/sdk/lib/rtl/utf8.c)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/rtl/utf8.c)
 
 add_library(ntoskrnl_vista ${SOURCE})
 target_link_libraries(ntoskrnl_vista PRIVATE pseh) # rtl_vista)

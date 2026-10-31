@@ -32,7 +32,7 @@
 #define IDM_EXPERT     1007
 #define IDM_CUSTOM     1008
 #define IDM_MARKQ      1009
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define IDM_SOUND      1041
 #endif
 
@@ -66,7 +66,7 @@
 #define DLG_CONGRATS   2
 #define DLG_CUSTOM     3
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Sound effects */
 #define IDW_BOX        1301
 #define IDW_FLAG       1302

@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/io/pnpmgr/pnpinit.c
  * PURPOSE:         PnP Initialization Code
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
@@ -29,7 +29,7 @@ INTERFACE_TYPE
 NTAPI
 IopDetermineDefaultInterfaceType(VOID)
 {
-    /* FIXME: ReactOS doesn't support MicroChannel yet */
+    /* FIXME: LibreNT doesn't support MicroChannel yet */
     return Isa;
 }
 

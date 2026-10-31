@@ -1,11 +1,11 @@
 /*
- * PROJECT:     LiberNT WLAN Service
+ * PROJECT:     LibreNT WLAN Service
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        base/services/wlansvc/nwifi_ioctl.c
  * PURPOSE:     IOCTL bridge to the nwifi.sys control device
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  *
- * Issues the <reactos/nwifi_ioctl.h> IOCTLs on \\.\Nwifi; a worker thread
+ * Issues the <librent/nwifi_ioctl.h> IOCTLs on \\.\Nwifi; a worker thread
  * pends GET_NOTIFICATION and turns kernel events into WLAN ACM notifications.
  * If nwifi is not loaded, entry points fail and no interfaces are presented.
  */

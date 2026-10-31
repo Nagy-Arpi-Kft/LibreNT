@@ -76,7 +76,7 @@ double FN_PROTOTYPE_REF(ldexp)(double x, int n)
 		{
 			val.u32[1] = sign | 0x00000000;
 			val.u32[0] = 0x00000000;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return __amd_handle_error("ldexp", __amd_ldexp, val.u64, _UNDERFLOW, AMD_F_INEXACT|AMD_F_UNDERFLOW, 0, x, (double)n, 2);
 #else
             return __amd_handle_error("ldexp", __amd_ldexp, val.u64, _UNDERFLOW, AMD_F_INEXACT|AMD_F_UNDERFLOW, ERANGE, x, (double)n, 2);
@@ -101,7 +101,7 @@ double FN_PROTOTYPE_REF(ldexp)(double x, int n)
 	{
 		val.u32[1] = sign | 0x00000000;
 		val.u32[0] = 0x00000000;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return __amd_handle_error("ldexp", __amd_ldexp, val.u64, _UNDERFLOW, AMD_F_INEXACT|AMD_F_UNDERFLOW, 0, x, (double)n, 2);
 #else
         return __amd_handle_error("ldexp", __amd_ldexp, val.u64, _UNDERFLOW, AMD_F_INEXACT|AMD_F_UNDERFLOW, ERANGE, x, (double)n, 2);

@@ -1,4 +1,4 @@
-# ReactOS NTFS Library
+# LibreNT NTFS Library
 Designed to be shared between usermode and kernelmode applications, this library provides everything you need to work with NTFS formated filesystems.
 
 ## Targets

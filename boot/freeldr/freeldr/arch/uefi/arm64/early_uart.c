@@ -16,7 +16,7 @@
 #include <debug.h>
 #include <drivers/acpi/acpi.h>
 
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 
 /*
  * Global runtime-detected UART state.

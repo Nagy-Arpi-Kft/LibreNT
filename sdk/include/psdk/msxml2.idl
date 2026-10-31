@@ -1750,7 +1750,7 @@ coclass XMLSchemaCache40
     [default] interface IXMLDOMSchemaCollection2;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 [
     uuid(88d96a07-f192-11d4-a65f-0040963251e5)
 ]

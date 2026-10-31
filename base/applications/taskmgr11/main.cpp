@@ -1,13 +1,13 @@
 /*
- * PROJECT:     ReactOS Task Manager
+ * PROJECT:     LibreNT Task Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Application frame: custom chrome, nav rail, header, pages
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
  */
 
 #include "app.h"
-#include <reactos/dwmframe.h>
-#include <reactos/dwmsettings.h>
+#include <librent/dwmframe.h>
+#include <librent/dwmsettings.h>
 
 #define FRAME_CLASS L"TaskManager11Frame"
 #define TRAY_ID 1
@@ -132,7 +132,7 @@ static void PageRect(HWND hwnd, RECT* r)
 /*  Settings                                                           */
 /* ------------------------------------------------------------------ */
 
-static const WCHAR* SETTINGS_KEY = L"Software\\ReactOS\\TaskMgr11";
+static const WCHAR* SETTINGS_KEY = L"Software\\LibreNT\\TaskMgr11";
 
 static DWORD RegReadDw(HKEY hk, const WCHAR* name, DWORD def)
 {

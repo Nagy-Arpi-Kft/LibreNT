@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Native WiFi (802.11) stack
+ * PROJECT:     LibreNT Native WiFi (802.11) stack
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DriverEntry, miniport/protocol registration, IM association
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -13,7 +13,7 @@
 NWIFI_GLOBALS gNwifi = { 0 };
 
 /* Protocol name (must match the INF binding name); built at runtime because
- * the current ReactOS ndis.h lacks NDIS_STRING_CONST. */
+ * the current LibreNT ndis.h lacks NDIS_STRING_CONST. */
 static const WCHAR NwifiProtocolNameBuffer[] = L"Nwifi";
 static NDIS_STRING NwifiProtocolName;
 

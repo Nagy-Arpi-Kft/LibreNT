@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            ntoskrnl/arch/arm64/include/arm64pl011.h
  * PURPOSE:         ARM64 PL011 UART definitions with runtime platform detection
@@ -21,7 +21,7 @@
  * - Platform identification (EarlyUartPlatformId)
  * - Inline functions for UART I/O (EarlyUartPutc, EarlyUartPuts, etc.)
  */
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 
 /*
  * Legacy constants for backward compatibility.

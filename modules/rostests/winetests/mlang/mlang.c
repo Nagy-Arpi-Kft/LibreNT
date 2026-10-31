@@ -3236,7 +3236,7 @@ static void test_MapFont(IMLangFontLink *font_link, IMLangFontLink2 *font_link2)
     ok(ret == E_INVALIDARG, "IMLangFontLink2_MapFont: expected E_INVALIDARG, got %08lx\n", ret);
 
     ret = IMLangFontLink2_MapFont(font_link2, hdc, 0, ch, &new_font);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     ok(ret == S_OK || broken(ret == E_FAIL), /* got E_FAIL on winxp and win2k */
@@ -3249,7 +3249,7 @@ static void test_MapFont(IMLangFontLink *font_link, IMLangFontLink2 *font_link2)
     ret = IMLangFontLink2_MapFont(font_link2, hdc, codepages, 0, &new_font);
     ok(ret == S_OK && new_font == last_font, "IMLangFontLink2_MapFont: expected S_OK/%p, got %08lx/%p\n", last_font, ret, new_font);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA || is_reactos()) // Broken on Windows 2003
     {
 #endif
@@ -3259,7 +3259,7 @@ static void test_MapFont(IMLangFontLink *font_link, IMLangFontLink2 *font_link2)
     charset = GetTextCharsetInfo(hdc, &fs, 0);
     SelectObject(hdc, old_font);
     ok(ret == S_OK && charset == SHIFTJIS_CHARSET && !!(fs.fsCsb[0] & FS_JISJAPAN), "IMLangFontLink2_MapFont: expected S_OK/%u/1, got %08lx/%u/0\n", SHIFTJIS_CHARSET, ret, charset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 

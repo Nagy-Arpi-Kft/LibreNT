@@ -1583,7 +1583,7 @@ static void test_dde_aw_transaction( BOOL client_unicode, BOOL server_unicode )
     info.cb = sizeof(info);
     ret = DdeQueryConvInfo(hconv, QID_SYNC, &info);
     ok(ret, "wrong info size %ld, DdeQueryConvInfo error %x\n", ret, DdeGetLastError(dde_inst));
-#if !defined(__REACTOS__) || !defined(_WIN64)
+#if !defined(__LIBRENT__) || !defined(_WIN64)
     ok(info.ConvCtxt.iCodePage == (client_unicode ? CP_WINUNICODE : CP_WINANSI),
        "wrong iCodePage %d\n", info.ConvCtxt.iCodePage);
     ok(!info.hConvPartner, "unexpected info.hConvPartner: %p\n", info.hConvPartner);
@@ -1609,7 +1609,7 @@ todo_wine {
     err = DdeGetLastError(dde_inst);
     if (conv_unicode && (!client_unicode || !server_unicode))  /* W->A mapping -> garbage */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!hdata || broken(hdata != 0) /* WS03 */, "DdeClientTransaction returned %p, error %lx\n", hdata, err);
         ok(ret == DDE_FNOTPROCESSED || broken(ret == DDE_FACKREQ) /* WS03 */, "wrong status code %04lx\n", ret);
         ok(err == DMLERR_NOTPROCESSED || broken(err == DMLERR_NO_ERROR) /* WS03 */, "DdeClientTransaction returned error %lx\n", err);
@@ -1627,7 +1627,7 @@ todo_wine {
     }
     else  /* no mapping */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(hdata != 0 || broken(!hdata) /* WS03 */, "DdeClientTransaction returned %p, error %lx\n", hdata, err);
         ok(ret == DDE_FACK || broken(ret == DDE_FNOTPROCESSED) /* WS03 */, "wrong status code %04lx\n", ret);
         ok(err == DMLERR_NO_ERROR || broken(err == DMLERR_NOTPROCESSED) /* WS03 */, "wrong dde error %lx\n", err);
@@ -1644,7 +1644,7 @@ todo_wine {
     err = DdeGetLastError(dde_inst);
     if (conv_unicode && (!client_unicode || !server_unicode))  /* W->A mapping */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(hdata != 0 || broken(!hdata) /* WS03 */, "DdeClientTransaction returned %p, error %lx\n", hdata, err);
         ok(ret == DDE_FACK || broken(ret == DDE_FNOTPROCESSED) /* WS03 */, "wrong status code %04lx\n", ret);
         ok(err == DMLERR_NO_ERROR || broken(err == DMLERR_NOTPROCESSED) /* WS03 */, "wrong dde error %lx\n", err);
@@ -1672,7 +1672,7 @@ todo_wine {
     err = DdeGetLastError(dde_inst);
     if (conv_unicode && (!client_unicode || !server_unicode))  /* W->A mapping -> wrong cmd */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!hdata || broken(hdata != 0) /* WS03 */, "DdeClientTransaction returned %p, error %lx\n", hdata, err);
         ok(ret == DDE_FNOTPROCESSED || broken(ret == DDE_FACKREQ) /* WS03 */, "wrong status code %04lx\n", ret);
         ok(err == DMLERR_NOTPROCESSED || broken(err == DMLERR_NO_ERROR) /* WS03 */, "DdeClientTransaction returned error %lx\n", err);
@@ -1690,7 +1690,7 @@ todo_wine {
     }
     else  /* no mapping */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(hdata != 0 || broken(!hdata) /* WS03 */, "DdeClientTransaction returned %p, error %lx\n", hdata, err);
         ok(ret == DDE_FACK || broken(ret == DDE_FNOTPROCESSED) /* WS03 */, "wrong status code %04lx\n", ret);
         ok(err == DMLERR_NO_ERROR || broken(err == DMLERR_NOTPROCESSED) /* WS03 */, "wrong dde error %lx\n", err);
@@ -1718,7 +1718,7 @@ todo_wine {
     }
     else  /* no mapping */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!hdata || broken(hdata != 0) /* WS03 */, "DdeClientTransaction returned %p, error %lx\n", hdata, err);
         ok(ret == DDE_FNOTPROCESSED || broken(ret == DDE_FACKREQ) /* WS03 */, "wrong status code %04lx\n", ret);
         ok(err == DMLERR_NOTPROCESSED || broken(err == DMLERR_NO_ERROR) /* WS03 */, "DdeClientTransaction returned error %lx\n", err);

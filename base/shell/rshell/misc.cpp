@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS shell extensions
+ * PROJECT:     LibreNT shell extensions
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Quick Launch Toolbar (Taskbar Shell Extension)
  * COPYRIGHT:   Copyright 2014 Giannis Adamopoulos

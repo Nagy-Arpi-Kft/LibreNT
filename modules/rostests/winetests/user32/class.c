@@ -22,12 +22,12 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef wait_child_process
 #define wait_child_process(pi) wait_child_process_(__FILE__, __LINE__)((pi)->hProcess)
 #endif
@@ -37,7 +37,7 @@
 #include "winreg.h"
 #include "wingdi.h"
 #include "winuser.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef WIN32_NO_STATUS
 #include <ntndk.h>
 #else
@@ -1478,7 +1478,7 @@ static void test_IME(void)
     ok(!lstrcmpiA(ptr, "user32.dll") || !lstrcmpiA(ptr, "ntdll.dll"), "IME window proc implemented in %s\n", ptr);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef IS_INTRESOURCE
 #endif
 #define IS_INTRESOURCE(x)   (((ULONG_PTR)(x) >> 16) == 0)

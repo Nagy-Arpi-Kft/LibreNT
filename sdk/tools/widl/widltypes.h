@@ -176,7 +176,7 @@ enum attr_type
     ATTR_STRING,
     ATTR_SWITCHIS,
     ATTR_SWITCHTYPE,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ATTR_SYSTEMHANDLE,
 #endif
     ATTR_THREADING,
@@ -665,7 +665,7 @@ struct _statement_t {
     unsigned int is_defined : 1;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct _system_handle_attr_t
 {
     unsigned char handle_type;

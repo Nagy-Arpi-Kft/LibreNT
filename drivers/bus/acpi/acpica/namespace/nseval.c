@@ -357,7 +357,7 @@ AcpiNsEvaluate (
          */
         AcpiExEnterInterpreter ();
         Status = AcpiPsExecuteMethod (Info);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         AcpiExExitInterpreter ();
 #endif
         break;
@@ -391,13 +391,13 @@ AcpiNsEvaluate (
 
         Status = AcpiExResolveNodeToValue (ACPI_CAST_INDIRECT_PTR (
             ACPI_NAMESPACE_NODE, &Info->ReturnObject), NULL);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         AcpiExExitInterpreter ();
 #endif
 
         if (ACPI_FAILURE (Status))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             AcpiExExitInterpreter ();
 #endif
             Info->ReturnObject = NULL;
@@ -446,7 +446,7 @@ AcpiNsEvaluate (
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     AcpiExExitInterpreter ();
 #endif
 

@@ -316,7 +316,7 @@ static LSTATUS copy_device_interface_property( HKEY hkey, const struct device_in
 {
     struct property prop;
     LSTATUS err;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD terminator_count = 0, allocation_size;
 #endif
 
@@ -324,7 +324,7 @@ static LSTATUS copy_device_interface_property( HKEY hkey, const struct device_in
     if (!(err = query_device_interface_property( hkey, iface, &prop ))) return ERROR_SUCCESS;
     if (err && err != ERROR_MORE_DATA) return ERROR_SUCCESS;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (property->Type == DEVPROP_TYPE_STRING) terminator_count = 1;
     else if (property->Type == DEVPROP_TYPE_STRING_LIST) terminator_count = 2;
     if (property->BufferSize > MAXDWORD - terminator_count * sizeof(WCHAR)) return ERROR_OUTOFMEMORY;
@@ -338,7 +338,7 @@ static LSTATUS copy_device_interface_property( HKEY hkey, const struct device_in
     else
     {
         property->Buffer = prop.buffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (terminator_count && !(property->BufferSize % sizeof(WCHAR)))
         {
             WCHAR *string = property->Buffer;
@@ -445,7 +445,7 @@ struct enum_dev_object_params
     void                            *context;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL device_interface_may_match( const struct device_interface *iface, const DEVPROP_FILTER_EXPRESSION *filters,
                                         const DEVPROP_FILTER_EXPRESSION *end )
 {
@@ -501,7 +501,7 @@ static LSTATUS enum_dev_objects_device_interface( HKEY hkey, const void *object,
 
     TRACE( "hkey %p object %s name %s\n", hkey, debugstr_device_interface(iface), debugstr_w(name) );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (params->filters && !device_interface_may_match( iface, params->filters, params->filters_end )) return ERROR_SUCCESS;
 #endif
 
@@ -534,7 +534,7 @@ static LSTATUS enum_dev_objects_device_interface( HKEY hkey, const void *object,
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void get_device_interface_filter_hints( const DEVPROP_FILTER_EXPRESSION *filters, const DEVPROP_FILTER_EXPRESSION *end,
                                                GUID *class_guid, BOOL *has_class, WCHAR *instance_id, BOOL *has_instance )
 {
@@ -599,7 +599,7 @@ static LSTATUS enum_dev_objects( DEV_OBJECT_TYPE type, const DEVPROPCOMPKEY *pro
     {
     case DevObjectTypeDeviceInterface:
     case DevObjectTypeDeviceInterfaceDisplay:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WCHAR instance_id[MAX_DEVICE_ID_LEN];
         BOOL has_class, has_instance;
@@ -731,7 +731,7 @@ struct device_query_context
     ULONG prop_keys_len;
     DEVPROPCOMPKEY *prop_keys;
     BOOL filters;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DEVPROP_FILTER_EXPRESSION *filter_exprs;
     ULONG filter_exprs_len;
     LONG close_pending;
@@ -845,7 +845,7 @@ static void device_iface_path_free( struct rb_entry *entry, void *data )
     free( path );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT device_query_context_copy_filters( struct device_query_context *ctx, ULONG filters_len,
                                                   const DEVPROP_FILTER_EXPRESSION *filters )
 {
@@ -907,7 +907,7 @@ static void CALLBACK device_query_context_notify_closed_async( TP_CALLBACK_INSTA
 #endif
 static void device_query_context_release( struct device_query_context *ctx )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG ref = InterlockedDecrement( &ctx->ref );
 
     if (ref == 1 && !(ctx->flags & DevQueryFlagAsyncClose) && ReadAcquire( &ctx->close_pending ))
@@ -925,7 +925,7 @@ static void device_query_context_release( struct device_query_context *ctx )
 #endif
     {
         free( ctx->prop_keys );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free( ctx->filter_exprs );
 #endif
         ctx->cs.DebugInfo->Spare[0] = 0;
@@ -1087,7 +1087,7 @@ static DWORD CALLBACK device_query_context_cm_notify_callback( HCMNOTIFICATION n
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ctx->filter_exprs && !device_query_context_object_matches( ctx, iface_path ))
         {
             free( notify_data );
@@ -1133,7 +1133,7 @@ static void CALLBACK device_query_enum_objects_async( TP_CALLBACK_INSTANCE *inst
     LSTATUS err = ERROR_SUCCESS;
     BOOL success;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     err = enum_dev_objects( ctx->type, ctx->prop_keys, ctx->prop_keys_len, !!(ctx->flags & DevQueryFlagAllProperties),
                             ctx->filter_exprs, ctx->filter_exprs ? ctx->filter_exprs + ctx->filter_exprs_len : NULL,
                             device_query_context_add_object, ctx );
@@ -1152,7 +1152,7 @@ static void CALLBACK device_query_enum_objects_async( TP_CALLBACK_INSTANCE *inst
     case ERROR_SUCCESS:
         ctx->state = DevQueryStateEnumCompleted;
         success = TrySubmitThreadpoolCallback( device_query_context_notify_enum_completed_async, ctx, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(ctx->flags & DevQueryFlagUpdateResults))
 #else
         if (ctx->filters || !(ctx->flags & DevQueryFlagUpdateResults))
@@ -1185,7 +1185,7 @@ static void CALLBACK device_query_enum_objects_async( TP_CALLBACK_INSTANCE *inst
         }
         break;
     case ERROR_CANCELLED:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         success = FALSE;
 #else
         if (!(ctx->flags & DevQueryFlagAsyncClose))
@@ -1240,7 +1240,7 @@ HRESULT WINAPI DevCreateObjectQueryEx( DEV_OBJECT_TYPE type, ULONG flags, ULONG 
         || (props_len && (flags & DevQueryFlagAllProperties))
         || (filters && !devprop_filters_validate( filters, filters + filters_len )))
         return E_INVALIDARG;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (filters)
         FIXME( "Query filters are not supported!\n" );
 #endif
@@ -1250,7 +1250,7 @@ HRESULT WINAPI DevCreateObjectQueryEx( DEV_OBJECT_TYPE type, ULONG flags, ULONG 
     hr = device_query_context_create( &ctx, type, flags, props_len, props, callback, user_data );
     if (FAILED( hr ))
         return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (filters && FAILED( hr = device_query_context_copy_filters( ctx, filters_len, filters ) ))
     {
         device_query_context_release( ctx );
@@ -1292,7 +1292,7 @@ void WINAPI DevCloseObjectQuery( HDEVQUERY query )
         CM_Unregister_Notification( ctx->notify );
         device_query_context_release( ctx ); /* Reference held by CM_Register_Notification. */
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (async && (old == DevQueryStateInitialized || old == DevQueryStateEnumCompleted))
         ctx->close_pending = TRUE;
     LeaveCriticalSection( &ctx->cs );

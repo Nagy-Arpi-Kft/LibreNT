@@ -1,5 +1,5 @@
 /*
- * ReactOS ATL
+ * LibreNT ATL
  *
  * Copyright 2016 Mark Jansen
  *

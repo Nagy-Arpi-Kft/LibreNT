@@ -43,7 +43,7 @@ static const struct
 }
 alias_map[] =
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"baseboard", L"Win32_BaseBoard" },
     { L"bios", L"Win32_BIOS" },
     { L"bootconfig", L"Win32_BootConfiguration" },
@@ -142,7 +142,7 @@ alias_map[] =
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *where_clause;
 static const WCHAR *raw_command;
 
@@ -306,7 +306,7 @@ error:
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void convert_to_bstr( VARIANT *v, CIMTYPE type )
 #else
 static void convert_to_bstr( VARIANT *v )
@@ -316,13 +316,13 @@ static void convert_to_bstr( VARIANT *v )
     VARTYPE vt;
 
     /* treat VT_I4 values as unsigned */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (V_VT(v) == VT_I4 && type != CIM_SINT32) V_VT(v) = VT_UI4;
 #else
     if (V_VT(v) == VT_I4) V_VT(v) = VT_UI4;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (V_VT(v) == VT_BOOL)
     {
         vt = VT_BOOL;
@@ -391,7 +391,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
     ULONG count, width = 0;
     VARIANT v;
     int i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL list = FALSE;
     CIMTYPE type;
 #endif
@@ -421,7 +421,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
         goto done;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         int props = 0;
 
@@ -453,7 +453,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
         output_error( STRING_INVALID_QUERY );
         goto done;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*proplist)
     {
         free( proplist );
@@ -461,7 +461,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = lstrlenW( class ) + lstrlenW( proplist ) + ARRAY_SIZE(L"SELECT * FROM ");
     if (where_clause) len += lstrlenW( where_clause ) + ARRAY_SIZE(L" WHERE ");
     if (!(query = SysAllocStringLen( NULL, len ))) goto done;
@@ -479,7 +479,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
     hr = IWbemServices_ExecQuery( services, wql, query, flags, NULL, &result );
     if (hr != S_OK) goto done;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (list)
     {
         for (;;)
@@ -509,7 +509,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
         if (!count) break;
 
         IWbemClassObject_BeginEnumeration( obj, WBEM_FLAG_NONSYSTEM_ONLY );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (IWbemClassObject_Next( obj, 0, &name, &v, &type, NULL ) == S_OK)
         {
             convert_to_bstr( &v, type );
@@ -549,7 +549,7 @@ static int query_prop( const WCHAR *class, int argc, WCHAR *argv[] )
         IEnumWbemClassObject_Next( result, WBEM_INFINITE, 1, &obj, &count );
         if (!count) break;
         IWbemClassObject_BeginEnumeration( obj, WBEM_FLAG_NONSYSTEM_ONLY );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (IWbemClassObject_Next( obj, 0, NULL, &v, &type, NULL ) == S_OK)
         {
             convert_to_bstr( &v, type );
@@ -628,7 +628,7 @@ static int process_args( int argc, WCHAR *argv[] )
     if (++i >= argc)
         goto not_supported;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!wcsicmp( argv[i], L"where" ))
     {
         int first = ++i, len = 0, j;
@@ -657,7 +657,7 @@ static int process_args( int argc, WCHAR *argv[] )
 
     if (!wcsicmp( argv[i], L"get" ))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ++i;
         return query_prop( class, argc - i, argv + i );
 #else
@@ -702,7 +702,7 @@ int __cdecl wmain(int argc, WCHAR *argv[])
                 WCHAR **new_argv;
 
                 if (!(new_argv = CommandLineToArgvW( stripped, &new_argc ))) return 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 raw_command = stripped;
 #endif
                 ret = process_args( new_argc, new_argv );
@@ -715,7 +715,7 @@ int __cdecl wmain(int argc, WCHAR *argv[])
         return ret;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     raw_command = GetCommandLineW();
 #endif
     return process_args( argc - 1, argv + 1 );

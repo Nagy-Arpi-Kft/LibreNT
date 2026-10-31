@@ -694,7 +694,7 @@ static void test_VerifyVersionInfo(void)
     ret = VerifyVersionInfoA(&info, VER_MINORVERSION | VER_SERVICEPACKMAJOR | VER_SERVICEPACKMINOR,
         VerSetConditionMask(VerSetConditionMask(0, VER_MINORVERSION, VER_GREATER_EQUAL),
             VER_MAJORVERSION, VER_GREATER_EQUAL));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         OSVERSIONINFOEXA current;
 
@@ -745,14 +745,14 @@ static void test_SystemFirmwareTable(void)
         HeapFree(GetProcessHeap(), 0, sfti);
         return;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( status == STATUS_BUFFER_TOO_SMALL || broken(status == STATUS_INVALID_DEVICE_REQUEST) /* Vista x64 ROS testbot */, "NtQuerySystemInformation failed %lx\n", status );
 #else
     ok( status == STATUS_BUFFER_TOO_SMALL, "NtQuerySystemInformation failed %lx\n", status );
 #endif
     sfti = HeapReAlloc(GetProcessHeap(), 0, sfti, expected_len);
     status = pNtQuerySystemInformation(SystemFirmwareTableInformation, sfti, expected_len, &expected_len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( !status || broken(status == STATUS_INVALID_DEVICE_REQUEST) /* Vista x64 ROS testbot */, "NtQuerySystemInformation failed %lx\n", status );
 #else
     ok( !status, "NtQuerySystemInformation failed %lx\n", status );
@@ -864,7 +864,7 @@ static void test_PackageIdFromFullName(void)
         win_skip("PackageIdFromFullName not available.\n");
         return;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_WIN10) {
         skip("test_PackageIdFromFullName() broken on Win8.1 and older\n");
         return;

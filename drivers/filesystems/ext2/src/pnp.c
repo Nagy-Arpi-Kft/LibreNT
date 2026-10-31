@@ -19,7 +19,7 @@ extern PEXT2_GLOBAL Ext2Global;
 
 /* DEFINITIONS *************************************************************/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -42,7 +42,7 @@ Ext2PnpCompletionRoutine (
 /* FUNCTIONS *************************************************************/
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS

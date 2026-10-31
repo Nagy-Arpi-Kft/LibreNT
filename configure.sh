@@ -1,15 +1,15 @@
 #!/bin/sh
 
-REACTOS_SOURCE_DIR=$(cd "$(dirname "$0")" && pwd -P)
-REACTOS_START_DIR=$(pwd -P)
+LIBRENT_SOURCE_DIR=$(cd "$(dirname "$0")" && pwd -P)
+LIBRENT_START_DIR=$(pwd -P)
 
 # rosconfig (menuconfig) support: the host tool is built below the source tree,
 # while every output tree owns its configuration cache and CMake pre-load file.
 # See sdk/tools/rosconfig/README.md.
-ROSCONFIG_DIR="$REACTOS_SOURCE_DIR/.rosconfig"
+ROSCONFIG_DIR="$LIBRENT_SOURCE_DIR/.rosconfig"
 ROSCONFIG_BIN="$ROSCONFIG_DIR/rosconfig"
-ROSCONFIG_BUILD="$REACTOS_SOURCE_DIR/sdk/tools/rosconfig/build.sh"
-ROSCONFIG_DEF="$REACTOS_SOURCE_DIR/sdk/cmake/rosconfig.def"
+ROSCONFIG_BUILD="$LIBRENT_SOURCE_DIR/sdk/tools/rosconfig/build.sh"
+ROSCONFIG_DEF="$LIBRENT_SOURCE_DIR/sdk/cmake/rosconfig.def"
 ROSCONFIG_STATE_DIR=
 ROSCONFIG_CACHE=
 ROSCONFIG_OVERRIDES=
@@ -69,7 +69,7 @@ usage() {
 	echo "Usage: configure.sh [options]"
 	echo "  --clang              Use RosBE Clang/LLVM from ~/.local/opt/rosbe/llvm"
 	echo "  --gcc                Use GCC from ~/.local/opt/rosbe/mingw-gcc"
-	echo "  -a, --arch <arch>    Target architecture: amd64, i386, arm64, riscv64, ppc (default: amd64)"
+	echo "  -a, --arch <arch>    Target architecture: amd64, i386, arm64 (default: amd64)"
 	echo "  -r, --release        Configure a Release build (default: Debug)"
 	echo "  makefiles            Use Unix Makefiles generator (default: Ninja)"
 	echo "  menuconfig           Open the interactive configuration UI first;"
@@ -174,18 +174,18 @@ optional_fex_warning() {
 }
 
 sync_glmark2_submodule() {
-	GLMARK2_DIR="$REACTOS_SOURCE_DIR/base/applications/cmdutils/glmark2"
+	GLMARK2_DIR="$LIBRENT_SOURCE_DIR/base/applications/cmdutils/glmark2"
 	if [ -f "$GLMARK2_DIR/src/benchmark-collection.cpp" ] &&
 	   [ -f "$GLMARK2_DIR/src/zlib/adler32.c" ]; then
 		return 0
 	fi
 
 	command -v git >/dev/null 2>&1 || fail "git is required to initialize the glmark2 submodule"
-	git -C "$REACTOS_SOURCE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1 || fail "glmark2 sources are missing; configure from a recursive Git checkout"
+	git -C "$LIBRENT_SOURCE_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1 || fail "glmark2 sources are missing; configure from a recursive Git checkout"
 
 	echo "Syncing glmark2 submodule..."
-	git -C "$REACTOS_SOURCE_DIR" submodule sync -- base/applications/cmdutils/glmark2 || fail "failed to sync glmark2 submodule metadata"
-	git -C "$REACTOS_SOURCE_DIR" submodule update --init --depth 1 -- base/applications/cmdutils/glmark2 || fail "failed to initialize the glmark2 submodule"
+	git -C "$LIBRENT_SOURCE_DIR" submodule sync -- base/applications/cmdutils/glmark2 || fail "failed to sync glmark2 submodule metadata"
+	git -C "$LIBRENT_SOURCE_DIR" submodule update --init --depth 1 -- base/applications/cmdutils/glmark2 || fail "failed to initialize the glmark2 submodule"
 	[ -f "$GLMARK2_DIR/src/benchmark-collection.cpp" ] &&
 	[ -f "$GLMARK2_DIR/src/zlib/adler32.c" ] || fail "glmark2 submodule is incomplete after synchronization"
 }
@@ -217,7 +217,7 @@ install_host_packages() {
 # They are checked out under submodules/ and track their configured branch.
 sync_feeds() {
 	[ "$SKIP_FEEDS_UPDATE" = "0" ] || return 0
-	[ -x "$REACTOS_SOURCE_DIR/scripts/feeds" ] || fail "missing $REACTOS_SOURCE_DIR/scripts/feeds"
+	[ -x "$LIBRENT_SOURCE_DIR/scripts/feeds" ] || fail "missing $LIBRENT_SOURCE_DIR/scripts/feeds"
 
 	FEEDS_WANTED=mesa
 	if [ "$ARCH" = "arm64" ] && fex_arm64ec_enabled; then
@@ -232,7 +232,7 @@ sync_feeds() {
 
 	echo "Updating source feeds:$FEEDS_WANTED"
 	# shellcheck disable=SC2086
-	"$REACTOS_SOURCE_DIR/scripts/feeds" update $FEEDS_WANTED ||
+	"$LIBRENT_SOURCE_DIR/scripts/feeds" update $FEEDS_WANTED ||
 		fail "could not update the source feeds; pass --no-feeds-update to skip"
 }
 
@@ -273,7 +273,7 @@ verify_kdb_sources() {
 	[ "$SKIP_FEEDS_UPDATE" = "0" ] || return 0
 	kdb_zydis_enabled || return 0
 
-	KDB_FEX_DIR="$REACTOS_SOURCE_DIR/submodules/fex-arm64ec"
+	KDB_FEX_DIR="$LIBRENT_SOURCE_DIR/submodules/fex-arm64ec"
 	KDB_ZYDIS_DIR="$KDB_FEX_DIR/External/zydis"
 	KDB_ZYCORE_DIR="$KDB_ZYDIS_DIR/dependencies/zycore"
 	[ -f "$KDB_ZYDIS_DIR/src/MetaInfo.c" ] && [ -f "$KDB_ZYCORE_DIR/src/API/Memory.c" ] ||
@@ -289,7 +289,7 @@ verify_arm64_sources() {
 	fi
 	[ "$SKIP_FEEDS_UPDATE" = "0" ] || return 0
 
-	FEX_CHECKOUT_DIR="$REACTOS_SOURCE_DIR/submodules/fex-arm64ec"
+	FEX_CHECKOUT_DIR="$LIBRENT_SOURCE_DIR/submodules/fex-arm64ec"
 	[ -f "$FEX_CHECKOUT_DIR/CMakeLists.txt" ] &&
 		[ -f "$FEX_CHECKOUT_DIR/External/fmt/CMakeLists.txt" ] &&
 		[ -f "$FEX_CHECKOUT_DIR/External/range-v3/CMakeLists.txt" ] &&
@@ -323,12 +323,6 @@ normalize_arch() {
 			;;
 		arm64|aarch64)
 			echo arm64
-			;;
-		riscv64|rv64)
-			echo riscv64
-			;;
-		ppc|powerpc|powerpcle)
-			echo ppc
 			;;
 		arm)
 			echo arm
@@ -435,14 +429,14 @@ done
 # When configure.sh is launched from an existing output tree, use that tree's
 # identity as the default. Command-line target flags still win. No source-wide
 # configuration cache participates in target selection.
-if [ "$REACTOS_START_DIR" != "$REACTOS_SOURCE_DIR" ]; then
-	CURRENT_CMAKE_CACHE="$REACTOS_START_DIR/CMakeCache.txt"
-	CURRENT_ROSCONFIG_CACHE="$REACTOS_START_DIR/.rosconfig/config.cache"
+if [ "$LIBRENT_START_DIR" != "$LIBRENT_SOURCE_DIR" ]; then
+	CURRENT_CMAKE_CACHE="$LIBRENT_START_DIR/CMakeCache.txt"
+	CURRENT_ROSCONFIG_CACHE="$LIBRENT_START_DIR/.rosconfig/config.cache"
 	if [ "$USER_ARCH" = "0" ]; then
 		CACHED_ARCH=$(cmake_cache_get "$CURRENT_CMAKE_CACHE" ARCH)
 		[ -n "$CACHED_ARCH" ] || CACHED_ARCH=$(rosconfig_file_get "$CURRENT_ROSCONFIG_CACHE" ARCH)
 		case "$CACHED_ARCH" in
-			amd64|i386|arm64|arm|riscv64|ppc) ARCH=$CACHED_ARCH ;;
+			amd64|i386|arm64|arm) ARCH=$CACHED_ARCH ;;
 		esac
 	fi
 	if [ "$USER_TOOLCHAIN" = "0" ]; then
@@ -474,23 +468,23 @@ else
 	BUILD_ENVIRONMENT=GCC
 fi
 
-REACTOS_OUTPUT_PATH=output-$BUILD_ENVIRONMENT-$ARCH-$BUILD_TYPE_SUFFIX$ROSBE_OUTPUT_SUFFIX
-EXPECTED_BUILD_DIR="$REACTOS_SOURCE_DIR/$REACTOS_OUTPUT_PATH"
+LIBRENT_OUTPUT_PATH=output-$BUILD_ENVIRONMENT-$ARCH-$BUILD_TYPE_SUFFIX$ROSBE_OUTPUT_SUFFIX
+EXPECTED_BUILD_DIR="$LIBRENT_SOURCE_DIR/$LIBRENT_OUTPUT_PATH"
 
 # Never reconfigure one target's output directory as another target. This check
 # runs before any CMake cache or generated build state is removed.
-if [ "$REACTOS_START_DIR" = "$REACTOS_SOURCE_DIR" ]; then
+if [ "$LIBRENT_START_DIR" = "$LIBRENT_SOURCE_DIR" ]; then
 	BUILD_DIR="$EXPECTED_BUILD_DIR"
-	BUILD_HINT_PATH="./$REACTOS_OUTPUT_PATH"
+	BUILD_HINT_PATH="./$LIBRENT_OUTPUT_PATH"
 	if [ "$RUN_MENUCONFIG" = "0" ]; then
-		echo "Creating directories in $REACTOS_OUTPUT_PATH"
+		echo "Creating directories in $LIBRENT_OUTPUT_PATH"
 		mkdir -p "$BUILD_DIR"
 	fi
-elif [ "$REACTOS_START_DIR" = "$EXPECTED_BUILD_DIR" ]; then
-	BUILD_DIR="$REACTOS_START_DIR"
+elif [ "$LIBRENT_START_DIR" = "$EXPECTED_BUILD_DIR" ]; then
+	BUILD_DIR="$LIBRENT_START_DIR"
 	BUILD_HINT_PATH="$BUILD_DIR"
 else
-	fail "refusing to configure '$REACTOS_START_DIR' as $BUILD_ENVIRONMENT/$ARCH/$BUILD_TYPE; expected output directory '$EXPECTED_BUILD_DIR'"
+	fail "refusing to configure '$LIBRENT_START_DIR' as $BUILD_ENVIRONMENT/$ARCH/$BUILD_TYPE; expected output directory '$EXPECTED_BUILD_DIR'"
 fi
 
 ROSCONFIG_STATE_DIR="$BUILD_DIR/.rosconfig"
@@ -519,7 +513,7 @@ fi
 
 if [ "$RUN_MENUCONFIG" = "1" ]; then
 	[ "$ROSCONFIG_OK" = "1" ] || fail "menuconfig requested but the rosconfig tool could not be built"
-	ROSCONFIG_MENU_DIR=$(mktemp -d "${TMPDIR:-/tmp}/reactos-menuconfig.XXXXXX") || fail "could not create a temporary menuconfig directory"
+	ROSCONFIG_MENU_DIR=$(mktemp -d "${TMPDIR:-/tmp}/librent-menuconfig.XXXXXX") || fail "could not create a temporary menuconfig directory"
 	ROSCONFIG_MENU_CACHE="$ROSCONFIG_MENU_DIR/config.cache"
 	trap 'rm -rf "$ROSCONFIG_MENU_DIR"' 0 1 2 3 15
 	if [ -f "$ROSCONFIG_CACHE" ]; then
@@ -539,7 +533,7 @@ if [ "$RUN_MENUCONFIG" = "1" ]; then
 		ARCH=$(rosconfig_file_get "$ROSCONFIG_MENU_CACHE" ARCH)
 	fi
 	case "$ARCH" in
-		amd64|i386|arm64|arm|riscv64|ppc) ;;
+		amd64|i386|arm64|arm) ;;
 		*) fail "menuconfig selected an unsupported architecture: $ARCH" ;;
 	esac
 
@@ -568,8 +562,8 @@ if [ "$RUN_MENUCONFIG" = "1" ]; then
 		BUILD_ENVIRONMENT=GCC
 		ROSCONFIG_TOOLCHAIN=gcc
 	fi
-	REACTOS_OUTPUT_PATH=output-$BUILD_ENVIRONMENT-$ARCH-$BUILD_TYPE_SUFFIX$ROSBE_OUTPUT_SUFFIX
-	BUILD_DIR="$REACTOS_SOURCE_DIR/$REACTOS_OUTPUT_PATH"
+	LIBRENT_OUTPUT_PATH=output-$BUILD_ENVIRONMENT-$ARCH-$BUILD_TYPE_SUFFIX$ROSBE_OUTPUT_SUFFIX
+	BUILD_DIR="$LIBRENT_SOURCE_DIR/$LIBRENT_OUTPUT_PATH"
 	BUILD_HINT_PATH="$BUILD_DIR"
 	ROSCONFIG_STATE_DIR="$BUILD_DIR/.rosconfig"
 	ROSCONFIG_CACHE="$ROSCONFIG_STATE_DIR/config.cache"
@@ -596,16 +590,16 @@ fi
 # target selection.
 if [ "$USE_CLANG" -eq 1 ]; then
 	TOOLCHAIN_FILE=toolchain-clang.cmake
-	LLVM_ROOT_OVERRIDE=${REACTOS_CLANG_LLVM_MINGW_ROOT:-}
+	LLVM_ROOT_OVERRIDE=${LIBRENT_CLANG_LLVM_MINGW_ROOT:-}
 	for LLVM_ROOT_ARG in $ROS_CMAKEOPTS; do
 		case "$LLVM_ROOT_ARG" in
-			-DREACTOS_CLANG_LLVM_MINGW_ROOT=*|-DREACTOS_CLANG_LLVM_MINGW_ROOT:*=*)
+			-DLIBRENT_CLANG_LLVM_MINGW_ROOT=*|-DLIBRENT_CLANG_LLVM_MINGW_ROOT:*=*)
 				LLVM_ROOT_OVERRIDE=${LLVM_ROOT_ARG#*=}
 				;;
 		esac
 	done
 	if [ -z "$LLVM_ROOT_OVERRIDE" ]; then
-		LLVM_ROOT_OVERRIDE=$(cmake_cache_get "$BUILD_DIR/CMakeCache.txt" REACTOS_CLANG_LLVM_MINGW_ROOT)
+		LLVM_ROOT_OVERRIDE=$(cmake_cache_get "$BUILD_DIR/CMakeCache.txt" LIBRENT_CLANG_LLVM_MINGW_ROOT)
 		[ -f "$LLVM_ROOT_OVERRIDE/src/llvm-project/runtimes/CMakeLists.txt" ] || LLVM_ROOT_OVERRIDE=
 	fi
 	if [ -n "$LLVM_ROOT_OVERRIDE" ]; then
@@ -617,11 +611,11 @@ if [ "$USE_CLANG" -eq 1 ]; then
 		[ -x "$ROSBE_LLVM_ROOT/bin/clang++" ] || fail "missing RosBE LLVM clang++ at $ROSBE_LLVM_ROOT/bin"
 	fi
 
-	export REACTOS_CLANG_LLVM_MINGW_ROOT="$ROSBE_LLVM_ROOT"
+	export LIBRENT_CLANG_LLVM_MINGW_ROOT="$ROSBE_LLVM_ROOT"
 	export LLVM_MINGW_ROOT="$ROSBE_LLVM_ROOT"
 	export PATH="$ROSBE_LLVM_ROOT/bin:$PATH"
 
-	ROS_CMAKEOPTS=$ROS_CMAKEOPTS" -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=$ROSBE_LLVM_ROOT"
+	ROS_CMAKEOPTS=$ROS_CMAKEOPTS" -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=$ROSBE_LLVM_ROOT"
 else
 	TOOLCHAIN_FILE=toolchain-gcc.cmake
 	ROSBE_GCC_ROOT="$ROSBE_ROOT/mingw-gcc"
@@ -649,7 +643,7 @@ else
 	rm -f "$ROSCONFIG_OVERRIDES"
 fi
 
-echo "Configuring a new ReactOS build on:"
+echo "Configuring a new LibreNT build on:"
 uname -srm
 echo
 echo "RosBE root:    $ROSBE_ROOT"
@@ -660,7 +654,7 @@ echo "Compiler:      $BUILD_ENVIRONMENT"
 echo "Architecture:  $ARCH"
 echo "Build type:    $BUILD_TYPE"
 echo "Generator:     $CMAKE_GENERATOR"
-echo "Output path:   $REACTOS_OUTPUT_PATH"
+echo "Output path:   $LIBRENT_OUTPUT_PATH"
 if [ "$ROSCONFIG_OK" = "1" ]; then
 	echo "Config cache:  $ROSCONFIG_CACHE"
 fi
@@ -687,14 +681,14 @@ cmake -G "$CMAKE_GENERATOR" \
 	-DCMAKE_TOOLCHAIN_FILE:FILEPATH="$TOOLCHAIN_FILE" \
 	-DARCH:STRING="$ARCH" \
 	$ROS_CMAKEOPTS \
-	"$REACTOS_SOURCE_DIR"
+	"$LIBRENT_SOURCE_DIR"
 if [ $? -ne 0 ]; then
-	echo "An error occurred while configuring ReactOS"
+	echo "An error occurred while configuring LibreNT"
 	exit 1
 fi
 
 if [ "$USE_CLANG" -eq 1 ]; then
-	"$REACTOS_SOURCE_DIR/sdk/tools/cxx-runtime/build-cxx-runtime.py" --reactos-build "$BUILD_DIR"
+	"$LIBRENT_SOURCE_DIR/sdk/tools/cxx-runtime/build-cxx-runtime.py" --librent-build "$BUILD_DIR"
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while building the LLVM runtimes"
 		exit 1

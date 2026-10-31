@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS VMX Hypervisor Driver
+ * PROJECT:     LibreNT VMX Hypervisor Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     RTL8139 PCI NIC emulation (minimal probe/bring-up model)
  * COPYRIGHT:   Copyright 2026 Ahmed Arif

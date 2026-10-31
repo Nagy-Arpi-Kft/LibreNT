@@ -36,25 +36,17 @@ elseif(ARCH STREQUAL "arm64")
     set(OARCH "armv8-a" CACHE STRING
     "Generate instructions for this CPU type. Specify one of:
      armv8-a armv8.1-a armv8.2-a armv8.3-a armv8.4-a armv8.5-a armv8.6-a")
-elseif(ARCH STREQUAL "ppc")
-    set(OARCH "604" CACHE STRING
-    "Generate instructions for this CPU type. Specify one of:
-     601 603 604 750")
-elseif(ARCH STREQUAL "riscv64")
-    set(OARCH "rv64gc" CACHE STRING
-    "Generate instructions for this ISA string or profile. Specify one of:
-     rv64gc rva22u64 rva23u64")
 endif()
 
 if(ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64")
     set(TUNE "generic" CACHE STRING
-    "Which CPU ReactOS should be optimized for.")
+    "Which CPU LibreNT should be optimized for.")
 elseif(ARCH STREQUAL "arm")
     set(TUNE "generic-armv7-a" CACHE STRING
-    "Which CPU ReactOS should be optimized for.")
-elseif(ARCH STREQUAL "arm64" OR ARCH STREQUAL "riscv64")
+    "Which CPU LibreNT should be optimized for.")
+elseif(ARCH STREQUAL "arm64")
     set(TUNE "generic" CACHE STRING
-    "Which CPU ReactOS should be optimized for.")
+    "Which CPU LibreNT should be optimized for.")
 endif()
 
 set(OPTIMIZE "4" CACHE STRING
@@ -99,16 +91,16 @@ endif()
 
 set(GDB FALSE CACHE BOOL
 "Whether to use by default KDGDB.DLL instead of KDCOM.DLL for debugging with GDB.
-Mainly used for cloud-based ReactOS development using Gitpod and Docker.
+Mainly used for cloud-based LibreNT development using Gitpod and Docker.
 If you don't use GDB, don't enable this.")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(_REACTOS_DEFAULT_DBG TRUE)
+    set(_LIBRENT_DEFAULT_DBG TRUE)
 else()
-    set(_REACTOS_DEFAULT_DBG FALSE)
+    set(_LIBRENT_DEFAULT_DBG FALSE)
 endif()
 
-set(DBG ${_REACTOS_DEFAULT_DBG} CACHE BOOL
+set(DBG ${_LIBRENT_DEFAULT_DBG} CACHE BOOL
 "Whether to compile for debugging.")
 
 set(SEPARATE_DBG TRUE CACHE BOOL
@@ -117,12 +109,12 @@ set(SEPARATE_DBG TRUE CACHE BOOL
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR
    CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" OR
    SEPARATE_DBG)
-    set(_REACTOS_DEFAULT_DEBUG_SYMBOLS TRUE)
+    set(_LIBRENT_DEFAULT_DEBUG_SYMBOLS TRUE)
 else()
-    set(_REACTOS_DEFAULT_DEBUG_SYMBOLS FALSE)
+    set(_LIBRENT_DEFAULT_DEBUG_SYMBOLS FALSE)
 endif()
 
-set(WITH_DEBUG_SYMBOLS ${_REACTOS_DEFAULT_DEBUG_SYMBOLS} CACHE BOOL
+set(WITH_DEBUG_SYMBOLS ${_LIBRENT_DEFAULT_DEBUG_SYMBOLS} CACHE BOOL
 "Whether to compile debug information.")
 
 if(MSVC)
@@ -138,30 +130,30 @@ else()
     set(_WINKD_ FALSE CACHE BOOL "Whether to compile with the KD protocol.")
 endif()
 
-string(TOUPPER "${KD_DEBUGGER}" _REACTOS_KD_DEBUGGER)
-if(NOT _REACTOS_KD_DEBUGGER MATCHES "^(AUTO|NONE|KDBG|EXTERNAL)$")
+string(TOUPPER "${KD_DEBUGGER}" _LIBRENT_KD_DEBUGGER)
+if(NOT _LIBRENT_KD_DEBUGGER MATCHES "^(AUTO|NONE|KDBG|EXTERNAL)$")
     message(FATAL_ERROR
         "Unknown KD_DEBUGGER '${KD_DEBUGGER}'; expected AUTO, NONE, KDBG or EXTERNAL")
 endif()
 
-string(TOUPPER "${KD_DEFAULT_TRANSPORT}" _REACTOS_KD_DEFAULT_TRANSPORT)
-if(NOT _REACTOS_KD_DEFAULT_TRANSPORT MATCHES "^(KDCOM|KDGDB)$")
+string(TOUPPER "${KD_DEFAULT_TRANSPORT}" _LIBRENT_KD_DEFAULT_TRANSPORT)
+if(NOT _LIBRENT_KD_DEFAULT_TRANSPORT MATCHES "^(KDCOM|KDGDB)$")
     message(FATAL_ERROR
         "Unknown KD_DEFAULT_TRANSPORT '${KD_DEFAULT_TRANSPORT}'; expected KDCOM or KDGDB")
 endif()
 
-if(_REACTOS_KD_DEBUGGER STREQUAL "NONE")
+if(_LIBRENT_KD_DEBUGGER STREQUAL "NONE")
     set(KDBG FALSE)
     set(_WINKD_ FALSE)
     set(GDB FALSE)
-elseif(_REACTOS_KD_DEBUGGER STREQUAL "KDBG")
+elseif(_LIBRENT_KD_DEBUGGER STREQUAL "KDBG")
     set(KDBG TRUE)
     set(_WINKD_ FALSE)
     set(GDB FALSE)
-elseif(_REACTOS_KD_DEBUGGER STREQUAL "EXTERNAL")
+elseif(_LIBRENT_KD_DEBUGGER STREQUAL "EXTERNAL")
     set(KDBG FALSE)
     set(_WINKD_ TRUE)
-    if(_REACTOS_KD_DEFAULT_TRANSPORT STREQUAL "KDGDB")
+    if(_LIBRENT_KD_DEFAULT_TRANSPORT STREQUAL "KDGDB")
         set(GDB TRUE)
     else()
         set(GDB FALSE)
@@ -170,14 +162,10 @@ elseif(NOT MSVC)
     set(KDBG TRUE)
 endif()
 
-if(KDBG AND _REACTOS_KD_DEBUGGER STREQUAL "AUTO" AND (ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64") AND
-   NOT EXISTS "${REACTOS_SOURCE_DIR}/submodules/fex-arm64ec/External/zydis/dependencies/zycore/src/API/Memory.c")
+if(KDBG AND _LIBRENT_KD_DEBUGGER STREQUAL "AUTO" AND (ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64") AND
+   NOT EXISTS "${LIBRENT_SOURCE_DIR}/submodules/fex-arm64ec/External/zydis/dependencies/zycore/src/API/Memory.c")
     message(STATUS "KDBG: the fex-arm64ec feed is not checked out; building without the integrated debugger. "
         "Run scripts/feeds update fex-arm64ec to build it.")
-    set(KDBG FALSE)
-endif()
-
-if(KDBG AND _REACTOS_KD_DEBUGGER STREQUAL "AUTO" AND ARCH STREQUAL "ppc")
     set(KDBG FALSE)
 endif()
 
@@ -192,42 +180,20 @@ if(GDB)
     set(_WINKD_ TRUE)
 endif()
 
-if(ARCH STREQUAL "ppc" AND _WINKD_)
-    message(FATAL_ERROR "The PowerPC external KD transport is unavailable; select KD_DEBUGGER=KDBG or NONE")
-endif()
-if(ARCH STREQUAL "riscv64" AND _WINKD_)
-    message(FATAL_ERROR "The RISC-V external KD transport is unavailable; select KD_DEBUGGER=KDBG or NONE")
-endif()
-
-cmake_dependent_option(ISAPNP_ENABLE "Whether to enable the ISA PnP support." ON
-                       "ARCH STREQUAL i386 AND NOT SARCH STREQUAL xbox" OFF)
-
 set(GENERATE_DEPENDENCY_GRAPH FALSE CACHE BOOL
 "Whether to create a GraphML dependency graph of DLLs.")
 
-cmake_dependent_option(ENABLE_ROSTESTS "Whether to build the ReactOS test suite." OFF
+cmake_dependent_option(ENABLE_ROSTESTS "Whether to build the LibreNT test suite." OFF
                        "CMAKE_BUILD_TYPE STREQUAL Debug" OFF)
 
 option(ENABLE_MESA_LLVMPIPE "Package the LLVMpipe OpenGL and Lavapipe Vulkan software ICDs." OFF)
 cmake_dependent_option(MESA_LLVMPIPE_FROM_SOURCE
-                       "Build LLVM and LLVMpipe into mesa_gallium.dll instead of using the LiberNT release payload." OFF
+                       "Build LLVM and LLVMpipe into mesa_gallium.dll instead of using the LibreNT release payload." OFF
                        "ENABLE_MESA_LLVMPIPE" OFF)
 
 cmake_dependent_option(ENABLE_FEX_ARM64EC
                        "Whether to build the optional FEX ARM64EC emulator for running AMD64 binaries on ARM64." ON
                        "ARCH STREQUAL arm64" OFF)
-
-cmake_dependent_option(RISCV64_FAST_MISALIGNED_ACCESS
-                       "The target harts perform misaligned scalar loads and stores to main memory in hardware" OFF
-                       "ARCH STREQUAL riscv64" OFF)
-
-cmake_dependent_option(RISCV64_VECTOR
-                       "The target harts implement the V extension; msvcrt calls its vector routines without runtime dispatch" OFF
-                       "ARCH STREQUAL riscv64" OFF)
-
-cmake_dependent_option(ENABLE_FELIX86
-                       "Whether to build the optional felix86 emulator for running AMD64 binaries on RISC-V64." ON
-                       "ARCH STREQUAL riscv64" OFF)
 
 cmake_dependent_option(ENABLE_FEX_ARM64EC_TEST_PAYLOADS
                        "Whether to import optional AMD64 diagnostic executables into FEX ARM64EC images." OFF
@@ -246,7 +212,7 @@ if(DEFINED RPI3VC4_MESA_FROM_SOURCE AND NOT DEFINED MESA_GALLIUM_FROM_SOURCE)
 endif()
 cmake_dependent_option(MESA_GALLIUM_FROM_SOURCE
                        "Build the Mesa Gallium OpenGL ICD from source" ON
-                       "ARCH STREQUAL i386 OR ARCH STREQUAL amd64 OR ARCH STREQUAL arm64 OR ARCH STREQUAL riscv64;CMAKE_C_COMPILER_ID STREQUAL Clang;NOT MSVC" OFF)
+                       "ARCH STREQUAL i386 OR ARCH STREQUAL amd64 OR ARCH STREQUAL arm64;CMAKE_C_COMPILER_ID STREQUAL Clang;NOT MSVC" OFF)
 unset(ENABLE_MESA_SOFTPIPE CACHE)
 
 cmake_dependent_option(ENABLE_FFMPEG
@@ -261,7 +227,6 @@ set(_wow64_default OFF)
 if((ARCH STREQUAL "amd64" OR ARCH STREQUAL "arm64") AND NOT ARM64EC_RUNTIME)
     set(_wow64_default ON)
 endif()
-# TODO(riscv64): add riscv64 to the ENABLE_WOW64 host list once an x86 CPU backend exists
 cmake_dependent_option(ENABLE_WOW64 "Whether to build the 32-bit WoW64 subsystem." ${_wow64_default}
                        "ARCH STREQUAL amd64 OR ARCH STREQUAL arm64" OFF)
 unset(_wow64_default)
@@ -347,43 +312,43 @@ endif()
 set(USE_DUMMY_PSEH FALSE CACHE BOOL
 "Whether to disable PSEH support.")
 
-set(REACTOS_TARGET_NT "0xA00" CACHE STRING
+set(LIBRENT_TARGET_NT "0xA00" CACHE STRING
 "Target NT version (e.g. 0x502, 0x600, 0x601, 0xA00)")
 
-set(REACTOS_GRAPHICS_DRIVER_MODEL "WDDM" CACHE STRING
+set(LIBRENT_GRAPHICS_DRIVER_MODEL "WDDM" CACHE STRING
 "Display driver model to build. Specify XPDM or WDDM.")
-set_property(CACHE REACTOS_GRAPHICS_DRIVER_MODEL PROPERTY STRINGS "XPDM" "WDDM")
+set_property(CACHE LIBRENT_GRAPHICS_DRIVER_MODEL PROPERTY STRINGS "XPDM" "WDDM")
 
-string(TOUPPER "${REACTOS_GRAPHICS_DRIVER_MODEL}" _REACTOS_GRAPHICS_DRIVER_MODEL)
-if(_REACTOS_GRAPHICS_DRIVER_MODEL STREQUAL "XPDM")
-    set(REACTOS_USE_XPDM TRUE)
-    set(REACTOS_USE_WDDM FALSE)
-elseif(_REACTOS_GRAPHICS_DRIVER_MODEL STREQUAL "WDDM")
-    set(REACTOS_USE_XPDM FALSE)
-    set(REACTOS_USE_WDDM TRUE)
+string(TOUPPER "${LIBRENT_GRAPHICS_DRIVER_MODEL}" _LIBRENT_GRAPHICS_DRIVER_MODEL)
+if(_LIBRENT_GRAPHICS_DRIVER_MODEL STREQUAL "XPDM")
+    set(LIBRENT_USE_XPDM TRUE)
+    set(LIBRENT_USE_WDDM FALSE)
+elseif(_LIBRENT_GRAPHICS_DRIVER_MODEL STREQUAL "WDDM")
+    set(LIBRENT_USE_XPDM FALSE)
+    set(LIBRENT_USE_WDDM TRUE)
 else()
     message(FATAL_ERROR
-        "REACTOS_GRAPHICS_DRIVER_MODEL must be XPDM or WDDM, not "
-        "'${REACTOS_GRAPHICS_DRIVER_MODEL}'")
+        "LIBRENT_GRAPHICS_DRIVER_MODEL must be XPDM or WDDM, not "
+        "'${LIBRENT_GRAPHICS_DRIVER_MODEL}'")
 endif()
 
-set(REACTOS_WDDM_LEVEL "3.2" CACHE STRING
+set(LIBRENT_WDDM_LEVEL "3.2" CACHE STRING
 "Windows 11 24H2 WDDM host contract level. Pre-WDDM 2 miniports are not supported." FORCE)
-set_property(CACHE REACTOS_WDDM_LEVEL PROPERTY STRINGS "3.2")
+set_property(CACHE LIBRENT_WDDM_LEVEL PROPERTY STRINGS "3.2")
 
 # The active WDDM tree has one ABI target: Windows 11 24H2 / WDDM 3.2.
 # Individual features still advertise only completed behavior. A 3.2 build
 # target must never be interpreted as claiming that every optional feature is
 # present; feature support is negotiated through the 3.2 feature interface.
-if(REACTOS_USE_WDDM)
-    set(REACTOS_WDDM_TARGET_LEVEL 3200)
-    set(REACTOS_WDDM_TARGET_INTERFACE_VERSION 0x11007)
-    set(REACTOS_WDDM_TARGET_UMD_INTERFACE_VERSION 0x11000)
+if(LIBRENT_USE_WDDM)
+    set(LIBRENT_WDDM_TARGET_LEVEL 3200)
+    set(LIBRENT_WDDM_TARGET_INTERFACE_VERSION 0x11007)
+    set(LIBRENT_WDDM_TARGET_UMD_INTERFACE_VERSION 0x11000)
 
     # Runtime callbacks currently complete the WDDM 2.1 tail. This is an
     # implementation ceiling, not a second selectable OS contract.
-    set(REACTOS_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION 0x6003)
+    set(LIBRENT_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION 0x6003)
 endif()
 
-set(DLL_EXPORT_VERSION "${REACTOS_TARGET_NT}" CACHE INTERNAL
+set(DLL_EXPORT_VERSION "${LIBRENT_TARGET_NT}" CACHE INTERNAL
 "The NT version the user mode DLLs target." FORCE)

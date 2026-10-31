@@ -4,7 +4,7 @@
  * Windows Filtering Platform — management types shared by the kernel-side
  * management API (fwpmk.h) and, eventually, the user-mode fwpuclnt.h.
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created for the dev-nt6-1 branch as part of the NT 5.2 -> NT 6.1 upgrade.

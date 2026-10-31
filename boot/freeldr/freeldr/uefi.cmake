@@ -6,10 +6,10 @@
 ##
 
 include_directories(BEFORE
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/edk2
-    ${REACTOS_SOURCE_DIR}/boot/freeldr/freeldr
-    ${REACTOS_SOURCE_DIR}/boot/freeldr/freeldr/include
-    ${REACTOS_SOURCE_DIR}/boot/freeldr/freeldr/include/arch/uefi
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/edk2
+    ${LIBRENT_SOURCE_DIR}/boot/freeldr/freeldr
+    ${LIBRENT_SOURCE_DIR}/boot/freeldr/freeldr/include
+    ${LIBRENT_SOURCE_DIR}/boot/freeldr/freeldr/include/arch/uefi
     ${CMAKE_CURRENT_BINARY_DIR})
 
 list(APPEND UEFILDR_ARC_SOURCE
@@ -59,13 +59,6 @@ elseif(ARCH STREQUAL "arm64")
         arch/uefi/uefiserial.c)
     list(APPEND UEFILDR_COMMON_ASM_SOURCE
         arch/uefi/arm64/uefiasm.S)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND UEFILDR_ARC_SOURCE
-        arch/uefi/uefiserial.c
-        arch/uefi/riscv64/runtime.c
-        arch/uefi/riscv64/watchdog.c)
-    list(APPEND UEFILDR_COMMON_ASM_SOURCE
-        arch/uefi/riscv64/uefiasm.S)
 else()
     #TBD
 endif()
@@ -79,7 +72,7 @@ list(APPEND UEFILDR_BOOTMGR_SOURCE
 
 foreach(asset font icons logo)
     if(asset STREQUAL "font")
-        set(asset_source ${REACTOS_SOURCE_DIR}/media/fonts/selawk.ttf)
+        set(asset_source ${LIBRENT_SOURCE_DIR}/media/fonts/selawk.ttf)
     elseif(asset STREQUAL "icons")
         set(asset_source ${CMAKE_CURRENT_SOURCE_DIR}/ui/assets/icons.alpha)
     else()
@@ -97,8 +90,8 @@ endforeach()
 add_asm_files(uefifreeldr_common_asm ${FREELDR_COMMON_ASM_SOURCE} ${UEFILDR_COMMON_ASM_SOURCE})
 
 list(APPEND FREELDR_NTLDR_SOURCE
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/config/cmboot.c
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/config.c
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/config/cmboot.c
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/ke/config.c
     ntldr/startup.c
     ntldr/conversion.c
     ntldr/headless.c
@@ -122,10 +115,6 @@ elseif(ARCH STREQUAL "arm")
 elseif(ARCH STREQUAL "arm64")
     list(APPEND FREELDR_NTLDR_SOURCE
         ntldr/arch/arm64/winldr.c)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND FREELDR_NTLDR_SOURCE
-        ntldr/arch/riscv64/jh7110.c
-        ntldr/arch/riscv64/winldr.c)
 else()
     #TBD
 endif()
@@ -141,10 +130,6 @@ add_library(uefifreeldr_common
 # longjmp reference with the vcruntime implementation, which needs RtlUnwind.
 target_link_libraries(uefifreeldr_common setjmp bootfont)
 target_link_libraries(uefifreeldr_common fatfs)
-if(ARCH STREQUAL "riscv64")
-    target_include_directories(uefifreeldr_common PRIVATE ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/jh7110disp)
-    target_link_libraries(uefifreeldr_common jh7110disp)
-endif()
 
 target_compile_definitions(uefifreeldr_common PRIVATE _FRLDRLIB_ UEFIBOOT)
 if(FREELDR_HTTP_BOOT)
@@ -215,7 +200,7 @@ endif()
     # We don't need hotpatching
     remove_target_compile_option(uefildr "/hotpatch")
 else()
-    if(ARCH STREQUAL "arm64" OR ARCH STREQUAL "riscv64")
+    if(ARCH STREQUAL "arm64")
         target_link_options(uefildr PRIVATE -Wl,--exclude-all-symbols,--file-alignment,0x200,--section-alignment,0x1000)
     else()
         target_link_options(uefildr PRIVATE -Wl,--exclude-all-symbols,--file-alignment,0x200,--section-alignment,0x200)
@@ -260,7 +245,7 @@ if(ARCH STREQUAL "i386")
     target_link_libraries(uefildr mini_hal)
 endif()
 if(ARCH STREQUAL "arm64")
-    set_target_properties(uefildr PROPERTIES REACTOS_LSE_ATOMICS lse_atomics_boot)
+    set_target_properties(uefildr PROPERTIES LIBRENT_LSE_ATOMICS lse_atomics_boot)
 endif()
 
 # dynamic analysis switches

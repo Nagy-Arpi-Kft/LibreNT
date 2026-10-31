@@ -612,7 +612,7 @@ INSTALLSTATE msi_get_component_action( MSIPACKAGE *package, MSICOMPONENT *comp )
         TRACE("component is disabled: %s\n", debugstr_w(comp->Component));
         return INSTALLSTATE_UNKNOWN;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (package->need_rollback)
         return comp->Installed == INSTALLSTATE_UNKNOWN ? INSTALLSTATE_ABSENT : comp->Installed;
 #else
@@ -1381,7 +1381,7 @@ static UINT load_all_folders( MSIPACKAGE *package )
     return r;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void set_root_drive( MSIPACKAGE *package )
 {
     WCHAR drives[128], best[4] = L"C:\\", *drive, *value;
@@ -1413,7 +1413,7 @@ static void set_root_drive( MSIPACKAGE *package )
 static UINT ACTION_CostInitialize(MSIPACKAGE *package)
 {
     msi_set_property( package->db, L"CostingComplete", L"0", -1 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     set_root_drive( package );
 #else
     msi_set_property( package->db, L"ROOTDRIVE", L"C:\\", -1 );
@@ -2341,7 +2341,7 @@ static UINT ACTION_CostFinalize(MSIPACKAGE *package)
                 primary_folder[2] = 0;
                 if (GetDiskFreeSpaceExW( primary_folder, &free, NULL, NULL ))
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     swprintf( buf, ARRAY_SIZE(buf), L"%I64u", free.QuadPart / 512 );
 #else
                     swprintf( buf, ARRAY_SIZE(buf), L"%lu", free.QuadPart / 512 );
@@ -2349,14 +2349,14 @@ static UINT ACTION_CostFinalize(MSIPACKAGE *package)
                     msi_set_property( package->db, L"PrimaryVolumeSpaceAvailable", buf, -1 );
                 }
                 required = get_volume_space_required( package );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 swprintf( buf, ARRAY_SIZE(buf), L"%I64u", required );
 #else
                 swprintf( buf, ARRAY_SIZE(buf), L"%lu", required );
 #endif
                 msi_set_property( package->db, L"PrimaryVolumeSpaceRequired", buf, -1 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 swprintf( buf, ARRAY_SIZE(buf), L"%I64u", (free.QuadPart / 512) - required );
 #else
                 swprintf( buf, ARRAY_SIZE(buf), L"%lu", (free.QuadPart / 512) - required );
@@ -2684,13 +2684,13 @@ static BYTE *build_multi_string_value( BYTE *old_value, DWORD old_size,
     const WCHAR *new_ptr = NULL, *old_ptr = NULL;
     enum join_op op = JOIN_OP_REPLACE;
     WCHAR **old = NULL, **new = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BYTE *ret = NULL;
 #else
     BYTE *ret;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (new_size / sizeof(WCHAR) > 2)
 #else
     if (new_size / sizeof(WCHAR) - 1 > 1)
@@ -2717,11 +2717,11 @@ static BYTE *build_multi_string_value( BYTE *old_value, DWORD old_size,
             new_ptr++;
         }
         new = split_multi_string_values( new_ptr, new_len, &new_count );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!new) goto done;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (old_size / sizeof(WCHAR) > 2)
 #else
     if (old_size / sizeof(WCHAR) - 1 > 1)
@@ -2730,12 +2730,12 @@ static BYTE *build_multi_string_value( BYTE *old_value, DWORD old_size,
         old_ptr = (const WCHAR *)old_value;
         old_len = old_size / sizeof(WCHAR) - 1;
         old = split_multi_string_values( old_ptr, old_len, &old_count );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!old) goto done;
 #endif
     }
     ret = (BYTE *)join_multi_string_values( op, old, old_count, new, new_count, size );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     if (old) for (i = 0; i < old_count; i++) free( old[i] );
     if (new) for (i = 0; i < new_count; i++) free( new[i] );
@@ -2816,7 +2816,7 @@ static UINT ITERATE_WriteRegistryValues(MSIRECORD *row, LPVOID param)
     }
     free( deformated );
     str = msi_record_get_string( row, 5, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     package->short_file_names = 1;
     len = deformat_string( package, str, &deformated );
     package->short_file_names = 0;
@@ -3149,7 +3149,7 @@ static UINT ACTION_InstallValidate(MSIPACKAGE *package)
     UINT rc;
 
     TRACE("InstallValidate\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     package->install_validated = TRUE;
 #endif
 
@@ -3545,7 +3545,7 @@ static BOOL CALLBACK Typelib_EnumResNameProc( HMODULE hModule, LPCWSTR lpszType,
     else
     {
         tl_struct->path = malloc(sz * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         swprintf(tl_struct->path, sz, L"%s\\%d", tl_struct->source, (WORD)(INT_PTR)lpszName);
 #else
         swprintf(tl_struct->path, sz, L"%s\\%d", tl_struct->source, lpszName);
@@ -4469,7 +4469,7 @@ static UINT ITERATE_WriteIniValues(MSIRECORD *row, LPVOID param)
 
     deformat_string(package,section,&deformated_section);
     deformat_string(package,key,&deformated_key);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     package->short_file_names = 1;
     deformat_string(package,value,&deformated_value);
     package->short_file_names = 0;
@@ -4566,7 +4566,7 @@ static UINT ITERATE_RemoveIniValuesOnUninstall( MSIRECORD *row, LPVOID param )
 
     deformat_string( package, section, &deformated_section );
     deformat_string( package, key, &deformated_key );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     package->short_file_names = 1;
     deformat_string( package, value, &deformated_value );
     package->short_file_names = 0;
@@ -4634,7 +4634,7 @@ static UINT ITERATE_RemoveIniValuesOnInstall( MSIRECORD *row, LPVOID param )
 
     deformat_string( package, section, &deformated_section );
     deformat_string( package, key, &deformated_key );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     package->short_file_names = 1;
     deformat_string( package, value, &deformated_value );
     package->short_file_names = 0;
@@ -5454,7 +5454,7 @@ end:
     return rc;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_hidden_property(MSIPACKAGE *package, const WCHAR *name)
 {
     WCHAR *list, *p, *q;
@@ -5485,7 +5485,7 @@ static UINT iterate_properties(MSIRECORD *record, void *param)
 
     uirow = MSI_CloneRecord(record);
     if (!uirow) return ERROR_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_hidden_property(param, MSI_RecordGetString(record, 1)))
         MSI_RecordSetStringW(uirow, 2, L"**********");
 #endif
@@ -7435,7 +7435,7 @@ static UINT admin_update_package_info( MSIPACKAGE *package )
     UINT r, type;
     int flags;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((r = msi_get_suminfo( package->db->storage, 1, &info ))) return r;
 #else
     if ((r = msi_get_suminfo( package->db->storage, 0, &info ))) return r;
@@ -7931,7 +7931,7 @@ static UINT ACTION_HandleStandardAction(MSIPACKAGE *package, LPCWSTR action)
                 ui_actioninfo( package, action, TRUE, 0 );
                 rc = StandardActions[i].handler( package );
                 ui_actioninfo( package, action, FALSE, !rc );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (rc == ERROR_FUNCTION_NOT_CALLED)
                     rc = ERROR_SUCCESS;
 #endif
@@ -8111,7 +8111,7 @@ UINT MSI_InstallPackage( MSIPACKAGE *package, LPCWSTR szPackagePath,
     }
 
     rc = ACTION_PerformAction(package, action);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (rc == ERROR_FUNCTION_NOT_CALLED)
         rc = ERROR_INSTALL_FAILURE;
 #endif
@@ -8143,7 +8143,7 @@ UINT MSI_InstallPackage( MSIPACKAGE *package, LPCWSTR szPackagePath,
     free( reinstall );
     free( action );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         MSIQUERY *view;
         MSIRECORD *info;

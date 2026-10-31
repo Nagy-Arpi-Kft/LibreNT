@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS msvcrt.dll
+ * PROJECT:     LibreNT msvcrt.dll
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     x86 asm implementation of _inp, _inpw, _inpd
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

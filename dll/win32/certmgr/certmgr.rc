@@ -5,13 +5,13 @@
 
 IDI_CERTMGR ICON "../../../base/applications/mscutils/certmgr/resources/certmgr.ico"
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Certificates Snap-in"
-#define REACTOS_STR_INTERNAL_NAME     "certmgr"
-#define REACTOS_STR_ORIGINAL_FILENAME "certmgr.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Certificates Snap-in"
+#define LIBRENT_STR_INTERNAL_NAME     "certmgr"
+#define LIBRENT_STR_ORIGINAL_FILENAME "certmgr.dll"
+#include <librent/version.rc>
 
-#include <reactos/manifest_dll.rc>
+#include <librent/manifest_dll.rc>
 
 IDR_CERTMGR REGISTRY "res/certmgr.rgs"
 IDR_CERTMGRABOUT REGISTRY "res/certmgrabout.rgs"

@@ -1,6 +1,6 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
-add_rpc_files(client ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/winspool.idl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
+add_rpc_files(client ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/winspool.idl)
 add_definitions(-D_WINSPOOL_WOW64_MARSHALLING)
 spec2def(winspool.drv winspool.spec ADD_IMPORTLIB)
 
@@ -35,4 +35,4 @@ set_module_type(winspool win32dll UNICODE)
 target_link_libraries(winspool wine ${PSEH_LIB})
 add_importlibs(winspool advapi32 gdi32 user32 rpcrt4 msvcrt kernel32 ntdll)
 add_pch(winspool precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET winspool DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winspool DESTINATION librent/system32 FOR all)

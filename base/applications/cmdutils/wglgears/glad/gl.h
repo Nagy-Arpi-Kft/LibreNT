@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Raspberry Pi 5 OpenGL diagnostics
+ * PROJECT:     LibreNT Raspberry Pi 5 OpenGL diagnostics
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GLAD compatibility declarations for the system OpenGL 1.1 ABI

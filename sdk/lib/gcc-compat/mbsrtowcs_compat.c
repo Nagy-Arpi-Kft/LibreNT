@@ -5,10 +5,10 @@
  * COPYRIGHT:   Copyright 2026 LiberNT Team
  *
  * GCC 15's libwinpthread references mbsrtowcs, which is only exported by
- * ReactOS msvcrt for DLL_EXPORT_VERSION >= 0x600. Provide a shim that
+ * LibreNT msvcrt for DLL_EXPORT_VERSION >= 0x600. Provide a shim that
  * delegates to mbstowcs (always available).
  *
- * ReactOS CRT uses mbstate_t = int and only supports single-byte locales,
+ * LibreNT CRT uses mbstate_t = int and only supports single-byte locales,
  * so the state parameter is effectively unused.
  */
 

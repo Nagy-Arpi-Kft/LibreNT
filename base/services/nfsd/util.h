@@ -187,14 +187,14 @@ int nfs_to_windows_error(int status, int default_error);
 
 int map_symlink_errors(int status);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint32_t align8(uint32_t offset) {
 #else
 FORCEINLINE uint32_t align8(uint32_t offset) {
 #endif
     return 8 + ((offset - 1) & ~7);
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint32_t align4(uint32_t offset) {
 #else
 FORCEINLINE uint32_t align4(uint32_t offset) {
@@ -203,14 +203,14 @@ FORCEINLINE uint32_t align4(uint32_t offset) {
 }
 
 /* path parsing */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline int is_delimiter(char c) {
 #else
 FORCEINLINE int is_delimiter(char c) {
 #endif
     return c == '\\' || c == '/' || c == '\0';
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline const char* next_delimiter(const char *pos, const char *end) {
 #else
 FORCEINLINE const char* next_delimiter(const char *pos, const char *end) {
@@ -219,7 +219,7 @@ FORCEINLINE const char* next_delimiter(const char *pos, const char *end) {
         pos++;
     return pos;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline const char* prev_delimiter(const char *pos, const char *start) {
 #else
 FORCEINLINE const char* prev_delimiter(const char *pos, const char *start) {
@@ -228,7 +228,7 @@ FORCEINLINE const char* prev_delimiter(const char *pos, const char *start) {
         pos--;
     return pos;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline const char* next_non_delimiter(const char *pos, const char *end) {
 #else
 FORCEINLINE const char* next_non_delimiter(const char *pos, const char *end) {
@@ -237,7 +237,7 @@ FORCEINLINE const char* next_non_delimiter(const char *pos, const char *end) {
         pos++;
     return pos;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline const char* prev_non_delimiter(const char *pos, const char *start) {
 #else
 FORCEINLINE const char* prev_non_delimiter(const char *pos, const char *start) {
@@ -277,7 +277,7 @@ void path_fh_copy(
     OUT nfs41_path_fh *dst,
     IN const nfs41_path_fh *src);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline int valid_handle(HANDLE handle) {
 #else
 FORCEINLINE int valid_handle(HANDLE handle) {

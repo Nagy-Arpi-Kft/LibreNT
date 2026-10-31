@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/thrdschd.c
  * PURPOSE:         Kernel Thread Scheduler (Affinity, Priority, Scheduling)
@@ -10,9 +10,9 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 #endif
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 #define NDEBUG
 #include <debug.h>
 

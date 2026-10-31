@@ -1,10 +1,10 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Data-export definitions for Windows export-table parity.
  *
  * Windows 11 ntoskrnl.exe exports a number of data symbols (object-type
- * pointers, debugger flags, build identifiers) that ReactOS does not implement
+ * pointers, debugger flags, build identifiers) that LibreNT does not implement
  * yet. They are defined here as zero-initialised placeholders so the matching
  * "@ extern <name>" lines in ntoskrnl.spec resolve; a consumer sees
  * a NULL object type (and fails cleanly) rather than an unresolved import.
@@ -17,9 +17,9 @@
  * Object-type pointers and pointer-sized data exports.
  *
  * CmKeyObjectType, ExTimerObjectType and IoCompletionObjectType are the public
- * export names for object types ReactOS already creates internally; they are
+ * export names for object types LibreNT already creates internally; they are
  * defined and wired to the live object in their owning subsystems (config/,
- * ex/, io/). The remaining symbols below back features ReactOS does not
+ * ex/, io/). The remaining symbols below back features LibreNT does not
  * implement yet and stay as zero placeholders.
  */
 void *ExActivationObjectType = 0;

@@ -4,7 +4,7 @@
  * FILE:        drivers/network/netio/nmr_stubs.c
  * PURPOSE:     Network Module Registrar (NMR) stub entry points.
  *              On real Windows these live in netio.sys, so this file
- *              hosts the ReactOS equivalents at the same layer.
+ *              hosts the LibreNT equivalents at the same layer.
  *
  *              All functions are functional stubs — they record the
  *              client/provider characteristics in a static table but do

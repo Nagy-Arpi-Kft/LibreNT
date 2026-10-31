@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Serial mouse driver
+ * PROJECT:     LibreNT Serial mouse driver
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/input/sermouse/createclose.c
  * PURPOSE:     IRP_MJ_CREATE and IRP_MJ_CLOSE operations

@@ -125,7 +125,7 @@ tcp_input(struct pbuf *p, struct netif *inp)
 #endif /* SO_REUSE */
   u8_t hdrlen_bytes;
   err_t err;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   u32_t urg_base = 0;
 #endif
 
@@ -438,7 +438,7 @@ tcp_input(struct pbuf *p, struct netif *inp)
       }
     }
     tcp_input_pcb = pcb;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     urg_base = pcb->rcv_nxt;
     if ((flags & TCP_URG) && (tcphdr->urgp != 0)) {
       u32_t urg_seq = seqno + lwip_ntohs(tcphdr->urgp) - 1;
@@ -511,7 +511,7 @@ tcp_input(struct pbuf *p, struct netif *inp)
             goto aborted;
           }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           if (pcb->urg_valid && TCP_SEQ_GEQ(pcb->urg_seq, urg_base) &&
               TCP_SEQ_LT(pcb->urg_seq, urg_base + recv_data->tot_len)) {
             pcb->urg_offset = pcb->urg_seq - urg_base;
@@ -530,7 +530,7 @@ tcp_input(struct pbuf *p, struct netif *inp)
 #endif /* TCP_QUEUE_OOSEQ && LWIP_WND_SCALE */
             goto aborted;
           }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           pcb->urg_in_data = 0;
 #endif
 
@@ -870,7 +870,7 @@ tcp_process(struct tcp_pcb *pcb)
   }
 
   if ((pcb->flags & TF_RXCLOSED) == 0) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((u32_t)(tcp_ticks - pcb->tmr) > TCP_QUICKACK_IDLE_TICKS)
       pcb->quickack = TCP_QUICKACK_SEGMENTS;
 #endif
@@ -1658,7 +1658,7 @@ tcp_receive(struct tcp_pcb *pcb)
 
 
         /* Acknowledge the segment(s). */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pcb->quickack) {
           pcb->quickack--;
           tcp_ack_now(pcb);

@@ -1445,7 +1445,7 @@ cpp_quote("#define IShellLink WINELIB_NAME_AW(IShellLink)")
 [
     object,
     uuid(000214e8-0000-0000-c000-000000000046),
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
     local,
 #endif
@@ -1459,14 +1459,14 @@ interface IShellExtInit : IUnknown
 {
     typedef IShellExtInit *LPSHELLEXTINIT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [local]
 #endif
     HRESULT Initialize(
         [in] PCIDLIST_ABSOLUTE pidlFolder,
         [in] IDataObject *pdtobj,
         [in] HKEY hkeyProgID);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
 
     [call_as(Initialize)]
@@ -1889,7 +1889,7 @@ interface IDropTargetHelper : IUnknown
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct CMINVOKECOMMANDINFOEX_REMOTE
 {
     DWORD cbSize;
@@ -1917,7 +1917,7 @@ typedef struct CMINVOKECOMMANDINFOEX_REMOTE
 [
     object,
     uuid(000214e4-0000-0000-c000-000000000046),
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
     local,
 #endif
@@ -1977,11 +1977,11 @@ cpp_quote("#define CMDSTR_VIEWLIST     WINELIB_NAME_AW(CMDSTR_VIEWLIST)")
 cpp_quote("#define CMDSTR_VIEWDETAILS  WINELIB_NAME_AW(CMDSTR_VIEWDETAILS)")
 
 cpp_quote("#define CMIC_MASK_HOTKEY         SEE_MASK_HOTKEY")
-cpp_quote("#define CMIC_MASK_ICON           SEE_MASK_ICON") // (NTDDI_VERSION < NTDDI_VISTA) || defined(__REACTOS__)
+cpp_quote("#define CMIC_MASK_ICON           SEE_MASK_ICON") // (NTDDI_VERSION < NTDDI_VISTA) || defined(__LIBRENT__)
 cpp_quote("#define CMIC_MASK_FLAG_NO_UI     SEE_MASK_FLAG_NO_UI")
 cpp_quote("#define CMIC_MASK_UNICODE        SEE_MASK_UNICODE")
 cpp_quote("#define CMIC_MASK_NO_CONSOLE     SEE_MASK_NO_CONSOLE")
-cpp_quote("#if (NTDDI_VERSION < NTDDI_VISTA) || defined(__REACTOS__)")
+cpp_quote("#if (NTDDI_VERSION < NTDDI_VISTA) || defined(__LIBRENT__)")
 cpp_quote("#define CMIC_MASK_HASLINKNAME    SEE_MASK_HASLINKNAME")  // NOTE: Depends on undocumented define
 cpp_quote("#define CMIC_MASK_HASTITLE       SEE_MASK_HASTITLE")     // NOTE: Depends on undocumented define
 cpp_quote("#endif")
@@ -2030,7 +2030,7 @@ cpp_quote("#define CMIC_MASK_NOZONECHECKS   SEE_MASK_NOZONECHECKS")
         POINT ptInvoke;
     } CMINVOKECOMMANDINFOEX, *LPCMINVOKECOMMANDINFOEX;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [local]
 #endif
     HRESULT QueryContextMenu(
@@ -2040,12 +2040,12 @@ cpp_quote("#define CMIC_MASK_NOZONECHECKS   SEE_MASK_NOZONECHECKS")
         [in] UINT idCmdLast,
         [in] UINT uFlags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [local]
 #endif
     HRESULT InvokeCommand( [in] LPCMINVOKECOMMANDINFO lpici );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [local]
 #endif
     HRESULT GetCommandString(
@@ -2054,7 +2054,7 @@ cpp_quote("#define CMIC_MASK_NOZONECHECKS   SEE_MASK_NOZONECHECKS")
         [out] UINT *pwReserved,
         [out, size_is(cchMax)] LPSTR pszName,
         [in] UINT cchMax);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
 
     [call_as(QueryContextMenu)]
@@ -2089,7 +2089,7 @@ cpp_quote("#define CMIC_MASK_NOZONECHECKS   SEE_MASK_NOZONECHECKS")
 [
     object,
     uuid(000214f4-0000-0000-c000-000000000046),
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
     local,
 #endif
@@ -2103,14 +2103,14 @@ interface IContextMenu2 : IContextMenu
 {
     typedef IContextMenu2 *LPCONTEXTMENU2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [local]
 #endif
     HRESULT HandleMenuMsg(
         [in] UINT uMsg,
         [in] WPARAM wParam,
         [in] LPARAM lParam);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
 
     [call_as(HandleMenuMsg)]
@@ -2129,7 +2129,7 @@ interface IContextMenu2 : IContextMenu
 [
     object,
     uuid(bcfce0a0-ec17-11d0-8d10-00a0c90f2719),
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
     local,
 #endif
@@ -2143,7 +2143,7 @@ interface IContextMenu3 : IContextMenu2
 {
     typedef IContextMenu3 *LPCONTEXTMENU3;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [local]
 #endif
     HRESULT HandleMenuMsg2(
@@ -2151,7 +2151,7 @@ interface IContextMenu3 : IContextMenu2
         [in] WPARAM wParam,
         [in] LPARAM lParam,
         [out] LRESULT *plResult);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef BUILD_ICONTEXTMENU_ISHELLEXTINIT_REMOTE_INTERFACE
 
     [call_as(HandleMenuMsg2)]
@@ -2640,7 +2640,7 @@ interface IDefaultExtractIconInit : IUnknown
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*****************************************************************************
  * IExplorerCommand interface (Vista+)
  */
@@ -2877,7 +2877,7 @@ interface IOpenControlPanel : IUnknown
                     [out] CPVIEW *pView);
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*****************************************************************************
  * IDeskBand interface
@@ -3227,7 +3227,7 @@ cpp_quote("#define SMC_SETSFOBJECT             0x0000002D")
 cpp_quote("#define SMC_SHCHANGENOTIFY          0x0000002E")
 cpp_quote("#define SMC_CHEVRONGETTIP           0x0000002F")
 cpp_quote("#define SMC_SFDDRESTRICTED          0x00000030")
-cpp_quote("#if (_WIN32_IE >= _WIN32_IE_IE70) || defined(__REACTOS__)")
+cpp_quote("#if (_WIN32_IE >= _WIN32_IE_IE70) || defined(__LIBRENT__)")
 cpp_quote("#define SMC_SFEXEC_MIDDLE           0x00000031")
 cpp_quote("#define SMC_GETAUTOEXPANDSTATE      0x00000041")
 cpp_quote("#define SMC_AUTOEXPANDCHANGE        0x00000042")
@@ -5093,7 +5093,7 @@ library ShellObjects
         interface IFileOperation;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     [
         uuid(0010890e-8789-413c-adbc-48f5b511b3af)
     ]
@@ -5101,7 +5101,7 @@ library ShellObjects
     {
         interface IUserNotification;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 }
 
@@ -5191,7 +5191,7 @@ interface IOperationsProgressDialog : IUnknown
          [out] PDOPSTATUS *popstatus);
 };
 
-cpp_quote("#ifdef __REACTOS__")
+cpp_quote("#ifdef __LIBRENT__")
 cpp_quote("#define FOFX_NOSKIPJUNCTIONS         0x00010000")
 cpp_quote("#define FOFX_PREFERHARDLINK          0x00020000")
 cpp_quote("#define FOFX_SHOWELEVATIONPROMPT     0x00040000")
@@ -5343,7 +5343,7 @@ interface IFolderBandPriv : IUnknown
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*****************************************************************************
  * IQueryContinue interface
  */
@@ -5500,7 +5500,7 @@ interface IUserAssist : IUnknown
         BOOL bEnable);
 };
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 interface INamespaceWalkCB;
 interface IPreviewHandlerFrame;

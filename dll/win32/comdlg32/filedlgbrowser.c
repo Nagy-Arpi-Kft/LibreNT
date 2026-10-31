@@ -38,7 +38,7 @@
 #include "shlguid.h"
 #include "servprov.h"
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C HRESULT DoUpdateAutoCompleteWithCWD(const FileOpenDlgInfos *info, LPCITEMIDLIST pidl);
 #endif
 
@@ -143,7 +143,7 @@ static void COMDLG32_UpdateCurrentDir(const FileOpenDlgInfos *fodInfos)
         if (SUCCEEDED(res))
             SetCurrentDirectoryW(wszCurrentDir);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DoUpdateAutoCompleteWithCWD(fodInfos, fodInfos->ShellInfos.pidlAbsCurrent);
 #endif
     
@@ -741,13 +741,13 @@ static HRESULT WINAPI IShellBrowserImpl_ICommDlgBrowser_OnDefaultCommand(ICommDl
     {
         HRESULT hRes;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ULONG  ulAttr = SFGAO_FOLDER | SFGAO_HASSUBFOLDER | SFGAO_FILESYSANCESTOR;
 #else
         ULONG  ulAttr = SFGAO_FOLDER | SFGAO_HASSUBFOLDER;
 #endif
         IShellFolder_GetAttributesOf(fodInfos->Shell.FOIShellFolder, 1, (LPCITEMIDLIST *)&pidl, &ulAttr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if ((ulAttr & (SFGAO_FOLDER | SFGAO_HASSUBFOLDER)) && (ulAttr & SFGAO_FILESYSANCESTOR))
 #else
 	if (ulAttr & (SFGAO_FOLDER | SFGAO_HASSUBFOLDER) )

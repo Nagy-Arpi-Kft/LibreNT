@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell
+ * PROJECT:     LibreNT Shell
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     Implement shell property bags
  * COPYRIGHT:   Copyright 2023 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -28,7 +28,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 class CBasePropertyBag
     : public IPropertyBag
-#if (_WIN32_WINNT < _WIN32_WINNT_VISTA) || defined(__REACTOS__)
+#if (_WIN32_WINNT < _WIN32_WINNT_VISTA) || defined(__LIBRENT__)
     , public IPropertyBag2
 #endif
 {
@@ -85,7 +85,7 @@ public:
         return m_cRefs;
     }
 
-#if (_WIN32_WINNT < _WIN32_WINNT_VISTA) || defined(__REACTOS__)
+#if (_WIN32_WINNT < _WIN32_WINNT_VISTA) || defined(__LIBRENT__)
     // IPropertyBag2 interface (stubs).
     // Keep the IPropertyBag Read/Write overloads in scope (the IPropertyBag2 ones below hide them).
     using IPropertyBag::Read;

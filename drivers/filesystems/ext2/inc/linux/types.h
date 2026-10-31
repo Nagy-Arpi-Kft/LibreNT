@@ -27,11 +27,11 @@ typedef	signed   __int64	__s64;
 typedef	unsigned __int64	__u64;
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef __s8         s8;
 typedef __u8         u8;
 #endif
-#if defined(_MSC_VER) || defined(__REACTOS__)
+#if defined(_MSC_VER) || defined(__LIBRENT__)
 typedef __s16       s16;
 typedef __u16       u16;
 typedef __s32       s32;
@@ -49,7 +49,7 @@ typedef __u64       u64;
 //
 // gcc special keyworks
 //
-#if defined(_MSC_VER) || !defined(__REACTOS__)
+#if defined(_MSC_VER) || !defined(__LIBRENT__)
 /* FIXME: Inspect why this is needed */
 #define __attribute__(x)
 #endif

@@ -1,5 +1,5 @@
 /*
- * ReactOS Access Control List Editor
+ * LibreNT Access Control List Editor
  * Copyright (C) 2004-2005 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or

@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 set "_EXIT_CODE=0"
 
-REM menuconfig.cmd - interactive ReactOS build configuration (OpenWrt/kconfig
+REM menuconfig.cmd - interactive LibreNT build configuration (OpenWrt/kconfig
 REM style). Compiles the rosconfig host tool on first use, opens the console
 REM UI to enable/disable build options, and stores selections in one output
 REM tree. The generated overrides.cmake is picked up by \PreLoad.cmake.

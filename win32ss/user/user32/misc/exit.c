@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS user32.dll
+ * PROJECT:         LibreNT user32.dll
  * FILE:            win32ss/user/user32/misc/exit.c
  * PURPOSE:         Shutdown related functions
  * PROGRAMMER:      Eric Kohl
@@ -59,7 +59,7 @@ typedef struct
 {
     UINT  uFlags;
     DWORD dwReserved;
-} EXIT_REACTOS_DATA, *PEXIT_REACTOS_DATA;
+} EXIT_LIBRENT_DATA, *PEXIT_LIBRENT_DATA;
 
 static BOOL
 ExitWindowsWorker(UINT uFlags,
@@ -71,7 +71,7 @@ WINAPI
 ExitWindowsThread(LPVOID Param)
 {
     DWORD dwExitCode;
-    PEXIT_REACTOS_DATA ExitData = (PEXIT_REACTOS_DATA)Param;
+    PEXIT_LIBRENT_DATA ExitData = (PEXIT_LIBRENT_DATA)Param;
 
     /* Do the exit asynchronously */
     if (ExitWindowsWorker(ExitData->uFlags, ExitData->dwReserved, TRUE))
@@ -88,13 +88,13 @@ ExitWindowsWorker(UINT uFlags,
                   DWORD dwReserved,
                   BOOL bCalledFromThread)
 {
-    EXIT_REACTOS_DATA ExitData;
+    EXIT_LIBRENT_DATA ExitData;
     HANDLE hExitThread;
     DWORD ExitCode;
     MSG msg;
 
     USER_API_MESSAGE ApiMessage;
-    PUSER_EXIT_REACTOS ExitReactOSRequest = &ApiMessage.Data.ExitReactOSRequest;
+    PUSER_EXIT_LIBRENT ExitLibreNTRequest = &ApiMessage.Data.ExitLibreNTRequest;
 
     /*
      * 1- FIXME: Call NtUserCallOneParam(uFlags, ONEPARAM_ROUTINE_PREPAREFORLOGOFF);
@@ -106,24 +106,24 @@ ExitWindowsWorker(UINT uFlags,
      *    We can shutdown synchronously or asynchronously.
      */
 
-    // ExitReactOSRequest->LastError = ERROR_SUCCESS;
-    ExitReactOSRequest->Flags = uFlags;
+    // ExitLibreNTRequest->LastError = ERROR_SUCCESS;
+    ExitLibreNTRequest->Flags = uFlags;
 
     CsrClientCallServer((PCSR_API_MESSAGE)&ApiMessage,
                         NULL,
                         CSR_CREATE_API_NUMBER(USERSRV_SERVERDLL_INDEX, UserpExitWindowsEx),
-                        sizeof(*ExitReactOSRequest));
+                        sizeof(*ExitLibreNTRequest));
 
     /* Set the last error accordingly */
     if (NT_SUCCESS(ApiMessage.Status) || ApiMessage.Status == STATUS_CANT_WAIT)
     {
-        if (ExitReactOSRequest->LastError != ERROR_SUCCESS)
-            UserSetLastError(ExitReactOSRequest->LastError);
+        if (ExitLibreNTRequest->LastError != ERROR_SUCCESS)
+            UserSetLastError(ExitLibreNTRequest->LastError);
     }
     else
     {
         UserSetLastNTError(ApiMessage.Status);
-        ExitReactOSRequest->Success = FALSE;
+        ExitLibreNTRequest->Success = FALSE;
     }
 
     /*
@@ -132,7 +132,7 @@ ExitWindowsWorker(UINT uFlags,
      * return the real state of the operation now.
      */
     if (NT_SUCCESS(ApiMessage.Status))
-        return ExitReactOSRequest->Success;
+        return ExitLibreNTRequest->Success;
 
     /*
      * In case something failed: we have a non-success status and:

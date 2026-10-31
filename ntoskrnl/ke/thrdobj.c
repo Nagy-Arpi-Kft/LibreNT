@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/thrdobj.c
  * PURPOSE:         Implements routines to manage the Kernel Thread Object
@@ -10,7 +10,7 @@
 
 #include <ntoskrnl.h>
 #ifdef _M_ARM64
-#include <reactos/chpe.h>
+#include <librent/chpe.h>
 #endif
 #define NDEBUG
 #include <debug.h>
@@ -1281,7 +1281,7 @@ KeRevertToUserAffinityThread(VOID)
 
     /* Set the user affinity and processor and disable system affinity */
     /* Do not copy GROUP_AFFINITY's reserved bytes: KTHREAD overlays APC and
-     * scheduler state there. ReactOS currently uses only processor group 0. */
+     * scheduler state there. LibreNT currently uses only processor group 0. */
     KiThreadAffinityMask(CurrentThread) = KiThreadUserAffinityMask(CurrentThread);
     CurrentThread->IdealProcessor = CurrentThread->UserIdealProcessor;
     CurrentThread->SystemAffinityActive = FALSE;

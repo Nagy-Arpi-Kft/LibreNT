@@ -1,11 +1,11 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel-Mode Test Suite for Win11-parity Mm behavior (kmwin11new)
  *
  * Memory-manager parity checks. Each contract is observable from a kernel-mode
  * driver (MDL flags, alignment, round-trip identity), so the same binary can be
- * run against the Win11 ARM64 reference kernel (ground truth) and ReactOS.
+ * run against the Win11 ARM64 reference kernel (ground truth) and LibreNT.
  */
 
 #include <kmt_test.h>

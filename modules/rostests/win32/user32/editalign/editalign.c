@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Tests
+ * PROJECT:     LibreNT Tests
  * LICENSE:     LGPL-2.0+ (https://spdx.org/licenses/LGPL-2.0+)
  * PURPOSE:     Tests text alignment of EDIT control
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ (katayama.hirofumi.mz@gmail.com)

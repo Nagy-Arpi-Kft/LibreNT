@@ -1,6 +1,6 @@
 
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT} -D_WIN32_WINNT=${REACTOS_TARGET_NT})
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT} -D_WIN32_WINNT=${LIBRENT_TARGET_NT})
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 list(APPEND SOURCE
     cred.c

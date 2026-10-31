@@ -202,7 +202,7 @@ static void LIBXML2_LOG_CALLBACK validate_warning(void* ctx, char const* msg, ..
 
 static void validate_serror(void* ctx, const xmlError* err)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BSTR *reason = ctx;
 
     if (reason && !*reason)
@@ -222,7 +222,7 @@ static const struct enumvariant_funcs schemacache_enumvariant = {
     NULL
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline HRESULT Schema_validate_tree(xmlSchemaPtr schema, xmlNodePtr tree, BSTR *reason)
 #else
 static inline HRESULT Schema_validate_tree(xmlSchemaPtr schema, xmlNodePtr tree)
@@ -236,7 +236,7 @@ static inline HRESULT Schema_validate_tree(xmlSchemaPtr schema, xmlNodePtr tree)
      *       we probably need to validate the schema here. */
     svctx = xmlSchemaNewValidCtxt(schema);
     xmlSchemaSetValidErrors(svctx, validate_error, validate_warning, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     xmlSchemaSetValidStructuredErrors(svctx, validate_serror, reason);
 #else
     xmlSchemaSetValidStructuredErrors(svctx, validate_serror, NULL);
@@ -566,7 +566,7 @@ HRESULT dt_validate(XDR_DT dt, const WCHAR *contentW)
                 xmlSetNs(node, ns);
                 xmlDocSetRootElement(tmp_doc, node);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 hr = Schema_validate_tree(datatypes_schema, (xmlNodePtr)tmp_doc, NULL);
 #else
                 hr = Schema_validate_tree(datatypes_schema, (xmlNodePtr)tmp_doc);
@@ -1492,7 +1492,7 @@ static inline xmlNodePtr lookup_schema_element(xmlSchemaPtr schema, const xmlCha
     return (decl != NULL)? decl->node : NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT SchemaCache_validate_tree(IXMLDOMSchemaCollection2* iface, xmlNodePtr tree, BSTR *reason)
 #else
 HRESULT SchemaCache_validate_tree(IXMLDOMSchemaCollection2* iface, xmlNodePtr tree)
@@ -1513,7 +1513,7 @@ HRESULT SchemaCache_validate_tree(IXMLDOMSchemaCollection2* iface, xmlNodePtr tr
     /* TODO: if the ns is not in the cache, and it's a URL,
      *       do we try to load from that? */
     if (schema)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return Schema_validate_tree(schema, tree, reason);
 #else
         return Schema_validate_tree(schema, tree);

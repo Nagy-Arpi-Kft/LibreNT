@@ -44,4 +44,4 @@ python media/graphics/explorer-toolbar/render-icons.py --originals /path/to/orig
 ```
 
 The converter shares the alpha and ICO helpers in
-`../user-folders/render-icons.py`. Normal ReactOS builds use the stored ICOs.
+`../user-folders/render-icons.py`. Normal LibreNT builds use the stored ICOs.

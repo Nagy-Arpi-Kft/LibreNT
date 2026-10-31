@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS vcruntime library
+ * PROJECT:     LibreNT vcruntime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of _get_purecall_handler, _set_purecall_handler and _purecall function
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

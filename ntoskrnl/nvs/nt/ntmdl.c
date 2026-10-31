@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NT Virtual Memory Subsystem
+ * PROJECT:     LibreNT NT Virtual Memory Subsystem
  * FILE:        ntoskrnl/nvs/nt/ntmdl.c
  * PURPOSE:     NT memory descriptor list interfaces
  *

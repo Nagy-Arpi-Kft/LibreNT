@@ -1,7 +1,7 @@
 /*
  * usb200.h
  *
- * This file is part of the ReactOS PSDK package.
+ * This file is part of the LibreNT PSDK package.
  *
  * Contributors:
  *   Magnus Olsen.
@@ -128,7 +128,7 @@ typedef struct _USB_BOS_DESCRIPTOR {
 C_ASSERT(sizeof(USB_BOS_DESCRIPTOR) == 5);
 
 /*
- * USB 3.x Device Capability Type Codes (subset used by ReactOS).
+ * USB 3.x Device Capability Type Codes (subset used by LibreNT).
  */
 #define USB_DEVICE_CAPABILITY_WIRELESS_USB                  0x01
 #define USB_DEVICE_CAPABILITY_USB20_EXTENSION               0x02
@@ -416,7 +416,7 @@ C_ASSERT(sizeof(USB_HUB_CHANGE) == sizeof(USHORT));
  * Modeled after the USB 3.x specification (Hub Descriptor, Table 10-XX)
  * and kept layout-compatible with Windows 10's internal definition.
  * The exact bitmap semantics of the removable/power masks are not used
- * by the current ReactOS stack; they are treated as opaque bytes.
+ * by the current LibreNT stack; they are treated as opaque bytes.
  */
 typedef struct _USB_30_HUB_DESCRIPTOR {
   UCHAR  bLength;

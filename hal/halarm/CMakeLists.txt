@@ -7,7 +7,7 @@ add_definitions(
 
 include_directories(
     include
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/include)
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/include)
 
 list(APPEND SOURCES
     omap3/halinit_up.c
@@ -22,4 +22,4 @@ add_library(halup MODULE
     ${SOURCES})
 
 set_module_type(halup kerneldll ENTRYPOINT 0)
-add_cd_file(TARGET halup DESTINATION reactos/system32 NO_CAB FOR all)
+add_cd_file(TARGET halup DESTINATION librent/system32 NO_CAB FOR all)

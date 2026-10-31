@@ -19,7 +19,7 @@
 #include <stdarg.h>
 
 #define COBJMACROS
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define CONST_VTABLE
 #endif
 
@@ -60,7 +60,7 @@ static BOOL nologo;
 
 static HRESULT query_interface(REFIID,void**);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <commctrl.h>
 
 PCWSTR g_force_engine = NULL;
@@ -226,7 +226,7 @@ static HRESULT WINAPI ActiveScriptSite_GetItemInfo(IActiveScriptSite *iface,
 {
     WINE_TRACE("(%s %lx %p %p)\n", wine_dbgstr_w(pstrName), dwReturnMask, ppunkItem, ppti);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         BOOL handled = FALSE;
         HRESULT hr = get_globalitem_info(pstrName, dwReturnMask, ppunkItem, ppti, &handled);
@@ -406,8 +406,8 @@ void schedule_timeout(LONG seconds)
 
 static void print_banner(void)
 {
-#ifdef __REACTOS__
-    const WCHAR *header = L"LiberNT Script Host";
+#ifdef __LIBRENT__
+    const WCHAR *header = L"LibreNT Script Host";
 #else
     const char * (CDECL *wine_get_version)(void);
     WCHAR header[64];
@@ -726,7 +726,7 @@ static BOOL run_script(BSTR text, IActiveScript *script, IActiveScriptParse *par
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <msxml2.h>
 #include <shlwapi.h>
 
@@ -978,7 +978,7 @@ static BOOL set_host_properties(const WCHAR *prop)
     else if(wcsicmp(prop, L"s") == 0)
         WINE_FIXME("ignoring //s\n");
     else if(wcsnicmp(prop, L"e:", 2) == 0)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         g_force_engine = &prop[2];
 #else
         WINE_FIXME("ignoring //e:\n");
@@ -1072,7 +1072,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPWSTR cmdline, int cm
     if(!res || res > ARRAY_SIZE(scriptFullName))
         return 1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ext = filepart ? wcsrchr(filepart, '.') : NULL;
     if(ext && !lstrcmpiW(ext, L".wsf")) {
         return run_wsf(scriptFullName);
@@ -1103,7 +1103,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPWSTR cmdline, int cm
     }
 
     ext = wcsrchr(filepart, '.');
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(g_force_engine) {
         CLSIDFromProgID(g_force_engine, &clsid);
     }
@@ -1137,7 +1137,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPWSTR cmdline, int cm
     IActiveScript_Release(script);
     IActiveScriptParse_Release(parser);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free_globals();
 #endif
 

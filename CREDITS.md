@@ -1,8 +1,8 @@
 # Credits
 
-## LiberNT
+## LibreNT
 
-LiberNT is available thanks to the work of:
+LibreNT is available thanks to the work of:
 
 - Ahmed ARIF (arif.ing@outlook.com)
 - Alula (git@alula.me)
@@ -11,7 +11,7 @@ To be listed here, add your name to this section in your pull request.
 
 ## Artwork
 
-LiberNT uses artwork from:
+LibreNT uses artwork from:
 
 - Microsoft Corporation (Fluent UI System Icons) (https://github.com/microsoft/fluentui-system-icons)
 - Papirus Development Team (https://github.com/PapirusDevelopmentTeam)
@@ -20,9 +20,9 @@ LiberNT uses artwork from:
 - GNOME Project (Adwaita icon theme) (https://gitlab.gnome.org/GNOME/adwaita-icon-theme)
 - Oxygen Team, KDE (Oxygen icon theme) (https://invent.kde.org/frameworks/oxygen-icons)
 
-## ReactOS
+## LibreNT
 
-LiberNT is a modified version of ReactOS, and the code it inherits is the work of the ReactOS contributors. ReactOS is available thanks to the work of:
+LibreNT is a modified version of LibreNT, and the code it inherits is the work of the LibreNT contributors. LibreNT is available thanks to the work of:
 
 - Aleksandar Andrejevic (aandrejevic@reactos.org)
 - Aleksey Bragin (aleksey at reactos org)
@@ -115,7 +115,7 @@ LiberNT is a modified version of ReactOS, and the code it inherits is the work o
 - Victor Kirhenshtein (sauros@iname.com)
 - Vizzini (vizzini@plasmic.com)
 
-ReactOS graphic design from:
+LibreNT graphic design from:
 
 - Mindflyer (mf@mufunyo.net)
 - Tango Desktop Project (http://tango-project.org/)
@@ -123,6 +123,6 @@ ReactOS graphic design from:
 
 ## Copyright
 
-Copyright in LiberNT stays with the people who wrote it. The changes made in LiberNT since March 2026 are Copyright © 2026 the LiberNT contributors. Code inherited from ReactOS remains Copyright © its ReactOS authors, and third-party components keep the notices of their authors. Each file states its own copyright holders and licence in its header.
+Copyright in LibreNT stays with the people who wrote it. The changes made in LibreNT since March 2026 are Copyright © 2026 the LibreNT contributors. Code inherited from ReactOS remains Copyright © its ReactOS authors, and third-party components keep the notices of their authors. Each file states its own copyright holders and licence in its header.
 
 No copyright or licence notice inherited from ReactOS or from a third party is removed or changed. The licence texts are in [COPYING](COPYING) (GPL 3.0), [COPYING2](COPYING2) (GPL 2.0), [COPYING.LIB](COPYING.LIB) (LGPL 2.1), [COPYING3.LIB](COPYING3.LIB) (LGPL 3.0) and [COPYING.ARM](COPYING.ARM) (BSD). Third-party components are listed in [media/doc/3rd Party Files.txt](media/doc/3rd%20Party%20Files.txt) and [media/doc/WINESYNC.txt](media/doc/WINESYNC.txt).

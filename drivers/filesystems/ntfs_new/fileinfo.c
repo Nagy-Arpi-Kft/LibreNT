@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Source file for the ntfs_new file information
  * COPYRIGHT:   Copyright 2024 Carl Bialorucki <carl.bialorucki@reactos.org>
@@ -2387,7 +2387,7 @@ Done:
             IoStack->Parameters.QueryFile.Length -
             BufferLength;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         // HACK!!! Driver should not have to edit UserIosb.
         Irp->UserIosb->Status = Irp->IoStatus.Status;
         Irp->UserIosb->Information = Irp->IoStatus.Information;

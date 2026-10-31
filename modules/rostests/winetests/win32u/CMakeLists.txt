@@ -1,4 +1,4 @@
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine ${REACTOS_SOURCE_DIR}/dll/win32/wow64win)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine ${LIBRENT_SOURCE_DIR}/dll/win32/wow64win)
 
 generate_import_lib(win32u_winetest_imports win32u.dll win32u_imports.spec "--version=${DLL_EXPORT_VERSION}" "")
 generate_import_lib(user32_winetest_imports user32.dll user32_imports.spec "--version=${DLL_EXPORT_VERSION}" "")

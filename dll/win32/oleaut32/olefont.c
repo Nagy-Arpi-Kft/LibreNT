@@ -68,7 +68,7 @@ typedef struct _HFONTItem
   /* The font associated with this object. */
   HFONT gdiFont;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   LOGFONTW logFont;
 #endif
 } HFONTItem, *PHFONTItem;
@@ -133,7 +133,7 @@ static HFONTItem *find_hfontitem(HFONT hfont)
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HFONT share_hfontitem(const LOGFONTW *logFont)
 {
     HFONTItem *item;
@@ -156,7 +156,7 @@ static HFONT share_hfontitem(const LOGFONTW *logFont)
 #endif
 
 /* Add an item to the list with one internal reference */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT add_hfontitem(HFONT hfont, const LOGFONTW *logFont)
 #else
 static HRESULT add_hfontitem(HFONT hfont)
@@ -169,7 +169,7 @@ static HRESULT add_hfontitem(HFONT hfont)
     new_item->int_refs = 1;
     new_item->total_refs = 1;
     new_item->gdiFont = hfont;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     new_item->logFont = *logFont;
 #endif
     EnterCriticalSection(&OLEFontImpl_csHFONTLIST);
@@ -630,7 +630,7 @@ static void realize_font(OLEFontImpl *This)
     logFont.lfQuality         = DEFAULT_QUALITY;
     logFont.lfPitchAndFamily  = DEFAULT_PITCH;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->gdiFont = share_hfontitem(&logFont);
     This->dirty = FALSE;
 

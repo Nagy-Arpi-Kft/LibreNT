@@ -9,7 +9,7 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-/* Synced with Wine commit e8781e7c8d0. ReactOS-specific changes are marked below. */
+/* Synced with Wine commit e8781e7c8d0. LibreNT-specific changes are marked below. */
 
 #include <ntdll.h>
 #define __WINE_WINNT_EXCEPTION_REGISTRATION_RECORD
@@ -141,7 +141,7 @@ RtlWow64IsWowGuestMachineSupported(USHORT machine, BOOLEAN *supported)
     *supported = FALSE;
     for (i = 0; machines[i].Machine; ++i)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (machines[i].WoW64Container && machine == machines[i].Machine)
 #else
         if (!machines[i].Native && machine == machines[i].Machine)
@@ -213,7 +213,7 @@ RtlWow64GetCpuAreaInfo(WOW64_CPURESERVED *cpu, ULONG reserved, WOW64_CPU_AREA_IN
     return STATUS_INVALID_PARAMETER;
 }
 
-#if !defined(__REACTOS__) || !defined(_M_ARM64)
+#if !defined(__LIBRENT__) || !defined(_M_ARM64)
 
 NTSTATUS
 WINAPI
@@ -274,7 +274,7 @@ RtlWow64GetThreadSelectorEntry(HANDLE handle,
                                ULONG *retlen)
 {
     ULONG selector, code_selector, data_selector, teb_selector;
-#if !defined(__REACTOS__) || !defined(_M_ARM64)
+#if !defined(__LIBRENT__) || !defined(_M_ARM64)
     WOW64_CONTEXT context = { WOW64_CONTEXT_CONTROL | WOW64_CONTEXT_SEGMENTS };
 #endif
     LDT_ENTRY entry = { 0 };
@@ -282,7 +282,7 @@ RtlWow64GetThreadSelectorEntry(HANDLE handle,
     if (size != sizeof(*info))
         return STATUS_INFO_LENGTH_MISMATCH;
 
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
     /* ARM64 uses fixed software descriptors for the WoW64 address space. */
     selector = info->Selector & ~3u;
     code_selector = 0x18;
@@ -401,7 +401,7 @@ RtlOpenCrossProcessEmulatorWorkConnection(HANDLE process, HANDLE *section, void 
     if (!RtlWow64GetSharedInfoProcess(process, &is_wow64, &wow64info) && is_wow64 && (wow64info.CpuFlags & WOW64_CPUFLAGS_SOFTWARE))
         remote_handle = (HANDLE)(ULONG_PTR)wow64info.SectionHandle;
 
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
     if (!remote_handle)
     {
         PROCESS_BASIC_INFORMATION process_info;

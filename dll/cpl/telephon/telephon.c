@@ -1,8 +1,8 @@
 /*
  *
- * PROJECT:         ReactOS Software Control Panel
+ * PROJECT:         LibreNT Software Control Panel
  * FILE:            dll/cpl/telephon/telephon.c
- * PURPOSE:         ReactOS Software Control Panel
+ * PURPOSE:         LibreNT Software Control Panel
  * PROGRAMMER:      Dmitry Chapyshev (dmitry@reactos.org)
  * UPDATE HISTORY:
  *    10-19-2007  Created

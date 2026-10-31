@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Windows-Compatible Session Manager
+ * PROJECT:         LibreNT Windows-Compatible Session Manager
  * LICENSE:         BSD 2-Clause License
  * FILE:            base/system/smss/crashdmp.c
  * PURPOSE:         Main SMSS Code
@@ -9,7 +9,7 @@
 /* INCLUDES *******************************************************************/
 
 #include "smss.h"
-#include <reactos/dump.h>
+#include <librent/dump.h>
 
 #define NDEBUG
 #include <debug.h>

@@ -167,7 +167,7 @@ Return Value:
 
     IoUnregisterFileSystem( CdData.FileSystemDeviceObject );
     IoDeleteDevice( CdData.FileSystemDeviceObject );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IoUnregisterFileSystem( CdData.HddFileSystemDeviceObject );
     IoDeleteDevice( CdData.HddFileSystemDeviceObject );
 #endif

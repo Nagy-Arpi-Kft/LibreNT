@@ -18,7 +18,7 @@
  */
 
 #include "private.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "appmodel.h"
 #endif
 #include "wine/debug.h"
@@ -503,7 +503,7 @@ static HRESULT WINAPI package_statics_get_Current( IPackageStatics *iface, IPack
 {
     struct package *impl;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT32 length = 0;
     LONG error;
 #endif
@@ -511,7 +511,7 @@ static HRESULT WINAPI package_statics_get_Current( IPackageStatics *iface, IPack
     TRACE( "iface %p, value %p\n", iface, value );
 
     if (!value) return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = NULL;
     if ((error = GetCurrentPackageFullName( &length, NULL )) == APPMODEL_ERROR_NO_PACKAGE)
         return HRESULT_FROM_WIN32( error );

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS User32 - Vista+ APIs
+ * PROJECT:     LibreNT User32 - Vista+ APIs
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Pointer device, auto-rotation and window arrangement queries
  * COPYRIGHT:   Adapted from corresponding Wine user32 implementations

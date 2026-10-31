@@ -39,7 +39,7 @@ typedef struct _ARC_DISK_SIGNATURE_EX
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-// ReactOS Loading Functions
+// LibreNT Loading Functions
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -93,7 +93,7 @@ LoadAndBootWindows(
     IN PCHAR Envp[]);
 
 ARC_STATUS
-LoadReactOSSetup(
+LoadLibreNTSetup(
     IN ULONG Argc,
     IN PCHAR Argv[],
     IN PCHAR Envp[]);

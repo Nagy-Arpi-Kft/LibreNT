@@ -28,14 +28,14 @@
 #include "winbase.h"
 #include "winerror.h"
 #include "winternl.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <limits.h>
 #include "lmaccess.h"
 #include "lmerr.h"
 #include "winioctl.h"
 #endif
 #include "aclapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "objbase.h"
 #include "iads.h"
 #endif
@@ -380,7 +380,7 @@ static void test_ConvertStringSidToSid(void)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_sddl_domain_aliases(void)
 {
     static const struct
@@ -1973,7 +1973,7 @@ static void test_token_attr(void)
     TOKEN_DEFAULT_DACL *Dacl;
     BOOL ret;
     DWORD i, GLE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD logon_count = 0;
     BYTE logon_sid[SECURITY_MAX_SID_SIZE];
     TOKEN_GROUPS logon_groups;
@@ -2049,7 +2049,7 @@ static void test_token_attr(void)
         DWORD DomainLength = 255;
         CHAR Domain[255];
         SID_NAME_USE SidNameUse;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((Groups->Groups[i].Attributes & SE_GROUP_LOGON_ID) == SE_GROUP_LOGON_ID)
         {
             ++logon_count;
@@ -2099,11 +2099,11 @@ static void test_token_attr(void)
     free(Owner);
 
     /* logon */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(logon_count <= 1, "Found %lu logon SIDs\n", logon_count);
 #endif
     ret = GetTokenInformation(Token, TokenLogonSid, NULL, 0, &Size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!logon_count)
     {
         ok(!ret && GetLastError() == ERROR_NOT_FOUND,
@@ -2129,7 +2129,7 @@ static void test_token_attr(void)
             ok(Groups->GroupCount == 1, "got %ld\n", Groups->GroupCount);
             if(Groups->GroupCount == 1)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ok(EqualSid(Groups->Groups[0].Sid, logon_sid), "Logon SID differs from TokenGroups\n");
 #endif
                 ConvertSidToStringSidA(Groups->Groups[0].Sid, &SidString);
@@ -2293,7 +2293,7 @@ static const struct well_known_sid_value
 /* 29 */ {TRUE, "S-1-5-32-547"},  {TRUE, "S-1-5-32-548"}, {TRUE, "S-1-5-32-549"},
 /* 32 */ {TRUE, "S-1-5-32-550"},  {TRUE, "S-1-5-32-551"}, {TRUE, "S-1-5-32-552"},
 /* 35 */ {TRUE, "S-1-5-32-554"},  {TRUE, "S-1-5-32-555"}, {TRUE, "S-1-5-32-556"},
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* 38 */ {FALSE, "S-1-5-21-12-23-34-500"}, {FALSE, "S-1-5-21-12-23-34-501"},
 /* 40 */ {FALSE, "S-1-5-21-12-23-34-502"}, {FALSE, "S-1-5-21-12-23-34-512"},
 /* 42 */ {FALSE, "S-1-5-21-12-23-34-513"}, {FALSE, "S-1-5-21-12-23-34-514"},
@@ -2320,7 +2320,7 @@ static const struct well_known_sid_value
 /* 63 */ {TRUE, "S-1-5-17"},      {FALSE, "S-1-5-32-569"}, {TRUE, "S-1-16-0"},
 /* 66 */ {TRUE, "S-1-16-4096"},   {TRUE, "S-1-16-8192"},   {TRUE, "S-1-16-12288"},
 /* 69 */ {TRUE, "S-1-16-16384"},  {TRUE, "S-1-5-33"},      {TRUE, "S-1-3-4"},
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* 72 */ {FALSE, "S-1-5-21-12-23-34-571"},  {FALSE, "S-1-5-21-12-23-34-572"},
 /* 74 */ {TRUE, "S-1-5-22"}, {FALSE, "S-1-5-21-12-23-34-521"}, {TRUE, "S-1-5-32-573"},
 /* 77 */ {FALSE, "S-1-5-21-12-23-34-498"}, {TRUE, "S-1-5-32-574"}, {TRUE, "S-1-16-8448"},
@@ -2360,7 +2360,7 @@ static void test_CreateWellKnownSid(void)
     ok(ret, "CreateWellKnownSid failed %lu\n", GetLastError());
     free(sid);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = AllocateAndInitializeSid(&ident, 4, SECURITY_NT_NON_UNIQUE, 12, 23, 34, 0, 0, 0, 0, &domainsid);
     ok(ret, "AllocateAndInitializeSid failed with %lu\n", GetLastError());
     if (!ret) return;
@@ -2379,7 +2379,7 @@ static void test_CreateWellKnownSid(void)
         if (value->sid_string == NULL)
             continue;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* some SIDs aren't implemented by all Windows versions - detect it */
         cb = sizeof(sid_buffer);
         if (!CreateWellKnownSid(i, NULL, sid_buffer, &cb))
@@ -2390,7 +2390,7 @@ static void test_CreateWellKnownSid(void)
 
 #endif
         cb = sizeof(sid_buffer);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = CreateWellKnownSid(i, value->without_domain ? NULL : domainsid, sid_buffer, &cb);
         ok(ret, "Couldn't create well known sid %u, error %lu\n", i, GetLastError());
         if (!ret) continue;
@@ -2399,7 +2399,7 @@ static void test_CreateWellKnownSid(void)
 #endif
         expect_eq(GetSidLengthRequired(*GetSidSubAuthorityCount(sid_buffer)), cb, DWORD, "%ld");
         ok(IsValidSid(sid_buffer), "The sid is not valid\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(IsWellKnownSid(sid_buffer, i), "SID type %u was not recognized\n", i);
         if (*GetSidSubAuthorityCount(sid_buffer) == 5 &&
             *GetSidSubAuthority(sid_buffer, 0) == SECURITY_NT_NON_UNIQUE)
@@ -2437,7 +2437,7 @@ static void test_CreateWellKnownSid(void)
         {
             char buf2[SECURITY_MAX_SID_SIZE];
             cb = sizeof(buf2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ret = CreateWellKnownSid(i, domainsid, buf2, &cb);
             ok(ret, "Couldn't create well known sid %u with optional domain, error %lu\n", i, GetLastError());
             if (ret)
@@ -2455,7 +2455,7 @@ static void test_CreateWellKnownSid(void)
     }
 
     FreeSid(domainsid);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = AllocateAndInitializeSid(&ident, 6, SECURITY_NT_NON_UNIQUE, 12, 23, 34, 45, 56, 0, 0, &domainsid);
     ok(ret, "Extended domain SID allocation failed with %lu\n", GetLastError());
     if (ret)
@@ -2908,7 +2908,7 @@ static void test_LookupAccountName(void)
     ok(!lstrcmpiA(domain, sid_dom), "Expected %s, got %s\n", sid_dom, domain);
     ok(domain_size == domain_save - 1, "Expected %ld, got %ld\n", domain_save - 1, domain_size);
     ok(strlen(domain) == domain_size, "Expected %d, got %ld\n", lstrlenA(domain), domain_size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsWellKnownSid(psid, WinLocalSystemSid))
         ok(sid_use == SidTypeWellKnownGroup, "Expected SidTypeWellKnownGroup, got %d\n", sid_use);
     else
@@ -3268,7 +3268,7 @@ static void test_process_security(void)
     dom_size = sizeof(domain);
     ret = LookupAccountSidA( NULL, UsersSid, account, &acc_size, domain, &dom_size, &use );
     ok(ret, "LookupAccountSid failed with %ld\n", ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsWellKnownSid(UsersSid, WinLocalSystemSid))
         ok(use == SidTypeUser, "expect SidTypeUser, got %d\n", use);
     else
@@ -3279,7 +3279,7 @@ static void test_process_security(void)
     if (PRIMARYLANGID(GetSystemDefaultLangID()) != LANG_ENGLISH)
         skip("Non-English locale (test with hardcoded 'None')\n");
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!strcmp(account, IsWellKnownSid(UsersSid, WinLocalSystemSid) ? "SYSTEM" : "None"),
            "unexpected primary group account %s\n", account);
 #else
@@ -3417,14 +3417,14 @@ static void test_process_security(void)
 
 static void test_process_security_child(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOKEN_PRIVILEGES privileges, previous;
     HANDLE handle, handle1, token;
 #else
     HANDLE handle, handle1;
 #endif
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD err, size;
 
     ret = OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY | TOKEN_ADJUST_PRIVILEGES, &token);
@@ -3477,12 +3477,12 @@ static void test_process_security_child(void)
     /* These two should fail - they are denied by ACL */
     handle = OpenProcess( PROCESS_VM_READ, FALSE, GetCurrentProcessId() );
     ok(handle == NULL, "OpenProcess(PROCESS_VM_READ) should have failed\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (handle) CloseHandle(handle);
 #endif
     handle = OpenProcess( PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId() );
     ok(handle == NULL, "OpenProcess(PROCESS_ALL_ACCESS) should have failed\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (handle) CloseHandle(handle);
 #endif
 
@@ -3516,7 +3516,7 @@ static void test_process_security_child(void)
 
     handle = OpenThread( THREAD_SET_THREAD_TOKEN, FALSE, GetCurrentThreadId() );
     ok(handle == NULL, "OpenThread(THREAD_SET_THREAD_TOKEN) should have failed\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (handle) CloseHandle(handle);
 
     if (previous.PrivilegeCount)
@@ -3637,13 +3637,13 @@ static void test_impersonation_level(void)
     free(PrivilegeSet);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void check_acl_constructor_ace(PACL acl, BYTE type, BYTE flags, DWORD mask, PSID sid)
 #else
 static void test_SetEntriesInAclW(void)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ACCESS_ALLOWED_ACE *ace;
     BOOL ret;
 #else
@@ -3678,7 +3678,7 @@ static void test_SetEntriesInAclW(void)
     ok(res, "AllocateAndInitializeSid failed with error %ld\n", GetLastError());
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = IsValidAcl(acl);
     ok(ret, "Constructor returned an invalid ACL.\n");
     if (!ret) return;
@@ -3701,7 +3701,7 @@ static void test_SetEntriesInAclW(void)
     ok(res, "AddAccessAllowedAce failed with error %ld\n", GetLastError());
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void check_acl_audit_roundtrip(PACL acl, PSID sid)
 {
     SYSTEM_AUDIT_ACE *ace;
@@ -3722,7 +3722,7 @@ static void check_acl_audit_roundtrip(PACL acl, PSID sid)
     LocalFree(NewAcl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = IsValidAcl(acl);
     ok(ret, "Audit round trip returned an invalid ACL.\n");
     if (!ret) return;
@@ -3753,7 +3753,7 @@ static void check_acl_audit_roundtrip(PACL acl, PSID sid)
     LocalFree(NewAcl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_acl_constructor_output(void)
 {
     static const struct
@@ -3761,7 +3761,7 @@ static void test_acl_constructor_output(void)
     if (PRIMARYLANGID(GetSystemDefaultLangID()) != LANG_ENGLISH)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ACCESS_MODE mode;
         BYTE type, audit_flags;
     } cases[] =
@@ -3771,7 +3771,7 @@ static void test_acl_constructor_output(void)
     else
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {GRANT_ACCESS, ACCESS_ALLOWED_ACE_TYPE, 0},
         {SET_ACCESS, ACCESS_ALLOWED_ACE_TYPE, 0},
         {DENY_ACCESS, ACCESS_DENIED_ACE_TYPE, 0},
@@ -3819,7 +3819,7 @@ static void test_acl_constructor_output(void)
             "returned acl wasn't NULL: %p\n", NewAcl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < ARRAY_SIZE(cases); ++i)
     {
         for (j = 0; j < ARRAY_SIZE(inheritance); ++j)
@@ -3862,7 +3862,7 @@ static void test_acl_constructor_output(void)
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&objects, 0, sizeof(objects));
     objects.ObjectsPresent = ACE_OBJECT_TYPE_PRESENT | ACE_INHERITED_OBJECT_TYPE_PRESENT;
     objects.ObjectTypeGuid = object_guid;
@@ -3917,7 +3917,7 @@ static void test_acl_constructor_output(void)
     LocalFree(NewAcl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = InitializeAcl(audit, sizeof(audit_buffer), ACL_REVISION);
     ok(ret, "InitializeAcl failed: %lu.\n", GetLastError());
     if (!ret) return;
@@ -4022,13 +4022,13 @@ static void test_acl_constructor_output(void)
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL check_acl_file_access(PSECURITY_DESCRIPTOR sd, HANDLE token, DWORD desired, BOOL expected)
 #else
 static void test_SetEntriesInAclA(void)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GENERIC_MAPPING mapping = {FILE_GENERIC_READ, FILE_GENERIC_WRITE, FILE_GENERIC_EXECUTE, FILE_ALL_ACCESS};
     PRIVILEGE_SET privileges;
     DWORD size = sizeof(privileges), granted = 0xdeadbeef;
@@ -4064,7 +4064,7 @@ static void test_SetEntriesInAclA(void)
     LocalFree(NewAcl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL check_acl_file_enforcement(HANDLE file, const char *path, HANDLE token,
                                       HANDLE previous_token, PSID sid, BOOL deny_present, BOOL denied, BOOL protected, BOOL explicit_allow)
 {
@@ -4114,7 +4114,7 @@ static BOOL check_acl_file_enforcement(HANDLE file, const char *path, HANDLE tok
         return;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(inherited_deny == !!deny_present, "File contains %lu inherited denies, expected %u.\n", inherited_deny, !!deny_present);
     ok(explicit_write == !!explicit_allow, "Explicit write allow count is %lu, expected %u.\n", explicit_write, !!explicit_allow);
     check_acl_file_access(sd, token, GENERIC_READ, TRUE);
@@ -4124,7 +4124,7 @@ static BOOL check_acl_file_enforcement(HANDLE file, const char *path, HANDLE tok
     ok(res, "InitializeAcl failed with error %ld\n", GetLastError());
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = SetThreadToken(NULL, token);
     ok(ret, "SetThreadToken failed: %lu.\n", GetLastError());
     if (!ret) goto done;
@@ -4141,7 +4141,7 @@ static BOOL check_acl_file_enforcement(HANDLE file, const char *path, HANDLE tok
     ok(res, "AllocateAndInitializeSid failed with error %ld\n", GetLastError());
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = SetThreadToken(NULL, token);
     ok(ret, "SetThreadToken failed: %lu.\n", GetLastError());
     if (!ret) goto done;
@@ -4163,7 +4163,7 @@ static BOOL check_acl_file_enforcement(HANDLE file, const char *path, HANDLE tok
     ok(res, "AllocateAndInitializeSid failed with error %ld\n", GetLastError());
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     LocalFree(sd);
     return TRUE;
@@ -7184,7 +7184,7 @@ static void test_GetNamedSecurityInfoA(void)
         return;
     }
     ok(!error, "GetNamedSecurityInfo failed with error %ld\n", error);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (error) goto file_security_done;
 #endif
 
@@ -7229,7 +7229,7 @@ static void test_GetNamedSecurityInfoA(void)
     error = GetNamedSecurityInfoA(tmpfile, SE_FILE_OBJECT, DACL_SECURITY_INFORMATION,
             NULL, NULL, &pDacl, NULL, &pSD);
     ok(!error, "GetNamedSecurityInfo failed with error %ld\n", error);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (error) goto file_security_done;
 #endif
 
@@ -7257,7 +7257,7 @@ static void test_GetNamedSecurityInfoA(void)
     error = GetNamedSecurityInfoA(tmpfile, SE_FILE_OBJECT, DACL_SECURITY_INFORMATION,
                 NULL, NULL, &pDacl, NULL, &pSD);
     ok(!error, "GetNamedSecurityInfo failed with error %ld\n", error);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (error) goto file_security_done;
 #endif
     todo_wine ok(!pDacl, "pDacl != NULL\n");
@@ -7335,7 +7335,7 @@ static void test_GetNamedSecurityInfoA(void)
             NULL, OPEN_EXISTING, 0, NULL);
     ok(h == INVALID_HANDLE_VALUE, "CreateFile error %ld\n", GetLastError());
     free(pDacl);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 file_security_done:
 #endif
     free(user);
@@ -7404,7 +7404,7 @@ file_security_done:
            || broken(flags == CONTAINER_INHERIT_ACE), /* win 10 */
            "Builtin Users ACE has unexpected flags (0x%x != 0x%x)\n", flags,
            INHERIT_ONLY_ACE|CONTAINER_INHERIT_ACE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(ace->Mask == GENERIC_READ
            || broken(ace->Mask == KEY_READ), /* win 10 */
            "Builtin Users ACE has unexpected mask (0x%lx != 0x%lx)\n",
@@ -7779,7 +7779,7 @@ static void test_SetSecurityDescriptorControl (PSECURITY_DESCRIPTOR sec)
         LPCSTR  strExpect = ((1 << bit) & immutable)
                           ? "ERROR_INVALID_PARAMETER" : "0xbebecaca";
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ctrl = ((1 << bit) & immutable) ? test : ref | mutable;
         setOrClear ^= bitsOfInterest;
         SetLastError (0xbebecaca);
@@ -8488,7 +8488,7 @@ set_done:
         expect_eq(test, ctrl, int, "%x");
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         world = sid_buffer;
         size = sizeof(sid_buffer);
         ret = CreateWellKnownSid(WinWorldSid, NULL, world, &size);
@@ -8600,7 +8600,7 @@ set_done:
         expect_eq(test, ctrl, int, "%x");
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     if (restricted) CloseHandle(restricted);
     if (token) CloseHandle(token);
@@ -8621,7 +8621,7 @@ static void test_PrivateObjectSecurity(void)
     PSECURITY_DESCRIPTOR buf;
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_private_object_inheritance();
 
 #endif
@@ -8750,7 +8750,7 @@ static void test_InitializeAcl(void)
 static void test_GetSecurityInfo(void)
 {
     char domain_users_ptr[sizeof(TOKEN_USER) + sizeof(SID) + sizeof(DWORD)*SID_MAX_SUB_AUTHORITIES];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char domain_sid_buffer[SECURITY_MAX_SID_SIZE];
     struct
     {
@@ -8760,7 +8760,7 @@ static void test_GetSecurityInfo(void)
 #endif
     char b[sizeof(TOKEN_USER) + sizeof(SID) + sizeof(DWORD)*SID_MAX_SUB_AUTHORITIES];
     char admin_ptr[sizeof(SID)+sizeof(ULONG)*SID_MAX_SUB_AUTHORITIES], dacl[100];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PSID domain_users_sid = (PSID) domain_users_ptr;
     int domain_users_ace_id = -1, admins_ace_id = -1, user_ace_id = -1, i;
 #else
@@ -8772,7 +8772,7 @@ static void test_GetSecurityInfo(void)
     SECURITY_ATTRIBUTES sa = {.nLength = sizeof(sa)};
     PSID admin_sid = (PSID) admin_ptr, user_sid;
     char sd[SECURITY_DESCRIPTOR_MIN_LENGTH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char process_dacl[200], process_cmdline[2 * MAX_PATH];
     SECURITY_DESCRIPTOR process_sd;
     SECURITY_ATTRIBUTES process_sa = {.nLength = sizeof(process_sa)};
@@ -8784,7 +8784,7 @@ static void test_GetSecurityInfo(void)
     ACL_SIZE_INFORMATION acl_size;
     PSECURITY_DESCRIPTOR pSD;
     ACCESS_ALLOWED_ACE *ace;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE token, obj, closed_obj;
 #else
     HANDLE token, obj;
@@ -8825,12 +8825,12 @@ static void test_GetSecurityInfo(void)
     }
     bret = GetTokenInformation(token, TokenUser, b, l, &l);
     ok(bret, "GetTokenInformation(TokenUser) failed with error %ld\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bret = GetTokenInformation(token, TokenPrimaryGroup, &primary_group, sizeof(primary_group), &l);
     ok(bret, "GetTokenInformation(TokenPrimaryGroup) failed with error %ld\n", GetLastError());
 #endif
     CloseHandle( token );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!bret) return;
 #endif
     user_sid = ((TOKEN_USER *)b)->User.Sid;
@@ -8926,7 +8926,7 @@ static void test_GetSecurityInfo(void)
     CloseHandle(obj);
 
     /* Obtain the "domain users" SID from the user SID */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sid_size = sizeof(domain_sid_buffer);
     bret = GetWindowsAccountDomainSid(user_sid, domain_sid_buffer, &sid_size);
     if (bret)
@@ -8937,7 +8937,7 @@ static void test_GetSecurityInfo(void)
                                   *GetSidSubAuthority(user_sid, 3), 0, 0, 0, 0, &domain_sid))
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sid_size = sizeof(domain_users_ptr);
         bret = CreateWellKnownSid(WinAccountDomainUsersSid, domain_sid_buffer, domain_users_sid, &sid_size);
         ok(bret, "CreateWellKnownSid failed with error %ld\n", GetLastError());
@@ -8947,7 +8947,7 @@ static void test_GetSecurityInfo(void)
         return;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
     {
         ok(GetLastError() == ERROR_NON_ACCOUNT_SID, "GetWindowsAccountDomainSid failed with error %ld\n", GetLastError());
@@ -8995,7 +8995,7 @@ static void test_GetSecurityInfo(void)
 #endif
 
     /* Test querying the ownership of a process */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetSecurityInfo(process_info.hProcess, SE_KERNEL_OBJECT,
 #else
     ret = GetSecurityInfo(GetCurrentProcess(), SE_KERNEL_OBJECT,
@@ -9003,14 +9003,14 @@ static void test_GetSecurityInfo(void)
                            OWNER_SECURITY_INFORMATION|GROUP_SECURITY_INFORMATION,
                            NULL, NULL, NULL, NULL, &pSD);
     ok(!ret, "GetNamedSecurityInfo failed with error %ld\n", ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ret) goto process_done;
 #endif
 
     bret = GetSecurityDescriptorOwner(pSD, &owner, &owner_defaulted);
     ok(bret, "GetSecurityDescriptorOwner failed with error %ld\n", GetLastError());
     ok(owner != NULL, "owner should not be NULL\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(owner && EqualSid(owner, user_sid), "Process owner SID != supplied owner SID.\n");
 #else
     ok(EqualSid(owner, admin_sid) || EqualSid(owner, user_sid),
@@ -9020,7 +9020,7 @@ static void test_GetSecurityInfo(void)
     bret = GetSecurityDescriptorGroup(pSD, &group, &group_defaulted);
     ok(bret, "GetSecurityDescriptorGroup failed with error %ld\n", GetLastError());
     ok(group != NULL, "group should not be NULL\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(group && EqualSid(group, primary_group.group.PrimaryGroup), "Process group SID != token primary group SID.\n");
 #else
     ok(EqualSid(group, domain_users_sid), "Process group SID != Domain Users SID.\n");
@@ -9028,14 +9028,14 @@ static void test_GetSecurityInfo(void)
     LocalFree(pSD);
 
     /* Test querying the DACL of a process */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetSecurityInfo(process_info.hProcess, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION,
 #else
     ret = GetSecurityInfo(GetCurrentProcess(), SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION,
 #endif
                                    NULL, NULL, NULL, NULL, &pSD);
     ok(!ret, "GetSecurityInfo failed with error %ld\n", ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ret) goto process_done;
 #endif
 
@@ -9043,7 +9043,7 @@ static void test_GetSecurityInfo(void)
     ok(bret, "GetSecurityDescriptorDacl failed with error %ld\n", GetLastError());
     ok(dacl_present, "DACL should be present\n");
     ok(pDacl && IsValidAcl(pDacl), "GetSecurityDescriptorDacl returned invalid DACL.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!bret || !dacl_present || !pDacl || !IsValidAcl(pDacl))
     {
         LocalFree(pSD);
@@ -9052,7 +9052,7 @@ static void test_GetSecurityInfo(void)
 #endif
     bret = GetAclInformation(pDacl, &acl_size, sizeof(acl_size), AclSizeInformation);
     ok(bret, "GetAclInformation failed\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!bret)
     {
         LocalFree(pSD);
@@ -9066,7 +9066,7 @@ static void test_GetSecurityInfo(void)
     {
         bret = GetAce(pDacl, i, (VOID **)&ace);
         ok(bret, "Failed to get ACE %d.\n", i);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!bret) continue;
         ok(ace->Header.AceType == ACCESS_ALLOWED_ACE_TYPE, "Process ACE %d has type %u\n", i, ace->Header.AceType);
         bret = domain_users_sid && EqualSid(&ace->SidStart, domain_users_sid);
@@ -9076,12 +9076,12 @@ static void test_GetSecurityInfo(void)
         if (bret) domain_users_ace_id = i;
         bret = EqualSid(&ace->SidStart, admin_sid);
         if (bret) admins_ace_id = i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         bret = EqualSid(&ace->SidStart, user_sid);
         if (bret) user_ace_id = i;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(user_ace_id != -1, "Current User ACE not found.\n");
     if (user_ace_id != -1)
     {
@@ -9103,7 +9103,7 @@ static void test_GetSecurityInfo(void)
         ok(flags == (INHERIT_ONLY_ACE|CONTAINER_INHERIT_ACE),
            "Domain Users ACE has unexpected flags (0x%x != 0x%x)\n", flags,
            INHERIT_ONLY_ACE|CONTAINER_INHERIT_ACE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(ace->Mask == GENERIC_READ, "Domain Users ACE has unexpected mask (0x%lx != 0x%lx)\n",
                                       ace->Mask, GENERIC_READ);
 #else
@@ -9111,7 +9111,7 @@ static void test_GetSecurityInfo(void)
                                       ace->Mask, GENERIC_READ);
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(admins_ace_id != -1,
 #else
     ok(admins_ace_id != -1 || broken(admins_ace_id == -1) /* xp */,
@@ -9123,11 +9123,11 @@ static void test_GetSecurityInfo(void)
         ok(bret, "Failed to get Builtin Admins ACE.\n");
         flags = ((ACE_HEADER *)ace)->AceFlags;
         ok(flags == 0x0, "Builtin Admins ACE has unexpected flags (0x%x != 0x0)\n", flags);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(ace->Mask == PROCESS_ALL_ACCESS,
            "Builtin Admins ACE has unexpected mask (0x%lx != 0x%lx)\n", ace->Mask, PROCESS_ALL_ACCESS);
 #else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(ace->Mask == PROCESS_ALL_ACCESS,
 #else
         ok(ace->Mask == PROCESS_ALL_ACCESS || broken(ace->Mask == 0x1f0fff) /* win2k */,
@@ -9137,7 +9137,7 @@ static void test_GetSecurityInfo(void)
     }
     LocalFree(pSD);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 process_done:
     bret = TerminateProcess(process_info.hProcess, 0);
     ok(bret, "TerminateProcess failed with error %lu\n", GetLastError());
@@ -9157,7 +9157,7 @@ process_done:
 
     sa.lpSecurityDescriptor = sd;
     obj = CreateEventA(&sa, TRUE, TRUE, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!!obj, "CreateEventA failed with error %lu\n", GetLastError());
     if (!obj) return;
 #endif
@@ -9200,7 +9200,7 @@ process_done:
             DACL_SECURITY_INFORMATION, NULL, NULL, NULL, NULL, &pSD);
     todo_wine ok(ret == ERROR_INVALID_HANDLE, "got error %lu\n", ret);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sid_size = 0;
     ret = RegGetKeySecurity((HKEY)obj, DACL_SECURITY_INFORMATION, NULL, &sid_size);
     ok(ret == ERROR_INSUFFICIENT_BUFFER, "RegGetKeySecurity returned %lu\n", ret);
@@ -9272,7 +9272,7 @@ process_done:
     closed_obj = obj;
 #endif
     CloseHandle(obj);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sid_size = 0;
     ret = RegGetKeySecurity((HKEY)closed_obj, DACL_SECURITY_INFORMATION, NULL, &sid_size);
     ok(ret == ERROR_INVALID_HANDLE, "RegGetKeySecurity(closed) returned %lu\n", ret);
@@ -10652,7 +10652,7 @@ static void test_kernel_objects_security(void)
 static void test_TokenIntegrityLevel(void)
 {
     TOKEN_MANDATORY_LABEL *tml;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOKEN_USER *user;
 #endif
     BYTE buffer[64];        /* using max. 28 byte in win7 x64 */
@@ -10663,7 +10663,7 @@ static void test_TokenIntegrityLevel(void)
                                                     {SECURITY_MANDATORY_HIGH_RID}};
     static SID high_level = {SID_REVISION, 1, {SECURITY_MANDATORY_LABEL_AUTHORITY},
                                                     {SECURITY_MANDATORY_MEDIUM_RID}};
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static SID system_level = {SID_REVISION, 1, {SECURITY_MANDATORY_LABEL_AUTHORITY},
                                                     {SECURITY_MANDATORY_SYSTEM_RID}};
 #endif
@@ -10694,7 +10694,7 @@ static void test_TokenIntegrityLevel(void)
     ok(tml->Label.Attributes == (SE_GROUP_INTEGRITY | SE_GROUP_INTEGRITY_ENABLED),
         "got 0x%lx (expected 0x%x)\n", tml->Label.Attributes, (SE_GROUP_INTEGRITY | SE_GROUP_INTEGRITY_ENABLED));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     user = get_alloc_token_user(token);
     if (IsWellKnownSid(user->User.Sid, WinLocalSystemSid))
         ok(EqualSid(tml->Label.Sid, &system_level), "Expected system integrity, got %s\n",
@@ -10718,11 +10718,11 @@ static void test_default_dacl_owner_group_sid(void)
     TOKEN_USER *token_user;
     TOKEN_OWNER *token_owner;
     TOKEN_PRIMARY_GROUP *token_primary_group;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOKEN_DEFAULT_DACL *token_dacl;
 #endif
     HANDLE handle, token;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL ret, defaulted, present, found, expected_found;
     DWORD size = 0, index;
 #else
@@ -10742,7 +10742,7 @@ static void test_default_dacl_owner_group_sid(void)
     token_owner = get_alloc_token_owner( token );
     token_primary_group = get_alloc_token_primary_group( token );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetTokenInformation(token, TokenDefaultDacl, NULL, 0, &size);
     ok(!ret && GetLastError() == ERROR_INSUFFICIENT_BUFFER,
        "GetTokenInformation(TokenDefaultDacl) failed with error %ld\n", GetLastError());
@@ -10752,7 +10752,7 @@ static void test_default_dacl_owner_group_sid(void)
 
 #endif
     CloseHandle( token );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret) goto done;
 #endif
 
@@ -10819,7 +10819,7 @@ static void test_default_dacl_owner_group_sid(void)
                 "expected ACCESS_ALLOWED_ACE_TYPE, got %d\n", ace->Header.AceType );
             if (EqualSid( &ace->SidStart, token_user->User.Sid )) found = TRUE;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         index = 0;
         expected_found = FALSE;
         while (token_dacl->DefaultDacl && GetAce(token_dacl->DefaultDacl, index++, (void **)&ace))
@@ -10839,13 +10839,13 @@ static void test_default_dacl_owner_group_sid(void)
     free( sd );
     CloseHandle( handle );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #endif
     free( token_primary_group );
     free( token_owner );
     free( token_user );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free( token_dacl );
 #endif
 }
@@ -11288,7 +11288,7 @@ static void test_system_security_access(void)
 
 static void test_GetWindowsAccountDomainSid(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char buffer1[SECURITY_MAX_SID_SIZE], buffer2[SECURITY_MAX_SID_SIZE];
 #else
     char *user, buffer1[SECURITY_MAX_SID_SIZE], buffer2[SECURITY_MAX_SID_SIZE];
@@ -11298,7 +11298,7 @@ static void test_GetWindowsAccountDomainSid(void)
     PSID domain_sid2 = (PSID *)&buffer2;
     DWORD sid_size;
     PSID user_sid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL bret;
 #else
     HANDLE token;
@@ -11306,7 +11306,7 @@ static void test_GetWindowsAccountDomainSid(void)
 #endif
     int i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bret = ConvertStringSidToSidA("S-1-5-21-1-2-3-4", &user_sid);
     ok(bret, "ConvertStringSidToSidA failed with error %ld\n", GetLastError());
     if (!bret) return;
@@ -11371,7 +11371,7 @@ static void test_GetWindowsAccountDomainSid(void)
     ok(EqualSid(domain_sid, domain_sid2), "unexpected domain sid %s != %s\n",
        debugstr_sid(domain_sid), debugstr_sid(domain_sid2));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LocalFree(user_sid);
 #else
     free(user);
@@ -11400,13 +11400,13 @@ static void test_GetSidIdentifierAuthority(void)
     ok(GetLastError() == ERROR_SUCCESS, "expected ERROR_SUCCESS, got %lu\n", GetLastError());
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void check_pseudo_token(HANDLE pseudo, HANDLE actual, NTSTATUS expected, unsigned int context)
 #else
 static void test_pseudo_tokens(void)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NTSTATUS (WINAPI *query_token)(HANDLE, TOKEN_INFORMATION_CLASS, void *, ULONG, ULONG *);
     TOKEN_STATISTICS expected_stats, stats;
     TOKEN_SOURCE expected_source, source;
@@ -11420,7 +11420,7 @@ static void test_pseudo_tokens(void)
 #endif
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     query_token = (void *)GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtQueryInformationToken");
     ok(query_token != NULL, "NtQueryInformationToken is missing\n");
     if (!query_token) return;
@@ -11433,7 +11433,7 @@ static void test_pseudo_tokens(void)
     CloseHandle(token);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (actual)
     {
         ret = GetTokenInformation(actual, TokenStatistics, &expected_stats, sizeof(expected_stats), &retlen);
@@ -11457,7 +11457,7 @@ static void test_pseudo_tokens(void)
         win_skip("CurrentProcessToken not supported, skipping test\n");
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(&stats, 0xcc, sizeof(stats));
     status = query_token(pseudo, TokenStatistics, &stats, sizeof(stats), &retlen);
     ok(status == expected, "Context %u handle %p: native query returned %#lx, expected %#lx\n",
@@ -11491,7 +11491,7 @@ static void test_pseudo_tokens(void)
 #endif
 
     SetLastError(0xdeadbeef);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetTokenInformation(pseudo, TokenStatistics, &stats, sizeof(stats), &retlen);
     error = GetLastError();
     ok(ret == (expected == STATUS_SUCCESS), "Context %u handle %p: Win32 query returned %d, error %lu\n",
@@ -11519,11 +11519,11 @@ static void test_pseudo_tokens(void)
     ok(GetLastError() == ERROR_NO_TOKEN, "Expected ERROR_NO_TOKEN, got %lu\n", GetLastError());
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* test GetCurrentThreadToken() */
 #endif
     SetLastError(0xdeadbeef);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DuplicateTokenEx(pseudo, TOKEN_QUERY, NULL, SecurityImpersonation, TokenImpersonation, &duplicate);
     error = GetLastError();
     ok(!ret, "Context %u handle %p: pseudo-token duplication succeeded\n", context, pseudo);
@@ -11676,7 +11676,7 @@ static void test_maximum_allowed(void)
     CloseHandle(handle);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void check_token_label(HANDLE token, DWORD *level, BOOL sacl_inherited, BOOL system_token)
 #else
 static void check_token_label(HANDLE token, DWORD *level, BOOL sacl_inherited)
@@ -11686,7 +11686,7 @@ static void check_token_label(HANDLE token, DWORD *level, BOOL sacl_inherited)
                              {SECURITY_MANDATORY_MEDIUM_RID}};
     static SID high_sid = {SID_REVISION, 1, {SECURITY_MANDATORY_LABEL_AUTHORITY},
                            {SECURITY_MANDATORY_HIGH_RID}};
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static SID system_sid = {SID_REVISION, 1, {SECURITY_MANDATORY_LABEL_AUTHORITY},
                              {SECURITY_MANDATORY_SYSTEM_RID}};
 #endif
@@ -11749,7 +11749,7 @@ static void check_token_label(HANDLE token, DWORD *level, BOOL sacl_inherited)
 
     sid = (SID *)&ace->SidStart;
     ConvertSidToStringSidA(sid, &str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (system_token)
         ok(EqualSid(sid, &system_sid), "Expected system integrity, got %s\n", str);
     else
@@ -11775,7 +11775,7 @@ static void test_token_label(void)
     SECURITY_ATTRIBUTES attr = {.nLength = sizeof(SECURITY_ATTRIBUTES)};
     ACL *sacl = (ACL *)sacl_buffer;
     TOKEN_LINKED_TOKEN linked;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOKEN_ELEVATION_TYPE elevation_type;
     TOKEN_USER *user;
     DWORD level, level2, size, error;
@@ -11784,7 +11784,7 @@ static void test_token_label(void)
 #endif
     PSECURITY_DESCRIPTOR sd;
     HANDLE token, token2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL ret, system_token;
 #else
     BOOL ret;
@@ -11799,7 +11799,7 @@ static void test_token_label(void)
     ret = OpenProcessToken(GetCurrentProcess(), READ_CONTROL | TOKEN_QUERY | TOKEN_DUPLICATE, &token);
     ok(ret, "OpenProcessToken failed with error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     user = get_alloc_token_user(token);
     system_token = IsWellKnownSid(user->User.Sid, WinLocalSystemSid);
     free(user);
@@ -11812,7 +11812,7 @@ static void test_token_label(void)
     ret = DuplicateTokenEx(token, READ_CONTROL, NULL, SecurityAnonymous, TokenPrimary, &token2);
     ok(ret, "Failed to duplicate token, error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     check_token_label(token2, &level2, TRUE, system_token);
 #else
     check_token_label(token2, &level2, TRUE);
@@ -11824,7 +11824,7 @@ static void test_token_label(void)
     ret = DuplicateTokenEx(token, READ_CONTROL, NULL, SecurityImpersonation, TokenImpersonation, &token2);
     ok(ret, "Failed to duplicate token, error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     check_token_label(token2, &level2, TRUE, system_token);
 #else
     check_token_label(token2, &level2, TRUE);
@@ -11851,7 +11851,7 @@ static void test_token_label(void)
     ret = DuplicateTokenEx(token, TOKEN_ALL_ACCESS, &attr, SecurityImpersonation, TokenImpersonation, &token2);
     ok(ret, "Failed to duplicate token, error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     check_token_label(token2, &level2, TRUE, system_token);
 #else
     check_token_label(token2, &level2, TRUE);
@@ -11863,7 +11863,7 @@ static void test_token_label(void)
     ret = SetKernelObjectSecurity(token2, LABEL_SECURITY_INFORMATION, sd);
     ok(ret, "Failed to set SD, error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     check_token_label(token2, &level2, FALSE, system_token);
 #else
     check_token_label(token2, &level2, FALSE);
@@ -11874,7 +11874,7 @@ static void test_token_label(void)
 
     /* Test the linked token. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetTokenInformation(token, TokenElevationType, &elevation_type, sizeof(elevation_type), &size);
     ok(ret, "Failed to get elevation type, error %lu\n", GetLastError());
     if (ret)
@@ -11894,7 +11894,7 @@ static void test_token_label(void)
     ok(level2 == level, "Expected level %#lx, got %#lx.\n", level, level2);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ret)
         {
             check_token_label(linked.LinkedToken, &level2, TRUE, system_token);
@@ -12445,7 +12445,7 @@ static DWORD WINAPI duplicate_handle_access_thread(void *arg)
     return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL check_token_group_attributes(HANDLE token, PSID sid, DWORD expected)
 {
     TOKEN_GROUPS *groups;
@@ -12484,7 +12484,7 @@ static BOOL check_token_group_attributes(HANDLE token, PSID sid, DWORD expected)
 #endif
 static void test_duplicate_handle_access(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char acl_buffer[200], everyone_sid_buffer[100], cmdline[300];
     union
     {
@@ -12497,7 +12497,7 @@ static void test_duplicate_handle_access(void)
     HANDLE token, restricted, impersonation, all_event, sync_event, event2, thread;
     SECURITY_ATTRIBUTES sa = {.nLength = sizeof(sa)};
     SID *everyone_sid = (SID *)everyone_sid_buffer;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     SID *local_sid = (SID *)local_sid_buffer;
 #endif
     ACL *acl = (ACL *)acl_buffer;
@@ -12515,7 +12515,7 @@ static void test_duplicate_handle_access(void)
 
     ret = OpenProcessToken(GetCurrentProcess(), TOKEN_DUPLICATE | TOKEN_QUERY | TOKEN_ASSIGN_PRIMARY, &token);
     ok(ret, "got error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret) return;
 
     size = sizeof(group_sid);
@@ -12531,7 +12531,7 @@ static void test_duplicate_handle_access(void)
     size = sizeof(everyone_sid_buffer);
     ret = CreateWellKnownSid(WinWorldSid, NULL, everyone_sid, &size);
     ok(ret, "got error %lu\n", GetLastError());
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     size = sizeof(local_sid_buffer);
     ret = CreateWellKnownSid(WinLocalSid, NULL, local_sid, &size);
     ok(ret, "got error %lu\n", GetLastError());
@@ -12541,7 +12541,7 @@ static void test_duplicate_handle_access(void)
     ret = AddAccessAllowedAce(acl, ACL_REVISION, SYNCHRONIZE, everyone_sid);
     ok(ret, "got error %lu\n", GetLastError());
     InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = AddAccessAllowedAce(acl, ACL_REVISION, EVENT_MODIFY_STATE, &group_sid.sid);
 #else
     ret = AddAccessAllowedAce(acl, ACL_REVISION, EVENT_MODIFY_STATE, local_sid);
@@ -12552,7 +12552,7 @@ static void test_duplicate_handle_access(void)
     ok(ret, "got error %lu\n", GetLastError());
     sa.lpSecurityDescriptor = &sd;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sid_attr.Sid = &group_sid.sid;
 #else
     sid_attr.Sid = local_sid;
@@ -12560,7 +12560,7 @@ static void test_duplicate_handle_access(void)
     sid_attr.Attributes = 0;
     ret = CreateRestrictedToken(token, 0, 1, &sid_attr, 0, NULL, 0, NULL, &restricted);
     ok(ret, "got error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret)
     {
         CloseHandle(token);
@@ -12703,7 +12703,7 @@ static void join_process_(int line, const PROCESS_INFORMATION *pi)
 
 static void test_create_process_token(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const SECURITY_IMPERSONATION_LEVEL levels[] = {SecurityAnonymous, SecurityIdentification};
     unsigned int i;
     char cmdline[300], acl_buffer[200];
@@ -12717,7 +12717,7 @@ static void test_create_process_token(void)
 #endif
     SECURITY_ATTRIBUTES sa = {.nLength = sizeof(sa)};
     ACL *acl = (ACL *)acl_buffer;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     SID *sid = (SID *)sid_buffer;
 #endif
     SID_AND_ATTRIBUTES sid_attr;
@@ -12725,21 +12725,21 @@ static void test_create_process_token(void)
     PROCESS_INFORMATION pi;
     SECURITY_DESCRIPTOR sd;
     STARTUPINFOA si = {0};
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD size, error;
 #else
     DWORD size;
 #endif
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token);
 #else
     size = sizeof(sid_buffer);
     ret = CreateWellKnownSid(WinLocalSid, NULL, sid, &size);
 #endif
     ok(ret, "got error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret) return;
     size = sizeof(group_sid);
     ret = CreateWellKnownSid(WinAuthenticatedUserSid, NULL, &group_sid.sid, &size);
@@ -12750,7 +12750,7 @@ static void test_create_process_token(void)
 #endif
     ret = InitializeAcl(acl, sizeof(acl_buffer), ACL_REVISION);
     ok(ret, "got error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = AddAccessAllowedAce(acl, ACL_REVISION, EVENT_MODIFY_STATE, &group_sid.sid);
 #else
     ret = AddAccessAllowedAce(acl, ACL_REVISION, EVENT_MODIFY_STATE, sid);
@@ -12777,7 +12777,7 @@ static void test_create_process_token(void)
     ret = OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY | TOKEN_ASSIGN_PRIMARY, &token);
     ok(ret, "got error %lu\n", GetLastError());
     ret = CreateProcessAsUserA(token, NULL, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret, "got error %lu\n", GetLastError());
 #else
     ok(ret || broken(GetLastError() == ERROR_ACCESS_DENIED) /* < 7 */, "got error %lu\n", GetLastError());
@@ -12806,7 +12806,7 @@ static void test_create_process_token(void)
             SecurityImpersonation, TokenImpersonation, &token2);
     ok(ret, "got error %lu\n", GetLastError());
     ret = CreateProcessAsUserA(token2, NULL, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret, "got error %lu\n", GetLastError());
 #else
     ok(ret || broken(GetLastError() == ERROR_BAD_TOKEN_TYPE) /* < 7 */, "got error %lu\n", GetLastError());
@@ -12814,7 +12814,7 @@ static void test_create_process_token(void)
     if (ret) join_process(&pi);
     CloseHandle(token2);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < ARRAY_SIZE(levels); ++i)
     {
         ret = DuplicateTokenEx(token, TOKEN_QUERY | TOKEN_ASSIGN_PRIMARY, NULL,
@@ -12835,7 +12835,7 @@ static void test_create_process_token(void)
 
 #endif
     sprintf(cmdline, "%s security restricted 1", myARGV[0]);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sid_attr.Sid = &group_sid.sid;
 #else
     sid_attr.Sid = sid;
@@ -12843,7 +12843,7 @@ static void test_create_process_token(void)
     sid_attr.Attributes = 0;
     ret = CreateRestrictedToken(token, 0, 1, &sid_attr, 0, NULL, 0, NULL, &token2);
     ok(ret, "got error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret)
     {
         CloseHandle(token);
@@ -13587,7 +13587,7 @@ static void test_window_security(void)
     LocalFree(sd);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static PSECURITY_DESCRIPTOR query_registry_security(HKEY key)
 {
     PSECURITY_DESCRIPTOR descriptor;
@@ -17332,7 +17332,7 @@ START_TEST(security)
     }
     test_kernel_objects_security();
     test_ConvertStringSidToSid();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_sddl_domain_aliases();
 #endif
     test_trustee();
@@ -17351,7 +17351,7 @@ START_TEST(security)
     test_impersonation_level();
     test_SetEntriesInAclW();
     test_SetEntriesInAclA();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_acl_constructor_output();
     test_acl_rights_queries();
     test_acl_object_rights_queries();
@@ -17360,7 +17360,7 @@ START_TEST(security)
 #endif
     test_CreateDirectoryA();
     test_GetNamedSecurityInfoA();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_registry_security_persistence(FALSE, 0);
     test_registry_security_persistence(TRUE, 0);
     test_registry_security_persistence(FALSE, KEY_WOW64_32KEY);

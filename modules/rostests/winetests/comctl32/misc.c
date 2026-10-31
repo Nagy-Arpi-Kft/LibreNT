@@ -345,7 +345,7 @@ static void test_LoadIconWithScaleDown(void)
     ok(res, "Failed to get icon info, error %lu\n", GetLastError());
     bytes = GetObjectA(info.hbmColor, sizeof(bmp), &bmp);
     ok(bytes > 0, "Failed to get bitmap info for icon\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bmp.bmWidth  == GetSystemMetrics(SM_CXSMICON), "Wrong icon width %ld\n", bmp.bmWidth);
     ok(bmp.bmHeight == GetSystemMetrics(SM_CYSMICON), "Wrong icon height %ld\n", bmp.bmHeight);
 #else
@@ -360,7 +360,7 @@ static void test_LoadIconWithScaleDown(void)
     ok(res, "Failed to get icon info, error %lu\n", GetLastError());
     bytes = GetObjectA(info.hbmColor, sizeof(bmp), &bmp);
     ok(bytes > 0, "Failed to get bitmap info for icon\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bmp.bmWidth  == GetSystemMetrics(SM_CXICON), "Wrong icon width %ld\n", bmp.bmWidth);
     ok(bmp.bmHeight == GetSystemMetrics(SM_CYICON), "Wrong icon height %ld\n", bmp.bmHeight);
 #else
@@ -375,7 +375,7 @@ static void test_LoadIconWithScaleDown(void)
     ok(res, "Failed to get icon info, error %lu\n", GetLastError());
     bytes = GetObjectA(info.hbmColor, sizeof(bmp), &bmp);
     ok(bytes > 0, "Failed to get bitmap info for icon\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bmp.bmWidth  == 42, "Wrong icon width %ld\n", bmp.bmWidth);
     ok(bmp.bmHeight == 42, "Wrong icon height %ld\n", bmp.bmHeight);
 #else
@@ -391,7 +391,7 @@ static void test_LoadIconWithScaleDown(void)
     ok(res, "Failed to get icon info, error %lu\n", GetLastError());
     bytes = GetObjectA(info.hbmColor, sizeof(bmp), &bmp);
     ok(bytes > 0, "Failed to get bitmap info for icon\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bmp.bmWidth  == GetSystemMetrics(SM_CXSMICON), "Wrong icon width %ld\n", bmp.bmWidth);
     ok(bmp.bmHeight == GetSystemMetrics(SM_CYSMICON), "Wrong icon height %ld\n", bmp.bmHeight);
 #else
@@ -406,7 +406,7 @@ static void test_LoadIconWithScaleDown(void)
     ok(res, "Failed to get icon info, error %lu\n", GetLastError());
     bytes = GetObjectA(info.hbmColor, sizeof(bmp), &bmp);
     ok(bytes > 0, "Failed to get bitmap info for icon\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bmp.bmWidth  == 42, "Wrong icon width %ld\n", bmp.bmWidth);
     ok(bmp.bmHeight == 42, "Wrong icon height %ld\n", bmp.bmHeight);
 #else

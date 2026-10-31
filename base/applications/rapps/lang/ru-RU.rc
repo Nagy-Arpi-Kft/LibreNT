@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Applications Manager
+ * PROJECT:     LibreNT Applications Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Russian resource file
  * TRANSLATORS: Copyright 2009 Dmitry Chapyshev <dmitry@reactos.org>
@@ -173,10 +173,10 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APPTITLE "Менеджер приложений ReactOS"
+    IDS_APPTITLE "Менеджер приложений LibreNT"
     IDS_APP_AUTHORS "Copyright 2009 Dmitry Chapyshev"
-    IDS_WELCOME_TITLE "Добро пожаловать в ""Менеджер приложений ReactOS""!"
-    IDS_WELCOME_TEXT "Выберите категорию слева и приложение для установки или удаления.\nСайт LiberNT: "
+    IDS_WELCOME_TITLE "Добро пожаловать в ""Менеджер приложений LibreNT""!"
+    IDS_WELCOME_TEXT "Выберите категорию слева и приложение для установки или удаления.\nСайт LibreNT: "
     IDS_WELCOME_URL "https://reactos.org"
 
     IDS_APPWIZ_TITLE "Add/Remove Programs"

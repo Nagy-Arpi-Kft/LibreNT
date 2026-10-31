@@ -30,7 +30,7 @@ Revision History:
 //
 
 #include <ntddk.h>
-#include <pseh/pseh2.h> // __REACTOS__
+#include <pseh/pseh2.h> // __LIBRENT__
 
 NTSTATUS
 FxProbeAndLockForRead(

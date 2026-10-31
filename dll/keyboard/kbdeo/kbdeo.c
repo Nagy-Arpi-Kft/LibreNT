@@ -1,5 +1,5 @@
 /*
- * ReactOS Esperanto Keyboard layout
+ * LibreNT Esperanto Keyboard layout
  * Copyright (C) 2003-2016 ReactOS
  * License: LGPL, see: LGPL.txt
  *

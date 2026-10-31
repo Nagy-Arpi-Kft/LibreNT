@@ -1,6 +1,6 @@
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT} -D_WIN32_WINNT=${REACTOS_TARGET_NT} -D_CRT_NON_CONFORMING_SWPRINTFS)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT} -D_WIN32_WINNT=${LIBRENT_TARGET_NT} -D_CRT_NON_CONFORMING_SWPRINTFS)
 
 spec2def(dummy.dll dummy.spec)
 add_library(kernel32_winetest_dummy MODULE dummy.c ${CMAKE_CURRENT_BINARY_DIR}/dummy.def)

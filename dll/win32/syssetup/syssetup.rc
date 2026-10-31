@@ -4,19 +4,19 @@
 
 #include "resource.h"
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "System Setup DLL"
-#define REACTOS_STR_INTERNAL_NAME     "syssetup"
-#define REACTOS_STR_ORIGINAL_FILENAME "syssetup.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "System Setup DLL"
+#define LIBRENT_STR_INTERNAL_NAME     "syssetup"
+#define LIBRENT_STR_ORIGINAL_FILENAME "syssetup.dll"
+#include <librent/version.rc>
 
 /* Ask for common controls v6 (BCM_SETIMAGELIST) */
-#include <reactos/manifest_dll.rc>
+#include <librent/manifest_dll.rc>
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 /* Bitmaps */
-IDB_REACTOS BITMAP "resources/reactos.bmp"
+IDB_LIBRENT BITMAP "resources/reactos.bmp"
 IDB_LINE BITMAP "resources/line.bmp"
 
 IDI_ICON1 ICON "resources/1.ico"

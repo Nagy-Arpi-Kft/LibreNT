@@ -69,7 +69,7 @@
                               FT_Face        face )
   {
     /* scan the array of segments in each direction */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     AF_GlyphHintsRec *hints = malloc(sizeof(*hints));
     if (!hints) return;
 #else
@@ -91,7 +91,7 @@
       FT_Error          error;
       FT_ULong          glyph_index;
       int               dim;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       AF_CJKMetricsRec *dummy = malloc(sizeof(*dummy));
       if (!dummy)
         goto Exit;
@@ -279,7 +279,7 @@
         }
 #endif
       }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       free(dummy);
       }
 #endif
@@ -288,7 +288,7 @@
     FT_TRACE5(( "\n" ));
 
     af_glyph_hints_done( hints );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(hints);
 #endif
   }

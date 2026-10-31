@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT RP1 Ethernet Driver
+ * PROJECT:     LibreNT RP1 Ethernet Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        drivers/network/dd/rp1gem/rp1gem.h
  * PURPOSE:     Raspberry Pi 5 RP1 Cadence GEM NDIS 6.30 miniport header
@@ -14,7 +14,7 @@
 #include <ipifcons.h>
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 #ifndef ETH_LENGTH_OF_ADDRESS
 #define ETH_LENGTH_OF_ADDRESS 6

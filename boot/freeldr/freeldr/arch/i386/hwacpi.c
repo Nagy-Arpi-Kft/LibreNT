@@ -19,7 +19,7 @@
  */
 
 #include <freeldr.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/drivers/acpi/acpi.h>
 
 #include <debug.h>
 DBG_DEFAULT_CHANNEL(HWDETECT);

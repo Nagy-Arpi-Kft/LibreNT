@@ -1,7 +1,7 @@
 /*
- * PROJECT:         ReactOS msgina.dll
+ * PROJECT:         LibreNT msgina.dll
  * FILE:            dll/win32/msgina/tui.c
- * PURPOSE:         ReactOS Logon GINA DLL
+ * PURPOSE:         LibreNT Logon GINA DLL
  * PROGRAMMER:      Hervé Poussineau (hpoussin@reactos.org)
  */
 

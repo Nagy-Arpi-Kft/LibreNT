@@ -50,7 +50,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(mmdevapi);
 DriverFuncs drvs;
 static DriverFuncs midi_driver;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define MIDI_CALL(code,args)  reactos_mmdevapi_call( code, args )
 #else
 #define MIDI_CALL(code,args)  __wine_unix_call( midi_driver.module_unixlib, code, args )
@@ -58,7 +58,7 @@ static DriverFuncs midi_driver;
 
 const WCHAR drv_keyW[] = L"Software\\Wine\\Drivers";
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const char *get_priority_string(int prio)
 {
     switch(prio){
@@ -126,7 +126,7 @@ fail:
 
 static BOOL WINAPI init_driver(INIT_ONCE *once, void *param, void **context)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UNREFERENCED_PARAMETER(once);
     UNREFERENCED_PARAMETER(param);
     UNREFERENCED_PARAMETER(context);
@@ -140,7 +140,7 @@ static BOOL WINAPI init_driver(INIT_ONCE *once, void *param, void **context)
         return TRUE;
     }
 
-    WARN("No ReactOS WDMAUD audio backend could be initialized.\n");
+    WARN("No LibreNT WDMAUD audio backend could be initialized.\n");
     return TRUE;
 }
 
@@ -249,7 +249,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
             DisableThreadLibraryCalls(hinstDLL);
             break;
         case DLL_PROCESS_DETACH:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (drvs.module_unixlib)
                 wine_unix_call( process_detach, NULL );
             if (lpvReserved) break;
@@ -279,7 +279,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI DllCanUnloadNow(void)
 {
     return S_FALSE;

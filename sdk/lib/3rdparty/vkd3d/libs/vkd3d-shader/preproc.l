@@ -26,7 +26,7 @@
 
 #include "preproc.tab.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef stdin
 #undef stdout
 #undef stderr

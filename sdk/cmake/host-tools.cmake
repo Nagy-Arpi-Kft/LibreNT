@@ -20,7 +20,7 @@ function(setup_host_tools)
             list(APPEND HOST_MODULES g++_plugin_seh)
         endif()
     endif()
-    list(TRANSFORM HOST_TOOLS PREPEND "${REACTOS_BINARY_DIR}/host-tools/bin/" OUTPUT_VARIABLE HOST_TOOLS_OUTPUT)
+    list(TRANSFORM HOST_TOOLS PREPEND "${LIBRENT_BINARY_DIR}/host-tools/bin/" OUTPUT_VARIABLE HOST_TOOLS_OUTPUT)
     if (CMAKE_HOST_WIN32)
         list(TRANSFORM HOST_TOOLS_OUTPUT APPEND ".exe")
         if(MSVC_IDE)
@@ -56,7 +56,7 @@ function(setup_host_tools)
         message("Not cross-compiling, no special host-tools cmake command")
     elseif(MSVC)
         message("Compiling on ${HOST_ARCH} for ${ARCH} (MSVC)")
-        set(HOST_TOOLS_CMAKE_COMMAND "${REACTOS_BINARY_DIR}/host-tools/cmake_shim.cmd")
+        set(HOST_TOOLS_CMAKE_COMMAND "${LIBRENT_BINARY_DIR}/host-tools/cmake_shim.cmd")
         if(MSVC_VERSION EQUAL 1900)
             file(WRITE ${HOST_TOOLS_CMAKE_COMMAND}
                 "set VSCMD_SKIP_SENDTELEMETRY=1\n"
@@ -118,7 +118,7 @@ function(setup_host_tools)
     if(HOST_TOOLS_PATH_DIRS)
         if(CMAKE_HOST_WIN32)
             file(TO_NATIVE_PATH "${HOST_TOOLS_PATH_DIRS}" HOST_TOOLS_ENV_PATH)
-            set(HOST_TOOLS_CMAKE_WRAPPER "${REACTOS_BINARY_DIR}/host-tools/cmake_env.cmd")
+            set(HOST_TOOLS_CMAKE_WRAPPER "${LIBRENT_BINARY_DIR}/host-tools/cmake_env.cmd")
             file(WRITE "${HOST_TOOLS_CMAKE_WRAPPER}"
                 "@echo off\r\n"
                 "set \"PATH=${HOST_TOOLS_ENV_PATH};%PATH%\"\r\n"
@@ -138,22 +138,22 @@ function(setup_host_tools)
         add_custom_target(host-tools)
     else()
         ExternalProject_Add(host-tools
-            SOURCE_DIR ${REACTOS_SOURCE_DIR}
-            PREFIX ${REACTOS_BINARY_DIR}/host-tools
-            BINARY_DIR ${REACTOS_BINARY_DIR}/host-tools/bin
+            SOURCE_DIR ${LIBRENT_SOURCE_DIR}
+            PREFIX ${LIBRENT_BINARY_DIR}/host-tools
+            BINARY_DIR ${LIBRENT_BINARY_DIR}/host-tools/bin
             CMAKE_COMMAND ${HOST_TOOLS_CMAKE_COMMAND}
             CMAKE_ARGS
                 -UCMAKE_TOOLCHAIN_FILE
                 -DARCH:STRING=${ARCH}
                 -DROSCONFIG_PROFILE:STRING=generic
                 -DROSCONFIG_SKIP_OVERRIDES:BOOL=ON
-                -DCMAKE_INSTALL_PREFIX=${REACTOS_BINARY_DIR}/host-tools
-                -DTOOLS_FOLDER=${REACTOS_BINARY_DIR}/host-tools/bin
+                -DCMAKE_INSTALL_PREFIX=${LIBRENT_BINARY_DIR}/host-tools
+                -DTOOLS_FOLDER=${LIBRENT_BINARY_DIR}/host-tools/bin
                 -DTARGET_COMPILER_ID=${CMAKE_C_COMPILER_ID}
                 -DTARGET_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                 -DCMAKE_BUILD_TYPE=${HOST_BUILD_TYPE}
                 -DUSE_DUMMY_PSEH:BOOL=${USE_DUMMY_PSEH}
-                -DREACTOS_TARGET_NT:STRING=0x502
+                -DLIBRENT_TARGET_NT:STRING=0x502
                 ${CMAKE_HOST_TOOLS_EXTRA_ARGS}
             BUILD_ALWAYS TRUE
             INSTALL_COMMAND ${CMAKE_COMMAND} -E true

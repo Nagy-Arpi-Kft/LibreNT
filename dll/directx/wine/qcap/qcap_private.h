@@ -25,7 +25,7 @@
 #include <stdbool.h>
 #include "dshow.h"
 #include "winternl.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 #include "wine/debug.h"
@@ -161,7 +161,7 @@ enum unix_funcs
     unix_funcs_count
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS qcap_backend_call(enum unix_funcs func, void *params);
 #endif
 

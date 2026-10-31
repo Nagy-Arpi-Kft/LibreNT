@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         BSD - See COPYING.ARM in the top level directory
- * PROJECT:           ReactOS CRT library
+ * PROJECT:           LibreNT CRT library
  * PURPOSE:           Implementation of floor
  * PROGRAMMER:        Timo Kreuzer (timo.kreuzer@reactos.org)
  *                    Original implementation: dawncrow

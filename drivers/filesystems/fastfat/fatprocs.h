@@ -34,13 +34,13 @@ Abstract:
 #include <ntdddisk.h>
 #include <ntddstor.h>
 #include <ntintsafe.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <pseh/pseh2.h>
 #include <dbgbitmap.h>
 #endif
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 // Downgrade unsupported NT6.2+ features.
 #undef MdlMappingNoExecute
 #define MdlMappingNoExecute 0
@@ -1036,7 +1036,7 @@ FatUnpinEaRange (
 //  of the file object, implemented in FilObSup.c
 //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef enum _TYPE_OF_OPEN {
 
     UnopenedFileObject = 1,
@@ -2052,7 +2052,7 @@ FatPrePostIrp (
     );
 
 VOID
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTAPI
 #endif
 FatAddToWorkque (

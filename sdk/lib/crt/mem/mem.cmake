@@ -30,13 +30,6 @@ elseif(ARCH STREQUAL "arm64")
         string/arm64/memchr.S
         string/arm64/memcmp.S
     )
-elseif(ARCH STREQUAL "riscv64")
-    list(REMOVE_ITEM LIBCNTPR_MEM_SOURCE mem/memcmp.c)
-    list(APPEND LIBCNTPR_MEM_SOURCE
-        mem/memchr.c
-        string/riscv64/rvmemcmp.c
-    )
-    set_source_files_properties(string/riscv64/rvmemcmp.c PROPERTIES COMPILE_OPTIONS "-fno-builtin")
 else()
     list(APPEND LIBCNTPR_MEM_SOURCE
         mem/memchr.c
@@ -57,9 +50,5 @@ endif()
 #)
 
 # Needed by ext2fs. Should use RtlCompareMemory instead?
-if(ARCH STREQUAL "riscv64")
-    add_library(memcmp string/riscv64/rvmemcmp.c)
-else()
-    add_library(memcmp mem/memcmp.c)
-endif()
+add_library(memcmp mem/memcmp.c)
 add_dependencies(memcmp psdk)

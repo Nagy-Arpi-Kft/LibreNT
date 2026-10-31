@@ -1,11 +1,11 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Test for LoadImageW using DLL compiled with MSVC
  * COPYRIGHT:   Copyright 2024 Doug Lyons <douglyons@douglyons.com>
  *
  * NOTES:
- * Works on ReactOS, but not on Windows 2003 Server SP2.
+ * Works on LibreNT, but not on Windows 2003 Server SP2.
  */
 
 #include "precomp.h"
@@ -91,7 +91,7 @@ START_TEST(LoadImageGCC)
     UINT size;
 
     /* Windows 2003 cannot run this test. Testman shows CRASH, so skip it. */
-    if (!IsReactOS())
+    if (!IsLibreNT())
         return;
 
     /* Extract Data Files */

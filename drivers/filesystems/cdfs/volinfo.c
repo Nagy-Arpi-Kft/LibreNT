@@ -59,7 +59,7 @@ CdQueryFsAttributeInfo (
     _Inout_ PULONG Length
     );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define PFILE_FS_SECTOR_SIZE_INFORMATION PVOID
 #endif
 
@@ -160,9 +160,9 @@ Return Value:
         //  and false if it couldn't wait for any I/O to complete.
         //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         RtlZeroMemory(Irp->AssociatedIrp.SystemBuffer, Length);
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
         switch (IrpSp->Parameters.QueryVolume.FsInformationClass) {
 
@@ -193,7 +193,7 @@ Return Value:
             break;
 #endif
 
-        /* ReactOS Change: GCC "enumeration value not handled in switch" */
+        /* LibreNT Change: GCC "enumeration value not handled in switch" */
         default: break;
         }
 
@@ -422,7 +422,7 @@ Return Value:
     //
 
     Buffer->Characteristics = Vcb->TargetDeviceObject->Characteristics;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     Buffer->DeviceType = FILE_DEVICE_CD_ROM;
 #else
     Buffer->DeviceType = Vcb->TargetDeviceObject->DeviceType;

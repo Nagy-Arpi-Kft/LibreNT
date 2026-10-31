@@ -57,7 +57,7 @@ ULONG         MCACount = 0;
 
 BOOLEAN FirstMasterOk = FALSE;
 // This is our own resource check,
-// ReactOS allows to allocate same I/O range for both PCI and ISA controllers
+// LibreNT allows to allocate same I/O range for both PCI and ISA controllers
 BOOLEAN AtdiskPrimaryClaimed = FALSE;
 BOOLEAN AtdiskSecondaryClaimed = FALSE;
 
@@ -1943,7 +1943,7 @@ UniataClaimLegacyPCIIDE(
     NTSTATUS status;
     PCM_RESOURCE_LIST resourceList = NULL;
     UNICODE_STRING devname;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PCM_RESOURCE_LIST oldResList = NULL;
 #endif
 
@@ -1973,7 +1973,7 @@ UniataClaimLegacyPCIIDE(
 del_do:
         IoDeleteDevice(BMList[i].PciIdeDevObj);
         BMList[i].PciIdeDevObj          = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (oldResList)
             ExFreePool(oldResList);
 #endif
@@ -1984,7 +1984,7 @@ del_do:
         resourceList,
         sizeof(CM_RESOURCE_LIST));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     oldResList = resourceList;
 #endif
 
@@ -2017,7 +2017,7 @@ del_do:
         goto del_do;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ExFreePool(resourceList);
     ExFreePool(oldResList);
 #endif
@@ -2760,7 +2760,7 @@ AtapiReadArgumentString(
     OUT PBOOLEAN Again
     )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PHW_DEVICE_EXTENSION deviceExtension = (PHW_DEVICE_EXTENSION)HwDeviceExtension;
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS GDI32
+ * PROJECT:     LibreNT GDI32
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Font manipulation API
  * COPYRIGHT:   Copyright 2019 James Tabor
@@ -3259,7 +3259,7 @@ GetFontData(HDC hdc,
     return NtGdiGetFontData(hdc, dwTable, dwOffset, lpvBuffer, cbData);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI
 GetFontRealizationInfo(HDC hdc, PFONT_REALIZATION_INFO info)
 {

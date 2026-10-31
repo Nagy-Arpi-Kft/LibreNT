@@ -21,12 +21,12 @@
 #include "roapi.h"
 #include "winbase.h"
 #include "winstring.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/debug.h"
 #endif
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline const char *debugstr_hstring(HSTRING str)
 {
     UINT32 len;

@@ -1,7 +1,7 @@
 /*
  * xmmintrin.h
  *
- * This file is part of the ReactOS CRT package.
+ * This file is part of the LibreNT CRT package.
  *
  * Contributors:
  *   Timo Kreuzer (timo.kreuzer@reactos.org)
@@ -25,11 +25,11 @@
 #include "intrin_target.h"
 
 /* When building with Clang, use Clang's own intrinsics headers instead.
- * ReactOS's versions use GCC-specific __builtin_ia32_* builtins that
+ * LibreNT's versions use GCC-specific __builtin_ia32_* builtins that
  * don't exist in Clang. */
 #if _VCRT_USE_CLANG_X86_INTRINSICS
 #include_next <xmmintrin.h>
-/* Define ReactOS-specific macros that code may depend on */
+/* Define LibreNT-specific macros that code may depend on */
 #ifndef __ATTRIBUTE_SSE__
 #define __ATTRIBUTE_SSE__
 #endif

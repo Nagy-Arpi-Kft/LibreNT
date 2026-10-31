@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT SD/SDIO/eMMC Bus Driver
+ * PROJECT:     LibreNT SD/SDIO/eMMC Bus Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Hardware-specific SDHCI hook dispatcher
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -700,8 +700,6 @@ NTSTATUS
 SdBusHardwareAttach(
     _In_ PFDO_EXTENSION FdoExtension)
 {
-    static const PCWSTR SpacemitK1Ids[] = { L"spacemit_k1-x-sdhci" };
-    static const PCWSTR StarfiveJh7110Ids[] = { L"starfive_jh7110-mmc" };
     static const PCWSTR Bcm2835SdHostIds[] = { L"BCM2855" };
     static const PCWSTR BrcmstbIds[] = { L"BRCM5D12", L"80860F16" };
     static const PCWSTR Bcm2847Ids[] = { L"BCM2847" };
@@ -718,16 +716,6 @@ SdBusHardwareAttach(
     if (Pdo == NULL)
     {
         return STATUS_SUCCESS;
-    }
-
-    if (SdBusDeviceMatchesAnyId(Pdo, SpacemitK1Ids, RTL_NUMBER_OF(SpacemitK1Ids)))
-    {
-        return SdBusK1xAttach(FdoExtension);
-    }
-
-    if (SdBusDeviceMatchesAnyId(Pdo, StarfiveJh7110Ids, RTL_NUMBER_OF(StarfiveJh7110Ids)))
-    {
-        return SdBusJh7110Attach(FdoExtension);
     }
 
     if (SdBusDeviceMatchesAnyId(Pdo, Bcm2835SdHostIds, RTL_NUMBER_OF(Bcm2835SdHostIds)))

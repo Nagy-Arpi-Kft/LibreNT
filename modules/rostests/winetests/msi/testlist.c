@@ -5,7 +5,7 @@
 
 extern void func_action(void);
 extern void func_automation(void);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern void func_customserver(void);
 #endif
 extern void func_db(void);
@@ -22,7 +22,7 @@ const struct test winetest_testlist[] =
 {
     { "action", func_action },
     { "automation", func_automation },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { "customserver", func_customserver },
 #endif
     { "db", func_db },

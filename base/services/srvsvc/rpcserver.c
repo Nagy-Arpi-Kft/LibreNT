@@ -1,5 +1,5 @@
 /*
- *  ReactOS Services
+ *  LibreNT Services
  *  Copyright (C) 2015 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS Services
+ * PROJECT:          LibreNT Services
  * FILE:             base/services/srvsvc/rpcserver.c
  * PURPOSE:          Server service
  * PROGRAMMER:       Eric Kohl

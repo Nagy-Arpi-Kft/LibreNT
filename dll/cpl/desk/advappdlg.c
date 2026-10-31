@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Display Control Panel
+ * PROJECT:         LibreNT Display Control Panel
  * FILE:            dll/cpl/desk/advappdlg.c
  * PURPOSE:         Advanced appearance dialog
  *

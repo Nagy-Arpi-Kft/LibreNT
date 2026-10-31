@@ -766,7 +766,7 @@ EXTERN_C VOID
 WINAPI
 SHChangeNotifyRegisterThread(_In_ SCNRT_STATUS Status)
 {
-    /* ReactOS registers change notifications synchronously, so the
+    /* LibreNT registers change notifications synchronously, so the
      * asynchronous register/deregister opt-in has nothing to switch. */
     TRACE("SHChangeNotifyRegisterThread(%d)\n", Status);
 }

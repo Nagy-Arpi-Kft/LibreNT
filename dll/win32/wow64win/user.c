@@ -29,10 +29,10 @@
 #include "shlobj.h"
 #include "wow64win_private.h"
 #include "native_stubs.h"
-#ifdef __REACTOS__
-#include "reactos_user.h"
+#ifdef __LIBRENT__
+#include "librent_user.h"
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/debug.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(wow);
@@ -357,7 +357,7 @@ typedef struct
     ULONG  hIconSm;
 } WNDCLASSEXW32;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void ros_cursordata_32to64( ROS_CURSORDATA64 *data, const ROS_CURSORDATA32 *data32 )
 {
     data->lpName = data32->lpName;
@@ -580,7 +580,7 @@ static MOUSEHOOKSTRUCTEX32 *mousehookstruct_64to32( const MOUSEHOOKSTRUCTEX *hoo
     return hook32;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static NTSTATUS dispatch_callback( ULONG id, void *args, ULONG len )
 {
     void *ret_ptr;
@@ -663,7 +663,7 @@ static size_t packed_message_64to32( UINT message, WPARAM wparam,
             const CREATESTRUCTW *cs64 = params64;
 
             createstruct_64to32( cs64, cs32 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             cs32->lpszName -= sizeof(*cs64) - sizeof(*cs32);
             cs32->lpszClass -= sizeof(*cs64) - sizeof(*cs32);
 #endif
@@ -766,7 +766,7 @@ static size_t packed_message_64to32( UINT message, WPARAM wparam,
 
             cds32.dwData = cds64->dwData;
             cds32.cbData = cds64->cbData;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if ((ULONG_PTR)cds64->lpData == sizeof(*cds64))
                 cds32.lpData = sizeof(cds32);
             else
@@ -968,7 +968,7 @@ static size_t packed_result_32to64( UINT message, WPARAM wparam, const void *par
     return size;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static NTSTATUS WINAPI wow64_NtUserCallWinProc( void *arg, ULONG size )
 {
     struct win_proc_params *params = arg;
@@ -1124,7 +1124,7 @@ static UINT hook_lparam_64to32( int id, int code, const void *lp, size_t size, v
     return size;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static NTSTATUS WINAPI wow64_NtUserCallWindowsHook( void *arg, ULONG size )
 {
     struct win_hook_params *params = arg;
@@ -1519,7 +1519,7 @@ static NTSTATUS WINAPI wow64_NtUserDragDropPost( void *arg, ULONG size )
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 ntuser_callback user_callbacks[NtUserCallCount] =
 {
 #define USER32_CALLBACK_ENTRY(name) wow64_NtUser##name,
@@ -1527,7 +1527,7 @@ ntuser_callback user_callbacks[NtUserCallCount] =
 #undef USER32_CALLBACK_ENTRY
 };
 #else
-#include "reactos_callbacks.c"
+#include "librent_callbacks.c"
 #endif
 
 NTSTATUS WINAPI wow64_NtUserActivateKeyboardLayout( UINT *args )
@@ -1629,7 +1629,7 @@ NTSTATUS WINAPI wow64_NtUserBuildHwndList( UINT *args )
     HDESK desktop = get_handle( &args );
     HWND hwnd = get_handle( &args );
     BOOL children = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL non_immersive = get_ulong( &args );
     ULONG thread_id = get_ulong( &args );
 #else
@@ -1644,7 +1644,7 @@ NTSTATUS WINAPI wow64_NtUserBuildHwndList( UINT *args )
     ULONG i;
     NTSTATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (buffer32 && count && !(buffer = Wow64AllocateTemp(count * sizeof(*buffer)))) return STATUS_NO_MEMORY;
     status = ((ROS_NTUSER_BUILD_HWND_LIST)NtUserBuildHwndList)(desktop, hwnd, children, non_immersive,
                                                                thread_id, count, buffer, size);
@@ -1712,7 +1712,7 @@ NTSTATUS WINAPI wow64_NtUserCallHwnd( UINT *args )
     return NtUserCallHwnd(hwnd, code);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserCallHwndLock( UINT *args )
 {
     HWND hwnd = get_handle( &args );
@@ -1823,7 +1823,7 @@ NTSTATUS WINAPI wow64_NtUserCallMsgFilter( UINT *args )
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LRESULT ros_call_next_hook( INT code, WPARAM wparam, LPARAM lparam, BOOL ansi )
 {
     return ((ROS_NTUSER_CALL_NEXT_HOOK_EX)NtUserCallNextHookEx)( code, wparam, lparam, ansi );
@@ -2024,7 +2024,7 @@ NTSTATUS WINAPI wow64_NtUserChangeClipboardChain( UINT *args )
 
 NTSTATUS WINAPI wow64_NtUserChangeDisplaySettings( UINT *args )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UNICODE_STRING32 *devname32 = get_ptr( &args );
     DEVMODEW *devmode = get_ptr( &args );
     DWORD flags = get_ulong( &args );
@@ -2124,7 +2124,7 @@ NTSTATUS WINAPI wow64_NtUserCreateCaret( UINT *args )
     return NtUserCreateCaret( hwnd, bitmap, width, height );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserCreateDesktop( UINT *args )
 {
     OBJECT_ATTRIBUTES32 *attr32 = get_ptr( &args );
@@ -2177,7 +2177,7 @@ NTSTATUS WINAPI wow64_NtUserCreatePopupMenu( UINT *args )
 NTSTATUS WINAPI wow64_NtUserCreateWindowEx( UINT *args )
 {
     DWORD ex_style = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ROS_LARGE_STRING32 *class_name32 = get_ptr( &args );
     ROS_LARGE_STRING32 *version32 = get_ptr( &args );
     ROS_LARGE_STRING32 *window_name32 = get_ptr( &args );
@@ -2196,7 +2196,7 @@ NTSTATUS WINAPI wow64_NtUserCreateWindowEx( UINT *args )
     HINSTANCE instance = get_ptr( &args );
     void *params = get_ptr( &args );
     DWORD flags = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     void *acbi_buffer = get_ptr( &args );
 #else
     HINSTANCE client_instance = get_ptr( &args );
@@ -2204,14 +2204,14 @@ NTSTATUS WINAPI wow64_NtUserCreateWindowEx( UINT *args )
     BOOL ansi = get_ulong( &args );
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ROS_LARGE_STRING64 class_name, version, window_name;
 #else
     UNICODE_STRING class_name, version, window_name;
 #endif
     HWND ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = ((ROS_NTUSER_CREATE_WINDOW_EX)NtUserCreateWindowEx)(ex_style, ros_large_str_32to64(&class_name, class_name32), ros_large_str_32to64(&version, version32), ros_large_str_32to64(&window_name, window_name32), style, x, y, width, height, parent, menu, instance, params, flags, acbi_buffer);
 #else
     ret = NtUserCreateWindowEx( ex_style, unicode_str_32to64( &class_name, class_name32), unicode_str_32to64( &version, version32 ), unicode_str_32to64( &window_name, window_name32 ), style, x, y, width, height, parent, menu, instance, params, flags, client_instance, class, ansi );
@@ -2369,7 +2369,7 @@ NTSTATUS WINAPI wow64_NtUserDrawIconEx( UINT *args )
     UINT istep = get_ulong( &args );
     HBRUSH hbr = get_handle( &args );
     UINT flags = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL meta_hdc = get_ulong( &args );
     ULONG dix_data = get_ulong( &args );
 
@@ -2644,7 +2644,7 @@ NTSTATUS WINAPI wow64_NtUserGetClassInfoEx( UINT *args )
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserGetClassInfo( UINT *args )
 {
     HINSTANCE instance = get_ptr( &args );
@@ -2698,7 +2698,7 @@ NTSTATUS WINAPI wow64_NtUserGetClipCursor( UINT *args )
 
 NTSTATUS WINAPI wow64_NtUserGetClipboardData( UINT *args )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT format = get_ulong( &args );
     ROS_GETCLIPBDATA32 *gcd32 = get_ptr( &args );
 
@@ -2765,7 +2765,7 @@ NTSTATUS WINAPI wow64_NtUserGetClipboardViewer( UINT *args )
     return HandleToUlong( NtUserGetClipboardViewer() );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserGetCPD( UINT *args )
 {
     HWND hwnd = get_handle( &args );
@@ -2944,14 +2944,14 @@ NTSTATUS WINAPI wow64_NtUserGetIconInfo( UINT *args )
     ICONINFO info;
     UNICODE_STRING module, res_name;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!NtUserGetIconInfo( icon, info32 ? &info : NULL, unicode_str_32to64( &module, module32 ), unicode_str_32to64( &res_name, res_name32 ), bpp, unk ))
 #else
     if (!NtUserGetIconInfo( icon, &info, unicode_str_32to64( &module, module32 ), unicode_str_32to64( &res_name, res_name32 ), bpp, unk ))
 #endif
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (info32)
     {
 #endif
@@ -2960,14 +2960,14 @@ NTSTATUS WINAPI wow64_NtUserGetIconInfo( UINT *args )
     info32->yHotspot = info.yHotspot;
     info32->hbmMask  = HandleToUlong( info.hbmMask );
     info32->hbmColor = HandleToUlong( info.hbmColor );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     if (module32)
     {
         module32->Buffer = PtrToUlong( module.Buffer );
         module32->Length = module.Length;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         module32->MaximumLength = module.MaximumLength;
 #endif
     }
@@ -2975,7 +2975,7 @@ NTSTATUS WINAPI wow64_NtUserGetIconInfo( UINT *args )
     {
         res_name32->Buffer = PtrToUlong( res_name.Buffer );
         res_name32->Length = res_name.Length;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         res_name32->MaximumLength = res_name.MaximumLength;
 #endif
     }
@@ -3126,7 +3126,7 @@ NTSTATUS WINAPI wow64_NtUserGetMessagePos( UINT *args )
     return NtUserGetMessagePos();
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserGetMonitorInfo( UINT *args )
 {
     HMONITOR monitor = get_handle( &args );
@@ -3468,7 +3468,7 @@ NTSTATUS WINAPI wow64_NtUserRegisterClassExWOW( UINT *args )
     const WNDCLASSEXW32 *wc32 = get_ptr( &args );
     UNICODE_STRING32 *name32 = get_ptr( &args );
     UNICODE_STRING32 *version32 = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const ROS_CLSMENUNAME32 *menu_name32 = get_ptr( &args );
 #else
     struct client_menu_name *menu_name = get_ptr( &args );
@@ -3477,7 +3477,7 @@ NTSTATUS WINAPI wow64_NtUserRegisterClassExWOW( UINT *args )
     DWORD flags = get_ulong( &args );
     DWORD *wow = get_ptr( &args );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UNICODE_STRING name, version, menu_string;
     ROS_CLSMENUNAME64 menu_name;
 #else
@@ -3504,7 +3504,7 @@ NTSTATUS WINAPI wow64_NtUserRegisterClassExWOW( UINT *args )
     wc.lpszClassName = UlongToPtr( wc32->lpszClassName );
     wc.hIconSm = LongToHandle( wc32->hIconSm );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     menu_name.pszClientAnsiMenuName = menu_name32->pszClientAnsiMenuName;
     menu_name.pwszClientUnicodeMenuName = menu_name32->pwszClientUnicodeMenuName;
     menu_name.pusMenuName = (ULONG_PTR)unicode_str_32to64( &menu_string, ULongToPtr( menu_name32->pusMenuName ));
@@ -3583,7 +3583,7 @@ NTSTATUS WINAPI wow64_NtUserGetThreadDesktop( UINT *args )
 {
     DWORD thread = get_ulong( &args );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HDESK console_desktop = get_handle( &args );
 
     return HandleToUlong( NtUserGetThreadDesktop( thread, console_desktop ));
@@ -3684,7 +3684,7 @@ NTSTATUS WINAPI wow64_NtUserHiliteMenuItem( UINT *args )
 
 NTSTATUS WINAPI wow64_NtUserInitializeClientPfnArrays( UINT *args )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const ROS_PFNCLIENT32 *procsA32 = get_ptr( &args );
     const ROS_PFNCLIENT32 *procsW32 = get_ptr( &args );
     const ROS_PFNCLIENTWORKER32 *workers32 = get_ptr( &args );
@@ -3823,7 +3823,7 @@ NTSTATUS WINAPI wow64_NtUserMapVirtualKeyEx( UINT *args )
 {
     UINT code = get_ulong( &args );
     UINT type = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD keyboard_id = get_ulong( &args );
     HKL layout = get_handle( &args );
 
@@ -3859,7 +3859,7 @@ static LRESULT message_call_32to64( HWND hwnd, UINT msg, WPARAM wparam, LPARAM l
 
     switch (msg)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_NCACTIVATE:
         return NtUserMessageCall( hwnd, msg, wparam, (LONG)lparam, result_info, type, ansi );
 #endif
@@ -4105,7 +4105,7 @@ NTSTATUS WINAPI wow64_NtUserMessageCall( UINT *args )
 
     switch (type)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case NtUserDefWindowProc:
         {
             LRESULT result = 0;
@@ -4132,7 +4132,7 @@ NTSTATUS WINAPI wow64_NtUserMessageCall( UINT *args )
             return TRUE;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case NtUserSendMessage:
         {
             LRESULT result = 0;
@@ -4313,7 +4313,7 @@ NTSTATUS WINAPI wow64_NtUserModifyUserStartupInfoFlags( UINT *args )
     return NtUserModifyUserStartupInfoFlags( mask, flags );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserMonitorFromPoint( UINT *args )
 {
     POINT point;
@@ -4378,7 +4378,7 @@ NTSTATUS WINAPI wow64_NtUserNotifyIMEStatus( UINT *args )
 {
     HWND hwnd = get_handle( &args );
     ULONG status = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD conversion = get_ulong( &args );
 
     return ((ROS_NTUSER_NOTIFY_IME_STATUS)NtUserNotifyIMEStatus)( hwnd, status, conversion );
@@ -4440,7 +4440,7 @@ NTSTATUS WINAPI wow64_NtUserOpenWindowStation( UINT *args )
     return HandleToUlong( NtUserOpenWindowStation( objattr_32to64( &attr, attr32 ), access ));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserSetThreadLayoutHandles( UINT *args )
 {
     HKL new_layout = get_handle( &args );
@@ -4609,7 +4609,7 @@ NTSTATUS WINAPI wow64_NtUserPrintWindow( UINT *args )
     return NtUserPrintWindow( hwnd, hdc, flags );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserProcessConnect( UINT *args )
 {
     HANDLE process = get_kernel_handle( &args );
@@ -4674,7 +4674,7 @@ NTSTATUS WINAPI wow64_NtUserQueryInputContext( UINT *args )
     return NtUserQueryInputContext( handle, attr );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserGetImeInfoEx( UINT *args )
 {
     ROS_IMEINFOEX32 *info32 = get_ptr( &args );
@@ -5009,7 +5009,7 @@ NTSTATUS WINAPI wow64_NtUserSetClassWord( UINT *args )
 
 NTSTATUS WINAPI wow64_NtUserSetClipboardData( UINT *args )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT format = get_ulong( &args );
     HANDLE handle = get_handle( &args );
     ROS_SETCLIPBDATA *scd = get_ptr( &args );
@@ -5055,7 +5055,7 @@ NTSTATUS WINAPI wow64_NtUserSetCursorIconData( UINT *args )
     HCURSOR cursor = get_handle( &args );
     UNICODE_STRING32 *module32 = get_ptr( &args );
     UNICODE_STRING32 *res_name32 = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const ROS_CURSORDATA32 *data32 = get_ptr( &args );
     ROS_CURSORDATA64 data, *frames;
     UNICODE_STRING module, res_name;
@@ -5175,7 +5175,7 @@ NTSTATUS WINAPI wow64_NtUserSetMenu( UINT *args )
 {
     HWND hwnd = get_handle( &args );
     HMENU menu = get_handle( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL repaint = get_ulong( &args );
 
     return ((ROS_NTUSER_SET_MENU)NtUserSetMenu)( hwnd, menu, repaint );
@@ -5288,7 +5288,7 @@ NTSTATUS WINAPI wow64_NtUserSetSysColors( UINT *args )
     INT count = get_ulong( &args );
     const INT *colors = get_ptr( &args );
     const COLORREF *values = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG flags = get_ulong( &args );
 
     return ((ROS_NTUSER_SET_SYS_COLORS)NtUserSetSysColors)( count, colors, values, flags );
@@ -5311,7 +5311,7 @@ NTSTATUS WINAPI wow64_NtUserSetSystemTimer( UINT *args )
     HWND hwnd = get_handle( &args );
     UINT_PTR id = get_ulong( &args );
     UINT timeout = get_ulong( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TIMERPROC proc = get_ptr( &args );
 
     return ((ROS_NTUSER_SET_TIMER)NtUserSetSystemTimer)( hwnd, id, timeout, proc );
@@ -5341,7 +5341,7 @@ NTSTATUS WINAPI wow64_NtUserSetTimer( UINT *args )
     UINT_PTR id = get_ulong( &args );
     UINT timeout = get_ulong( &args );
     TIMERPROC proc = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
     return ((ROS_NTUSER_SET_TIMER)NtUserSetTimer)( hwnd, id, timeout, proc );
 #else
@@ -5608,7 +5608,7 @@ NTSTATUS WINAPI wow64_NtUserSystemParametersInfo( UINT *args )
             if (info32->cbSize != sizeof(*info32)) return FALSE;
             if (val == sizeof(*info32)) val = sizeof(info);
             info.cbSize = sizeof(info);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             info.lpszDefaultScheme = ULongToPtr( info32->lpszDefaultScheme );
             if (!NtUserSystemParametersInfo( action, val, &info, winini )) return FALSE;
             info32->dwFlags = info.dwFlags;
@@ -5621,7 +5621,7 @@ NTSTATUS WINAPI wow64_NtUserSystemParametersInfo( UINT *args )
         }
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case SPI_SETHIGHCONTRAST:
         if (ptr)
         {
@@ -5654,7 +5654,7 @@ NTSTATUS WINAPI wow64_NtUserSystemParametersInfo( UINT *args )
         }
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case SPI_SETDESKWALLPAPER:
     case ROS_SPI_SETDESKWALLPAPERBITMAP:
         if (ptr)
@@ -5878,7 +5878,7 @@ NTSTATUS WINAPI wow64_NtUserUnregisterClass( UINT *args )
 {
     UNICODE_STRING32 *name32 = get_ptr( &args );
     HINSTANCE instance = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ROS_CLSMENUNAME32 *menu_name32 = get_ptr( &args );
 
     ROS_CLSMENUNAME64 menu_name = { 0 };
@@ -5890,7 +5890,7 @@ NTSTATUS WINAPI wow64_NtUserUnregisterClass( UINT *args )
     UNICODE_STRING name;
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = NtUserUnregisterClass( unicode_str_32to64( &name, name32 ), instance,
                                  menu_name32 ? (struct client_menu_name **)&menu_name : NULL );
     if (ret && menu_name32)
@@ -5959,7 +5959,7 @@ NTSTATUS WINAPI wow64_NtUserVkKeyScanEx( UINT *args )
 {
     WCHAR chr = get_ulong( &args );
     HKL layout = get_handle( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL use_hkl = get_ulong( &args );
 
     return ((ROS_NTUSER_VK_KEY_SCAN_EX)NtUserVkKeyScanEx)( chr, layout, use_hkl );
@@ -6005,7 +6005,7 @@ NTSTATUS WINAPI wow64_NtUserDisplayConfigGetDeviceInfo( UINT *args )
     return NtUserDisplayConfigGetDeviceInfo( packet );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtUserCallHwndOpt( UINT *args )
 {
     HWND hwnd = get_handle( &args );

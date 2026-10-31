@@ -75,7 +75,7 @@ static HRESULT FtpProtocol_open_request(Protocol *prot, IUri *uri, DWORD request
         return hres;
 
     hres = UrlUnescapeW(url, NULL, &path_size, URL_UNESCAPE_INPLACE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hres)) {
         BSTR host;
 

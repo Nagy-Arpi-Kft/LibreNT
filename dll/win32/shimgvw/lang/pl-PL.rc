@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Picture and Fax Viewer
+ * PROJECT:     LibreNT Picture and Fax Viewer
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Polish resource file
  * TRANSLATORS: Copyright 2011 Rafal Harabien <rafalh@reactos.org>
@@ -13,7 +13,7 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 
 STRINGTABLE
 BEGIN
-    IDS_APPTITLE "Przeglądarka obrazów i faksów LiberNT"
+    IDS_APPTITLE "Przeglądarka obrazów i faksów LibreNT"
     IDS_SETASDESKBG "Ustaw jako tło pulpitu"
     IDS_NOPREVIEW "Podgląd niedostępny."
     IDS_PREVIEW "Podgląd"

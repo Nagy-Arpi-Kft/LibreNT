@@ -9,4 +9,4 @@ add_library(msvcrt20 MODULE
 set_module_type(msvcrt20 win32dll ENTRYPOINT 0)
 add_importlibs(msvcrt20 msvcrt kernel32 ntdll)
 
-add_cd_file(TARGET msvcrt20 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msvcrt20 DESTINATION librent/system32 FOR all)

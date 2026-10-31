@@ -1,4 +1,4 @@
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*
  * Top level resource file for localui
  *
@@ -34,7 +34,7 @@
 
 #include "wine/wine_common_ver.rc"
 
-#include <reactos/manifest_dll.rc>
+#include <librent/manifest_dll.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

@@ -34,7 +34,7 @@ static HRESULT map_entry_init( HSTRING key, IInspectable *value, struct map_entr
 {
     HRESULT hr;
     if (FAILED(hr = WindowsDuplicateString( key, &entry->key ))) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((entry->value = value)) IInspectable_AddRef( value );
 #else
     IInspectable_AddRef( (entry->value = value) );
@@ -46,7 +46,7 @@ static void map_entry_copy( struct map_entry *dst, const struct map_entry *src )
 {
     /* key has been duplicated already and further duplication cannot fail */
     WindowsDuplicateString( src->key, &dst->key );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((dst->value = src->value)) IInspectable_AddRef( dst->value );
 #else
     IInspectable_AddRef( (dst->value = src->value) );
@@ -57,7 +57,7 @@ static void map_entry_clear( struct map_entry *entry )
 {
     WindowsDeleteString( entry->key );
     entry->key = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (entry->value) IInspectable_Release( entry->value );
 #else
     IInspectable_AddRef( entry->value );
@@ -171,7 +171,7 @@ static HRESULT WINAPI pair_get_Value( IKeyValuePair_HSTRING_IInspectable *iface,
 {
     struct pair *impl = impl_from_IKeyValuePair_HSTRING_IInspectable( iface );
     TRACE( "iface %p, value %p\n", iface, value );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((*value = impl->entry.value)) IInspectable_AddRef( *value );
 #else
     IInspectable_AddRef( (*value = impl->entry.value) );
@@ -437,7 +437,7 @@ static ULONG WINAPI map_view_Release( IMapView_HSTRING_IInspectable *iface )
 
     if (!ref)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (impl->size) map_entry_clear( impl->entries + --impl->size );
 #endif
         IMap_HSTRING_IInspectable_Release( &impl->map->IMap_HSTRING_IInspectable_iface );
@@ -474,7 +474,7 @@ static HRESULT WINAPI map_view_Lookup( IMapView_HSTRING_IInspectable *iface, HST
     TRACE( "iface %p, key %s, value %p\n", iface, debugstr_hstring( key ), value );
 
     if (FAILED(hr = map_view_check_serial( impl ))) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = NULL;
     if (!(entry = map_entries_lower_bound( impl->entries, impl->size, key, &order )) || order) return E_BOUNDS;
     if ((*value = entry->value)) IInspectable_AddRef( *value );
@@ -701,7 +701,7 @@ static HRESULT WINAPI map_Lookup( IMap_HSTRING_IInspectable *iface, HSTRING key,
 
     TRACE( "iface %p, key %s, value %p\n", iface, debugstr_hstring( key ), value );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = NULL;
     if (!(entry = map_entries_lower_bound( impl->entries, impl->size, key, &order )) || order) return E_BOUNDS;
     if ((*value = entry->value)) IInspectable_AddRef( *value );

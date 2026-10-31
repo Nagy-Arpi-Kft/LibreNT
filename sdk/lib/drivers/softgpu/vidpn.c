@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM Null/Software GPU Miniport
+ * PROJECT:     LibreNT WDDM Null/Software GPU Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VidPN DDI callbacks for softgpu.sys.
  *              Implements the Video Present Network miniport interface.
@@ -482,7 +482,7 @@ SoftGpuDdiIsSupportedVidPn(
  * SoftGpuDdiRecommendFunctionalVidPn
  *
  * Propose a functional VidPN when the OS has no prior state.
- * Since the ReactOS VidPN object model is not yet complete, we simply
+ * Since the LibreNT VidPN object model is not yet complete, we simply
  * return success without populating the VidPN object — dxgkrnl will
  * continue with whatever state it has.
  *
@@ -663,7 +663,7 @@ SoftGpuUpdateTargetModeSet(
         NewMode->VideoSignalInfo.HSyncFreq.Denominator = 1;
         NewMode->VideoSignalInfo.PixelRate = (SIZE_T)Width * Height * 60;
         NewMode->VideoSignalInfo.ScanLineOrdering = D3DDDI_VSSLO_PROGRESSIVE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         NewMode->WireFormatAndPreference.Value = 0;
         NewMode->WireFormatAndPreference.Preference = Preference;
         NewMode->WireFormatAndPreference.Rgb =
@@ -881,7 +881,7 @@ SoftGpuDdiEnumVidPnCofuncModality(
                 &UpdatedPath.ContentTransformation.RotationSupport,
                 sizeof(UpdatedPath.ContentTransformation.RotationSupport));
             UpdatedPath.ContentTransformation.RotationSupport.Identity = 1;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
             UpdatedPath.ContentTransformation.RotationSupport.Offset0 = 1;
 #endif
         }
@@ -1162,7 +1162,7 @@ SoftGpuDdiCommitVidPn(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
 /*
  * WDDM 2.3 timing transaction. The platform binding exposes a single fixed
  * firmware scanout, so this callback accepts only that pinned mode, SDR

@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS
+# PROJECT:     LibreNT
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the unchanged Raspberry Pi Windows mailbox driver sources
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -17,8 +17,8 @@ set_module_type(rpiq kmdfdriver)
 
 get_filename_component(_rpi3winsync_root "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
 target_include_directories(rpiq BEFORE PRIVATE
-    ${_rpi3winsync_root}/reactos-compat/mailbox
-    ${_rpi3winsync_root}/reactos-compat
+    ${_rpi3winsync_root}/librent-compat/mailbox
+    ${_rpi3winsync_root}/librent-compat
     ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
@@ -33,10 +33,10 @@ endif()
 target_link_libraries(rpiq ntoskrnl_vista libcntpr ${PSEH_LIB})
 add_importlibs(rpiq ntoskrnl hal)
 
-add_cd_file(TARGET rpiq DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET rpiq DESTINATION librent/system32/drivers FOR all)
 
 # StampInf normally expands the architecture token in the synchronized INF.
-# Generate the equivalent ReactOS ARM64 install metadata in the output tree.
+# Generate the equivalent LibreNT ARM64 install metadata in the output tree.
 file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/rpiq.inf.in" CONTENT [=[
 [Version]
 Signature = "$Windows NT$"
@@ -84,7 +84,7 @@ add_custom_target(rpiq_inf_files DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/rpiq.inf")
 add_cd_file(
     FILE "${CMAKE_CURRENT_BINARY_DIR}/rpiq.inf"
     TARGET rpiq_inf_files
-    DESTINATION reactos/inf
+    DESTINATION librent/inf
     FOR all)
 
 set_target_properties(rpiq PROPERTIES FOLDER "Drivers/Platform/Raspberry Pi 3")

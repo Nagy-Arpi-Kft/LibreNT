@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Automatic Testing Utility
+ * PROJECT:     LibreNT Automatic Testing Utility
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Main header file
  * COPYRIGHT:   Copyright 2009-2015 Colin Finck (colin@reactos.org)
@@ -32,7 +32,7 @@ using namespace std;
 #include <winreg.h>
 
 #include <ndk/rtlfuncs.h>
-#include <reactos/buildno.h>
+#include <librent/buildno.h>
 
 /* Class includes */
 #include "auto_array_ptr.h"

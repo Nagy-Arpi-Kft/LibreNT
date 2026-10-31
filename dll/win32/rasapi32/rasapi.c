@@ -254,7 +254,7 @@ DWORD WINAPI RasEnumDevicesA(LPRASDEVINFOA lpRasDevinfo, LPDWORD lpcb, LPDWORD l
 	if(lpRasDevinfo && lpRasDevinfo->dwSize != sizeof(RASDEVINFOA))
 		return ERROR_INVALID_SIZE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (!*lpcb) {
 		*lpcb = sizeof(RASDEVINFOA);
 		return ERROR_BUFFER_TOO_SMALL;

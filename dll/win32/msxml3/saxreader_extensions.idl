@@ -33,7 +33,7 @@ interface ISAXExtensionHandler : IUnknown
 {
     HRESULT xmldecl([in] BSTR version, [in] BSTR encoding,[in] BSTR standalone);
     HRESULT dtd([in] BSTR data, [in] struct dtd *dtd);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT endtag();
 #endif
 }

@@ -1,5 +1,5 @@
 /*
- *  ReactOS to Win32 entry points for testing
+ *  LibreNT to Win32 entry points for testing
  *
  *  ros2win.h
  *

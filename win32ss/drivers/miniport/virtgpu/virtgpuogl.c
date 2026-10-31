@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS VirtIO GPU OpenGL ICD scaffold
+ * PROJECT:     LibreNT VirtIO GPU OpenGL ICD scaffold
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     XPDM OpenGL ICD entry points for the VirtIO GPU display driver
  */
@@ -20839,9 +20839,9 @@ VirtGpuOglGetError(VOID)
 static const GLubyte * APIENTRY
 VirtGpuOglGetString(_In_ GLenum Name)
 {
-    static const GLubyte Vendor[] = "ReactOS";
+    static const GLubyte Vendor[] = "LibreNT";
     static const GLubyte Renderer[] = "VirtIO GPU transport ICD";
-    static const GLubyte Version[] = "1.1 ReactOS VirtIO GPU transport scaffold";
+    static const GLubyte Version[] = "1.1 LibreNT VirtIO GPU transport scaffold";
     static const GLubyte Extensions[] = "";
     PVIRTGPU_OGL_CONTEXT Context = VirtGpuOglCurrentContext();
 
@@ -22682,7 +22682,7 @@ VirtGpu3DCreateVirglContext(
     _In_opt_ LPCSTR DebugName)
 {
     VIRTGPU_3D_CAPS Caps;
-    static const CHAR DefaultName[] = "ReactOS VirtGpu VirGL";
+    static const CHAR DefaultName[] = "LibreNT VirtGpu VirGL";
 
     if ((Context == NULL) || !VirtGpuOglQueryCaps(hdc, &Caps))
         return FALSE;
@@ -22957,7 +22957,7 @@ DrvCreateContext(_In_ HDC hdc)
     VIRTGPU_3D_CREATE_CONTEXT Create;
     PVIRTGPU_OGL_CONTEXT Context;
     ULONG Returned;
-    static const CHAR DebugName[] = "ReactOS VirtGpu ICD";
+    static const CHAR DebugName[] = "LibreNT VirtGpu ICD";
 
     if (!VirtGpuOglQueryCaps(hdc, &Caps))
         return NULL;

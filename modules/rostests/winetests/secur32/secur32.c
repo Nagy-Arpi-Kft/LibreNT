@@ -46,7 +46,7 @@ static SECURITY_STATUS (SEC_ENTRY *pSspiPrepareForCredWrite)
     (PSEC_WINNT_AUTH_IDENTITY_OPAQUE, PCWSTR, PULONG, PCWSTR *, PCWSTR *, PUCHAR *, PULONG);
 static void (SEC_ENTRY *pSspiZeroAuthIdentity)
     (PSEC_WINNT_AUTH_IDENTITY_OPAQUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SECURITY_STATUS (SEC_ENTRY *pSspiCopyAuthIdentity)
     (PSEC_WINNT_AUTH_IDENTITY_OPAQUE, PSEC_WINNT_AUTH_IDENTITY_OPAQUE *);
 static SECURITY_STATUS (SEC_ENTRY *pSspiValidateAuthIdentity)(PSEC_WINNT_AUTH_IDENTITY_OPAQUE);
@@ -380,7 +380,7 @@ static void test_SspiEncodeStringsAsAuthIdentity(void)
     pSspiFreeAuthIdentity( id );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_SspiCopyAuthIdentity(void)
 {
     static const WCHAR username[] = {'u','s','e','r','n','a','m','e',0};
@@ -902,7 +902,7 @@ static void test_SspiPrepareForCredWrite(void)
     pSspiFreeAuthIdentity( id );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_kerberos_credentials(void)
 {
     static const ULONG bad_use[] = { 0, SECPKG_CRED_DEFAULT, SECPKG_CRED_INBOUND | SECPKG_CRED_DEFAULT,
@@ -1002,7 +1002,7 @@ static void test_kerberos(void)
     status = AcquireCredentialsHandleA( NULL, provider, SECPKG_CRED_OUTBOUND, NULL,
                                         NULL, NULL, NULL, &cred, &ttl );
     todo_wine ok( status == SEC_E_OK, "AcquireCredentialsHandleA returned %08lx\n", status );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(status == SEC_E_OK)
     {
         SecPkgCredentials_NamesA names;
@@ -1042,7 +1042,7 @@ START_TEST(secur32)
         pSspiLocalFree = (void *)GetProcAddress(secdll, "SspiLocalFree");
         pSspiPrepareForCredWrite = (void *)GetProcAddress(secdll, "SspiPrepareForCredWrite");
         pSspiZeroAuthIdentity = (void *)GetProcAddress(secdll, "SspiZeroAuthIdentity");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pSspiCopyAuthIdentity = (void *)GetProcAddress(secdll, "SspiCopyAuthIdentity");
         pSspiValidateAuthIdentity = (void *)GetProcAddress(secdll, "SspiValidateAuthIdentity");
         pSspiIsAuthIdentityEncrypted = (void *)GetProcAddress(secdll, "SspiIsAuthIdentityEncrypted");
@@ -1087,7 +1087,7 @@ START_TEST(secur32)
         test_InitSecurityInterface();
         test_SspiEncodeStringsAsAuthIdentity();
         test_SspiPrepareForCredWrite();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         test_SspiCopyAuthIdentity();
         test_SspiAuthIdentityLayout();
         test_SspiCompareAuthIdentities();

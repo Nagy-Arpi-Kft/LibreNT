@@ -1,4 +1,4 @@
-/* ReactOS WinRT compatibility tests. LGPL-2.1-or-later. */
+/* LibreNT WinRT compatibility tests. LGPL-2.1-or-later. */
 #define COBJMACROS
 #include <stdarg.h>
 #include "initguid.h"

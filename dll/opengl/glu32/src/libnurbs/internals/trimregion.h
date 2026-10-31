@@ -46,7 +46,7 @@ class Backend;
 class TrimRegion {
 public:
 			TrimRegion();
-#if defined(__REACTOS__) && defined(__clang__)
+#if defined(__LIBRENT__) && defined(__clang__)
     /* FIXME: Inspect */
     ~TrimRegion( void ) {}
 #endif

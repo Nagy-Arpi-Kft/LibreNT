@@ -53,7 +53,7 @@ extern HRESULT multi_threaded_map_create( const struct map_iids *iids, IInspecta
 extern IActivationFactory *data_writer_activation_factory;
 extern IActivationFactory *buffer_activation_factory;
 extern IActivationFactory *property_set_factory;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern IActivationFactory *value_set_factory;
 
 extern BOOLEAN metadata_type_present(HSTRING type_name);

@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <process.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <versionhelpers.h>
 #endif
 #include <sys/stat.h>
@@ -397,8 +397,8 @@ static void test__popen(const char *name)
     ret = fputs("child-to-parent\n", pipe);
     ok(ret != EOF, "fputs returned %x\n", ret);
 
-#ifdef __REACTOS__
-    if (IsReactOS())
+#ifdef __LIBRENT__
+    if (IsLibreNT())
     {
         skip("Skipping _pclose, because it hangs on reactos\n");
         return;

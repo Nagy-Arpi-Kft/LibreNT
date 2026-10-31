@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 <!-- SPDX-FileCopyrightText: 2026 Ahmed ARIF -->
 
-# Modern Mesa in the ReactOS build
+# Modern Mesa in the LibreNT build
 
 The vendored `submodules/mesa` source comes from
 https://github.com/eotics-com/reactos-mesa.git at commit
@@ -13,8 +13,8 @@ Mesa's licenses and authorship are unchanged. This integration note's GPL
 notice does not relicense Mesa or LLVM.
 
 The GitHub repository's `main` mirrors upstream development. The imported
-`ros-dev` snapshot contains the ReactOS WGL, RPi3 D3DKMT and ARM64EC port
-changes. A normal ReactOS checkout contains all source needed for the build.
+`ros-dev` snapshot contains the LibreNT WGL, RPi3 D3DKMT and ARM64EC port
+changes. A normal LibreNT checkout contains all source needed for the build.
 
 ## Enable and build
 
@@ -28,7 +28,7 @@ consume it. Current build support is llvm-mingw Clang, AMD64 or native ARM64.
 
 `ENABLE_MESA_LLVMPIPE=ON` alone builds nothing from LLVM or Mesa. Configure
 downloads `libernt-mesa-llvmpipe-<release>-<arch>.zip` from the
-`mesa-llvmpipe-<release>` LiberNT GitHub release, verifies the SHA-256 pinned in
+`mesa-llvmpipe-<release>` LibreNT GitHub release, verifies the SHA-256 pinned in
 `submodules/mesa-llvmpipe-payload.cmake`, and packages:
 
 - `mesa_llvmpipe.dll`: an LLVMpipe-only WGL ICD registered as the `MSOGL`
@@ -65,7 +65,7 @@ Ninja, Bison 2.7+, Flex, Python with Mako, packaging and PyYAML, and llvm-mingw.
 Disabled builds do not probe these optional dependencies or download LLVM.
 `MESA_BISON`, `MESA_FLEX`, and `MESA_PYTHON` select host generator tools.
 AMD64 and native ARM64 OpenGL and Lavapipe use one CMake Mesa sub-build. The
-ReactOS build does not invoke Mesa's alternative build-system files.
+LibreNT build does not invoke Mesa's alternative build-system files.
 
 CMake builds static Windows LLVM **22.1.8** from its official, SHA-256-pinned
 source archive, including the native TableGen tools needed for cross builds.
@@ -98,24 +98,24 @@ updated by CMake, and dependency fallbacks are disabled.
 - `vulkan_lvp.dll` and `lvp_icd.json`: Mesa Lavapipe's software Vulkan ICD
   and loader manifest, packaged in `reactos/system32`.
 - `vulkan-1.dll`: Khronos Vulkan Loader 1.4.354, packaged in
-  `reactos/system32`. The small ReactOS adaptation expands environment strings
+  `reactos/system32`. The small LibreNT adaptation expands environment strings
   in machine-wide ICD registry value names, allowing an image-independent
   `%SystemRoot%` path.
 - `mesa-licenses.zip`: Mesa, LLVM, Vulkan-Headers, Vulkan-Loader and
   DirectX-Headers licensing, packaged under
   `reactos/3rdParty`.
 - No Mesa replacement `opengl32.dll` or D3D12 backend is built by this target.
-  Existing ReactOS OpenGL and RPi hardware-driver paths remain.
+  Existing LibreNT OpenGL and RPi hardware-driver paths remain.
 - Enabled image builds register `mesa_gallium.dll` as the `MSOGL` fallback ICD.
-  ReactOS tries this only when neither WDDM nor XPDM publishes an ICD; missing
+  LibreNT tries this only when neither WDDM nor XPDM publishes an ICD; missing
   or unusable registration retains the built-in software fallback.
 - Enabled image builds register the Lavapipe manifest in the standard
   machine-wide Vulkan Drivers key and also set `VK_ADD_DRIVER_FILES` for
   non-elevated processes. Both are additive: a later Intel or other vendor
   Vulkan ICD remains visible to the same Khronos loader.
 
-Building/packaging the DLL does **not** prove that ReactOS discovers the ICD or
-that an application renders correctly. A focused ARM64 ReactOS QEMU probe on
+Building/packaging the DLL does **not** prove that LibreNT discovers the ICD or
+that an application renders correctly. A focused ARM64 LibreNT QEMU probe on
 2026-09-15 loaded the packaged Vulkan loader, resolved the machine-registered
 manifest to `X:\reactos\System32\lvp_icd.json`, created an instance, and
 enumerated one CPU device: `llvmpipe (LLVM 22.1.8, 128 bits)`, Vulkan 1.4.354.
@@ -140,7 +140,7 @@ successfully from `ros-dev` commit `94fe6bf842ad179af1a49d7a3ac391e1e382077a`.
 These results apply to that recorded revision; later source changes need
 separate validation.
 The same WGL probe completed 22 checks without failures with these drivers on
-native Windows 11 ARM64 (10.0.26100.1742) and ReactOS AMD64 with the software-ICD
+native Windows 11 ARM64 (10.0.26100.1742) and LibreNT AMD64 with the software-ICD
 loader change. Both reported Mesa 26.2.2 / LLVM 22.1.8 / OpenGL 4.6, rendered
 the expected green pixel, and completed buffer swap.
 
@@ -150,7 +150,7 @@ packaged test image and a diagnostic DLL alias, not today's consolidated
 `mesa_gallium.dll` installation path. The focused ARM64 LLVMpipe result above
 supersedes that limitation for the CPU path only.
 
-An additional ReactOS `wglMakeCurrent` correction rebinds an already-current
+An additional LibreNT `wglMakeCurrent` correction rebinds an already-current
 context when its destination DC changes. A paired 103-check presentation and
 rebinding probe passes on native Windows and the corrected AMD64 test image;
 the uncorrected image fails ten checks. In the recorded browser run,

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Test for x64 RtlVirtualUnwind
  * COPYRIGHT:   Copyright 2026 Jiahe Wang <wjhwjhn@gmail.com>

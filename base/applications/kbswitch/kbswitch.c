@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Keyboard Layout Switcher
+ * PROJECT:     LibreNT Keyboard Layout Switcher
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Switching Keyboard Layouts
  * COPYRIGHT:   Copyright Dmitry Chapyshev (dmitry@reactos.org)

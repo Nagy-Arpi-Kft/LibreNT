@@ -1,6 +1,6 @@
 
 include_directories(BEFORE Common
-                    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/virtio)
+                    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/virtio)
 
 add_definitions(
    -DNDIS60_MINIPORT
@@ -20,7 +20,7 @@ add_library(netkvm MODULE ${SOURCE} ndis6/parandis.rc)
 target_link_libraries(netkvm virtio)
 set_module_type(netkvm kernelmodedriver)
 add_importlibs(netkvm ndis ntoskrnl hal)
-add_cd_file(TARGET netkvm DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET netkvm DESTINATION librent/system32/drivers FOR all)
 add_driver_inf(netkvm netkvm.inf)
 
 if(NOT MSVC)

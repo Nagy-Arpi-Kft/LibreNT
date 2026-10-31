@@ -1,5 +1,5 @@
 #
-# PROJECT:     LiberNT Windows Sockets Helper for Bluetooth
+# PROJECT:     LibreNT Windows Sockets Helper for Bluetooth
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build rules
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -16,4 +16,4 @@ list(APPEND SOURCE
 add_library(wshbth MODULE ${SOURCE})
 set_module_type(wshbth win32dll UNICODE)
 add_importlibs(wshbth bluetoothapis ws2_32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET wshbth DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wshbth DESTINATION librent/system32 FOR all)

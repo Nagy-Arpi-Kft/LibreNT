@@ -413,14 +413,14 @@ static UINT WINAPI extract_cab_cb( void *arg, UINT message, UINT_PTR param1, UIN
 static BOOL extract_cabinet_file( const WCHAR *cabinet, const WCHAR *root,
                                   const WCHAR *src, const WCHAR *dst )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     static const WCHAR extW[] = {'.','c','a','b',0};
 #endif
     static const WCHAR backslashW[] = {'\\',0};
     WCHAR path[MAX_PATH];
     struct extract_cab_ctx ctx = {src, dst};
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("extract_cabinet_file(cab = '%s' ; root = '%s' ; src = '%s' ; dst = '%s')\n",
           debugstr_w(cabinet), debugstr_w(root), debugstr_w(src), debugstr_w(dst));
 #else
@@ -1150,7 +1150,7 @@ static BOOL create_full_pathW(const WCHAR *path)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_lz_compressed_file( LPCWSTR file )
 {
     static const BYTE lz_magic[] = { 0x53, 0x5a, 0x44, 0x44, 0x88, 0xf0, 0x27, 0x33 };
@@ -1176,7 +1176,7 @@ static BOOL do_file_copyW( LPCWSTR source, LPCWSTR target, DWORD style,
 {
     BOOL rc = FALSE;
     BOOL docopy = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     INT hSource, hTemp;
     OFSTRUCT OfStruct;
     WCHAR TempPath[MAX_PATH];
@@ -1189,7 +1189,7 @@ static BOOL do_file_copyW( LPCWSTR source, LPCWSTR target, DWORD style,
 
     TRACE("copy %s to %s style 0x%x\n",debugstr_w(source),debugstr_w(target),style);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Length = GetFullPathNameW(source, ARRAYSIZE(TempPath), TempPath, NULL);
     if (Length && Length < ARRAYSIZE(TempPath) &&
         (Length = GetFullPathNameW(target, ARRAYSIZE(TempFile), TempFile, NULL)) &&
@@ -1438,7 +1438,7 @@ static BOOL do_file_copyW( LPCWSTR source, LPCWSTR target, DWORD style,
 
     if (docopy)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((style & SP_COPY_FORCE_IN_USE) && GetFileAttributesW(target) != INVALID_FILE_ATTRIBUTES)
         {
             rc = FALSE;
@@ -1448,7 +1448,7 @@ static BOOL do_file_copyW( LPCWSTR source, LPCWSTR target, DWORD style,
 #endif
         rc = MoveFileExW(TempFile,target,MOVEFILE_REPLACE_EXISTING);
         TRACE("Did copy... rc was %i\n",rc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!rc && (style & (SP_COPY_IN_USE_NEEDS_REBOOT | SP_COPY_FORCE_IN_USE)) &&
             (GetLastError() == ERROR_SHARING_VIOLATION || GetLastError() == ERROR_ACCESS_DENIED))
         {
@@ -1464,7 +1464,7 @@ static BOOL do_file_copyW( LPCWSTR source, LPCWSTR target, DWORD style,
         }
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dwLastError = docopy && !rc ? GetLastError() : ERROR_SUCCESS;
     if (!bDelayed)
         DeleteFileW(TempFile);
@@ -1477,7 +1477,7 @@ static BOOL do_file_copyW( LPCWSTR source, LPCWSTR target, DWORD style,
             DeleteFileW(source);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetLastError(dwLastError);
 #endif
     return rc;
@@ -1528,7 +1528,7 @@ exit:
 /***********************************************************************
  *            SetupInstallFileExA   (SETUPAPI.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI SetupInstallFileExA( HINF hinf, PINFCONTEXT inf_context, PCSTR source, PCSTR root,
                                  PCSTR dest, DWORD style, PSP_FILE_CALLBACK_A handler,
                                  PVOID context, PBOOL in_use )
@@ -1635,7 +1635,7 @@ BOOL WINAPI SetupInstallFileW( HINF hinf, PINFCONTEXT inf_context, PCWSTR source
 /***********************************************************************
  *            SetupInstallFileExW   (SETUPAPI.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI SetupInstallFileExW( HINF hinf, PINFCONTEXT inf_context, PCWSTR source, PCWSTR root,
                                  PCWSTR dest, DWORD style, PSP_FILE_CALLBACK_W handler,
                                  PVOID context, PBOOL in_use )

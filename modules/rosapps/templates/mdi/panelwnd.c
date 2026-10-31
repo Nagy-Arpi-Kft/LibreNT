@@ -1,5 +1,5 @@
 /*
- *  ReactOS Application
+ *  LibreNT Application
  *
  *  panelwnd.c
  *

@@ -44,7 +44,7 @@
 #include "commdlg.h"
 #include "mlang.h"
 #include "mshtmhst.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     #include <shlwapi_undoc.h>
     ULONG WINAPI GetProcessOsVersion(void);
 #endif
@@ -55,12 +55,12 @@ WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 /* DLL handles for late bound calls */
 extern HINSTANCE shlwapi_hInstance;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern DWORD SHLWAPI_ThreadRef_index;
 #endif
 
 static HRESULT iunknown_query_service(IUnknown*,REFGUID,REFIID,LPVOID*);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI SHInvokeCommand(HWND hWnd, IShellFolder* lpFolder, LPCITEMIDLIST lpApidl, LPCSTR lpVerb);
 #else
 HRESULT WINAPI SHInvokeCommand(HWND,IShellFolder*,LPCITEMIDLIST,DWORD);
@@ -199,7 +199,7 @@ HANDLE WINAPI SHAllocShared(LPCVOID lpvData, DWORD dwSize, DWORD dwProcId)
   return hRet;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  * @ [SHLWAPI.510]
  *
@@ -257,7 +257,7 @@ SHLockSharedEx(HANDLE hShared, DWORD dwProcId, BOOL bWriteAccess)
  */
 PVOID WINAPI SHLockShared(HANDLE hShared, DWORD dwProcId)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return SHLockSharedEx(hShared, dwProcId, TRUE);
 #else
   HANDLE hDup;
@@ -517,7 +517,7 @@ INT WINAPI SHStringFromGUIDA(REFGUID guid, LPSTR lpszDest, INT cchMax)
   TRACE("(%s,%p,%d)\n", debugstr_guid(guid), lpszDest, cchMax);
 
   sprintf(xguid, "{%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}",
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           (unsigned long)guid->Data1, guid->Data2, guid->Data3,
 #else
           guid->Data1, guid->Data2, guid->Data3,
@@ -812,7 +812,7 @@ LONG WINAPI SHSetWindowBits(HWND hwnd, INT offset, UINT mask, UINT flags)
  */
 HWND WINAPI SHSetParentHwnd(HWND hWnd, HWND hWndParent)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   HWND hWndOld;
 
   TRACE("%p, %p\n", hWnd, hWndParent);
@@ -1772,7 +1772,7 @@ int WINAPI SHSearchMapInt(const int *lpKeys, const int *lpValues, int iLen, int 
  *      @	[SHLWAPI.200]
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI
 MayQSForward(
     _In_ IUnknown *lpUnknown,
@@ -1808,7 +1808,7 @@ HRESULT WINAPI MayQSForward(IUnknown* lpUnknown, PVOID lpReserved,
  *      @	[SHLWAPI.201]
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI
 MayExecForward(
     _In_ IUnknown *lpUnknown,
@@ -1844,7 +1844,7 @@ HRESULT WINAPI MayExecForward(IUnknown* lpUnknown, INT iUnk, REFGUID pguidCmdGro
  *      @	[SHLWAPI.202]
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI
 IsQSForward(_In_opt_ REFGUID pguidCmdGroup, _In_ ULONG cCmds, _In_ OLECMD *prgCmds)
 {
@@ -2079,20 +2079,20 @@ BOOL WINAPI FDSA_DeleteItem(FDSA_info *info, DWORD where)
  *  id   [I] Index of child Window to set the Font
  *
  * RETURNS
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
  *  VOID
 #else
  *  Success: S_OK
 #endif
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID WINAPI SHSetDefaultDialogFont(HWND hWnd, INT id)
 #else
 HRESULT WINAPI SHSetDefaultDialogFont(HWND hWnd, INT id)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HFONT hOldFont, hNewFont;
     LOGFONTW lfOldFont, lfNewFont;
     HWND hwndItem;
@@ -2171,7 +2171,7 @@ HANDLE WINAPI SHRemoveDefaultDialogFont(HWND hWnd)
  */
 HMODULE WINAPI SHPinDllOfCLSID(REFIID refiid)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HKEY newkey;
     DWORD type, count, length;
     WCHAR value[MAX_PATH], expanded[MAX_PATH], string[MAX_PATH];
@@ -2354,7 +2354,7 @@ HWND WINAPI SHCreateWorkerWindowA(WNDPROC wndProc, HWND hWndParent, DWORD dwExSt
   return hWnd;
 }
 
-#ifndef __REACTOS__ /* The followings are defined in <shlwapi_undoc.h> */
+#ifndef __LIBRENT__ /* The followings are defined in <shlwapi_undoc.h> */
 typedef struct tagPOLICYDATA
 {
   DWORD policy;        /* flags value passed to SHRestricted */
@@ -2363,7 +2363,7 @@ typedef struct tagPOLICYDATA
 } POLICYDATA, *LPPOLICYDATA;
 
 #define SHELL_NO_POLICY 0xffffffff
-#endif /* ndef __REACTOS__ */
+#endif /* ndef __LIBRENT__ */
 /*************************************************************************
  * @                          [SHLWAPI.271]
  *
@@ -2379,7 +2379,7 @@ typedef struct tagPOLICYDATA
  */
 DWORD WINAPI SHGetRestriction(LPCWSTR lpSubKey, LPCWSTR lpSubName, LPCWSTR lpValue)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR szPath[MAX_PATH];
     DWORD dwSize, dwValue = 0;
 
@@ -2436,7 +2436,7 @@ DWORD WINAPI SHGetRestriction(LPCWSTR lpSubKey, LPCWSTR lpSubName, LPCWSTR lpVal
  *  different POLICYDATA structure and implements a similar algorithm adapted to
  *  that structure.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI
 SHRestrictionLookup(
     _In_ DWORD policy,
@@ -2453,7 +2453,7 @@ DWORD WINAPI SHRestrictionLookup(
 {
 	TRACE("(0x%08lx %s %p %p)\n", policy, debugstr_w(initial), polTable, polArr);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	if (!polTable || !polArr)
 	  return 0;
 #endif
@@ -2922,7 +2922,7 @@ BOOL WINAPI PlaySoundWrapW(LPCWSTR pszSound, HMODULE hmod, DWORD fdwSound)
     return PlaySoundW(pszSound, hmod, fdwSound);
 }
 
-#ifndef __REACTOS__ /* See propbag.cpp */
+#ifndef __LIBRENT__ /* See propbag.cpp */
 /*************************************************************************
  *      @	[SHLWAPI.294]
  *
@@ -2969,7 +2969,7 @@ DWORD WINAPI SHGetIniStringW(LPCWSTR appName, LPCWSTR keyName, LPWSTR out,
 }
 #endif
 
-#ifndef __REACTOS__ /* See propbag.cpp */
+#ifndef __LIBRENT__ /* See propbag.cpp */
 /*************************************************************************
  *      @	[SHLWAPI.295]
  *
@@ -3186,7 +3186,7 @@ UINT WINAPI SHDefExtractIconWrapW(LPCWSTR pszIconFile, int iIndex, UINT uFlags, 
  *           executed.
  *  Failure: An HRESULT error code indicating the error.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C HRESULT WINAPI SHInvokeCommandWithFlagsAndSite(HWND, IUnknown*, IShellFolder*, LPCITEMIDLIST, UINT, LPCSTR);
 HRESULT WINAPI SHInvokeCommand(HWND hWnd, IShellFolder* lpFolder, LPCITEMIDLIST lpApidl, LPCSTR lpVerb)
 {
@@ -3229,7 +3229,7 @@ HRESULT WINAPI SHInvokeCommand(HWND hWnd, IShellFolder* lpFolder, LPCITEMIDLIST 
           cmIci.cbSize = sizeof(cmIci);
           cmIci.fMask = CMIC_MASK_ASYNCOK;
           cmIci.hwnd = hWnd;
-#ifdef __REACTOS__ /* r75561 */
+#ifdef __LIBRENT__ /* r75561 */
           cmIci.lpVerb = MAKEINTRESOURCEA(dwCommandId - 1);
 #else
           cmIci.lpVerb = MAKEINTRESOURCEA(dwCommandId);
@@ -3245,7 +3245,7 @@ HRESULT WINAPI SHInvokeCommand(HWND hWnd, IShellFolder* lpFolder, LPCITEMIDLIST 
   }
   return hRet;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /*************************************************************************
  *      @	[SHLWAPI.370]
@@ -3655,7 +3655,7 @@ HRESULT WINAPI CLSIDFromStringWrap(LPCWSTR idstr, CLSID *id)
     return CLSIDFromString((LPCOLESTR)idstr, id);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  * @  [SHLWAPI.438]
  */
@@ -3837,7 +3837,7 @@ VOID WINAPI ColorRGBToHLS(COLORREF cRGB, LPWORD pwHue,
     *pwSaturation = wSaturation;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct tagLOGPALETTEMAX /* Compatible with LOGPALETTE but extended */
 {
     WORD palVersion;
@@ -3849,7 +3849,7 @@ typedef struct tagLOGPALETTEMAX /* Compatible with LOGPALETTE but extended */
 /*************************************************************************
  *      SHCreateShellPalette	[SHLWAPI.@]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HPALETTE WINAPI
 SHCreateShellPalette(_In_opt_ HDC hdc)
 {
@@ -3974,7 +3974,7 @@ DWORD WINAPI SHMenuIndexFromID(HMENU hMenu, UINT uID)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  *      @	[SHLWAPI.447]
  */
@@ -4003,7 +4003,7 @@ VOID WINAPI FixSlashesAndColonW(LPWSTR lpwstr)
 }
 
 
-#ifndef __REACTOS__ /* See appcompat.c */
+#ifndef __LIBRENT__ /* See appcompat.c */
 /*************************************************************************
  *      @	[SHLWAPI.461]
  */
@@ -4066,7 +4066,7 @@ BOOL WINAPI SHSkipJunction(IBindCtx *pbc, const CLSID *pclsid)
  */
 HKEY WINAPI SHGetShellKey(DWORD flags, LPCWSTR sub_key, BOOL create)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     enum _shellkey_flags {
         SHKEY_Root_HKCU = 0x1,
         SHKEY_Root_HKLM = 0x2,
@@ -4441,7 +4441,7 @@ INT WINAPIV ShellMessageBoxW( HINSTANCE hInstance, HWND hWnd, LPCWSTR lpText,
 
     va_end(args);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uType |= MB_SETFOREGROUND;
 #endif
     ret = MessageBoxW(hWnd, pszTemp, pszTitle, uType);
@@ -4618,7 +4618,7 @@ PSECURITY_DESCRIPTOR WINAPI GetShellSecurityDescriptor(const PSHELL_USER_PERMISS
                 case ACCESS_ALLOWED_ACE_TYPE:
                     if (!AddAccessAllowedAce(pAcl, ACL_REVISION, sup->dwAccessMask, sid))
                         goto error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (sup->fInherit && !AddAccessAllowedAce(pAcl, ACL_REVISION, sup->dwInheritAccessMask, sid))
                         goto error;
 #else
@@ -4630,7 +4630,7 @@ PSECURITY_DESCRIPTOR WINAPI GetShellSecurityDescriptor(const PSHELL_USER_PERMISS
                 case ACCESS_DENIED_ACE_TYPE:
                     if (!AddAccessDeniedAce(pAcl, ACL_REVISION, sup->dwAccessMask, sid))
                         goto error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (sup->fInherit && !AddAccessDeniedAce(pAcl, ACL_REVISION, sup->dwInheritAccessMask, sid))
                         goto error;
 #else
@@ -4642,7 +4642,7 @@ PSECURITY_DESCRIPTOR WINAPI GetShellSecurityDescriptor(const PSHELL_USER_PERMISS
                 default:
                     goto error;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (sup->fInherit)
             {
                 PACE_HEADER ace;
@@ -4673,7 +4673,7 @@ free_sids:
     return psd;
 }
 
-#ifndef __REACTOS__ /* See propbag.cpp */
+#ifndef __LIBRENT__ /* See propbag.cpp */
 /***********************************************************************
  *             SHCreatePropertyBagOnRegKey [SHLWAPI.471]
  *
@@ -4797,7 +4797,7 @@ INT WINAPI SHFormatDateTimeA(const FILETIME *fileTime, DWORD *flags,
     return retval;
 }
 
-#ifndef __REACTOS__ /* See zonechk.c */
+#ifndef __LIBRENT__ /* See zonechk.c */
 /***********************************************************************
  *             ZoneCheckUrlExW [SHLWAPI.231]
  *
@@ -4863,7 +4863,7 @@ INT WINAPI SHVerbExistsNA(LPSTR verb, PVOID pUnknown, PVOID pUnknown2, DWORD dwU
 HRESULT WINAPI IUnknown_QueryServiceForWebBrowserApp(IUnknown* lpUnknown,
         REFGUID riid, LPVOID *lppOut)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IServiceProvider *pSP;
     HRESULT hr = IUnknown_QueryService(lpUnknown, &SID_STopLevelBrowser,
                                        &IID_IServiceProvider, (PVOID*)&pSP);
@@ -4881,7 +4881,7 @@ HRESULT WINAPI IUnknown_QueryServiceForWebBrowserApp(IUnknown* lpUnknown,
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT VariantChangeTypeForRead(_Inout_ VARIANTARG *pvarg, _In_ VARTYPE vt)
 {
     HRESULT hr;
@@ -5078,13 +5078,13 @@ HRESULT WINAPI SHPropertyBag_ReadSHORT(IPropertyBag *ppb, LPCWSTR pszPropName, S
  *
  * RETURNS
  *  HRESULT codes
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
  * @see https://www.geoffchappell.com/studies/windows/shell/shlwapi/api/propbag/readlong.htm
 #endif
  */
 HRESULT WINAPI SHPropertyBag_ReadLONG(IPropertyBag *ppb, LPCWSTR pszPropName, LPLONG pValue)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
     VARIANTARG varg;
 
@@ -5118,7 +5118,7 @@ HRESULT WINAPI SHPropertyBag_ReadLONG(IPropertyBag *ppb, LPCWSTR pszPropName, LP
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /**************************************************************************
  *  SHPropertyBag_ReadDWORD (SHLWAPI.507)
  *
@@ -5822,7 +5822,7 @@ DWORD WINAPI SHGetObjectCompatFlags(IUnknown *pUnk, const CLSID *clsid)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /**************************************************************************
  *  SHBoolSystemParametersInfo (SHLWAPI.537)
  *

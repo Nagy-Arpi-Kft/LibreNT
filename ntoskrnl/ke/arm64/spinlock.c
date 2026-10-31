@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * PURPOSE:         Spin lock support for ARM64
  * COPYRIGHT:       Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */

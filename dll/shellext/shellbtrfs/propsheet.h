@@ -19,7 +19,7 @@
 
 #include <shlobj.h>
 #include <deque>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"

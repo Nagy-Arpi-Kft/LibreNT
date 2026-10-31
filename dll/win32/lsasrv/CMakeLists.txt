@@ -1,12 +1,12 @@
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys/lsass)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys/lsass)
 
 add_rpc_files(server
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/dssetup.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/lsa.idl)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/dssetup.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/lsa.idl)
 spec2def(lsasrv.dll lsasrv.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -40,4 +40,4 @@ set_module_type(lsasrv win32dll UNICODE)
 target_link_libraries(lsasrv wine ${PSEH_LIB})
 add_importlibs(lsasrv samsrv rpcrt4 msvcrt kernel32 advapi32 ntdll)
 add_pch(lsasrv lsasrv.h SOURCE)
-add_cd_file(TARGET lsasrv DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET lsasrv DESTINATION librent/system32 FOR all)

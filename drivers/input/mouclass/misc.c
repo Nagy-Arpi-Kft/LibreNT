@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Mouse class driver
+ * PROJECT:         LibreNT Mouse class driver
  * FILE:            drivers/input/mouclass/misc.c
  * PURPOSE:         Miscellaneous operations
  *

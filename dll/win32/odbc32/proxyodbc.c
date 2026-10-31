@@ -29,7 +29,7 @@
 #include "winternl.h"
 #include "winreg.h"
 #include "winnls.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/debug.h"
 #endif
 
@@ -38,7 +38,7 @@
 #include "sqlext.h"
 #include "unixlib.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef TRACE_ON
 #include "wine/debug.h"
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
@@ -46,7 +46,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(odbc);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define ODBC_CALL( func, params ) ((void)(params), SQL_ERROR)
 #else
 #define ODBC_CALL( func, params ) WINE_UNIX_CALL( unix_ ## func, params )
@@ -8579,7 +8579,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD reason, LPVOID reserved)
     {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls(hinstDLL);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (!__wine_init_unix_call())
         {
             if (WINE_UNIX_CALL( process_attach, NULL )) __wine_unixlib_handle = 0;
@@ -8599,7 +8599,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD reason, LPVOID reserved)
         break;
 
     case DLL_PROCESS_DETACH:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (__wine_unixlib_handle) WINE_UNIX_CALL( process_detach, NULL );
 #endif
         if (reserved) break;

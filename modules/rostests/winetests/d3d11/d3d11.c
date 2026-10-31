@@ -37537,7 +37537,7 @@ START_TEST(d3d11)
         return;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((wined3d = GetModuleHandleA("d3dwine.dll")))
 #else
     if ((wined3d = GetModuleHandleA("wined3d.dll")))

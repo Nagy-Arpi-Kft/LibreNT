@@ -9,4 +9,4 @@ list(APPEND SOURCE
 add_library(rstrtmgr MODULE ${SOURCE})
 set_module_type(rstrtmgr win32dll UNICODE)
 add_importlibs(rstrtmgr advapi32 user32 psapi version rpcrt4 msvcrt kernel32 ntdll)
-add_cd_file(TARGET rstrtmgr DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rstrtmgr DESTINATION librent/system32 FOR all)

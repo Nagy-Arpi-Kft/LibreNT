@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM Null/Software GPU Miniport
+ * PROJECT:     LibreNT WDDM Null/Software GPU Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DMA command scheduling DDIs for softgpu.sys.
  *              Implements SubmitCommand, PreemptCommand, BuildPagingBuffer,
@@ -622,7 +622,7 @@ typedef struct _SOFTGPU_EXECUTION_RESULT
 {
     SOFTGPU_EXECUTION_OUTCOME Outcome;
     ULONG                     ResumeOffset;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     BOOLEAN                   MonitoredFenceSignaled;
 #endif
     D3DGPU_VIRTUAL_ADDRESS    FaultedVirtualAddress;
@@ -859,7 +859,7 @@ SoftGpuExecuteDmaBuffer(
                                          DXGK_GENERAL_ERROR_PAGE_FAULT);
                 break;
             }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
             Result->MonitoredFenceSignaled = TRUE;
 #endif
         }
@@ -970,7 +970,7 @@ SoftGpuDpcRoutine(
     BOOLEAN                      HaveSubmit;
     BOOLEAN                      HaveCompletion = FALSE;
     BOOLEAN                      HaveFault = FALSE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     BOOLEAN                      HaveMonitoredSignal = FALSE;
 #endif
 
@@ -1023,7 +1023,7 @@ SoftGpuDpcRoutine(
                 SOFTGPU_EXECUTION_RESULT ExecuteResult;
 
                 SoftGpuExecuteDmaBuffer(Device, &Submit, &ExecuteResult);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
                 if (ExecuteResult.MonitoredFenceSignaled)
                     HaveMonitoredSignal = TRUE;
 #endif
@@ -1050,7 +1050,7 @@ SoftGpuDpcRoutine(
                     SOFTGPU_FAULT_RETIREMENT FaultRetirement;
 
                     SoftGpuFaultPolicyRetire(
-                        REACTOS_WDDM_TARGET_LEVEL,
+                        LIBRENT_WDDM_TARGET_LEVEL,
                         HeadIndex,
                         Submit.Fence,
                         Engine->CompletedFence,
@@ -1060,7 +1060,7 @@ SoftGpuDpcRoutine(
                     Engine->CompletedFence =
                         FaultRetirement.CompletedFence;
                     Engine->EngineActive = 0;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
                     /*
                      * A fault is terminal for this one packet, not a completed
                      * fence watermark. Consume its ring slot and stop so the OS
@@ -1105,13 +1105,13 @@ SoftGpuDpcRoutine(
     }
     KeReleaseSpinLock(&Device->FenceLock, OldIrql);
     if (!HaveCompletion && !HaveFault
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         && !HaveMonitoredSignal
 #endif
         )
         return;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     /*
      * The engine has already performed the mapped fence write.  Publish its
      * type-11 handoff before the completion/fault payload for the same
@@ -1150,7 +1150,7 @@ SoftGpuDpcRoutine(
             &NotifyData);
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (HaveFault &&
         Device->DxgkInterface.DxgkCbNotifyInterrupt != NULL)
     {
@@ -1383,7 +1383,7 @@ SoftGpuDdiSubmitCommand(
         KeReleaseSpinLock(&Device->FenceLock, OldIrql);
         return STATUS_INVALID_HANDLE;
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     Process = KmdDevice->Process;
     if (Process == NULL ||
         Process->Magic != SOFTGPU_PROCESS_MAGIC ||
@@ -1429,7 +1429,7 @@ SoftGpuDdiSubmitCommand(
         Entry->Fence = SubmitCommand->SubmissionFenceId;
         Entry->NullRendering =
             SubmitCommand->Flags.NullRendering ? TRUE : FALSE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         SoftGpuGpuVaSubmissionSnapshot(
             &Process->Root,
             Process->hDxgkProcess,
@@ -1533,7 +1533,7 @@ SoftGpuResolveDmaOwner(
         {
             return STATUS_INVALID_HANDLE;
         }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         if (Context->Process == NULL ||
             Context->Process != KmdDevice->Process)
         {
@@ -1556,7 +1556,7 @@ SoftGpuResolveDmaOwner(
     Device = KmdDevice->Adapter;
     if (Device == NULL || Device->Magic != SOFTGPU_DEVICE_MAGIC)
         return STATUS_INVALID_HANDLE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (KmdDevice->Process == NULL ||
         KmdDevice->Process->Magic != SOFTGPU_PROCESS_MAGIC ||
         KmdDevice->Process->Adapter != Device)
@@ -1917,7 +1917,7 @@ SoftGpuDdiRender(
 
             case SOFTGPU_CMD_OP_SIGNAL_FENCE:
             case SOFTGPU_CMD_OP_WAIT_FENCE:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
                 /* GPU synchronization against a monitored fence the caller
                  * mapped into its own GPU address space; the engine resolves
                  * the address through that process's page tables, so an
@@ -2113,7 +2113,7 @@ SoftGpuDdiBuildPagingBuffer(
             return STATUS_SUCCESS;
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         case DXGK_OPERATION_UPDATE_PAGE_TABLE:
         {
             /* VidMm supplies a separate descriptor snapshot. The miniport
@@ -2176,7 +2176,7 @@ SoftGpuDdiBuildPagingBuffer(
 
         case DXGK_OPERATION_NOTIFY_RESIDENCY:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case DXGK_OPERATION_SIGNAL_MONITORED_FENCE:
         {
             CONST DXGK_BUILDPAGINGBUFFER_SIGNALMONITOREDFENCE *Signal =
@@ -2299,7 +2299,7 @@ SoftGpuDdiPatch(
     {
         return STATUS_INVALID_HANDLE;
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (KmdDevice->Process == NULL ||
         KmdDevice->Process->Magic != SOFTGPU_PROCESS_MAGIC ||
         KmdDevice->Process->Adapter != Device)
@@ -2740,7 +2740,7 @@ SoftGpuDdiCreateContext(
     {
         return STATUS_INVALID_PARAMETER;
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if ((!CreateContext->Flags.SystemContext && Process == NULL) ||
         (Process != NULL &&
          (Process->Magic != SOFTGPU_PROCESS_MAGIC ||

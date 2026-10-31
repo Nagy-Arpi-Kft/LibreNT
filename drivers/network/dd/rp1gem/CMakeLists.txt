@@ -1,5 +1,5 @@
 #
-# PROJECT:     ReactOS RP1 Ethernet Driver
+# PROJECT:     LibreNT RP1 Ethernet Driver
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # FILE:        drivers/network/dd/rp1gem/CMakeLists.txt
 # PURPOSE:     RP1 Ethernet miniport build rules
@@ -21,5 +21,5 @@ add_library(rp1gem MODULE ${SOURCE} rp1gem.rc)
 add_pch(rp1gem rp1gem.h SOURCE)
 set_module_type(rp1gem kernelmodedriver)
 add_importlibs(rp1gem ndis ntoskrnl hal)
-add_cd_file(TARGET rp1gem DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET rp1gem DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(rp1gem netrp1gem.inf)

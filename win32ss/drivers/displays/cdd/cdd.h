@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Canonical Display Driver (cdd.dll)
+ * PROJECT:     LibreNT Canonical Display Driver (cdd.dll)
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM canonical GDI display driver - private declarations.
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -30,7 +30,7 @@
 
 /* DWM composition contract (CDD_ESCAPE_*, IOCTL_VIDEO_DXGK_*): shared with
  * win32k and dxgkrnl. */
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 
 #define RCDD_DISPLAY_TILE_DIMENSION 9
 #define RCDD_DISPLAY_TILE_COUNT \

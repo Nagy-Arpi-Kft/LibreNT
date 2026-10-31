@@ -330,7 +330,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_device_EnqueueSetEvent(IWineDXGIDevice *if
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void STDMETHODCALLTYPE dxgi_device_Trim(IWineDXGIDevice *iface)
 {
     struct dxgi_device *device = impl_from_IWineDXGIDevice(iface);
@@ -444,7 +444,7 @@ static ULONG STDMETHODCALLTYPE dxgi_swapchain_factory_Release(IWineDXGISwapChain
     return dxgi_device_Release(&device->IWineDXGIDevice_iface);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Windowed rendering does not need the adapter to drive an enumerated
  * output. Fall back to its first output, which is not enumerated. */
 static HRESULT dxgi_get_rendering_output(struct dxgi_factory *factory, struct dxgi_adapter *adapter,
@@ -472,7 +472,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_swapchain_factory_create_swapchain(IWineDX
     struct IDXGIOutput *containing_output;
     struct dxgi_factory *dxgi_factory;
     struct d3d11_swapchain *object;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL composition = !window;
 #endif
     HRESULT hr;
@@ -486,7 +486,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_swapchain_factory_create_swapchain(IWineDX
         return E_FAIL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     switch (desc->Format)
     {
         case DXGI_FORMAT_R8G8B8A8_UNORM: case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
@@ -543,7 +543,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_swapchain_factory_create_swapchain(IWineDX
         free(object);
         return hr;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     object->alpha_mode = desc->AlphaMode;
     object->flags = desc->Flags;
     object->usage = desc->BufferUsage;
@@ -643,7 +643,7 @@ HRESULT dxgi_device_init(struct dxgi_device *device, struct dxgi_device_layer *l
     }
 
     window = dxgi_factory_get_device_window(dxgi_factory);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The implicit swapchain only supplies the rendering context. */
     if (FAILED(hr = dxgi_get_rendering_output(dxgi_factory, dxgi_adapter, window, &output)))
 #else

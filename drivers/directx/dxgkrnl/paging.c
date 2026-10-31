@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VidMm paging-operation state machine
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -127,14 +127,14 @@ DxgkpPagingPrepareBuildBuffer(
     BuildArgs->DmaSize = DmaBuffer->Capacity - WriteOffset;
     BuildArgs->hSystemContext =
         Adapter->PagingSystemContext->hMiniportContext;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     BuildArgs->DmaBufferGpuVirtualAddress = DmaBuffer->GpuVirtualAddress;
     BuildArgs->DmaBufferWriteOffset = WriteOffset;
 #endif
     DxgkpPagingPreparePrivateData(DmaBuffer, BuildArgs);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 static BOOLEAN
 DxgkpPagingMonitoredFenceSignalSupported(
     _In_opt_ PDXGKRNL_ADAPTER Adapter)
@@ -145,7 +145,7 @@ DxgkpPagingMonitoredFenceSignalSupported(
            (!Adapter->GpuMmuCapsValid ||
             Adapter->GpuMmuCaps.PageTableUpdateMode == DXGK_PAGETABLEUPDATE_CPU_VIRTUAL) &&
            DxgkPagingCoreShouldAppendMonitoredSignal(
-               REACTOS_WDDM_TARGET_LEVEL,
+               LIBRENT_WDDM_TARGET_LEVEL,
                DxgkCapsCoreInterfaceVersionToLevel(
                    Adapter->MiniportContext->InitData.s.Version),
                TRUE,
@@ -558,7 +558,7 @@ DxgkPagingExecuteBatch(
     PDXGKRNL_DMA_BUFFER DmaBuffer = NULL;
     DXGKRNL_TRACK_DMA_ARGS TrackArgs;
     PUCHAR FinalCursor = NULL;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     PVOID SignalSyncObjectReference = NULL;
     D3DGPU_VIRTUAL_ADDRESS SignalFenceGpuVa = 0;
     BOOLEAN BuildGpuSignal = FALSE;
@@ -593,7 +593,7 @@ DxgkPagingExecuteBatch(
         return STATUS_DEVICE_NOT_READY;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (hSignalSyncObject != 0 &&
         DxgkpPagingMonitoredFenceSignalSupported(Adapter))
     {
@@ -641,14 +641,14 @@ DxgkPagingExecuteBatch(
     BufferBytes = DxgkpPagingBufferBytes(Adapter);
     if (OperationCount <=
         DXGKP_PAGING_MAX_BUFFER_BYTES / PAGE_SIZE
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
             - (BuildGpuSignal ? 1 : 0)
 #endif
         )
     {
         ULONG Estimate =
             OperationCount
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
             + (BuildGpuSignal ? 1 : 0)
 #endif
             ;
@@ -784,7 +784,7 @@ DxgkPagingExecuteBatch(
             }
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         if (BuildGpuSignal && !RetryLarger)
         {
             ULONG MultipassOffset = 0;
@@ -918,7 +918,7 @@ DxgkPagingExecuteBatch(
     BytesUsed = (ULONG)(FinalCursor - (PUCHAR)DmaBuffer->VirtualAddress);
     if (BytesUsed == 0)
     {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         if (DxgkPagingCoreNoWorkSignalRoute(
                 hSignalSyncObject != 0,
                 SignalSyncObjectReference != NULL) ==
@@ -947,7 +947,7 @@ DxgkPagingExecuteBatch(
     TrackArgs.Device = Device;
     TrackArgs.hSignalSyncObject = hSignalSyncObject;
     TrackArgs.SignalFenceValue = SignalFenceValue;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     TrackArgs.SignalSyncObjectReference =
         SignalSyncObjectReference;
     TrackArgs.SignalWrittenByGpu = SignalWrittenByGpu;
@@ -990,7 +990,7 @@ DxgkPagingExecuteBatch(
 Cleanup:
     if (DmaBuffer != NULL)
         DxgkFreeDmaBuffer(DmaBuffer);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (SignalSyncObjectReference != NULL)
     {
         DxgkSyncObjectReleaseTrackedSignal(
@@ -1120,7 +1120,7 @@ DxgkPagingExecute(
     if (hSignalSyncObject == 0 && DxgkpPagingOperationIsImmediate(Adapter, Op))
         return DxgkpPagingBuildImmediate(Adapter, Op);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (hSignalSyncObject != 0 &&
         DxgkpPagingMonitoredFenceSignalSupported(Adapter))
     {

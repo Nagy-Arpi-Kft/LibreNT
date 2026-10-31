@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS NT Library
+ * PROJECT:         LibreNT NT Library
  * FILE:            dll/ntdll/rtl/exit.c
  * PURPOSE:         RtlExitUserProcess implementation
  */

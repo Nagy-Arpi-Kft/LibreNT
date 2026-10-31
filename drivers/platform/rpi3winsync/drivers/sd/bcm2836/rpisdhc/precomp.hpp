@@ -2,7 +2,7 @@
 //    Copyright (C) Microsoft.  All rights reserved.
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntddk.h>
 #else
 #include <Ntddk.h>

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT
+ * PROJECT:     LibreNT CRT
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of _finite.
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

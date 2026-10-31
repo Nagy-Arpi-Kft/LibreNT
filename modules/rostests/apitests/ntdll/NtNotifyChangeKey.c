@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Synchronous registry notification filtering and cancellation
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -38,7 +38,7 @@ static DWORD WINAPI waiter(void *p)
 START_TEST(NtNotifyChangeKey)
 {
     WCHAR path[96];
-    _snwprintf(path, sizeof(path) / sizeof(path[0]), L"Software\\ReactOSNotifyTest_%lu", GetCurrentProcessId());
+    _snwprintf(path, sizeof(path) / sizeof(path[0]), L"Software\\LibreNTNotifyTest_%lu", GetCurrentProcessId());
     notify = (NotifyFn)GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "NtNotifyChangeKey");
     CHECK(notify != 0);
     if (!notify)

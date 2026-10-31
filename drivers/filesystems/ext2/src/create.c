@@ -298,7 +298,7 @@ Ext2LookupFile (
         LockAcquired = TRUE;
 
         bNotFollow = IsFlagOn(Linkdep, EXT2_LOOKUP_NOT_FOLLOW);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         Linkdep = ClearFlag(Linkdep, EXT2_LOOKUP_FLAG_MASK);
 #else
         ClearFlag(Linkdep, EXT2_LOOKUP_FLAG_MASK);
@@ -849,7 +849,7 @@ Ext2CreateFile(
     ULONG               CreateDisposition;
 
     BOOLEAN             bParentFcbCreated = FALSE;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     BOOLEAN             bDir = FALSE;
 #endif
     BOOLEAN             bFcbAllocated = FALSE;
@@ -1020,7 +1020,7 @@ McbExisting:
             UNICODE_STRING  RealName;
             UNICODE_STRING  RemainName;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             LONG            i = 0;
 #endif
 

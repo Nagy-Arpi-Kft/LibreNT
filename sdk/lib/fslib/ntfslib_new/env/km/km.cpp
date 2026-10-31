@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NTFS library
+ * PROJECT:     LibreNT NTFS library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Kernelmode glue
  * COPYRIGHT:   Copyright 2024 Justin Miller <justin.miller@reactos.org>

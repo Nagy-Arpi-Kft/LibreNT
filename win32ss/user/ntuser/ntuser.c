@@ -1,6 +1,6 @@
 /*
  *  COPYRIGHT:        See COPYING in the top level directory
- *  PROJECT:          ReactOS kernel
+ *  PROJECT:          LibreNT kernel
  *  PURPOSE:          ntuser init. and main funcs.
  *  FILE:             win32ss/user/ntuser/ntuser.c
  */
@@ -163,8 +163,8 @@ InitUserAtoms(VOID)
     AtomDDETrack = IntAddGlobalAtom(L"SysDT", TRUE);
     AtomQOS      = IntAddGlobalAtom(L"SysQOS", TRUE);
     AtomImeLevel = IntAddGlobalAtom(L"SysIMEL", TRUE);
-    AtomTouchWindow = IntAddGlobalAtom(L"ReactOS.TouchWindow", TRUE);
-    AtomDwmDarkMode = IntAddUserPropertyAtom(L"ReactOS.Dwm.ImmersiveDarkMode");
+    AtomTouchWindow = IntAddGlobalAtom(L"LibreNT.TouchWindow", TRUE);
+    AtomDwmDarkMode = IntAddUserPropertyAtom(L"LibreNT.Dwm.ImmersiveDarkMode");
     AtomDwmSystemBackdropType = IntAddUserPropertyAtom(DWM_PROP_SYSTEM_BACKDROP_TYPE);
     AtomDwmBackdropOpacity = IntAddUserPropertyAtom(DWM_PROP_BACKDROP_OPACITY);
     AtomDwmBackdropColor = IntAddUserPropertyAtom(DWM_PROP_BACKDROP_COLOR);

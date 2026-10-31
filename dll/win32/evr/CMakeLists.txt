@@ -16,5 +16,5 @@ target_link_libraries(evr mfuuid strmiids strmbase uuid dxguid wine wine_dll_can
 add_importlibs(evr ole32 oleaut32 user32 d3d9 dxva2 msvcrt kernel32 ntdll)
 add_delay_importlibs(evr mfplat)
 add_dependencies(evr dxsdk evr_idlheaders)
-add_cd_file(TARGET evr DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET evr DESTINATION librent/system32 FOR all)
 set_wine_module(evr)

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NTFS library
+ * PROJECT:     LibreNT NTFS library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Mutate the NTFS $I30 directory index
  */

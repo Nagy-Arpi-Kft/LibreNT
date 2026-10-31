@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/arch/common/acpi/tables.c
  * PURPOSE:         ACPI table discovery and cache shared by the ACPI HALs
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

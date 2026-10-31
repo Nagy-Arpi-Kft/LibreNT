@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     USB boot keyboard input for the kernel debugger during a bug check
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include <ntoskrnl.h>
-#include <reactos/drivers/dumpstor.h>
+#include <librent/drivers/dumpstor.h>
 #include "kd.h"
 #include "kdterminal.h"
 

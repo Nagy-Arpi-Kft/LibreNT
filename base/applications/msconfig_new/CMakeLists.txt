@@ -4,7 +4,7 @@ PROJECT(msconfig_new)
 include_directories(
     .
     comctl32ex
-    ${REACTOS_SOURCE_DIR}/sdk/include/c++)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/c++)
 
 list(APPEND C_SOURCE
     comctl32ex/comctl32supp.c
@@ -35,4 +35,4 @@ set_module_type(msconfig_new win32gui UNICODE)
 target_link_libraries(msconfig_new comsupp cpprt atl_classes)
 set_target_cpp_properties(msconfig_new WITH_EXCEPTIONS)
 add_importlibs(msconfig_new user32 gdi32 comctl32 comdlg32 advapi32 version ole32 oleaut32 msxml3 shell32 shlwapi msvcrt kernel32)
-add_cd_file(TARGET msconfig_new DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msconfig_new DESTINATION librent/system32 FOR all)

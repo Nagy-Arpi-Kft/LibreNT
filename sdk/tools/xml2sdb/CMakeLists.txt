@@ -6,12 +6,12 @@ list(APPEND SOURCE
     tinyxml2.cpp
     xml2sdb.cpp
     xml2sdb.h
-    ${REACTOS_SOURCE_DIR}/dll/appcompat/apphelp/sdbwrite.c
-    ${REACTOS_SOURCE_DIR}/dll/appcompat/apphelp/sdbstringtable.c)
+    ${LIBRENT_SOURCE_DIR}/dll/appcompat/apphelp/sdbwrite.c
+    ${LIBRENT_SOURCE_DIR}/dll/appcompat/apphelp/sdbstringtable.c)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/dll/appcompat/apphelp
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/appcompat)
+    ${LIBRENT_SOURCE_DIR}/dll/appcompat/apphelp
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/appcompat)
 add_host_tool(xml2sdb ${SOURCE})
 target_link_libraries(xml2sdb PRIVATE host_includes)
 

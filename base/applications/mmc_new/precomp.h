@@ -1,7 +1,7 @@
 /*
- * PROJECT:     ReactOS Management Console
+ * PROJECT:     LibreNT Management Console
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
- * PURPOSE:     Precompiled Header for ReactOS Management Console
+ * PURPOSE:     Precompiled Header for LibreNT Management Console
  * COPYRIGHT:   Copyright 2006-2007 Thomas Weidenmueller
  *              Copyright 2017 Mark Jansen (mark.jansen@reactos.org)
  */
@@ -26,7 +26,7 @@
 #include <shlwapi.h>
 #include <wincon.h>
 #include <shlobj.h>
-#include <reactos/debug.h>
+#include <librent/debug.h>
 #include <shellutils.h>
 #include <shellapi.h>
 #include <msxml2.h>

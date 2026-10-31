@@ -59,7 +59,7 @@ static HRESULT WINAPI tables_QueryInterface(IMetaDataTables *iface, REFIID iid, 
         IMetaDataTables_AddRef((*out = iface));
         return S_OK;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(&IID_IMetaDataImport, iid) || IsEqualGUID(&IID_IMetaDataImport2, iid))
 #else
     if (IsEqualGUID(&IID_IMetaDataImport, iid))
@@ -1166,7 +1166,7 @@ static HRESULT token_get_parent_typedef(IMetaDataImport *iface, mdToken token, t
 
     TRACE("(%p, %s, %p, %p)\n", iface, debugstr_mdToken(token), enum_func, parent);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     assert(type == mdtMethodDef || type == mdtFieldDef || type == mdtProperty || type == mdtEvent);
 #else
     assert(type == mdtMethodDef || type == mdtFieldDef || type == mdtProperty);
@@ -1317,7 +1317,7 @@ static HRESULT WINAPI import_EnumProperties(IMetaDataImport *iface, HCORENUM *re
 static HRESULT WINAPI import_EnumEvents(IMetaDataImport *iface, HCORENUM *henum, mdTypeDef type_def, mdEvent *events,
                                         ULONG len, ULONG *count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct metadata_tables *impl = impl_from_IMetaDataImport(iface);
     ULONG num_eventmap_rows, i;
     HRESULT hr;
@@ -1362,7 +1362,7 @@ static HRESULT WINAPI import_GetEventProps(IMetaDataImport *iface, mdEvent event
                                            mdMethodDef *fire_method, mdMethodDef *other_methods, ULONG other_len,
                                            ULONG *other_count)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     mdToken parent = mdTypeDefNil, type = mdTypeRefNil, add = mdMethodDefNil, remove = mdMethodDefNil;
     mdToken fire = mdMethodDefNil;
     struct metadata_tables *impl = impl_from_IMetaDataImport(iface);
@@ -1976,7 +1976,7 @@ static HRESULT WINAPI import_IsGlobal(IMetaDataImport *iface, mdToken token, int
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI import2_EnumGenericParams(IMetaDataImport2 *iface, HCORENUM *henum, mdToken token,
                                                 mdGenericParam *params, ULONG len, ULONG *count)
 {
@@ -2121,7 +2121,7 @@ static const IMetaDataImportVtbl import_vtbl = {
     import_GetNestedClassProps,
     import_GetNativeCallConvFromSig,
     import_IsGlobal
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 },
     import2_EnumGenericParams,
     import2_GetGenericParamProps,
@@ -2147,7 +2147,7 @@ HRESULT IMetaDataTables_create_from_file(const WCHAR *path, IMetaDataTables **if
     }
 
     impl->IMetaDataTables_iface.lpVtbl = &tables_vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     impl->IMetaDataImport_iface.lpVtbl = &import2_vtbl.import;
 #else
     impl->IMetaDataImport_iface.lpVtbl = &import_vtbl;
@@ -2170,7 +2170,7 @@ HRESULT IMetaDataTables_create_from_data(const BYTE *data, ULONG data_size, IMet
     }
 
     impl->IMetaDataTables_iface.lpVtbl = &tables_vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     impl->IMetaDataImport_iface.lpVtbl = &import2_vtbl.import;
 #else
     impl->IMetaDataImport_iface.lpVtbl = &import_vtbl;

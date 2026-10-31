@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS system libraries
+ * PROJECT:     LibreNT system libraries
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     AppContainer profile functions
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>

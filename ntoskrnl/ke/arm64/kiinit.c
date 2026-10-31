@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/ke/arm64/kiinit.c
  * PURPOSE:         Kernel initialization stubs for ARM64
@@ -1314,7 +1314,7 @@ KiInitializeSystem(_Inout_ PLOADER_PARAMETER_BLOCK LoaderBlock)
         /*
          * PAN (Privileged Access Never):
          *
-         * ReactOS currently performs a number of kernel-mode accesses to user
+         * LibreNT currently performs a number of kernel-mode accesses to user
          * virtual addresses (e.g. ProbeForWrite) without explicit uaccess guards.
          * If PAN is enabled, these accesses will repeatedly fault with a
          * permission fault (DFSC=0xB) and can wedge early boot.

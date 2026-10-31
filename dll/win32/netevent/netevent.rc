@@ -1,7 +1,7 @@
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Network Event Handler"
-#define REACTOS_STR_INTERNAL_NAME     "netevent"
-#define REACTOS_STR_ORIGINAL_FILENAME "netevent.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Network Event Handler"
+#define LIBRENT_STR_INTERNAL_NAME     "netevent"
+#define LIBRENT_STR_ORIGINAL_FILENAME "netevent.dll"
+#include <librent/version.rc>
 
 #include <neteventmsg.rc>

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ComPort Library for NEC PC-98 series
+ * PROJECT:     LibreNT ComPort Library for NEC PC-98 series
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     NEC PC-98 series UART support routines
  * COPYRIGHT:   Copyright 2020-2026 Dmitry Borisov <di.sean@protonmail.com>

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     UEFI GOP-specific boot UI helpers
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF (arif.ing@outlook.com)
@@ -238,7 +238,7 @@ InbvGopComputeWordmarkRect(
     if (!Rect)
         return FALSE;
 
-    Header = (PBITMAPINFOHEADER)InbvGetResourceAddress(IDB_REACTOS_GOP_LOGO);
+    Header = (PBITMAPINFOHEADER)InbvGetResourceAddress(IDB_LIBRENT_GOP_LOGO);
     if (!InbvGopValidateWordmarkHeader(Header))
         return FALSE;
 
@@ -1101,7 +1101,7 @@ InbvGopDrawWordmark(
     ULONG RedShift = 0, GreenShift = 0, BlueShift = 0;
     ULONG RedMax = 0, GreenMax = 0, BlueMax = 0;
 
-    Bitmap = InbvGetResourceAddress(IDB_REACTOS_GOP_LOGO);
+    Bitmap = InbvGetResourceAddress(IDB_LIBRENT_GOP_LOGO);
     Header = (PBITMAPINFOHEADER)Bitmap;
     if (!InbvGopValidateWordmarkHeader(Header))
         return FALSE;
@@ -1266,7 +1266,7 @@ InbvGopHandleBootBitmap(VOID)
 
     if (!WordmarkDrawn)
     {
-        static const CHAR LoadingMsg[] = "ReactOS";
+        static const CHAR LoadingMsg[] = "LibreNT";
         ULONG CharW;
         ULONG msgPx;
         ULONG x;

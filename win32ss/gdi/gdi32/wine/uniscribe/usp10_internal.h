@@ -269,7 +269,7 @@ void SHAPE_ApplyDefaultOpentypeFeatures(HDC hdc, ScriptCache *psc, SCRIPT_ANALYS
 void SHAPE_ApplyOpenTypePositions(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa,
                                   const WORD *glyphs, INT cGlyphs, int *piAdvance, GOFFSET *goffset );
 HRESULT SHAPE_CheckFontForRequiredFeatures(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT SHAPE_CharGlyphProp(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR *pwcChars,
 #else
 void SHAPE_CharGlyphProp(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR *pwcChars,
@@ -295,7 +295,7 @@ void Indic_ParseSyllables(HDC hdc, SCRIPT_ANALYSIS *psa, ScriptCache *psc, const
                           unsigned int cChar, IndicSyllable **syllables, int *syllable_count,
                           lexical_function lex, BOOL modern);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT BREAK_line(const WCHAR *chars, int count, const SCRIPT_ANALYSIS *sa, SCRIPT_LOGATTR *la);
 #else
 void BREAK_line(const WCHAR *chars, int count, const SCRIPT_ANALYSIS *sa, SCRIPT_LOGATTR *la);
@@ -309,7 +309,7 @@ int OpenType_apply_GSUB_lookup(const void *table, unsigned int lookup_index, WOR
 unsigned int OpenType_apply_GPOS_lookup(const ScriptCache *psc, const OUTLINETEXTMETRICW *otm,
         const LOGFONTW *logfont, const SCRIPT_ANALYSIS *analysis, int *advance, unsigned int lookup_index,
         const WORD *glyphs, unsigned int glyph_index, unsigned int glyph_count, GOFFSET *goffset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void OpenType_GSUB_SubstituteSingleGlyph(const void *table, const LoadedFeature *feature, LONG param, WORD *glyph);
 void OpenType_GPOS_PositionSingleGlyph(const ScriptCache *script_cache, const LoadedFeature *feature, WORD glyph,
                                        int *advance, GOFFSET *goffset);

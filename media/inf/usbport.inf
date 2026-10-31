@@ -4,11 +4,11 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = USB
 ClassGUID  = {36FC9E60-C465-11CF-8056-444553540000}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 10/19/1999,5.00.2157.1
 
 [DestinationDirs]
@@ -172,7 +172,7 @@ LoadOrderGroup = Base
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 IntelMfg = "Intel"
 

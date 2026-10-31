@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT build tools
+ * PROJECT:     LibreNT build tools
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Built-in non-interactive tests for rosconfig
  */
@@ -136,7 +136,7 @@ int rosconfig_self_test(void)
         "\n"
         "menu \"Modules\"\n"
         "config ENABLE_ROSTESTS\n"
-        "    prompt \"ReactOS test suite and RosAutoTest\"\n"
+        "    prompt \"LibreNT test suite and RosAutoTest\"\n"
         "    type bool\n"
         "    default n\n"
         "    depends BUILD_TYPE=Debug\n"
@@ -445,7 +445,7 @@ int rosconfig_self_test(void)
     expect(&test, file_contains(generated_path, "set(LEVEL \"expert\" CACHE STRING \"Detail level\")"), "choice values are quoted");
     expect(&test, file_contains(generated_path, "set(LABEL \"quoted \\\"path\\\\tail\" CACHE STRING \"Display label\")"), "string values are escaped for CMake");
     expect(&test, file_contains(generated_path, "set(ROSCONFIG_PROFILE \"generic\" CACHE STRING \"Target profile\")"), "the selected architecture's generic profile is emitted");
-    expect(&test, file_contains(generated_path, "set(ENABLE_ROSTESTS TRUE CACHE BOOL \"ReactOS test suite and RosAutoTest\")"), "the RosAutoTest module is emitted independently of the profile");
+    expect(&test, file_contains(generated_path, "set(ENABLE_ROSTESTS TRUE CACHE BOOL \"LibreNT test suite and RosAutoTest\")"), "the RosAutoTest module is emitted independently of the profile");
     expect(&test, !file_contains(generated_path, "profile_raspberry"), "a hidden architecture profile is not emitted");
 
     set_value(profile_amd64, "lattepandamu");
@@ -473,7 +473,7 @@ int rosconfig_self_test(void)
     expect(&test, generate_cmake(generated_path) == 0, "CMake fragment regenerates with Raspberry Pi 3/5 HTTP boot disabled");
     expect(&test, file_contains(generated_path, "set(ROSCONFIG_PROFILE \"profile_raspberry\" CACHE STRING \"Target profile\")"), "the ARM64 Raspberry Pi 3/5 profile is emitted");
     expect(&test, file_contains(generated_path, "set(FREELDR_HTTP_BOOT FALSE CACHE BOOL \"Enable HTTP boot\")"), "the Raspberry Pi 3/5 HTTP boot option can be disabled");
-    expect(&test, file_contains(generated_path, "set(ENABLE_ROSTESTS TRUE CACHE BOOL \"ReactOS test suite and RosAutoTest\")"), "the RosAutoTest module composes with the Raspberry Pi 3/5 profile");
+    expect(&test, file_contains(generated_path, "set(ENABLE_ROSTESTS TRUE CACHE BOOL \"LibreNT test suite and RosAutoTest\")"), "the RosAutoTest module composes with the Raspberry Pi 3/5 profile");
     set_value(http_boot, "y");
     expect(&test, generate_cmake(generated_path) == 0, "CMake fragment regenerates with Raspberry Pi 3/5 HTTP boot enabled");
     expect(&test, file_contains(generated_path, "set(FREELDR_HTTP_BOOT TRUE CACHE BOOL \"Enable HTTP boot\")"), "the Raspberry Pi 3/5 HTTP boot option can be enabled");

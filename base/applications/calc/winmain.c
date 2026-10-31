@@ -1,5 +1,5 @@
 /*
- * ReactOS Calc (main program)
+ * LibreNT Calc (main program)
  *
  * Copyright 2007-2017, Carlo Bramini
  *
@@ -1932,7 +1932,7 @@ static INT_PTR CALLBACK DlgMainProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
     return FALSE;
 }
 
-#if defined(__GNUC__) && !defined(__REACTOS__)
+#if defined(__GNUC__) && !defined(__LIBRENT__)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 #else
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nShowCmd)

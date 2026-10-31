@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Kernel Streaming
+ * PROJECT:         LibreNT Kernel Streaming
  * FILE:            drivers/wdm/audio/backpln/portcls/port_wavert.cpp
  * PURPOSE:         WaveRT Port Driver
  * PROGRAMMER:      Johannes Anderwald
@@ -235,7 +235,7 @@ CPortWaveRT::MiniportWriteEtwEvent(
     UNREFERENCED_PARAMETER(Data3);
     UNREFERENCED_PARAMETER(Data4);
 
-    /* ReactOS does not currently publish the PortCls miniport ETW provider. */
+    /* LibreNT does not currently publish the PortCls miniport ETW provider. */
     return STATUS_SUCCESS;
 }
 //---------------------------------------------------------------

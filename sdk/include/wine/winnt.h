@@ -1,7 +1,7 @@
 
 #pragma once
 
-#if defined(__REACTOS__) && defined(_NTSTATUS_) && !defined(WIN32_NO_STATUS)
+#if defined(__LIBRENT__) && defined(_NTSTATUS_) && !defined(WIN32_NO_STATUS)
 #define WIN32_NO_STATUS
 #define __WINE_RESTORE_WIN32_NO_STATUS
 #endif

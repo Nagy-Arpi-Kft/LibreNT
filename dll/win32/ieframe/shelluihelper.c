@@ -17,7 +17,7 @@
  */
 
 #include "ieframe.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "objsafe.h"
 #endif
 
@@ -27,7 +27,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(ieframe);
 
 struct ShellUIHelper {
     IShellUIHelper2 IShellUIHelper2_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IDispatchEx IDispatchEx_iface;
     IObjectWithSite IObjectWithSite_iface;
     IObjectSafety IObjectSafety_iface;
@@ -58,7 +58,7 @@ static HRESULT WINAPI ShellUIHelper2_QueryInterface(IShellUIHelper2 *iface, REFI
     }else if(IsEqualGUID(&IID_IShellUIHelper2, riid)) {
         TRACE("(%p)->(IID_IShellUIHelper2 %p)\n", This, ppv);
         *ppv = &This->IShellUIHelper2_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }else if(IsEqualGUID(&IID_IDispatchEx, riid)) {
         *ppv = &This->IDispatchEx_iface;
     }else if(IsEqualGUID(&IID_IObjectWithSite, riid)) {
@@ -94,7 +94,7 @@ static ULONG WINAPI ShellUIHelper2_Release(IShellUIHelper2 *iface)
     TRACE("(%p) ref=%ld\n", This, ref);
 
     if(!ref) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(This->site)
             IUnknown_Release(This->site);
 #endif
@@ -116,7 +116,7 @@ static HRESULT WINAPI ShellUIHelper2_GetTypeInfoCount(IShellUIHelper2 *iface, UI
 
 static HRESULT WINAPI ShellUIHelper2_GetTypeInfo(IShellUIHelper2 *iface, UINT iTInfo, LCID lcid, LPTYPEINFO *ppTInfo)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hres;
 
     TRACE("(%p)->(%d %ld %p)\n", iface, iTInfo, lcid, ppTInfo);
@@ -137,7 +137,7 @@ static HRESULT WINAPI ShellUIHelper2_GetTypeInfo(IShellUIHelper2 *iface, UINT iT
 static HRESULT WINAPI ShellUIHelper2_GetIDsOfNames(IShellUIHelper2 *iface, REFIID riid, LPOLESTR *rgszNames, UINT cNames,
         LCID lcid, DISPID *rgDispId)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ITypeInfo *typeinfo;
     HRESULT hres;
 
@@ -163,7 +163,7 @@ static HRESULT WINAPI ShellUIHelper2_Invoke(IShellUIHelper2 *iface, DISPID dispI
         REFIID riid, LCID lcid, WORD wFlags, DISPPARAMS *pDispParams, VARIANT *pVarResult,
         EXCEPINFO *pExepInfo, UINT *puArgErr)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ITypeInfo *typeinfo;
     HRESULT hres;
 
@@ -427,7 +427,7 @@ static const IShellUIHelper2Vtbl ShellUIHelper2Vtbl = {
     ShellUIHelper2_SearchGuideUrl
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline ShellUIHelper *impl_from_IDispatchEx(IDispatchEx *iface)
 {
     return CONTAINING_RECORD(iface, ShellUIHelper, IDispatchEx_iface);
@@ -711,7 +711,7 @@ HRESULT create_shell_ui_helper(IShellUIHelper2 **_ret)
         return E_OUTOFMEMORY;
 
     ret->IShellUIHelper2_iface.lpVtbl = &ShellUIHelper2Vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret->IDispatchEx_iface.lpVtbl = &ShellUIHelperDispExVtbl;
     ret->IObjectWithSite_iface.lpVtbl = &ShellUIHelperSiteVtbl;
     ret->IObjectSafety_iface.lpVtbl = &ShellUIHelperSafetyVtbl;

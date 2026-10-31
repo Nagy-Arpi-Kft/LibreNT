@@ -29,7 +29,7 @@
 #include "rtlsupportapi.h"
 #include "wow64win_private.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSYSAPI void WINAPI RtlRaiseException( EXCEPTION_RECORD *record );
 #endif
 

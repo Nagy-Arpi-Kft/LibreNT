@@ -31,7 +31,7 @@
 /* FUNCTIONS ****************************************************************/
 
 static const WCHAR s_szProductOptions[] = L"SYSTEM\\CurrentControlSet\\Control\\ProductOptions";
-static const WCHAR s_szRosVersion[] = L"SYSTEM\\CurrentControlSet\\Control\\ReactOS\\Settings\\Version";
+static const WCHAR s_szRosVersion[] = L"SYSTEM\\CurrentControlSet\\Control\\LibreNT\\Settings\\Version";
 static const WCHAR s_szControlWindows[] = L"SYSTEM\\CurrentControlSet\\Control\\Windows";
 static const WCHAR s_szWinlogon[] = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon";
 static const WCHAR s_szDefaultSoundEvents[] = L"AppEvents\\Schemes\\Apps\\.Default";
@@ -222,7 +222,7 @@ DoWriteInstallationType(INSTALLATION_TYPE nOption)
 
     RegCloseKey(hKey);
 
-    /* open ReactOS version key */
+    /* open LibreNT version key */
     error = RegOpenKeyExW(HKEY_LOCAL_MACHINE, s_szRosVersion, 0, KEY_WRITE, &hKey);
     if (error)
     {
@@ -470,7 +470,7 @@ EnableVisualTheme(
 // https://pinvoke.net/default.aspx/uxtheme.SetSystemVisualStyle
 // or ApplyTheme(NULL, 0, NULL) for restoring the classic theme.
 //
-// NOTE: The '/Action:ActivateMSTheme' is ReactOS-specific.
+// NOTE: The '/Action:ActivateMSTheme' is LibreNT-specific.
 //
 
     if (ThemeFile && (fType == THEME_FILE))

@@ -1,11 +1,11 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel-Mode Test Suite - minimal-safe MDL Win11-parity checks
  *
- * Validates the two MDL routines ReactOS used to stub (MmAdvanceMdl,
+ * Validates the two MDL routines LibreNT used to stub (MmAdvanceMdl,
  * MmProtectMdlSystemAddress) plus the basic MDL accessors, against the Win11
- * ARM64 reference kernel (ground truth) and ReactOS.
+ * ARM64 reference kernel (ground truth) and LibreNT.
  *
  * SAFETY / Win11-portability rules followed here:
  *   - Only NonPagedPool buffers and only MmCached mappings (ARM64 hard-bugchecks

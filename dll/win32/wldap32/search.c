@@ -30,7 +30,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(wldap32);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void search_with_version3( LDAP *ld )
 {
     int version;
@@ -133,7 +133,7 @@ ULONG CDECL ldap_search_extW( LDAP *ld, WCHAR *base, ULONG scope, WCHAR *filter,
 
     if (!ld) return WLDAP32_LDAP_PARAM_ERROR;
     if ((ret = WLDAP32_ldap_connect( ld, &timevalW ))) return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     search_with_version3( ld );
 #endif
 
@@ -207,7 +207,7 @@ ULONG CDECL ldap_search_ext_sW( LDAP *ld, WCHAR *base, ULONG scope, WCHAR *filte
 
     if (!ld || !res) return WLDAP32_LDAP_PARAM_ERROR;
     if ((ret = WLDAP32_ldap_connect( ld, timeout ))) return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     search_with_version3( ld );
 #endif
 

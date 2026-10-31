@@ -1,6 +1,6 @@
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Kernel Debugger over Network extension stubs"
-#define REACTOS_STR_INTERNAL_NAME     "kdstub"
-#define REACTOS_STR_ORIGINAL_FILENAME "kdstub.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Kernel Debugger over Network extension stubs"
+#define LIBRENT_STR_INTERNAL_NAME     "kdstub"
+#define LIBRENT_STR_ORIGINAL_FILENAME "kdstub.dll"
+#include <librent/version.rc>
 

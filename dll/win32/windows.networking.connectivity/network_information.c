@@ -122,7 +122,7 @@ struct connection_profile
 {
     IConnectionProfile IConnectionProfile_iface;
     IConnectionProfile2 IConnectionProfile2_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IAgileObject IAgileObject_iface;
 #endif
     LONG ref;
@@ -141,7 +141,7 @@ static HRESULT WINAPI connection_profile_QueryInterface( IConnectionProfile *ifa
 
     TRACE( "iface %p, iid %s, out %p.\n", iface, debugstr_guid( iid ), out );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID( iid, &IID_IAgileObject ))
     {
         *out = &impl->IAgileObject_iface;
@@ -175,7 +175,7 @@ static HRESULT WINAPI connection_profile_QueryInterface( IConnectionProfile *ifa
     return E_NOINTERFACE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline struct connection_profile *impl_from_IAgileObject( IAgileObject *iface )
 {
     return CONTAINING_RECORD( iface, struct connection_profile, IAgileObject_iface );
@@ -491,7 +491,7 @@ static HRESULT WINAPI network_information_statics_GetInternetConnectionProfile( 
 
     impl->IConnectionProfile_iface.lpVtbl = &connection_profile_vtbl;
     impl->IConnectionProfile2_iface.lpVtbl = &connection_profile2_vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     impl->IAgileObject_iface.lpVtbl = &connection_profile_agile_vtbl;
 #endif
     impl->ref = 1;

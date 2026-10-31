@@ -312,7 +312,7 @@ static void test_GetLocaleInfoA(void)
   ok( (ret == len) && !lstrcmpA(buffer, expected), "got %d with '%s' (expected %d with '%s')\n",
       ret, buffer, len, expected);
   ret = GetLocaleInfoA(LOCALE_CUSTOM_DEFAULT, LOCALE_SLANGUAGE, buffer, ARRAY_SIZE(buffer));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   ok( ((ret == len) && !lstrcmpA(buffer, expected)) || broken(!ret) /* WS03 */, "got %d with '%s' (expected %d with '%s')\n",
       ret, buffer, len, expected);
 #else
@@ -1630,7 +1630,7 @@ static void test_GetNumberFormatA(void)
 
     for (i = 0; i < ARRAY_SIZE(tests); i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       /* Skip tests[4, 10-13] on WS03 */
       if (GetNTVersion() < _WIN32_WINNT_VISTA && (i == 4 || (i >= 10 && i <= 13)))
         continue;
@@ -1921,7 +1921,7 @@ static void test_CompareStringA(void)
 
   for (i = 0; i < ARRAY_SIZE(comparestringa_data); i++)
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       /* Skip comparestringa_data[44, 45, 49] on WS03 */
       if (GetNTVersion() < _WIN32_WINNT_VISTA && (i == 44 || i == 45 || i == 49))
         continue;
@@ -2645,7 +2645,7 @@ static void test_lcmapstring_unicode(lcmapstring_wrapper func_ptr, const char *f
     ret = func_ptr(LCMAP_FULLWIDTH, math_text, -1, buf, ARRAY_SIZE(buf));
     ok(ret == lstrlenW(buf) + 1, "%s ret %d, error %ld, expected value %d\n", func_name,
        ret, GetLastError(), lstrlenW(buf) + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!lstrcmpW(buf, math_result) || broken(!lstrcmpW(buf, math_text)) /* WS03 */, "%s string compare mismatch %s\n", func_name, debugstr_w(buf));
 #else
     ok(!lstrcmpW(buf, math_result), "%s string compare mismatch %s\n", func_name, debugstr_w(buf));
@@ -2661,7 +2661,7 @@ static void test_lcmapstring_unicode(lcmapstring_wrapper func_ptr, const char *f
     ret = func_ptr(LCMAP_FULLWIDTH, cjk_compat_text, -1, buf, ARRAY_SIZE(buf));
     ok(ret == lstrlenW(buf) + 1, "%s ret %d, error %ld, expected value %d\n", func_name,
        ret, GetLastError(), lstrlenW(buf) + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!lstrcmpW(buf, cjk_compat_result) || broken(!lstrcmpW(buf, cjk_compat_text)) /* WS03 */, "%s string compare mismatch %s\n", func_name, debugstr_w(buf));
 #else
     ok(!lstrcmpW(buf, cjk_compat_result), "%s string compare mismatch %s\n", func_name, debugstr_w(buf));
@@ -2918,7 +2918,7 @@ static void test_LCMapStringEx(void)
     SetLastError(0xdeadbeef);
     ret = pLCMapStringEx(invalidW, LCMAP_HIRAGANA,
                          upper_case, -1, buf, ARRAY_SIZE(buf), NULL, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "LCMapStringEx should not fail with bad locale name\n");
 #else
     ok(ret, "LCMapStringEx should not fail with bad locale name\n");
@@ -2996,10 +2996,10 @@ static void test_LocaleNameToLCID(void)
 
     buffer[0] = 0;
     SetLastError(0xdeadbeef);
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
     lcid = LocaleNameToLCID(LOCALE_NAME_SYSTEM_DEFAULT, 0);
     expect = GetSystemDefaultLCID();
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     ok(lcid == expect || broken(lcid == 0) /* x86_64 */, "Expected lcid == %08lx, got %08lx, error %ld\n", expect, lcid, GetLastError());
 #else
     ok(lcid == expect, "Expected lcid == %08lx, got %08lx, error %ld\n", expect, lcid, GetLastError());
@@ -3205,7 +3205,7 @@ static void test_LocaleNameToLCID(void)
 
     if (pRtlLcidToLocaleName)
     {
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         WCHAR buffer[128], expect[128];
 #else
         WCHAR buffer[128];
@@ -3252,7 +3252,7 @@ static void test_LocaleNameToLCID(void)
         status = pRtlLcidToLocaleName( LOCALE_SYSTEM_DEFAULT, &str, 0, 0 );
         ok( status == STATUS_SUCCESS, "wrong error %lx\n", status );
         ok( str.Length == wcslen(buffer) * sizeof(WCHAR), "wrong len %u\n", str.Length );
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         LCIDToLocaleName( GetSystemDefaultLCID(), expect, ARRAY_SIZE(expect), 0 );
         ok( !wcscmp( buffer, expect ), "wrong name %s / %s\n", debugstr_w(buffer), debugstr_w(expect) );
 #endif
@@ -3262,7 +3262,7 @@ static void test_LocaleNameToLCID(void)
         status = pRtlLcidToLocaleName( LOCALE_USER_DEFAULT, &str, 0, 0 );
         ok( status == STATUS_SUCCESS, "wrong error %lx\n", status );
         ok( str.Length == wcslen(buffer) * sizeof(WCHAR), "wrong len %u\n", str.Length );
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         LCIDToLocaleName( GetUserDefaultLCID(), expect, ARRAY_SIZE(expect), 0 );
         ok( !wcscmp( buffer, expect ), "wrong name %s / %s\n", debugstr_w(buffer), debugstr_w(expect) );
 #endif
@@ -3278,7 +3278,7 @@ static void test_LocaleNameToLCID(void)
         status = pRtlLcidToLocaleName( LOCALE_CUSTOM_DEFAULT, &str, 0, 0 );
         ok( status == STATUS_SUCCESS, "wrong error %lx\n", status );
         ok( str.Length == wcslen(buffer) * sizeof(WCHAR), "wrong len %u\n", str.Length );
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         LCIDToLocaleName( GetUserDefaultLCID(), expect, ARRAY_SIZE(expect), 0 );
         ok( !wcscmp( buffer, expect ), "wrong name %s / %s\n", debugstr_w(buffer), debugstr_w(expect) );
 #endif
@@ -3874,15 +3874,15 @@ static void test_unicode_sorting(void)
         else if (len1 < len2) result = -1;
         else if (len1 > len2) result = 1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok (result == entry->result_sortkey || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "Test %d (%s, %s) - Expected %d, got %d\n",
 #else
         ok (result == entry->result_sortkey, "Test %d (%s, %s) - Expected %d, got %d\n",
 #endif
             i, wine_dbgstr_w(entry->first), wine_dbgstr_w(entry->second), entry->result_sortkey, result);
 
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
-#if defined(__REACTOS__) && defined(_WIN64)
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
+#if defined(__LIBRENT__) && defined(_WIN64)
         if ((i == 0 || i == 5 || i == 8 || i == 9 || i == 17 || i == 80 || i == 81 || i == 84 ||
             i == 199 || i == 200 || i == 202 || i == 235 || i == 236 || i == 250 || i == 251 ||
             i == 259 || i == 260) && (GetNTVersion() == _WIN32_WINNT_VISTA))
@@ -4131,7 +4131,7 @@ static void test_FoldStringW(void)
       { 0x00b9, 1, 1 },                   /* Superscript 1 */
       { 0x0660, 0, 9 },                   /* Eastern Arabic */
       { 0x06f0, 0, 9 },                   /* Arabic - Hindu */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x07c0, 0, 9, TRUE /* WS03 */ },  /* Nko */
 #else
       { 0x07c0, 0, 9 },                   /* Nko */
@@ -4140,7 +4140,7 @@ static void test_FoldStringW(void)
       { 0x09e6, 0, 9 },                   /* Bengalii */
       { 0x0a66, 0, 9 },                   /* Gurmukhi */
       { 0x0ae6, 0, 9 },                   /* Gujarati */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x0b66, 0, 9, TRUE /* WS03 */ },  /* Oriya */
       { 0x0be6, 0, 9, TRUE /* WS03 */ },  /* Tamil */
 #else
@@ -4155,7 +4155,7 @@ static void test_FoldStringW(void)
       { 0x0de6, 0, 9, TRUE /*win10*/ },   /* Sinhala Lith */
       { 0x0e50, 0, 9 },                   /* Thai */
       { 0x0ed0, 0, 9 },                   /* Laos */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x0f20, 0, 9, TRUE /* WS03 */ },  /* Tibet */
       { 0x1040, 0, 9, TRUE /* WS03 */ },  /* Myanmar */
       { 0x1090, 0, 9, TRUE /* WS03 */ },  /* Myanmar Shan */
@@ -4177,7 +4177,7 @@ static void test_FoldStringW(void)
       { 0x19da, 1, 1, TRUE /*win7*/ },    /* New Tai Lue Tham 1 */
       { 0x1a80, 0, 9, TRUE /*win7*/ },    /* Tai Tham Hora */
       { 0x1a90, 0, 9, TRUE /*win7*/ },    /* Tai Tham Tham */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x1b50, 0, 9, TRUE /* WS03 */ },  /* Balinese */
       { 0x1bb0, 0, 9, TRUE /* WS03 */ },  /* Sundanese */
       { 0x1c40, 0, 9, TRUE /* WS03 */ },  /* Lepcha */
@@ -4195,7 +4195,7 @@ static void test_FoldStringW(void)
       { 0x2474, 1, 9 },                   /* Bracketed */
       { 0x2488, 1, 9 },                   /* Full stop */
       { 0x24ea, 0, 0 },                   /* Circled 0 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x24f5, 1, 9, TRUE /* WS03 */ },  /* Double Circled */
       { 0x24ff, 0, 0, TRUE /* WS03 */ },  /* Negative Circled 0 */
 #else
@@ -4205,7 +4205,7 @@ static void test_FoldStringW(void)
       { 0x2776, 1, 9 },                   /* Inverted Circled */
       { 0x2780, 1, 9 },                   /* Patterned Circled */
       { 0x278a, 1, 9 },                   /* Inverted Patterned Circled */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x3007, 0, 0, TRUE /* WS03 */ },  /* Ideographic Number 0 */
       { 0x3021, 1, 9, TRUE /* WS03 */ },  /* Hangzhou */
       { 0xa620, 0, 9, TRUE /* WS03 */ },  /* Vai */
@@ -4217,21 +4217,21 @@ static void test_FoldStringW(void)
       { 0xa8d0, 0, 9 },                   /* Saurashtra */
 #endif
       { 0xa8e0, 0, 9, TRUE /*win7*/ },    /* Combining Devanagari */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0xa900, 0, 9, TRUE /* WS03 */ },  /* Kayah Li */
 #else
       { 0xa900, 0, 9 },                   /* Kayah Li */
 #endif
       { 0xa9d0, 0, 9, TRUE /*win7*/ },    /* Javanese */
       { 0xa9f0, 0, 9, TRUE /*win10*/ },   /* Myanmar Tai Laing */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0xaa50, 0, 9, TRUE /* WS03 */ },  /* Cham */
 #else
       { 0xaa50, 0, 9 },                   /* Cham */
 #endif
       { 0xabf0, 0, 9, TRUE /*win7*/ },    /* Meetei Mayek */
       { 0xff10, 0, 9 },                   /* Full Width */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x10107, 1, 9, TRUE /* WS03 */ }, /* Aegean */
       { 0x10320, 1, 1, TRUE /* WS03 */ }, /* Old Italic Numeral 1 */
       { 0x10321, 5, 5, TRUE /* WS03 */ }, /* Old Italic Numeral 5 */
@@ -4272,7 +4272,7 @@ static void test_FoldStringW(void)
       { 0x16b50, 0, 9, TRUE /*win10*/ },  /* Pahawh Hmong */
       { 0x16d70, 0, 9, TRUE /*win10*/ },  /* Kirat Rai */
       { 0x1ccf0, 0, 9, TRUE /*win10*/ },  /* Outlined digits */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       { 0x1d7ce, 0, 9, TRUE /* WS03 */ }, /* Mathematical Bold */
       { 0x1d7d8, 0, 9, TRUE /* WS03 */ }, /* Mathematical Double Struck */
       { 0x1d7e2, 0, 9, TRUE /* WS03 */ }, /* Mathematical Sans Serif */
@@ -4400,7 +4400,7 @@ static void test_FoldStringW(void)
             continue;
         }
         ok(ret == 2, "Expected ret == 2, got %d, error %ld\n", ret, GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(dst[0] == ch || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "MAP_FOLDDIGITS: ch 0x%04x Expected unchanged got %04x\n", ch, dst[0]);
 #else
         ok(dst[0] == ch, "MAP_FOLDDIGITS: ch 0x%04x Expected unchanged got %04x\n", ch, dst[0]);
@@ -4519,7 +4519,7 @@ static void test_ConvertDefaultLocale(void)
       "Expected lcid = %08x got %08lx\n", MAKELANGID( LANG_CHINESE, SUBLANG_CHINESE_HONGKONG ), lcid );
   lcid = ConvertDefaultLocale( LANG_SERBIAN_NEUTRAL );
   ok( lcid == MAKELANGID( LANG_SERBIAN, SUBLANG_SERBIAN_SERBIA_LATIN ) ||
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       broken( lcid == MAKELANGID( LANG_SERBIAN, SUBLANG_SERBIAN_LATIN ) ) || /* Vista */
       broken( lcid == LANG_SERBIAN_NEUTRAL ),  /* WS03 */
 #else
@@ -4538,7 +4538,7 @@ static void test_ConvertDefaultLocale(void)
   LCID_RES(LOCALE_SYSTEM_DEFAULT, GetSystemDefaultLCID());
   LCID_RES(LOCALE_USER_DEFAULT,   GetUserDefaultLCID());
   LCID_RES(LOCALE_NEUTRAL,        GetUserDefaultLCID());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   lcid = ConvertDefaultLocale( LOCALE_CUSTOM_DEFAULT );
   ok(lcid == GetUserDefaultLCID() ||
      broken(lcid == 0x0c00) /* WS03 */,
@@ -4990,7 +4990,7 @@ static void test_EnumUILanguageA(void)
 
   SetLastError(0xdeadbeef);
   ret = pEnumUILanguagesA(luilocale_proc1A, MUI_LANGUAGE_NAME, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   ok(ret || broken(!ret && GetLastError() == ERROR_INVALID_FLAGS) /* WS03 */, "Expected ret != 0, got %d, error %ld\n", ret, GetLastError());
 #else
   ok(ret, "Expected ret != 0, got %d, error %ld\n", ret, GetLastError());
@@ -5240,7 +5240,7 @@ static void test_GetCPInfo(void)
         for (i = 0; i < 12; i++) ok( cpiw.LeadByte[i] == 0, "wrong LeadByte[%u] %02x\n", i, cpiw.LeadByte[i] );
         ok( cpiw.MaxCharSize == 5, "wrong MaxCharSize %02x\n", cpiw.MaxCharSize );
         ok( cpiw.CodePage == CP_UTF7, "wrong CodePage %02x\n", cpiw.CodePage );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( cpiw.UnicodeDefaultChar == 0xfffd ||
             broken(cpiw.UnicodeDefaultChar == 0x3f) /* WS03 */, "wrong UnicodeDefaultChar %02x\n", cpiw.UnicodeDefaultChar );
 #else
@@ -5276,7 +5276,7 @@ static void test_GetCPInfo(void)
         for (i = 0; i < 12; i++) ok( cpiw.LeadByte[i] == 0, "wrong LeadByte[%u] %02x\n", i, cpiw.LeadByte[i] );
         ok( cpiw.MaxCharSize == 4, "wrong MaxCharSize %02x\n", cpiw.MaxCharSize );
         ok( cpiw.CodePage == CP_UTF8, "wrong CodePage %02x\n", cpiw.CodePage );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( cpiw.UnicodeDefaultChar == 0xfffd ||
             broken(cpiw.UnicodeDefaultChar == 0x3f) /* WS03 */, "wrong UnicodeDefaultChar %02x\n", cpiw.UnicodeDefaultChar );
 #else
@@ -5668,7 +5668,7 @@ static void test_IdnToNameprepUnicode(void)
         { 3, L"a-a", IDN_USE_STD3_ASCII_RULES, 3, 3, L"a-a" },
         { 3, L"aa-", IDN_USE_STD3_ASCII_RULES, 0, 0, L"aa-" },
         { -1, L"T\xdf\x130\x143\x37a\x6a\x30c \xaa", 0, 12, 12, L"tssi\x307\x144 \x3b9\x1f0 a" },
-#ifndef __REACTOS__ // This test only passes on Win8 and WS03.
+#ifndef __LIBRENT__ // This test only passes on Win8 and WS03.
         { 11, L"t\xad\x34f\x2066\x180b\x180c\x180d\x200b\x200c\x200d", 0, 0, 2, L"t",
           STATUS_NO_UNICODE_TRANSLATION },
 #endif
@@ -6069,7 +6069,7 @@ static void test_IsValidLocaleName(void)
     ret = pIsValidLocaleName(L"en-US");
     ok(ret, "IsValidLocaleName failed\n");
     ret = pIsValidLocaleName(L"en");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "IsValidLocaleName failed\n");
 #else
     ok(ret, "IsValidLocaleName failed\n");
@@ -6176,7 +6176,7 @@ static void test_ResolveLocaleName(void)
         { LOCALE_NAME_INVARIANT, L"" },
     };
     INT i, ret;
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
     WCHAR buffer[LOCALE_NAME_MAX_LENGTH], system[LOCALE_NAME_MAX_LENGTH];
 #else
     WCHAR buffer[LOCALE_NAME_MAX_LENGTH];
@@ -6210,14 +6210,14 @@ static void test_ResolveLocaleName(void)
     SetLastError( 0xdeadbeef );
     memset( buffer, 0xcc, sizeof(buffer) );
     ret = pResolveLocaleName( LOCALE_NAME_SYSTEM_DEFAULT, buffer, ARRAY_SIZE(buffer) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( ret || broken(GetLastError() == ERROR_INVALID_PARAMETER) /* Win8 */, "failed err %lu\n", GetLastError() );
 #else
     ok( ret, "failed err %lu\n", GetLastError() );
 #endif
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
     GetSystemDefaultLocaleName( system, ARRAY_SIZE(system) );
-#if !(defined(__REACTOS__) && defined(_WIN64))
+#if !(defined(__LIBRENT__) && defined(_WIN64))
     ok( !wcscmp( buffer, system ), "got wrong syslocale %s / %s\n", debugstr_w(buffer), debugstr_w(system));
     ok( ret == wcslen(system) + 1, "wrong len %u / %Iu\n", ret, wcslen(system) + 1 );
 #endif
@@ -7293,7 +7293,7 @@ static void test_FindNLSStringEx(void)
 
     for (i = 0; i < ARRAY_SIZE(tests); i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() == _WIN32_WINNT_VISTA && i == 5) // Skip tests[5] on Vista
             continue;
 #endif
@@ -8016,7 +8016,7 @@ static void test_SpecialCasing(void)
 
         {L"el-GR", LCMAP_UPPERCASE, 0x1FB3,0x1FBC}, /* GREEK SMALL LETTER ALPHA WITH YPOGEGRAMMENI */
         {L"el-GR", LCMAP_LOWERCASE, 0x1FBC,0x1FB3}, /* GREEK CAPITAL LETTER ALPHA WITH PROSGEGRAMMENI */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {L"el-GR", LCMAP_UPPERCASE, 0x1FC3,0x1FCC,0, TRUE /* Vista */}, /* GREEK SMALL LETTER ETA WITH YPOGEGRAMMENI */
         {L"el-GR", LCMAP_LOWERCASE, 0x1FCC,0x1FC3,0, TRUE /* Vista */}, /* GREEK CAPITAL LETTER ETA WITH PROSGEGRAMMENI */
         {L"el-GR", LCMAP_UPPERCASE, 0x1FF3,0x1FFC,0, TRUE /* Vista */}, /* GREEK SMALL LETTER OMEGA WITH YPOGEGRAMMENI */
@@ -8345,7 +8345,7 @@ static void test_NLSVersion(void)
         ok( !ret, "IsNLSDefinedString succeeded\n" );
         ok( GetLastError() == ERROR_INSUFFICIENT_BUFFER, "wrong error %lu\n", GetLastError() );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
         SetLastError( 0xdeadbeef );
@@ -8353,7 +8353,7 @@ static void test_NLSVersion(void)
         ret = pIsNLSDefinedString( COMPARE_STRING, 0, (NLSVERSIONINFO *)&info, L"A", 1 );
         ok( ret, "IsNLSDefinedString failed err %lu\n", GetLastError() );
         ok( GetLastError() == 0xdeadbeef, "wrong error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
@@ -8362,7 +8362,7 @@ static void test_NLSVersion(void)
         ok( !ret, "IsNLSDefinedString succeeded\n" );
         ok( GetLastError() == ERROR_INVALID_FLAGS, "wrong error %lu\n", GetLastError() );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
         SetLastError( 0xdeadbeef );
@@ -8384,7 +8384,7 @@ static void test_NLSVersion(void)
         ret = pIsNLSDefinedString( COMPARE_STRING, 0, (NLSVERSIONINFO *)&info, L"\xd800", -20 );
         ok( !ret, "IsNLSDefinedString failed err %lu\n", GetLastError() );
         ok( GetLastError() == 0xdeadbeef, "wrong error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
@@ -8866,7 +8866,7 @@ static void dump_sortkeys( char *argv[] )
             while (*p == ' ' || *p == '\t') p++;
         }
         *p = 0;
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         res = LCMapStringEx( locale, flags | LCMAP_SORTKEY, data, pos,
                              (WCHAR *)key, sizeof(key), NULL, NULL, 0 );
         printf( "%s:", buffer );
@@ -8884,7 +8884,7 @@ static BOOL CALLBACK EnumDateFormatsExEx_proc(LPWSTR date_format_string, CALID c
 
 static void test_EnumDateFormatsExEx(void)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     skip("Cannot build test_EnumDateFormatsExEx() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
     DWORD error;

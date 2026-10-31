@@ -22,5 +22,5 @@ set_module_type(taskschd win32dll)
 target_link_libraries(taskschd uuid wine wine_dll_register wine_dll_canunload)
 add_importlibs(taskschd oleaut32 ole32 advapi32 xmllite rpcrt4 msvcrt kernel32 ntdll)
 add_dependencies(taskschd taskschd_rpc_header stdole2)
-add_cd_file(TARGET taskschd DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET taskschd DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(taskschd) # CORE-5743: No ARRAY_SIZE macro

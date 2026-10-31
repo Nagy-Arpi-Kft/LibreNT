@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS System Libraries
+ * PROJECT:         LibreNT System Libraries
  * FILE:            dll/win32/kernel32/k32.h
  * PURPOSE:         Win32 Kernel Library Header
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
@@ -30,7 +30,7 @@
 
 #include <tlhelp32.h>
 
-/* NTDDI_VERSION is set globally from REACTOS_TARGET_NT — do not override here.
+/* NTDDI_VERSION is set globally from LIBRENT_TARGET_NT — do not override here.
  * Forcing WS03SP1 caused SYSTEM_PERFORMANCE_INFORMATION (and other NDK structs)
  * to be the pre-Vista size, while ntoskrnl/HAL/win32k all use the configured
  * NTDDI level. The size mismatch made NtQuerySystemInformation reject calls

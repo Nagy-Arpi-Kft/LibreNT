@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS DirectManipulation
+ * PROJECT:     LibreNT DirectManipulation
  * LICENSE:     LGPL-2.1-or-later
  * PURPOSE:     COM manager and synchronous manual viewports
  */

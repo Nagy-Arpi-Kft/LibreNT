@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Universal Serial Bus Bulk Enhanced Host Controller Interface
+ * PROJECT:     LibreNT Universal Serial Bus Bulk Enhanced Host Controller Interface
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/usb/usbccgp/pdo.c
  * PURPOSE:     USB  device driver.
@@ -1211,7 +1211,7 @@ PDO_HandleInternalDeviceControl(
         Status = IoCallDriver(PDODeviceExtension->NextDeviceObject, Irp);
         return Status;
     }
-    else if (IoStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_INTERNAL_REACTOS_USB_GET_KEYBOARD_INTERFACE)
+    else if (IoStack->Parameters.DeviceIoControl.IoControlCode == IOCTL_INTERNAL_LIBRENT_USB_GET_KEYBOARD_INTERFACE)
     {
         IoSkipCurrentIrpStackLocation(Irp);
         Status = IoCallDriver(PDODeviceExtension->NextDeviceObject, Irp);

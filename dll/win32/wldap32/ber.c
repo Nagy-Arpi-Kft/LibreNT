@@ -39,7 +39,7 @@ WLDAP32_BerElement * CDECL WLDAP32_ber_alloc_t( int options )
     TRACE( "%d\n", options );
 
     if (options != WLDAP32_LBER_USE_DER || !(ret = malloc( sizeof(*ret) ))) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((ret->opaque = (char *)ber_alloc_t( 0 ))) return ret;
 #else
     if ((ret->opaque = (char *)ber_alloc_t( options ))) return ret;
@@ -193,7 +193,7 @@ int WINAPIV WLDAP32_ber_printf( WLDAP32_BerElement *ber, char *fmt, ... )
             ret = ber_printf( BER(ber), new_fmt, arg );
             break;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case 'o':
         {
             char *arg = va_arg( list, char * );
@@ -238,7 +238,7 @@ int WINAPIV WLDAP32_ber_printf( WLDAP32_BerElement *ber, char *fmt, ... )
         {
             struct WLDAP32_berval **array = va_arg( list, struct WLDAP32_berval ** );
             struct berval **arrayU;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!array) break;
 #endif
             if (!(arrayU = bvarrayWtoU( array )))
@@ -254,7 +254,7 @@ int WINAPIV WLDAP32_ber_printf( WLDAP32_BerElement *ber, char *fmt, ... )
         {
             char *arg = va_arg( list, char * );
             int arg2 = va_arg( list, int );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ret = ber_printf( BER(ber), new_fmt, arg, (ber_len_t)arg2 );
 #else
             new_fmt[0] = 'B';  /* 'X' is deprecated */
@@ -278,7 +278,7 @@ int WINAPIV WLDAP32_ber_printf( WLDAP32_BerElement *ber, char *fmt, ... )
         if (ret == -1) break;
     }
     va_end( list );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ret == -1 ? -1 : 0;
 #else
     return ret;

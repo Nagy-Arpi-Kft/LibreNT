@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Tests for CShellDispatch
  * COPYRIGHT:   Copyright 2026 Whindmar Saksit <whindsaks@proton.me>

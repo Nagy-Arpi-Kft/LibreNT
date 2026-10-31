@@ -28,7 +28,7 @@ Revision History:
 #define CHECK_RETURN_IF_USER_MODE
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 # ifndef NTAPI
 #  define NTAPI __stdcall
 # endif

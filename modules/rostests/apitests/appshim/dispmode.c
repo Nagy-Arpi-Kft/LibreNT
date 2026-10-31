@@ -8,7 +8,7 @@
 #include <ntstatus.h>
 #define WIN32_NO_STATUS
 #include <windows.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntndk.h>
 #else
 #include <winternl.h>

@@ -35,7 +35,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(gdiplus);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*
     Unix stuff
     Code from http://www.johndcook.com/blog/2009/01/19/stand-alone-error-function-erf/

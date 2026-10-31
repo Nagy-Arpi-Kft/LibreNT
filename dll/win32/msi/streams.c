@@ -231,7 +231,7 @@ static UINT STREAMS_delete_row(struct tagMSIVIEW *view, UINT row)
 
     name = msi_string_lookup( db->strings, db->streams[row].str_index, NULL );
     if (!(encname = encode_streamname( FALSE, name ))) return ERROR_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         ULARGE_INTEGER zero;
 

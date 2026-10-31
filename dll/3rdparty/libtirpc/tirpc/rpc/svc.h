@@ -378,7 +378,7 @@ extern SVCXPRT *svc_tli_create(const SOCKET, const struct netconfig *,
 /*
  * Connectionless and connectionful create routines
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern SVCXPRT *svc_vc_create(const SOCKET, const u_int, const u_int);
 #else
 extern SVCXPRT *svc_vc_create(const int, const u_int, const u_int);
@@ -394,7 +394,7 @@ extern SVCXPRT *svc_vc_create(const int, const u_int, const u_int);
  */
 extern SVCXPRT *svcunix_create(int, u_int, u_int, char *);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern SVCXPRT *svc_dg_create(const SOCKET, const u_int, const u_int);
 #else
 extern SVCXPRT *svc_dg_create(const int, const u_int, const u_int);

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Media Foundation decoders
+ * PROJECT:     LibreNT Media Foundation decoders
  * FILE:        dll/win32/msmpeg2vdec/main.c
  * PURPOSE:     Class factories and registration of the H.264 and AAC decoders
  *

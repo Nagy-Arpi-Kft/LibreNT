@@ -18,7 +18,7 @@
 #include "vfdtypes.h"
 #include "vfdapi.h"
 #include "vfdlib.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "vfdmsg.h"
 #else
 #include "vfdmsg_lib.h"
@@ -41,7 +41,7 @@ static LRESULT CALLBACK ToolTipProc(
 	switch (uMsg) {
 	case WM_CREATE:
 		//	Store Font handle
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		SetWindowLong(hWnd, GWL_USERDATA,
 			(LONG)((LPCREATESTRUCT)lParam)->lpCreateParams);
 #else
@@ -61,7 +61,7 @@ static LRESULT CALLBACK ToolTipProc(
 				RECT rc;
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 				SelectObject(hDC, (HFONT)GetWindowLong(hWnd, GWL_USERDATA));
 #else
 				SelectObject(hDC, (HFONT)GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -130,7 +130,7 @@ static LRESULT CALLBACK ToolTipProc(
 
 	case WM_DESTROY:
 		//	delete font
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		DeleteObject((HFONT)GetWindowLong(hWnd, GWL_USERDATA));
 #else
 		DeleteObject((HFONT)GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -151,7 +151,7 @@ void WINAPI VfdToolTip(
 	int				pos_y,
 	BOOL			stick)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	HWND			hWnd;
 #endif
 	WNDCLASS		wc = {0};
@@ -249,7 +249,7 @@ void WINAPI VfdToolTip(
 	//
 	//	Create the tool tip window
 	//
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	hWnd = CreateWindowEx(
 #else
 	CreateWindowEx(

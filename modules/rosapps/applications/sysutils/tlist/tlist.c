@@ -1,10 +1,10 @@
 /*
- * ReactOS Project
+ * LibreNT Project
  * TList
  *
  * Copyright (c) 2000,2001 Emanuele Aliberti
  */
-#include <reactos/buildno.h>
+#include <librent/buildno.h>
 #define WIN32_NO_STATUS
 #include <windows.h>
 #define NTOS_MODE_USER
@@ -65,7 +65,7 @@ void PsaiFree(void *ptr)
 
 int WINAPI PrintBanner (VOID)
 {
-  printf ("ReactOS "KERNEL_VERSION_STR" T(ask)List\n");
+  printf ("LibreNT "KERNEL_VERSION_STR" T(ask)List\n");
   printf ("Copyright (c) 2000,2001 Emanuele Aliberti\n\n");
   return EXIT_SUCCESS;
 }

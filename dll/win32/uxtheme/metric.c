@@ -76,7 +76,7 @@ COLORREF WINAPI GetThemeSysColor(HTHEME hTheme, int iColorID)
     TRACE("(%p, %d)\n", hTheme, iColorID);
     SetLastError(0);
     if(hTheme) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if((tp = MSSTYLES_FindMetric(hTheme, TMT_COLOR, TMT_FIRSTCOLOR + iColorID))) {
 #else
         if((tp = MSSTYLES_FindMetric(hTheme, TMT_COLOR, iColorID))) {
@@ -177,7 +177,7 @@ int WINAPI GetThemeSysSize(HTHEME hTheme, int iSizeID)
         SM_CXSMSIZE, TMT_SMCAPTIONBARWIDTH,
         SM_CYSMSIZE, TMT_SMCAPTIONBARHEIGHT,
         SM_CXMENUSIZE, TMT_MENUBARWIDTH,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SM_CYMENUSIZE, TMT_MENUBARHEIGHT,
         SM_CXPADDEDBORDER, TMT_PADDEDBORDERWIDTH
 #else

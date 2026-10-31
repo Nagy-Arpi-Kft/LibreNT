@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "precomp.h"
 #endif
 
@@ -359,7 +359,7 @@ static void test_comboex_WM_LBUTTONDOWN(void)
     result = SendMessageA(hList, WM_LBUTTONUP, 0, MAKELPARAM(x, y));
     ok(!result, "WM_LBUTTONUP was not processed. LastError=%ld\n",
        GetLastError());
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     ok(GetFocus() == hEdit ||

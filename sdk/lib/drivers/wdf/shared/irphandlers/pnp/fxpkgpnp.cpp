@@ -2964,7 +2964,7 @@ Return Value:
         // status = UpdateWmiInstanceForS0Idle(AddInstance);
         // if (!NT_SUCCESS(status)) {
         //     return status;
-        // } __REACTOS__
+        // } __LIBRENT__
 
         if (Settings->Enabled == WdfUseDefault) {
             //
@@ -2995,7 +2995,7 @@ Return Value:
         //
         overridable = FALSE;
 
-        // (void) UpdateWmiInstanceForS0Idle(RemoveInstance); __REACTOS__
+        // (void) UpdateWmiInstanceForS0Idle(RemoveInstance); __LIBRENT__
     }
 
     //
@@ -3371,7 +3371,7 @@ Return Value:
 
     if (Settings->UserControlOfWakeSettings == WakeAllowUserControl) {
 
-        // status = UpdateWmiInstanceForSxWake(AddInstance); __REACTOS__
+        // status = UpdateWmiInstanceForSxWake(AddInstance); __LIBRENT__
 
         // if (!NT_SUCCESS(status)) {
         //     return status;
@@ -3406,7 +3406,7 @@ Return Value:
         //
         overridable = FALSE;
 
-        // (void) UpdateWmiInstanceForSxWake(RemoveInstance); __REACTOS__
+        // (void) UpdateWmiInstanceForSxWake(RemoveInstance); __LIBRENT__
     }
 
     if (firstTime) {

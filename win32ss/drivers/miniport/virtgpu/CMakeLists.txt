@@ -1,5 +1,5 @@
 include_directories(BEFORE
-    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/virtio)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/virtio)
 
 list(APPEND SOURCE
     virtgpu.c
@@ -11,10 +11,10 @@ set_module_type(virtgpu kernelmodedriver)
 add_importlibs(virtgpu ntoskrnl videoprt hal)
 target_link_libraries(virtgpu virtio libcntpr)
 add_pch(virtgpu virtgpu.h SOURCE)
-add_cd_file(TARGET virtgpu DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET virtgpu DESTINATION librent/system32/drivers FOR all)
 
 # The native virtgpu miniport belongs to the XPDM display stack.
-if(REACTOS_USE_XPDM)
+if(LIBRENT_USE_XPDM)
     add_registry_inf(virtgpu_reg.inf)
     add_driver_inf(virtgpu virtgpu.inf)
 endif()
@@ -31,7 +31,7 @@ target_link_libraries(virtgpu_disp libcntpr)
 add_importlibs(virtgpu_disp win32k)
 add_dependencies(virtgpu_disp psdk)
 add_pch(virtgpu_disp display.h DISPLAY_SOURCE)
-add_cd_file(TARGET virtgpu_disp DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET virtgpu_disp DESTINATION librent/system32 FOR all)
 
 spec2def(virtgpuogl.dll virtgpuogl.spec)
 add_library(virtgpuogl MODULE
@@ -40,7 +40,7 @@ add_library(virtgpuogl MODULE
     ${CMAKE_CURRENT_BINARY_DIR}/virtgpuogl.def)
 set_module_type(virtgpuogl win32dll ENTRYPOINT DllMain 12)
 add_importlibs(virtgpuogl gdi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET virtgpuogl DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET virtgpuogl DESTINATION librent/system32 FOR all)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     target_compile_options(virtgpu PRIVATE

@@ -27,7 +27,7 @@
 #include "taskschd.h"
 #include "mstask.h"
 #include "mstask_private.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "atsvc_c.h"
 #else
 #include "atsvc.h"

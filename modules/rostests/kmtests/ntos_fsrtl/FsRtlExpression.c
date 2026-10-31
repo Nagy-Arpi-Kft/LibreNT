@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         LGPLv2+ - See COPYING.LIB in the top level directory
  * PURPOSE:         Test for FsRtlIsNameInExpression/FsRtlIsDbcsInExpression
  * PROGRAMMER:      Pierre Schweitzer <pierre.schweitzer@reactos.org>
@@ -146,10 +146,10 @@ struct
     { L"?*?",                   L"aa",                          FALSE,  FALSE,  TRUE },
     { L"?*?",                   L"aaa",                         FALSE,  FALSE,  TRUE },
     { L"?*?",                   L"aaaa",                        FALSE,  FALSE,  TRUE },
-    { L"C:\\ReactOS\\**",       L"C:\\ReactOS\\dings.bmp",      FALSE,  FALSE,  TRUE },
-    { L"C:\\ReactOS\\***",      L"C:\\ReactOS\\dings.bmp",      FALSE,  FALSE,  TRUE },
-    { L"C:\\Windows\\*a*",      L"C:\\ReactOS\\dings.bmp",      FALSE,  FALSE,  FALSE },
-    { L"C:\\ReactOS\\*.bmp",    L"C:\\Windows\\explorer.exe",   FALSE,  FALSE,  FALSE },
+    { L"C:\\LibreNT\\**",       L"C:\\LibreNT\\dings.bmp",      FALSE,  FALSE,  TRUE },
+    { L"C:\\LibreNT\\***",      L"C:\\LibreNT\\dings.bmp",      FALSE,  FALSE,  TRUE },
+    { L"C:\\Windows\\*a*",      L"C:\\LibreNT\\dings.bmp",      FALSE,  FALSE,  FALSE },
+    { L"C:\\LibreNT\\*.bmp",    L"C:\\Windows\\explorer.exe",   FALSE,  FALSE,  FALSE },
     { L"*.bmp;*.dib",           L"winhlp32.exe",                FALSE,  FALSE,  FALSE },
     { L"*.*.*.*",               L"127.0.0.1",                   FALSE,  FALSE,  TRUE },
     { L"*?*?*?*",               L"1.0.0.1",                     FALSE,  FALSE,  TRUE },

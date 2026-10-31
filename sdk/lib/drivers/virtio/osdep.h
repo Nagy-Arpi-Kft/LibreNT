@@ -16,14 +16,14 @@
 
 #include <ntddk.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef __GNUC__
 #undef FORCEINLINE
 #define FORCEINLINE inline __attribute__((__always_inline__))
 #endif
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #if !defined(ENOSPC)
 #define ENOSPC 1
 #endif

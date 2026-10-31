@@ -56,7 +56,7 @@
 #  define strncasecmp _strnicmp
 #  define strcasecmp _stricmp
 # endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define MAX_PATH 260
 #define ARRAYSIZE(x) (sizeof(x) / sizeof((x)[0]))
 #else
@@ -397,7 +397,7 @@ static inline char *make_temp_dir(void)
         value += 7777;
         if (errno == EACCES && !tmpdir)
         {
-#if defined(__REACTOS__) && defined(_WIN32)
+#if defined(__LIBRENT__) && defined(_WIN32)
             if (!(tmpdir = getenv("TEMP"))) tmpdir = "temp";
 #else
             if (!(tmpdir = getenv("TMPDIR"))) tmpdir = "/tmp";
@@ -720,7 +720,7 @@ static inline struct target init_argv0_target( const char *argv0 )
 
 static inline char *get_bindir( const char *argv0 )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return NULL;
 #else
 #ifndef _WIN32

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
- PROJECT:     ReactOS CRT
+ PROJECT:     LibreNT CRT
  LICENSE:     MIT (https://spdx.org/licenses/MIT)
  PURPOSE:     Script to generate test data tables for math functions
  COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Display Driver Model - Win32k/dxgkrnl Bridge
+ * PROJECT:     LibreNT Display Driver Model - Win32k/dxgkrnl Bridge
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Public interface for the win32k ↔ dxgkrnl bridge
  * COPYRIGHT:   Copyright 2025 LiberNT Contributors
@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <reactos/rddm/rxgkinterface.h>
+#include <librent/rddm/rxgkinterface.h>
 
 /* Bridge lifecycle */
 NTSTATUS WddmBridgeInit(VOID);
@@ -16,7 +16,7 @@ NTSTATUS WddmBridgeGetStatus(VOID);
 NTSTATUS WddmBridgeRequireReady(VOID);
 BOOLEAN  WddmBridgeIsReady(VOID);
 ULONG    WddmBridgeGetInterfaceVersion(VOID);
-NTSTATUS WddmBridgeGetInterface(_Out_ PREACTOS_WIN32K_DXGKRNL_INTERFACE Interface);
+NTSTATUS WddmBridgeGetInterface(_Out_ PLIBRENT_WIN32K_DXGKRNL_INTERFACE Interface);
 
 ULONG_PTR
 NTAPI

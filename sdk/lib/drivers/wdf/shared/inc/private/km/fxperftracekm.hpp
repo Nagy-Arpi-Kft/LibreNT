@@ -33,7 +33,7 @@ Notes:
 #define WDF_INTERRUPT_EVENT_VERSION_2   2
 #define WDF_WORK_ITEM_EVENT_VERSION_2   2
 
-// __REACTOS__ : functions are commented out
+// __LIBRENT__ : functions are commented out
 
 FORCEINLINE
 VOID

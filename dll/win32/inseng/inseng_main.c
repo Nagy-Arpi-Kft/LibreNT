@@ -259,7 +259,7 @@ static HRESULT WINAPI InstallEngine2_GetICifFile(IInstallEngine2 *iface, ICifFil
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static IInstallEngine2Vtbl InstallEngine2Vtbl = {
 #else
 static const IInstallEngine2Vtbl InstallEngine2Vtbl = {
@@ -349,7 +349,7 @@ static HRESULT WINAPI InstallEngineCF_CreateInstance(IClassFactory *iface, IUnkn
     return hres;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static IClassFactoryVtbl InstallEngineCFVtbl = {
 #else
 static const IClassFactoryVtbl InstallEngineCFVtbl = {

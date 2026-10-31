@@ -3,9 +3,9 @@
 #include <windowsx.h>
 #include <powrprof.h>
 
-#define SM2_KEY             L"Software\\ReactOS\\StartMenu2"
-#define SM2_RECENT_LINK_KEY L"Software\\ReactOS\\StartMenu2\\RecentApps\\Links"
-#define SM2_RECENT_EXE_KEY  L"Software\\ReactOS\\StartMenu2\\RecentApps\\Executables"
+#define SM2_KEY             L"Software\\LibreNT\\StartMenu2"
+#define SM2_RECENT_LINK_KEY L"Software\\LibreNT\\StartMenu2\\RecentApps\\Links"
+#define SM2_RECENT_EXE_KEY  L"Software\\LibreNT\\StartMenu2\\RecentApps\\Executables"
 
 enum SM2VIEW { SM2V_MAIN, SM2V_PROGRAMS, SM2V_SEARCH };
 

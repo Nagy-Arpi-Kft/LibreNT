@@ -557,7 +557,7 @@ int CDECL _wgetenv_s(size_t *ret_len, wchar_t *buffer, size_t len,
 /*********************************************************************
  *		_get_environ (MSVCRT.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int CDECL _get_environ(char ***ptr)
 {
     if (!MSVCRT_CHECK_PMT(ptr != NULL)) return EINVAL;
@@ -574,7 +574,7 @@ void CDECL _get_environ(char ***ptr)
 /*********************************************************************
  *		_get_wenviron (MSVCRT.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int CDECL _get_wenviron(wchar_t ***ptr)
 {
     if (!MSVCRT_CHECK_PMT(ptr != NULL)) return EINVAL;

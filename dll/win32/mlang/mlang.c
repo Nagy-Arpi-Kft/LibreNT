@@ -839,7 +839,7 @@ static UINT ConvertJISJapaneseToUnicode(LPCSTR input, DWORD count,
     CHAR *sjis_string;
     UINT rc = 0;
     sjis_string = malloc(count);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!sjis_string)
         return 0;
 #endif
@@ -890,7 +890,7 @@ static UINT ConvertUnknownJapaneseToUnicode(LPCSTR input, DWORD count,
 
     case 50220:
         sjis_string = malloc(count);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!sjis_string)
             return 0;
 #endif
@@ -917,12 +917,12 @@ static UINT ConvertJapaneseUnicodeToJIS(LPCWSTR input, DWORD count,
     UINT rc = 0;
 
     len = WideCharToMultiByte(932,0,input,count,0,0,NULL,NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!len)
         return 0;
 #endif
     sjis_string = malloc(len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!sjis_string)
         return 0;
     if (!WideCharToMultiByte(932,0,input,count,sjis_string,len,NULL,NULL))
@@ -992,7 +992,7 @@ HRESULT WINAPI ConvertINetMultiByteToUnicode(
     case CP_UNICODE:
         if (*pcSrcSize == -1)
             *pcSrcSize = lstrlenW((LPCWSTR)pSrcStr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *pcDstSize = pDstStr ? min(*pcSrcSize, *pcDstSize) : *pcSrcSize;
 #else
         *pcDstSize = min(*pcSrcSize, *pcDstSize);
@@ -1005,7 +1005,7 @@ HRESULT WINAPI ConvertINetMultiByteToUnicode(
     case 50220:
     case 50221:
     case 50222:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (*pcSrcSize == -1)
             *pcSrcSize = lstrlenA(pSrcStr);
         *pcDstSize = ConvertJISJapaneseToUnicode(pSrcStr,*pcSrcSize,pDstStr,pDstStr ? *pcDstSize : 0);
@@ -1014,7 +1014,7 @@ HRESULT WINAPI ConvertINetMultiByteToUnicode(
 #endif
         break;
     case 50932:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (*pcSrcSize == -1)
             *pcSrcSize = lstrlenA(pSrcStr);
         *pcDstSize = ConvertUnknownJapaneseToUnicode(pSrcStr,*pcSrcSize,pDstStr,pDstStr ? *pcDstSize : 0);
@@ -1167,7 +1167,7 @@ HRESULT WINAPI ConvertINetString(
             return hr;
 
         pDstStrW = malloc(cDstSizeW * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!pDstStrW)
             return E_OUTOFMEMORY;
 #endif
@@ -1589,7 +1589,7 @@ static HRESULT map_font(HDC hdc, DWORD codepages, HFONT src_font, HFONT *dst_fon
 
     for (i = 0; i < 32; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         mask = 1U << i;
 #else
         mask = (DWORD)(1 << i);
@@ -3217,7 +3217,7 @@ static HRESULT WINAPI fnIMultiLanguage3_ConvertStringInIStream(
     if (FAILED(hr)) goto exit;
 
     hr = ConvertINetString(pdwMode, dwSrcEncoding, dwDstEncoding, src, &srclen, NULL, &dstlen);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hr != S_OK) goto exit;
 #else
     if (FAILED(hr)) goto exit;
@@ -3229,7 +3229,7 @@ static HRESULT WINAPI fnIMultiLanguage3_ConvertStringInIStream(
         goto exit;
     }
     hr = ConvertINetString(pdwMode, dwSrcEncoding, dwDstEncoding, src, &srclen, dst, &dstlen);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hr != S_OK) goto exit;
 #else
     if (FAILED(hr)) goto exit;
@@ -3919,7 +3919,7 @@ static HRESULT WINAPI fnIMLangFontLink2_CodePagesToCodePage(IMLangFontLink2* ifa
 
     for (i = 0; i < 32; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         mask = 1U << i;
 #else
         mask = 1 << i;
@@ -3999,7 +3999,7 @@ static HRESULT WINAPI fnIMLangFontLink2_MapFont(IMLangFontLink2* This,
     else
     {
         if (pFont == NULL) return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(fnIMLangFontLink2_GetCharCodePages(This, chSrc, &dwCodePages)) || !dwCodePages)
             return E_FAIL;
 

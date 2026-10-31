@@ -23,7 +23,7 @@
 #include "shlguid.h"
 #include "isguids.h"
 #include "ieautomation.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "shlguid_undoc.h"
 #endif
 
@@ -181,7 +181,7 @@ static const IClassFactoryVtbl CUrlHistoryFactoryVtbl = {
 
 static IClassFactory CUrlHistoryFactory = { &CUrlHistoryFactoryVtbl };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const IClassFactoryVtbl ShellUIHelperFactoryVtbl = {
     ClassFactory_QueryInterface,
     ClassFactory_AddRef,
@@ -220,14 +220,14 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpv)
     case DLL_PROCESS_ATTACH:
         ieframe_instance = hInstDLL;
         register_iewindow_class();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IEFRAME_InitObjects(hInstDLL);
 #endif
         DisableThreadLibraryCalls(ieframe_instance);
         break;
     case DLL_PROCESS_DETACH:
         if (lpv) break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IEFRAME_TermObjects();
 #endif
         unregister_iewindow_class();
@@ -257,7 +257,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
         return IClassFactory_QueryInterface(&InternetShortcutFactory, riid, ppv);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(IsEqualGUID(&CLSID_ShellUIHelper, rclsid))
         return IClassFactory_QueryInterface(&ShellUIHelperFactory, riid, ppv);
 
@@ -303,7 +303,7 @@ IClassFactory InternetExplorerManagerFactory = { &InternetExplorerManagerFactory
 HRESULT WINAPI DllCanUnloadNow(void)
 {
     TRACE("()\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(IEFRAME_ObjectsInUse())
         return S_FALSE;
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Generic Framebuffer display driver
+ * PROJECT:     LibreNT Generic Framebuffer display driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Generic XPDM driver entry point
  * COPYRIGHT:   Copyright 2004 Filip Navara

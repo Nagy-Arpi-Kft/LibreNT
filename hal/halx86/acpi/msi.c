@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Hardware Abstraction Layer
+ * PROJECT:         LibreNT Hardware Abstraction Layer
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            hal/halx86/acpi/msi.c
  * PURPOSE:         PCI MSI/MSI-X Capability Programming
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

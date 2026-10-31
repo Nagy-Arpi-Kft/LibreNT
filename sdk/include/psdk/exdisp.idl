@@ -650,7 +650,7 @@ interface IShellWindows : IDispatch
 }
 
 [
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     threading(apartment),
 #endif
     uuid(9ba05972-f6a8-11cf-a442-00a0c90a8f39)
@@ -925,7 +925,7 @@ coclass CScriptErrorList {
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 [
     uuid(60890160-69f0-11d1-b758-00a0c90564fe),
     hidden

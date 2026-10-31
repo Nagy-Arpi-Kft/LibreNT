@@ -242,7 +242,7 @@ enum schan_funcs
     unix_funcs_count,
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS schan_backend_call(enum schan_funcs func, void *params);
 PWSTR SECUR32_AllocWideFromMultiByte(PCSTR str);
 PSTR SECUR32_AllocMultiByteFromWide(PCWSTR str);

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell
+ * PROJECT:     LibreNT Shell
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     Implementing ZoneCheck* functions (Internet Zone Manager)
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -16,7 +16,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(zonechk);
 
 static IClassFactory *g_pZoneMgrCF = NULL; /* Internet Zone Manager's Class Factory (cached) */
-CRITICAL_SECTION g_csZoneMgrLock; /* Guards g_pZoneMgrCF (ReactOS only) */
+CRITICAL_SECTION g_csZoneMgrLock; /* Guards g_pZoneMgrCF (LibreNT only) */
 static HINSTANCE g_hinstZoneMgr = NULL; /* The module of Zone Manager */
 
 static HRESULT

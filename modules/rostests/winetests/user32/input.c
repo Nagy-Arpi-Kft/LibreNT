@@ -60,7 +60,7 @@
 #include "kbd.h"
 
 #include "wine/test.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* printf with temp buffer allocation */
 const char *wine_dbg_sprintf( const char *format, ... )
 {
@@ -1253,7 +1253,7 @@ static void test_SendInput_keyboard_messages( WORD vkey, WORD scan, WCHAR wch, W
 
     struct send_input_keyboard_test unicode_vkey[] =
     {
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
         {.scan = 0x3c0, .vkey = vkey, .flags = KEYEVENTF_UNICODE, .expect_state = { 0 /*[vkey] = 0x80*/},
 #else
         {.scan = 0x3c0, .vkey = vkey, .flags = KEYEVENTF_UNICODE, .expect_state = {/*[vkey] = 0x80*/},
@@ -3285,14 +3285,14 @@ static const struct tounicode_tests
     { 0, shift, 'a', 1, {'A',0}},
     { 0, menu, 'a', 1, {'a',0}},
     { 0, shift|menu, 'a', 1, {'A',0}},
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     { 0, shift|ctrl|menu, 'a', 0, {0}},
 #else
     { 0, shift|ctrl|menu, 'a', 0, {}},
 #endif
     { 0, ctrl, 'a', 1, {1, 0}},
     { 0, shift|ctrl, 'a', 1, {1, 0}},
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     { VK_TAB, ctrl, 0, 0, {0}},
     { VK_TAB, shift|ctrl, 0, 0, {0}},
 #else
@@ -3300,7 +3300,7 @@ static const struct tounicode_tests
     { VK_TAB, shift|ctrl, 0, 0, {}},
 #endif
     { VK_RETURN, ctrl, 0, 1, {'\n', 0}},
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     { VK_RETURN, shift|ctrl, 0, 0, {0}},
     { 0, ctrl, '4', 0, {0}},
     { 0, shift|ctrl, '4', 0, {0}},
@@ -3355,7 +3355,7 @@ static const struct tounicode_tests
     { 0, ctrl, ']', 1, {0x1d}},
     { 0, ctrl, '^', 1, {0x1e}},
     { 0, ctrl, '_', 1, {0x1f}},
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     { 0, ctrl, '`', 0, {0}},
 #else
     { 0, ctrl, '`', 0, {}},
@@ -3637,7 +3637,7 @@ static void test_keyboard_layout_name(void)
 
         for (j = 0; layouts_preload[j]; ++j)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             swprintf( tmpklid, KL_NAMELENGTH, L"%08X", HandleToUlong(layouts_preload[j]) );
 #else
             swprintf( tmpklid, KL_NAMELENGTH, L"%08X", layouts_preload[j] );
@@ -5894,7 +5894,7 @@ static void test_SetCursorPos(void)
     /* need to move by at least 3 pixels to update, but not consistent */
     mouse_event( MOUSEEVENTF_MOVE, -1, 0, 0, 0 );
     ok_ret( 1, GetCursorPos( &pos ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( abs( expect_pos.x - pos.x ) <= 2, "got pos %ld\n", pos.x );
     ok( abs( expect_pos.y - pos.y ) <= 2, "got pos %ld\n", pos.y );
 #else
@@ -5902,7 +5902,7 @@ static void test_SetCursorPos(void)
 #endif
     mouse_event( MOUSEEVENTF_MOVE, +1, 0, 0, 0 );
     ok_ret( 1, GetCursorPos( &pos ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( abs( expect_pos.x - pos.x ) <= 2, "got pos %ld\n", pos.x );
     ok( abs( expect_pos.y - pos.y ) <= 2, "got pos %ld\n", pos.y );
 #else
@@ -5913,7 +5913,7 @@ static void test_SetCursorPos(void)
     expect_pos.x -= 2;
     mouse_event( MOUSEEVENTF_MOVE, -4, 0, 0, 0 );
     ok_ret( 1, GetCursorPos( &pos ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     todo_wine ok( abs( expect_pos.x - pos.x ) <= 2, "got pos %ld\n", pos.x );
 #else
     todo_wine ok( abs( expect_pos.x - pos.x ) <= 1, "got pos %ld\n", pos.x );
@@ -5921,7 +5921,7 @@ static void test_SetCursorPos(void)
     expect_pos.x += 2;
     mouse_event( MOUSEEVENTF_MOVE, +4, 0, 0, 0 );
     ok_ret( 1, GetCursorPos( &pos ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( abs( expect_pos.x - pos.x ) <= 2, "got pos %ld\n", pos.x );
 #else
     ok( abs( expect_pos.x - pos.x ) <= 1, "got pos %ld\n", pos.x );
@@ -6241,7 +6241,7 @@ START_TEST(input)
     init_function_pointers();
     GetCursorPos( &pos );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA && !is_reactos()) {
         skip("The user32:input tests causes persistent input issues on WS03!\n");
         return;

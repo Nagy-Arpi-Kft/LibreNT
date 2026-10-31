@@ -70,7 +70,7 @@ static LRESULT CALLBACK AtlAxWin_wndproc( HWND hWnd, UINT wMsg, WPARAM wParam, L
             if (!ptr)
                 return 1;
             GetWindowTextW( hWnd, ptr, len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 HRESULT hr = AtlAxCreateControlEx( ptr, hWnd, NULL, NULL, NULL, NULL, NULL );
                 free( ptr );
@@ -97,7 +97,7 @@ static LRESULT CALLBACK AtlAxWin_wndproc( HWND hWnd, UINT wMsg, WPARAM wParam, L
     return DefWindowProcW( hWnd, wMsg, wParam, lParam );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LRESULT CALLBACK AtlAxWinLic_wndproc( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam )
 {
     if ( wMsg == WM_CREATE )
@@ -170,7 +170,7 @@ BOOL WINAPI AtlAxWinInit(void)
     if(_ATL_VER > _ATL_VER_30) {
         static const WCHAR AtlAxWinLicW[] = L"AtlAxWinLic" ATL_NAME_SUFFIX;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wcex.lpfnWndProc   = AtlAxWinLic_wndproc;
 #endif
         wcex.lpszClassName = AtlAxWinLicW;
@@ -934,7 +934,7 @@ static LRESULT IOCS_OnWndProc( IOCS *This, HWND hWnd, UINT uMsg, WPARAM wParam, 
     {
         case WM_DESTROY:
             IOCS_Detach( This );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             IOleClientSite_Release( &This->IOleClientSite_iface );
 #endif
             break;
@@ -964,7 +964,7 @@ static LRESULT CALLBACK AtlHost_wndproc( HWND hWnd, UINT wMsg, WPARAM wParam, LP
 
 static HRESULT IOCS_Attach( IOCS *This, HWND hWnd, IUnknown *pUnkControl ) /* subclass hWnd */
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IOCS *Previous = hWnd ? (IOCS*) GetPropW( hWnd, L"__WINE_ATL_IOCS" ) : NULL;
 
     if ( Previous )
@@ -1001,7 +1001,7 @@ static HRESULT IOCS_Init( IOCS *This )
 {
     RECT rect;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ( !This->control )
     {
         SetRectEmpty( &This->size );
@@ -1142,7 +1142,7 @@ HRESULT WINAPI AtlAxCreateControlLicEx(LPCOLESTR lpszName, HWND hWnd,
 
     content = get_content_type(lpszName, &controlId);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (content == IsEmpty)
     {
         hRes = IOCS_Create( hWnd, NULL, &pContainer );

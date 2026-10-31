@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * PURPOSE:         C specific exception handler for SEH metadata
  */
 

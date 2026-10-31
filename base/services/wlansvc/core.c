@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WLAN Service
+ * PROJECT:     LibreNT WLAN Service
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        base/services/wlansvc/core.c
  * PURPOSE:     AutoConfig service core: interface list + lifetime + lookups
@@ -120,7 +120,7 @@ WlanSvcPopulateInterfacesLocked(VOID)
         else
             WlanSvcSynthesizeGuid(ref, &iface->InterfaceGuid);
         _snwprintf(iface->Description, WLAN_MAX_NAME_LENGTH - 1,
-                   L"ReactOS Native WiFi Adapter #%lu", ref->InterfaceIndex + 1);
+                   L"LibreNT Native WiFi Adapter #%lu", ref->InterfaceIndex + 1);
         WlanSvcGetAdapterDescription(&ref->AdapterGuid, iface->Description, WLAN_MAX_NAME_LENGTH);
         iface->PhyType = dot11_phy_type_erp;
         iface->AutoConfigEnabled = TRUE;

@@ -456,7 +456,7 @@ GpStatus WINGDIPAPI GdipGetLogFontA(GpFont *font, GpGraphics *graphics,
  */
 GpStatus WINGDIPAPI GdipGetLogFontW(GpFont *font, GpGraphics *graphics, LOGFONTW *lf)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     REAL angle, rel_width, rel_height, height;
 #else
     REAL angle, rel_height, height;
@@ -485,7 +485,7 @@ GpStatus WINGDIPAPI GdipGetLogFontW(GpFont *font, GpGraphics *graphics, LOGFONTW
     }
 
     GdipMultiplyMatrix(&matrix, &graphics->gdi_transform, MatrixOrderAppend);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     transform_properties(graphics, &matrix, FALSE, NULL, NULL, &angle);
     rel_width = sqrtf(matrix.matrix[0] * matrix.matrix[0] + matrix.matrix[1] * matrix.matrix[1]);
     rel_height = rel_width ? matrix.matrix[3] * (matrix.matrix[0] / rel_width) -

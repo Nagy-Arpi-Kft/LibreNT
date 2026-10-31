@@ -1,12 +1,12 @@
 /*
- * PROJECT:         LiberNT HAL (ARM64)
+ * PROJECT:         LibreNT HAL (ARM64)
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * COPYRIGHT:       Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include <ntddk.h>
 #include <halacpi_arm64.h>
-#include <reactos/hal/msi.h>
+#include <librent/hal/msi.h>
 #define NDEBUG
 #include <debug.h>
 
@@ -47,7 +47,7 @@ NTSTATUS NTAPI HalpGetMessageRoutingInfo(PHAL_MESSAGE_ROUTING_INFO RoutingInfo)
  *   llvm-readobj --coff-exports hal.dll
  *     Name: HalEnumerateProcessors  ForwardedTo: ntoskrnl.HalEnumerateProcessors
  *
- * ReactOS has NOT merged HAL into ntoskrnl, and ReactOS ntoskrnl.spec exports
+ * LibreNT has NOT merged HAL into ntoskrnl, and LibreNT ntoskrnl.spec exports
  * none of these names, so forwarding to ntoskrnl would produce dangling
  * forwarders. To achieve Win11 hal.dll export-NAME-set parity while staying
  * inside the hal tree, we provide local UNIMPLEMENTED stubs here and export the

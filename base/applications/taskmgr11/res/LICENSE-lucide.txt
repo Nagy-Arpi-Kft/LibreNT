@@ -41,7 +41,7 @@ IC_OPENFOLDER      folder-open.svg
 IC_OPENAPP         external-link.svg
 IC_WINDOW          app-window.svg
 
-The application icon (taskmgr11.ico) is the classic ReactOS Task Manager
+The application icon (taskmgr11.ico) is the classic LibreNT Task Manager
 icon (GPL-2.0-or-later, from base/applications/taskmgr) and does not
 derive from Lucide.
 

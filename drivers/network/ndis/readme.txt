@@ -7,10 +7,10 @@ Build instructions for NDIS library
     'make' to make the library
     'make clean' to clean it
 
- - from the top level reactos directory:
+ - from the top level LibreNT directory:
     'make ndis'
 
- - make must be run from the top level reactos directory to update the import
+ - make must be run from the top level LibreNT directory to update the import
    library, unless you manually update it
 
 -----------------------------
@@ -28,6 +28,6 @@ DDK environment variables must be set! (run setenv.bat)
     - Run "build" to build the library
 
 
-Building with Mingw32 and ReactOS include files:
+Building with Mingw32 and LibreNT include files:
 
-    - Run "make ndis" FROM THE ReactOS ROOT DIRECTORY to build the library
+    - Run "make ndis" FROM THE LibreNT ROOT DIRECTORY to build the library

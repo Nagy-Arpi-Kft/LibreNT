@@ -1,9 +1,9 @@
 project(rapps)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/cryptlib
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
-include_directories(SYSTEM ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/zlib/contrib)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/cryptlib
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
+include_directories(SYSTEM ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/zlib/contrib)
 include_directories(include)
 
 list(APPEND SOURCE
@@ -55,4 +55,4 @@ target_link_libraries(rapps conutils uuid cpprt atl_classes minizip zlib)
 add_importlibs(rapps advapi32 comctl32 gdi32 wininet user32 shell32 shlwapi ole32 setupapi gdiplus msvcrt kernel32 ntdll)
 add_dependencies(rapps rappsmsg)
 add_message_headers(ANSI rappsmsg.mc)
-add_cd_file(TARGET rapps DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rapps DESTINATION librent/system32 FOR all)

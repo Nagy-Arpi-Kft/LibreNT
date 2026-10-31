@@ -29,7 +29,7 @@
 #include "textserv.h"
 #include "wine/debug.h"
 #include "editstr.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "riched20.h"
 #endif
 

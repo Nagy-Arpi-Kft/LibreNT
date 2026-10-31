@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Setup Library
+ * PROJECT:     LibreNT Setup Library
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Bootloader support functions
  * COPYRIGHT:   ...
@@ -55,7 +55,7 @@ TrimTrailingPathSeparators_UStr(
 
 
 static VOID
-CreateFreeLoaderReactOSEntries(
+CreateFreeLoaderLibreNTEntries(
     IN PVOID BootStoreHandle,
     IN PCWSTR ArcPath)
 {
@@ -74,14 +74,14 @@ CreateFreeLoaderReactOSEntries(
 
     Options->OsLoadPath = ArcPath;
 
-    /* ReactOS */
-    // BootEntry->BootEntryKey = MAKESTRKEY(L"ReactOS");
-    BootEntry->FriendlyName = L"\"LiberNT\"";
+    /* LibreNT */
+    // BootEntry->BootEntryKey = MAKESTRKEY(L"LibreNT");
+    BootEntry->FriendlyName = L"\"LibreNT\"";
     Options->OsLoadOptions  = L"/FASTDETECT";
-    AddBootStoreEntry(BootStoreHandle, BootEntry, MAKESTRKEY(L"ReactOS"));
+    AddBootStoreEntry(BootStoreHandle, BootEntry, MAKESTRKEY(L"LibreNT"));
 
-    /* DefaultOS=ReactOS */
-    BootOptions.NextBootEntryKey = MAKESTRKEY(L"ReactOS");
+    /* DefaultOS=LibreNT */
+    BootOptions.NextBootEntryKey = MAKESTRKEY(L"LibreNT");
 
 #if DBG
     if (IsUnattendedSetup)
@@ -103,7 +103,7 @@ CreateFreeLoaderReactOSEntries(
 }
 
 static NTSTATUS
-CreateFreeLoaderIniForReactOS(
+CreateFreeLoaderIniForLibreNT(
     IN PCWSTR IniPath,
     IN PCWSTR ArcPath)
 {
@@ -116,8 +116,8 @@ CreateFreeLoaderIniForReactOS(
     if (!NT_SUCCESS(Status))
         return Status;
 
-    /* Add the ReactOS entries */
-    CreateFreeLoaderReactOSEntries(BootStoreHandle, ArcPath);
+    /* Add the LibreNT entries */
+    CreateFreeLoaderLibreNTEntries(BootStoreHandle, ArcPath);
 
     /* Close the INI file */
     CloseBootStore(BootStoreHandle);
@@ -125,7 +125,7 @@ CreateFreeLoaderIniForReactOS(
 }
 
 static NTSTATUS
-CreateFreeLoaderIniForReactOSAndBootSector(
+CreateFreeLoaderIniForLibreNTAndBootSector(
     IN PCWSTR IniPath,
     IN PCWSTR ArcPath,
     IN PCWSTR Section,
@@ -211,8 +211,8 @@ CreateFreeLoaderIniForReactOSAndBootSector(
     if (!NT_SUCCESS(Status))
         return Status;
 
-    /* Add the ReactOS entries */
-    CreateFreeLoaderReactOSEntries(BootStoreHandle, ArcPath);
+    /* Add the LibreNT entries */
+    CreateFreeLoaderLibreNTEntries(BootStoreHandle, ArcPath);
 
     BootEntry->Version = FreeLdr;
     BootEntry->BootFilePath = NULL;
@@ -236,29 +236,29 @@ CreateFreeLoaderIniForReactOSAndBootSector(
 
 //
 // I think this function can be generalizable as:
-// "find the corresponding 'ReactOS' boot entry in this loader config file
+// "find the corresponding 'LibreNT' boot entry in this loader config file
 // (here abstraction comes there), and if none, add a new one".
 //
 
-typedef struct _ENUM_REACTOS_ENTRIES_DATA
+typedef struct _ENUM_LIBRENT_ENTRIES_DATA
 {
     ULONG i;
     BOOLEAN UseExistingEntry;
     PCWSTR ArcPath;
     WCHAR SectionName[80];
     WCHAR OsName[80];
-} ENUM_REACTOS_ENTRIES_DATA, *PENUM_REACTOS_ENTRIES_DATA;
+} ENUM_LIBRENT_ENTRIES_DATA, *PENUM_LIBRENT_ENTRIES_DATA;
 
 // PENUM_BOOT_ENTRIES_ROUTINE
 static NTSTATUS
 NTAPI
-EnumerateReactOSEntries(
+EnumerateLibreNTEntries(
     IN BOOT_STORE_TYPE Type,
     IN PBOOT_STORE_ENTRY BootEntry,
     IN PVOID Parameter OPTIONAL)
 {
     NTSTATUS Status;
-    PENUM_REACTOS_ENTRIES_DATA Data = (PENUM_REACTOS_ENTRIES_DATA)Parameter;
+    PENUM_LIBRENT_ENTRIES_DATA Data = (PENUM_LIBRENT_ENTRIES_DATA)Parameter;
     PNTOS_OPTIONS Options = (PNTOS_OPTIONS)&BootEntry->OsOptions;
     WCHAR SystemPath[MAX_PATH];
 
@@ -271,7 +271,7 @@ EnumerateReactOSEntries(
                          RTL_FIELD_SIZE(NTOS_OPTIONS, Signature)) !=
                          RTL_FIELD_SIZE(NTOS_OPTIONS, Signature))
     {
-        /* This is not a ReactOS entry */
+        /* This is not a LibreNT entry */
         // DPRINT("    An installation '%S' of unsupported type '%S'\n",
                // BootEntry->FriendlyName, BootEntry->Version ? BootEntry->Version : L"n/a");
         DPRINT("    An installation '%S' of unsupported type %lu\n",
@@ -283,7 +283,7 @@ EnumerateReactOSEntries(
     /* BootType is Windows2003, now check OsLoadPath */
     if (!Options->OsLoadPath || !*Options->OsLoadPath)
     {
-        /* Certainly not a ReactOS installation */
+        /* Certainly not a LibreNT installation */
         DPRINT1("    A Win2k3 install '%S' without an ARC path?!\n", BootEntry->FriendlyName);
         /* Continue the enumeration */
         goto SkipThisEntry;
@@ -296,7 +296,7 @@ EnumerateReactOSEntries(
         if (!NT_SUCCESS(Status) || _wcsicmp(Options->OsLoadPath, SystemPath) != 0)
         {
             /*
-             * This entry is a ReactOS entry, but the SystemRoot
+             * This entry is a LibreNT entry, but the SystemRoot
              * does not match the one we are looking for.
              */
             /* Continue the enumeration */
@@ -309,7 +309,7 @@ EnumerateReactOSEntries(
     // DPRINT("    Found a Win2k3 install '%S' with ARC path '%S'\n",
            // BootEntry->FriendlyName, Options->OsLoadPath);
 
-    DPRINT("EnumerateReactOSEntries: OsLoadPath: '%S'\n", Options->OsLoadPath);
+    DPRINT("EnumerateLibreNTEntries: OsLoadPath: '%S'\n", Options->OsLoadPath);
 
     Data->UseExistingEntry = TRUE;
     RtlStringCchCopyW(Data->OsName, ARRAYSIZE(Data->OsName), BootEntry->FriendlyName);
@@ -322,9 +322,9 @@ SkipThisEntry:
     if (Type == FreeLdr && wcscmp(Data->SectionName, (PWSTR)BootEntry->BootEntryKey)== 0)
     {
         RtlStringCchPrintfW(Data->SectionName, ARRAYSIZE(Data->SectionName),
-                            L"ReactOS_%lu", Data->i);
+                            L"LibreNT_%lu", Data->i);
         RtlStringCchPrintfW(Data->OsName, ARRAYSIZE(Data->OsName),
-                            L"\"LiberNT %lu\"", Data->i);
+                            L"\"LibreNT %lu\"", Data->i);
         Data->i++;
     }
     return STATUS_SUCCESS;
@@ -338,7 +338,7 @@ UpdateFreeLoaderIni(
 {
     NTSTATUS Status;
     PVOID BootStoreHandle;
-    ENUM_REACTOS_ENTRIES_DATA Data;
+    ENUM_LIBRENT_ENTRIES_DATA Data;
     UCHAR xxBootEntry[FIELD_OFFSET(BOOT_STORE_ENTRY, OsOptions) + sizeof(NTOS_OPTIONS)];
     PBOOT_STORE_ENTRY BootEntry = (PBOOT_STORE_ENTRY)&xxBootEntry;
     PNTOS_OPTIONS Options = (PNTOS_OPTIONS)&BootEntry->OsOptions;
@@ -353,20 +353,20 @@ UpdateFreeLoaderIni(
     Data.UseExistingEntry = TRUE;
     Data.i = 1;
     Data.ArcPath = ArcPath;
-    RtlStringCchCopyW(Data.SectionName, ARRAYSIZE(Data.SectionName), L"ReactOS");
-    RtlStringCchCopyW(Data.OsName, ARRAYSIZE(Data.OsName), L"\"LiberNT\"");
+    RtlStringCchCopyW(Data.SectionName, ARRAYSIZE(Data.SectionName), L"LibreNT");
+    RtlStringCchCopyW(Data.OsName, ARRAYSIZE(Data.OsName), L"\"LibreNT\"");
 
     //
     // FIXME: We temporarily use EnumerateBootStoreEntries, until
     // both QueryBootStoreEntry and ModifyBootStoreEntry get implemented.
     //
-    Status = EnumerateBootStoreEntries(BootStoreHandle, EnumerateReactOSEntries, &Data);
+    Status = EnumerateBootStoreEntries(BootStoreHandle, EnumerateLibreNTEntries, &Data);
 
-    /* Create a new "ReactOS" entry if there is none already existing that suits us */
+    /* Create a new "LibreNT" entry if there is none already existing that suits us */
     if (!Data.UseExistingEntry)
     {
-        // RtlStringCchPrintfW(Data.SectionName, ARRAYSIZE(Data.SectionName), L"ReactOS_%lu", Data.i);
-        // RtlStringCchPrintfW(Data.OsName, ARRAYSIZE(Data.OsName), L"\"LiberNT %lu\"", Data.i);
+        // RtlStringCchPrintfW(Data.SectionName, ARRAYSIZE(Data.SectionName), L"LibreNT_%lu", Data.i);
+        // RtlStringCchPrintfW(Data.OsName, ARRAYSIZE(Data.OsName), L"\"LibreNT %lu\"", Data.i);
 
         BootEntry->Version = FreeLdr;
         BootEntry->BootFilePath = NULL;
@@ -398,7 +398,7 @@ UpdateBootIni(
 {
     NTSTATUS Status;
     PVOID BootStoreHandle;
-    ENUM_REACTOS_ENTRIES_DATA Data;
+    ENUM_LIBRENT_ENTRIES_DATA Data;
 
     // NOTE: Technically it would be "BootSector"...
     UCHAR xxBootEntry[FIELD_OFFSET(BOOT_STORE_ENTRY, OsOptions) + sizeof(NTOS_OPTIONS)];
@@ -415,14 +415,14 @@ UpdateBootIni(
     Data.UseExistingEntry = TRUE;
     // Data.i = 1;
     Data.ArcPath = EntryName;
-    // RtlStringCchCopyW(Data.SectionName, ARRAYSIZE(Data.SectionName), L"ReactOS");
-    RtlStringCchCopyW(Data.OsName, ARRAYSIZE(Data.OsName), L"\"LiberNT\"");
+    // RtlStringCchCopyW(Data.SectionName, ARRAYSIZE(Data.SectionName), L"LibreNT");
+    RtlStringCchCopyW(Data.OsName, ARRAYSIZE(Data.OsName), L"\"LibreNT\"");
 
     //
     // FIXME: We temporarily use EnumerateBootStoreEntries, until
     // both QueryBootStoreEntry and ModifyBootStoreEntry get implemented.
     //
-    Status = EnumerateBootStoreEntries(BootStoreHandle, EnumerateReactOSEntries, &Data);
+    Status = EnumerateBootStoreEntries(BootStoreHandle, EnumerateLibreNTEntries, &Data);
 
     /* If either the key was not found, or contains something else, add a new one */
     if (!Data.UseExistingEntry /* ||
@@ -894,8 +894,8 @@ InstallBootloaderFiles(
 #define EFI_LOAD_OPTION_MAX             4096
 #define EFI_BOOT_ORDER_MAX              512
 #define EFI_BOOT_OPTION_SEARCH_MAX      0x1000
-#define EFI_BOOT_MANAGER_DESCRIPTION    L"LiberNT Boot Manager"
-#define EFI_BOOT_MANAGER_FILE           L"\\EFI\\LiberNT\\Boot\\bootmgfw.efi"
+#define EFI_BOOT_MANAGER_DESCRIPTION    L"LibreNT Boot Manager"
+#define EFI_BOOT_MANAGER_FILE           L"\\EFI\\LibreNT\\Boot\\bootmgfw.efi"
 #define EFI_WINDOWS_BOOT_MANAGER_FILE   L"\\EFI\\Microsoft\\Boot\\bootmgfw.efi"
 #define GPT_HEADER_ENTRIES_LBA_OFFSET   72
 #define GPT_HEADER_ENTRY_COUNT_OFFSET   80
@@ -1349,17 +1349,17 @@ InstallBcdStore(
     if (!NT_SUCCESS(Status))
         return Status;
 
-    CombinePaths(Path, ARRAYSIZE(Path), 2, SystemRootPath->Buffer, L"EFI\\LiberNT\\Boot");
+    CombinePaths(Path, ARRAYSIZE(Path), 2, SystemRootPath->Buffer, L"EFI\\LibreNT\\Boot");
     Status = SetupCreateDirectory(Path);
     if (!NT_SUCCESS(Status) && Status != STATUS_OBJECT_NAME_COLLISION)
         return Status;
 
-    CombinePaths(Path, ARRAYSIZE(Path), 2, SystemRootPath->Buffer, L"EFI\\LiberNT\\Boot\\bootmgfw.efi");
+    CombinePaths(Path, ARRAYSIZE(Path), 2, SystemRootPath->Buffer, L"EFI\\LibreNT\\Boot\\bootmgfw.efi");
     Status = SetupCopyFile(BootManagerPath, Path, FALSE);
     if (!NT_SUCCESS(Status))
         return Status;
 
-    CombinePaths(StorePath, ARRAYSIZE(StorePath), 2, SystemRootPath->Buffer, L"EFI\\LiberNT\\Boot\\BCD");
+    CombinePaths(StorePath, ARRAYSIZE(StorePath), 2, SystemRootPath->Buffer, L"EFI\\LibreNT\\Boot\\BCD");
     Status = SetupCopyFile(TemplatePath, StorePath, FALSE);
     if (!NT_SUCCESS(Status))
         return Status;
@@ -1876,7 +1876,7 @@ InstallEfiSystemPartition(
     else
     {
         DPRINT1("Create new 'freeldr.ini' on the EFI system partition\n");
-        Status = CreateFreeLoaderIniForReactOS(SystemRootPath->Buffer, DestinationArcPath->Buffer);
+        Status = CreateFreeLoaderIniForLibreNT(SystemRootPath->Buffer, DestinationArcPath->Buffer);
     }
     if (!NT_SUCCESS(Status))
         DPRINT1("Writing 'freeldr.ini' failed (Status %lx)\n", Status);
@@ -1946,10 +1946,10 @@ InstallFatBootcodeToPartition(
         {
             /* Create new 'freeldr.ini' */
             DPRINT1("Create new 'freeldr.ini'\n");
-            Status = CreateFreeLoaderIniForReactOS(SystemRootPath->Buffer, DestinationArcPath->Buffer);
+            Status = CreateFreeLoaderIniForLibreNT(SystemRootPath->Buffer, DestinationArcPath->Buffer);
             if (!NT_SUCCESS(Status))
             {
-                DPRINT1("CreateFreeLoaderIniForReactOS() failed (Status %lx)\n", Status);
+                DPRINT1("CreateFreeLoaderIniForLibreNT() failed (Status %lx)\n", Status);
                 return Status;
             }
 
@@ -1994,7 +1994,7 @@ InstallFatBootcodeToPartition(
         DPRINT1("Update 'boot.ini'\n");
         Status = UpdateBootIni(SystemRootPath->Buffer,
                                L"C:\\bootsect.ros",
-                               L"\"LiberNT\"");
+                               L"\"LibreNT\"");
         if (!NT_SUCCESS(Status))
         {
             DPRINT1("UpdateBootIni() failed (Status %lx)\n", Status);
@@ -2117,13 +2117,13 @@ InstallFatBootcodeToPartition(
 
             if (IsThereAValidBootSector(SystemRootPath->Buffer))
             {
-                Status = CreateFreeLoaderIniForReactOSAndBootSector(
+                Status = CreateFreeLoaderIniForLibreNTAndBootSector(
                              SystemRootPath->Buffer, DestinationArcPath->Buffer,
                              Section, Description,
                              SystemRootPath->Buffer, BootSector);
                 if (!NT_SUCCESS(Status))
                 {
-                    DPRINT1("CreateFreeLoaderIniForReactOSAndBootSector() failed (Status %lx)\n", Status);
+                    DPRINT1("CreateFreeLoaderIniForLibreNTAndBootSector() failed (Status %lx)\n", Status);
                     return Status;
                 }
 
@@ -2140,10 +2140,10 @@ InstallFatBootcodeToPartition(
             }
             else
             {
-                Status = CreateFreeLoaderIniForReactOS(SystemRootPath->Buffer, DestinationArcPath->Buffer);
+                Status = CreateFreeLoaderIniForLibreNT(SystemRootPath->Buffer, DestinationArcPath->Buffer);
                 if (!NT_SUCCESS(Status))
                 {
-                    DPRINT1("CreateFreeLoaderIniForReactOS() failed (Status %lx)\n", Status);
+                    DPRINT1("CreateFreeLoaderIniForLibreNT() failed (Status %lx)\n", Status);
                     return Status;
                 }
             }
@@ -2234,13 +2234,13 @@ InstallBtrfsBootcodeToPartition(
         {
             PCWSTR BootSector = L"BOOTSECT.OLD";
 
-            Status = CreateFreeLoaderIniForReactOSAndBootSector(
+            Status = CreateFreeLoaderIniForLibreNTAndBootSector(
                          SystemRootPath->Buffer, DestinationArcPath->Buffer,
                          L"Linux", L"\"Linux\"",
                          SystemRootPath->Buffer, BootSector);
             if (!NT_SUCCESS(Status))
             {
-                DPRINT1("CreateFreeLoaderIniForReactOSAndBootSector() failed (Status %lx)\n", Status);
+                DPRINT1("CreateFreeLoaderIniForLibreNTAndBootSector() failed (Status %lx)\n", Status);
                 return Status;
             }
 
@@ -2257,10 +2257,10 @@ InstallBtrfsBootcodeToPartition(
         }
         else
         {
-            Status = CreateFreeLoaderIniForReactOS(SystemRootPath->Buffer, DestinationArcPath->Buffer);
+            Status = CreateFreeLoaderIniForLibreNT(SystemRootPath->Buffer, DestinationArcPath->Buffer);
             if (!NT_SUCCESS(Status))
             {
-                DPRINT1("CreateFreeLoaderIniForReactOS() failed (Status %lx)\n", Status);
+                DPRINT1("CreateFreeLoaderIniForLibreNT() failed (Status %lx)\n", Status);
                 return Status;
             }
         }
@@ -2331,13 +2331,13 @@ InstallNtfsBootcodeToPartition(
     {
         PCWSTR BootSector = L"BOOTSECT.OLD";
 
-        Status = CreateFreeLoaderIniForReactOSAndBootSector(
+        Status = CreateFreeLoaderIniForLibreNTAndBootSector(
                      SystemRootPath->Buffer, DestinationArcPath->Buffer,
                      L"Linux", L"\"Linux\"",
                      SystemRootPath->Buffer, BootSector);
         if (!NT_SUCCESS(Status))
         {
-            DPRINT1("CreateFreeLoaderIniForReactOSAndBootSector() failed (Status %lx)\n", Status);
+            DPRINT1("CreateFreeLoaderIniForLibreNTAndBootSector() failed (Status %lx)\n", Status);
             return Status;
         }
 
@@ -2354,10 +2354,10 @@ InstallNtfsBootcodeToPartition(
     }
     else
     {
-        Status = CreateFreeLoaderIniForReactOS(SystemRootPath->Buffer, DestinationArcPath->Buffer);
+        Status = CreateFreeLoaderIniForLibreNT(SystemRootPath->Buffer, DestinationArcPath->Buffer);
         if (!NT_SUCCESS(Status))
         {
-            DPRINT1("CreateFreeLoaderIniForReactOS() failed (Status %lx)\n", Status);
+            DPRINT1("CreateFreeLoaderIniForLibreNT() failed (Status %lx)\n", Status);
             return Status;
         }
     }
@@ -2531,10 +2531,10 @@ InstallBootManagerAndBootEntriesWorker(
 
         /* Create new 'freeldr.ini' */
         DPRINT("Create new 'freeldr.ini'\n");
-        Status = CreateFreeLoaderIniForReactOS(SystemRootPath->Buffer, DestinationArcPath->Buffer);
+        Status = CreateFreeLoaderIniForLibreNT(SystemRootPath->Buffer, DestinationArcPath->Buffer);
         if (!NT_SUCCESS(Status))
         {
-            DPRINT1("CreateFreeLoaderIniForReactOS() failed (Status 0x%08lx)\n", Status);
+            DPRINT1("CreateFreeLoaderIniForLibreNT() failed (Status 0x%08lx)\n", Status);
             return Status;
         }
 
@@ -2640,7 +2640,7 @@ GetDeviceInfo(
  * The installation source, where to copy the FreeLdr boot manager from.
  *
  * @param[in]   DestinationArcPath
- * The ReactOS installation path in ARC format.
+ * The LibreNT installation path in ARC format.
  *
  * @param[in]   Options
  * For BIOS-based PCs:

@@ -1,5 +1,5 @@
 /*
- * ReactOS Shell
+ * LibreNT Shell
  *
  * Copyright 2016 Giannis Adamopoulos
  *

@@ -22,7 +22,7 @@
 
 
 
-#if defined(_M_ARM) || defined(__REACTOS__)
+#if defined(_M_ARM) || defined(__LIBRENT__)
 #define FX_VF_PAGING
 #else
 #define FX_VF_PAGING __declspec(code_seg(FX_VF_SECTION_NAME_QUOTED(WDF_FX_VF_SECTION_NAME)))

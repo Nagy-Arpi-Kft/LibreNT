@@ -259,7 +259,7 @@ struct request
     unsigned int websocket_send_buffer_size, websocket_set_send_buffer_size;
     int reply_len;
     enum request_state state;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *username;
     WCHAR *password;
 #endif
@@ -434,7 +434,7 @@ void stop_queue( struct queue * );
 DWORD queue_task( struct queue *, TASK_CALLBACK, struct task_header *, struct object_header * );
 BOOL task_needs_completion( struct task_header * );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void winsock_init(void);
 #endif
 void netconn_addref( struct netconn * );
@@ -449,7 +449,7 @@ BOOL netconn_wait_overlapped_result( struct netconn *conn, WSAOVERLAPPED *ovr, D
 void netconn_cancel_io( struct netconn *conn );
 DWORD netconn_set_timeout( struct netconn *, BOOL, int );
 BOOL netconn_is_alive( struct netconn * );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD netconn_renegotiate( struct netconn *conn, const WCHAR *hostname, CredHandle *cred_handle );
 #endif
 BOOL netconn_is_valid( struct netconn * );

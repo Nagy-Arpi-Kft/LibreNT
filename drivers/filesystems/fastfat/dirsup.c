@@ -3556,7 +3556,7 @@ Return Value:
                                           Page * PAGE_SIZE,
                                           PinSize,
                                           &Bcbs[Page],
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                           &Dirent,
 #else
                                           (PVOID *)&Dirent,

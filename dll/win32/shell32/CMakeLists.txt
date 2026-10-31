@@ -134,7 +134,7 @@ if(WOW64_I386_RUNTIME AND ARCH STREQUAL "i386")
     target_compile_definitions(shell32 PRIVATE BUILD_WOW6432)
 endif()
 
-if(ARCH STREQUAL "arm64" AND ENABLE_FEX_ARM64EC AND EXISTS "${REACTOS_SOURCE_DIR}/submodules/fex-arm64ec/CMakeLists.txt")
+if(ARCH STREQUAL "arm64" AND ENABLE_FEX_ARM64EC AND EXISTS "${LIBRENT_SOURCE_DIR}/submodules/fex-arm64ec/CMakeLists.txt")
     target_compile_definitions(shell32 PRIVATE ENABLE_FEX_ARM64EC)
 endif()
 
@@ -183,5 +183,5 @@ add_delay_importlibs(shell32 powrprof shdocvw devmgr winspool.drv winmm mpr uxth
 add_importlibs(shell32 windows.storage advapi32 gdi32 user32 comctl32 comdlg32 shlwapi shcore msvcrt kernel32 ntdll)
 add_dependencies(shell32 stdole2) # shell32_shldisp.tlb needs stdole2.tlb
 add_pch(shell32 precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET shell32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET shell32 DESTINATION librent/system32 FOR all)
 add_neutral_resource_file(shell32 shell32.rc shell32_mun.rc)

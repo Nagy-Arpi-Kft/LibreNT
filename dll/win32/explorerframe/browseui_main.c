@@ -29,7 +29,7 @@
 #include "winbase.h"
 #include "winreg.h"
 #include "shlguid.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "shlguid_undoc.h"
 #endif
 #include "rpcproxy.h"
@@ -51,15 +51,15 @@ static const struct {
     REFCLSID clsid;
     LPFNCONSTRUCTOR ctor;
 } ClassesTable[] = {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     {&CLSID_ACLMulti, ACLMulti_Constructor},
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     {&CLSID_ProgressDialog, ProgressDialog_Constructor},
 #endif
     {&CLSID_CompCatCacheDaemon, CompCatCacheDaemon_Constructor},
     {&CLSID_DeskBarApp, DeskBarApp_Constructor},
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     {&CLSID_ACListISF, ACLShellSource_Constructor},
 #endif
     {NULL, NULL}

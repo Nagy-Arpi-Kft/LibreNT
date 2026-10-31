@@ -77,7 +77,7 @@ SH32_ExtCoCreateInstance(
     _In_ REFIID riid,
     _Out_ LPVOID *ppv);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI WineShell32_GetClassObject(REFCLSID clsid, REFIID riid, void **obj);
 HRESULT WINAPI ExplorerBrowser_Constructor(IUnknown *outer, REFIID riid, void **obj);
 HRESULT WINAPI NamespaceTreeControl_Constructor(IUnknown *outer, REFIID riid, void **obj);
@@ -93,7 +93,7 @@ extern INT ShellLargeIconSize;
 extern INT ShellSmallIconSize;
 extern INT ShellIconBPP;
 BOOL WINAPI Shell_GetImageLists(HIMAGELIST * lpBigList, HIMAGELIST * lpSmallList);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HIMAGELIST SIC_GetImageList(INT iImageList);
 #endif
 
@@ -105,7 +105,7 @@ BOOL HCR_GetExecuteCommandW( HKEY hkeyClass, LPCWSTR szClass, LPCWSTR szVerb, LP
 BOOL HCR_GetIconW(LPCWSTR szClass, LPWSTR szDest, LPCWSTR szName, DWORD len, int* picon_idx);
 BOOL HCR_GetClassNameW(REFIID riid, LPWSTR szDest, DWORD len) DECLSPEC_HIDDEN;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Current User */
 BOOL HCU_GetIconW(LPCWSTR szClass, LPWSTR szDest, LPCWSTR szName, DWORD len, int* picon_idx) DECLSPEC_HIDDEN;
 
@@ -211,7 +211,7 @@ static inline WCHAR *strdupAtoW(const char *str)
     if (!str) return NULL;
 
     len = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = (WCHAR *)malloc(len * sizeof(WCHAR));
 #else
     ret = malloc(len * sizeof(WCHAR));
@@ -298,7 +298,7 @@ extern const GUID CLSID_UnixDosFolder DECLSPEC_HIDDEN;
 /* Default shell folder value registration */
 HRESULT SHELL_RegisterShellFolders(void) DECLSPEC_HIDDEN;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT SHELL_AddAutomaticDestination(LPCWSTR pszAppID, PCIDLIST_ABSOLUTE pidl);
 #endif
 

@@ -1,7 +1,7 @@
 
 spec2def(winsta.dll winsta.spec)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 list(APPEND SOURCE
     logon.c
@@ -22,4 +22,4 @@ set_module_type(winsta win32dll)
 target_link_libraries(winsta wine)
 add_importlibs(winsta msvcrt kernel32 ntdll)
 add_pch(winsta winsta.h SOURCE)
-add_cd_file(TARGET winsta DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winsta DESTINATION librent/system32 FOR all)

@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 1998, 1999, 2000, 2001 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 /*
- * PROJECT:         ReactOS user32.dll
+ * PROJECT:         LibreNT user32.dll
  * FILE:            win32ss/user/rtl/text.c
  * PURPOSE:         Draw Text
  * PROGRAMMER:      Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -287,7 +287,7 @@ static void TEXT_PathEllipsify (HDC hdc, WCHAR *str, unsigned int max_len,
     lastFwdSlash = strrchrW (str, FORWARD_SLASH);
 #endif
     lastSlash = lastBkSlash > lastFwdSlash ? lastBkSlash : lastFwdSlash;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lastSlash) lastSlash = str + *len_str;
 #else
     if (!lastSlash) lastSlash = str;
@@ -1220,7 +1220,7 @@ INT WINAPI DrawTextExWorker( HDC hdc,
             last_line = !(flags & DT_NOCLIP) && y + ((flags & DT_EDITCONTROL) ? 2*lh : lh) > rect->bottom;
 	strPtr = TEXT_NextLineW(hdc, strPtr, &count, line, &len, width, flags, &size, last_line, &p_retstr, tabwidth, &prefix_offset, &ellip);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (flags & DT_CENTER)
     {
         if (((rect->right - rect->left) < size.cx) && (flags & DT_CALCRECT))
@@ -1240,7 +1240,7 @@ INT WINAPI DrawTextExWorker( HDC hdc,
 
 	if (flags & DT_SINGLELINE)
 	{
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (flags & DT_VCENTER) y = rect->top +
             (rect->bottom - rect->top + (invert_y ? size.cy : -size.cy)) / 2;
         else if (flags & DT_BOTTOM)

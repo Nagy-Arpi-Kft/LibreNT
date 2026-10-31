@@ -593,12 +593,12 @@ struct d3d_device
     struct d3d_device_context_state **context_states;
     SIZE_T context_states_size;
     SIZE_T context_state_count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IUnknown *on12;
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <d3d11on12.h>
 
 HRESULT d3d11_device_attach_on12(ID3D11Device *iface, IUnknown *on12);

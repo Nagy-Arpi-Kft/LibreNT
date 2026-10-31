@@ -226,7 +226,7 @@ NTSTATUS WINAPI wow64_NtLoadDriver( UINT *args )
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     ULONG Version;
@@ -301,7 +301,7 @@ NTSTATUS WINAPI wow64_NtPowerInformation( UINT *args )
     case ProcessorInformation:   /* PROCESSOR_POWER_INFORMATION */
         return NtPowerInformation( level, in_buf, in_len, out_buf, out_len );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case PowerRequestCreate:  /* COUNTED_REASON_CONTEXT in, HANDLE out */
     {
         const POWER_REQUEST_CONTEXT32 *ctx32 = in_buf;
@@ -441,7 +441,7 @@ NTSTATUS WINAPI wow64_NtQuerySystemInformation( UINT *args )
     case SystemProcessorBrandString:  /* char[] */
     case SystemProcessorFeaturesInformation:  /* SYSTEM_PROCESSOR_FEATURES_INFORMATION */
     case SystemWineVersionInformation:  /* char[] */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case SystemFlagsInformation:  /* SYSTEM_FLAGS_INFORMATION */
     case SystemNumaProcessorMap:  /* SYSTEM_NUMA_INFORMATION */
     case SystemNumaAvailableMemory:  /* SYSTEM_NUMA_INFORMATION */
@@ -449,7 +449,7 @@ NTSTATUS WINAPI wow64_NtQuerySystemInformation( UINT *args )
 #endif
         return NtQuerySystemInformation( class, ptr, len, retlen );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case SystemRangeStartInformation:  /* ULONG_PTR */
         if (len != sizeof(ULONG)) return STATUS_INFO_LENGTH_MISMATCH;
         *(ULONG *)ptr = (ULONG)(ULONG_PTR)highest_user_address + 1;
@@ -723,7 +723,7 @@ NTSTATUS WINAPI wow64_NtQuerySystemInformation( UINT *args )
         return STATUS_INVALID_INFO_CLASS;
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQuerySystemInformation: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -760,7 +760,7 @@ NTSTATUS WINAPI wow64_NtQuerySystemInformationEx( UINT *args )
         ULONG size, size32, pos = 0, pos32 = 0;
 
         if (!query || query_len < sizeof(LONG)) return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = NtQuerySystemInformationEx( class, query, query_len, NULL, 0, &size );
         if (status != STATUS_INFO_LENGTH_MISMATCH) return status;
         info = Wow64AllocateTemp( size );
@@ -815,7 +815,7 @@ NTSTATUS WINAPI wow64_NtQuerySystemInformationEx( UINT *args )
         return NtQuerySystemInformationEx( class, &handle, sizeof(handle), ptr, len, retlen );
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQuerySystemInformationEx: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );

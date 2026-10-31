@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Universal Serial Bus Bulk Storage Driver
+ * PROJECT:     LibreNT Universal Serial Bus Bulk Storage Driver
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     USB block storage device driver.
  * COPYRIGHT:   2005-2006 James Tabor
@@ -140,7 +140,7 @@ static NTSTATUS USBSTOR_GetDumpInterface(_In_ PPDO_DEVICE_EXTENSION PdoExtension
         UsbInterface.InterfaceNumber = FdoExtension->InterfaceInformation->InterfaceNumber;
         UsbInterface.BulkInEndpointAddress = BulkInPipe->EndpointAddress;
         UsbInterface.BulkOutEndpointAddress = BulkOutPipe->EndpointAddress;
-        Status = USBSTOR_SyncInternalRequest(FdoExtension->LowerDeviceObject, IOCTL_INTERNAL_REACTOS_USB_GET_DUMP_INTERFACE, &UsbInterface);
+        Status = USBSTOR_SyncInternalRequest(FdoExtension->LowerDeviceObject, IOCTL_INTERNAL_LIBRENT_USB_GET_DUMP_INTERFACE, &UsbInterface);
         if (!NT_SUCCESS(Status))
         {
             DPRINT1("USBSTOR: USB dump interface request failed (0x%08lx)\n", Status);
@@ -599,7 +599,7 @@ USBSTOR_HandleDeviceControl(
 
     switch (IoStack->Parameters.DeviceIoControl.IoControlCode)
     {
-        case IOCTL_REACTOS_STORAGE_GET_DUMP_INTERFACE:
+        case IOCTL_LIBRENT_STORAGE_GET_DUMP_INTERFACE:
             PDODeviceExtension = DeviceObject->DeviceExtension;
             if (PDODeviceExtension->Common.IsFDO)
             {

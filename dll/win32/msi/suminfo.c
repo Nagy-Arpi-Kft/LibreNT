@@ -36,7 +36,7 @@
 #include "propvarutil.h"
 
 #include "msipriv.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -173,7 +173,7 @@ static UINT propvar_changetype(PROPVARIANT *changed, PROPVARIANT *property, VART
     return (hr == S_OK) ? ERROR_SUCCESS : ERROR_FUNCTION_FAILED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD read_properties_from_data( PROPVARIANT *prop, LPBYTE data, DWORD sz )
 {
     struct property_section_header *section_hdr = (struct property_section_header *)data;
@@ -368,7 +368,7 @@ static UINT load_summary_info( MSISUMMARYINFO *si, IStream *stm )
     if( FAILED(r) || count != sz )
         return ERROR_FUNCTION_FAILED;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( section_hdr.cbSection < SECT_HDR_SIZE )
         return ERROR_FUNCTION_FAILED;
 #else
@@ -389,7 +389,7 @@ static UINT load_summary_info( MSISUMMARYINFO *si, IStream *stm )
     sz = section_hdr.cbSection - SECT_HDR_SIZE;
     r = IStream_Read( stm, &data[ SECT_HDR_SIZE ], sz, &count );
     if( SUCCEEDED(r) && count == sz )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         si->extra_props = read_properties_from_data( si->property, data, sz + SECT_HDR_SIZE );
 #else
         read_properties_from_data( si->property, data, sz + SECT_HDR_SIZE );
@@ -607,7 +607,7 @@ UINT WINAPI MsiGetSummaryInformationW( MSIHANDLE hDatabase, const WCHAR *szDatab
     if( !pHandle )
         return ERROR_INVALID_PARAMETER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( szDatabase && (szDatabase[0] || !hDatabase) )
     {
         LPCWSTR persist = uiUpdateCount ? MSIDBOPEN_DIRECT : MSIDBOPEN_READONLY;
@@ -658,7 +658,7 @@ UINT WINAPI MsiGetSummaryInformationW( MSIHANDLE hDatabase, const WCHAR *szDatab
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (db->memory_only)
     {
         msiobj_release( &db->hdr );
@@ -739,7 +739,7 @@ UINT WINAPI MsiSummaryInfoGetPropertyCount( MSIHANDLE hSummaryInfo, UINT *pCount
     }
 
     if( pCount )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *pCount = get_property_count( si->property ) + si->extra_props;
 #else
         *pCount = get_property_count( si->property );
@@ -955,7 +955,7 @@ static UINT set_prop( MSISUMMARYINFO *si, UINT uiProperty, UINT type,
 
     prop = &si->property[uiProperty];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( prop->vt != VT_EMPTY && prop->vt != type )
         return ERROR_SUCCESS;
 
@@ -1372,7 +1372,7 @@ UINT WINAPI MsiCreateTransformSummaryInfoA( MSIHANDLE db, MSIHANDLE db_ref, cons
 UINT WINAPI MsiCreateTransformSummaryInfoW( MSIHANDLE db, MSIHANDLE db_ref, const WCHAR *transform, int error,
                                             int validation )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MSIDATABASE *database, *reference;
 
     if (!(database = msihandle2msiinfo( db, MSIHANDLETYPE_DATABASE )))

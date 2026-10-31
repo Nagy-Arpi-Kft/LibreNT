@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 1998, 1999, 2000, 2001 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 /*
- * PROJECT:         ReactOS user32.dll
+ * PROJECT:         LibreNT user32.dll
  * FILE:            win32ss/user/user32/windows/paint.c
  * PURPOSE:         Input
  * PROGRAMMER:      Casper S. Hornstrup (chorns@users.sourceforge.net)

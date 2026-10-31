@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS NT Virtual Memory Subsystem
+# PROJECT:     LibreNT NT Virtual Memory Subsystem
 # FILE:        ntoskrnl/nvs/check-standalone.cmake
 # PURPOSE:     Check virtual memory manager source isolation
 #

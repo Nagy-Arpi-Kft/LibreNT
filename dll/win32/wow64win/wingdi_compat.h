@@ -1,4 +1,4 @@
-/* ReactOS compatibility definitions missing from sdk/include/psdk/wingdi.h. */
+/* LibreNT compatibility definitions missing from sdk/include/psdk/wingdi.h. */
 
 #ifndef __WOW64WIN_WINGDI_COMPAT_H
 #define __WOW64WIN_WINGDI_COMPAT_H

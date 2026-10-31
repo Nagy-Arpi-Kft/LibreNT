@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT library
+ * PROJECT:     LibreNT CRT library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Portable sine, cosine, and tangent implementations
  * COPYRIGHT:   Adapted from musl libc trigonometric kernels

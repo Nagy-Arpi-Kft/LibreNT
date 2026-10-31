@@ -1,4 +1,4 @@
-/* ReactOS version resource for Wine GStreamer. */
+/* LibreNT version resource for Wine GStreamer. */
 
 #define WINE_FILEDESCRIPTION_STR "Wine GStreamer"
 #define WINE_FILENAME_STR "winegstreamer.dll"

@@ -582,12 +582,12 @@ static BOOL compile_cs(const WCHAR *source, const WCHAR *target, const WCHAR *ty
     ret = CreateProcessW(csc, cmdline, NULL, NULL, FALSE, DETACHED_PROCESS, NULL, NULL, &si, &pi);
     ok(ret, "Could not create process: %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wait_child_process(pi.hProcess);
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     wait_child_process(&pi);
 #endif
 

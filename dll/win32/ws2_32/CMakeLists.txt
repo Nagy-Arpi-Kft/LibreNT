@@ -4,8 +4,8 @@ spec2def(ws2_32.dll ws2_32.spec ADD_IMPORTLIB)
 
 include_directories(
     inc
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/winsock)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/winsock)
 
 add_library(ws2_32_inaddr STATIC src/inaddr.c)
 add_dependencies(ws2_32_inaddr psdk)
@@ -65,4 +65,4 @@ endif()
 add_importlibs(ws2_32 advapi32 ws2help msvcrt kernel32 ntdll)
 add_delay_importlibs(ws2_32 user32)
 add_pch(ws2_32 inc/ws2_32.h SOURCE)
-add_cd_file(TARGET ws2_32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET ws2_32 DESTINATION librent/system32 FOR all)

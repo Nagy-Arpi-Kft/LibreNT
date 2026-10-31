@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Test for the WM_NCPAINT update region on frame geometry changes
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>

@@ -23,7 +23,7 @@
 #include <windef.h>
 #include <winbase.h>
 #include <winuser.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/winternl.h>
 #else
 #include <winternl.h>

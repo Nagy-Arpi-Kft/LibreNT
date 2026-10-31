@@ -1,8 +1,8 @@
 /*
- * PROJECT:     ReactOS Console Command More
+ * PROJECT:     LibreNT Console Command More
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        base/applications/cmdutils/more/lang/uk-UA.rc
- * PURPOSE:     Ukraianian Language File for ReactOS Console Command More
+ * PURPOSE:     Ukraianian Language File for LibreNT Console Command More
  * PROGRAMMERS: Rostislav Zabolotny
  */
 LANGUAGE LANG_UKRAINIAN, SUBLANG_DEFAULT

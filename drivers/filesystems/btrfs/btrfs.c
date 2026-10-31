@@ -22,13 +22,13 @@
 #include "btrfs_drv.h"
 #include "xxhash.h"
 #include "crc32c.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef _MSC_VER
 #include <cpuid.h>
 #else
 #include <intrin.h>
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 #include <ntddscsi.h>
 #include "btrfs.h"
 #include <ata.h>
@@ -649,7 +649,7 @@ static void calculate_total_space(_In_ device_extension* Vcb, _Out_ uint64_t* to
     *freespace = sectors_used > *totalsize ? 0 : (*totalsize - sectors_used);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 // simplified version of FsRtlAreNamesEqual, which can be a bottleneck!
 static bool compare_strings(const UNICODE_STRING* us1, const UNICODE_STRING* us2) {
     if (us1->Length != us2->Length)
@@ -809,7 +809,7 @@ static bool lie_about_fs_type() {
 
     return false;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 // version of RtlUTF8ToUnicodeN for Vista and below
 NTSTATUS utf8_to_utf16(WCHAR* dest, ULONG dest_max, ULONG* dest_len, char* src, ULONG src_len) {
@@ -1029,14 +1029,14 @@ static NTSTATUS __stdcall drv_query_volume_information(_In_ PDEVICE_OBJECT Devic
         {
             FILE_FS_ATTRIBUTE_INFORMATION* data = Irp->AssociatedIrp.SystemBuffer;
             bool overflow = false;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             static const WCHAR ntfs[] = L"NTFS";
 #endif
             static const WCHAR btrfs[] = L"Btrfs";
             const WCHAR* fs_name;
             ULONG fs_name_len, orig_fs_name_len;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             if (Irp->RequestorMode == UserMode && lie_about_fs_type()) {
                 fs_name = ntfs;
                 orig_fs_name_len = fs_name_len = sizeof(ntfs) - sizeof(WCHAR);
@@ -1208,7 +1208,7 @@ static NTSTATUS __stdcall drv_query_volume_information(_In_ PDEVICE_OBJECT Devic
             break;
         }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef _MSC_VER // not in mingw yet
         case FileFsSectorSizeInformation:
         {
@@ -1232,7 +1232,7 @@ static NTSTATUS __stdcall drv_query_volume_information(_In_ PDEVICE_OBJECT Devic
             break;
         }
 #endif
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
         default:
             Status = STATUS_INVALID_PARAMETER;
@@ -5975,7 +5975,7 @@ static void init_serial(bool first_time) {
 }
 #endif
 
-#if !defined(__REACTOS__) && (defined(_X86_) || defined(_AMD64_))
+#if !defined(__LIBRENT__) && (defined(_X86_) || defined(_AMD64_))
 static void check_cpu() {
     bool have_sse2 = false, have_sse42 = false, have_avx2 = false;
     int cpu_info[4];
@@ -6336,7 +6336,7 @@ NTSTATUS __stdcall DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_S
 
     TRACE("DriverEntry\n");
 
-#if !defined(__REACTOS__) && (defined(_X86_) || defined(_AMD64_))
+#if !defined(__LIBRENT__) && (defined(_X86_) || defined(_AMD64_))
     check_cpu();
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Debug and tracing helpers for dxgkrnl
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -104,14 +104,14 @@ DxgkRosAssert(
     if (!Expr)
     {
         /*
-         * Use KeBugCheckEx with a ReactOS-reserved bugcheck code so that
+         * Use KeBugCheckEx with a LibreNT-reserved bugcheck code so that
          * crash dumps are clearly labelled. Parameters:
          *   P1 = DXGKRNL_POOL_TAG ('XgxD') as a breadcrumb
          *   P2 = caller-supplied subcode
          *   P3 = 0 (reserved)
          *   P4 = 0 (reserved)
          *
-         * 0x00000170 is not yet assigned to any public ReactOS or Windows
+         * 0x00000170 is not yet assigned to any public LibreNT or Windows
          * driver bugcheck; treat it as a private dxgkrnl assertion stop.
          */
         KeBugCheckEx(0x00000170,

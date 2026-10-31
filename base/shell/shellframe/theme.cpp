@@ -1,13 +1,13 @@
 /*
- * PROJECT:     LiberNT Shell Frame
+ * PROJECT:     LibreNT Shell Frame
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Light and dark palettes, accent color, DPI and fonts
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include "shellframe.h"
-#include <reactos/dwmframe.h>
-#include <reactos/dwmsettings.h>
+#include <librent/dwmframe.h>
+#include <librent/dwmsettings.h>
 
 namespace ShellFrame
 {

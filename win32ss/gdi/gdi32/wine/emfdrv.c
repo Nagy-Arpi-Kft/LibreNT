@@ -32,7 +32,7 @@
 #include "winnls.h"
 #include "winerror.h"
 #include "gdi_private.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/winternl.h"
 #else
 #include "winternl.h"

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     CDD redirection surface synchronization
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -8,7 +8,7 @@
 #include "dxgkrnl_private.h"
 #include "present.h"
 #include "vidmm.h"
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 
 NTKERNELAPI VOID FASTCALL
 ExfAcquirePushLockExclusive(_Inout_ PEX_PUSH_LOCK PushLock);

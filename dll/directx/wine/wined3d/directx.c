@@ -76,13 +76,13 @@ const GLenum magLookup[] =
 
 void CDECL wined3d_output_release_ownership(const struct wined3d_output *output)
 {
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_SETVIDPNSOURCEOWNER set_owner_desc = {0};
 #endif
 
     TRACE("output %p.\n", output);
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     set_owner_desc.hDevice = output->kmt_device;
     D3DKMTSetVidPnSourceOwner(&set_owner_desc);
 #endif
@@ -90,7 +90,7 @@ void CDECL wined3d_output_release_ownership(const struct wined3d_output *output)
 
 HRESULT CDECL wined3d_output_take_ownership(const struct wined3d_output *output, BOOL exclusive)
 {
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_SETVIDPNSOURCEOWNER set_owner_desc;
     D3DKMT_VIDPNSOURCEOWNER_TYPE owner_type;
     NTSTATUS status;
@@ -98,7 +98,7 @@ HRESULT CDECL wined3d_output_take_ownership(const struct wined3d_output *output,
 
     TRACE("output %p, exclusive %#x.\n", output, exclusive);
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     owner_type = exclusive ? D3DKMT_VIDPNSOURCEOWNER_EXCLUSIVE : D3DKMT_VIDPNSOURCEOWNER_SHARED;
     set_owner_desc.pType = &owner_type;
     set_owner_desc.pVidPnSourceId = &output->vidpn_source_id;
@@ -127,13 +127,13 @@ HRESULT CDECL wined3d_output_take_ownership(const struct wined3d_output *output,
 
 static void wined3d_output_cleanup(const struct wined3d_output *output)
 {
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_DESTROYDEVICE destroy_device_desc;
 #endif
 
     TRACE("output %p.\n", output);
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     destroy_device_desc.hDevice = output->kmt_device;
     D3DKMTDestroyDevice(&destroy_device_desc);
 #endif
@@ -142,7 +142,7 @@ static void wined3d_output_cleanup(const struct wined3d_output *output)
 static HRESULT wined3d_output_init(struct wined3d_output *output, unsigned int ordinal,
         struct wined3d_adapter *adapter, const WCHAR *device_name)
 {
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_OPENADAPTERFROMGDIDISPLAYNAME open_adapter_desc;
     D3DKMT_CREATEDEVICE create_device_desc = {{0}};
     D3DKMT_CLOSEADAPTER close_adapter_desc;
@@ -150,7 +150,7 @@ static HRESULT wined3d_output_init(struct wined3d_output *output, unsigned int o
 
     TRACE("output %p, device_name %s.\n", output, wine_dbgstr_w(device_name));
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     lstrcpyW(open_adapter_desc.DeviceName, device_name);
     if (D3DKMTOpenAdapterFromGdiDisplayName(&open_adapter_desc))
         return E_INVALIDARG;
@@ -166,7 +166,7 @@ static HRESULT wined3d_output_init(struct wined3d_output *output, unsigned int o
     lstrcpyW(output->device_name, device_name);
     output->adapter = adapter;
     output->screen_format = WINED3DFMT_UNKNOWN;
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     output->kmt_device = create_device_desc.hDevice;
     output->vidpn_source_id = open_adapter_desc.VidPnSourceId;
 #endif
@@ -1080,11 +1080,11 @@ HRESULT CDECL wined3d_adapter_get_video_memory_info(const struct wined3d_adapter
         struct wined3d_video_memory_info *info)
 {
     static unsigned int once;
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_QUERYVIDEOMEMORYINFO query_memory_info;
 #endif
     struct wined3d_adapter_identifier adapter_id;
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     NTSTATUS status;
 #endif
     HRESULT hr;
@@ -1097,7 +1097,7 @@ HRESULT CDECL wined3d_adapter_get_video_memory_info(const struct wined3d_adapter
         return E_INVALIDARG;
     }
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     query_memory_info.hProcess = NULL;
     query_memory_info.hAdapter = adapter->kmt_adapter;
     query_memory_info.PhysicalAdapterIndex = node_idx;
@@ -1808,7 +1808,7 @@ HRESULT CDECL wined3d_output_set_gamma_ramp(struct wined3d_output *output, const
     return WINED3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL CDECL wined3d_output_is_exclusively_owned(const struct wined3d_output *output)
 {
     D3DKMT_CHECKVIDPNEXCLUSIVEOWNERSHIP check = {0};
@@ -1860,7 +1860,7 @@ HRESULT CDECL wined3d_adapter_get_identifier(const struct wined3d_adapter *adapt
     identifier->adapter_luid = adapter->luid;
     identifier->video_memory = min(~(SIZE_T)0, adapter->driver_info.vram_bytes);
     identifier->shared_system_memory = min(~(SIZE_T)0, adapter->driver_info.sysmem_bytes);
-#if defined(__REACTOS__) && defined(REACTOS_WINE_WDDM)
+#if defined(__LIBRENT__) && defined(LIBRENT_WINE_WDDM)
     wined3d_get_wddm_adapter_identifier(adapter->kmt_adapter, identifier);
 #endif
 
@@ -1869,10 +1869,10 @@ HRESULT CDECL wined3d_adapter_get_identifier(const struct wined3d_adapter *adapt
     return WINED3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT CDECL wined3d_output_wait_vblank(const struct wined3d_output *output)
 {
-#if defined(REACTOS_WINE_WDDM)
+#if defined(LIBRENT_WINE_WDDM)
     D3DKMT_WAITFORVERTICALBLANKEVENT wait_desc;
 
     TRACE("output %p.\n", output);
@@ -2203,7 +2203,7 @@ HRESULT CDECL wined3d_check_device_format(const struct wined3d *wined3d,
     if (usage & WINED3DUSAGE_QUERY_LEGACYBUMPMAP)
         format_attrs |= WINED3D_FORMAT_ATTR_BUMPMAP;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if ((format_caps & WINED3D_FORMAT_CAP_TEXTURE) && (wined3d->flags & WINED3D_NO3D))
     {
         TRACE("Requested texturing support, but wined3d was created with WINED3D_NO3D.\n");
@@ -2498,7 +2498,7 @@ HRESULT CDECL wined3d_get_device_caps(const struct wined3d_adapter *adapter,
                                         WINED3DPMISCCAPS_FOGVERTEXCLAMPED */
 
     caps->RasterCaps               = WINED3DPRASTERCAPS_DITHER    |
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                      WINED3DPRASTERCAPS_PAT       |
 #endif
                                      WINED3DPRASTERCAPS_WFOG      |
@@ -2979,7 +2979,7 @@ static void adapter_no3d_release_context(struct wined3d_context *context)
 
 static void adapter_no3d_get_wined3d_caps(const struct wined3d_adapter *adapter, struct wined3d_caps *caps)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     caps->ddraw_caps.dds_caps |= WINEDDSCAPS_BACKBUFFER
             | WINEDDSCAPS_COMPLEX
             | WINEDDSCAPS_FRONTBUFFER
@@ -3280,7 +3280,7 @@ static HRESULT adapter_no3d_create_shader_resource_view(const struct wined3d_vie
         struct wined3d_resource *resource, void *parent, const struct wined3d_parent_ops *parent_ops,
         struct wined3d_shader_resource_view **view)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct wined3d_shader_resource_view *view_no3d;
     HRESULT hr;
 #endif
@@ -3288,7 +3288,7 @@ static HRESULT adapter_no3d_create_shader_resource_view(const struct wined3d_vie
     TRACE("desc %s, resource %p, parent %p, parent_ops %p, view %p.\n",
             wined3d_debug_view_desc(desc, resource), resource, parent, parent_ops, view);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(view_no3d = calloc(1, sizeof(*view_no3d))))
         return E_OUTOFMEMORY;
 
@@ -3309,7 +3309,7 @@ static void adapter_no3d_destroy_shader_resource_view(struct wined3d_shader_reso
 {
     TRACE("view %p.\n", view);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wined3d_shader_resource_view_cleanup(view);
     free(view);
 #endif
@@ -3378,7 +3378,7 @@ static void adapter_no3d_flush_context(struct wined3d_context *context)
     TRACE("context %p.\n", context);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct no3d_raster_vertex
 {
     float x, y;
@@ -3690,7 +3690,7 @@ static bool no3d_raster_get_vertex_idx(const struct wined3d_state *state,
 static void adapter_no3d_draw_primitive(struct wined3d_device *device,
         const struct wined3d_state *state, const struct wined3d_draw_parameters *parameters)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const struct wined3d_vertex_declaration_element *position_element = NULL, *diffuse_element = NULL;
     const struct wined3d_vertex_declaration_element *texcoord_element = NULL;
     struct no3d_raster_source position, diffuse, texcoord;
@@ -3952,7 +3952,7 @@ static void wined3d_adapter_no3d_init_d3d_info(struct wined3d_adapter *adapter, 
 
     d3d_info->wined3d_creation_flags = wined3d_creation_flags;
     d3d_info->unconditional_npot = true;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     d3d_info->limits.max_rt_count = 1;
     d3d_info->limits.texture_size = 4096;
     d3d_info->limits.pointsize_max = 1.0f;
@@ -3975,8 +3975,8 @@ static struct wined3d_adapter *wined3d_adapter_no3d_create(unsigned int ordinal,
 
     static const struct wined3d_gpu_description gpu_description =
     {
-#ifdef __REACTOS__
-        HW_VENDOR_SOFTWARE, CARD_WINE, "ReactOS Software Rasterizer", DRIVER_WINE, 128,
+#ifdef __LIBRENT__
+        HW_VENDOR_SOFTWARE, CARD_WINE, "LibreNT Software Rasterizer", DRIVER_WINE, 128,
 #else
         HW_VENDOR_SOFTWARE, CARD_WINE, "WineD3D DirectDraw Emulation", DRIVER_WINE, 128,
 #endif
@@ -4048,11 +4048,11 @@ static BOOL wined3d_adapter_create_output(struct wined3d_adapter *adapter, const
 BOOL wined3d_adapter_init(struct wined3d_adapter *adapter, unsigned int ordinal, const LUID *luid,
         const struct wined3d_adapter_ops *adapter_ops)
 {
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_OPENADAPTERFROMLUID open_adapter_desc;
 #endif
     unsigned int output_idx = 0, primary_idx = 0;
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     D3DKMT_CLOSEADAPTER close_adapter_desc;
 #endif
     DISPLAY_DEVICEW display_device;
@@ -4077,7 +4077,7 @@ BOOL wined3d_adapter_init(struct wined3d_adapter *adapter, unsigned int ordinal,
     }
     TRACE("adapter %p LUID %08lx:%08lx.\n", adapter, adapter->luid.HighPart, adapter->luid.LowPart);
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     open_adapter_desc.AdapterLuid = adapter->luid;
     if (D3DKMTOpenAdapterFromLuid(&open_adapter_desc))
         return FALSE;
@@ -4121,7 +4121,7 @@ done:
         for (output_idx = 0; output_idx < adapter->output_count; ++output_idx)
             wined3d_output_cleanup(&adapter->outputs[output_idx]);
         free(adapter->outputs);
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
         close_adapter_desc.hAdapter = adapter->kmt_adapter;
         D3DKMTCloseAdapter(&close_adapter_desc);
 #endif
@@ -4156,10 +4156,10 @@ HRESULT wined3d_init(struct wined3d *wined3d, uint32_t flags)
 
     if (!(wined3d->adapters[0] = wined3d_adapter_create(0, flags)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(flags & WINED3D_NO3D) && wined3d_settings.renderer == WINED3D_RENDERER_AUTO)
         {
-            WARN("The configured 3D renderer is unavailable; using the ReactOS software rasterizer.\n");
+            WARN("The configured 3D renderer is unavailable; using the LibreNT software rasterizer.\n");
             flags |= WINED3D_NO3D;
             wined3d->flags = flags;
             wined3d->adapters[0] = wined3d_adapter_create(0, flags);

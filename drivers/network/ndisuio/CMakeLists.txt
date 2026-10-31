@@ -5,7 +5,7 @@ add_definitions(
 
 include_directories(
     BEFORE include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers/ndisuio)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers/ndisuio)
 
 list(APPEND SOURCE
     createclose.c
@@ -20,4 +20,4 @@ add_library(ndisuio MODULE ${SOURCE} ndisuio.rc)
 set_module_type(ndisuio kernelmodedriver)
 add_importlibs(ndisuio ndis ntoskrnl hal)
 add_pch(ndisuio ndisuio.h SOURCE)
-add_cd_file(TARGET ndisuio DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET ndisuio DESTINATION librent/system32/drivers FOR all)

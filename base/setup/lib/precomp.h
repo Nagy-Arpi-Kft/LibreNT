@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Setup Library
+ * PROJECT:     LibreNT Setup Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Precompiled header
  * COPYRIGHT:   Copyright 2017-2018 Hermes Belusca-Maito
@@ -29,7 +29,7 @@
 #include <ntstrsafe.h>
 
 /* Filesystem headers */
-#include <reactos/rosioctl.h>   // For extra partition IDs
+#include <librent/rosioctl.h>   // For extra partition IDs
 
 
 #ifndef SPLIBAPI
@@ -42,7 +42,7 @@
 //#include "inffile.h"
 //#include "inicache.h"
 //#include "progress.h"
-//#ifdef __REACTOS__
+//#ifdef __LIBRENT__
 //#include "infros.h"
 //#include "filequeue.h"
 //#endif

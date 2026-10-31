@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * shpolicy.c - Data for shell/system policies.
  *
@@ -905,7 +905,7 @@ BOOL WINAPI SHInitRestricted(LPCVOID unused, LPCVOID inpRegKey)
 
 	return TRUE;
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  * shpolicy.c - Data for shell/system policies.
  *
@@ -975,7 +975,7 @@ HANDLE g_hRestGlobalCounter = NULL;
 LONG g_nRestCountValue = -1;
 DWORD g_RestValues[_countof(s_PolicyTable)] = { 0 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static int WINAPI SHELL_StrCmpLogicalInit(PCWSTR s1, PCWSTR s2);
 
 static int (WINAPI* g_pfnStrCmpLogical)(PCWSTR s1, PCWSTR s2) = SHELL_StrCmpLogicalInit;
@@ -1009,7 +1009,7 @@ static void SH32_RestrictionsChanged()
  * @return  The handle of the global counter.
  * @implemented
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C HANDLE
 #else
 static HANDLE
@@ -1128,4 +1128,4 @@ BOOL WINAPI SHSettingsChanged(LPCVOID unused, LPCWSTR pszKey)
 
     return SHGlobalCounterIncrement(SHELL_GetRestrictionsCounter());
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

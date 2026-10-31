@@ -299,7 +299,7 @@ Ext2InvalidateVolumes ( IN PEXT2_IRP_CONTEXT IrpContext )
     PIRP                Irp;
     PIO_STACK_LOCATION  IrpSp;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PVPB                NewVpb = NULL;
 #endif
     HANDLE              Handle;

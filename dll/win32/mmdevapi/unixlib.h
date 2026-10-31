@@ -53,7 +53,7 @@ struct endpoint
 {
     unsigned int name;
     unsigned int device;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int state;
 #endif
 };
@@ -81,7 +81,7 @@ struct create_stream_params
     HRESULT result;
     UINT32 *channel_count;
     stream_handle *stream;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT32 aligned_frames;
 #endif
 };

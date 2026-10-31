@@ -21,7 +21,7 @@
 #include "winternl.h"
 #include "dwrite.h"
 #include "dwrite_private.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 
@@ -118,7 +118,7 @@ enum font_backend_funcs
     unix_funcs_count,
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS dwrite_backend_call(enum font_backend_funcs func, void *params);
 #define UNIX_CALL( func, params ) dwrite_backend_call( unix_ ## func, params )
 #else

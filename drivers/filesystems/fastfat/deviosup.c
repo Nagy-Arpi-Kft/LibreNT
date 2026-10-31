@@ -267,7 +267,7 @@ Return Value:
     ULONG BufferOffset;
     PDEVICE_OBJECT DeviceObject;
 
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     BOOLEAN IsAWrite = FALSE;
 #endif
 
@@ -287,7 +287,7 @@ Return Value:
 
     Vbo = IrpSp->Parameters.Read.ByteOffset.LowPart;
     ByteCount = IrpSp->Parameters.Read.Length;
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     IsAWrite = (IrpSp->MajorFunction == IRP_MJ_WRITE);
 #endif
 
@@ -1683,7 +1683,7 @@ Return Value:
     PMDL Mdl;
     BOOLEAN Wait;
     PFAT_IO_CONTEXT Context;
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     BOOLEAN IsAWrite = FALSE;
     ULONG Length = 0;
 #endif
@@ -1726,7 +1726,7 @@ Return Value:
     Context->MasterIrp = MasterIrp;
 
     IrpSp = IoGetCurrentIrpStackLocation( MasterIrp );
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     IsAWrite = (IrpSp->MajorFunction == IRP_MJ_WRITE);
     Length = IrpSp->Parameters.Read.Length;
 #endif
@@ -2027,7 +2027,7 @@ Return Value:
 {
     PIO_STACK_LOCATION IrpSp;
     PFAT_IO_CONTEXT Context;
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     BOOLEAN IsAWrite = FALSE;
 #endif
 
@@ -2078,7 +2078,7 @@ Return Value:
     IrpSp->Parameters.Read.Length = ByteCount;
     IrpSp->Parameters.Read.ByteOffset.QuadPart = Lbo;
 
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     IsAWrite = (IrpSp->MajorFunction == IRP_MJ_WRITE);
 #endif
 
@@ -2214,7 +2214,7 @@ Return Value:
 
     PMDL Mdl;
     PMDL SavedMdl;
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     BOOLEAN IsAWrite = FALSE;
 #endif
 
@@ -2293,7 +2293,7 @@ Return Value:
     IrpSp->Parameters.Read.Length = ByteCount;
     IrpSp->Parameters.Read.ByteOffset.QuadPart = Lbo;
 
-#if !defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_WIN8)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_WIN8)
     IsAWrite = (IrpSp->MajorFunction == IRP_MJ_WRITE);
 #endif
 

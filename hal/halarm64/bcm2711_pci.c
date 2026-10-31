@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS HAL — ARM64 BCM2711 PCIe host + config backend
+ * PROJECT:     LibreNT HAL — ARM64 BCM2711 PCIe host + config backend
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Broadcom BCM2711 (Raspberry Pi 4 / CM4) brcmstb PCIe root
  *              complex: controller bring-up + link training (the firmware
@@ -19,8 +19,8 @@
 #include <ndk/kefuncs.h>
 #include <ioaccess.h>
 #include <halfuncs.h>
-#include <reactos/hal/acpi_pci.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/hal/acpi_pci.h>
+#include <librent/drivers/acpi/acpi.h>
 #include <halacpi.h>
 #include <hal.h>
 #include "halext.h"

@@ -7,5 +7,5 @@ add_library(msnet32 MODULE
 set_module_type(msnet32 win32dll)
 target_link_libraries(msnet32 wine)
 add_importlibs(msnet32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET msnet32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msnet32 DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(msnet32) # CORE-5743

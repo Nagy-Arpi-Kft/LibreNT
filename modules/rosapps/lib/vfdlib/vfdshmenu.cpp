@@ -16,7 +16,7 @@
 #include "vfdtypes.h"
 #include "vfdapi.h"
 #include "vfdlib.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "vfdmsg.h"
 #else
 #include "vfdmsg_lib.h"
@@ -54,7 +54,7 @@ enum {
 static struct _vfd_menu {
 	UINT	textid;			//	menu item text id
 	UINT	helpid;			//	menu item help id
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	PCHAR	verbA;			//	ansi verb text
 	PWCHAR	verbW;			//	unicode verb text
 #else
@@ -267,7 +267,7 @@ STDMETHODIMP CVfdShExt::QueryContextMenu(
 //
 
 STDMETHODIMP CVfdShExt::GetCommandString(
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	UINT			idCmd,
 #else
 	UINT_PTR		idCmd,
@@ -339,7 +339,7 @@ STDMETHODIMP CVfdShExt::InvokeCommand(
 	DWORD	ret;
 	CMINVOKECOMMANDINFOEX *excmi = (CMINVOKECOMMANDINFOEX *)lpcmi;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	unicode = lpcmi->cbSize >= FIELD_OFFSET(CMINVOKECOMMANDINFOEX, ptInvoke) &&
 	          (lpcmi->fMask & CMIC_MASK_UNICODE);
 #else

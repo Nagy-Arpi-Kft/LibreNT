@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 5 WDDM miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 WDDM miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VideoCore firmware property mailbox — polled property-tag
  *              exchanges for clock control (V3D) and firmware queries.
@@ -9,7 +9,7 @@
 #include "rpi5vc4_mbox.h"
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 #define RPI5_MBOX_BUFFER_BYTES  PAGE_SIZE
 #define RPI5_MBOX_TIMEOUT_TRIES 20000   /* x 50 us = 1 s ceiling */

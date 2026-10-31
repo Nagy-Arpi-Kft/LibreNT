@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Swap chain / present infrastructure — private declarations
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -346,7 +346,7 @@ typedef struct _DXGKRNL_PRESENT_QUEUE
     WORK_QUEUE_ITEM                 MmioFlipWorkItem;
     KSPIN_LOCK                      VBlankWaitLock;
     LIST_ENTRY                      VBlankWaiterList;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     /*
      * Kernel-owned synchronization event exposed to DWM through a caller-owned
      * handle.  Target fields are protected by VBlankWaitLock.
@@ -451,7 +451,7 @@ DxgkpWaitForVerticalBlank(
     _In_ UINT NumObjects,
     _In_reads_opt_(NumObjects) CONST D3DKMT_PTR_TYPE *ObjectHandleArray);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 NTSTATUS
 DxgkPresentOpenDwmVBlankEvent(
     _In_ struct _DXGKRNL_ADAPTER *Adapter,

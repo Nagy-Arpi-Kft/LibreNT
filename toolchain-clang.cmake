@@ -53,7 +53,7 @@ set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES
     ARCH
     ARM64EC_RUNTIME
     CLANG_VERSION
-    REACTOS_CLANG_LLVM_MINGW_ROOT)
+    LIBRENT_CLANG_LLVM_MINGW_ROOT)
 set(CMAKE_SYSTEM_NAME Windows)
 
 if(ARCH STREQUAL "i386")
@@ -68,38 +68,34 @@ elseif(ARCH STREQUAL "arm64")
     else()
         set(CMAKE_SYSTEM_PROCESSOR aarch64)
     endif()
-elseif(ARCH STREQUAL "riscv64")
-    set(CMAKE_SYSTEM_PROCESSOR riscv64)
-elseif(ARCH STREQUAL "ppc")
-    set(CMAKE_SYSTEM_PROCESSOR powerpcle)
 else()
     message(FATAL_ERROR "Unsupported ARCH: ${ARCH}")
 endif()
 
 set(triplet ${CMAKE_SYSTEM_PROCESSOR}-w64-mingw32)
 
-if(NOT DEFINED REACTOS_CLANG_LLVM_MINGW_ROOT OR NOT REACTOS_CLANG_LLVM_MINGW_ROOT)
+if(NOT DEFINED LIBRENT_CLANG_LLVM_MINGW_ROOT OR NOT LIBRENT_CLANG_LLVM_MINGW_ROOT)
     _detect_llvm_mingw_root(_llvm_mingw_root)
     if(_llvm_mingw_root)
-        set(REACTOS_CLANG_LLVM_MINGW_ROOT "${_llvm_mingw_root}" CACHE PATH
+        set(LIBRENT_CLANG_LLVM_MINGW_ROOT "${_llvm_mingw_root}" CACHE PATH
             "RosBE LLVM toolchain root")
     endif()
 endif()
 
-if(REACTOS_CLANG_LLVM_MINGW_ROOT AND CMAKE_C_COMPILER)
+if(LIBRENT_CLANG_LLVM_MINGW_ROOT AND CMAKE_C_COMPILER)
     get_filename_component(_cached_compiler_dir "${CMAKE_C_COMPILER}" DIRECTORY)
     get_filename_component(_cached_compiler_dir "${_cached_compiler_dir}" ABSOLUTE)
-    get_filename_component(_llvm_bin_dir "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin" ABSOLUTE)
+    get_filename_component(_llvm_bin_dir "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin" ABSOLUTE)
     if(NOT _cached_compiler_dir STREQUAL _llvm_bin_dir)
         message(FATAL_ERROR "This build directory was configured with ${CMAKE_C_COMPILER}, "
-            "not the RosBE LLVM toolchain in ${REACTOS_CLANG_LLVM_MINGW_ROOT}. "
+            "not the RosBE LLVM toolchain in ${LIBRENT_CLANG_LLVM_MINGW_ROOT}. "
             "Run configure.sh again for this output directory.")
     endif()
 endif()
 
 set(_llvm_tool_bin_hints)
-if(REACTOS_CLANG_LLVM_MINGW_ROOT)
-    list(APPEND _llvm_tool_bin_hints "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin")
+if(LIBRENT_CLANG_LLVM_MINGW_ROOT)
+    list(APPEND _llvm_tool_bin_hints "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin")
 endif()
 
 require_llvm_program(CMAKE_C_COMPILER clang)
@@ -136,9 +132,9 @@ set(CMAKE_ASM_CREATE_STATIC_LIBRARY ${CMAKE_C_CREATE_STATIC_LIBRARY})
 set(CMAKE_C_STANDARD_LIBRARIES "" CACHE STRING "Standard C Libraries")
 set(CMAKE_CXX_STANDARD_LIBRARIES "" CACHE STRING "Standard C++ Libraries")
 
-set(REACTOS_CLANG_BASE_LINKER_FLAGS "-nostdlib -fuse-ld=lld --ld-path=\"${CMAKE_LINKER}\" -Wl,--enable-auto-image-base,--disable-auto-import")
-set(CMAKE_SHARED_LINKER_FLAGS_INIT "${REACTOS_CLANG_BASE_LINKER_FLAGS}")
-set(CMAKE_MODULE_LINKER_FLAGS_INIT "${REACTOS_CLANG_BASE_LINKER_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS_INIT "${REACTOS_CLANG_BASE_LINKER_FLAGS}")
+set(LIBRENT_CLANG_BASE_LINKER_FLAGS "-nostdlib -fuse-ld=lld --ld-path=\"${CMAKE_LINKER}\" -Wl,--enable-auto-image-base,--disable-auto-import")
+set(CMAKE_SHARED_LINKER_FLAGS_INIT "${LIBRENT_CLANG_BASE_LINKER_FLAGS}")
+set(CMAKE_MODULE_LINKER_FLAGS_INIT "${LIBRENT_CLANG_BASE_LINKER_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "${LIBRENT_CLANG_BASE_LINKER_FLAGS}")
 
 set(CMAKE_USER_MAKE_RULES_OVERRIDE "${CMAKE_CURRENT_LIST_DIR}/overrides-gcc.cmake")

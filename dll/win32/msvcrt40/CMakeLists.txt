@@ -8,4 +8,4 @@ add_library(msvcrt40 MODULE
 set_module_type(msvcrt40 win32dll ENTRYPOINT 0)
 add_importlibs(msvcrt40 ntdll)
 
-add_cd_file(TARGET msvcrt40 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msvcrt40 DESTINATION librent/system32 FOR all)

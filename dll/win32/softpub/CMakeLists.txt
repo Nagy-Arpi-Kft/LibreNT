@@ -9,5 +9,5 @@ add_library(softpub MODULE
 set_module_type(softpub win32dll ENTRYPOINT 0 )
 target_link_libraries(softpub wine)
 add_importlibs(softpub wintrust ntdll)
-add_cd_file(TARGET softpub DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET softpub DESTINATION librent/system32 FOR all)
 set_wine_module(softpub)

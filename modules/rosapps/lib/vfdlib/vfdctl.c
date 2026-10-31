@@ -15,12 +15,12 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <dbt.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning (push, 3)
 #endif
 #include <shlobj.h>
 #include <winioctl.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning (pop)
 #endif
 #include <stdio.h>
@@ -46,7 +46,7 @@ typedef struct _GET_LENGTH_INFORMATION {
 //
 //	DOS device name (\\.\VirtualFD)
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define VFD_DEVICE_TEMPLATE		"\\\\.\\" VFD_DEVICE_BASENAME "%u"
 #else
 #define VFD_DEVICE_TEMPLATE		"\\\\.\\" VFD_DEVICE_BASENAME "%lu"
@@ -56,7 +56,7 @@ typedef struct _GET_LENGTH_INFORMATION {
 #define VFD_INSTALL_DIRECTORY	"\\system32\\drivers\\"
 
 #ifdef _DEBUG
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern ULONG TraceFlags = (ULONG)-1;//0;
 extern CHAR *TraceFile	= NULL;
 extern ULONG TraceLine	= 0;
@@ -255,7 +255,7 @@ DWORD WINAPI VfdInstallDriver(
 	DWORD			len;
 	DWORD			ret = ERROR_SUCCESS;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	CHAR			full_file_path[MAX_PATH];
 #endif
 
@@ -274,7 +274,7 @@ DWORD WINAPI VfdInstallDriver(
 
 	inst_path = &system_dir[len];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	strcpy(full_file_path, system_dir);
 	strcat(full_file_path, VFD_INSTALL_DIRECTORY);
 	strcat(full_file_path, VFD_DRIVER_FILENAME);
@@ -352,7 +352,7 @@ DWORD WINAPI VfdInstallDriver(
 		}
 	}
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	//      Check install directory & file exist or use full_file_path
 
 	if (GetFileAttributesA(file_path) == INVALID_FILE_ATTRIBUTES) {
@@ -1226,7 +1226,7 @@ HANDLE WINAPI VfdOpenDevice(
 	if (isalpha(nTarget)) {
 		//	nTarget is a drive letter
 		//	\\.\<x>:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		sprintf(dev_name, VFD_VOLUME_TEMPLATE, nTarget);
 #else
 		sprintf(dev_name, VFD_VOLUME_TEMPLATE, (CHAR)nTarget);

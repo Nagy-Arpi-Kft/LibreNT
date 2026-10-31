@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/dbgk/dbgkutil.c
  * PURPOSE:         User-Mode Debugging Support, Internal Debug Functions.
@@ -9,7 +9,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 #ifdef KDBG
 #include <kdbg/kdb.h>
 #endif

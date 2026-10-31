@@ -14,8 +14,8 @@
 #include <arm64.h>
 #include <blefi.h>
 #include <drivers/acpi/acpi.h>
-#include <reactos/arm64/acpi.h>
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/acpi.h>
+#include <librent/arm64/early_uart.h>
 extern EFI_SYSTEM_TABLE *GlobalSystemTable;
 DBG_DEFAULT_CHANNEL(WINDOWS);
 

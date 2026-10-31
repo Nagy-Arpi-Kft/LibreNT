@@ -848,7 +848,7 @@ static DWORD WAVE_mciPlay(MCIDEVICEID wDevID, DWORD_PTR dwFlags, DWORD_PTR pmt, 
     /* make it so that 3 buffers per second are needed */
     bufsize = WAVE_ALIGN_ON_BLOCK(wmw, wmw->lpWaveFormat->nAvgBytesPerSec / 3);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     waveHdr = malloc(2 * (sizeof(WAVEHDR) + (SIZE_T)bufsize));
     if (!waveHdr) {
 	dwRet = MCIERR_OUT_OF_MEMORY;
@@ -1094,7 +1094,7 @@ static DWORD WAVE_mciRecord(MCIDEVICEID wDevID, DWORD_PTR dwFlags, DWORD_PTR pmt
     /* make it so that 3 buffers per second are needed */
     bufsize = WAVE_ALIGN_ON_BLOCK(wmw, wmw->lpWaveFormat->nAvgBytesPerSec / 3);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     waveHdr = malloc(2 * (sizeof(WAVEHDR) + (SIZE_T)bufsize));
     if (!waveHdr) {
 	dwRet = MCIERR_OUT_OF_MEMORY;

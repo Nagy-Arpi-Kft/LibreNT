@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
  * LICENSE:     See LGPL.txt in the top level directory
- * PROJECT:     ReactOS system libraries
- * FILE:        reactos/lib/epsapi/enum/drivers.c
+ * PROJECT:     LibreNT system libraries
+ * FILE:        librent/lib/epsapi/enum/drivers.c
  * PURPOSE:     Enumerate system modules
  * PROGRAMMER:  KJK::Hyperion <noog@libero.it>
  * UPDATE HISTORY:

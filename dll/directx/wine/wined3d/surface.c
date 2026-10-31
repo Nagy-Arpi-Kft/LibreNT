@@ -696,7 +696,7 @@ static HRESULT surface_cpu_blt(struct wined3d_texture *dst_texture, unsigned int
             wined3d_format_calculate_pitch(dst_format, 1, dst_box->right, dst_box->bottom,
                     &dst_map.row_pitch, &dst_map.slice_pitch);
             dst_map.data = malloc(dst_map.slice_pitch);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!dst_map.data)
             {
                 hr = E_OUTOFMEMORY;

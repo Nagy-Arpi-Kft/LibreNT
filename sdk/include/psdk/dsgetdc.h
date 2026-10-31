@@ -19,7 +19,7 @@
 #ifndef __WINE_DSGETDC_H
 #define __WINE_DSGETDC_H
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define _DSGETDC_H
 #include <winsock2.h>
 typedef struct _LSA_FOREST_TRUST_INFORMATION LSA_FOREST_TRUST_INFORMATION, *PLSA_FOREST_TRUST_INFORMATION;
@@ -32,7 +32,7 @@ extern "C" {
 #define DS_INET_ADDRESS                 1
 #define DS_NETBIOS_ADDRESS              2
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DS_DOMAIN_IN_FOREST             0x01
 #define DS_DOMAIN_DIRECT_OUTBOUND       0x02
 #define DS_DOMAIN_TREE_ROOT             0x04
@@ -132,7 +132,7 @@ typedef struct _DS_DOMAIN_TRUSTSW {
 
 DECL_WINELIB_TYPE_AW(DOMAIN_CONTROLLER_INFO)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DECL_WINELIB_TYPE_AW(DS_DOMAIN_TRUSTS)
 #endif
 
@@ -148,7 +148,7 @@ DWORD WINAPI DsEnumerateDomainTrustsA(LPSTR, ULONG, PDS_DOMAIN_TRUSTSA*, PULONG)
 DWORD WINAPI DsEnumerateDomainTrustsW(LPWSTR, ULONG, PDS_DOMAIN_TRUSTSW*, PULONG);
 #define      DsEnumerateDomainTrusts WINELIB_NAME_AW(DsEnumerateDomainTrusts)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI DsAddressToSiteNamesA(LPCSTR, DWORD, PSOCKET_ADDRESS, LPSTR **);
 DWORD WINAPI DsAddressToSiteNamesW(LPCWSTR, DWORD, PSOCKET_ADDRESS, LPWSTR **);
 #define DsAddressToSiteNames WINELIB_NAME_AW(DsAddressToSiteNames)

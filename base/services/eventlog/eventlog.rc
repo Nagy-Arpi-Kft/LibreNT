@@ -1,5 +1,5 @@
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "Event logging service"
-#define REACTOS_STR_INTERNAL_NAME     "EventLog"
-#define REACTOS_STR_ORIGINAL_FILENAME "wevtsvc.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "Event logging service"
+#define LIBRENT_STR_INTERNAL_NAME     "EventLog"
+#define LIBRENT_STR_ORIGINAL_FILENAME "wevtsvc.dll"
+#include <librent/version.rc>

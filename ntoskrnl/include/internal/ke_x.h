@@ -1,5 +1,5 @@
 /*
-* PROJECT:         ReactOS Kernel
+* PROJECT:         LibreNT Kernel
 * LICENSE:         GPL - See COPYING in the top level directory
 * FILE:            ntoskrnl/include/internal/ke_x.h
 * PURPOSE:         Internal Inlined Functions for the Kernel
@@ -790,7 +790,7 @@ KiAcquireTimerLock(IN ULONG Hand)
 
     /* Now get the lock */
 #ifdef _M_ARM64
-    // Win11 arm64 LockQueue has only 17 entries; timer locks live in a ReactOS array
+    // Win11 arm64 LockQueue has only 17 entries; timer locks live in a LibreNT array
     LockQueue = &KeGetCurrentPrcb()->TimerTableLockQueue[LockIndex];
 #else
     LockQueue = &KeGetCurrentPrcb()->LockQueue[LockQueueTimerTableLock + LockIndex];

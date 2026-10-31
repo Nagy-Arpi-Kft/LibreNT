@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS Win32k subsystem
+ * PROJECT:          LibreNT Win32k subsystem
  * PURPOSE:          Windows
  * FILE:             win32ss/user/ntuser/window.c
  * PROGRAMERS:       Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -1827,7 +1827,7 @@ NtUserBuildHwndList(
    if (!NT_SUCCESS(Status))
       goto Quit;
 
-   /* Keep the count-only query used by the ReactOS USER32 wrappers. */
+   /* Keep the count-only query used by the LibreNT USER32 wrappers. */
    if (!phwndList && cHwnd == 0)
    {
       Status = STATUS_SUCCESS;
@@ -3663,7 +3663,7 @@ Quit:
 }
 
 ////
-//// ReactOS work around! Keep it the sames as in Combo.c and Controls.h
+//// LibreNT work around! Keep it the sames as in Combo.c and Controls.h
 ////
 /* combo state struct */
 typedef struct
@@ -3811,7 +3811,7 @@ Exit:
 }
 
 ////
-//// ReactOS work around! Keep it the sames as in Listbox.c
+//// LibreNT work around! Keep it the sames as in Listbox.c
 ////
 /* Listbox structure */
 typedef struct
@@ -4838,7 +4838,7 @@ NtUserDefSetText(HWND hWnd, PLARGE_STRING WindowText)
       return FALSE;
    }
 
-   // ReactOS uses Unicode and not mixed. Up/Down converting will take time.
+   // LibreNT uses Unicode and not mixed. Up/Down converting will take time.
    // Brought to you by: The Wine Project! Dysfunctional Thought Processes!
    // Now we know what the bAnsi is for.
    RtlInitUnicodeString(&UnicodeString, NULL);

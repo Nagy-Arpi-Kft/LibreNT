@@ -24,7 +24,7 @@
 
 #include "d3dukmdt.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 #define NTSTATUS                int32_t
 
@@ -57,7 +57,7 @@
 
 /*
  * POWER_ACTION and DEVICE_POWER_STATE are already provided by winnt.h on
- * MinGW and by the ReactOS DDK.  Only define them when neither has been
+ * MinGW and by the LibreNT DDK.  Only define them when neither has been
  * included yet (kernel-only build paths).
  */
 #if !defined(_WINNT_) && !defined(__WINE_WINNT_H) && !defined(_NTDEF_)
@@ -89,7 +89,7 @@ typedef enum _DEVICE_POWER_STATE {
 typedef LONG NTSTATUS;
 #endif
 
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 #pragma region Desktop Family
 #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
@@ -102,7 +102,7 @@ typedef LONG NTSTATUS;
 // Available only for Vista (LONGHORN) and later and for
 // multiplatform tools such as debugger extensions
 //
-#if defined(__REACTOS__) || ((NTDDI_VERSION >= NTDDI_LONGHORN) || defined(D3DKMDT_SPECIAL_MULTIPLATFORM_TOOL))
+#if defined(__LIBRENT__) || ((NTDDI_VERSION >= NTDDI_LONGHORN) || defined(D3DKMDT_SPECIAL_MULTIPLATFORM_TOOL))
 
 //
 // Hardcoded overlay count
@@ -617,7 +617,7 @@ typedef struct _D3DKMDT_VIDEO_SIGNAL_INFO
         struct
         {
             // Scan line ordering (e.g. progressive, interlaced).
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             UINT ScanLineOrdering : 3; // D3DDDI_VIDEO_SIGNAL_SCANLINE_ORDERING
 #else
             D3DDDI_VIDEO_SIGNAL_SCANLINE_ORDERING ScanLineOrdering : 3;

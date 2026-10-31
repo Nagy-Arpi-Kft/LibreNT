@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Windows Sockets Helper for Bluetooth
+ * PROJECT:     LibreNT Windows Sockets Helper for Bluetooth
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shared definitions
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -16,7 +16,7 @@
 #include <ws2bth.h>
 #include <bluetoothapis.h>
 #include <bthioctl.h>
-#include <reactos/tdibth.h>
+#include <librent/tdibth.h>
 
 #define EXPORT WINAPI
 

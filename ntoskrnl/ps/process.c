@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ps/process.c
  * PURPOSE:         Process Manager: Process Management
@@ -10,7 +10,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 #define NDEBUG
 #include <debug.h>
 
@@ -1372,7 +1372,7 @@ PsGetProcessServerSilo(_In_ PEPROCESS Process)
 {
     UNREFERENCED_PARAMETER(Process);
 
-    /* ReactOS does not create server silos; the host silo is represented by NULL. */
+    /* LibreNT does not create server silos; the host silo is represented by NULL. */
     return NULL;
 }
 
@@ -4020,7 +4020,7 @@ PsQueryProcessAttributesByToken(
 VOID NTAPI PsReferenceKernelStack(_Inout_ PKTHREAD Thread)
 {
     UNREFERENCED_PARAMETER(Thread);
-    /* ReactOS never swaps a kernel stack out, so no pin is required. */
+    /* LibreNT never swaps a kernel stack out, so no pin is required. */
 }
 
 VOID NTAPI PsDereferenceKernelStack(_Inout_ PKTHREAD Thread)

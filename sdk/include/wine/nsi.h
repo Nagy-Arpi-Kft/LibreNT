@@ -23,7 +23,7 @@
 #include "in6addr.h"
 #include "ws2def.h"
 #include "ws2ipdef.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <winioctl.h>
 #else
 #include "winioctl.h"

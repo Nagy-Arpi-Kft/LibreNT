@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Spooler API
+ * PROJECT:     LibreNT Spooler API
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Functions related to Spool Files and printing
  * COPYRIGHT:   Copyright 1998-2020 ReactOS

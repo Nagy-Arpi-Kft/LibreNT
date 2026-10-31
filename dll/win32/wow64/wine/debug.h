@@ -1,4 +1,4 @@
-/* ReactOS debug mapping for Wine's native WoW64 sources. */
+/* LibreNT debug mapping for Wine's native WoW64 sources. */
 
 #pragma once
 

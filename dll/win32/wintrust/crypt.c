@@ -24,7 +24,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #endif
 #include "windef.h"
@@ -35,7 +35,7 @@
 #include "mssip.h"
 #include "imagehlp.h"
 #include "winternl.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "rpc.h"
 #endif
 
@@ -57,7 +57,7 @@ struct cryptcat
     GUID      subject;
     DWORD     attr_count;
     CRYPTCATATTRIBUTE *attr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR    *filename;
     DWORD     version;
     DWORD     member_count;
@@ -65,7 +65,7 @@ struct cryptcat
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct catmember
 {
     CRYPTCATMEMBER      member;
@@ -314,7 +314,7 @@ BOOL WINAPI CryptCATAdminAcquireContext2(HCATADMIN *catAdmin, const GUID *sys, c
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_valid_catalog_file(const WCHAR *filename)
 {
     struct cryptcat *catalog;
@@ -339,7 +339,7 @@ HCATINFO WINAPI CryptCATAdminAddCatalog(HCATADMIN catAdmin, PWSTR catalogFile,
     static const WCHAR slashW[] = {'\\',0};
     struct catadmin *ca = catAdmin;
     struct catinfo *ci;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR generated_name[MAX_PATH];
 #endif
     WCHAR *target;
@@ -348,7 +348,7 @@ HCATINFO WINAPI CryptCATAdminAddCatalog(HCATADMIN catAdmin, PWSTR catalogFile,
     TRACE("%p %s %s %ld\n", catAdmin, debugstr_w(catalogFile),
           debugstr_w(selectBaseName), flags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ca || ca->magic != CATADMIN_MAGIC || !catalogFile || flags)
     {
         SetLastError(ERROR_INVALID_PARAMETER);
@@ -880,7 +880,7 @@ BOOL WINAPI CryptCATClose(HANDLE hCatalog)
     }
     free(cc->attr);
     free(cc->inner);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (cc->member_count)
         catalog_free_member(cc->members[--cc->member_count]);
     free(cc->members);
@@ -1019,7 +1019,7 @@ CRYPTCATMEMBER * WINAPI CryptCATEnumerateMember(HANDLE hCatalog, CRYPTCATMEMBER 
 
     if (member->dwReserved >= cc->inner->cCTLEntry)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError(ERROR_SUCCESS);
 #else
         SetLastError(ERROR_INVALID_PARAMETER);
@@ -1027,7 +1027,7 @@ CRYPTCATMEMBER * WINAPI CryptCATEnumerateMember(HANDLE hCatalog, CRYPTCATMEMBER 
         goto error;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (cc->inner->SubjectAlgorithm.pszObjId &&
         !strcmp(cc->inner->SubjectAlgorithm.pszObjId, szOID_CATALOG_LIST_MEMBER2))
     {
@@ -1110,7 +1110,7 @@ CRYPTCATMEMBER * WINAPI CryptCATEnumerateMember(HANDLE hCatalog, CRYPTCATMEMBER 
         SetLastError(CRYPT_E_ATTRIBUTES_MISSING);
         goto error;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (cc->version == CRYPTCAT_VERSION_1)
     {
         size = entry->SubjectIdentifier.cbData + sizeof(WCHAR);
@@ -1213,7 +1213,7 @@ BOOL WINAPI CryptCATCatalogInfoFromContext(HCATINFO hcatinfo, CATALOG_INFO *info
 CRYPTCATATTRIBUTE * WINAPI CryptCATPutAttrInfo(HANDLE catalog, CRYPTCATMEMBER *member,
         WCHAR *name, DWORD flags, DWORD size, BYTE *data)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct cryptcat *cc = catalog;
     struct catmember *cm = (struct catmember *)member;
     CRYPTCATATTRIBUTE *attr, **attrs;
@@ -1281,7 +1281,7 @@ CRYPTCATATTRIBUTE * WINAPI CryptCATPutCatAttrInfo(HANDLE catalog,
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL catalog_decode_hash_tag(const WCHAR *tag, BYTE *hash, DWORD hash_len)
 {
     BYTE value, any = 0;
@@ -1306,7 +1306,7 @@ static BOOL catalog_decode_hash_tag(const WCHAR *tag, BYTE *hash, DWORD hash_len
 CRYPTCATMEMBER * WINAPI CryptCATPutMemberInfo(HANDLE catalog, WCHAR *filename,
         WCHAR *member, GUID *subject, DWORD version, DWORD size, BYTE *data)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct cryptcat *cc = catalog;
     const SIP_INDIRECT_DATA *indirect = (const SIP_INDIRECT_DATA *)data;
     DWORD tag_len, file_len, data_oid_len, alg_oid_len, total;
@@ -1397,7 +1397,7 @@ CRYPTCATMEMBER * WINAPI CryptCATPutMemberInfo(HANDLE catalog, WCHAR *filename,
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI WVTAsn1SpcIndirectDataContentEncode(DWORD, LPCSTR, const void *, BYTE *, DWORD *);
 BOOL WINAPI WVTAsn1CatMemberInfoEncode(DWORD, LPCSTR, const void *, BYTE *, DWORD *);
 BOOL WINAPI WVTAsn1CatNameValueEncode(DWORD, LPCSTR, const void *, BYTE *, DWORD *);
@@ -1526,7 +1526,7 @@ static BOOL catalog_member_entry_v2(const CRYPTCATMEMBER *m, struct catentry *e)
  */
 BOOL WINAPI CryptCATPersistStore(HANDLE catalog)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static char catalog_list[] = szOID_CATALOG_LIST;
     struct cryptcat *cc = catalog;
     CMSG_SIGNED_ENCODE_INFO sign_info = { sizeof(sign_info) };
@@ -1695,7 +1695,7 @@ HANDLE WINAPI CryptCATOpen(WCHAR *filename, DWORD flags, HCRYPTPROV hProv,
     CloseHandle(file);
 
     size = sizeof(DWORD);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((cc = calloc(1, sizeof(*cc) + (lstrlenW(filename) + 1) * sizeof(WCHAR))))
     {
         cc->filename = (WCHAR *)(cc + 1);
@@ -1770,7 +1770,7 @@ HANDLE WINAPI CryptCATOpen(WCHAR *filename, DWORD flags, HCRYPTPROV hProv,
             free(cc);
             return INVALID_HANDLE_VALUE;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!cc->version && cc->inner->SubjectAlgorithm.pszObjId)
         {
             if (!strcmp(cc->inner->SubjectAlgorithm.pszObjId, szOID_CATALOG_LIST_MEMBER))
@@ -1787,7 +1787,7 @@ HANDLE WINAPI CryptCATOpen(WCHAR *filename, DWORD flags, HCRYPTPROV hProv,
     return INVALID_HANDLE_VALUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI WVTAsn1SpcLinkEncode(DWORD, LPCSTR, const void *, BYTE *, DWORD *);
 
 static BOOL include_pe_page_hashes;
@@ -2093,7 +2093,7 @@ static BYTE *sip_pe_image_value(const BYTE *link, DWORD link_len, DWORD *out_len
 BOOL WINAPI CryptSIPCreateIndirectData(SIP_SUBJECTINFO* pSubjectInfo, DWORD* pcbIndirectData,
                                        SIP_INDIRECT_DATA* pIndirectData)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const GUID peGUID = { 0xC689AAB8, 0x8E78, 0x11D0, { 0x8C,0x47,0x00,0xC0,0x4F,0xC2,0x95,0xEE } };
     static const GUID cabGUID = { 0xC689AABA, 0x8E78, 0x11D0, { 0x8C,0x47,0x00,0xC0,0x4F,0xC2,0x95,0xEE } };
     static const GUID flatGUID = { 0xDE351A42, 0x8E59, 0x11D0, { 0x8C,0x47,0x00,0xC0,0x4F,0xC2,0x95,0xEE } };
@@ -2278,7 +2278,7 @@ done:
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void WINAPI WintrustSetDefaultIncludePEPageHashes(BOOL fIncludePEPageHashes)
 {
     TRACE("(%d)\n", fIncludePEPageHashes);
@@ -2443,7 +2443,7 @@ static BOOL WINTRUST_PutSignedMsgToPEFile(SIP_SUBJECTINFO* pSubjectInfo, DWORD p
     }
 
     /* int aligned WIN_CERTIFICATE structure with cbSignedDataMsg+1 bytes of data */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size = (FIELD_OFFSET(WIN_CERTIFICATE, bCertificate[cbSignedDataMsg]) + 7) & ~7;
 #else
     size = FIELD_OFFSET(WIN_CERTIFICATE, bCertificate[cbSignedDataMsg+4]) & (~3);
@@ -2673,7 +2673,7 @@ static BOOL WINTRUST_GetSignedMsgFromCatFile(SIP_SUBJECTINFO *pSubjectInfo,
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL WINTRUST_PutSignedMsgToCabFile(SIP_SUBJECTINFO *pSubjectInfo,
  DWORD *pdwIndex, DWORD cbSignedDataMsg, BYTE *pbSignedDataMsg)
 {
@@ -2866,7 +2866,7 @@ BOOL WINAPI CryptSIPPutSignedDataMsg(SIP_SUBJECTINFO* pSubjectInfo, DWORD pdwEnc
     if(!memcmp(pSubjectInfo->pgSubjectType, &unknown, sizeof(unknown)))
         return WINTRUST_PutSignedMsgToPEFile(pSubjectInfo, pdwEncodingType,
                 pdwIndex, cbSignedDataMsg, pbSignedDataMsg);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (!memcmp(pSubjectInfo->pgSubjectType, &catGUID, sizeof(catGUID)))
         return WINTRUST_PutSignedMsgToCatFile(pSubjectInfo, pdwIndex,
                 cbSignedDataMsg, pbSignedDataMsg);
@@ -2887,7 +2887,7 @@ BOOL WINAPI CryptSIPPutSignedDataMsg(SIP_SUBJECTINFO* pSubjectInfo, DWORD pdwEnc
 BOOL WINAPI CryptSIPRemoveSignedDataMsg(SIP_SUBJECTINFO* pSubjectInfo,
                                        DWORD dwIndex)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p %ld)\n", pSubjectInfo, dwIndex);
 
     if (!pSubjectInfo || !pSubjectInfo->pgSubjectType)

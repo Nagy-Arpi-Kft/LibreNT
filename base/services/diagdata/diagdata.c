@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Diagnostic Data Service
+ * PROJECT:     LibreNT Diagnostic Data Service
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Sends the required and the optional diagnostic data, spooled until delivered
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -16,13 +16,13 @@
 #include <strsafe.h>
 #define NTOS_MODE_USER
 #include <ndk/mmtypes.h>
-#include <reactos/dump.h>
+#include <librent/dump.h>
 #define NDEBUG
 #include <debug.h>
 
-#define DIAGDATA_KEY L"SOFTWARE\\LiberNT\\DiagnosticData"
-#define DIAGDATA_ENDPOINT L"https://ci.libernt.com/api/diagnostic-data/v1/report"
-#define DIAGDATA_AGENT L"LiberNT-DiagnosticData/1"
+#define DIAGDATA_KEY L"SOFTWARE\\LibreNT\\DiagnosticData"
+#define DIAGDATA_ENDPOINT L""
+#define DIAGDATA_AGENT L"LibreNT-DiagnosticData/1"
 #define DIAGDATA_SETTLE_MS 30000
 #define DIAGDATA_PNP_POLL_MS 500
 #define DIAGDATA_OFF_LEVEL 0
@@ -712,14 +712,14 @@ static BOOL BuildReport(_Out_ PDIAGDATA_BUFFER Buffer, _Out_ PDIAGDATA_PROGRESS 
 static DWORD DiagDataLevel(VOID)
 {
     HKEY Key;
-    DWORD Level = 1;
+    DWORD Level = DIAGDATA_OFF_LEVEL;
     DWORD Type = 0;
     DWORD Size = sizeof(Level);
 
     if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, DIAGDATA_DATACOLLECTION_KEY, 0, KEY_QUERY_VALUE, &Key) != ERROR_SUCCESS)
-        return 1;
+        return DIAGDATA_OFF_LEVEL;
     if (RegQueryValueExW(Key, L"AllowTelemetry", NULL, &Type, (LPBYTE)&Level, &Size) != ERROR_SUCCESS || Type != REG_DWORD)
-        Level = 1;
+        Level = DIAGDATA_OFF_LEVEL;
     RegCloseKey(Key);
     return Level;
 }

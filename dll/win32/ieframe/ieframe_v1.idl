@@ -21,7 +21,7 @@
 
 #include "exdisp.idl"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 [
     threading(apartment),
     uuid(871c5380-42a0-1069-a2ea-08002b30309d)

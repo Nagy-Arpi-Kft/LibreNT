@@ -1,10 +1,10 @@
 /*
  * CSQ Test Driver
  * Copyright (c) 2004, Vizzini (vizzini@plasmic.com)
- * Released under the GNU GPL for the ReactOS project
+ * Released under the GNU GPL for the LibreNT project
  *
  * This driver is designed to exercise the cancel-safe IRP queue logic.
- * Please refer to reactos/include/ddk/csq.h and reactos/drivers/lib/csq.
+ * Please refer to librent/include/ddk/csq.h and librent/drivers/lib/csq.
  */
 #include <ntddk.h>
 #include <csq.h>

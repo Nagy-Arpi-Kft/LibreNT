@@ -25,9 +25,9 @@
 #include <winreg.h>
 
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <shellapi.h>
-#include <reactos/dwmsettings.h>
+#include <librent/dwmsettings.h>
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(console);
@@ -51,7 +51,7 @@ struct console_window
     BOOL              in_selection;    /* an area is being selected */
     COORD             selection_start; /* selection coordinates */
     COORD             selection_end;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL              selection_block;
     BOOL              selection_mark;
     BOOL              selection_moved;
@@ -75,7 +75,7 @@ struct console_window
 
     RECT              update;          /* screen buffer update rect */
     enum update_state update_state;    /* update state */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     COLORREF          backdrop;
     BOOL              backdrop_set;
     WCHAR            *title;
@@ -280,14 +280,14 @@ static void load_config( const WCHAR *key_name, struct console_config *config )
     config->insert_mode  = 1;
     config->menu_mask    = 0;
     config->popup_attr   = 0xF5;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     config->quick_edit   = 1;
 #else
     config->quick_edit   = 0;
 #endif
     config->sb_height    = 150;
     config->sb_width     = 80;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     config->attr         = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 #else
     config->attr         = 0x000F;
@@ -485,7 +485,7 @@ static void fill_mem_dc( struct console *console, const RECT *update )
     WCHAR *line;
     INT *dx;
     RECT r;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const struct cell_color *colors;
     COLORREF fg, bg;
     unsigned int first, last;
@@ -494,7 +494,7 @@ static void fill_mem_dc( struct console *console, const RECT *update )
     if (!console->window->font || !console->window->bitmap)
         return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(line = malloc( (update->right - update->left + 3) * sizeof(WCHAR))) ) return;
     if (!(dx = malloc( (update->right - update->left + 3) * sizeof(*dx) )))
     {
@@ -510,7 +510,7 @@ static void fill_mem_dc( struct console *console, const RECT *update )
     for (j = update->top; j <= update->bottom; j++)
     {
         cell = &console->active->data[j * console->active->width];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         colors = console->active->colors ? &console->active->colors[j * console->active->width] : NULL;
         first = update->left;
         last = update->right;
@@ -616,13 +616,13 @@ static void update_window_cursor( struct console *console )
 /* sets a new shape for the cursor */
 static void shape_cursor( struct console *console )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int size = console->active->vt_cursor_size ? console->active->vt_cursor_size : console->active->cursor_size;
 #else
     int size = console->active->cursor_size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (console->window->cursor_visible && console->win == GetFocus()) DestroyCaret();
 #else
     if (console->active->cursor_visible && console->win == GetFocus()) DestroyCaret();
@@ -654,7 +654,7 @@ static void shape_cursor( struct console *console )
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void update_content_backdrop( struct console *console )
 {
     COLORREF fill;
@@ -670,7 +670,7 @@ static void update_content_backdrop( struct console *console )
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define TITLE_TIMER       2
 #define TITLE_TIMER_DELAY 16
 
@@ -765,7 +765,7 @@ static void update_window( struct console *console )
 
         dx += r.right - r.left;
         dy += r.bottom - r.top;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!console->window->size_from_window && !console->window->in_size_move)
 #endif
         SetWindowPos( console->win, 0, 0, 0, dx, dy, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE );
@@ -808,7 +808,7 @@ static void update_window( struct console *console )
         UpdateWindow( console->win );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (update_all || (console->active->vt_cursor_size ? console->active->vt_cursor_size : console->active->cursor_size) !=
                       console->window->cursor_size)
     {
@@ -848,7 +848,7 @@ static void update_window( struct console *console )
         update_window_cursor( console );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     update_content_backdrop( console );
 #endif
     console->window->update_state = UPDATE_NONE;
@@ -1023,7 +1023,7 @@ static int CALLBACK enum_first_font_proc( const LOGFONTW *lf, const TEXTMETRICW 
     return !ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL set_default_tt_font( struct console *console, struct console_config *config )
 {
     WCHAR face_name[LF_FACESIZE], cp_name[16];
@@ -1146,7 +1146,7 @@ static void get_selection_rect( struct console *console, RECT *r )
                  console->active->win.top) * console->active->font.height;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void get_selection_order( struct console *console, COORD *first, COORD *last )
 {
     COORD a = console->window->selection_start, b = console->window->selection_end;
@@ -1211,7 +1211,7 @@ static void update_selection( struct console *console, HDC ref_dc )
 
     if (console->win == GetFocus() && console->active->cursor_visible)
         HideCaret( console->win );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     invert_selection( console, dc );
 #else
     InvertRect( dc, &r );
@@ -1239,7 +1239,7 @@ static void move_selection( struct console *console, COORD c1, COORD c2 )
     {
         if (console->win == GetFocus() && console->active->cursor_visible)
             HideCaret( console->win );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         invert_selection( console, dc );
 #else
         InvertRect( dc, &r );
@@ -1250,7 +1250,7 @@ static void move_selection( struct console *console, COORD c1, COORD c2 )
     if (dc)
     {
         get_selection_rect( console, &r );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         invert_selection( console, dc );
 #else
         InvertRect( dc, &r );
@@ -1262,7 +1262,7 @@ static void move_selection( struct console *console, COORD c1, COORD c2 )
 }
 
 /* copies the current selection into the clipboard */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void copy_selection( struct console *console )
 {
     int width = console->active->width, x, y, left, right;
@@ -1359,7 +1359,7 @@ static void copy_selection( struct console *console )
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void insert_text( struct console *console, const WCHAR *text, unsigned int len );
 
 static void paste_clipboard( struct console *console )
@@ -1406,7 +1406,7 @@ static void paste_clipboard( struct console *console )
         ir[0].Event.KeyEvent.dwControlKeyState = 0;
         ir[0].Event.KeyEvent.bKeyDown = TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         vt_bracket_paste( console, TRUE );
 #endif
         /* generate the corresponding input records */
@@ -1423,7 +1423,7 @@ static void paste_clipboard( struct console *console )
 
             write_console_input( console, ir, 2, i == len - 1 );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         vt_bracket_paste( console, FALSE );
 #endif
         GlobalUnlock( h );
@@ -1433,7 +1433,7 @@ static void paste_clipboard( struct console *console )
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void insert_text( struct console *console, const WCHAR *text, unsigned int len )
 {
     unsigned int i;
@@ -1753,7 +1753,7 @@ static void record_key_input( struct console *console, BOOL down, WPARAM wparam,
     ir.Event.KeyEvent.uChar.UnicodeChar = last;
     if (!down) last = 0; /* FIXME: buggy HACK  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((console->mode & ENABLE_VIRTUAL_TERMINAL_INPUT) && vt_translate_key( console, &ir )) return;
 #endif
     write_console_input( console, &ir, 1, TRUE );
@@ -2313,7 +2313,7 @@ static void apply_config( struct console *console, const struct console_config *
 
     console->window->menu_mask     = config->menu_mask;
     console->window->quick_edit    = config->quick_edit;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (config->quick_edit) console->mode |= ENABLE_QUICK_EDIT_MODE | ENABLE_EXTENDED_FLAGS;
     else console->mode &= ~ENABLE_QUICK_EDIT_MODE;
 #endif
@@ -2519,7 +2519,7 @@ static BOOL config_dialog( struct console *console, BOOL current )
 static void resize_window( struct console *console, int width, int height )
 {
     struct console_config config;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct screen_buffer *screen_buffer = console->active;
     int cursor_row = -1;
 
@@ -2542,7 +2542,7 @@ static void resize_window( struct console *console, int width, int height )
         config.sb_width = config.win_width;
     if (config.sb_height < config.win_height)
         config.sb_height = config.win_height;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (cursor_row >= 0)
     {
         config.win_pos.X = 0;
@@ -2634,7 +2634,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 {
     struct console *console = (struct console *)GetWindowLongPtrW( hwnd, 0 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (console && console->window && !console->window->in_selection &&
         msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST && vt_translate_mouse( console, msg, wparam, lparam ))
         return 0;
@@ -2649,7 +2649,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
         PostQuitMessage( 0 );
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_SETTINGCHANGE:
         console->window->backdrop_set = FALSE;
         update_content_backdrop( console );
@@ -2659,7 +2659,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 
     case WM_TIMER:
     case WM_UPDATE_CONFIG:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (msg == WM_TIMER && wparam == TITLE_TIMER)
         {
             KillTimer( hwnd, TITLE_TIMER );
@@ -2686,7 +2686,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
                     console->active->win.left * console->active->font.width,
                     console->active->win.top  * console->active->font.height,
                     SRCCOPY );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 int cx = (console->active->win.right - console->active->win.left + 1) * console->active->font.width;
                 int cy = (console->active->win.bottom - console->active->win.top + 1) * console->active->font.height;
@@ -2723,7 +2723,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 
     case WM_KEYDOWN:
     case WM_KEYUP:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window && console->window->in_selection && console->window->selection_mark)
             handle_selection_key( console, msg == WM_KEYDOWN, wparam, lparam );
         else if (console->window && msg == WM_KEYDOWN && handle_edit_key( console, wparam ))
@@ -2753,7 +2753,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
         break;
 
     case WM_LBUTTONDOWN:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window && (console->window->quick_edit || console->window->in_selection))
         {
             COORD c = get_cell( console, lparam );
@@ -2801,7 +2801,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 #endif
 
     case WM_MOUSEMOVE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window && (console->window->quick_edit || console->window->in_selection))
         {
             if (GetCapture() == console->win && console->window->in_selection &&
@@ -2839,7 +2839,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 #endif
 
     case WM_LBUTTONUP:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window && (console->window->quick_edit || console->window->in_selection))
         {
             if (GetCapture() == console->win && console->window->in_selection)
@@ -2883,7 +2883,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 #endif
 
     case WM_RBUTTONDOWN:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window && console->window->quick_edit && !(wparam & (MK_CONTROL|MK_SHIFT)))
         {
             if (console->window->in_selection)
@@ -2920,7 +2920,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
         record_mouse_input( console, get_cell(console, lparam), wparam, 0 );
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_LBUTTONDBLCLK:
         if (console->window && console->window->quick_edit)
             select_word( console, get_cell( console, lparam ) );
@@ -2935,7 +2935,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
         record_mouse_input( console, get_cell(console, lparam), wparam, DOUBLE_CLICK );
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_DROPFILES:
         drop_files( console, (HDROP)wparam );
         break;
@@ -2948,7 +2948,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
                          console->active->font.width, console->active->font.height );
             update_window_cursor( console );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window) vt_focus_event( console, TRUE );
 #endif
         break;
@@ -2956,12 +2956,12 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
     case WM_KILLFOCUS:
         if (console->window && console->active->cursor_visible)
             DestroyCaret();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window) vt_focus_event( console, FALSE );
 #endif
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_ENTERSIZEMOVE:
         if (console->window) console->window->in_size_move = TRUE;
         break;
@@ -3003,7 +3003,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
 #endif
 
     case WM_SIZE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->window && console->window->update_state != UPDATE_BUSY)
         {
             int width  = max( LOWORD(lparam) / console->active->font.width, 20 );
@@ -3120,7 +3120,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
             config_dialog( console, TRUE );
             break;
         case IDS_MARK:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             clear_selection( console );
             console->window->selection_block = TRUE;
             console->window->selection_mark = TRUE;
@@ -3131,7 +3131,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
             console->window->in_selection = TRUE;
             break;
         case IDS_COPY:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (console->window->in_selection)
                 copy_and_clear_selection( console );
 #else
@@ -3147,7 +3147,7 @@ static LRESULT WINAPI window_proc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lp
             paste_clipboard( console );
             break;
         case IDS_SELECTALL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             select_all( console );
 #else
             console->window->selection_start.X = console->window->selection_start.Y = 0;
@@ -3190,7 +3190,7 @@ void update_window_config( struct console *console, BOOL delay )
         PostMessageW( console->win, WM_UPDATE_CONFIG, 0, 0 );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void set_window_quick_edit( struct console *console, BOOL enable )
 {
     if (console->window) console->window->quick_edit = enable;
@@ -3219,7 +3219,7 @@ void update_window_region( struct console *console, const RECT *update )
     update_window_config( console, TRUE );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void set_client_icon( struct console *console, WPARAM type, int width, int height,
                              const WCHAR *path )
 {
@@ -3305,7 +3305,7 @@ BOOL init_window( struct console *console )
                         0, 0, 0, 0, wndclass.hInstance, console ))
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DragAcceptFiles( console->win, TRUE );
     set_client_icons( console );
     if ((!config.face_name[0] || !wcscmp( config.face_name, L"__DefaultTTFont__" )) &&

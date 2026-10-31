@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS International Components for Unicode
+ * PROJECT:     LibreNT International Components for Unicode
  * FILE:        dll/win32/icu/icu_private.h
  * PURPOSE:     ICU C API types used by the character set converters
  *

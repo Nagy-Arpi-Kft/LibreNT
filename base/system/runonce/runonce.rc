@@ -3,10 +3,10 @@
 
 #include "resource.h"
 
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Run Once Wrapper"
-#define REACTOS_STR_INTERNAL_NAME     "runonce"
-#define REACTOS_STR_ORIGINAL_FILENAME "runonce.exe"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Run Once Wrapper"
+#define LIBRENT_STR_INTERNAL_NAME     "runonce"
+#define LIBRENT_STR_ORIGINAL_FILENAME "runonce.exe"
+#include <librent/version.rc>
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 

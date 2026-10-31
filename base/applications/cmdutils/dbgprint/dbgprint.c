@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS DbgPrint Utility
+ * PROJECT:         LibreNT DbgPrint Utility
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            base/applications/cmdutils/dbgprint/dbgprint.c
  * PURPOSE:         outputs a text via DbgPrint API

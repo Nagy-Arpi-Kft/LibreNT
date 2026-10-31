@@ -36,7 +36,7 @@
 #include "mmreg.h"
 #include "ks.h"
 #include "ksguid.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef DEFINE_GUIDEX
 #define DEFINE_GUIDEX(name) const CDECL GUID __declspec(selectany) name = { STATICGUIDOF(name) }
 #endif

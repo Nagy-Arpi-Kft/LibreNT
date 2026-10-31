@@ -1,5 +1,5 @@
 /*
- *  ReactOS
+ *  LibreNT
  *  Copyright (C) 2004 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,9 +17,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /*
- * PROJECT:         ReactOS Sample Control Panel
+ * PROJECT:         LibreNT Sample Control Panel
  * FILE:            dll/cpl/main/main.c
- * PURPOSE:         ReactOS Main Control Panel
+ * PURPOSE:         LibreNT Main Control Panel
  * PROGRAMMER:      Eric Kohl
  * UPDATE HISTORY:
  *      05-01-2004  Created

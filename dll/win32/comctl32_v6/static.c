@@ -109,7 +109,7 @@ static BOOL get_icon_size( HICON handle, SIZE *size )
     if (!GetIconInfo(handle, &info))
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetObjectW(info.hbmMask, sizeof(bmp), &bmp);
 #else
     ret = GetObjectW(info.hbmColor, sizeof(bmp), &bmp);
@@ -118,7 +118,7 @@ static BOOL get_icon_size( HICON handle, SIZE *size )
     {
         size->cx = bmp.bmWidth;
         size->cy = bmp.bmHeight;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /*
             If this structure defines a black and white icon, this bitmask is formatted
             so that the upper half is the icon AND bitmask and the lower half is
@@ -701,7 +701,7 @@ static void STATIC_PaintOwnerDrawfn( HWND hwnd, HDC hdc, HBRUSH hbrush, DWORD st
     if (font) SelectObject( hdc, oldFont );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL CALLBACK STATIC_DrawTextCallback(HDC hdc, LPARAM text, WPARAM format, int cx, int cy)
 {
     RECT rect;
@@ -800,7 +800,7 @@ static void STATIC_PaintTextfn( HWND hwnd, HDC hdc, HBRUSH hbrush, DWORD style )
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         UINT flags = DST_COMPLEX;
         if (style & WS_DISABLED)
             flags |= DSS_DISABLED;

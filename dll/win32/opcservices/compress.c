@@ -252,7 +252,7 @@ HRESULT compress_finalize_archive(struct zip_archive *archive)
             cdh.signature = ZIP32_CDFH;
             cdh.version = ZIP64_VERSION;
             cdh.min_version = ZIP64_VERSION;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             cdh.flags = file->flags;
 #else
             cdh.flags = USE_DATA_DESCRIPTOR;
@@ -321,7 +321,7 @@ HRESULT compress_finalize_archive(struct zip_archive *archive)
             cdh.signature = ZIP32_CDFH;
             cdh.version = ZIP32_VERSION;
             cdh.min_version = ZIP32_VERSION;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             cdh.flags = file->flags;
 #else
             cdh.flags = USE_DATA_DESCRIPTOR;
@@ -402,7 +402,7 @@ static void compress_write_content(struct zip_archive *archive, IStream *content
     move.QuadPart = 0;
     IStream_Seek(content, move, STREAM_SEEK_SET, NULL);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (options == OPC_COMPRESSION_NONE)
     {
         do
@@ -524,7 +524,7 @@ HRESULT compress_add_file(struct zip_archive *archive, const WCHAR *path,
     file->flags |= USE_DATA_DESCRIPTOR;
 
     local_header.signature = LOCAL_HEADER_SIGNATURE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     local_header.flags = file->flags;
 #else
     local_header.flags = USE_DATA_DESCRIPTOR;
@@ -593,7 +593,7 @@ HRESULT compress_add_file(struct zip_archive *archive, const WCHAR *path,
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT zip_read_at(IStream *input, uint64_t offset, void *buffer, ULONG size)
 {
     LARGE_INTEGER pos;

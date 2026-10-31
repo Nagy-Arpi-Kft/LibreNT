@@ -5,7 +5,7 @@
 #define SBX_LABEL_LOW_SDDL L"S:(ML;;NW;;;LW)"
 #define SBX_LABEL_LOW_NR_SDDL L"S:(ML;;NWNR;;;LW)"
 
-/* Creation-policy word 2 values used by current Chromium.  The ReactOS SDK is
+/* Creation-policy word 2 values used by current Chromium.  The LibreNT SDK is
  * intentionally usable with older consumers, so keep local fallbacks in the
  * browser parity tests until the public header is brought up to date. */
 #ifndef PROCESS_CREATION_MITIGATION_POLICY2_RESTRICT_INDIRECT_BRANCH_PREDICTION_ALWAYS_ON

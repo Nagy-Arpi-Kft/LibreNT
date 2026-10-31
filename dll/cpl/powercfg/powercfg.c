@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Power Configuration Applet
+ * PROJECT:     LibreNT Power Configuration Applet
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Applet initialization
  * COPYRIGHT:   Copyright 2006-2009 Alexander Wurzinger <lohnegrim@gmx.net>

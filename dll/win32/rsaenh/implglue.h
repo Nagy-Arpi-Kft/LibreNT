@@ -33,7 +33,7 @@ struct rsa_key
 {
     SYMCRYPT_RSAKEY *key;
     UINT32           flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BYTE            *small_modulus;
     UINT32           small_size;
     UINT32           small_pubexp;

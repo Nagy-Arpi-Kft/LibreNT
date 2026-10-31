@@ -260,7 +260,7 @@ static struct attr *parse_attr( const WCHAR *str, int *used )
     return attr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL cookie_attr_expired( const struct attr *attr )
 {
     SYSTEMTIME st;
@@ -308,7 +308,7 @@ BOOL set_cookies( struct request *request, const WCHAR *cookies )
     struct session *session = request->connect->session;
     struct cookie *cookie;
     int len, used;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL expired = FALSE;
 #endif
 
@@ -335,7 +335,7 @@ BOOL set_cookies( struct request *request, const WCHAR *cookies )
             path = attr;
             cookie_path = attr->value;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (!wcsicmp( attr->name, L"expires" ) || !wcsicmp( attr->name, L"max-age" ))
         {
             if (cookie_attr_expired( attr )) expired = TRUE;
@@ -358,7 +358,7 @@ BOOL set_cookies( struct request *request, const WCHAR *cookies )
     if (!cookie_path && !(cookie_path = wcsdup( request->path ))) goto end;
 
     if ((p = wcsrchr( cookie_path, '/' )) && p != cookie_path) *p = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (expired)
     {
         remove_cookie( session, cookie_domain, cookie_path, cookie->name );

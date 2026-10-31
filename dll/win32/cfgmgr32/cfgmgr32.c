@@ -20,7 +20,7 @@
 #include "cfgmgr32_private.h"
 #include "initguid.h"
 #include "devpkey.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "sddl.h"
 #endif
 
@@ -109,13 +109,13 @@ static LSTATUS open_key( HKEY root, const WCHAR *key, REGSAM access, BOOL open, 
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LSTATUS query_device_container_id( const WCHAR *instance_id, struct property *prop );
 
 #endif
 static LSTATUS query_value( HKEY hkey, const WCHAR *value, WCHAR *buffer, DWORD len )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len *= sizeof(WCHAR);
 #endif
     return RegQueryValueExW( hkey, value, NULL, NULL, (BYTE *)buffer, &len );
@@ -187,7 +187,7 @@ static LSTATUS query_property( HKEY root, const WCHAR *prefix, DEVPROPTYPE type,
 
 static LSTATUS query_named_property( HKEY hkey, const WCHAR *nameW, DEVPROPTYPE type, struct property *prop )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD local_type = REG_NONE, *reg_type = &local_type;
 #else
     DWORD *reg_type = prop->reg_type;
@@ -214,7 +214,7 @@ static LSTATUS query_named_property( HKEY hkey, const WCHAR *nameW, DEVPROPTYPE 
         err = RegQueryValueExW( hkey, nameW, NULL, reg_type, prop->buffer, prop->size );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((!err || err == ERROR_MORE_DATA) && prop->reg_type) *prop->reg_type = local_type;
 #endif
     if (!err && !prop->buffer) err = ERROR_MORE_DATA;
@@ -274,7 +274,7 @@ struct property_desc
     const WCHAR      *name;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct property_desc class_properties[] =
 {
     { &DEVPKEY_DeviceClass_ClassName,          DEVPROP_TYPE_STRING,                     L"Class" },
@@ -328,7 +328,7 @@ static const struct property_desc class_properties[] =
 };
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LSTATUS return_registry_property( struct property *prop, DEVPROPTYPE type, DWORD reg_type, const void *data, DWORD size )
 {
     LSTATUS err = *prop->size >= size ? ERROR_SUCCESS : ERROR_MORE_DATA;
@@ -430,7 +430,7 @@ static LSTATUS query_class_property( HKEY hkey, struct property *prop )
     {
         const struct property_desc *desc = class_properties + i;
         if (memcmp( desc->key, &prop->key, sizeof(prop->key) )) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!memcmp( desc->key, &DEVPKEY_DeviceClass_Security, sizeof(desc->key->fmtid) ) &&
             desc->key->pid >= DEVPKEY_DeviceClass_Security.pid)
             return query_class_device_property( hkey, desc, prop );
@@ -473,7 +473,7 @@ static LSTATUS enum_class_property_keys( HKEY hkey, DEVPROPKEY *buffer, ULONG *s
     LSTATUS err = ERROR_SUCCESS;
     HKEY props_key;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (UINT i = 0; i < ARRAY_SIZE(class_properties); i++)
     {
         const struct property_desc *desc = class_properties + i;
@@ -599,7 +599,7 @@ static LSTATUS enum_class_device_interfaces( HKEY root, struct device_interface 
             for (tmp = wcschr( instance, '\\' ); tmp; tmp = wcschr( tmp, '\\' )) *tmp = '#';
             for (UINT j = 0; !err && !(err = RegEnumKeyW( iface_key, j, iface->refstr, ARRAY_SIZE(iface->refstr) )); j++)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ULONG len = (iface->refstr[0] == '#' && iface->refstr[1]) ?
                     swprintf( path, ARRAY_SIZE(path), L"\\\\?\\%s#%s\\%s", instance, iface->class, iface->refstr + 1 ) :
                     swprintf( path, ARRAY_SIZE(path), L"\\\\?\\%s#%s", instance, iface->class );
@@ -618,7 +618,7 @@ static LSTATUS enum_class_device_interfaces( HKEY root, struct device_interface 
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 LSTATUS enum_device_interfaces_filtered( BOOL all, const GUID *class_guid, const WCHAR *instance_id,
                                          enum_objects_cb callback, void *context )
 {
@@ -662,7 +662,7 @@ LSTATUS enum_device_interfaces( BOOL all, enum_objects_cb callback, void *contex
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct interface_paths
 {
     WCHAR **paths;
@@ -747,7 +747,7 @@ static LSTATUS enum_device_interface_list( GUID *class, DEVINSTID_W instance_id,
     if (instance_id && !*instance_id) instance_id = NULL;
 
     guid_string( class, iface.class, ARRAY_SIZE(iface.class) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     err = open_device_classes_key( HKEY_LOCAL_MACHINE, iface.class, KEY_ENUMERATE_SUB_KEYS, TRUE, &class_key );
     if (err == ERROR_FILE_NOT_FOUND)
     {
@@ -783,7 +783,7 @@ LSTATUS query_device_interface_property( HKEY hkey, const struct device_interfac
         return query_named_property( hkey, L"DeviceInstance", DEVPROP_TYPE_STRING, prop );
     if (!memcmp( &DEVPKEY_DeviceInterface_ClassGuid, &prop->key, sizeof(prop->key) ))
         return return_property( prop, DEVPROP_TYPE_GUID, &iface->class_guid, sizeof(iface->class_guid) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!memcmp( &DEVPKEY_DeviceInterface_ReferenceString, &prop->key, sizeof(prop->key) ))
     {
         if (!iface->refstr[1]) return ERROR_NOT_FOUND;
@@ -804,7 +804,7 @@ LSTATUS query_device_interface_property( HKEY hkey, const struct device_interfac
         const struct property_desc *desc = device_interface_properties + i;
         if (memcmp( desc->key, &prop->key, sizeof(prop->key) )) continue;
         if (!desc->name) return query_property( hkey, prefix, desc->type, prop );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             WCHAR params[MAX_PATH];
             HKEY params_key;
@@ -853,7 +853,7 @@ LSTATUS enum_device_interface_property_keys( HKEY hkey, const struct device_inte
     if (capacity < ++count || !buffer) err = ERROR_MORE_DATA;
     else buffer[count - 1] = DEVPKEY_DeviceInterface_ClassGuid;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (iface->refstr[1])
     {
         if (capacity < ++count || !buffer) err = ERROR_MORE_DATA;
@@ -878,7 +878,7 @@ LSTATUS enum_device_interface_property_keys( HKEY hkey, const struct device_inte
     for (UINT i = 0; i < ARRAY_SIZE(device_interface_properties); i++)
     {
         const struct property_desc *desc = device_interface_properties + i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (desc->name && !RegGetValueW( hkey, path, desc->name, RRF_RT_ANY, NULL, NULL, NULL ))
 #else
         if (desc->name && !RegQueryValueExW( hkey, desc->name, NULL, NULL, NULL, NULL ))
@@ -890,7 +890,7 @@ LSTATUS enum_device_interface_property_keys( HKEY hkey, const struct device_inte
     }
 
     swprintf( path, ARRAY_SIZE(path), L"%s\\Properties", iface->refstr );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!open_key( hkey, path, KEY_ENUMERATE_SUB_KEYS, TRUE, &props_key ))
     {
         WCHAR guid[39], pid[16], name[64];
@@ -1024,7 +1024,7 @@ static const struct property_desc device_properties[] =
     { &DEVPKEY_Device_LocationPaths,                DEVPROP_TYPE_STRING_LIST,                   L"LocationPaths" },
     { &DEVPKEY_Device_BaseContainerId,              DEVPROP_TYPE_GUID,                          L"BaseContainerId" },
     /* unicode-only properties */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { &DEVPKEY_NAME,                                DEVPROP_TYPE_STRING },
 #endif
     { &DEVPKEY_Device_InstanceId,                   DEVPROP_TYPE_STRING },
@@ -1100,7 +1100,7 @@ static const struct property_desc device_properties[] =
     { &DEVPKEY_Device_SafeRemovalRequiredOverride,  DEVPROP_TYPE_BOOLEAN },
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DEVINST device_get_devnode( const struct device *dev )
 {
     WCHAR instance_id[3 * MAX_PATH];
@@ -1239,7 +1239,7 @@ static LSTATUS query_driver_property( HKEY hkey, const struct property_desc *des
 
 static LSTATUS query_device_property( HKEY hkey, const struct device *dev, struct property *prop )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!memcmp( &DEVPKEY_Device_Parent, &prop->key, sizeof(prop->key) ))
         return query_device_parent( dev, prop );
     if (!memcmp( &DEVPKEY_Device_Children, &prop->key, sizeof(prop->key) ) ||
@@ -1264,12 +1264,12 @@ static LSTATUS query_device_property( HKEY hkey, const struct device *dev, struc
             len += swprintf( instance_id + len, ARRAY_SIZE(instance_id) - len, L"\\%s", dev->device );
         if (*dev->instance)
             swprintf( instance_id + len, ARRAY_SIZE(instance_id) - len, L"\\%s", dev->instance );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wcsupr( instance_id );
 #endif
         return return_property_string( prop, instance_id );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!memcmp( &DEVPKEY_NAME, &prop->key, sizeof(prop->key) ))
     {
         LSTATUS err = query_named_property( hkey, L"FriendlyName", DEVPROP_TYPE_STRING, prop );
@@ -1282,7 +1282,7 @@ static LSTATUS query_device_property( HKEY hkey, const struct device *dev, struc
     {
         const struct property_desc *desc = device_properties + i;
         if (memcmp( desc->key, &prop->key, sizeof(prop->key) )) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!memcmp( &DEVPKEY_Device_DeviceDesc, &prop->key, sizeof(prop->key.fmtid) ) &&
             CfgmgrIsKernelDevNodeProperty( prop->key.pid - 1 ))
             return query_kernel_device_property( dev, prop->key.pid - 1, desc->type, prop );
@@ -1317,7 +1317,7 @@ static LSTATUS get_device_property( HKEY root, const struct device *dev, struct 
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LSTATUS query_device_container_id( const WCHAR *instance_id, struct property *prop )
 {
     struct device dev;
@@ -1333,7 +1333,7 @@ LSTATUS enum_device_property_keys( HKEY hkey, const struct device *dev, DEVPROPK
     LSTATUS err = ERROR_SUCCESS;
     HKEY props_key;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (UINT i = 0; i < ARRAY_SIZE(device_properties); i++)
     {
         const struct property_desc *desc = device_properties + i;
@@ -1363,7 +1363,7 @@ LSTATUS enum_device_property_keys( HKEY hkey, const struct device *dev, DEVPROPK
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!open_key( hkey, L"Properties", KEY_ENUMERATE_SUB_KEYS, TRUE, &props_key ))
     {
         WCHAR guid[39], pid[16], name[64];
@@ -1421,7 +1421,7 @@ static LSTATUS get_device_property_keys( HKEY root, const struct device *dev, DE
 
 static LSTATUS get_device_strings( const WCHAR *instance_id, const DEVPROPKEY *key, ULONG *size, WCHAR *buffer )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *instance = instance_id;
 #else
     const WCHAR *instance = instance_id && *instance_id ? instance_id : L"HTREE\\ROOT\\0";
@@ -1431,7 +1431,7 @@ static LSTATUS get_device_strings( const WCHAR *instance_id, const DEVPROPKEY *k
     DEVPROPTYPE type;
     LSTATUS err;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!instance || !*instance || init_device( &dev, instance )) return ERROR_NOT_FOUND;
 #else
     if ((err = init_device( &dev, instance ))) return err;
@@ -1452,7 +1452,7 @@ static LSTATUS matches_device_property( HKEY hkey, struct device *dev, const DEV
 
     if (!key) return ERROR_SUCCESS;
     if ((err = init_property( &prop, key, &type, (BYTE *)buffer, &size, FALSE ))) return err;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((err = query_device_property( hkey, dev, &prop ))) return (err == ERROR_FILE_NOT_FOUND || err == ERROR_NOT_FOUND) ? ERROR_NO_MATCH : err;
 #else
     if ((err = query_device_property( hkey, dev, &prop ))) return err == ERROR_FILE_NOT_FOUND ? ERROR_NO_MATCH : err;
@@ -1592,7 +1592,7 @@ static LSTATUS devnode_get_device( DEVINST node, struct device *dev )
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DEVINST CfgmgrDevInstFromId( const WCHAR *id )
 {
     struct device dev;
@@ -1638,7 +1638,7 @@ static CONFIGRET map_error( LSTATUS err )
     }
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static CONFIGRET map_error_node( LSTATUS err )
 {
     switch (err)
@@ -1687,7 +1687,7 @@ DWORD WINAPI CM_MapCrToWin32Err( CONFIGRET code, DWORD default_error )
     return default_error;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *      CM_Connect_MachineW  (cfgmgr32.@)
  */
@@ -1726,7 +1726,7 @@ CONFIGRET WINAPI CM_Enumerate_Classes_Ex( ULONG index, GUID *class, ULONG flags,
     HKEY root;
 
     TRACE( "index %lu, class %s, flags %#lx, machine %p\n", index, debugstr_guid(class), flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -1760,7 +1760,7 @@ CONFIGRET WINAPI CM_Enumerate_Enumerators_ExW( ULONG index, WCHAR *buffer, ULONG
     HKEY root;
 
     TRACE( "index %lu, buffer %p, len %p, flags %#lx, machine %p\n", index, buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -1822,7 +1822,7 @@ CONFIGRET WINAPI CM_Get_Class_Key_Name_ExW( GUID *guid, WCHAR *name, ULONG *len,
     UINT capacity;
 
     TRACE( "guid %s, name %p, len %p, flags %#lx, machine %p\n", debugstr_guid(guid), name, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -1877,7 +1877,7 @@ CONFIGRET WINAPI CM_Open_Class_Key_ExW( GUID *class, const WCHAR *name, REGSAM a
     WCHAR buffer[39];
 
     TRACE( "class %s, name %s, access %#lx, disposition %#lx, hkey %p, flags %#lx\n", debugstr_guid(class), debugstr_w(name), access, disposition, hkey, flags );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -1932,7 +1932,7 @@ CONFIGRET WINAPI CM_Get_Class_Registry_PropertyW( GUID *class, ULONG property, U
     LSTATUS err;
 
     TRACE( "class %s, property %#lx, type %p, buffer %p, len %p, flags %#lx, machine %p\n", debugstr_guid(class), property, type, buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -1954,7 +1954,7 @@ CONFIGRET WINAPI CM_Get_Class_Registry_PropertyA( GUID *class, ULONG property, U
     LSTATUS err;
 
     TRACE( "class %s, property %#lx, type %p, buffer %p, len %p, flags %#lx, machine %p\n", debugstr_guid(class), property, type, buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -1967,7 +1967,7 @@ CONFIGRET WINAPI CM_Get_Class_Registry_PropertyA( GUID *class, ULONG property, U
     return map_error( get_class_property( class, &prop ) );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *      CM_Set_Class_Registry_PropertyW (cfgmgr32.@)
  */
@@ -2000,7 +2000,7 @@ CONFIGRET WINAPI CM_Get_Class_Property_ExW( const GUID *class, const DEVPROPKEY 
     LSTATUS err;
 
     TRACE( "class %s, key %s, type %p, buffer %p, size %p, flags %#lx, machine %p\n", debugstr_guid(class), debugstr_DEVPROPKEY(key), type, buffer, size, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2028,7 +2028,7 @@ CONFIGRET WINAPI CM_Get_Class_Property_Keys_Ex( const GUID *class, DEVPROPKEY *k
     LSTATUS err;
 
     TRACE( "class %s, keys %p, size %p, flags %#lx, machine %p\n", debugstr_guid(class), keys, count, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2060,7 +2060,7 @@ CONFIGRET WINAPI CM_Get_Device_Interface_List_Size_ExW( ULONG *len, GUID *class,
     BOOL all = flags == CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES;
 
     TRACE( "len %p, class %s, instance %s, flags %#lx, machine %p\n", len, debugstr_guid(class), debugstr_w(instance_id), flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2071,7 +2071,7 @@ CONFIGRET WINAPI CM_Get_Device_Interface_List_Size_ExW( ULONG *len, GUID *class,
     if (flags & ~CM_GET_DEVICE_INTERFACE_LIST_BITS) return CR_INVALID_FLAG;
 
     *len = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (instance_id && *instance_id)
     {
         struct device dev;
@@ -2117,7 +2117,7 @@ CONFIGRET WINAPI CM_Get_Device_Interface_List_ExW( GUID *class, DEVINSTID_W inst
     BOOL all = flags == CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES;
 
     TRACE( "class %s, instance %s, buffer %p, len %lu, flags %#lx, machine %p\n", debugstr_guid(class), debugstr_w(instance_id), buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2129,7 +2129,7 @@ CONFIGRET WINAPI CM_Get_Device_Interface_List_ExW( GUID *class, DEVINSTID_W inst
     if (flags & ~CM_GET_DEVICE_INTERFACE_LIST_BITS) return CR_INVALID_FLAG;
 
     memset( buffer, 0, len * sizeof(WCHAR) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (instance_id && *instance_id)
     {
         struct device dev;
@@ -2188,7 +2188,7 @@ CONFIGRET WINAPI CM_Open_Device_Interface_Key_ExW( const WCHAR *name, REGSAM acc
     LSTATUS err;
 
     TRACE( "name %s, access %#lx, disposition %#lx, hkey %p, flags %#lx\n", debugstr_w(name), access, disposition, hkey, flags );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2247,14 +2247,14 @@ CONFIGRET WINAPI CM_Get_Device_Interface_Property_ExW( const WCHAR *name, const 
     LSTATUS err;
 
     TRACE( "name %s, key %p, type %p, buffer %p, size %p, flags %#lx\n", debugstr_w(name), key, type, buffer, size, flags);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
 #endif
 
     if (!name) return CR_INVALID_POINTER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (init_device_interface( &iface, name ))
     {
         if (size) *size = 0;
@@ -2286,7 +2286,7 @@ CONFIGRET WINAPI CM_Get_Device_Interface_Property_Keys_ExW( const WCHAR *name, D
     LSTATUS err;
 
     TRACE( "name %s, buffer %p, size %p, flags %#lx\n", debugstr_w(name), buffer, size, flags);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2315,7 +2315,7 @@ CONFIGRET WINAPI CM_Get_Device_Interface_Property_KeysW( const WCHAR *iface, DEV
     return CM_Get_Device_Interface_Property_Keys_ExW( iface, keys, count, flags, NULL );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *      CM_Get_Device_Interface_AliasW (cfgmgr32.@)
  */
@@ -2345,7 +2345,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_List_Size_ExW( ULONG *len, const WCHAR *filter
     GUID guid;
 
     TRACE( "len %p, filter %s, flags %#lx, machine %p\n", len, debugstr_w(filter), flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2365,7 +2365,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_List_Size_ExW( ULONG *len, const WCHAR *filter
     case 0:                                      err = enum_devices( NULL, NULL, NULL, all, enum_objects_size, len ); break;
     case CM_GETIDLIST_FILTER_ENUMERATOR:         err = enum_devices( filter, NULL, NULL, all, enum_objects_size, len ); break;
     case CM_GETIDLIST_FILTER_CLASS:              err = enum_devices( NULL, &DEVPKEY_Device_ClassGuid, filter, all, enum_objects_size, len ); break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case CM_GETIDLIST_FILTER_SERVICE:            err = enum_devices( NULL, filter && !*filter ? NULL : &DEVPKEY_Device_Service, filter, all, enum_objects_size, len ); break;
 #else
     case CM_GETIDLIST_FILTER_SERVICE:            err = enum_devices( NULL, &DEVPKEY_Device_Service, filter, all, enum_objects_size, len ); break;
@@ -2419,7 +2419,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_List_ExW( const WCHAR *filter, WCHAR *buffer, 
     GUID guid;
 
     TRACE( "filter %s, buffer %p, len %lu, flags %#lx, machine %p\n", debugstr_w(filter), buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2440,7 +2440,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_List_ExW( const WCHAR *filter, WCHAR *buffer, 
     case 0:                                      err = enum_devices( NULL, NULL, NULL, all, enum_objects_append, &params ); break;
     case CM_GETIDLIST_FILTER_ENUMERATOR:         err = enum_devices( filter, NULL, NULL, all, enum_objects_append, &params ); break;
     case CM_GETIDLIST_FILTER_CLASS:              err = enum_devices( NULL, &DEVPKEY_Device_ClassGuid, filter, all, enum_objects_append, &params ); break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case CM_GETIDLIST_FILTER_SERVICE:            err = enum_devices( NULL, filter && !*filter ? NULL : &DEVPKEY_Device_Service, filter, all, enum_objects_append, &params ); break;
 #else
     case CM_GETIDLIST_FILTER_SERVICE:            err = enum_devices( NULL, &DEVPKEY_Device_Service, filter, all, enum_objects_append, &params ); break;
@@ -2493,7 +2493,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_ListA( const char *filter, char *buffer, ULONG
     return CM_Get_Device_ID_List_ExA( filter, buffer, len, flags, NULL );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *           CM_Locate_DevNode_ExW (cfgmgr32.@)
  */
@@ -2601,7 +2601,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_Size_Ex( ULONG *len, DEVINST node, ULONG flags
     struct device dev;
 
     TRACE( "len %p, node %#lx, flags %#lx, machine %p\n", len, node, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2636,7 +2636,7 @@ CONFIGRET WINAPI CM_Get_Device_ID_ExW( DEVINST node, WCHAR *buffer, ULONG len, U
     ULONG path_len;
 
     TRACE( "node %#lx, buffer %p, len %lu, flags %#lx, machine %p\n", node, buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2645,14 +2645,14 @@ CONFIGRET WINAPI CM_Get_Device_ID_ExW( DEVINST node, WCHAR *buffer, ULONG len, U
 
     if (!buffer) return CR_INVALID_POINTER;
     if (devnode_get_device( node, &dev )) return CR_INVALID_DEVNODE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!len) return CR_INVALID_POINTER;
 #endif
 
     path_len = swprintf( path, ARRAY_SIZE(path), L"%s", dev.enumerator );
     if (*dev.device) path_len += swprintf( path + path_len, ARRAY_SIZE(path) - path_len, L"\\%s", dev.device );
     if (*dev.instance) path_len += swprintf( path + path_len, ARRAY_SIZE(path) - path_len, L"\\%s", dev.instance );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wcsupr( path );
 #endif
 
@@ -2710,7 +2710,7 @@ CONFIGRET WINAPI CM_Open_DevNode_Key_Ex( DEVINST node, REGSAM access, ULONG prof
     LSTATUS err;
 
     TRACE( "node %#lx, access %#lx, profile %lu, disposition %#lx, hkey %p, flags %#lx, machine %p\n", node, access, profile, disposition, hkey, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2762,14 +2762,14 @@ CONFIGRET WINAPI CM_Get_DevNode_Registry_Property_ExW( DEVINST node, ULONG prope
     LSTATUS err;
 
     TRACE( "node %#lx, property %#lx, type %p, buffer %p, len %p, flags %#lx, machine %p\n", node, property, type, buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
 #endif
     if (flags) FIXME( "flags %#lx not implemented!\n", flags );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (CfgmgrIsKernelDevNodeProperty( property ))
         return CfgmgrGetDevNodeRegistryPropertyW( node, property, type, buffer, len, flags, machine );
 #endif
@@ -2789,14 +2789,14 @@ CONFIGRET WINAPI CM_Get_DevNode_Registry_Property_ExA( DEVINST node, ULONG prope
     LSTATUS err;
 
     TRACE( "node %#lx, property %#lx, type %p, buffer %p, len %p, flags %#lx, machine %p\n", node, property, type, buffer, len, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
 #endif
     if (flags) FIXME( "flags %#lx not implemented!\n", flags );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (CfgmgrIsKernelDevNodeProperty( property ))
         return CfgmgrGetDevNodeRegistryPropertyA( node, property, type, buffer, len, flags, machine );
 #endif
@@ -2832,7 +2832,7 @@ CONFIGRET WINAPI CM_Get_DevNode_Property_ExW( DEVINST node, const DEVPROPKEY *ke
     LSTATUS err;
 
     TRACE( "node %#lx, key %s, type %p, buffer %p, size %p, flags %#lx, machine %p\n", node, debugstr_DEVPROPKEY(key), type, buffer, size, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2862,7 +2862,7 @@ CONFIGRET WINAPI CM_Get_DevNode_Property_Keys_Ex( DEVINST node, DEVPROPKEY *keys
     LSTATUS err;
 
     TRACE( "node %#lx, keys %p, count %p, flags %#lx, machine %p\n", node, keys, count, flags, machine );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!CfgmgrIsValidMachine( machine )) return CR_FAILURE;
 #else
     if (machine) FIXME( "machine %p not implemented!\n", machine );
@@ -2887,7 +2887,7 @@ CONFIGRET WINAPI CM_Get_DevNode_Property_Keys( DEVINST node, DEVPROPKEY *keys, U
     return CM_Get_DevNode_Property_Keys_Ex( node, keys, count, flags, NULL );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *             CM_Get_Child_Ex  (cfgmgr32.@)
  */
@@ -3020,7 +3020,7 @@ WORD WINAPI CM_Get_Version( void )
     return 0x0400;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 CONFIGRET WINAPI CM_Request_Eject_PC( void )
 {
     FIXME( "stub\n" );

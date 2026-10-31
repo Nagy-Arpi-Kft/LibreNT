@@ -500,7 +500,7 @@ static DWORD MSVCRT_nested_handler(PEXCEPTION_RECORD rec,
   return ExceptionCollidedUnwind;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void msvcrt_local_unwind2(MSVCRT_EXCEPTION_FRAME* frame, int trylevel, void *ebp)
 {
   EXCEPTION_REGISTRATION_RECORD reg;
@@ -555,7 +555,7 @@ static void msvcrt_local_unwind4( ULONG *cookie, MSVCRT_EXCEPTION_FRAME* frame, 
     TRACE("unwound OK\n");
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*******************************************************************
  *		_local_unwind2 (MSVCRT.@)
  */
@@ -573,7 +573,7 @@ void CDECL _local_unwind4( ULONG *cookie, MSVCRT_EXCEPTION_FRAME* frame, int try
     msvcrt_local_unwind4( cookie, frame, trylevel, &frame->_ebp );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void CDECL _global_unwind2(EXCEPTION_REGISTRATION_RECORD* frame);
 #else
 /*******************************************************************
@@ -746,7 +746,7 @@ int CDECL _except_handler4_common( ULONG *cookie, void (*check_cookie)(void),
 }
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * setjmp/longjmp implementation
  */
@@ -855,12 +855,12 @@ void __cdecl longjmp(_JUMP_BUFFER *jmp, int retval)
 
     __wine_longjmp( (__wine_jmp_buf *)jmp, retval );
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*********************************************************************
  *		_seh_longjmp_unwind (MSVCRT.@)
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void __stdcall _seh_longjmp_unwind(_JUMP_BUFFER *jmp)
 {
     msvcrt_local_unwind2( (MSVCRT_EXCEPTION_FRAME *)jmp->Registration, jmp->TryLevel, (void *)jmp->Ebp );

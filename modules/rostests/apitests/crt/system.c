@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT
+ * PROJECT:     LibreNT CRT
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Tests for system()
  * COPYRIGHT:   Copyright 2023 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -16,7 +16,7 @@ START_TEST(system)
 #ifdef TEST_CRTDLL
     DWORD dwOsVer = _WIN32_WINNT_WIN2K;
 #else
-    /* ReactOS behaves like Vista here */
+    /* LibreNT behaves like Vista here */
     DWORD dwOsVer = is_reactos() ? _WIN32_WINNT_VISTA : GetNTVersion();
 #endif
 

@@ -1,5 +1,5 @@
 /*
-    ReactOS Kernel Streaming
+    LibreNT Kernel Streaming
     Port Class
 
     This file is in the public domain.

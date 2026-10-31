@@ -26,7 +26,7 @@
 #ifdef WIDE_SCANF
 #define _CHAR_ wchar_t
 #define _EOF_ WEOF
-#if defined(__REACTOS__) && defined(_LIBCNT_)
+#if defined(__LIBRENT__) && defined(_LIBCNT_)
 #define _EOF_RET 0
 #else
 #define _EOF_RET (short)WEOF
@@ -134,7 +134,7 @@
 #endif /* CONSOLE */
 
 _FUNCTION_ {
-#if !defined(__REACTOS__) || !defined(_LIBCNT_)
+#if !defined(__LIBRENT__) || !defined(_LIBCNT_)
     pthreadlocinfo locinfo;
 #endif
     int rd = 0, consumed = 0;
@@ -159,7 +159,7 @@ _FUNCTION_ {
         return _EOF_RET;
     }
 
-#if !defined(__REACTOS__) || !defined(_LIBCNT_)
+#if !defined(__LIBRENT__) || !defined(_LIBCNT_)
     if(!locale)
         locinfo = get_locinfo();
     else
@@ -188,7 +188,7 @@ _FUNCTION_ {
 	    int base;
 	    int h_prefix = 0;
 	    int l_prefix = 0;
-#if !defined(__REACTOS__) || !defined(_LIBCNT_)
+#if !defined(__LIBRENT__) || !defined(_LIBCNT_)
 	    int L_prefix = 0;
 #endif
 	    int w_prefix = 0;
@@ -220,7 +220,7 @@ _FUNCTION_ {
                     break;
 		case 'w': w_prefix = 1; break;
 		case 'L':
-#if !defined(__REACTOS__) || !defined(_LIBCNT_)
+#if !defined(__LIBRENT__) || !defined(_LIBCNT_)
                     L_prefix = 1;
 #endif
                     break;
@@ -321,7 +321,7 @@ _FUNCTION_ {
 		    }
                 }
                 break;
-#if !defined(__REACTOS__) || !defined(_LIBCNT_)
+#if !defined(__LIBRENT__) || !defined(_LIBCNT_)
             case 'e':
             case 'E':
             case 'f':
@@ -420,8 +420,8 @@ _FUNCTION_ {
                         else exp += e;
                     }
 
-#ifdef __REACTOS__
-                    /* ReactOS: don't inline float processing (kernel/freeldr don't like that! */
+#ifdef __LIBRENT__
+                    /* LibreNT: don't inline float processing (kernel/freeldr don't like that! */
                     _internal_handle_float(negative, exp, suppress, d, l_prefix || L_prefix, &ap);
                     st = 1;
 #else
@@ -454,7 +454,7 @@ _FUNCTION_ {
                         else if (l_prefix) _SET_NUMBER_(double);
                         else _SET_NUMBER_(float);
                     }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
                 }
                 break;
 #endif

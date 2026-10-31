@@ -68,8 +68,8 @@ Revision History:
 #define TRACINGDRIVER         0x00001000
 #define TRACINGPNPPOWERSTATES 0x00002000
 
-#define TRACINGDMA            0x00004000 // __REACTOS__
-#define TRACINGIOTARGET       0x00008000 // __REACTOS__
+#define TRACINGDMA            0x00004000 // __LIBRENT__
+#define TRACINGIOTARGET       0x00008000 // __LIBRENT__
 
 extern "C" {
 void

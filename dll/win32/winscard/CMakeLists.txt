@@ -13,5 +13,5 @@ add_library(winscard MODULE
 set_module_type(winscard win32dll)
 target_link_libraries(winscard wine)
 add_importlibs(winscard msvcrt kernel32 ntdll)
-add_cd_file(TARGET winscard DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winscard DESTINATION librent/system32 FOR all)
 set_wine_module(winscard)

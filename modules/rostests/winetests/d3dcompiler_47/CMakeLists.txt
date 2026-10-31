@@ -4,7 +4,7 @@ add_definitions(
     -DD3D_COMPILER_VERSION=47
     -D__WINESRC__)
 
-set(D3DCOMPILER_TEST_SOURCE_DIR ${REACTOS_SOURCE_DIR}/modules/rostests/winetests/d3dcompiler_43)
+set(D3DCOMPILER_TEST_SOURCE_DIR ${LIBRENT_SOURCE_DIR}/modules/rostests/winetests/d3dcompiler_43)
 
 add_executable(d3dcompiler_47_winetest
     ${D3DCOMPILER_TEST_SOURCE_DIR}/asm.c

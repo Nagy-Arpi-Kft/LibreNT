@@ -5,7 +5,7 @@ list(APPEND SOURCE
     nfs41_debug.h)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/dll/np/nfs)
+    ${LIBRENT_SOURCE_DIR}/dll/np/nfs)
 
 add_definitions(-DRDBSS_TRACKER)
 
@@ -22,5 +22,5 @@ if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_compile_options(nfs41_driver PRIVATE "-Wno-unused-value")
 endif()
 
-add_cd_file(TARGET nfs41_driver DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET nfs41_driver DESTINATION librent/system32/drivers FOR all)
 add_registry_inf(nfs41_reg.inf)

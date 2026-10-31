@@ -248,7 +248,7 @@ typedef struct tagHOOK
     INT_PTR ihmod;
     struct _THREADINFO *ptiHooked;
     struct _DESKTOP *rpdesk;
-    /* ReactOS */
+    /* LibreNT */
     LIST_ENTRY Chain; /* Hook chain entry */
     HOOKPROC Proc; /* Hook function */
     BOOLEAN Ansi; /* Is it an Ansi hook? */
@@ -453,7 +453,7 @@ typedef struct tagITEM
     HBITMAP hbmp; /* bitmap */
     INT cxBmp; /* Width Maximum size of the bitmap items in MIIM_BITMAP state */
     INT cyBmp; /* Height " */
-    /* ReactOS */
+    /* LibreNT */
     UNICODE_STRING lpstr;
 } ITEM, *PITEM;
 
@@ -497,7 +497,7 @@ typedef struct tagMENU
     INT iTop; /* Current scroll position Top */
     INT iMaxTop; /* Current scroll position Max Top */
     DWORD dwArrowsOn:2; /* Arrows: 0 off, 1 on, 2 to the top, 3 to the bottom. */
-    /* ReactOS */
+    /* LibreNT */
     LIST_ENTRY ListEntry;
     HWND hWnd; /* Window containing the menu, use POPUPMENU */
     BOOL TimeToHide;
@@ -546,7 +546,7 @@ typedef struct tagPOPUPMENU
 
 typedef struct _REGISTER_SYSCLASS
 {
-    /* This is a reactos specific class used to initialize the
+    /* This is a LibreNT specific class used to initialize the
        system window classes during user32 initialization */
     PWSTR ClassName;
     UINT Style;
@@ -815,7 +815,7 @@ typedef struct _WND
     struct _WND *spwndClipboardListener;
     DWORD ExStyle2;
 
-    /* ReactOS */
+    /* LibreNT */
     struct
     {
         RECT NormalRect;
@@ -1211,7 +1211,7 @@ typedef struct _SHAREDINFO
     WNDMSG DefWindowSpecMsgs;
 } SHAREDINFO, *PSHAREDINFO;
 
-/* See also the USERSRV_API_CONNECTINFO #define in include/reactos/subsys/win/winmsg.h */
+/* See also the USERSRV_API_CONNECTINFO #define in include/librent/subsys/win/winmsg.h */
 typedef struct _USERCONNECT
 {
     ULONG ulVersion;
@@ -3787,7 +3787,7 @@ NTAPI
 NtUserYieldTask(VOID);
 
 /* NtUserBad
- * ReactOS-specific NtUser calls and their related structures, both which shouldn't exist.
+ * LibreNT-specific NtUser calls and their related structures, both which shouldn't exist.
  */
 
 #define NOPARAM_ROUTINE_ISCONSOLEMODE             0xffff0001

@@ -1,5 +1,5 @@
 ﻿/*
- * ReactOS Spanish Keyboard Layout
+ * LibreNT Spanish Keyboard Layout
  * Copyright (C) 2003-2014 ReactOS
  * License: LGPL, see: LGPL.txt
  *
@@ -494,7 +494,7 @@ ROSDATA VSC_LPWSTR extended_key_names[] =
   { 0x51, L"Avpág" },
   { 0x52, L"Ins" },
   { 0x53, L"Supr" },
-  { 0x54, L"<LiberNT>" },
+  { 0x54, L"<LibreNT>" },
   { 0x55, L"Ayuda" },
   { 0x5b, L"Windows izq." },
   { 0x5c, L"Windows der." },

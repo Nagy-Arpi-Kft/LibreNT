@@ -401,7 +401,7 @@ static void register_browser_class(void)
     browser_class = RegisterClassExW(&wndclass);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL install_wine_gecko(void)
 {
     static const WCHAR nativeW[] = L"\\sysnative\\rundll32.exe";
@@ -757,7 +757,7 @@ static WCHAR *check_version(const WCHAR *path)
     return file_name;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *find_wine_gecko_sysdir(void)
 {
     static const WCHAR geckoW[] = L"\\gecko\\" GECKO_VERSION "\\wine_gecko";
@@ -822,7 +822,7 @@ static WCHAR *find_wine_gecko_datadir(void)
     return ret;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static WCHAR *find_wine_gecko_unix(const WCHAR *dir)
 {
     HANDLE handle;
@@ -878,7 +878,7 @@ BOOL load_gecko(void)
 
         loading_thread = GetCurrentThreadId();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!(gecko_path = find_wine_gecko_sysdir())
            && !(gecko_path = find_wine_gecko_datadir())
            && install_wine_gecko())

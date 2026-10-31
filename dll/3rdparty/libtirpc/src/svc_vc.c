@@ -324,7 +324,7 @@ again:
 	    &len)) == SOCKET_ERROR) {
 		if (errno == EINTR)
 			goto again;
-#ifndef __REACTOS__ // CVE-2018-14621
+#ifndef __LIBRENT__ // CVE-2018-14621
 		/*
 		 * Clean out the most idle file descriptor when we're
 		 * running out.
@@ -342,7 +342,7 @@ again:
 	 */
 
 	newxprt = makefd_xprt(sock, r->sendsize, r->recvsize);
-#ifdef __REACTOS__ // CVE-2018-14622
+#ifdef __LIBRENT__ // CVE-2018-14622
 	if (!newxprt)
 		return (FALSE);
 #endif
@@ -513,13 +513,13 @@ read_vc(xprtp, buf, len)
 	}
 
 	do {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		pollfd.fd = sock;
 		pollfd.events = POLLIN;
 		pollfd.revents = 0;
 		switch (poll(&pollfd, 1, milliseconds)) {
 #else
-		/* ReactOS: use select instead of poll */
+		/* LibreNT: use select instead of poll */
 		fd_set infd;
 		struct timeval timeout;
 
@@ -541,7 +541,7 @@ read_vc(xprtp, buf, len)
 		default:
 			break;
 		}
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	} while ((pollfd.revents & POLLIN) == 0);
 #else
 	} while (TRUE);
@@ -566,13 +566,13 @@ fatal_err:
  * Any error is fatal and the connection is closed.
  */
 static int
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 write_vc(xprtp, ptr, len)
 #else
 write_vc(xprtp, buf, len)
 #endif
 	void *xprtp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     void *ptr;
 #else
 	char *buf;
@@ -583,7 +583,7 @@ write_vc(xprtp, buf, len)
 	int i, cnt;
 	struct cf_conn *cd;
 	struct timeval tv0, tv1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char *buf = ptr;
 #endif
 

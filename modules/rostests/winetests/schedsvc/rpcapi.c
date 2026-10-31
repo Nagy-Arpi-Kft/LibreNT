@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <windows.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 #include <ole2.h>

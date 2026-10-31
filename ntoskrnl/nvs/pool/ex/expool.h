@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Pool Allocator
+ * PROJECT:     LibreNT Pool Allocator
  * FILE:        ntoskrnl/nvs/pool/ex/expool.h
  * PURPOSE:     Executive pool integration definitions
  *

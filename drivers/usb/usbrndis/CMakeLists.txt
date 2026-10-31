@@ -1,5 +1,5 @@
 #
-# LiberNT USB RNDIS Network Driver
+# LibreNT USB RNDIS Network Driver
 #
 # Using NDIS 6.20 with NET_BUFFER_LIST send/receive.
 #
@@ -38,5 +38,5 @@ endif()
 
 add_importlibs(usbrndis ndis ntoskrnl hal usbd)
 add_pch(usbrndis usbrndis.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET usbrndis DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET usbrndis DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(usbrndis usbrndis.inf)

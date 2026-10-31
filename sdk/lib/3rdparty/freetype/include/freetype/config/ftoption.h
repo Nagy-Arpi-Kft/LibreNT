@@ -110,7 +110,7 @@ FT_BEGIN_HEADER
    * ```
    *
    */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define FT_CONFIG_OPTION_ENVIRONMENT_PROPERTIES
 #endif
 
@@ -126,7 +126,7 @@ FT_BEGIN_HEADER
    * When this macro is not defined, FreeType offers alternative LCD
    * rendering technology that produces excellent output.
    */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING
 #else
 /* #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING */
@@ -433,7 +433,7 @@ FT_BEGIN_HEADER
    *   Do not `#undef` these macros here since the build system might define
    *   them for certain configurations only.
    */
-#if defined(__REACTOS__) && DBG && !defined(NDEBUG)
+#if defined(__LIBRENT__) && DBG && !defined(NDEBUG)
 #define FT_DEBUG_LEVEL_ERROR
 #else
 /* #define FT_DEBUG_LEVEL_ERROR */

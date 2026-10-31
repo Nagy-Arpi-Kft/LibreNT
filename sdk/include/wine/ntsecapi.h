@@ -677,7 +677,7 @@ typedef struct _KERB_PURGE_TKT_CACHE_REQUEST
 
 #define LSA_SUCCESS(Error) ((LONG)(Error) >= 0)
 
-#if defined(__REACTOS__) && defined(__GNUC__)
+#if defined(__LIBRENT__) && defined(__GNUC__)
 #undef WINADVAPI
 #define WINADVAPI
 #endif
@@ -715,7 +715,7 @@ WINADVAPI NTSTATUS WINAPI LsaSetTrustedDomainInfoByName(LSA_HANDLE,PLSA_UNICODE_
 WINADVAPI NTSTATUS WINAPI LsaSetTrustedDomainInformation(LSA_HANDLE,PSID,TRUSTED_INFORMATION_CLASS,PVOID);
 WINADVAPI NTSTATUS WINAPI LsaStorePrivateData(LSA_HANDLE,PLSA_UNICODE_STRING,PLSA_UNICODE_STRING);
 WINADVAPI NTSTATUS WINAPI LsaUnregisterPolicyChangeNotification(POLICY_NOTIFICATION_INFORMATION_CLASS,HANDLE);
-#if defined(__REACTOS__) && defined(__GNUC__)
+#if defined(__LIBRENT__) && defined(__GNUC__)
 #undef WINADVAPI
 #define WINADVAPI DECLSPEC_IMPORT
 #endif

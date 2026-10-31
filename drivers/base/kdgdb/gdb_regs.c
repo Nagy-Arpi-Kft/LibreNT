@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       GPL, see COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            drivers/base/kdgdb/gdb_regs.c
  * PURPOSE:         Architecture independent register access for the GDB stub.
  *

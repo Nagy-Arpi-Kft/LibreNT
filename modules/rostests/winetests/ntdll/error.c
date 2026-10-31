@@ -47,7 +47,7 @@
  * (of course older Windows platforms will fail to pass the strict mode)
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* This isn't defined in the Windows SDK but Wine needs it anyways. */
 #define STATUS_VRF_CFG_ENABLED ((NTSTATUS)0xC000049F)
 #endif

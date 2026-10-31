@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS PSDK
+ * PROJECT:     LibreNT PSDK
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     IP Types Header
  * COPYRIGHT:   Copyright 2025 Carl Bialorucki <carl.bialorucki@reactos.org>
@@ -153,7 +153,7 @@ typedef struct _IP_ADAPTER_UNICAST_ADDRESS_XP {
     ULONG LeaseLifetime;
 } IP_ADAPTER_UNICAST_ADDRESS_XP, *PIP_ADAPTER_UNICAST_ADDRESS_XP;
 
-#if defined(__REACTOS__) || (NTDDI_VERSION >= NTDDI_VISTA)
+#if defined(__LIBRENT__) || (NTDDI_VERSION >= NTDDI_VISTA)
 typedef IP_ADAPTER_UNICAST_ADDRESS_LH IP_ADAPTER_UNICAST_ADDRESS;
 typedef IP_ADAPTER_UNICAST_ADDRESS_LH *PIP_ADAPTER_UNICAST_ADDRESS;
 #elif (NTDDI_VERSION >= NTDDI_WINXP)

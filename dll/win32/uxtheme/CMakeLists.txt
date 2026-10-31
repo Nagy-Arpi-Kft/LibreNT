@@ -1,6 +1,6 @@
 
 add_definitions(-D__WINESRC__ -D_UXTHEME_)
-include_directories(${REACTOS_SOURCE_DIR}/win32ss/include)
+include_directories(${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 spec2def(uxtheme.dll uxtheme.spec ADD_IMPORTLIB)
 
@@ -15,7 +15,7 @@ list(APPEND SOURCE
     ncscrollbar.c
     nonclient.c
     property.c
-    reactos.c
+    librent.c
     resource.h
     scrollbar.c
     stylemap.c
@@ -50,4 +50,4 @@ if(DLL_EXPORT_VERSION GREATER_EQUAL 0x600)
 else()
     add_importlibs(uxtheme user32_vista user32 advapi32 gdi32 msvcrt kernel32_vista kernel32 ntdll)
 endif()
-add_cd_file(TARGET uxtheme DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET uxtheme DESTINATION librent/system32 FOR all)

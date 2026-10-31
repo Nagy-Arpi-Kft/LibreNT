@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/freetype/include)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/freetype/include)
 spec2def(ftfd.dll ftfd.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -22,4 +22,4 @@ target_link_libraries(ftfd freetype libcntpr setjmp ${PSEH_LIB})
 add_pch(ftfd ftfd.h "${PCH_SKIP_SOURCE}")
 add_importlibs(ftfd win32k)
 add_dependencies(ftfd psdk)
-add_cd_file(TARGET ftfd DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET ftfd DESTINATION librent/system32 FOR all)

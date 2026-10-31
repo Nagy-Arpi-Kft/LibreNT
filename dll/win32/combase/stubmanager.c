@@ -89,7 +89,7 @@ struct ifstub * stub_manager_new_ifstub(struct stub_manager *m, IRpcStubBuffer *
         return NULL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualIID(iid, &IID_IUnknown))
         IUnknown_Release(stub->iface);
 #endif
@@ -97,7 +97,7 @@ struct ifstub * stub_manager_new_ifstub(struct stub_manager *m, IRpcStubBuffer *
     hr = rpc_create_serverchannel(dest_context, dest_context_data, &stub->chan);
     if (hr != S_OK)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!IsEqualIID(iid, &IID_IUnknown))
 #endif
         IUnknown_Release(stub->iface);
@@ -138,7 +138,7 @@ static void stub_manager_delete_ifstub(struct stub_manager *m, struct ifstub *if
     if (!m->disconnected)
         rpc_unregister_interface(&ifstub->iid, TRUE);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ifstub->stubbuffer)
     {
         IRpcStubBuffer_Disconnect(ifstub->stubbuffer);
@@ -147,7 +147,7 @@ static void stub_manager_delete_ifstub(struct stub_manager *m, struct ifstub *if
 #else
     if (ifstub->stubbuffer) IRpcStubBuffer_Release(ifstub->stubbuffer);
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!IsEqualIID(&ifstub->iid, &IID_IUnknown))
 #endif
     IUnknown_Release(ifstub->iface);
@@ -423,7 +423,7 @@ struct stub_manager * get_stub_manager(struct apartment *apt, OID oid)
     return result;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG stub_manager_ext_addref_ex(struct stub_manager *m, struct ifstub *ifstub, ULONG refs, BOOL tableweak)
 {
     BOOL first_extern_ref;
@@ -726,7 +726,7 @@ void stub_manager_release_marshal_data(struct stub_manager *m, ULONG refs, const
     else if (ifstub->flags & MSHLFLAGS_TABLESTRONG)
         refs = 1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     stub_manager_ext_release_ex(m, ifstub, refs, tableweak, !tableweak);
 #else
     stub_manager_ext_release(m, refs, tableweak, !tableweak);
@@ -873,7 +873,7 @@ static HRESULT WINAPI Rundown_RemAddRef(IRundown *iface,
             continue;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         stub_manager_ext_addref_ex(stubmgr, stub_manager_ipid_to_ifstub(stubmgr, &InterfaceRefs[i].ipid),
                                    InterfaceRefs[i].cPublicRefs, FALSE);
 #else
@@ -911,7 +911,7 @@ static HRESULT WINAPI Rundown_RemRelease(IRundown *iface,
             break;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         stub_manager_ext_release_ipid(stubmgr, &InterfaceRefs[i].ipid, InterfaceRefs[i].cPublicRefs, FALSE, TRUE);
 #else
         stub_manager_ext_release(stubmgr, InterfaceRefs[i].cPublicRefs, FALSE, TRUE);

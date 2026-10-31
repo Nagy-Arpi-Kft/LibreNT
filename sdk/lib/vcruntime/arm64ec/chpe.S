@@ -3,7 +3,7 @@
  * This file is part of the mingw-w64 runtime package.
  * No warranty is given; refer to the file DISCLAIMER.PD within this package.
  *
- * Adapted for the ReactOS ARM64EC runtime from mingw-w64/FEX LoadConfig.S.
+ * Adapted for the LibreNT ARM64EC runtime from mingw-w64/FEX LoadConfig.S.
  */
 
 #define PTR .8byte

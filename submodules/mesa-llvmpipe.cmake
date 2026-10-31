@@ -9,7 +9,7 @@ if(CMAKE_VERSION VERSION_LESS 3.24)
     message(FATAL_ERROR "The optional Mesa LLVMpipe build requires CMake 3.24 or newer.")
 endif()
 if(NOT ARCH MATCHES "^(amd64|arm64)$")
-    message(FATAL_ERROR "Mesa LLVMpipe requires an amd64 or arm64 ReactOS target.")
+    message(FATAL_ERROR "Mesa LLVMpipe requires an amd64 or arm64 LibreNT target.")
 endif()
 if(NOT CMAKE_C_COMPILER_ID STREQUAL "Clang" OR MSVC)
     message(FATAL_ERROR "Mesa LLVMpipe requires the RosBE Clang toolchain.")
@@ -18,7 +18,7 @@ if(NOT TARGET mesa_gallium OR NOT TARGET mesa_gallium_build)
     message(FATAL_ERROR "Mesa LLVMpipe requires MESA_GALLIUM_FROM_SOURCE so LLVMpipe is built into the shared WGL ICD.")
 endif()
 
-set(MESA_SOURCE_DIR "${REACTOS_SOURCE_DIR}/submodules/mesa")
+set(MESA_SOURCE_DIR "${LIBRENT_SOURCE_DIR}/submodules/mesa")
 if(NOT EXISTS "${MESA_SOURCE_DIR}/CMakeLists.txt")
     message(FATAL_ERROR "The vendored Mesa source is missing at ${MESA_SOURCE_DIR}")
 endif()
@@ -43,7 +43,7 @@ else()
     set(MESA_SDK_ARCH ${MESA_CPU})
     set(MESA_TRIPLE "${MESA_CPU}-w64-mingw32")
 endif()
-find_program(MESA_STRIP NAMES llvm-strip HINTS "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin" NO_CACHE REQUIRED)
+find_program(MESA_STRIP NAMES llvm-strip HINTS "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin" NO_CACHE REQUIRED)
 find_program(MESA_NINJA NAMES ninja REQUIRED)
 find_program(MESA_PYTHON NAMES python3 python REQUIRED)
 find_program(MESA_PATCH NAMES patch REQUIRED)
@@ -51,11 +51,11 @@ execute_process(COMMAND "${MESA_PYTHON}" -c "import mako, packaging, yaml" RESUL
 if(NOT _mesa_python_status EQUAL 0)
     message(FATAL_ERROR "Mesa needs Python mako, packaging and PyYAML modules for ${MESA_PYTHON}: ${_mesa_python_error}")
 endif()
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
 
 set(MESA_WORK_DIR "${CMAKE_CURRENT_BINARY_DIR}/mesa-llvmpipe")
-set(MESA_SDK_LIBDIR "${MESA_WORK_DIR}/reactos-sdk-lib")
-set(MESA_CMAKE_BINARY_DIR "${REACTOS_BINARY_DIR}/dll/opengl/mesa_gallium/mesa-source/cmake-build")
+set(MESA_SDK_LIBDIR "${MESA_WORK_DIR}/librent-sdk-lib")
+set(MESA_CMAKE_BINARY_DIR "${LIBRENT_BINARY_DIR}/dll/opengl/mesa_gallium/mesa-source/cmake-build")
 set(MESA_LAVAPIPE_BUILD_DLL "${MESA_CMAKE_BINARY_DIR}/src/gallium/targets/lavapipe/vulkan_lvp.dll")
 set(MESA_LAVAPIPE_BUILD_MANIFEST "${MESA_CMAKE_BINARY_DIR}/src/gallium/targets/lavapipe/lvp_icd.json")
 set(MESA_LAVAPIPE_DLL "${MESA_WORK_DIR}/vulkan_lvp.dll")
@@ -84,16 +84,16 @@ export_sdk_libraries(mesa_llvmpipe_sdk_libs "${MESA_SDK_LIBDIR}"
     DEPENDS ${_mesa_sdk_targets} ucrtoldnames_target)
 string(JOIN " " _mesa_sdk_arch_flags ${MESA_ARCH_FLAGS})
 set(MESA_SDK_CMAKE_ARGS
-    -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${REACTOS_SOURCE_DIR}/submodules/reactos-sdk.cmake
+    -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${LIBRENT_SOURCE_DIR}/submodules/librent-sdk.cmake
     -DCMAKE_MAKE_PROGRAM:FILEPATH=${MESA_NINJA}
-    -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=${REACTOS_CLANG_LLVM_MINGW_ROOT}
-    -DREACTOS_SDK_ARCH:STRING=${MESA_SDK_ARCH}
-    -DREACTOS_SDK_TRIPLE:STRING=${MESA_TRIPLE}
-    "-DREACTOS_SDK_ARCH_FLAGS:STRING=${_mesa_sdk_arch_flags}"
-    -DREACTOS_SDK_SOURCE_DIR:PATH=${REACTOS_SOURCE_DIR}
-    -DREACTOS_SDK_BUILD_DIR:PATH=${REACTOS_BINARY_DIR}
-    -DREACTOS_SDK_LIBDIR:PATH=${MESA_SDK_LIBDIR}
-    -DREACTOS_SDK_CXX_RUNTIME:PATH=${REACTOS_LIBCXX_ROOT})
+    -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=${LIBRENT_CLANG_LLVM_MINGW_ROOT}
+    -DLIBRENT_SDK_ARCH:STRING=${MESA_SDK_ARCH}
+    -DLIBRENT_SDK_TRIPLE:STRING=${MESA_TRIPLE}
+    "-DLIBRENT_SDK_ARCH_FLAGS:STRING=${_mesa_sdk_arch_flags}"
+    -DLIBRENT_SDK_SOURCE_DIR:PATH=${LIBRENT_SOURCE_DIR}
+    -DLIBRENT_SDK_BUILD_DIR:PATH=${LIBRENT_BINARY_DIR}
+    -DLIBRENT_SDK_LIBDIR:PATH=${MESA_SDK_LIBDIR}
+    -DLIBRENT_SDK_CXX_RUNTIME:PATH=${LIBRENT_LIBCXX_ROOT})
 
 set(_mesa_llvm_dependency)
 if(MESA_LLVM_ROOT)
@@ -107,10 +107,10 @@ if(MESA_LLVM_ROOT)
     endif()
 else()
     set(MESA_LLVM_PREFIX "${MESA_WORK_DIR}/llvm-install")
-    set(_mesa_llvm_patch_args PATCH_COMMAND ${MESA_PATCH} -p1 -i "${REACTOS_SOURCE_DIR}/submodules/llvm-reactos-sdk.patch")
+    set(_mesa_llvm_patch_args PATCH_COMMAND ${MESA_PATCH} -p1 -i "${LIBRENT_SOURCE_DIR}/submodules/llvm-librent-sdk.patch")
     set(_mesa_llvm_abi_args)
     if(ARM64EC_RUNTIME)
-        list(APPEND _mesa_llvm_patch_args COMMAND ${MESA_PATCH} -p1 -i "${REACTOS_SOURCE_DIR}/submodules/llvm-arm64ec.patch")
+        list(APPEND _mesa_llvm_patch_args COMMAND ${MESA_PATCH} -p1 -i "${LIBRENT_SOURCE_DIR}/submodules/llvm-arm64ec.patch")
         set(_mesa_llvm_abi_args -DLLVM_DISABLE_ASSEMBLY_FILES=ON)
     endif()
     set(MESA_LLVM_SOURCE_ROOT "" CACHE PATH "Optional existing LLVM 22.1.8 source tree to reuse across architectures")
@@ -177,7 +177,7 @@ else()
             -DLLVM_BUILD_LLVM_DYLIB=OFF
             -DLLVM_LINK_LLVM_DYLIB=OFF
             -DBUILD_SHARED_LIBS=OFF
-        BUILD_COMMAND ${CMAKE_COMMAND} -E env CCACHE_DISABLE=1 SCCACHE_DISABLE=1 ${REACTOS_NESTED_BUILD} <BINARY_DIR>
+        BUILD_COMMAND ${CMAKE_COMMAND} -E env CCACHE_DISABLE=1 SCCACHE_DISABLE=1 ${LIBRENT_NESTED_BUILD} <BINARY_DIR>
         INSTALL_COMMAND ${CMAKE_COMMAND} --install <BINARY_DIR>
         USES_TERMINAL_CONFIGURE TRUE
         USES_TERMINAL_BUILD TRUE)
@@ -242,7 +242,7 @@ ExternalProject_Add(vulkan-loader-build
     PATCH_COMMAND ${CMAKE_COMMAND}
         -DPATCH_EXECUTABLE=${MESA_PATCH}
         -DSOURCE_DIR=<SOURCE_DIR>
-        -DPATCH_FILE=${CMAKE_CURRENT_LIST_DIR}/vulkan-loader-reactos.patch
+        -DPATCH_FILE=${CMAKE_CURRENT_LIST_DIR}/vulkan-loader-librent.patch
         -P ${CMAKE_CURRENT_LIST_DIR}/vulkan-loader-apply-patch.cmake
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
@@ -286,11 +286,11 @@ add_custom_command(
 
 add_custom_target(mesa-llvmpipe DEPENDS "${MESA_LAVAPIPE_DLL}" "${MESA_LAVAPIPE_MANIFEST}" "${VULKAN_LOADER_DLL}" "${MESA_LICENSES}")
 add_dependencies(mesa-llvmpipe mesa_gallium)
-add_cd_file(FILE "${MESA_LAVAPIPE_DLL}" TARGET mesa-llvmpipe DESTINATION reactos/system32 OPTIONAL FOR all)
-add_cd_file(FILE "${MESA_LAVAPIPE_MANIFEST}" TARGET mesa-llvmpipe DESTINATION reactos/system32 OPTIONAL FOR all)
-add_cd_file(FILE "${VULKAN_LOADER_DLL}" TARGET mesa-llvmpipe DESTINATION reactos/system32 OPTIONAL FOR all)
-add_cd_file(FILE "${MESA_LICENSES}" TARGET mesa-llvmpipe DESTINATION reactos/3rdParty OPTIONAL FOR all)
-add_optional_registry_inf(INF "${REACTOS_SOURCE_DIR}/submodules/mesa-llvmpipe.inf" REQUIRES "${MESA_LAVAPIPE_MANIFEST}")
+add_cd_file(FILE "${MESA_LAVAPIPE_DLL}" TARGET mesa-llvmpipe DESTINATION librent/system32 OPTIONAL FOR all)
+add_cd_file(FILE "${MESA_LAVAPIPE_MANIFEST}" TARGET mesa-llvmpipe DESTINATION librent/system32 OPTIONAL FOR all)
+add_cd_file(FILE "${VULKAN_LOADER_DLL}" TARGET mesa-llvmpipe DESTINATION librent/system32 OPTIONAL FOR all)
+add_cd_file(FILE "${MESA_LICENSES}" TARGET mesa-llvmpipe DESTINATION librent/3rdParty OPTIONAL FOR all)
+add_optional_registry_inf(INF "${LIBRENT_SOURCE_DIR}/submodules/mesa-llvmpipe.inf" REQUIRES "${MESA_LAVAPIPE_MANIFEST}")
 add_dependencies(submodules mesa-llvmpipe)
 if(ARCH STREQUAL "arm64")
     set(_mesa_wgl_profile "VC4/V3D/LLVMpipe WGL")

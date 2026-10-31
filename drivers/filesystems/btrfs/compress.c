@@ -31,13 +31,13 @@
 #define Z_SOLO
 #define ZLIB_INTERNAL
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "zlib/zlib.h"
 #include "zlib/inftrees.h"
 #include "zlib/inflate.h"
 #else
 #include <zlib.h>
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #define ZSTD_STATIC_LINKING_ONLY
 
@@ -94,7 +94,7 @@ typedef struct {
 static void* zstd_malloc(void* opaque, size_t size);
 static void zstd_free(void* opaque, void* address);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 ZSTD_customMem zstd_mem = { .customAlloc = zstd_malloc, .customFree = zstd_free, .opaque = NULL };
 #else
 ZSTD_customMem zstd_mem = { zstd_malloc, zstd_free, NULL };

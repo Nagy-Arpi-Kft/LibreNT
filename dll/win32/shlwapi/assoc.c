@@ -28,7 +28,7 @@
 #include "shlguid.h"
 #include "shlobj.h"
 #include "shlwapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "shlwapi_undoc.h"
 #include "evalcmd.h"
 #include "wine/unicode.h"
@@ -38,7 +38,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 /* Default IQueryAssociations::Init() flags */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SHLWAPI_DEF_ASSOCF (ASSOCF_INIT_BYEXENAME | ASSOCF_INIT_DEFAULTTOSTAR | \
                             ASSOCF_INIT_DEFAULTTOFOLDER | ASSOCF_INIT_NOREMAPCLSID | \
                             ASSOCF_INIT_IGNOREUNKNOWN)
@@ -47,7 +47,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(shell);
                             ASSOCF_INIT_DEFAULTTOFOLDER)
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C ULONG WINAPI GetProcessOsVersion(void); // FIXME: Move or delete
 #endif
 
@@ -107,13 +107,13 @@ HRESULT WINAPI AssocCreate(CLSID clsid, REFIID refiid, void **lpInterface)
   if (!lpInterface)
     return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   *(PVOID*)lpInterface = NULL;
 #else
   *(DWORD*)lpInterface = 0;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!IsEqualGUID(&clsid, &CLSID_QueryAssociations) &&
       !IsEqualGUID(&clsid, &IID_IQueryAssociations))
   {
@@ -130,7 +130,7 @@ HRESULT WINAPI AssocCreate(CLSID clsid, REFIID refiid, void **lpInterface)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct AssocPerceivedInfo
 {
     PCWSTR Type;
@@ -324,7 +324,7 @@ static const struct AssocPerceivedInfo* AssocFindByType(LPCWSTR pszType)
  * BUGS
  *   Unimplemented.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI AssocGetPerceivedType(LPCWSTR lpszExt, PERCEIVED *lpType,
                                      INT *lpFlag, LPWSTR *lppszType)
 {
@@ -413,7 +413,7 @@ HRESULT WINAPI AssocQueryKeyW(ASSOCF cfFlags, ASSOCKEY assockey, LPCWSTR pszAsso
   hRet = AssocCreate( CLSID_QueryAssociations, &IID_IQueryAssociations, (void **)&lpAssoc );
   if (FAILED(hRet)) return hRet;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   hRet = IQueryAssociations_Init(lpAssoc, cfFlags & SHLWAPI_DEF_ASSOCF, pszAssoc, NULL, NULL);
 #else
   cfFlags &= SHLWAPI_DEF_ASSOCF;
@@ -581,7 +581,7 @@ HRESULT WINAPI AssocQueryStringByKeyW(ASSOCF cfFlags, ASSOCSTR str, HKEY hkAssoc
   hRet = AssocCreate( CLSID_QueryAssociations, &IID_IQueryAssociations, (void **)&lpAssoc );
   if (FAILED(hRet)) return hRet;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   hRet = IQueryAssociations_Init(lpAssoc, cfFlags & SHLWAPI_DEF_ASSOCF, 0, hkAssoc, NULL);
 #else
   cfFlags &= SHLWAPI_DEF_ASSOCF;
@@ -666,7 +666,7 @@ HRESULT WINAPI AssocQueryStringByKeyA(ASSOCF cfFlags, ASSOCSTR str, HKEY hkAssoc
  */
 BOOL WINAPI AssocIsDangerous(LPCWSTR lpszAssoc)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const WCHAR *const dangerous_exts[] =
     {
         L".ade", L".adp", L".app", L".appref-ms", L".asp", L".bas", L".bat", L".cer", L".chm",

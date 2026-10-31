@@ -268,7 +268,7 @@ uint32_t FAudio_CreateSourceVoice(
 	uint32_t i;
 
 	LOG_API_ENTER(audio)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (audio->master == NULL)
 	{
 		LOG_API_EXIT(audio)
@@ -590,7 +590,7 @@ uint32_t FAudio_CreateSubmixVoice(
 	uint32_t i;
 
 	LOG_API_ENTER(audio)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (audio->master == NULL)
 	{
 		LOG_API_EXIT(audio)

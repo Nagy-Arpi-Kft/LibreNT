@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Service Control Manager
+ * PROJECT:     LibreNT Service Control Manager
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        base/system/services/database.c
  * PURPOSE:     Database control interface

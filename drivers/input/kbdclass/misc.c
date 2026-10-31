@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Keyboard class driver
+ * PROJECT:         LibreNT Keyboard class driver
  * FILE:            drivers/input/kbdclass/misc.c
  * PURPOSE:         Miscellaneous operations
  *

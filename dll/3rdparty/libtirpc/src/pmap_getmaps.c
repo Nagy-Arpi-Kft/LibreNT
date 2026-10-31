@@ -66,7 +66,7 @@ pmap_getmaps(address)
 	 struct sockaddr_in *address;
 {
 	struct pmaplist *head = NULL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SOCKET sock = INVALID_SOCKET;
 #else
 	int sock = -1;

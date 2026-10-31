@@ -19,8 +19,8 @@
  */
 
 #include <windows.h>
-#ifdef __REACTOS__
-#include <reactos/user32_vista.h>
+#ifdef __LIBRENT__
+#include <librent/user32_vista.h>
 #endif
 #include <advpub.h>
 #include <ole2.h>
@@ -71,7 +71,7 @@ static DWORD register_iexplore(BOOL doregister)
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prev, WCHAR *cmdline, int show)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 #endif
 
@@ -82,7 +82,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prev, WCHAR *cmdline, int sho
             return register_iexplore(FALSE);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Registration must not initialize USER before setup is complete. */
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Header for C++ Ob template type definitions
  * COPYRIGHT:   Copyright 2026 Timo Kreuzer <timo.kreuzer@reactos.org>

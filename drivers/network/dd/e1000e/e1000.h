@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Intel PRO/1000 Driver
+ * PROJECT:     LibreNT Intel PRO/1000 Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS 6.x Main header file
  * COPYRIGHT:       2026 Ahmed ARIF (arif.ing@outlook.com)
@@ -13,7 +13,7 @@
 /*
  * NDIS version configuration:
  * - NDIS620_MINIPORT and NDIS_MINIPORT_DRIVER are defined via CMakeLists.txt
- * - ReactOS ndis.h supports up to NDIS 6.20; the driver is designed for 6.30+
+ * - LibreNT ndis.h supports up to NDIS 6.20; the driver is designed for 6.30+
  * - Version macros are set by the build system to avoid conflicts with ndis.h
  */
 
@@ -21,12 +21,12 @@
 #include <ntintsafe.h>
 #include <wdmguid.h>  /* For GUID_BUS_INTERFACE_STANDARD */
 
-/* DPRINT/DPRINT1 — ReactOS debug output macros. Use the explicit
- * reactos/ prefix because the e1000 source dir has its own local
+/* DPRINT/DPRINT1 — LibreNT debug output macros. Use the explicit
+ * librent/ prefix because the e1000 source dir has its own local
  * debug.h (legacy NDIS_DbgPrint helper) that would otherwise win
  * the include search. */
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 /* Include compatibility layer for missing NDIS 6.x APIs */
 #include "ndis6_compat.h"
@@ -34,7 +34,7 @@
 /* Include hardware definitions */
 #include "e1000hw.h"
 
-/* DPRINT/DPRINT1 already provided by <reactos/debug.h> above. The
+/* DPRINT/DPRINT1 already provided by <librent/debug.h> above. The
  * legacy local debug.h (NDIS_DbgPrint helper) is intentionally not
  * included — it lives in drivers/network/dd/e1000/ for the NDIS 5.0
  * variant only. */

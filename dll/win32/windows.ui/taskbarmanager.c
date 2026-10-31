@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Windows Runtime
+ * PROJECT:     LibreNT Windows Runtime
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     TaskbarManager capability discovery for unpackaged applications
  */
@@ -100,7 +100,7 @@ static HRESULT WINAPI manager_GetTrustLevel(ITaskbarManager *iface, TrustLevel *
 static HRESULT WINAPI manager_disabled(ITaskbarManager *iface, boolean *value)
 {
     if (!value) return E_POINTER;
-    /* No packaged-app pinning service is available in the ReactOS shell. */
+    /* No packaged-app pinning service is available in the LibreNT shell. */
     *value = FALSE;
     return S_OK;
 }

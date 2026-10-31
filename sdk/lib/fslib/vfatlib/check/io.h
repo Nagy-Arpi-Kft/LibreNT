@@ -27,11 +27,11 @@
 #ifndef _IO_H
 #define _IO_H
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <fcntl.h>		/* for off_t */
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void fs_open(char *path, int rw);
 #else
 NTSTATUS fs_open(PUNICODE_STRING DriveRoot, int read_write);
@@ -40,7 +40,7 @@ NTSTATUS fs_open(PUNICODE_STRING DriveRoot, int read_write);
 /* Opens the filesystem PATH. If RW is zero, the filesystem is opened
    read-only, otherwise, it is opened read-write. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN fs_isdirty(void);
 
 /* Checks if filesystem is dirty */
@@ -72,7 +72,7 @@ int fs_changed(void);
 
 /* Determines whether the filesystem has changed. See fs_close. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void fs_abort(void);
 
 NTSTATUS fs_lock(BOOLEAN LockVolume);

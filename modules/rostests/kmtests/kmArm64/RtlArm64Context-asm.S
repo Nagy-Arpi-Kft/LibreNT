@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS
+ * PROJECT:     LibreNT
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Observe x18 after restoring a migrated context
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>

@@ -448,17 +448,17 @@ static HRESULT register_inf(BOOL doregister)
 {
     HRESULT (WINAPI *pRegInstall)(HMODULE hm, LPCSTR pszSection, const STRTABLEA* pstTable);
     HMODULE hAdvpack;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
     hAdvpack = LoadLibraryW(L"advpack.dll");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!hAdvpack) return HRESULT_FROM_WIN32(GetLastError());
 #endif
     pRegInstall = (void *)GetProcAddress(hAdvpack, "RegInstall");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = pRegInstall ? pRegInstall(hProxyDll, doregister ? "RegisterDll" : "UnregisterDll", NULL)
                     : HRESULT_FROM_WIN32(GetLastError());
     FreeLibrary(hAdvpack);

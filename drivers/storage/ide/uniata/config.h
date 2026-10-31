@@ -87,12 +87,12 @@
 /*  Compiler dependencies                          */
 /***************************************************/
 
-/* ReactOS-specific defines */
-#ifdef __REACTOS__
- #define USE_REACTOS_DDK
-#endif //__REACTOS__
+/* LibreNT-specific defines */
+#ifdef __LIBRENT__
+ #define USE_LIBRENT_DDK
+#endif //__LIBRENT__
 
-#ifdef USE_REACTOS_DDK
+#ifdef USE_LIBRENT_DDK
  #define ULONGIO_PTR     ULONG_PTR
  #define CRNT_ILK_TYPE
  #define CRNT_ILK_PTYPE
@@ -105,7 +105,7 @@
  #define REGRTL_STR_PTYPE  (PWCHAR)
  #define UlongToPtr(u)   ((PVOID)((ULONG)(u)))
  #define PtrToUlong(u)   ((ULONG)((PVOID)(u)))
-#endif //USE_REACTOS_DDK
+#endif //USE_LIBRENT_DDK
 
 /* Are we under GNU C (mingw) ??? */
 #if __GNUC__ >=3
@@ -113,7 +113,7 @@
  #define  DEF_U64(x)     (x##ULL)
  #define  DEF_I64(x)     (x##LL)
 
- /* ReactOS-specific defines */
+ /* LibreNT-specific defines */
 
  #ifndef DDKAPI
   #define DDKAPI          __attribute__((stdcall))
@@ -132,7 +132,7 @@
  #define  DEF_U64(x)     (x##UI64)
  #define  DEF_I64(x)     (x##I64)
 
- /* ReactOS-specific defines */
+ /* LibreNT-specific defines */
 
  #ifndef DDKAPI
   #define DDKAPI          __stdcall

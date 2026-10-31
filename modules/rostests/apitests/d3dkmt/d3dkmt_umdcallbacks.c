@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     The runtime's D3DDDI_DEVICECALLBACKS, driven as a driver drives them
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -89,7 +89,7 @@ static void Test_TableIsPopulated(D3DKMT_HANDLE hAdapter, D3DKMT_HANDLE hDevice)
      * stub that leaves the requested operation undone.
      */
 
-#if (REACTOS_EXPECTED_UMD_INTERFACE_VERSION >= \
+#if (LIBRENT_EXPECTED_UMD_INTERFACE_VERSION >= \
      D3D_UMD_INTERFACE_VERSION_WIN8)
     ok(Callbacks.pfnOfferAllocationsCb != NULL,
        "no Win8 pfnOfferAllocationsCb\n");
@@ -412,7 +412,7 @@ Test_SynchronizationObjectThroughCallbacks(
        (long)hr);
 }
 
-#if (REACTOS_EXPECTED_UMD_INTERFACE_VERSION >= \
+#if (LIBRENT_EXPECTED_UMD_INTERFACE_VERSION >= \
      D3D_UMD_INTERFACE_VERSION_WIN8)
 
 static void
@@ -664,7 +664,7 @@ Test_Win8SynchronizationObject2ThroughCallbacks(
 
 #endif
 
-#if (REACTOS_EXPECTED_UMD_INTERFACE_VERSION >= \
+#if (LIBRENT_EXPECTED_UMD_INTERFACE_VERSION >= \
      D3D_UMD_INTERFACE_VERSION_WDDM2_0)
 
 /*
@@ -757,7 +757,7 @@ Test_Wddm2ResourceDeallocateThroughCallbacks(
  * The WDDM 2.0 tier: the driver owns its working set and its own GPU
  * address space, rather than the kernel deciding both at submission.
  * ------------------------------------------------------------------ */
-#if (REACTOS_EXPECTED_UMD_INTERFACE_VERSION >= \
+#if (LIBRENT_EXPECTED_UMD_INTERFACE_VERSION >= \
      D3D_UMD_INTERFACE_VERSION_WDDM2_0)
 
 static void Test_Wddm2TierIsPopulated(D3DKMT_HANDLE hAdapter, D3DKMT_HANDLE hDevice)
@@ -2089,12 +2089,12 @@ START_TEST(umdcallbacks)
     Test_ContextLifetimeThroughCallbacks(hAdapter, hDevice);
     Test_OverlayCallbacksRejectMalformedRequests(hAdapter, hDevice);
     Test_SynchronizationObjectThroughCallbacks(hAdapter, hDevice);
-#if (REACTOS_EXPECTED_UMD_INTERFACE_VERSION >= \
+#if (LIBRENT_EXPECTED_UMD_INTERFACE_VERSION >= \
      D3D_UMD_INTERFACE_VERSION_WIN8)
     Test_Win8OfferReclaimThroughCallbacks(hAdapter, hDevice);
     Test_Win8SynchronizationObject2ThroughCallbacks(hAdapter, hDevice);
 #endif
-#if (REACTOS_EXPECTED_UMD_INTERFACE_VERSION >= \
+#if (LIBRENT_EXPECTED_UMD_INTERFACE_VERSION >= \
      D3D_UMD_INTERFACE_VERSION_WDDM2_0)
     Test_Wddm2ResourceDeallocateThroughCallbacks(hAdapter, hDevice);
     Test_Wddm2TierIsPopulated(hAdapter, hDevice);

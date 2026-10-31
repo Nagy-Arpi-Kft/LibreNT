@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NT Virtual Memory Subsystem
+ * PROJECT:     LibreNT NT Virtual Memory Subsystem
  * FILE:        ntoskrnl/nvs/nt/ntci.c
  * PURPOSE:     Process image signing policy at image section creation
  *
@@ -8,7 +8,7 @@
  */
 
 #include <nvs/nt/mint.h>
-#include <reactos/ci.h>
+#include <librent/ci.h>
 #include "catalog.h"
 
 #define TAG_CODE_INTEGRITY 'gImM'

@@ -7,8 +7,8 @@ add_definitions(
 
 include_directories(
     schilytools/include
-    reactos
-    ${REACTOS_BINARY_DIR}/sdk/include)
+    librent
+    ${LIBRENT_BINARY_DIR}/sdk/include)
 
 # libschily and libsiconv are licensed under CDDL whereas mkisofs is licensed under GPL.
 # As such, we cannot mix the library sources with mkisofs sources and have to build them separately.

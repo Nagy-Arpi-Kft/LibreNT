@@ -1,7 +1,7 @@
 #include <user32.h>
 #include <ndk/cmfuncs.h>
 #include <strsafe.h>
-#include <reactos/colorscheme.h>
+#include <librent/colorscheme.h>
 
 #define MAX_USER_MODE_DRV_BUFFER 526
 
@@ -373,7 +373,7 @@ ClientThreadSetupHelper(BOOL IsCallback)
         gSharedInfo = UserCon.siClient;
         gpsi = gSharedInfo.psi;
         gHandleTable = gSharedInfo.aheList;
-        /* ReactOS-Specific! */ gHandleEntries = SharedPtrToUser(gHandleTable->handles);
+        /* LibreNT-Specific! */ gHandleEntries = SharedPtrToUser(gHandleTable->handles);
 
         // ERR("1 SI 0x%x : HT 0x%x : D 0x%x\n",
         //     gSharedInfo.psi, gSharedInfo.aheList, gSharedInfo.ulSharedDelta);
@@ -549,7 +549,7 @@ Init(PUSERCONNECT UserCon /*PUSERSRV_API_CONNECTINFO*/)
         gSharedInfo = UserCon->siClient;
         gpsi = gSharedInfo.psi;
         gHandleTable = gSharedInfo.aheList;
-        /* ReactOS-Specific! */ gHandleEntries = SharedPtrToUser(gHandleTable->handles);
+        /* LibreNT-Specific! */ gHandleEntries = SharedPtrToUser(gHandleTable->handles);
     }
 
     // FIXME: Yet another hack... This call should normally not be done here, but

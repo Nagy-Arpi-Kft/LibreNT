@@ -18,7 +18,7 @@
 #pragma once
 
 #include <windows.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"

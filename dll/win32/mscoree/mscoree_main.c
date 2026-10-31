@@ -711,7 +711,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID* ppv)
     if(!ppv)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = check_monodata_assembly(rclsid);
     if (FAILED(hr))
     {
@@ -733,7 +733,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID* ppv)
     return hr;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void parse_msi_version_string(const char *version, int *parts)
 {
     const char *minor_start, *build_start;
@@ -770,7 +770,7 @@ static int compare_versions(const char *a, const char *b)
 
 static BOOL invoke_appwiz(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return FALSE;
 #else
     PROCESS_INFORMATION pi;
@@ -970,7 +970,7 @@ end:
 
 HRESULT WINAPI DllRegisterServer(void)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     install_wine_mono();
 #endif
 

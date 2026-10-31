@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Hardware Abstraction Layer (HAL)
+ * PROJECT:         LibreNT Hardware Abstraction Layer (HAL)
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/arch/common/generic/misc.c
  * PURPOSE:         Registry helpers every HAL shares
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

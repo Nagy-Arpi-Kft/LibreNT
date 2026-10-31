@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Certificate Manager
+ * PROJECT:     LibreNT Certificate Manager
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:
  * COPYRIGHT:   Copyright 2025 Mark Jansen <mark.jansen@reactos.org>

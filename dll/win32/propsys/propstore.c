@@ -27,7 +27,7 @@
 #include "objbase.h"
 #include "rpcproxy.h"
 #include "propsys.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "propvarutil.h"
 #endif
 #include "wine/debug.h"
@@ -56,7 +56,7 @@ typedef struct {
 
 typedef struct {
     IPropertyStoreCache IPropertyStoreCache_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IPersistSerializedPropStorage IPersistSerializedPropStorage_iface;
     PERSIST_SPROPSTORE_FLAGS flags;
 #endif
@@ -70,7 +70,7 @@ static inline PropertyStore *impl_from_IPropertyStoreCache(IPropertyStoreCache *
     return CONTAINING_RECORD(iface, PropertyStore, IPropertyStoreCache_iface);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline PropertyStore *impl_from_IPersistSerializedPropStorage(IPersistSerializedPropStorage *iface)
 {
     return CONTAINING_RECORD(iface, PropertyStore, IPersistSerializedPropStorage_iface);
@@ -90,7 +90,7 @@ static HRESULT WINAPI PropertyStore_QueryInterface(IPropertyStoreCache *iface, R
     {
         *ppv = &This->IPropertyStoreCache_iface;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (IsEqualIID(&IID_IPersistSerializedPropStorage, iid))
     {
         *ppv = &This->IPersistSerializedPropStorage_iface;
@@ -325,7 +325,7 @@ static HRESULT WINAPI PropertyStore_SetValue(IPropertyStoreCache *iface,
 
     TRACE("%p,%p,%p\n", iface, key, propvar);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->flags & FPSPS_READONLY)
         return STG_E_ACCESSDENIED;
 #endif
@@ -439,7 +439,7 @@ static HRESULT WINAPI PropertyStore_SetValueAndState(IPropertyStoreCache *iface,
 
     TRACE("%p,%p,%p,%d\n", iface, key, ppropvar, state);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->flags & FPSPS_READONLY)
         return STG_E_ACCESSDENIED;
 #endif
@@ -478,7 +478,7 @@ static const IPropertyStoreCacheVtbl PropertyStore_Vtbl = {
     PropertyStore_SetValueAndState
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define PROPSTORAGE_VERSION 0x53505331
 #define PROPVALUE_HEADER_SIZE (2 * sizeof(DWORD) + sizeof(BYTE))
 
@@ -771,7 +771,7 @@ HRESULT PropertyStore_CreateInstance(IUnknown *pUnkOuter, REFIID iid, void** ppv
     if (!This) return E_OUTOFMEMORY;
 
     This->IPropertyStoreCache_iface.lpVtbl = &PropertyStore_Vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->IPersistSerializedPropStorage_iface.lpVtbl = &PropertyStore_Serialized_Vtbl;
     This->flags = FPSPS_DEFAULT;
 #endif
@@ -786,7 +786,7 @@ HRESULT PropertyStore_CreateInstance(IUnknown *pUnkOuter, REFIID iid, void** ppv
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct object_property_store
 {
     IUnknown IUnknown_iface;
@@ -846,7 +846,7 @@ static const IUnknownVtbl object_property_store_vtbl =
 HRESULT WINAPI PSCreatePropertyStoreFromObject(IUnknown *obj, DWORD access, REFIID riid, void **ret)
 {
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct object_property_store *store;
     IPropertyStore *propstore;
 #endif
@@ -859,7 +859,7 @@ HRESULT WINAPI PSCreatePropertyStoreFromObject(IUnknown *obj, DWORD access, REFI
     if (IsEqualIID(riid, &IID_IPropertyStore) && SUCCEEDED(hr = IUnknown_QueryInterface(obj, riid, ret)))
         return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(IUnknown_QueryInterface(obj, &IID_IPropertyStore, (void **)&propstore)))
     {
         if (!(store = HeapAlloc(GetProcessHeap(), 0, sizeof(*store))))

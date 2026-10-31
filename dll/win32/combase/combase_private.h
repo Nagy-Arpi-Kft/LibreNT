@@ -40,7 +40,7 @@ struct apartment
     HWND host_apt_hwnd;      /* handle to apartment window of host apartment (CS cs) */
     struct local_server *local_server; /* A marshallable object exposing local servers (CS cs) */
     BOOL being_destroyed;    /* is currently being destroyed */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL leaving;
 #endif
 
@@ -58,7 +58,7 @@ struct apartment
 
 HRESULT open_key_for_clsid(REFCLSID clsid, const WCHAR *keyname, REGSAM access, HKEY *subkey);
 HRESULT open_appidkey_from_clsid(REFCLSID clsid, REGSAM access, HKEY *subkey);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG_PTR get_global_option(GLOBALOPT_PROPERTIES property);
 #endif
 
@@ -132,7 +132,7 @@ HRESULT rpc_revoke_local_server(unsigned int cookie);
 HRESULT rpc_create_clientchannel(const OXID *oxid, const IPID *ipid, const OXID_INFO *oxid_info, const IID *iid,
         DWORD dest_context, void *dest_context_data, IRpcChannelBuffer **chan, struct apartment *apt);
 HRESULT rpc_create_serverchannel(DWORD dest_context, void *dest_context_data, IRpcChannelBuffer **chan);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern DWORD com_default_imp_level;
 #endif
 HRESULT rpc_register_interface(REFIID riid);
@@ -177,10 +177,10 @@ struct apartment * apartment_get_mta(void);
 HRESULT apartment_get_inproc_class_object(struct apartment *apt, const struct class_reg_data *regdata,
         REFCLSID rclsid, REFIID riid, DWORD class_context, void **ppv);
 HRESULT apartment_get_local_server_stream(struct apartment *apt, IStream **ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT apartment_track_dll(struct apartment *apt, const WCHAR *dllpath);
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 IUnknown *com_get_registered_class_object_ex(const struct apartment *apt, REFCLSID rclsid, DWORD clscontext,
         BOOL include_suspended, BOOL *suspended);
 #endif
@@ -236,7 +236,7 @@ struct ifstub
     IUnknown         *iface;      /* RO */
     MSHLFLAGS         flags;      /* so we can enforce process-local marshalling rules (RO) */
     IRpcChannelBuffer*chan;       /* channel passed to IRpcStubBuffer::Invoke (RO) */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG             extrefs;
 #endif
 };
@@ -250,7 +250,7 @@ struct stub_manager
     struct apartment *apt;        /* owning apt (RO) */
 
     ULONG             extrefs;    /* number of 'external' references (CS lock) */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG             lockrefs;
 #endif
     ULONG             refs;       /* internal reference count (CS apt->cs) */
@@ -272,7 +272,7 @@ struct stub_manager
     BOOL              disconnected; /* CoDisconnectObject has been called (CS lock) */
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI ComCat_CreateInstance(IClassFactory *iface, IUnknown *pUnk, REFIID riid, void **ppv);
 LSTATUS create_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKEY *retkey);
 LSTATUS open_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKEY *retkey);
@@ -283,7 +283,7 @@ struct stub_manager * get_stub_manager_from_object(struct apartment *apt, IUnkno
 void stub_manager_disconnect(struct stub_manager *m);
 ULONG stub_manager_ext_addref(struct stub_manager *m, ULONG refs, BOOL tableweak);
 ULONG stub_manager_ext_release(struct stub_manager *m, ULONG refs, BOOL tableweak, BOOL last_unlock_releases);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG stub_manager_ext_addref_ex(struct stub_manager *m, struct ifstub *ifstub, ULONG refs, BOOL tableweak);
 ULONG stub_manager_ext_release_ex(struct stub_manager *m, struct ifstub *ifstub, ULONG refs, BOOL tableweak,
                                   BOOL last_unlock_releases);

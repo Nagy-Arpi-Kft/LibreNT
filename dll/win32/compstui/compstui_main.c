@@ -34,7 +34,7 @@
 #include "wine/debug.h"
 #include "wine/list.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
 #endif
 

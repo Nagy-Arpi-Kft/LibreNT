@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS vcruntime library
+ * PROJECT:     LibreNT vcruntime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of _chkesp_failed
  * COPYRIGHT:   Copyright 2026 Timo Kreuzer <timo.kreuzer@reactos.org>

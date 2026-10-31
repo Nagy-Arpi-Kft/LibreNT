@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Winlogon
+ * PROJECT:     LibreNT Winlogon
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Portuguese (Portugal) resource file
  * TRANSLATORS: Copyright 2012 Matheus Macabu <mkbu95@gmail.com>
@@ -57,7 +57,7 @@ BEGIN
     IDS_PREPARETOSTANDBY "Preparando para entrar em Modo de Espera"
     IDS_PREPARETOHIBERNATE "Preparando para Hibernar"
     IDS_SAVEYOURSETTINGS "A guardar as suas configurações"
-    IDS_REACTOSISSTARTINGUP "LiberNT está a iniciar"
+    IDS_REACTOSISSTARTINGUP "LibreNT está a iniciar"
     IDS_LOGGINGOFF "Terminar sessão"
     IDS_TIMEOUTSHORTFORMAT "%02d:%02d:%02d"
     IDS_TIMEOUTLONGFORMAT "%d dias"

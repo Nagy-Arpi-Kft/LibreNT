@@ -1,5 +1,5 @@
 /*
-* PROJECT:         ReactOS Kernel
+* PROJECT:         LibreNT Kernel
 * LICENSE:         GPL - See COPYING in the top level directory
 * FILE:            ntoskrnl/ke/balmgr.c
 * PURPOSE:         Balance Set Manager
@@ -9,7 +9,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 #define NDEBUG
 #include <debug.h>
 

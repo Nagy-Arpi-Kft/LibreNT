@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Settings
+ * PROJECT:     LibreNT Settings
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Settings window, navigation, search and page rendering
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -16,7 +16,7 @@ extern "C"
 }
 #include <wlanapi.h>
 #include <secext.h>
-#include <reactos/dwmsettings.h>
+#include <librent/dwmsettings.h>
 #include <algorithm>
 
 using namespace ShellFrame;
@@ -2334,7 +2334,7 @@ wWinMain(HINSTANCE instance, HINSTANCE previous, LPWSTR commandLine, int showCmd
     if (argv)
         LocalFree(argv);
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-    existing = FindWindowW(L"LiberNTSettingsWindow", NULL);
+    existing = FindWindowW(L"LibreNTSettingsWindow", NULL);
     if (existing)
     {
         COPYDATASTRUCT data = { 1, (DWORD)((lstrlenW(commandLine) + 1) * sizeof(WCHAR)), commandLine };
@@ -2350,7 +2350,7 @@ wWinMain(HINSTANCE instance, HINSTANCE previous, LPWSTR commandLine, int showCmd
     InitCommonControlsEx(&icc);
     if (!Startup())
         return 1;
-    if (!window.Create(L"LiberNTSettingsWindow", Str(IDS_APP_TITLE).c_str(), NULL, 1100, 760, showCmd))
+    if (!window.Create(L"LibreNTSettingsWindow", Str(IDS_APP_TITLE).c_str(), NULL, 1100, 760, showCmd))
     {
         Shutdown();
         return 1;

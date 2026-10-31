@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            lib/advapi32/reg/hkcr.c
  * PURPOSE:         Registry functions - HKEY_CLASSES_ROOT abstraction
  * PROGRAMMER:      Jerôme Gardou (jerome.gardou@reactos.org)

@@ -213,7 +213,7 @@
                           FT_Pos*  max_advance )
   {
     FT_Error       error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     T1_DecoderRec *decoder_allocated = malloc(sizeof(*decoder_allocated));
     if (!decoder_allocated)
       return FT_THROW( Out_Of_Memory );
@@ -243,7 +243,7 @@
                                            FT_RENDER_MODE_NORMAL,
                                            T1_Parse_Glyph );
     if ( error )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         free(decoder_allocated);
         return error;
@@ -284,7 +284,7 @@
 
     psaux->t1_decoder_funcs->done( &decoder );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(decoder_allocated);
 #undef decoder
     }
@@ -301,7 +301,7 @@
                    FT_Fixed*  advances )
   {
     T1_Face        face  = (T1_Face)t1face;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     T1_DecoderRec *decoder_allocated = malloc(sizeof(*decoder_allocated));
     if (!decoder_allocated)
       return FT_THROW( Out_Of_Memory );
@@ -329,7 +329,7 @@
                     first + nn ));
       }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       free(decoder_allocated);
 #endif
       return FT_Err_Ok;
@@ -345,7 +345,7 @@
                                            FT_RENDER_MODE_NORMAL,
                                            T1_Parse_Glyph );
     if ( error )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         free(decoder_allocated);
         return error;
@@ -379,7 +379,7 @@
                   advances[nn] == 1 ? "" : "s" ));
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(decoder_allocated);
 #undef decoder
     }
@@ -396,7 +396,7 @@
   {
     T1_GlyphSlot            glyph = (T1_GlyphSlot)t1glyph;
     FT_Error                error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     T1_DecoderRec *decoder_allocated = malloc(sizeof(*decoder_allocated));
     if (!decoder_allocated)
       return FT_THROW( Out_Of_Memory );
@@ -653,7 +653,7 @@
     if ( must_finish_decoder )
       decoder_funcs->done( &decoder );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(decoder_allocated);
 #undef decoder
     }

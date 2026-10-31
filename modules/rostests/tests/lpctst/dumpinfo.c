@@ -1,7 +1,7 @@
 /*
- * reactos/apps/lpc/dumpinfo.c
+ * librent/apps/lpc/dumpinfo.c
  *
- * ReactOS Operating System
+ * LibreNT Operating System
  *
  * Dump a kernel object's attributes by its handle.
  *

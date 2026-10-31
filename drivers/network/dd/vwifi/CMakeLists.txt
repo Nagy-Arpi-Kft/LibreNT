@@ -21,5 +21,5 @@ target_link_libraries(vwifi ${PSEH_LIB})
 
 add_importlibs(vwifi ndis ntoskrnl hal)
 add_pch(vwifi vwifi.h "")
-add_cd_file(TARGET vwifi DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET vwifi DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(vwifi netvwifi.inf)

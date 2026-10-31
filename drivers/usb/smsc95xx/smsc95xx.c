@@ -1,10 +1,10 @@
 /*
- * PROJECT:     LiberNT SMSC LAN95xx USB Ethernet Driver
+ * PROJECT:     LibreNT SMSC LAN95xx USB Ethernet Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS 6 miniport for SMSC/Microchip LAN95xx USB Ethernet
  *
  * This is an original implementation based on the public LAN95xx register,
- * USB framing, and PHY programming descriptions.  The ReactOS USB/NDIS
+ * USB framing, and PHY programming descriptions.  The LibreNT USB/NDIS
  * integration follows the contracts used by the other in-tree USB miniports.
  */
 

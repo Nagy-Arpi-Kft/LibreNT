@@ -1,7 +1,7 @@
 /*
  * Power Meter Interface (PMI)
  *
- * This file is part of the ReactOS DDK.
+ * This file is part of the LibreNT DDK.
  * Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */

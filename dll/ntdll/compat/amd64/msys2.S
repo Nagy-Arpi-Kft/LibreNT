@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            dll/ntdll/compat/amd64/msys2.S
  * PURPOSE:         Hack for msys-2
  *

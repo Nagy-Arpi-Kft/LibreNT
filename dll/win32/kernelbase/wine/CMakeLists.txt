@@ -1,5 +1,5 @@
 # Drop the inherited global target version before bumping to 0xA01.
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0xA01 -DWINVER=0xA01)
 
 add_definitions(
@@ -11,7 +11,7 @@ add_definitions(
     -D_KERNEL32_
     -D_KERNELBASE_)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID STREQUAL "Clang")

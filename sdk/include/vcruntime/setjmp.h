@@ -181,7 +181,7 @@ typedef struct __JUMP_BUFFER {
 
 #elif defined(_M_RISCV64)
 
-/* ReactOS RV64 integer-call ABI: sp and s0-s11 are nonvolatile.
+/* LibreNT RV64 integer-call ABI: sp and s0-s11 are nonvolatile.
  * Save caller-clobbered ra as the return continuation. Floating-point
  * registers are caller-saved under this calling convention. */
 #define _JBLEN 16

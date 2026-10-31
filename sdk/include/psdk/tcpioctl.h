@@ -55,7 +55,7 @@
 #define IP_MIB_ADDRTABLE_ENTRY_ID       0x102
 #define IP_INTFC_INFO_ID                0x103
 /* Non public TOIID used to query modules info */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define IP_SPECIFIC_MODULE_ENTRY_ID     0x110
 #endif
 #define MAX_PHYSADDR_SIZE               8
@@ -106,7 +106,7 @@
 /* TCP connection options */
 #define TCP_SOCKET_NODELAY 1
 
-/* ReactOS specific */
+/* LibreNT specific */
 #define TCP_SOCKET_KEEPALIVE 2
 #define TCP_SOCKET_KEEPALIVEVALS 3
 #define AO_OPTION_UDP_SEND_MSG_SIZE 39

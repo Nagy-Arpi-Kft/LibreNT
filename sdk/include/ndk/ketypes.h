@@ -115,7 +115,7 @@ Author:
 #define PROCESSOR_ARCHITECTURE_ALPHA64  7
 #define PROCESSOR_ARCHITECTURE_MSIL     8
 #define PROCESSOR_ARCHITECTURE_AMD64    9
-/* ReactOS-native RISC-V64 architecture ID; keep in sync with winnt_old.h. */
+/* LibreNT-native RISC-V64 architecture ID; keep in sync with winnt_old.h. */
 #define PROCESSOR_ARCHITECTURE_RISCV64  15
 #define PROCESSOR_ARCHITECTURE_UNKNOWN  0xFFFF
 
@@ -903,7 +903,7 @@ typedef struct _KUSER_SHARED_DATA
     ULONG64 UserPointerAuthMask;                            // 0x730
 #endif // NTDDI_VERSION >= NTDDI_WIN11_NI
 
-#if (NTDDI_VERSION < NTDDI_WIN7) && defined(__REACTOS__)
+#if (NTDDI_VERSION < NTDDI_WIN7) && defined(__LIBRENT__)
     XSTATE_CONFIGURATION XState;
 #endif
 } KUSER_SHARED_DATA, *PKUSER_SHARED_DATA;
@@ -1117,12 +1117,12 @@ typedef struct _PP_LOOKASIDE_LIST
 // Kernel Memory Node
 //
 // The Win11 (ntkrnlmp.pdb _KNODE, type 0x1B32) _KNODE is a 0x178-byte topology
-// node that bears no resemblance to the pre-Vista layout ReactOS historically
+// node that bears no resemblance to the pre-Vista layout LibreNT historically
 // used (ProcessorMask/Color/Seed/FreeCount...). The fields the tree actually
 // reads (ProcessorMask, Seed, NodeNumber, FreeCount) are kept by name - either
-// as a real Win11 field (NodeNumber) or as a ReactOS-compat alias unioned over
+// as a real Win11 field (NodeNumber) or as a LibreNT-compat alias unioned over
 // the Win11 member that holds the same datum (ProcessorMask == ActiveGroups
-// group-0 mask) or over a Win11 region ReactOS never touches (Seed, FreeCount).
+// group-0 mask) or over a Win11 region LibreNT never touches (Seed, FreeCount).
 //
 typedef struct _KNODE
 {
@@ -1140,7 +1140,7 @@ typedef struct _KNODE
     union                                                // 0x00B
     {
         UCHAR GroupSeed;                                 // Win11
-        /* ReactOS-private: legacy per-node thread round-robin seed (procobj.c).
+        /* LibreNT-private: legacy per-node thread round-robin seed (procobj.c).
            Win11 keeps the scheduling seed in KSCHEDULER_SUBNODE.ProcessSeed. */
         UCHAR Seed;
     };
@@ -1149,7 +1149,7 @@ typedef struct _KNODE
     union                                                // 0x010
     {
         ULONG64 ActiveGroups[2];                         // Win11 KGROUP_MASK { ULONG64 Masks[2] }
-        /* ReactOS-compat alias: this node's processor mask == ActiveGroups[0]
+        /* LibreNT-compat alias: this node's processor mask == ActiveGroups[0]
            (group 0), mirroring how Win11 stores the per-node affinity. Read and
            written across procobj.c/thrdobj.c/thrdschd.c/topology.c/sysinfo.c. */
         KAFFINITY ProcessorMask;
@@ -1157,9 +1157,9 @@ typedef struct _KNODE
     union                                                // 0x020
     {
         struct _KSCHEDULER_SUBNODE *SchedulerSubNodes[32];   // Win11 (256 bytes)
-        /* ReactOS-private: legacy MM per-node free-page counts (read-only in
+        /* LibreNT-private: legacy MM per-node free-page counts (read-only in
            sysinfo.c, never written in this tree -> always 0). Overlays the
-           ReactOS-unused Win11 SchedulerSubNodes pointer array. */
+           LibreNT-unused Win11 SchedulerSubNodes pointer array. */
         ULONG_PTR FreeCount[2];
     };
     ULONG ActiveTopologyElements[5];                     // 0x120 (20 bytes)
@@ -1672,7 +1672,7 @@ typedef struct _KLOCK_ENTRY
 //
 // UMS (User-Mode Scheduling) types -- Win7+, amd64 only
 // TODO: These are stub definitions for asm offset generation.
-// Full UMS support is not yet implemented in ReactOS.
+// Full UMS support is not yet implemented in LibreNT.
 //
 #if (NTDDI_VERSION >= NTDDI_WIN7) && defined(_M_AMD64)
 
@@ -1723,7 +1723,7 @@ typedef struct _KERNEL_STACK_SEGMENT
 } KERNEL_STACK_SEGMENT, *PKERNEL_STACK_SEGMENT;
 
 // The Win11 (ntkrnlmp.pdb _KSTACK_CONTROL, type 0x1B79, fieldList 0x1B78) struct
-// is 0x40 bytes. ReactOS historically used a simplified 0x30-byte body that
+// is 0x40 bytes. LibreNT historically used a simplified 0x30-byte body that
 // omitted CalloutState/Padding, which left Previous at 0x10 instead of its real
 // 0x20 - so the embedded KERNEL_STACK_SEGMENT (and every Previous.* OFFSET the
 // asm helpers derive) sat 0x10 too low versus Win11.
@@ -1736,11 +1736,11 @@ typedef struct _KSTACK_CONTROL
         ULONG_PTR ActualLimit;
         ULONG_PTR StackExpansion:1;
     };
-    PVOID CalloutState;                                  // 0x10 Win11 (was absent in ReactOS)
-    PVOID Padding;                                       // 0x18 Win11 (was absent in ReactOS)
+    PVOID CalloutState;                                  // 0x10 Win11 (was absent in LibreNT)
+    PVOID Padding;                                       // 0x18 Win11 (was absent in LibreNT)
     KERNEL_STACK_SEGMENT Previous;                       // 0x20 (was wrongly at 0x10)
 #ifdef _M_IX86
-    /* ReactOS-private i386-only save slots, consumed by the i386 stack-expansion
+    /* LibreNT-private i386-only save slots, consumed by the i386 stack-expansion
        asm via ksx.template.h (KcTrapFrame/KcExceptionList). */
     struct _KTRAP_FRAME *PreviousTrapFrame;
     PVOID PreviousExceptionList;
@@ -1773,7 +1773,7 @@ C_ASSERT(FIELD_OFFSET(KSTACK_CONTROL, Previous.InitialStack) == 0x38);
 
 //
 // Kernel Thread (KTHREAD), Win11 26100 arm64 layout (ntkrnlmp.pdb 10.0.26100.8036)
-// sizeof == 0x4A0; members marked [ReactOS] live in Win11 spare slots
+// sizeof == 0x4A0; members marked [LibreNT] live in Win11 spare slots
 // RISC-V shares these objects; register frames and per-CPU state remain native.
 // VfpState and ARM64 emulation/vector metadata are reserved on RISC-V.
 //
@@ -1812,17 +1812,17 @@ typedef struct _KTHREAD
             ULONG WaitNext:1;
             ULONG SystemAffinityActive:1;
             ULONG Alertable:1;
-            ULONG ProcessReadyQueue:1;                   // Win11 name: Reserved1 [ReactOS]
+            ULONG ProcessReadyQueue:1;                   // Win11 name: Reserved1 [LibreNT]
             ULONG ApcInterruptRequest:1;
             ULONG QuantumEndMigrate:1;
             ULONG SecureThread:1;
             ULONG TimerActive:1;
             ULONG SystemThread:1;
             ULONG ProcessDetachActive:1;
-            ULONG GdiFlushActive:1;                      // Win11 name: Reserved2 [ReactOS]
+            ULONG GdiFlushActive:1;                      // Win11 name: Reserved2 [LibreNT]
             ULONG ScbReadyQueue:1;
             ULONG ApcQueueable:1;
-            ULONG CycleChargePending:1;                  // Win11 name: Reserved3 [ReactOS]
+            ULONG CycleChargePending:1;                  // Win11 name: Reserved3 [LibreNT]
             ULONG WaitNextClearWobPriorityFloor:1;
             ULONG TimerSuspended:1;
             ULONG SuspendedWaitMode:1;
@@ -1861,8 +1861,8 @@ typedef struct _KTHREAD
             ULONG ProcessStackCountDecremented:1;
             ULONG RestrictedGuiThread:1;
             ULONG VpBackingThread:1;
-            ULONG EtwStackTraceApc1Inserted:1;           // Win11 name: EtwStackTraceCrimsonApcDisabled [ReactOS]
-            ULONG EtwStackTraceApc2Inserted:1;           // Win11: EtwStackTraceApcInserted:8 [ReactOS]
+            ULONG EtwStackTraceApc1Inserted:1;           // Win11 name: EtwStackTraceCrimsonApcDisabled [LibreNT]
+            ULONG EtwStackTraceApc2Inserted:1;           // Win11: EtwStackTraceApcInserted:8 [LibreNT]
             ULONG ThreadFlagsReserved:7;
         };
         volatile LONG ThreadFlags;                       // 0x070
@@ -1879,8 +1879,8 @@ typedef struct _KTHREAD
         };
         CHAR SameThreadTransientFlags;
     };
-    volatile UCHAR SwapBusy;                             // 0x076 Win11 name: Spare0 [ReactOS]
-    UCHAR ChpeSuspendDeferred;                           // 0x077 [ReactOS]
+    volatile UCHAR SwapBusy;                             // 0x076 Win11 name: Spare0 [LibreNT]
+    UCHAR ChpeSuspendDeferred;                           // 0x077 [LibreNT]
     ULONG SystemCallNumber;                              // 0x078
     ULONG ReadyTime;                                     // 0x07C
     PVOID FirstArgument;                                 // 0x080
@@ -1899,7 +1899,7 @@ typedef struct _KTHREAD
     union
     {
         PKWAIT_BLOCK WaitBlockList;                      // 0x0C8
-        PKGATE GateObject;                               // [ReactOS]
+        PKGATE GateObject;                               // [LibreNT]
     };
     union
     {
@@ -1922,7 +1922,7 @@ typedef struct _KTHREAD
         {
             UCHAR WaitBlockFill5[1 * sizeof(KWAIT_BLOCK) + FIELD_OFFSET(KWAIT_BLOCK, SpareLong)];
             volatile UCHAR State;                        // 0x17C
-            SCHAR Quantum;                               // 0x17D Win11 name: Spare13 [ReactOS]
+            SCHAR Quantum;                               // 0x17D Win11 name: Spare13 [LibreNT]
             UCHAR WaitIrql;                              // 0x17E
             CHAR WaitMode;                               // 0x17F
         };
@@ -1970,7 +1970,7 @@ typedef struct _KTHREAD
             union
             {
                 ULONG64 Spare19;                         // 0x1F0
-                volatile ULONG DeferredProcessor;        // [ReactOS]
+                volatile ULONG DeferredProcessor;        // [LibreNT]
             };
         };
     };
@@ -1988,7 +1988,7 @@ typedef struct _KTHREAD
     USHORT UserAffinityPrimaryGroup;                     // 0x250
     CCHAR PreviousMode;                                  // 0x252
     SCHAR BasePriority;                                  // 0x253
-    CCHAR FreezeCount;                                   // 0x254 Win11 name: Spare24 [ReactOS]
+    CCHAR FreezeCount;                                   // 0x254 Win11 name: Spare24 [LibreNT]
     BOOLEAN Preempted;                                   // 0x255
     UCHAR AdjustReason;                                  // 0x256
     SCHAR AdjustIncrement;                               // 0x257
@@ -2014,7 +2014,7 @@ typedef struct _KTHREAD
     union
     {
         KAPC SchedulerApc;                               // 0x2A8
-        KAPC SuspendApc;                                 // [ReactOS] alias
+        KAPC SuspendApc;                                 // [LibreNT] alias
         struct
         {
             UCHAR SchedulerApcFill1[3];
@@ -2045,7 +2045,7 @@ typedef struct _KTHREAD
     union
     {
         KEVENT SuspendEvent;                             // 0x300
-        KEVENT SuspendSemaphore;                         // [ReactOS] alias, KEVENT-sized (was KSEMAPHORE)
+        KEVENT SuspendSemaphore;                         // [LibreNT] alias, KEVENT-sized (was KSEMAPHORE)
     };
     LIST_ENTRY ThreadListEntry;                          // 0x318
     LIST_ENTRY MutantListHead;                           // 0x328
@@ -2062,7 +2062,7 @@ typedef struct _KTHREAD
     volatile LONG AbCompletedIoQoSBoostCount;            // 0x380
     volatile SHORT KeReferenceCount;                     // 0x384
     CHAR DecayBoost;                                     // 0x386
-    UCHAR LargeStack;                                    // 0x387 Win11 name: Spare6 [ReactOS]
+    UCHAR LargeStack;                                    // 0x387 Win11 name: Spare6 [LibreNT]
     ULONG ForegroundLossTime;                            // 0x388
     ULONG Spare38C;                                      // 0x38C
     union
@@ -2108,10 +2108,10 @@ typedef struct _KTHREAD
     ULONG SchedulerAssistYieldCounter;                   // 0x430
     ULONG SchedulerAssistYieldBoostCount;                // 0x434
     LONG64 SchedulerAssistLastYieldBoostTime;            // 0x438
-    // Win11 Spare28[5] region: ReactOS private members
-    KSPIN_LOCK ApcQueueLock;                             // 0x440 [ReactOS]
-    PKAPC_STATE ApcStatePointer[2];                      // 0x448 [ReactOS]
-    PVOID CallbackStack;                                 // 0x458 [ReactOS]
+    // Win11 Spare28[5] region: LibreNT private members
+    KSPIN_LOCK ApcQueueLock;                             // 0x440 [LibreNT]
+    PKAPC_STATE ApcStatePointer[2];                      // 0x448 [LibreNT]
+    PVOID CallbackStack;                                 // 0x458 [LibreNT]
     ULONG64 Spare28;                                     // 0x460
     ULONG Spare29;                                       // 0x468
     volatile ULONG ModeHistory;                          // 0x46C
@@ -2129,9 +2129,9 @@ typedef struct _KTHREAD
 
 //
 // Kernel Thread (KTHREAD), Win11 26100 amd64 layout (ntkrnlmp.pdb 10.0.26100.8036)
-// sizeof == 0x4C0; members marked [ReactOS] live in Win11 spare/padding slots.
+// sizeof == 0x4C0; members marked [LibreNT] live in Win11 spare/padding slots.
 // Mirrors the arm64 variant above: genuine Windows fields are offset-accurate and
-// C_ASSERT-locked; ReactOS-internal scheduler/APC fields are tucked into spares.
+// C_ASSERT-locked; LibreNT-internal scheduler/APC fields are tucked into spares.
 //
 #elif defined(_M_AMD64) && (NTDDI_VERSION >= NTDDI_WIN11_GE)
 
@@ -2165,17 +2165,17 @@ typedef struct _KTHREAD
             ULONG WaitNext:1;
             ULONG SystemAffinityActive:1;
             ULONG Alertable:1;
-            ULONG ProcessReadyQueue:1;                   // Win11 name: Reserved1 [ReactOS]
+            ULONG ProcessReadyQueue:1;                   // Win11 name: Reserved1 [LibreNT]
             ULONG ApcInterruptRequest:1;
             ULONG QuantumEndMigrate:1;
             ULONG SecureThread:1;
             ULONG TimerActive:1;
             ULONG SystemThread:1;
             ULONG ProcessDetachActive:1;
-            ULONG GdiFlushActive:1;                      // Win11 name: Reserved2 [ReactOS]
+            ULONG GdiFlushActive:1;                      // Win11 name: Reserved2 [LibreNT]
             ULONG ScbReadyQueue:1;
             ULONG ApcQueueable:1;
-            ULONG CycleChargePending:1;                  // Win11 name: Reserved3 [ReactOS]
+            ULONG CycleChargePending:1;                  // Win11 name: Reserved3 [LibreNT]
             ULONG WaitNextClearWobPriorityFloor:1;
             ULONG TimerSuspended:1;
             ULONG SuspendedWaitMode:1;
@@ -2359,7 +2359,7 @@ typedef struct _KTHREAD
     USHORT UserAffinityPrimaryGroup;                     // 0x230
     CHAR PreviousMode;                                   // 0x232
     CHAR BasePriority;                                   // 0x233
-    CCHAR FreezeCount;                                   // 0x234 Win11 name: Spare24 [ReactOS]
+    CCHAR FreezeCount;                                   // 0x234 Win11 name: Spare24 [LibreNT]
     UCHAR Preempted;                                     // 0x235
     UCHAR AdjustReason;                                  // 0x236
     CHAR AdjustIncrement;                                // 0x237
@@ -2385,7 +2385,7 @@ typedef struct _KTHREAD
     union
     {
         KAPC SchedulerApc;                               // 0x288
-        KAPC SuspendApc;                                 // [ReactOS] alias
+        KAPC SuspendApc;                                 // [LibreNT] alias
         struct
         {
             UCHAR SchedulerApcFill1[FIELD_OFFSET(KAPC, SpareByte1)]; // 0x03
@@ -2416,7 +2416,7 @@ typedef struct _KTHREAD
     union
     {
         KEVENT SuspendEvent;                             // 0x2E0
-        KEVENT SuspendSemaphore;                         // [ReactOS] alias, KEVENT-sized
+        KEVENT SuspendSemaphore;                         // [LibreNT] alias, KEVENT-sized
     };
     LIST_ENTRY ThreadListEntry;                          // 0x2F8
     LIST_ENTRY MutantListHead;                           // 0x308
@@ -2450,7 +2450,7 @@ typedef struct _KTHREAD
     volatile LONG AbCompletedIoQoSBoostCount;            // 0x360
     volatile SHORT KeReferenceCount;                     // 0x364
     CHAR DecayBoost;                                     // 0x366
-    UCHAR LargeStack;                                    // 0x367 Win11 name: Spare6 [ReactOS]
+    UCHAR LargeStack;                                    // 0x367 Win11 name: Spare6 [LibreNT]
     ULONG ForegroundLossTime;                            // 0x368
     union
     {
@@ -2515,10 +2515,10 @@ typedef struct _KTHREAD
     ULONG SchedulerAssistYieldCounter;                   // 0x488
     ULONG SchedulerAssistYieldBoostCount;                // 0x48C
     LONG64 SchedulerAssistLastYieldBoostTime;            // 0x490
-    // Win11 Padding[5] region (0x498..0x4C0): ReactOS private members
-    KSPIN_LOCK ApcQueueLock;                             // 0x498 [ReactOS]
-    PKAPC_STATE ApcStatePointer[2];                      // 0x4A0 [ReactOS]
-    PVOID CallbackStack;                                 // 0x4B0 [ReactOS]
+    // Win11 Padding[5] region (0x498..0x4C0): LibreNT private members
+    KSPIN_LOCK ApcQueueLock;                             // 0x498 [LibreNT]
+    PKAPC_STATE ApcStatePointer[2];                      // 0x4A0 [LibreNT]
+    PVOID CallbackStack;                                 // 0x4B0 [LibreNT]
     ULONG64 Padding;                                     // 0x4B8
 } KTHREAD;                                               // sizeof 0x4C0
 
@@ -2979,9 +2979,9 @@ typedef struct _KTHREAD
 #elif (NTDDI_VERSION >= NTDDI_LONGHORN) // ][
     PVOID MdlForLockedTeb;
 #endif // ]
-#if defined(__REACTOS__) && defined(_M_AMD64) // HACK!
+#if defined(__LIBRENT__) && defined(_M_AMD64) // HACK!
     XSAVE_FORMAT* StateSaveArea;
-#elif defined(__REACTOS__) && defined(_M_ARM64)
+#elif defined(__LIBRENT__) && defined(_M_ARM64)
     PVOID StateSaveArea;
     PVOID Arm64FpState;
 #endif
@@ -3017,7 +3017,7 @@ typedef struct _KTHREAD
     ULONG ExpectedRunTime;
     PVOID KernelStack;
     XSAVE_FORMAT* StateSaveArea;
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
     PVOID Arm64FpState;
 #endif
     struct _KSCHEDULING_GROUP* SchedulingGroup;
@@ -3317,7 +3317,7 @@ typedef struct _KTHREAD
     union
     {
         KAPC SchedulerApc;
-#if defined(__REACTOS__) && !defined(_WIN64)
+#if defined(__LIBRENT__) && !defined(_WIN64)
         KAPC SuspendApc;
 #endif
         struct
@@ -3356,7 +3356,7 @@ typedef struct _KTHREAD
     union
     {
         KEVENT SuspendEvent;
-#if defined(__REACTOS__) && !defined(_WIN64)
+#if defined(__LIBRENT__) && !defined(_WIN64)
         KEVENT SuspendSemaphore;
 #endif
     };
@@ -3423,8 +3423,8 @@ typedef struct _KTHREAD
     ULONG64 NpxState;
 #endif
 #endif
-#if defined(__REACTOS__) && !defined(_WIN64) && (NTDDI_VERSION >= NTDDI_WIN10)
-    /* ReactOS-private state absent from the public NT10 x86 layout. */
+#if defined(__LIBRENT__) && !defined(_WIN64) && (NTDDI_VERSION >= NTDDI_WIN10)
+    /* LibreNT-private state absent from the public NT10 x86 layout. */
     KSPIN_LOCK ApcQueueLock;
     PKAPC_STATE ApcStatePointer[2];
     PVOID CallbackStack;
@@ -3517,7 +3517,7 @@ C_ASSERT(FIELD_OFFSET(KTHREAD, UserAbEntries) == 0x498);
 
 //
 // amd64 KTHREAD layout locks (Win11 26100 ntkrnlmp.pdb 10.0.26100.8036).
-// Genuine Windows fields are pinned to their PDB offsets; the ReactOS-only
+// Genuine Windows fields are pinned to their PDB offsets; the LibreNT-only
 // fields live in the Win11 Padding[5] tail (ApcQueueLock/ApcStatePointer/CallbackStack)
 // plus Spare6 (LargeStack). Spare18 overlays WaitBlock[3].Object and is not writable.
 //
@@ -3614,7 +3614,7 @@ C_ASSERT(FIELD_OFFSET(KTHREAD, CallbackStack) == 0x4B0);
 
 //
 // Kernel Process (KPROCESS), shared Win11 26100 arm64 layout
-// sizeof == 0x1B8; members marked [ReactOS] live in Win11 spare slots
+// sizeof == 0x1B8; members marked [LibreNT] live in Win11 spare slots
 //
 #ifdef KERNEL_LAYOUT_WIN11_ARM64
 
@@ -3664,14 +3664,14 @@ typedef struct _KPROCESS
     ULONG64 ActiveGroupsMask[2];                         // 0x0A0 KGROUP_MASK
     ULONG64 ActiveGroupPadding[2];                       // 0x0B0
     PVOID IdealProcessorAssignmentBlock;                 // 0x0C0
-    // Win11 Padding[6] region: ReactOS private members
-    ULONG_PTR Unused0;                                   // 0x0C8 [ReactOS]
-    PVOID VdmTrapcHandler;                               // 0x0D0 [ReactOS]
-    USHORT IopmOffset;                                   // 0x0D8 [ReactOS]
-    UCHAR State;                                         // 0x0DA [ReactOS]
-    UCHAR ThreadSeed;                                    // 0x0DB [ReactOS]
-    UCHAR PowerState;                                    // 0x0DC [ReactOS]
-    UCHAR IdealNode;                                     // 0x0DD [ReactOS]
+    // Win11 Padding[6] region: LibreNT private members
+    ULONG_PTR Unused0;                                   // 0x0C8 [LibreNT]
+    PVOID VdmTrapcHandler;                               // 0x0D0 [LibreNT]
+    USHORT IopmOffset;                                   // 0x0D8 [LibreNT]
+    UCHAR State;                                         // 0x0DA [LibreNT]
+    UCHAR ThreadSeed;                                    // 0x0DB [LibreNT]
+    UCHAR PowerState;                                    // 0x0DC [LibreNT]
+    UCHAR IdealNode;                                     // 0x0DD [LibreNT]
     USHORT SpareDE;                                      // 0x0DE
     ULONG64 SpareE0[3];                                  // 0x0E0
     ULONG Padding2;                                      // 0x0F8
@@ -3706,7 +3706,7 @@ typedef struct _KPROCESS
 
 //
 // Kernel Process (KPROCESS), Win11 26100 amd64 layout (ntkrnlmp.pdb 10.0.26100.8036)
-// sizeof == 0x1C8; members marked [ReactOS] live in the Win11 Padding[6] slot
+// sizeof == 0x1C8; members marked [LibreNT] live in the Win11 Padding[6] slot
 //
 #elif defined(_M_AMD64) && (NTDDI_VERSION >= NTDDI_WIN11_GE)
 
@@ -3754,16 +3754,16 @@ typedef struct _KPROCESS
     ULONG64 ActiveGroupsMask[2];                         // 0x098 KGROUP_MASK
     ULONG64 ActiveGroupPadding[2];                       // 0x0A8
     PVOID IdealProcessorAssignmentBlock;                 // 0x0B8
-    ULONG_PTR Unused0;                                   // 0x0C0 [ReactOS]
-    PVOID VdmTrapcHandler;                               // 0x0C8 [ReactOS]
-    USHORT IopmOffset;                                   // 0x0D0 [ReactOS]
-    UCHAR State;                                         // 0x0D2 [ReactOS]
-    UCHAR ThreadSeed;                                    // 0x0D3 [ReactOS]
-    UCHAR PowerState;                                    // 0x0D4 [ReactOS]
-    UCHAR IdealNode;                                     // 0x0D5 [ReactOS]
+    ULONG_PTR Unused0;                                   // 0x0C0 [LibreNT]
+    PVOID VdmTrapcHandler;                               // 0x0C8 [LibreNT]
+    USHORT IopmOffset;                                   // 0x0D0 [LibreNT]
+    UCHAR State;                                         // 0x0D2 [LibreNT]
+    UCHAR ThreadSeed;                                    // 0x0D3 [LibreNT]
+    UCHAR PowerState;                                    // 0x0D4 [LibreNT]
+    UCHAR IdealNode;                                     // 0x0D5 [LibreNT]
     USHORT SpareD6;                                      // 0x0D6
-    KGDTENTRY64 LdtSystemDescriptor;                     // 0x0D8 [ReactOS]
-    PVOID LdtBaseAddress;                                // 0x0E8 [ReactOS]
+    KGDTENTRY64 LdtSystemDescriptor;                     // 0x0D8 [LibreNT]
+    PVOID LdtBaseAddress;                                // 0x0E8 [LibreNT]
     ULONG Padding2;                                      // 0x0F0
     ULONG SchedulerAssistYieldBoostCount;                // 0x0F4
     LONG64 SchedulerAssistYieldBoostAllowedTime;         // 0x0F8

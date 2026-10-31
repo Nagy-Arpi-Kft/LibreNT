@@ -27,7 +27,7 @@
 #include <setupapi.h>
 #include <strsafe.h>
 #include <mountmgr.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <algorithm>
 #include "../btrfs.h"
 #include "mountmgr.h"
@@ -239,7 +239,7 @@ static void find_devices(HWND hwnd, const GUID* guid, const mountmgr& mm, vector
                     try {
                         auto v = mm.query_points(L"", L"", wstring_view(path.Buffer, path.Length / sizeof(WCHAR)));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                         for (const auto& p : v) {
                             if (p.symlink.length() == 14 && p.symlink.substr(0, dosdevices.length()) == dosdevices && p.symlink[13] == ':') {
 #else
@@ -248,7 +248,7 @@ static void find_devices(HWND hwnd, const GUID* guid, const mountmgr& mm, vector
 #endif
                                 WCHAR dr[3];
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                 dr[0] = p.symlink[12];
 #else
                                 dr[0] = (*p).symlink[12];
@@ -316,7 +316,7 @@ static void find_devices(HWND hwnd, const GUID* guid, const mountmgr& mm, vector
         throw last_error(GetLastError());
 }
 
-#ifndef __REACTOS__ // Disabled because building with our <algorithm> seems complex right now...
+#ifndef __LIBRENT__ // Disabled because building with our <algorithm> seems complex right now...
 static bool sort_devices(device i, device j) {
     if (i.disk_num < j.disk_num)
         return true;
@@ -385,7 +385,7 @@ void BtrfsDeviceAdd::populate_device_tree(HWND tree) {
         find_devices(hwnd, &GUID_DEVINTERFACE_HIDDEN_VOLUME, mm, device_list);
     }
 
-#ifndef __REACTOS__ // Disabled because building with our <algorithm> seems complex right now...
+#ifndef __LIBRENT__ // Disabled because building with our <algorithm> seems complex right now...
     sort(device_list.begin(), device_list.end(), sort_devices);
 #endif
 

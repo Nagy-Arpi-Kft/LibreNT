@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Kernel-Mode Test Suite Reserved Mapping test
  * COPYRIGHT:   Copyright 2015,2023 Thomas Faber (thomas.faber@reactos.org)
@@ -8,7 +8,7 @@
 
 #include <kmt_test.h>
 
-static BOOLEAN g_IsReactOS;
+static BOOLEAN g_IsLibreNT;
 
 #ifdef _M_IX86
 static BOOLEAN g_IsPae;
@@ -132,7 +132,7 @@ ValidateMapping(
     CurrentAddress = (PUCHAR)BaseAddress - 1 * PAGE_SIZE;
     PteValue = GET_PTE_VALUE(CurrentAddress);
 
-    if (!g_IsReactOS && GetNTVersion() >= _WIN32_WINNT_VISTA)
+    if (!g_IsLibreNT && GetNTVersion() >= _WIN32_WINNT_VISTA)
     {
         skip(FALSE, "Reserved-mapping free PTE metadata is native-NT internal state\n");
         return Valid;
@@ -165,12 +165,12 @@ ValidateMapping(
     {
         ExpectedValue = (TotalPtes + 2) << 28;
     }
-    else if (g_IsReactOS || GetNTVersion() >= _WIN32_WINNT_VISTA)
+    else if (g_IsLibreNT || GetNTVersion() >= _WIN32_WINNT_VISTA)
 #else
-    if (g_IsReactOS || GetNTVersion() >= _WIN32_WINNT_VISTA)
+    if (g_IsLibreNT || GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     {
-        /* On ReactOS and on Vista+ the size is stored in
+        /* On LibreNT and on Vista+ the size is stored in
          * the NextEntry field of a MMPTE_LIST structure */
         ExpectedValue = ((ULONG64)TotalPtes + 2) << 32;
     }
@@ -361,9 +361,9 @@ START_TEST(MmReservedMapping)
 #ifdef _M_IX86
     g_IsPae = ExIsProcessorFeaturePresent(PF_PAE_ENABLED);
 #endif
-    g_IsReactOS = *(PULONG)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
-    if (!g_IsReactOS)
-        trace("Not ReactOS\n");
+    g_IsLibreNT = *(PULONG)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
+    if (!g_IsLibreNT)
+        trace("Not LibreNT\n");
 
     pMmAllocatePagesForMdlEx = KmtGetSystemRoutineAddress(L"MmAllocatePagesForMdlEx");
 

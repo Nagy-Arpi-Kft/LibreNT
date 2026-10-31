@@ -3,7 +3,7 @@
  *
  * USB IOCTL interface.
  *
- * This file is part of the ReactOS PSDK package.
+ * This file is part of the LibreNT PSDK package.
  *
  * Contributors:
  *   Created by Casper S. Hornstrup <chorns@users.sourceforge.net>
@@ -213,7 +213,7 @@ typedef struct _USB_TOPOLOGY_ADDRESS {
 
 #endif
 
-#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__LIBRENT__)
 
 #define IOCTL_USB_GET_HUB_INFORMATION_EX \
   CTL_CODE(FILE_DEVICE_USB, USB_GET_HUB_INFORMATION_EX, METHOD_BUFFERED, FILE_ANY_ACCESS)
@@ -409,7 +409,7 @@ typedef struct _USB_NODE_CONNECTION_INFORMATION_EX_V2 {
   USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS Flags;
 } USB_NODE_CONNECTION_INFORMATION_EX_V2, *PUSB_NODE_CONNECTION_INFORMATION_EX_V2;
 
-#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__LIBRENT__)
 
 typedef enum _USB_HUB_TYPE {
   UsbRootHub = 1,
@@ -531,7 +531,7 @@ typedef struct _HUB_DEVICE_CONFIG_INFO_V1 {
   CTL_CODE(FILE_DEVICE_USB, USB_GET_NODE_CONNECTION_INFORMATION_EX_V2, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
 
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__LIBRENT__)
 
 #define IOCTL_USB_GET_TRANSPORT_CHARACTERISTICS \
   CTL_CODE(FILE_DEVICE_USB, USB_GET_TRANSPORT_CHARACTERISTICS, METHOD_BUFFERED, FILE_ANY_ACCESS)
@@ -802,7 +802,7 @@ typedef struct _USB_DEVICE_PERFORMANCE_INFO {
 
 #pragma pack(pop)
 
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__LIBRENT__)
 
 #pragma pack(push, 1)
 

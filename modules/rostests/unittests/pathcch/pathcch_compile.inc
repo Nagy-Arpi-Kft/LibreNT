@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS PathCch Library - Unit-tests
+ * PROJECT:     LibreNT PathCch Library - Unit-tests
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     C/C++ compilation tests
  * COPYRIGHT:   Copyright 2025 Hermès Bélusca-Maïto <hermes.belusca-maito@reactos.org>
@@ -17,12 +17,12 @@ void test_CPP_PathCch(void)
 void test_C_PathCch(void)
 #endif
 {
-    const WCHAR szTestPath[] = L"C:\\ReactOS\\System32\\dllcache\\..\\..\\..\\freeldr.ini";
+    const WCHAR szTestPath[] = L"C:\\LibreNT\\System32\\dllcache\\..\\..\\..\\freeldr.ini";
     const WCHAR szCanonPath[] = L"C:\\freeldr.ini";
-    const WCHAR szExtraPath0[] = L"C:\\ReactOS\\System32";
-    const WCHAR szExtraPath1[] = L"C:\\ReactOS\\System32\\";
+    const WCHAR szExtraPath0[] = L"C:\\LibreNT\\System32";
+    const WCHAR szExtraPath1[] = L"C:\\LibreNT\\System32\\";
     const WCHAR szExtraPath2[] = L"\\dllcache\\..\\..\\..\\freeldr.ini";
-    const WCHAR szUNCPath[] = L"\\\\?\\UNC\\ReactOS_Server\\Root\\freeldr.ini";
+    const WCHAR szUNCPath[] = L"\\\\?\\UNC\\LibreNT_Server\\Root\\freeldr.ini";
 
     HRESULT hr;
     BOOL res;

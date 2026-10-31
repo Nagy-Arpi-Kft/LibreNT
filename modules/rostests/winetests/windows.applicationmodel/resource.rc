@@ -21,6 +21,6 @@
 /* @makedep: appxmanifest.xml */
 appxmanifest.xml RCDATA appxmanifest.xml
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 application.exe TESTDLL "application.exe"
 #endif

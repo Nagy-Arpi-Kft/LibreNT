@@ -8,4 +8,4 @@ add_library(werkernel MODULE
 
 set_module_type(werkernel kernelmodedriver)
 add_importlibs(werkernel ntoskrnl hal)
-add_cd_file(TARGET werkernel DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET werkernel DESTINATION librent/system32/drivers NO_CAB FOR all)

@@ -22,7 +22,7 @@ enum algid
 {
     /* symmetric */
     AES,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RC2,
     TDES,
     DES,
@@ -40,7 +40,7 @@ struct key
 {
     enum algid algid;
     BCRYPT_KEY_HANDLE bcrypt_key;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL finalized;
     WCHAR *name;
     DWORD flags;
@@ -68,13 +68,13 @@ struct object_property
     void *value;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define NCRYPT_OBJECT_MAGIC 0x4A424F4E
 #endif
 
 struct object
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD magic;
 #endif
     enum object_type type;

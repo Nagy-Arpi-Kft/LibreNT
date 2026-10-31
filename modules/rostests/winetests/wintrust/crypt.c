@@ -685,7 +685,7 @@ static void test_CryptCATAdminAddRemoveCatalog(void)
     SetLastError(0xdeadbeef);
     hcatinfo = pCryptCATAdminAddCatalog(hcatadmin, tmpfileW, basenameW, 0);
     error = GetLastError();
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     {
@@ -707,7 +707,7 @@ static void test_CryptCATAdminAddRemoveCatalog(void)
     hcatinfo = pCryptCATAdminAddCatalog(hcatadmin, tmpfileW, NULL, 0);
     error = GetLastError();
     ok(hcatinfo == NULL, "CryptCATAdminAddCatalog succeeded\n");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     ok(error == ERROR_BAD_FORMAT, "got %lu expected ERROR_BAD_FORMAT\n", GetLastError());
@@ -725,7 +725,7 @@ static void test_CryptCATAdminAddRemoveCatalog(void)
         win_skip("Not enough rights\n");
         goto cleanup;
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     ok(hcatinfo != NULL, "CryptCATAdminAddCatalog failed %lu\n", GetLastError());
@@ -733,7 +733,7 @@ static void test_CryptCATAdminAddRemoveCatalog(void)
     info.cbStruct = sizeof(info);
     info.wszCatalogFile[0] = 0;
     ret = pCryptCATCatalogInfoFromContext(hcatinfo, &info, 0);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     {
@@ -758,7 +758,7 @@ static void test_CryptCATAdminAddRemoveCatalog(void)
     lstrcatA(catfilepath, "\\{DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF}\\winetest.cat");
     attrs = GetFileAttributesA(catfilepath);
     ok(attrs != INVALID_FILE_ATTRIBUTES, "Expected %s to exist\n", catfilepath);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     ok(attrs == FILE_ATTRIBUTE_SYSTEM ||

@@ -4,5 +4,5 @@
 add_library(acpipmi MODULE acpipmi.c acpipmi.rc)
 set_module_type(acpipmi kernelmodedriver)
 add_importlibs(acpipmi ntoskrnl hal)
-add_cd_file(TARGET acpipmi DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET acpipmi DESTINATION librent/system32/drivers FOR all)
 add_driver_inf(acpipmi acpipmi.inf)

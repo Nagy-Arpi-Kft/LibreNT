@@ -44,12 +44,12 @@ typedef struct _WINE_REGSTOREINFO
     struct list      crlsToDelete;
     struct list      ctlsToDelete;
     HANDLE           key_modified_event;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list      notify_events;
 #endif
 } WINE_REGSTOREINFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct _WINE_REGSTORE_NOTIFY
 {
     struct list entry;
@@ -438,7 +438,7 @@ static void WINAPI CRYPT_RegCloseStore(HCERTSTORE hCertStore, DWORD dwFlags)
         FIXME("Unimplemented flags: %08lx\n", dwFlags);
 
     CRYPT_RegFlushStore(store, dwFlags & CERT_CLOSE_STORE_FORCE_FLAG);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (!list_empty(&store->notify_events))
         CRYPT_RegFreeNotify(LIST_ENTRY(list_head(&store->notify_events), WINE_REGSTORE_NOTIFY, entry));
 #endif
@@ -593,7 +593,7 @@ static BOOL WINAPI CRYPT_RegControl(HCERTSTORE hCertStore, DWORD dwFlags,
                 store->key_modified_event, TRUE))
             {
                 ERR("RegNotifyChangeKeyValue failed.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 SetEvent(store->key_modified_event);
 #endif
             }
@@ -601,7 +601,7 @@ static BOOL WINAPI CRYPT_RegControl(HCERTSTORE hCertStore, DWORD dwFlags,
             I_CertUpdateStore(store->memStore, memStore, 0, 0);
             CertCloseStore(memStore, 0);
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pvCtrlPara)
         {
             HANDLE event = *(const HANDLE *)pvCtrlPara;
@@ -624,7 +624,7 @@ static BOOL WINAPI CRYPT_RegControl(HCERTSTORE hCertStore, DWORD dwFlags,
         FIXME("CERT_STORE_CTRL_AUTO_RESYNC: stub\n");
         break;
     case CERT_STORE_CTRL_NOTIFY_CHANGE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pvCtrlPara)
         {
             EnterCriticalSection(&store->cs);
@@ -635,7 +635,7 @@ static BOOL WINAPI CRYPT_RegControl(HCERTSTORE hCertStore, DWORD dwFlags,
         FIXME("CERT_STORE_CTRL_NOTIFY_CHANGE: stub\n");
 #endif
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case CERT_STORE_CTRL_CANCEL_NOTIFY:
     {
         WINE_REGSTORE_NOTIFY *notify;
@@ -700,7 +700,7 @@ WINECRYPT_CERTSTORE *CRYPT_RegOpenStore(HCRYPTPROV hCryptProv, DWORD dwFlags,
     {
         HKEY key;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         BOOL opened;
 
         if ((ULONG_PTR)pvPara >= (ULONG_PTR)HKEY_CLASSES_ROOT &&
@@ -748,7 +748,7 @@ WINECRYPT_CERTSTORE *CRYPT_RegOpenStore(HCRYPTPROV hCryptProv, DWORD dwFlags,
                     list_init(&regInfo->certsToDelete);
                     list_init(&regInfo->crlsToDelete);
                     list_init(&regInfo->ctlsToDelete);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     list_init(&regInfo->notify_events);
 #endif
                     regInfo->key_modified_event = CreateEventW(NULL, FALSE, FALSE, NULL);
@@ -756,7 +756,7 @@ WINECRYPT_CERTSTORE *CRYPT_RegOpenStore(HCRYPTPROV hCryptProv, DWORD dwFlags,
                         regInfo->key_modified_event, TRUE))
                     {
                         ERR("RegNotifyChangeKeyValue failed.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         SetEvent(regInfo->key_modified_event);
 #endif
                     }

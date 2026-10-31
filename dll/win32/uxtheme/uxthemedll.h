@@ -23,8 +23,8 @@
 
 #include <wingdi.h>
 #include <winuser.h>
-#ifdef __REACTOS__
-#include <reactos/user32_vista.h>
+#ifdef __LIBRENT__
+#include <librent/user32_vista.h>
 #endif
 #include <uxtheme.h>
 #include <msstyles.h>
@@ -92,7 +92,7 @@ HRESULT WINAPI OpenThemeFile(LPCWSTR pszThemeFileName, LPCWSTR pszColorName,
                              LPCWSTR pszSizeName, HTHEMEFILE *hThemeFile,
                              DWORD unknown);
 HRESULT WINAPI CloseThemeFile(HTHEMEFILE hThemeFile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI ApplyTheme(HTHEMEFILE hThemeFile, UINT flags, HWND hWnd);
 #else
 HRESULT WINAPI ApplyTheme(HTHEMEFILE hThemeFile, char *unknown, HWND hWnd);
@@ -115,7 +115,7 @@ extern void UXTHEME_InitSystem(HINSTANCE hInst);
 extern HRESULT UXTHEME_SetActiveTheme(PTHEME_FILE tf);
 extern void UXTHEME_UninitSystem(void);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HINSTANCE hDllInst;
 extern DWORD gdwErrorInfoTlsIndex;
 extern BOOL g_bThemeHooksActive;

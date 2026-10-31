@@ -21,16 +21,16 @@
 #include <portabledevicetypes.h>
 #include <sensorsapi.h>
 #include <sensors.h>
-#include <reactos/drivers/sensorprovider.h>
+#include <librent/drivers/sensorprovider.h>
 
 #include <wine/debug.h>
 
 HRESULT sensor_manager_create(REFIID iid, void **out);
 HRESULT sensor_collection_create(REFIID iid, void **out);
-HRESULT sensor_create(const WCHAR *device_path, const REACTOS_SENSOR_PROVIDER_INFORMATION *provider,
+HRESULT sensor_create(const WCHAR *device_path, const LIBRENT_SENSOR_PROVIDER_INFORMATION *provider,
         ULONG channel_index, REFIID iid, void **out);
 HRESULT sensor_data_report_create(const PROPERTYKEY *key, double scale,
-        const REACTOS_SENSOR_READING *reading, REFIID iid, void **out);
+        const LIBRENT_SENSOR_READING *reading, REFIID iid, void **out);
 
 static inline WCHAR *sensor_strdupW(const WCHAR *source)
 {

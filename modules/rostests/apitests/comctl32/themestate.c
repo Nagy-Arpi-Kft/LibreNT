@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT api tests
+ * PROJECT:         LibreNT api tests
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Test that comctl32 requests the extended theme part/state
  *                  pairs (hover, selection, sort, disabled) from uxtheme
@@ -780,7 +780,7 @@ START_TEST(themestate)
     SetForegroundWindow(g_hMainWnd);
     FlushPaint(g_hMainWnd);
 
-    /* The probe must come after window creation and painting: ReactOS gates
+    /* The probe must come after window creation and painting: LibreNT gates
      * OpenThemeData on the per-process user api hook, which user32 loads
      * lazily on the first paint/nonclient path, not at process start */
     probeTheme = OpenThemeData(g_hMainWnd, L"Button");

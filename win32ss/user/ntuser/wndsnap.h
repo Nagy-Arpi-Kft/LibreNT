@@ -3,7 +3,7 @@
 extern BOOL g_bWindowSnapEnabled;
 
 /* Private server-side class used only by the composited snap preview. */
-#define SNAP_PREVIEW_CLASS_NAME L"ReactOSSnapPreview"
+#define SNAP_PREVIEW_CLASS_NAME L"LibreNTSnapPreview"
 
 /* How far the pointer may drift off the edge before the armed snap is dropped */
 #define SNAP_RELEASE_SLACK 12

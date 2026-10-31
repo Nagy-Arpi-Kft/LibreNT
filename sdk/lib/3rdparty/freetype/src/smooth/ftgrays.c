@@ -191,7 +191,7 @@ typedef ptrdiff_t  FT_PtrDist;
 
 #ifdef FT_DEBUG_LEVEL_TRACE
 
-#ifndef __REACTOS__ /* win32ss/drivers/font/ftfd/rosglue.c defines this */
+#ifndef __LIBRENT__ /* win32ss/drivers/font/ftfd/rosglue.c defines this */
   void
   FT_Message( const char*  fmt,
               ... )
@@ -1674,7 +1674,7 @@ typedef ptrdiff_t  FT_PtrDist;
     const TCoord  yMin = ras.min_ey;
     const TCoord  yMax = ras.max_ey;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TCell   *buffer = malloc(FT_MAX_GRAY_POOL * sizeof(TCell));
     if (!buffer)
       return 1;
@@ -1739,7 +1739,7 @@ typedef ptrdiff_t  FT_PtrDist;
           continue;
         }
         else if ( error != ErrRaster_Memory_Overflow )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
           free(buffer);
           return 1;
@@ -1755,7 +1755,7 @@ typedef ptrdiff_t  FT_PtrDist;
         if ( width == 0 )
         {
           FT_TRACE7(( "gray_convert_glyph: rotten glyph\n" ));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           free(buffer);
 #endif
           return 1;
@@ -1767,7 +1767,7 @@ typedef ptrdiff_t  FT_PtrDist;
       } while ( band >= bands );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(buffer);
     }
 #endif
@@ -1783,7 +1783,7 @@ typedef ptrdiff_t  FT_PtrDist;
     const FT_Bitmap*   target_map = params->target;
 
 #ifndef FT_STATIC_RASTER
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     gray_TWorker *worker;
 #else
     gray_TWorker  worker[1];
@@ -1812,18 +1812,18 @@ typedef ptrdiff_t  FT_PtrDist;
            outline->contours[outline->n_contours - 1] + 1 )
       return FT_THROW( Invalid_Outline );
 
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
     worker = malloc(sizeof(*worker));
     if (!worker)
       return FT_THROW(Out_Of_Memory);
-#endif /* !defined(FT_STATIC_RASTER) && defined(__REACTOS__) */
+#endif /* !defined(FT_STATIC_RASTER) && defined(__LIBRENT__) */
 
     ras.outline = *outline;
 
     if ( params->flags & FT_RASTER_FLAG_DIRECT )
     {
       if ( !params->gray_spans )
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
       {
         free(worker);
         return 0;
@@ -1845,7 +1845,7 @@ typedef ptrdiff_t  FT_PtrDist;
     {
       /* if direct mode is not set, we must have a target bitmap */
       if ( !target_map )
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
       {
         free(worker);
         return FT_THROW( Invalid_Argument );
@@ -1856,7 +1856,7 @@ typedef ptrdiff_t  FT_PtrDist;
 
       /* nothing to do */
       if ( !target_map->width || !target_map->rows )
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
       {
         free(worker);
         return 0;
@@ -1866,7 +1866,7 @@ typedef ptrdiff_t  FT_PtrDist;
 #endif
 
       if ( !target_map->buffer )
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
       {
         free(worker);
         return FT_THROW( Invalid_Argument );
@@ -1895,7 +1895,7 @@ typedef ptrdiff_t  FT_PtrDist;
 
     /* exit if nothing to do */
     if ( ras.max_ex <= ras.min_ex || ras.max_ey <= ras.min_ey )
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
     {
       free(worker);
       return 0;
@@ -1904,7 +1904,7 @@ typedef ptrdiff_t  FT_PtrDist;
       return 0;
 #endif
 
-#if !defined(FT_STATIC_RASTER) && defined(__REACTOS__)
+#if !defined(FT_STATIC_RASTER) && defined(__LIBRENT__)
     {
       FT_Error error = gray_convert_glyph( RAS_VAR );
       free(worker);

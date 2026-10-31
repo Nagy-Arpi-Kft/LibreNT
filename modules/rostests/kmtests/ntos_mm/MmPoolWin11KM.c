@@ -1,13 +1,13 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Aggressive Win11-parity coverage of the executive POOL allocator
  *
- * Win11 <-> ReactOS parity push.  The SAME compiled kmtest driver runs on the
- * Windows 11 ARM64 reference kernel (ground truth) AND on ReactOS.  Every check
+ * Win11 <-> LibreNT parity push.  The SAME compiled kmtest driver runs on the
+ * Windows 11 ARM64 reference kernel (ground truth) AND on LibreNT.  Every check
  * below asserts a behaviour that is OBSERVABLE from a kernel-mode driver
  * (non-NULL, alignment, writability, round-trip block size, zero-on-alloc), so
- * a contract mismatch between the two runs pinpoints a ReactOS divergence
+ * a contract mismatch between the two runs pinpoints a LibreNT divergence
  * instead of a host-specific artefact.
  *
  * ARM64 notes that drive the assertions:
@@ -32,10 +32,10 @@
  *     through alloc/fill/free round-trips.
  *
  * ROS divergence target:
- *   - ExQueryPoolBlockSize() is a stub on ReactOS (UNIMPLEMENTED; returns 0 and
+ *   - ExQueryPoolBlockSize() is a stub on LibreNT (UNIMPLEMENTED; returns 0 and
  *     never writes *QuotaCharged).  Win11 returns a sane block size and sets the
  *     flag.  TestQueryPoolBlockSize() asserts the Win11 contract, so it passes on
- *     Win11 and fails (cleanly, no crash) on ReactOS.
+ *     Win11 and fails (cleanly, no crash) on LibreNT.
  */
 
 #include <kmt_test.h>
@@ -55,7 +55,7 @@
 #define MANYTAG(i)   (0x4B506D00u | (ULONG)(0x30 + (i)))
 
 /*
- * POOL_FLAG_* values are not present in the ReactOS headers (ExAllocatePool2 is
+ * POOL_FLAG_* values are not present in the LibreNT headers (ExAllocatePool2 is
  * a Win10 2004+ API).  Only the flag we actually use is defined locally.  By
  * contract ExAllocatePool2 zero-initialises unless POOL_FLAG_UNINITIALIZED is
  * set, so POOL_FLAG_NON_PAGED alone yields a zeroed non-paged block.
@@ -219,7 +219,7 @@ TestDistinctTags(VOID)
  * the requested size and stays sane (a sub-page request cannot report more than
  * a page of headroom), and *QuotaCharged is written (FALSE for a non-quota
  * block).  SEH-guarded; the allocation is freed on every path.  Passes on Win11,
- * diverges on ReactOS.
+ * diverges on LibreNT.
  */
 static
 VOID

@@ -14,18 +14,18 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning(push,3)
 #endif
 #include <commdlg.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning(pop)
 #endif
 
 #include "vfdtypes.h"
 #include "vfdapi.h"
 #include "vfdlib.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "vfdmsg.h"
 #else
 #include "vfdmsg_lib.h"
@@ -47,7 +47,7 @@
 //
 //	local functions
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static INT CALLBACK OpenDialogProc(
 #else
 static INT_PTR CALLBACK OpenDialogProc(
@@ -93,7 +93,7 @@ DWORD WINAPI VfdGuiOpen(
 //
 // Open image dialog procedure
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 INT CALLBACK OpenDialogProc(
 #else
 INT_PTR CALLBACK OpenDialogProc(
@@ -404,7 +404,7 @@ void OnBrowse(
 	ofn.nMaxFile	= sizeof(file);
 	ofn.lpstrInitialDir = dir;
 	ofn.lpstrTitle	= title ? title : FALLBACK_IMAGE_TITLE;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	ofn.Flags		= OFN_ENABLESIZING | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST;
 #else
 	ofn.Flags		= OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST;

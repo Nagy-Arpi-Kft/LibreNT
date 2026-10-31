@@ -8,7 +8,7 @@ add_executable(dxgi_winetest
     testlist.c)
 
 target_link_libraries(dxgi_winetest dx10guid uuid)
-target_include_directories(dxgi_winetest BEFORE PRIVATE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+target_include_directories(dxgi_winetest BEFORE PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 set_module_type(dxgi_winetest win32cui)
 add_dependencies(dxgi_winetest d3d_idl_headers)
 add_importlibs(dxgi_winetest d3d10_1 dxgi user32 msvcrt kernel32)

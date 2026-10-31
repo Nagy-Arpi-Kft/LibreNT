@@ -1,7 +1,7 @@
 /*
- * PROJECT:     ReactOS DirectComposition
+ * PROJECT:     LibreNT DirectComposition
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
- * PURPOSE:     DirectComposition interface declarations used by the ReactOS backend
+ * PURPOSE:     DirectComposition interface declarations used by the LibreNT backend
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
  */
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Boot Loader
+ * PROJECT:     LibreNT Boot Loader
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ARM64 loader address space limits
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -7,7 +7,7 @@
 
 #include <blefi.h>
 #include <arm64.h>
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 #include "../../winload/winload.h"
 
 const PFN_NUMBER MmArchMaxLoaderPage = MM_MAX_PAGE_LOADER;

@@ -19726,7 +19726,7 @@ START_TEST(d3d10core)
     HMODULE wined3d;
     char **argv;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((wined3d = GetModuleHandleA("d3dwine.dll")))
 #else
     if ((wined3d = GetModuleHandleA("wined3d.dll")))

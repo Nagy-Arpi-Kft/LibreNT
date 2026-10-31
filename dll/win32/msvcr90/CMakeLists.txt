@@ -1,4 +1,4 @@
-set(MSVCRT_DIR ${REACTOS_SOURCE_DIR}/dll/win32/msvcrt)
+set(MSVCRT_DIR ${LIBRENT_SOURCE_DIR}/dll/win32/msvcrt)
 set(VC90_ASSEMBLY ${WINARCH}_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_deadbeef)
 
 remove_definitions(-D_CRT_NON_CONFORMING_SWPRINTFS)
@@ -8,10 +8,10 @@ if(MSVC AND LTCG)
 endif()
 
 get_property(INCLUDE_DIRS DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
-list(REMOVE_ITEM INCLUDE_DIRS "${REACTOS_SOURCE_DIR}/sdk/include/crt")
+list(REMOVE_ITEM INCLUDE_DIRS "${LIBRENT_SOURCE_DIR}/sdk/include/crt")
 set_property(DIRECTORY . PROPERTY INCLUDE_DIRECTORIES ${INCLUDE_DIRS})
 include_directories(${MSVCRT_DIR}/include ${MSVCRT_DIR})
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_definitions(
     -D_CRTIMP=
@@ -71,14 +71,6 @@ elseif(ARCH STREQUAL "arm")
     list(APPEND SOURCE ${MSVCRT_DIR}/except_arm.c)
 elseif(ARCH STREQUAL "arm64")
     list(APPEND SOURCE ${MSVCRT_DIR}/except_arm64.c)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND SOURCE
-        ${MSVCRT_DIR}/except_riscv64.c
-        ${MSVCRT_DIR}/fpu_riscv64.c)
-elseif(ARCH STREQUAL "ppc")
-    list(APPEND SOURCE
-        ${MSVCRT_DIR}/except_ppc.c
-        ${MSVCRT_DIR}/fpu_ppc.c)
 endif()
 
 if(MSVC)
@@ -123,8 +115,8 @@ target_link_libraries(msvcr90 crtmath dbgrpt vcruntime wine chkstk ${PSEH_LIB})
 add_importlibs(msvcr90 kernel32 kernel32_vista ntdll)
 add_delay_importlibs(msvcr90 user32 advapi32)
 add_dependencies(msvcr90 psdk asm)
-add_cd_file(TARGET msvcr90 DESTINATION reactos/winsxs/${VC90_ASSEMBLY} FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${VC90_ASSEMBLY}.manifest DESTINATION reactos/winsxs/manifests FOR all)
+add_cd_file(TARGET msvcr90 DESTINATION librent/winsxs/${VC90_ASSEMBLY} FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${VC90_ASSEMBLY}.manifest DESTINATION librent/winsxs/manifests FOR all)
 
 add_library(msvcr90_implib EXCLUDE_FROM_ALL
     ${MSVCRT_DIR}/iob.c

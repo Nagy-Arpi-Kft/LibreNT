@@ -26,7 +26,7 @@
 
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI SxspGenerateManifestPathOnAssemblyIdentity(const WCHAR *, WCHAR *, DWORD *, void *);
 #endif
 
@@ -317,7 +317,7 @@ static void test_manifest_path(void)
                 ok( (p && !wcsncmp( buffer, tests[i].expect, p + 1 - buffer )) ||
                      broken( tests[i].broken && !wcsncmp( buffer, tests[i].broken, p + 1 - buffer )),
                      "wrong result %s / %s\n", debugstr_w(buffer), debugstr_w(tests[i].expect) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 todo_wine todo_if(is_reactos())
 #else
                 todo_wine

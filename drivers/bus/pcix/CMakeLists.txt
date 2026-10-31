@@ -1,7 +1,7 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/arblib
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/arblib
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 list(APPEND SOURCE
     arb/ar_busno.c
@@ -59,4 +59,4 @@ endif()
 add_importlibs(pcix ntoskrnl hal)
 add_pch(pcix pci.h "${PCH_SKIP_SOURCE}")
 add_dependencies(pcix pciclass)
-add_cd_file(TARGET pcix DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET pcix DESTINATION librent/system32/drivers NO_CAB FOR all)

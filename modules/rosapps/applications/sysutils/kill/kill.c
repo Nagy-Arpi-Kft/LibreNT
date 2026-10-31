@@ -1,5 +1,5 @@
 /*
- *  ReactOS kill
+ *  LibreNT kill
  *  Copyright (C) 2003 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kill.exe
+ * PROJECT:         LibreNT kill.exe
  * FILE:            apps/utils/kill/kill.c
  * PURPOSE:         Kill a running Process
  * PROGRAMMER:      Steven Edwards (Steven_Ed4153@yahoo.com)

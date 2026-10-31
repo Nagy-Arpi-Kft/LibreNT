@@ -40,7 +40,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(commdlg);
 
 HINSTANCE COMDLG32_hInstance = 0;
 HANDLE	COMDLG32_hActCtx = INVALID_HANDLE_VALUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 CRITICAL_SECTION COMDLG32_OpenFileLock;
 #endif
 
@@ -75,7 +75,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID Reserved)
 		COMDLG32_hActCtx = CreateActCtxW(&actctx);
 		if (COMDLG32_hActCtx == INVALID_HANDLE_VALUE)
 			ERR("failed to create activation context, last error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		InitializeCriticalSection(&COMDLG32_OpenFileLock);
 #endif
 
@@ -84,7 +84,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID Reserved)
 	case DLL_PROCESS_DETACH:
             if (Reserved) break;
             if (COMDLG32_TlsIndex != TLS_OUT_OF_INDEXES) TlsFree(COMDLG32_TlsIndex);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             DeleteCriticalSection(&COMDLG32_OpenFileLock);
 #endif
             if (COMDLG32_hActCtx != INVALID_HANDLE_VALUE) ReleaseActCtx(COMDLG32_hActCtx);

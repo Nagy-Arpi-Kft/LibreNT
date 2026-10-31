@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * Path Functions
  *
@@ -4740,7 +4740,7 @@ HRESULT SHELL_RegisterShellFolders(void)
         register_system_knownfolders();
     return hr;
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  * Path Functions
  *
@@ -5372,7 +5372,7 @@ static BOOL PathMakeUniqueNameA(
 /*************************************************************************
  * PathMakeUniqueNameW	[internal]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-pathmakeuniquename */
 static BOOL PathMakeUniqueNameW(
     _Out_ PWSTR pszUniqueName,
@@ -5822,7 +5822,7 @@ static LONG PathProcessCommandA (
 	return strlen(lpszPath);
 }
 
-#ifndef __REACTOS__ // See ../shlexec.cpp
+#ifndef __LIBRENT__ // See ../shlexec.cpp
 /*************************************************************************
 *	PathProcessCommandW
 */
@@ -5859,7 +5859,7 @@ LONG WINAPI PathProcessCommandAW (
 */
 
 /* !! MISSING Win2k3-compatible paths from the list below; absent from Wine !! */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const WCHAR Application_DataW[] = L"Application Data";
 static const WCHAR Local_Settings_Application_DataW[] = L"Local Settings\\Application Data";
 static const WCHAR Local_Settings_HistoryW[] = L"Local Settings\\History";
@@ -5876,14 +5876,14 @@ static const WCHAR Start_Menu_StartupW[] = L"Start Menu\\Programs\\StartUp";
 /* Long strings that are repeated many times: keep them here */
 static const WCHAR szSHFolders[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders";
 static const WCHAR szSHUserFolders[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const WCHAR szKnownFolderDescriptions[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FolderDescriptions";
 static const WCHAR szKnownFolderRedirections[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders";
 #endif
 
 typedef enum _CSIDL_Type {
     CSIDL_Type_User,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CSIDL_Type_InMyDocuments,
     CSIDL_Type_InAppData,
 #endif
@@ -5898,7 +5898,7 @@ typedef enum _CSIDL_Type {
 } CSIDL_Type;
 
 /* Cannot use #if _WIN32_WINNT >= 0x0600 because _WIN32_WINNT == 0x0600 here. */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define CSIDL_CONTACTS         0x0043
 #define CSIDL_DOWNLOADS        0x0047
 #define CSIDL_LINKS            0x004d
@@ -6683,7 +6683,7 @@ INT Shell_ParseSpecialFolder(_In_ LPCWSTR pszStart, _Out_ LPWSTR *ppch, _Out_ IN
     return SHGetSpecialFolderID(pszPath);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT _SHExpandEnvironmentStrings(LPCWSTR szSrc, LPWSTR szDest);
 #else
 static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR szDest, DWORD cchDest);
@@ -6698,7 +6698,7 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
  * Returns successful error code if the value was retrieved from the registry,
  * and a failure otherwise.
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT _SHGetUserShellFolderPath(HKEY rootKey, LPCWSTR userPrefix,
 #else
 static HRESULT _SHGetUserShellFolderPath(HKEY rootKey, HANDLE hToken, LPCWSTR userPrefix,
@@ -6755,7 +6755,7 @@ static HRESULT _SHGetUserShellFolderPath(HKEY rootKey, HANDLE hToken, LPCWSTR us
         {
             WCHAR szTemp[MAX_PATH];
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             _SHExpandEnvironmentStrings(path, szTemp);
 #else
             hr = _SHExpandEnvironmentStrings(hToken, path, szTemp, _countof(szTemp));
@@ -6773,7 +6773,7 @@ static HRESULT _SHGetUserShellFolderPath(HKEY rootKey, HANDLE hToken, LPCWSTR us
     }
     else
         hr = E_FAIL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 end:
 #endif
     RegCloseKey(shellFolderKey);
@@ -6817,7 +6817,7 @@ BOOL _SHGetUserProfileDirectoryW(HANDLE hToken, LPWSTR szPath, LPDWORD lpcchPath
  *   CSIDL_Type_CurrVer:  %SystemDrive%
  *   (Others might make sense too, but as yet are unneeded.)
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT _SHGetDefaultValue(BYTE folder, LPWSTR pszPath)
 #else
 static HRESULT _SHGetDefaultValue(HANDLE hToken, BYTE folder, LPWSTR pszPath)
@@ -6825,7 +6825,7 @@ static HRESULT _SHGetDefaultValue(HANDLE hToken, BYTE folder, LPWSTR pszPath)
 {
     HRESULT hr;
     WCHAR resourcePath[MAX_PATH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NT_PRODUCT_TYPE ProductType;
 #endif
 
@@ -6837,7 +6837,7 @@ static HRESULT _SHGetDefaultValue(HANDLE hToken, BYTE folder, LPWSTR pszPath)
     if (!pszPath)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hToken != NULL && hToken != (HANDLE)-1)
     {
         FIXME("unsupported for user other than current or default\n");
@@ -6868,7 +6868,7 @@ static HRESULT _SHGetDefaultValue(HANDLE hToken, BYTE folder, LPWSTR pszPath)
         case CSIDL_Type_User:
             strcpyW(pszPath, L"%USERPROFILE%");
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case CSIDL_Type_InAppData:
             hr = _SHGetDefaultValue(hToken, CSIDL_APPDATA, pszPath);
             if (FAILED(hr))
@@ -6932,7 +6932,7 @@ static HRESULT _SHGetDefaultValue(HANDLE hToken, BYTE folder, LPWSTR pszPath)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LPCWSTR _SHGetCurrentVersionValueName(BYTE folder)
 {
     switch (folder)
@@ -6971,7 +6971,7 @@ static HRESULT _SHGetCurrentVersionPath(DWORD dwFlags, BYTE folder,
     if (!pszPath)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_win64)
     {
         BOOL is_wow64 = FALSE;
@@ -6985,7 +6985,7 @@ static HRESULT _SHGetCurrentVersionPath(DWORD dwFlags, BYTE folder,
 
 #endif
     if (dwFlags & SHGFP_TYPE_DEFAULT)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         hr = _SHGetDefaultValue(folder, pszPath);
 #else
         hr = _SHGetDefaultValue(NULL, folder, pszPath);
@@ -7000,7 +7000,7 @@ static HRESULT _SHGetCurrentVersionPath(DWORD dwFlags, BYTE folder,
         {
             DWORD dwType, dwPathLen = MAX_PATH * sizeof(WCHAR);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             if (RegQueryValueExW(hKey, CSIDL_Data[folder].szValueName, NULL,
 #else
             if (RegQueryValueExW(hKey, _SHGetCurrentVersionValueName(folder), NULL,
@@ -7008,7 +7008,7 @@ static HRESULT _SHGetCurrentVersionPath(DWORD dwFlags, BYTE folder,
              &dwType, (LPBYTE)pszPath, &dwPathLen) ||
              (dwType != REG_SZ && dwType != REG_EXPAND_SZ))
             {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 hr = _SHGetDefaultValue(folder, pszPath);
 #else
                 hr = _SHGetDefaultValue(NULL, folder, pszPath);
@@ -7027,7 +7027,7 @@ static HRESULT _SHGetCurrentVersionPath(DWORD dwFlags, BYTE folder,
                     }
                     /* fall through */
                 default:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                     RegSetValueExW(hKey, CSIDL_Data[folder].szValueName, 0, dwType,
 #else
                     RegSetValueExW(hKey, _SHGetCurrentVersionValueName(folder), 0, dwType,
@@ -7099,7 +7099,7 @@ static HRESULT _SHGetUserProfilePath(HANDLE hToken, DWORD dwFlags, BYTE folder,
 
     if (folder >= ARRAY_SIZE(CSIDL_Data))
         return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (CSIDL_Data[folder].type != CSIDL_Type_User &&
         CSIDL_Data[folder].type != CSIDL_Type_InMyDocuments &&
         CSIDL_Data[folder].type != CSIDL_Type_InAppData)
@@ -7114,7 +7114,7 @@ static HRESULT _SHGetUserProfilePath(HANDLE hToken, DWORD dwFlags, BYTE folder,
 
     if (dwFlags & SHGFP_TYPE_DEFAULT)
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         hr = _SHGetDefaultValue(folder, pszPath);
 #else
         hr = _SHGetDefaultValue(hToken, folder, pszPath);
@@ -7152,7 +7152,7 @@ static HRESULT _SHGetUserProfilePath(HANDLE hToken, DWORD dwFlags, BYTE folder,
             szValueName = &buffer[0];
         }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         hr = _SHGetUserShellFolderPath(hRootKey, userPrefix, szValueName, pszPath);
         if (FAILED(hr) && hRootKey != HKEY_LOCAL_MACHINE)
             hr = _SHGetUserShellFolderPath(HKEY_LOCAL_MACHINE, NULL, szValueName, pszPath);
@@ -7201,21 +7201,21 @@ static HRESULT _SHGetAllUsersProfilePath(DWORD dwFlags, BYTE folder,
         return E_INVALIDARG;
 
     if (dwFlags & SHGFP_TYPE_DEFAULT)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         hr = _SHGetDefaultValue(folder, pszPath);
 #else
         hr = _SHGetDefaultValue(NULL, folder, pszPath);
 #endif
     else
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         hr = _SHGetUserShellFolderPath(HKEY_LOCAL_MACHINE, NULL,
 #else
         hr = _SHGetUserShellFolderPath(HKEY_LOCAL_MACHINE, NULL, NULL,
 #endif
          CSIDL_Data[folder].szValueName, pszPath);
         if (FAILED(hr))
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             hr = _SHGetDefaultValue(folder, pszPath);
 #else
             hr = _SHGetDefaultValue(NULL, folder, pszPath);
@@ -7225,7 +7225,7 @@ static HRESULT _SHGetAllUsersProfilePath(DWORD dwFlags, BYTE folder,
     return hr;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT _SHOpenProfilesKey(PHKEY pKey)
 {
     LONG lRet;
@@ -7290,14 +7290,14 @@ static HRESULT _SHGetProfilesValue(HKEY profilesKey, LPCWSTR szValueName,
  * If one of the directly handled environment variables is expanded, only
  * expands a single variable, and only in the beginning of szSrc.
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT _SHExpandEnvironmentStrings(LPCWSTR szSrc, LPWSTR szDest)
 #else
 static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR szDest, DWORD cchDest)
 #endif
 {
     HRESULT hr;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     WCHAR szTemp[MAX_PATH], szProfilesPrefix[MAX_PATH] = { 0 };
     HKEY key = NULL;
 #else
@@ -7315,7 +7315,7 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
         hr = S_OK;
         goto end;
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* Get the profile prefix, we'll probably be needing it */
     hr = _SHOpenProfilesKey(&key);
     if (SUCCEEDED(hr))
@@ -7338,7 +7338,7 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
     {
         if (!strncmpiW(szTemp, L"%ALLUSERSPROFILE%", ARRAY_SIZE(L"%ALLUSERSPROFILE%")-1))
         {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             WCHAR szAllUsers[MAX_PATH];
 
             strcpyW(szDest, szProfilesPrefix);
@@ -7351,7 +7351,7 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
 #endif
             PathAppendW(szDest, szTemp + ARRAY_SIZE(L"%ALLUSERSPROFILE%")-1);
         }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         else if (!strncmpiW(szTemp, L"%PUBLIC%", ARRAY_SIZE(L"%PUBLIC%")-1))
         {
             WCHAR szAllUsers[MAX_PATH], def_val[MAX_PATH];
@@ -7366,7 +7366,7 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
 #endif
         else if (!strncmpiW(szTemp, L"%USERPROFILE%", ARRAY_SIZE(L"%USERPROFILE%")-1))
         {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             WCHAR userName[MAX_PATH];
             DWORD userLen = MAX_PATH;
 
@@ -7382,7 +7382,7 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
         }
         else if (!strncmpiW(szTemp, L"%SystemDrive%", ARRAY_SIZE(L"%SystemDrive%")-1))
         {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             GetSystemDirectoryW(szDest, MAX_PATH);
 #else
             if (!GetSystemDirectoryW(szDest, cchDest))
@@ -7391,17 +7391,17 @@ static HRESULT _SHExpandEnvironmentStrings(HANDLE hToken, LPCWSTR szSrc, LPWSTR 
             strcpyW(szDest + 3, szTemp + ARRAY_SIZE(L"%SystemDrive%")-1 + 1);
         }
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 fallback_expand:
 #endif
         {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             DWORD ret = ExpandEnvironmentStringsW(szTemp, szDest, MAX_PATH);
 #else
             DWORD ret = SHExpandEnvironmentStringsForUserW(hToken, szTemp, szDest, cchDest);
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             if (ret > MAX_PATH)
 #else
             if (ret > cchDest)
@@ -7414,7 +7414,7 @@ fallback_expand:
         if (SUCCEEDED(hr)) strcpyW(szTemp, szDest);
     }
 end:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (key)
         RegCloseKey(key);
 #endif
@@ -7718,7 +7718,7 @@ HRESULT WINAPI SHGetFolderPathAndSubDirW(
             hr = _SHGetCurrentVersionPath(dwFlags, folder, szTemp);
             break;
         case CSIDL_Type_User:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case CSIDL_Type_InMyDocuments:
         case CSIDL_Type_InAppData:
 #endif
@@ -7736,7 +7736,7 @@ HRESULT WINAPI SHGetFolderPathAndSubDirW(
 
     /* Expand environment strings if necessary */
     if (*szTemp == '%')
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         hr = _SHExpandEnvironmentStrings(szTemp, szBuildPath);
 #else
         hr = _SHExpandEnvironmentStrings(hToken, szTemp, szBuildPath, _countof(szBuildPath));
@@ -7786,7 +7786,7 @@ HRESULT WINAPI SHGetFolderPathAndSubDirW(
     TRACE("Created missing system directory %s\n", debugstr_w(szBuildPath));
 
 end:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* create desktop.ini for custom icon */
     if ((nFolder & CSIDL_FLAG_CREATE) &&
         CSIDL_Data[folder].nShell32IconIndex)
@@ -7896,7 +7896,7 @@ static HRESULT _SHRegisterFolders(HKEY hRootKey, HANDLE hToken,
 
         /* For CSIDL_Type_User we also use the GUID if no szValueName is provided */
         szValueName = CSIDL_Data[folders[i]].szValueName;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!szValueName &&
             (CSIDL_Data[folders[i]].type == CSIDL_Type_User ||
              CSIDL_Data[folders[i]].type == CSIDL_Type_InMyDocuments ||
@@ -7919,7 +7919,7 @@ static HRESULT _SHRegisterFolders(HKEY hRootKey, HANDLE hToken,
         else
         {
             *path = '\0';
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (CSIDL_Data[folders[i]].type == CSIDL_Type_User ||
                 CSIDL_Data[folders[i]].type == CSIDL_Type_InMyDocuments ||
                 CSIDL_Data[folders[i]].type == CSIDL_Type_InAppData)
@@ -7995,7 +7995,7 @@ static HRESULT _SHRegisterUserShellFolders(BOOL bDefault)
      CSIDL_FONTS,
      CSIDL_ADMINTOOLS,
 /* Cannot use #if _WIN32_WINNT >= 0x0600 because _WIN32_WINNT == 0x0600 here. */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
      CSIDL_CONTACTS,
      CSIDL_DOWNLOADS,
      CSIDL_LINKS,
@@ -8104,7 +8104,7 @@ BOOL WINAPI SHGetSpecialFolderPathW (
                             szPath) == S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT SHGetFolderLocationHelper(HWND hwnd, int nFolder, REFCLSID clsid, LPITEMIDLIST *ppidl)
 {
     HRESULT hr;
@@ -8160,7 +8160,7 @@ HRESULT WINAPI SHGetFolderLocation(
 	LPITEMIDLIST *ppidl)
 {
     HRESULT hr = E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR szPath[MAX_PATH];
 #endif
 
@@ -8172,7 +8172,7 @@ HRESULT WINAPI SHGetFolderLocation(
     if (dwReserved)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((nFolder & CSIDL_FLAG_NO_ALIAS) &&
         SHGetSpecialFolderPathW(hwndOwner, szPath, (nFolder & CSIDL_FOLDER_MASK), FALSE))
     {
@@ -8217,7 +8217,7 @@ HRESULT WINAPI SHGetFolderLocation(
             *ppidl = _ILCreateNetwork();
             break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case CSIDL_CONNECTIONS:
             hr = SHGetFolderLocationHelper(hwndOwner, CSIDL_CONTROLS, &CLSID_NetworkConnections, ppidl);
             break;
@@ -8309,4 +8309,4 @@ UINT SHELL_GetKnownFolderCount(void)
     return ARRAY_SIZE(CSIDL_Data);
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

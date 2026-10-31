@@ -5912,7 +5912,7 @@ static void test_CloneBitmapArea(void)
     GdipDisposeImage((GpImage *)copy);
     GdipDisposeImage((GpImage *)bitmap);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_reactos() && (GetNTVersion() < NTDDI_WIN7))
     {
         trace("Skipping test cases pre Win 7, because they fail.\n");

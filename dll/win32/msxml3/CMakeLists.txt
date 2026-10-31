@@ -5,7 +5,7 @@ add_definitions(
     -DCOM_NO_WINDOWS_H)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/libwin-iconv)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/libwin-iconv)
 
 spec2def(msxml3.dll msxml3.spec ADD_IMPORTLIB NO_PRIVATE_WARNINGS)
 add_typelib(msxml3_v1.idl)
@@ -87,5 +87,5 @@ add_importlibs(msxml3 libxslt urlmon ws2_32 shlwapi oleaut32 ole32 user32 advapi
 # msxml3_v1.tlb needs stdole2.tlb.
 add_dependencies(msxml3 msxml_message_resources xmlparser_idlheader saxreader_extensions_idlheader stdole2)
 add_pch(msxml3 precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET msxml3 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msxml3 DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(msxml3) # CORE-5743: No ARRAY_SIZE and CONST_VTABLE

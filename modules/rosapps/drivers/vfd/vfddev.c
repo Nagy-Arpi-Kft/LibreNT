@@ -62,7 +62,7 @@ VfdCreateDevice(
 	physical_num = 0;
 
 	do {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		name_buffer[sizeof(name_buffer) - 1] = UNICODE_NULL;
 
 		_snwprintf(name_buffer, sizeof(name_buffer) - 1,
@@ -137,7 +137,7 @@ VfdCreateDevice(
 
 	//	Create the interface link (\??\VirtualFD<n>)
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	name_buffer[sizeof(name_buffer) - 1] = UNICODE_NULL;
 
 	_snwprintf(name_buffer, sizeof(name_buffer) - 1,
@@ -367,7 +367,7 @@ VfdDeleteDevice(
 
 	//	Remove the interface symbolic link
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	name_buffer[sizeof(name_buffer) - 1] = UNICODE_NULL;
 
 	_snwprintf(name_buffer, sizeof(name_buffer) - 1,

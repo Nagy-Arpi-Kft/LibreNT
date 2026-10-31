@@ -21,14 +21,14 @@ Revision History:
 
 --*/
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "stddef.h"
 #include "ntddk.h"
 #include "scsi.h"
 #endif
 #include "classp.h"
 
-// #include <stdarg.h> __REACTOS__
+// #include <stdarg.h> __LIBRENT__
 
 #ifdef DEBUG_USE_WPP
 #include "power.tmh"
@@ -101,7 +101,7 @@ Return Value:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassDispatchPower(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
@@ -182,7 +182,7 @@ Return Value:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClasspPowerUpCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -767,7 +767,7 @@ Return Value:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClasspPowerDownCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -1892,7 +1892,7 @@ Routine Description:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassMinimalPowerHandler(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
@@ -1988,7 +1988,7 @@ Return Value:
 --*/
 __control_entrypoint(DeviceDriver)
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassSpinDownPowerHandler(
     _In_ PDEVICE_OBJECT DeviceObject,
     _In_ PIRP Irp
@@ -2050,7 +2050,7 @@ Routine Description:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassStopUnitPowerHandler(
     _In_ PDEVICE_OBJECT DeviceObject,
     _In_ PIRP Irp
@@ -2209,7 +2209,7 @@ Routine Description:
 
 --*/
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClasspStartNextPowerIrpCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -2235,7 +2235,7 @@ ClasspStartNextPowerIrpCompletion(
 } // end ClasspStartNextPowerIrpCompletion()
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClasspDeviceLockFailurePowerIrpCompletion(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -2399,7 +2399,7 @@ Return Value:
 _Function_class_(POWER_SETTING_CALLBACK)
 _IRQL_requires_same_
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClasspPowerSettingCallback(
     _In_ LPCGUID SettingGuid,
     _In_reads_bytes_(ValueLength) PVOID Value,

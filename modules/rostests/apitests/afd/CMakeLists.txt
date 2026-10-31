@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 list(APPEND SOURCE
     AfdHelpers.c

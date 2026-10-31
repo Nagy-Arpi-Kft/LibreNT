@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/kernel32/client/file/delete.c
  * PURPOSE:         Deleting files
  * PROGRAMMER:      Ariadne (ariadne@xs4all.nl)
@@ -12,7 +12,7 @@
 
 #include <k32.h>
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 /* FUNCTIONS ****************************************************************/
 

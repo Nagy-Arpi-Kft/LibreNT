@@ -372,7 +372,7 @@ static HRESULT WINAPI HTMLFormElement_submit(IHTMLFormElement *iface)
     HTMLFormElement *This = impl_from_IHTMLFormElement(iface);
     HTMLOuterWindow *window = NULL, *this_window = NULL;
     nsAString action_uri_str, target_str, method_str;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     nsIInputStream *post_stream = NULL;
 #else
     nsIInputStream *post_stream;
@@ -447,7 +447,7 @@ static HRESULT WINAPI HTMLFormElement_submit(IHTMLFormElement *iface)
         const PRUnichar *target;
 
         nsAString_GetData(&target_str, &target);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hres = submit_form(window, this_window, target, uri, post_stream);
 #else
         hres = submit_form(window, target, uri, post_stream);

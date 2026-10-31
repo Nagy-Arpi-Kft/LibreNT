@@ -18,7 +18,7 @@
 
 #include <assert.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #endif
@@ -29,7 +29,7 @@
 #include <winternl.h>
 
 #include <wine/list.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <wine/unixlib.h>
 #else
 typedef HMODULE unixlib_module_t;
@@ -38,8 +38,8 @@ typedef ULONG_PTR unixlib_handle_t;
 
 #include "unixlib.h"
 
-#ifdef __REACTOS__
-#define REACTOS_AUDIO_SESSION_MAX_CHANNELS 32
+#ifdef __LIBRENT__
+#define LIBRENT_AUDIO_SESSION_MAX_CHANNELS 32
 
 struct reactos_audio_session_id
 {
@@ -57,7 +57,7 @@ struct reactos_audio_session_snapshot
     LONG generation;
     float master_volume;
     BOOL mute;
-    float channel_volumes[REACTOS_AUDIO_SESSION_MAX_CHANNELS];
+    float channel_volumes[LIBRENT_AUDIO_SESSION_MAX_CHANNELS];
     WCHAR process_path[MAX_PATH];
     WCHAR display_name[128];
     WCHAR icon_path[MAX_PATH];
@@ -81,7 +81,7 @@ struct audio_session {
     WCHAR *icon_path;
     GUID grouping_param;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct reactos_audio_session_id shared_id;
     LONG shared_generation;
     DWORD process_id;
@@ -125,7 +125,7 @@ struct audio_client {
     float *vols;
     UINT32 channel_count;
     stream_handle stream;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT32 aligned_frames;
 #endif
 
@@ -168,7 +168,7 @@ typedef struct MMDevice {
     struct list entry;
 } MMDevice;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct reactos_endpoint_volume_state
 {
     DWORD mixer_index;
@@ -228,7 +228,7 @@ extern void reactos_audio_sessions_shutdown(void);
 
 static inline void wine_unix_call(const unsigned int code, void *args)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const NTSTATUS status = reactos_mmdevapi_call(code, args);
 #else
     const NTSTATUS status = __wine_unix_call(drvs.module_unixlib, code, args);
@@ -252,7 +252,7 @@ extern HRESULT get_audio_session(const GUID *sessionguid, IMMDevice *device, UIN
 extern HRESULT get_audio_session_wrapper(const GUID *guid, IMMDevice *device,
                                          struct audio_session_wrapper **out);
 extern HRESULT get_audio_sessions(IMMDevice *device, GUID **ret, int *ret_count);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HRESULT get_audio_session_wrapper_by_id(const struct reactos_audio_session_id *id,
                                                IMMDevice *device,
                                                struct audio_session_wrapper **out);

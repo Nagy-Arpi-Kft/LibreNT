@@ -37,7 +37,7 @@ typedef enum _WDFFUNCENUM_NUMENTRIES {
 #include "fxldr.h"
 #include "fxlibrarycommon.h"
 #include "fxtelemetry.hpp"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wdfversionlog.h"
 #include "minwindef.h"
 #else
@@ -231,7 +231,7 @@ ReportDdiFunctionCountMismatch(
     //
     // Report a telemetry event that can be used to proactively fix drivers
     //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     TraceLoggingWrite(g_TelemetryProvider,
                     "KmdfClientFunctionCountMismatch",
                     WDF_TELEMETRY_EVT_KEYWORDS,
@@ -267,7 +267,7 @@ FxLibraryCommonCommission(
     //
     // register telemetry provider.
     //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     RegisterTelemetryProvider();
 
     //
@@ -325,18 +325,18 @@ FxLibraryCommonDecommission(
     // Uninitialize WPP tracing.
     //
     if (FxLibraryGlobals.InternalTracingInitialized) {
-        //TraceUninitialize(); __REACTOS__ : not compiled
+        //TraceUninitialize(); __LIBRENT__ : not compiled
         FxLibraryGlobals.InternalTracingInitialized = FALSE;
     }
 
     //
     // Unregister telemetry provider.
     //
-    //UnregisterTelemetryProvider(); __REACTOS__ : not compiled
+    //UnregisterTelemetryProvider(); __LIBRENT__ : not compiled
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     EventUnregisterMicrosoft_Windows_DriverFrameworks_KernelMode_Performance();
-#endif // __REACTOS__
+#endif // __LIBRENT__
     //
     // Decommission this version's DLL globals.
     //
@@ -527,7 +527,7 @@ FxLibraryCommonRegisterClient(
             __Print((LITERAL(WDF_LIBRARY_REGISTER_CLIENT)
                      ": Enhanced Verification is ON\n"));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             LockVerifierSection(fxDriverGlobals, ClientInfo->RegistryPath);
 
             if (Microsoft_Windows_DriverFrameworks_KernelMode_PerformanceHandle == NULL) {
@@ -552,7 +552,7 @@ FxLibraryCommonRegisterClient(
                 //
                 *((WDFFUNC**) Info->FuncTable) = (WDFFUNC*) &VfWdfVersion.Functions;
             }
-#endif // __REACTOS__
+#endif // __LIBRENT__
         }
 
         status = STATUS_SUCCESS;

@@ -14,7 +14,7 @@ if(POLICY CMP0116)
     cmake_policy(SET CMP0116 OLD)
 endif()
 
-project(REACTOS)
+project(LIBRENT)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE ON)
@@ -30,7 +30,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 # check that the ARCH (target architecture) variable is defined
 if(NOT ARCH)
-    message(FATAL_ERROR "Target architecture (ARCH) is not defined. Please, choose one of: i386, amd64, arm, arm64, riscv64, ppc")
+    message(FATAL_ERROR "Target architecture (ARCH) is not defined. Please, choose one of: i386, amd64, arm, arm64")
 endif()
 # Now the ARCH variable will be in lowercase.
 # It is needed because STREQUAL comparison
@@ -40,7 +40,7 @@ endif()
 string(TOLOWER ${ARCH} ARCH)
 
 # set possible values for cmake GUI
-set_property(CACHE ARCH PROPERTY STRINGS "i386" "amd64" "arm" "arm64" "riscv64" "ppc")
+set_property(CACHE ARCH PROPERTY STRINGS "i386" "amd64" "arm" "arm64")
 
 # Alternative WinNT-compatible architecture string
 if(ARCH STREQUAL "i386")
@@ -60,22 +60,22 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Versioning
-include(sdk/include/reactos/version.cmake)
+include(sdk/include/librent/version.cmake)
 
 # Compile options
 include(sdk/cmake/config.cmake)
 
-# Derive the target NTDDI level from REACTOS_TARGET_NT for *both* the
+# Derive the target NTDDI level from LIBRENT_TARGET_NT for *both* the
 # cross-compile (target) build and the host-tools build below — host tools like
 # mkhive need the same NTDDI level the kernel will use so cmlib's hive-format
 # feature gates stay in sync. Mirror sdkddkver.h's WS03 default too: when the
 # selected target is 5.2, default NTDDI should be WS03SP1 rather than raw WS03.
-if(REACTOS_TARGET_NT STREQUAL "0x502")
-    set(REACTOS_TARGET_NTDDI "0x05020100")
-elseif(REACTOS_TARGET_NT STREQUAL "0xA00")
-    set(REACTOS_TARGET_NTDDI "0x0A000010")
+if(LIBRENT_TARGET_NT STREQUAL "0x502")
+    set(LIBRENT_TARGET_NTDDI "0x05020100")
+elseif(LIBRENT_TARGET_NT STREQUAL "0xA00")
+    set(LIBRENT_TARGET_NTDDI "0x0A000010")
 else()
-    math(EXPR REACTOS_TARGET_NTDDI "${REACTOS_TARGET_NT} * 65536" OUTPUT_FORMAT HEXADECIMAL)
+    math(EXPR LIBRENT_TARGET_NTDDI "${LIBRENT_TARGET_NT} * 65536" OUTPUT_FORMAT HEXADECIMAL)
 endif()
 
 # Compiler flags handling
@@ -85,21 +85,21 @@ include(sdk/cmake/compilerflags.cmake)
 include(sdk/cmake/set_wine_module.cmake)
 
 add_definitions(
-    -D__REACTOS__
+    -D__LIBRENT__
 )
 
 # There doesn't seem to be a standard for __FILE__ being relative or absolute, so detect it at runtime.
-file(RELATIVE_PATH _PATH_PREFIX ${REACTOS_BINARY_DIR} ${REACTOS_SOURCE_DIR})
+file(RELATIVE_PATH _PATH_PREFIX ${LIBRENT_BINARY_DIR} ${LIBRENT_SOURCE_DIR})
 if (NOT MSVC AND ((CMAKE_C_COMPILER_ID STREQUAL "GNU") AND (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "8.0.0")
                OR (CMAKE_C_COMPILER_ID STREQUAL "Clang") AND (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "10.0.0")))
     # Thankfully, GCC has this
-    add_compile_options(-ffile-prefix-map=${REACTOS_SOURCE_DIR}=)
+    add_compile_options(-ffile-prefix-map=${LIBRENT_SOURCE_DIR}=)
     add_compile_options(-ffile-prefix-map=${_PATH_PREFIX}=)
 else()
     string(LENGTH ${_PATH_PREFIX} _PATH_PREFIX_LENGTH)
-    string(LENGTH ${REACTOS_SOURCE_DIR} REACTOS_SOURCE_DIR_LENGTH)
-    math(EXPR REACTOS_SOURCE_DIR_LENGTH "${REACTOS_SOURCE_DIR_LENGTH} + 1")
-    add_compile_definitions("$<$<COMPILE_LANGUAGE:C,CXX>:__RELFILE__=&__FILE__[__FILE__[0] == '.' ? ${_PATH_PREFIX_LENGTH} : ${REACTOS_SOURCE_DIR_LENGTH}]>")
+    string(LENGTH ${LIBRENT_SOURCE_DIR} LIBRENT_SOURCE_DIR_LENGTH)
+    math(EXPR LIBRENT_SOURCE_DIR_LENGTH "${LIBRENT_SOURCE_DIR_LENGTH} + 1")
+    add_compile_definitions("$<$<COMPILE_LANGUAGE:C,CXX>:__RELFILE__=&__FILE__[__FILE__[0] == '.' ? ${_PATH_PREFIX_LENGTH} : ${LIBRENT_SOURCE_DIR_LENGTH}]>")
 endif()
 
 if(MSVC_IDE)
@@ -214,7 +214,7 @@ else()
 
     # Add our own target properties
     # General module definitions
-    define_property(TARGET PROPERTY REACTOS_MODULE_TYPE
+    define_property(TARGET PROPERTY LIBRENT_MODULE_TYPE
         BRIEF_DOCS "The type of this module"
         FULL_DOCS [[
 The type of this module.
@@ -244,33 +244,33 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
         set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
     endif()
 
-    # Version Options (REACTOS_TARGET_NTDDI is computed unconditionally above
+    # Version Options (LIBRENT_TARGET_NTDDI is computed unconditionally above
     # so host-tools see the same value).
-    math(EXPR _NT_MAJOR "${REACTOS_TARGET_NT} / 256")
-    math(EXPR _NT_MINOR "${REACTOS_TARGET_NT} % 256")
-    math(EXPR _NT_VALUE "${REACTOS_TARGET_NT} + 0")
+    math(EXPR _NT_MAJOR "${LIBRENT_TARGET_NT} / 256")
+    math(EXPR _NT_MINOR "${LIBRENT_TARGET_NT} % 256")
+    math(EXPR _NT_VALUE "${LIBRENT_TARGET_NT} + 0")
 
-    add_definitions(-DWINVER=${REACTOS_TARGET_NT}
+    add_definitions(-DWINVER=${LIBRENT_TARGET_NT}
                     -D_WIN32_IE=0x603
-                    -D_WIN32_WINNT=${REACTOS_TARGET_NT}
-                    -D_WIN32_WINDOWS=${REACTOS_TARGET_NT}
-                    -D_SETUPAPI_VER=${REACTOS_TARGET_NT}
+                    -D_WIN32_WINNT=${LIBRENT_TARGET_NT}
+                    -D_WIN32_WINDOWS=${LIBRENT_TARGET_NT}
+                    -D_SETUPAPI_VER=${LIBRENT_TARGET_NT}
                     -DMINGW_HAS_SECURE_API=1
                     -DDXGKDDI_INTERFACE_VERSION=0x1052 # Vista
                     -DDLL_EXPORT_VERSION=${DLL_EXPORT_VERSION}
                     -DVER_PRODUCTMAJORVERSION=${_NT_MAJOR}
                     -DVER_PRODUCTMINORVERSION=${_NT_MINOR})
 
-    if(REACTOS_USE_WDDM)
+    if(LIBRENT_USE_WDDM)
         add_definitions(
-            -DD3D_UMD_INTERFACE_VERSION=${REACTOS_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION})
-        add_compile_definitions(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM=1)
+            -DD3D_UMD_INTERFACE_VERSION=${LIBRENT_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION})
+        add_compile_definitions(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM=1)
         message(STATUS
-            "Display driver model: WDDM ${REACTOS_WDDM_LEVEL} compatibility ceiling "
-            "(UMD ABI ${REACTOS_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION})")
+            "Display driver model: WDDM ${LIBRENT_WDDM_LEVEL} compatibility ceiling "
+            "(UMD ABI ${LIBRENT_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION})")
     else()
         add_definitions(-DD3D_UMD_INTERFACE_VERSION=0x000C) # Vista
-        add_compile_definitions(REACTOS_GRAPHICS_DRIVER_MODEL_XPDM=1)
+        add_compile_definitions(LIBRENT_GRAPHICS_DRIVER_MODEL_XPDM=1)
         message(STATUS "Display driver model: XPDM")
     endif()
 
@@ -302,17 +302,11 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
         if(SARCH STREQUAL "omap3-zoom2")
             add_definitions(-D_ZOOM2_)
         endif()
-    elseif(ARCH STREQUAL "riscv64")
-        # Clang defines _M_RISCV64 with the Microsoft-compatible value (100).
-        add_compile_definitions(_RISCV64_ _WIN64)
-    elseif(ARCH STREQUAL "ppc")
-        # Clang defines _M_PPC with the Microsoft-compatible CPU value.
-        add_compile_definitions(_PPC_ WIN32)
     elseif(ARCH STREQUAL "arm64")
         if(ARM64EC_RUNTIME)
             # ARM64EC has the x64 ABI/type model while emitting ARM64 code.
             # llvm-mingw defines __arm64ec__ and __x86_64__; define the MS
-            # architecture macros expected by the ReactOS/SDK headers too.
+            # architecture macros expected by the LibreNT/SDK headers too.
             add_definitions(-D_AMD64_ -D_M_AMD64 -D_M_X64
                             -D_ARM64EC_ -D_M_ARM64EC
                             -D__arm64ec__ -D__x86_64__ -D_WIN64)
@@ -350,7 +344,7 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
     if(MSVC)
         include(sdk/cmake/msvc.cmake)
     elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-        set(_REACTOS_CLANG_BUILD_CONFIG TRUE)
+        set(_LIBRENT_CLANG_BUILD_CONFIG TRUE)
         include(sdk/cmake/clang.cmake)
     else()
         include(sdk/cmake/gcc.cmake)
@@ -369,22 +363,22 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
         sdk/include/ddk
         sdk/include/ndk
         sdk/include/psdk
-        sdk/include/reactos
-        sdk/include/reactos/libs
+        sdk/include/librent
+        sdk/include/librent/libs
         sdk/include/vcruntime
         sdk/include/winrt
-        ${REACTOS_BINARY_DIR}/sdk/include
-        ${REACTOS_BINARY_DIR}/sdk/include/psdk
-        ${REACTOS_BINARY_DIR}/sdk/include/ddk
-        ${REACTOS_BINARY_DIR}/sdk/include/dxsdk
-        ${REACTOS_BINARY_DIR}/sdk/include/reactos
-        ${REACTOS_BINARY_DIR}/sdk/include/reactos/mc
+        ${LIBRENT_BINARY_DIR}/sdk/include
+        ${LIBRENT_BINARY_DIR}/sdk/include/psdk
+        ${LIBRENT_BINARY_DIR}/sdk/include/ddk
+        ${LIBRENT_BINARY_DIR}/sdk/include/dxsdk
+        ${LIBRENT_BINARY_DIR}/sdk/include/librent
+        ${LIBRENT_BINARY_DIR}/sdk/include/librent/mc
         sdk/include/dxsdk
         sdk/lib/pseh/include
     )
 
     if(ARCH STREQUAL "arm")
-        include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/arm)
+        include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/arm)
     endif()
 
     add_dependency_header()
@@ -395,8 +389,6 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
         include(sdk/cmake/baseaddress64.cmake)
         if(ARCH STREQUAL "arm64")
             set(_baseaddress_shift "+ 0x77FF00000000")
-        elseif(ARCH STREQUAL "riscv64")
-            set(_baseaddress_shift "- 0x7c000000000")
         endif()
         if(DEFINED _baseaddress_shift)
             get_cmake_property(_baseaddress_vars VARIABLES)
@@ -414,14 +406,14 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
 
     # For MSVC builds, this puts all debug symbols file in the same directory.
     if(MSVC)
-        set(CMAKE_PDB_OUTPUT_DIRECTORY "${REACTOS_BINARY_DIR}/msvc_pdb")
+        set(CMAKE_PDB_OUTPUT_DIRECTORY "${LIBRENT_BINARY_DIR}/msvc_pdb")
     elseif(SEPARATE_DBG)
-        set(CMAKE_PDB_OUTPUT_DIRECTORY "${REACTOS_BINARY_DIR}/symbols")
+        set(CMAKE_PDB_OUTPUT_DIRECTORY "${LIBRENT_BINARY_DIR}/symbols")
     endif()
 
     add_custom_target(submodules)
 
-    #begin with boot so reactos_cab target is defined before all other modules
+    #begin with boot so librent_cab target is defined before all other modules
     add_subdirectory(boot)
     add_subdirectory(bootloader)
     add_subdirectory(base)
@@ -464,7 +456,7 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
     # Create {bootcd, livecd, preinstall}.lst
     create_iso_lists()
 
-    file(MAKE_DIRECTORY ${REACTOS_BINARY_DIR}/sdk/include/reactos)
+    file(MAKE_DIRECTORY ${LIBRENT_BINARY_DIR}/sdk/include/librent)
 
     add_dependency_footer()
 endif()

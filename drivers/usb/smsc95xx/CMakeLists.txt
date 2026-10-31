@@ -10,5 +10,5 @@ add_library(smsc95xx MODULE
 
 set_module_type(smsc95xx kernelmodedriver)
 add_importlibs(smsc95xx ndis ntoskrnl hal usbd)
-add_cd_file(TARGET smsc95xx DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET smsc95xx DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(smsc95xx smsc95xx.inf)

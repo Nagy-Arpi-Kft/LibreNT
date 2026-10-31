@@ -1011,7 +1011,7 @@ Return Value:
 
 {
     PTHREAD_CONTEXT CurrentThreadContext;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG_PTR StackTop;
     ULONG_PTR StackBottom;
 #endif
@@ -1047,7 +1047,7 @@ Return Value:
     //  context and store it in the top level context.
     //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IoGetStackLimits( &StackTop, &StackBottom);
 #endif
 
@@ -1055,7 +1055,7 @@ Return Value:
 #pragma warning(suppress: 6011) // Bug in PREFast around bitflag operations
 #endif
     if (FlagOn( IrpContext->Flags, IRP_CONTEXT_FLAG_TOP_LEVEL ) ||
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         (!IoWithinStackLimits( (ULONG_PTR)CurrentThreadContext, sizeof( THREAD_CONTEXT ) ) ||
 #else
         (((ULONG_PTR) CurrentThreadContext > StackBottom - sizeof( THREAD_CONTEXT )) ||
@@ -1091,7 +1091,7 @@ _Function_class_(FAST_IO_CHECK_IF_POSSIBLE)
 _IRQL_requires_same_
 _Success_(return != FALSE)
 BOOLEAN
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdFastIoCheckIfPossible (
     _In_ PFILE_OBJECT FileObject,
     _In_ PLARGE_INTEGER FileOffset,

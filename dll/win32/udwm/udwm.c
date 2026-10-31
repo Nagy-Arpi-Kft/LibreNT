@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Desktop Window Manager
+ * PROJECT:     LibreNT Desktop Window Manager
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     User DWM policy module
@@ -8,7 +8,7 @@
 #define COBJMACROS
 #include <windows.h>
 #include <objbase.h>
-#include <reactos/dwmcore.h>
+#include <librent/dwmcore.h>
 
 struct IWICImagingFactory;
 struct IWICBitmap;

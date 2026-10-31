@@ -245,7 +245,7 @@ static HRESULT WINAPI TaskFolder_DeleteFolder(ITaskFolder *iface, BSTR name, LON
     TRACE("%p,%s,%lx\n", iface, debugstr_w(name), flags);
 
     if (!name || !*name) return E_ACCESSDENIED;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (wcschr(name, '/')) return HRESULT_FROM_WIN32(ERROR_INVALID_NAME);
 #endif
 
@@ -298,7 +298,7 @@ static HRESULT WINAPI TaskFolder_DeleteTask(ITaskFolder *iface, BSTR name, LONG 
 
     TRACE("%p,%s,%lx\n", iface, debugstr_w(name), flags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!name || !*name) return SchRpcDelete(folder->path, 0);
 #else
     if (!name || !*name) return E_ACCESSDENIED;
@@ -347,7 +347,7 @@ static HRESULT WINAPI TaskFolder_RegisterTask(ITaskFolder *iface, BSTR name, BST
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT apply_registration_user(ITaskDefinition *definition, const WCHAR *user, TASK_LOGON_TYPE logon,
                                        ITaskDefinition **effective)
 {
@@ -425,7 +425,7 @@ static HRESULT WINAPI TaskFolder_RegisterTaskDefinition(ITaskFolder *iface, BSTR
     if (!is_variant_null(&sddl))
         FIXME("security descriptor %s is ignored\n", debugstr_variant(&sddl));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_variant_null(&password))
         FIXME("password is ignored\n");
 #else
@@ -435,7 +435,7 @@ static HRESULT WINAPI TaskFolder_RegisterTaskDefinition(ITaskFolder *iface, BSTR
 
     if (!task) task = &regtask;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (V_VT(&user) == VT_BSTR && V_BSTR(&user) && *V_BSTR(&user))
     {
         ITaskDefinition *effective;
@@ -507,7 +507,7 @@ HRESULT TaskFolder_create(const WCHAR *parent, const WCHAR *path, ITaskFolder **
     WCHAR *folder_path;
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!path && parent && (wcschr(parent, '/') || !wcscmp(parent, L".")))
         return HRESULT_FROM_WIN32(ERROR_INVALID_NAME);
 
@@ -515,7 +515,7 @@ HRESULT TaskFolder_create(const WCHAR *parent, const WCHAR *path, ITaskFolder **
     if (path)
     {
         int len = lstrlenW(path);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (create && !wcscmp(path, L"\\")) return E_INVALIDARG;
         if (wcschr(path, '/')) return HRESULT_FROM_WIN32(ERROR_INVALID_NAME);
 #endif

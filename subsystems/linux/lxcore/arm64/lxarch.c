@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT Linux Subsystem
+ * PROJECT:     LibreNT Linux Subsystem
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     AArch64 Linux system call table and register state
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include "../lxcore.h"
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 
 #define LX_EM_AARCH64     183
 #define LX_HWCAP_FP       (1ULL << 0)

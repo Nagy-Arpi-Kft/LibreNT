@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Precompiled header for D3DKMT user-mode API tests
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -132,8 +132,8 @@ LoadD3DKMTProc(const char *Name)
 /*
  * Generic loader for the WDDM2 entry points, typed via the canonical
  * PFND3DKMT_* signatures from d3dkmthk.h. Skips the whole test when gdi32
- * does not export the function (e.g. on down-level ReactOS), so the same
- * binary is portable between Windows 11 and ReactOS.
+ * does not export the function (e.g. on down-level LibreNT), so the same
+ * binary is portable between Windows 11 and LibreNT.
  *
  *   LOADFN(PFND3DKMT_CREATEPAGINGQUEUE, pCreate, "D3DKMTCreatePagingQueue");
  */

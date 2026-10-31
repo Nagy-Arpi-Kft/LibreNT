@@ -24,7 +24,7 @@
 
 #include "conhost.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <winioctl.h>
 #include <drivers/condrv/condrvhost.h>
 #else
@@ -74,7 +74,7 @@ static void destroy_screen_buffer( struct screen_buffer *screen_buffer )
         screen_buffer->console->active = NULL;
     wine_rb_remove( &screen_buffer_map, &screen_buffer->entry );
     free( screen_buffer->font.face_name );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     vt_destroy( screen_buffer );
     free( screen_buffer->wrapped );
 #endif
@@ -163,7 +163,7 @@ static BOOL is_active( struct screen_buffer *screen_buffer )
 
 static unsigned int get_tty_cp( struct console *console )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return CP_UTF8;
 #else
     return console->is_unix ? CP_UNIXCP : CP_UTF8;
@@ -438,7 +438,7 @@ static void new_line( struct screen_buffer *screen_buffer, RECT *update_rect )
              screen_buffer->width * (screen_buffer->height - 1) * sizeof(*screen_buffer->data) );
     for (i = 0; i < screen_buffer->width; i++)
         screen_buffer->data[screen_buffer->width * (screen_buffer->height - 1) + i] = empty_char_info;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     move_cell_colors( screen_buffer, 0, screen_buffer->width, screen_buffer->width * (screen_buffer->height - 1) );
     reset_cell_colors( screen_buffer, screen_buffer->width * (screen_buffer->height - 1), screen_buffer->width );
     move_wrapped_rows( screen_buffer, 0, 1, screen_buffer->height - 1 );
@@ -453,7 +453,7 @@ static void new_line( struct screen_buffer *screen_buffer, RECT *update_rect )
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int break_wide_cell( struct screen_buffer *screen_buffer, unsigned int index )
 {
     char_info_t *data = screen_buffer->data;
@@ -573,7 +573,7 @@ static void write_text_char( struct screen_buffer *screen_buffer, WCHAR lead, WC
 
 static void write_char( struct screen_buffer *screen_buffer, WCHAR ch, RECT *update_rect, unsigned int *home_y )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     write_text_char( screen_buffer, ch, ch, (ch >= 0xd800 && ch <= 0xdfff) ? 1 : console_char_width( ch ),
                      update_rect, home_y );
 #else
@@ -602,7 +602,7 @@ static void write_char( struct screen_buffer *screen_buffer, WCHAR ch, RECT *upd
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG request_busy;
 static char *request_in, *request_out;
 static size_t request_in_size, request_out_size;
@@ -692,7 +692,7 @@ static NTSTATUS get_next_request( struct console *console, int signal, int read,
 
 static NTSTATUS read_complete( struct console *console, NTSTATUS status, const void *buf, size_t size, int signal )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (console->read_ioctl == IOCTL_CONDRV_READ_CONSOLE_CONTROL)
         status = get_next_request( console, signal, 1, status, &console->key_state, sizeof(console->key_state),
                                    buf, size, NULL, 0, NULL, NULL, NULL, NULL );
@@ -1510,7 +1510,7 @@ static void update_read_output( struct console *console, BOOL newline )
         offset = edit_line_string_width( ctx->buf, ctx->len );
         screen_buffer->cursor_x = 0;
         screen_buffer->cursor_y = ctx->home_y + (ctx->home_x + offset) / screen_buffer->width;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         set_row_wrapped( screen_buffer, screen_buffer->cursor_y, 0 );
 #endif
         if (++screen_buffer->cursor_y >= screen_buffer->height)
@@ -1787,7 +1787,7 @@ NTSTATUS write_console_input( struct console *console, const INPUT_RECORD *recor
     TRACE( "%u\n", count );
 
     if (!count) return STATUS_SUCCESS;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (count == 1 && records[0].EventType == MOUSE_EVENT &&
         records[0].Event.MouseEvent.dwEventFlags == MOUSE_MOVED && console->record_count &&
         console->records[console->record_count - 1].EventType == MOUSE_EVENT &&
@@ -2227,7 +2227,7 @@ NTSTATUS change_screen_buffer_size( struct screen_buffer *screen_buffer, int new
             memcpy( &new_data[i * new_width], &new_data[old_height * new_width],
                     new_width * sizeof(char_info_t) );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     resize_cell_colors( screen_buffer, new_width, new_height );
     if (screen_buffer->wrapped)
     {
@@ -2244,7 +2244,7 @@ NTSTATUS change_screen_buffer_size( struct screen_buffer *screen_buffer, int new
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void set_row_wrapped( struct screen_buffer *screen_buffer, unsigned int y, unsigned char wrapped )
 {
     unsigned char *rows;
@@ -2531,7 +2531,7 @@ static NTSTATUS set_output_info( struct screen_buffer *screen_buffer,
     }
     if (params->mask & SET_CONSOLE_OUTPUT_INFO_DISPLAY_WINDOW)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int left = info->win_left, top = info->win_top;
         int right = info->win_right, bottom = info->win_bottom;
         int max_width = screen_buffer->max_width, max_height = screen_buffer->max_height;
@@ -2627,7 +2627,7 @@ static NTSTATUS write_console( struct screen_buffer *screen_buffer, const WCHAR 
 
     empty_update_rect( screen_buffer, &update_rect );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((screen_buffer->mode & (ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) ==
         (ENABLE_PROCESSED_OUTPUT | ENABLE_VIRTUAL_TERMINAL_PROCESSING))
     {
@@ -2656,7 +2656,7 @@ static NTSTATUS write_console( struct screen_buffer *screen_buffer, const WCHAR 
                 while (j--) write_char( screen_buffer, ' ', &update_rect, NULL );
                 continue;
             case '\n':
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 set_row_wrapped( screen_buffer, screen_buffer->cursor_y, 0 );
 #endif
                 screen_buffer->cursor_x = 0;
@@ -2678,7 +2678,7 @@ static NTSTATUS write_console( struct screen_buffer *screen_buffer, const WCHAR 
         }
         if (screen_buffer->cursor_x == screen_buffer->width && !(screen_buffer->mode & ENABLE_WRAP_AT_EOL_OUTPUT))
             screen_buffer->cursor_x = update_rect.left;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (IS_HIGH_SURROGATE( buffer[i] ) && i + 1 < len && IS_LOW_SURROGATE( buffer[i + 1] ))
         {
             unsigned int width = console_char_width( 0x10000 + ((buffer[i] - 0xd800) << 10) + (buffer[i + 1] - 0xdc00) );
@@ -2698,7 +2698,7 @@ static NTSTATUS write_console( struct screen_buffer *screen_buffer, const WCHAR 
         {
             if (!(screen_buffer->mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING))
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 set_row_wrapped( screen_buffer, screen_buffer->cursor_y, ROW_WRAPPED );
 #endif
                 screen_buffer->cursor_x = 0;
@@ -2737,7 +2737,7 @@ static NTSTATUS write_output( struct screen_buffer *screen_buffer, const struct 
         return STATUS_SUCCESS;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (params->mode == CHAR_INFO_MODE_TEXT && !params->width)
     {
         const WCHAR *text = (const WCHAR *)(params + 1);
@@ -2810,7 +2810,7 @@ static NTSTATUS write_output( struct screen_buffer *screen_buffer, const struct 
             dest->ch = *(const WCHAR *)src;
             break;
         case CHAR_INFO_MODE_ATTR:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             dest->attr = (*(const unsigned short *)src & ~CELL_WIDE_FLAGS) | (dest->attr & CELL_WIDE_FLAGS);
             reset_cell_colors( screen_buffer, dest - screen_buffer->data, 1 );
 #else
@@ -2819,7 +2819,7 @@ static NTSTATUS write_output( struct screen_buffer *screen_buffer, const struct 
             break;
         case CHAR_INFO_MODE_TEXTATTR:
             *dest = *(const char_info_t *)src;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             reset_cell_colors( screen_buffer, dest - screen_buffer->data, 1 );
 #endif
             break;
@@ -2908,7 +2908,7 @@ static NTSTATUS read_output( struct screen_buffer *screen_buffer, const struct c
                          *out_size / sizeof(*data) );
             *out_size = count * sizeof(*data);
             if (!(data = alloc_ioctl_buffer( *out_size ))) return STATUS_NO_MEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 unsigned int out = 0;
 
@@ -2946,7 +2946,7 @@ static NTSTATUS read_output( struct screen_buffer *screen_buffer, const struct c
                          *out_size / sizeof(*data) );
             *out_size = count * sizeof(*data);
             if (!(data = alloc_ioctl_buffer( *out_size ))) return STATUS_NO_MEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             for (i = 0; i < count; i++)
             {
                 if ((src[i].attr & COMMON_LVB_LEADING_BYTE) && i + 1 < count &&
@@ -2983,7 +2983,7 @@ static NTSTATUS read_output( struct screen_buffer *screen_buffer, const struct c
                 memcpy( &data[i * width], &screen_buffer->data[(y + i) * screen_buffer->width + x],
                         width * sizeof(*data) );
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             for (i = 0; i < width * count; i++)
             {
                 if (data[i].ch >= 0xd800 && data[i].ch <= 0xdfff) data[i].ch = 0xfffd;
@@ -3018,7 +3018,7 @@ static NTSTATUS fill_output( struct screen_buffer *screen_buffer, const struct c
     switch(params->mode)
     {
     case CHAR_INFO_MODE_TEXT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(params->ch >= 0xd800 && params->ch <= 0xdfff) && console_char_width( params->ch ) == 2 &&
             screen_buffer->width >= 2)
         {
@@ -3059,7 +3059,7 @@ static NTSTATUS fill_output( struct screen_buffer *screen_buffer, const struct c
 #endif
         break;
     case CHAR_INFO_MODE_ATTR:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         for (i = 0; i < count; i++) dest[i].attr = (params->attr & ~CELL_WIDE_FLAGS) | (dest[i].attr & CELL_WIDE_FLAGS);
         reset_cell_colors( screen_buffer, dest - screen_buffer->data, count );
 #else
@@ -3072,7 +3072,7 @@ static NTSTATUS fill_output( struct screen_buffer *screen_buffer, const struct c
             dest[i].ch   = params->ch;
             dest[i].attr = params->attr;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         reset_cell_colors( screen_buffer, dest - screen_buffer->data, count );
 #endif
         break;
@@ -3159,7 +3159,7 @@ static NTSTATUS scroll_output( struct screen_buffer *screen_buffer, const struct
             for (y = h; y > 0; y--)
             {
                 memcpy( pdst, psrc, w * sizeof(*pdst) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 move_cell_colors( screen_buffer, pdst - screen_buffer->data, psrc - screen_buffer->data, w );
 #endif
                 pdst -= screen_buffer->width;
@@ -3177,7 +3177,7 @@ static NTSTATUS scroll_output( struct screen_buffer *screen_buffer, const struct
                  * copies are done on the same row, so the dst and src blocks
                  * can overlap */
                 memmove( pdst, psrc, w * sizeof(*pdst) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 move_cell_colors( screen_buffer, pdst - screen_buffer->data, psrc - screen_buffer->data, w );
 #endif
                 pdst += screen_buffer->width;
@@ -3196,7 +3196,7 @@ static NTSTATUS scroll_output( struct screen_buffer *screen_buffer, const struct
             if (dst.Left >= src.Left) right = min( right, dst.Left - 1 );
         }
         for (x = left; x <= right; x++) screen_buffer->data[y * screen_buffer->width + x] = params->fill;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (left <= right) reset_cell_colors( screen_buffer, y * screen_buffer->width + left, right - left + 1 );
 #endif
     }
@@ -3255,7 +3255,7 @@ static NTSTATUS set_console_title( struct console *console, const WCHAR *in_titl
         tty_sync( console );
     }
     if (console->win)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         update_window_title( console );
 #else
         SetWindowTextW( console->win, console->title );
@@ -3263,7 +3263,7 @@ static NTSTATUS set_console_title( struct console *console, const WCHAR *in_titl
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void set_vt_console_title( struct console *console, const WCHAR *title, size_t size )
 {
     set_console_title( console, title, size );
@@ -3358,7 +3358,7 @@ static NTSTATUS screen_buffer_ioctl( struct screen_buffer *screen_buffer, unsign
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *alias_string( const WCHAR *str, size_t size, BOOL lower )
 {
     size_t count = size / sizeof(WCHAR);
@@ -3610,7 +3610,7 @@ static NTSTATUS console_input_ioctl( struct console *console, unsigned int code,
         if (in_size != sizeof(unsigned int) || *out_size) return STATUS_INVALID_PARAMETER;
         console->mode = *(unsigned int *)in_data;
         TRACE( "set %x mode\n", console->mode );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (console->mode & ENABLE_EXTENDED_FLAGS)
             set_window_quick_edit( console, (console->mode & ENABLE_QUICK_EDIT_MODE) != 0 );
 #endif
@@ -3765,7 +3765,7 @@ static NTSTATUS console_input_ioctl( struct console *console, unsigned int code,
         console->record_count = 0;
         return STATUS_SUCCESS;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case IOCTL_CONDRV_ADD_ALIAS:
         if (*out_size) return STATUS_INVALID_PARAMETER;
         return add_console_alias( console, in_data, in_size );
@@ -3799,7 +3799,7 @@ static NTSTATUS process_console_ioctls( struct console *console )
         if (status) out_size = 0;
 
         console->signaled = console->record_count != 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = get_next_request( console, console->signaled, 0, status, ioctl_buffer, out_size, NULL, 0,
                                    ioctl_buffer, ioctl_buffer_size, &code, &output, &out_size, &in_size );
 #else
@@ -4047,7 +4047,7 @@ int __cdecl wmain(int argc, WCHAR *argv[])
         STARTUPINFOW si;
         if (!init_window( &console )) return 1;
         GetStartupInfoW( &si );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (si.lpTitle && (si.dwFlags & STARTF_TITLEISLINKNAME))
         {
             WCHAR *name = wcsrchr( si.lpTitle, '\\' );

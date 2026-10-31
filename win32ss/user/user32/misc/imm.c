@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS user32.dll
+ * PROJECT:     LibreNT user32.dll
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     User32.dll Imm functions
  * COPYRIGHT:   Copyright Dmitry Chapyshev (dmitry@reactos.org)
@@ -991,7 +991,7 @@ LRESULT ImeWnd_OnImeSetContext(PIMEUI pimeui, WPARAM wParam, LPARAM lParam)
 
 /* The window procedure of the default IME window */
 LRESULT WINAPI
-ImeWndProc_common(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, BOOL unicode) // ReactOS
+ImeWndProc_common(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, BOOL unicode) // LibreNT
 {
     ROS_WINDOWINFO info;
     PIMEUI pimeui;

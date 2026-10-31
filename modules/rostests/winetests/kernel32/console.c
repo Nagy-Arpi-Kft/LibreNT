@@ -27,7 +27,7 @@
 #include <stdio.h>
 
 #include "wine/test.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winehacks.h"
 #endif
 
@@ -769,7 +769,7 @@ static void testCtrlHandler(void)
     ok(GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0), "Couldn't send ctrl-c event\n");
     /* FIXME: it isn't synchronous on wine but it can still happen before we test */
     if (0) ok(mch_count == 1, "Event isn't synchronous\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD res = WaitForSingleObject(mch_event, 3000);
     ok(res == WAIT_OBJECT_0 || broken(res == WAIT_TIMEOUT) /* ROS testbots on Windows */, "event sending didn't work (%ld)\n", res);
 #else
@@ -1033,7 +1033,7 @@ static void testScreenBuffer(HANDLE hConOut)
 
 static void test_new_screen_buffer_properties(HANDLE hConOut)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     UNREFERENCED_PARAMETER(hConOut);
     skip("Cannot build test_new_screen_buffer_properties() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
@@ -1090,7 +1090,7 @@ static void test_new_screen_buffer_properties(HANDLE hConOut)
 
 static void test_new_screen_buffer_color_attributes(HANDLE hConOut)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     UNREFERENCED_PARAMETER(hConOut);
     skip("Cannot build test_new_screen_buffer_color_attributes() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
@@ -3523,7 +3523,7 @@ static void test_GetCurrentConsoleFont(HANDLE std_output)
 
 static void test_GetCurrentConsoleFontEx(HANDLE std_output)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     UNREFERENCED_PARAMETER(std_output);
     skip("Cannot build test_GetCurrentConsoleFontEx() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
@@ -3652,7 +3652,7 @@ static void test_GetCurrentConsoleFontEx(HANDLE std_output)
 
 static void test_SetCurrentConsoleFontEx(HANDLE std_output)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UNREFERENCED_PARAMETER(std_output);
     skip("Cannot build test_SetCurrentConsoleFontEx() until kernelbase is synced.\n");
 #else
@@ -4284,7 +4284,7 @@ static void test_FreeConsole(void)
 
 static void test_SetConsoleScreenBufferInfoEx(HANDLE std_output)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     UNREFERENCED_PARAMETER(std_output);
     skip("Cannot build test_SetConsoleScreenBufferInfoEx() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
@@ -4336,7 +4336,7 @@ static void test_SetConsoleScreenBufferInfoEx(HANDLE std_output)
 
 static void test_GetConsoleOriginalTitleA(void)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     skip("Cannot build test_GetConsoleOriginalTitleA() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
     char title[] = "Original Console Title";
@@ -4366,7 +4366,7 @@ static void test_GetConsoleOriginalTitleA(void)
 
 static void test_GetConsoleOriginalTitleW(void)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     skip("Cannot build test_GetConsoleOriginalTitleW() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
     WCHAR title[] = L"Original Console Title";
@@ -4402,7 +4402,7 @@ static void test_GetConsoleOriginalTitleW(void)
 
 static void test_GetConsoleOriginalTitleW_empty(void)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     skip("Cannot build test_GetConsoleOriginalTitleW_empty() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
     WCHAR buf[64];
@@ -4421,7 +4421,7 @@ static void test_GetConsoleOriginalTitle(void)
     char title[] = "Original Console Title";
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("This test is incredibly broken on WS03\n");
         return;
@@ -4492,7 +4492,7 @@ static void test_GetConsoleTitleW(void)
 
     ret = GetConsoleTitleW(buf, 2);
     ok(ret, "GetConsoleTitleW failed: %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok(ret == wcslen(str), "Got string length %lu, expected %Iu\n", ret, wcslen(str));
@@ -4500,7 +4500,7 @@ static void test_GetConsoleTitleW(void)
 
     ret = GetConsoleTitleW(buf, 4);
     ok(ret, "GetConsoleTitleW failed: %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok(ret == wcslen(str), "Got string length %lu, expected %Iu\n", ret, wcslen(str));
@@ -4573,7 +4573,7 @@ static void test_console_as_root_directory(void)
     status = NtCreateFile( &h2, SYNCHRONIZE, &attr, &iosb, NULL, 0,
                            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
                            FILE_OPEN, 0, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( status == STATUS_NOT_FOUND || broken( status == STATUS_OBJECT_TYPE_MISMATCH ) /* Win7 */ || broken( status == STATUS_INVALID_HANDLE ) /* WS03 */,
 #else
     ok( status == STATUS_NOT_FOUND || broken( status == STATUS_OBJECT_TYPE_MISMATCH ) /* Win7 */,
@@ -4964,7 +4964,7 @@ static void test_pseudo_console(void)
     ok(hres == S_OK, "CreatePseudoConsole failed: %08lx\n", hres);
     CloseHandle(console_pipe2);
 
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
     InitializeProcThreadAttributeList(NULL, 1, 0, &attr_size);
     startup.lpAttributeList = HeapAlloc(GetProcessHeap(), 0, attr_size);
     InitializeProcThreadAttributeList(startup.lpAttributeList, 1, 0, &attr_size);
@@ -5150,7 +5150,7 @@ static void test_CreateProcessCUI(void)
         {TRUE,  0,                                     NULL_STD,        CP_WITH_CONSOLE | CP_WITH_HANDLE | CP_WITH_WINDOW},
         {TRUE,  DETACHED_PROCESS,                      NULL_STD,        0},
 /*20*/  {TRUE,  CREATE_NEW_CONSOLE,                    NULL_STD,        CP_OWN_CONSOLE | CP_WITH_WINDOW},
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         {TRUE,  CREATE_NO_WINDOW,                      NULL_STD,        CP_OWN_CONSOLE},
 #endif
         {TRUE,  DETACHED_PROCESS | CREATE_NO_WINDOW,   NULL_STD,        0},
@@ -5159,7 +5159,7 @@ static void test_CreateProcessCUI(void)
         {TRUE,  0,                                     CONSOLE_STD,     CP_INH_CONSOLE | CP_WITH_WINDOW},
 /*25*/  {TRUE,  DETACHED_PROCESS,                      CONSOLE_STD,     0},
         {TRUE,  CREATE_NEW_CONSOLE,                    CONSOLE_STD,     CP_OWN_CONSOLE | CP_WITH_WINDOW},
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         {TRUE,  CREATE_NO_WINDOW,                      CONSOLE_STD,     CP_OWN_CONSOLE},
 #endif
         {TRUE,  DETACHED_PROCESS | CREATE_NO_WINDOW,   CONSOLE_STD,     0},
@@ -5168,7 +5168,7 @@ static void test_CreateProcessCUI(void)
 /*30*/  {TRUE,  0,                                     STARTUPINFO_STD, CP_INH_CONSOLE | CP_WITH_WINDOW},
         {TRUE,  DETACHED_PROCESS,                      STARTUPINFO_STD, CP_INPUT_VALID | CP_OUTPUT_VALID, .is_broken = 0x100},
         {TRUE,  CREATE_NEW_CONSOLE,                    STARTUPINFO_STD, CP_OWN_CONSOLE | CP_WITH_WINDOW,  .is_broken = CP_WITH_CONSOLE | CP_WITH_HANDLE | CP_WITH_WINDOW | CP_ALONE},
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         {TRUE,  CREATE_NO_WINDOW,                      STARTUPINFO_STD, CP_OWN_CONSOLE,                   .is_broken = CP_WITH_CONSOLE | CP_WITH_HANDLE | CP_ALONE},
 #endif
         {TRUE,  DETACHED_PROCESS | CREATE_NO_WINDOW,   STARTUPINFO_STD, CP_INPUT_VALID | CP_OUTPUT_VALID, .is_broken = 0x100},
@@ -5195,7 +5195,7 @@ static void test_CreateProcessCUI(void)
          {TRUE,  0,                        STARTUPINFO_STD, FALSE,  CP_INH_CONSOLE | CP_WITH_WINDOW | CP_ENABLED_CTRLC},
          {TRUE,  CREATE_NEW_PROCESS_GROUP, STARTUPINFO_STD, FALSE,  CP_INH_CONSOLE | CP_WITH_WINDOW | CP_GROUP_LEADER},
          {FALSE, 0,                        CONSOLE_STD,     TRUE,   0},
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
          {FALSE, CREATE_NEW_PROCESS_GROUP, CONSOLE_STD,     TRUE,   CP_GROUP_LEADER},
 #endif
 /* 10 */ {FALSE, 0,                        CONSOLE_STD,     FALSE,  CP_ENABLED_CTRLC},
@@ -5230,7 +5230,7 @@ static void test_CreateProcessCUI(void)
 
     for (i = 0; i < ARRAY_SIZE(no_console_tests); i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (i == 9 && GetNTVersion() < _WIN32_WINNT_WIN7)
             continue;
 #endif
@@ -5438,9 +5438,9 @@ static void test_CtrlHandlerSubsystem(void)
             ok(exit_code == STATUS_CONTROL_C_EXIT, "Unexpected exit code %#lx, instead of %#lx\n",
                exit_code, STATUS_CONTROL_C_EXIT);
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /* If the test fails to close when it should, force close.
-         * This prevents an issue where the test hangs on ReactOS. */
+         * This prevents an issue where the test hangs on LibreNT. */
         if (res != WAIT_OBJECT_0)
             TerminateProcess(info.hProcess, 0);
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ARM64 SMT (logical-processor) topology
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -50,9 +50,9 @@ static VOID Arm64SmtCheckCpu(KAFFINITY *SiblingOut)
     if (Siblings == 0)
     {
         /* Win11's KPRCB does not expose MultiThreadProcessorSet at this offset
-         * (ReactOS extension; lands in Win11 PrcbPad4 -> reads 0). Treat as
-         * not-applicable on Win11 instead of failing; ReactOS populates it. */
-        trace("cpu %lu: MultiThreadProcessorSet not populated (ReactOS-private/Win11 padding); SMT checks skipped\n",
+         * (LibreNT extension; lands in Win11 PrcbPad4 -> reads 0). Treat as
+         * not-applicable on Win11 instead of failing; LibreNT populates it. */
+        trace("cpu %lu: MultiThreadProcessorSet not populated (LibreNT-private/Win11 padding); SMT checks skipped\n",
               MyNumber);
         return;
     }

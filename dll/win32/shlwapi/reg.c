@@ -37,7 +37,7 @@ static const DWORD dwLenMimeDbContent = 27; /* strlen of szMimeDbContentA/W */
 
 INT     WINAPI SHStringFromGUIDW(REFGUID,LPWSTR,INT);
 HRESULT WINAPI SHRegGetCLSIDKeyW(REFGUID,LPCWSTR,BOOL,BOOL,PHKEY);
-#ifdef __REACTOS__ /* Should go to shcore, but we need kernelbase for that */
+#ifdef __LIBRENT__ /* Should go to shcore, but we need kernelbase for that */
 /*************************************************************************
  * SHRegSetPathA   [SHLWAPI.@]
  *
@@ -58,7 +58,7 @@ DWORD WINAPI SHRegSetPathA(HKEY hKey, LPCSTR lpszSubKey, LPCSTR lpszValue,
                            LPCSTR lpszPath, DWORD dwFlags)
 {
   char szBuff[MAX_PATH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DWORD dwType;
   LPCSTR pszData;
   INT cch;
@@ -100,7 +100,7 @@ DWORD WINAPI SHRegSetPathW(HKEY hKey, LPCWSTR lpszSubKey, LPCWSTR lpszValue,
                            LPCWSTR lpszPath, DWORD dwFlags)
 {
   WCHAR szBuff[MAX_PATH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DWORD dwType;
   LPCWSTR pszData;
   INT cch;
@@ -132,7 +132,7 @@ DWORD WINAPI SHRegSetPathW(HKEY hKey, LPCWSTR lpszSubKey, LPCWSTR lpszValue,
                      lstrlenW(szBuff));
 #endif
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /*************************************************************************
  * SHDeleteOrphanKeyA   [SHLWAPI.@]
@@ -567,7 +567,7 @@ HRESULT WINAPI SHRegGetCLSIDKeyA(REFGUID guid, LPCSTR lpszValue, BOOL bUseHKCU, 
 HRESULT WINAPI SHRegGetCLSIDKeyW(REFGUID guid, LPCWSTR lpszValue, BOOL bUseHKCU,
                            BOOL bCreate, PHKEY phKey)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   static const WCHAR szClassIdKey[] = { 'S','o','f','t','w','a','r','e','\\',
     'M','i','c','r','o','s','o','f','t','\\','W','i','n','d','o','w','s','\\',
     'C','u','r','r','e','n','t','V','e','r','s','i','o','n','\\',
@@ -578,7 +578,7 @@ HRESULT WINAPI SHRegGetCLSIDKeyW(REFGUID guid, LPCWSTR lpszValue, BOOL bUseHKCU,
   HKEY hkey;
 
   /* Create the key string */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   // https://www.geoffchappell.com/studies/windows/shell/shlwapi/api/reg/reggetclsidkey.htm
   WCHAR* ptr;
 

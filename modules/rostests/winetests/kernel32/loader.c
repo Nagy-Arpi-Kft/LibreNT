@@ -30,7 +30,7 @@
 #include "winnls.h"
 #include "wine/test.h"
 #include "delayloadhandler.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winehacks.h"
 #include "native_machine.h"
 #endif
@@ -445,7 +445,7 @@ static BOOL query_image_section( int id, const char *dll_name, const IMAGE_NT_HE
         (cor_header->MajorRuntimeVersion > 2 ||
          (cor_header->MajorRuntimeVersion == 2 && cor_header->MinorRuntimeVersion >= 5)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( image.ComPlusILOnly || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
 #else
         ok( image.ComPlusILOnly,
@@ -453,7 +453,7 @@ static BOOL query_image_section( int id, const char *dll_name, const IMAGE_NT_HE
             "%u: wrong ComPlusILOnly flags %02x\n", id, image.ImageFlags );
         if (nt_header->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC &&
             !(cor_header->Flags & COMIMAGE_FLAGS_32BITREQUIRED))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( image.ComPlusNativeReady || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
 #else
             ok( image.ComPlusNativeReady,
@@ -479,7 +479,7 @@ static BOOL query_image_section( int id, const char *dll_name, const IMAGE_NT_HE
     if (!(nt_header->OptionalHeader.SectionAlignment % page_size))
         ok( !image.ImageMappedFlat, "%u: wrong ImageMappedFlat flags %02x\n", id, image.ImageFlags );
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( image.ImageMappedFlat || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
 #else
         ok( image.ImageMappedFlat,
@@ -490,7 +490,7 @@ static BOOL query_image_section( int id, const char *dll_name, const IMAGE_NT_HE
         ok( !image.ImageDynamicallyRelocated || broken( image.ComPlusILOnly ), /* <= win7 */
             "%u: wrong ImageDynamicallyRelocated flags %02x\n", id, image.ImageFlags );
     else if (image.ImageContainsCode && !image.ImageMappedFlat && !cor_header)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( image.ImageDynamicallyRelocated || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
 #else
         ok( image.ImageDynamicallyRelocated,
@@ -704,7 +704,7 @@ static NTSTATUS map_image_section( const IMAGE_NT_HEADERS *nt_header, const IMAG
         else if (!lstrcmpiW( path, load_fallback_name ))
         {
             trace( "%u: loaded fallback\n", line );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( !expect_status || broken(is_win64) /* Broken on Vista, 8.1 x64 */, "%u: got fallback but expected failure %lx\n", line, expect_status );
             ok( expect_fallback || broken(is_win64) /* Broken on Vista, 8.1 x64 */ ||
 #else
@@ -724,7 +724,7 @@ static NTSTATUS map_image_section( const IMAGE_NT_HEADERS *nt_header, const IMAG
              ldr_status == STATUS_ILLEGAL_INSTRUCTION)
     {
         /* some dlls with invalid entry point will crash, but this means we loaded the test dll */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( !expect_fallback || broken(is_win64 && GetNTVersion() == _WIN32_WINNT_WIN8) /* Broken on 8.1 x64 */, "%u: got test dll but expected fallback\n", line );
 #else
         ok( !expect_fallback, "%u: got test dll but expected fallback\n", line );
@@ -1083,7 +1083,7 @@ static void test_Loader(void)
 
             SetLastError(0xdeadbeef);
             hlib_as_data_file = LoadLibraryExA(dll_name, 0, LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!hlib_as_data_file && GetLastError() == ERROR_INVALID_PARAMETER) {
                 skip("LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE not supported\n");
                 FreeLibrary(hlib_as_data_file);
@@ -1105,13 +1105,13 @@ static void test_Loader(void)
             SetLastError(0xdeadbeef);
             ret = FreeLibrary(hlib_as_data_file);
             ok(ret, "FreeLibrary error %ld\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
 
             SetLastError(0xdeadbeef);
             hlib_as_data_file = LoadLibraryExA(dll_name, 0, LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!hlib_as_data_file && GetLastError() == ERROR_INVALID_PARAMETER) {
                 skip("LOAD_LIBRARY_AS_IMAGE_RESOURCE not supported\n");
                 FreeLibrary(hlib_as_data_file);
@@ -1127,7 +1127,7 @@ static void test_Loader(void)
             SetLastError(0xdeadbeef);
             ret = FreeLibrary(hlib_as_data_file);
             ok(ret, "FreeLibrary error %ld\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
 
@@ -2088,7 +2088,7 @@ static void test_section_access(void)
             ok(!memcmp(buf, section_data, section.SizeOfRawData), "wrong section data\n");
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA) { // Crashes on WS03
 #endif
         status = NtQueryInformationProcess(pi.hProcess, ProcessImageInformation,
@@ -2103,7 +2103,7 @@ static void test_section_access(void)
         ok(!status, "Got unexpected status %#lx.\n", status);
         ok(!(image_info.ImageCharacteristics & IMAGE_FILE_DLL),
                 "Got unexpected characteristics %#x.\n", nt_header.FileHeader.Characteristics);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
@@ -2332,7 +2332,7 @@ static void test_import_resolution(void)
             expect = GetProcAddress( GetModuleHandleA( data.module ), data.function.name );
             ok( (void *)ptr->thunks[0].u1.Function == expect, "thunk %p instead of %p for %s.%s\n",
                 (void *)ptr->thunks[0].u1.Function, expect, data.module, data.function.name );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( ptr->tls_index < 32 || broken(ptr->tls_index == 9999) /* WS03 */, "wrong tls index %d\n", ptr->tls_index );
             if (ptr->tls_index != 9999) {
 #else
@@ -2341,7 +2341,7 @@ static void test_import_resolution(void)
             str = ((char **)NtCurrentTeb()->ThreadLocalStoragePointer)[ptr->tls_index];
             ok( !strcmp( str, "hello world" ), "wrong tls data '%s' at %p\n", str, str );
             ok(ptr->tls_index_hi == 0, "TLS Index written as a short, high half: %d\n", ptr->tls_index_hi);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
             check_tls_index(mod, ptr->tls_index != 9999);
@@ -2382,7 +2382,7 @@ static void test_import_resolution(void)
             if (!mod) break;
             ptr = (struct imports *)((char *)mod + page_size);
             tls_index_save = ptr->tls_index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( ptr->tls_index < 32 || broken(ptr->tls_index == 9999) /* WS03 */, "wrong tls index %d\n", ptr->tls_index );
             if (sizeof(tls_init_code) > 1 && ptr->tls_index != 9999)
 #else
@@ -2424,7 +2424,7 @@ static void test_import_resolution(void)
             }
             status = pNtQuerySection( mapping, SectionImageInformation, &image, sizeof(image), &size );
             ok( !status, "NtQuerySection failed %lx\n", status );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( test == 6 ? !image.ImageDynamicallyRelocated : image.ImageDynamicallyRelocated || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
 #else
             ok( test == 6 ? !image.ImageDynamicallyRelocated : image.ImageDynamicallyRelocated,
@@ -2441,7 +2441,7 @@ static void test_import_resolution(void)
             status = pNtMapViewOfSection( mapping, GetCurrentProcess(), (void **)&mod, 0, 0, &offset,
                                           &size, 1 /* ViewShare */, 0, PAGE_READONLY );
             todo_wine_if (test == 5)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( status == (test == 6 ? STATUS_IMAGE_NOT_AT_BASE : STATUS_SUCCESS) || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
 #else
             ok( status == (test == 6 ? STATUS_IMAGE_NOT_AT_BASE : STATUS_SUCCESS),
@@ -2459,7 +2459,7 @@ static void test_import_resolution(void)
             }
             else todo_wine_if (test == 5)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
                 ok( (void *)pnt->OptionalHeader.ImageBase == mod, "not at base %p / %p\n",
@@ -2467,7 +2467,7 @@ static void test_import_resolution(void)
                 ok( (char *)ptr->tls.StartAddressOfRawData == (char *)mod + DATA_RVA( data.tls_data ),
                     "tls not relocated %p / %p\n", (void *)ptr->tls.StartAddressOfRawData,
                     (char *)mod + DATA_RVA( data.tls_data ));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 }
 #endif
             }
@@ -2879,14 +2879,14 @@ static void subtest_export_forwarder_dep_chain( size_t num_chained_export_module
     if (winetest_debug > 1)
         trace( "All modules should be unloaded; the unloading process should not reload any DLL\n" );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     for (i = 0; i < num_modules; i++)
     {
         ok( !GetModuleHandleA( temp_paths[i] ), "modules[%Iu] should not be kept loaded (3)\n", i );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -3143,7 +3143,7 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
         {
             /* FIXME: remove once Wine is fixed */
             todo_wine_if (!(expected_code == STILL_ACTIVE || expected_code == 196))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ok(!ret || broken(GetNTVersion() < _WIN32_WINNT_VISTA), "RtlDllShutdownInProgress returned %ld\n", ret);
 #else
                 ok(!ret, "RtlDllShutdownInProgress returned %ld\n", ret);
@@ -3158,13 +3158,13 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
             void* value;
             SetLastError(0xdeadbeef);
             value = pFlsGetValue(fls_index);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(value == NULL || broken(value == (void*)0x31415) /* WS03 */, "FlsGetValue returned %p, expected NULL\n", value);
 #else
             ok(value == NULL, "FlsGetValue returned %p, expected NULL\n", value);
 #endif
             ok(GetLastError() == ERROR_SUCCESS, "FlsGetValue failed with error %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(fls_callback_count == thread_detach_count + 1 || broken(GetNTVersion() < _WIN32_WINNT_VISTA),
                 "wrong FLS callback count %ld, expected %d\n", fls_callback_count, thread_detach_count + 1);
 #else
@@ -3179,7 +3179,7 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
             ret = pFlsFree(fls_index);
             ok(ret, "FlsFree failed with error %lu\n", GetLastError());
             fls_index = FLS_OUT_OF_INDEXES;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
             ok(fls_callback_count == fls_count,
@@ -3240,7 +3240,7 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
         handle = CreateThread(NULL, 0, noop_thread_proc, &noop_thread_started, 0, &ret);
         if (param)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(!handle || broken(handle != 0) /* Pre-Win7 */, "CreateThread should fail\n");
 
             if (!handle)
@@ -3274,7 +3274,7 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
         handle = CreateRemoteThread(process, NULL, 0, noop_thread_proc, &noop_thread_started, 0, &ret);
         if (param)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(!handle || broken(handle != 0) /* Pre-Win7 */, "CreateRemoteThread should fail\n");
 
             if (!handle)
@@ -3410,7 +3410,7 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
 
             SetLastError(0xdeadbeef);
             value = pFlsGetValue(fls_index);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(!value || broken(value == (void*)0x31415) /* WS03 */, "FlsGetValue returned %p, expected NULL\n", value);
 #else
             ok(!value, "FlsGetValue returned %p, expected NULL\n", value);
@@ -3423,12 +3423,12 @@ static BOOL WINAPI dll_entry_point(HINSTANCE hinst, DWORD reason, LPVOID param)
             if (fls_list_head)
             {
                 count = check_linked_list(fls_list_head, &NtCurrentTeb()->FlsSlots->fls_list_entry, &index);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
                 ok(count <= thread_count, "Got unexpected count %u, thread_count %u.\n", count, thread_count);
                 ok(index == ~0, "Got unexpected index %u.\n", index);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
             }
@@ -3605,14 +3605,14 @@ static void child_process(const char *dll_name, DWORD target_offset)
         hmod = GetModuleHandleA(dll_name);
         ok(hmod != 0, "DLL should not be unloaded\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
         SetLastError(0xdeadbeef);
         thread = CreateThread(NULL, 0, noop_thread_proc, &dummy, 0, &ret);
         ok(!thread, "CreateThread should fail\n");
         ok(GetLastError() == ERROR_ACCESS_DENIED, "expected ERROR_ACCESS_DENIED, got %ld\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
@@ -3893,7 +3893,7 @@ static void test_ExitProcess(void)
     ok(ret == WAIT_OBJECT_0, "child process failed to terminate\n");
     if (ret != WAIT_OBJECT_0) TerminateProcess(pi.hProcess, 0);
     GetExitCodeProcess(pi.hProcess, &ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == 195 || broken(ret == 0xc0000005) /* WS03 */, "expected exit code 195, got %lu\n", ret);
 #else
     ok(ret == 195, "expected exit code 195, got %lu\n", ret);
@@ -4019,7 +4019,7 @@ static void test_ExitProcess(void)
     ok(ret, "CreateProcess(%s) error %ld\n", cmdline, GetLastError());
     ret = WaitForSingleObject(pi.hProcess, 5000);
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == WAIT_TIMEOUT || broken(ret == WAIT_OBJECT_0) /* WS03 */, "child process should fail to terminate\n");
 #else
     ok(ret == WAIT_TIMEOUT, "child process should fail to terminate\n");
@@ -4033,7 +4033,7 @@ static void test_ExitProcess(void)
     ok(ret == WAIT_OBJECT_0, "child process failed to terminate\n");
     GetExitCodeProcess(pi.hProcess, &ret);
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == 201 || broken(ret == 1) /* WS03 */, "expected exit code 201, got %lu\n", ret);
 #else
     ok(ret == 201, "expected exit code 201, got %lu\n", ret);

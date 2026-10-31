@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS Ancillary Function Driver
+ * PROJECT:     LibreNT Ancillary Function Driver
  * FILE:        tdihelpers/tdi.c
  * PURPOSE:     Transport Driver Interface functions
  * PROGRAMMERS: Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -21,7 +21,7 @@
 /* If you want to see the DPRINT() output in your debugger,
  * remove the following line (or comment it out): */
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 static NTSTATUS TdiCall(
     PIRP Irp,

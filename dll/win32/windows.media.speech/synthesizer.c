@@ -180,13 +180,13 @@ static HRESULT voice_information_create( const WCHAR *display_name, const WCHAR 
 
     if (!(voice_info = calloc(1, sizeof(*voice_info)))) return E_OUTOFMEMORY;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = wcslen(display_name);
 #else
     len = wcslen(display_name) + 3;
 #endif
     langlen = GetLocaleInfoEx(locale, LOCALE_SLOCALIZEDDISPLAYNAME, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!langlen)
     {
         hr = HRESULT_FROM_WIN32(GetLastError());
@@ -202,7 +202,7 @@ static HRESULT voice_information_create( const WCHAR *display_name, const WCHAR 
     len += 3;
 #endif
     description = malloc((len + langlen)  * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!description)
     {
         voice_information_delete(voice_info);
@@ -211,7 +211,7 @@ static HRESULT voice_information_create( const WCHAR *display_name, const WCHAR 
 #endif
     wcscpy(description, display_name);
     wcscat(description, L" - ");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!GetLocaleInfoEx(locale, LOCALE_SLOCALIZEDDISPLAYNAME, description + len, langlen))
     {
         hr = HRESULT_FROM_WIN32(GetLastError());
@@ -1372,7 +1372,7 @@ struct synthesizer
 
     struct synthesizer_options *options;
     IVoiceInformation *current_voice;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG async_id;
 #endif
 };
@@ -1480,7 +1480,7 @@ static HRESULT synthesizer_synthesize_text_to_stream_async( IUnknown *invoker, I
 static HRESULT WINAPI synthesizer_SynthesizeTextToStreamAsync( ISpeechSynthesizer *iface, HSTRING text,
                                                                IAsyncOperation_SpeechSynthesisStream **operation )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct synthesizer *impl = impl_from_ISpeechSynthesizer(iface);
 
     TRACE("iface %p, text %p, operation %p.\n", iface, text, operation);
@@ -1512,7 +1512,7 @@ static HRESULT synthesizer_synthesize_ssml_to_stream_async( IUnknown *invoker, I
 static HRESULT WINAPI synthesizer_SynthesizeSsmlToStreamAsync( ISpeechSynthesizer *iface, HSTRING ssml,
                                                                IAsyncOperation_SpeechSynthesisStream **operation )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct synthesizer *impl = impl_from_ISpeechSynthesizer(iface);
 
     TRACE("iface %p, ssml %p, operation %p.\n", iface, ssml, operation);

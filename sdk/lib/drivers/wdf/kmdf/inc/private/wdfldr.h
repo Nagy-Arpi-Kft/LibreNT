@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS WdfLdr driver
+ * PROJECT:     LibreNT WdfLdr driver
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     WdfLdr driver - exported functions
  * COPYRIGHT:   Copyright 2021 Max Korostil (mrmks04@yandex.ru)

@@ -19,7 +19,7 @@
 #include "vfdtypes.h"
 #include "vfdapi.h"
 #include "vfdlib.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "vfdmsg.h"
 #else
 #include "vfdmsg_lib.h"
@@ -74,7 +74,7 @@ static PSTR FormatSizeUnits(ULONG size, PSTR buf)
 	double dsize;
 
 	if (size < 1000) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		sprintf(buf, "%u", size);
 #else
 		sprintf(buf, "%lu", size);

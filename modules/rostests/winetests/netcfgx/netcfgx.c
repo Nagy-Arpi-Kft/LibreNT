@@ -20,7 +20,7 @@
 
 #define COBJMACROS
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <objbase.h>
 #endif
 #include "netcfgx.h"

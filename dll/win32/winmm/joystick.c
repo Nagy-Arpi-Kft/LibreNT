@@ -665,7 +665,7 @@ MMRESULT WINAPI joySetCapture( HWND hwnd, UINT id, UINT period, BOOL changed )
 
     if (!IsWindow( hwnd ))
         res = JOYERR_NOCANDO; /* FIXME: what should be returned ? */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (joysticks[id].capture == hwnd)
     {
         UINT timer = SetTimer( hwnd, joysticks[id].timer, period, joystick_timer );

@@ -1,7 +1,7 @@
 /* Unicode ctype tables */
 /* Automatically generated; DO NOT EDIT!! */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/unicode.h"
 #else
 #include "windef.h"

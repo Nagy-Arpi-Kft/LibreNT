@@ -26,7 +26,7 @@
 
 
 #define CBXLVL 2 /* dprintf level for callback xdr logging */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define CBX_ERR(msg) dprintf((CBXLVL), "%s: failed at %s\n", __FUNCTION__, msg)
 #else
 #define CBX_ERR(msg) dprintf((CBXLVL), __FUNCTION__ ": failed at " msg "\n")

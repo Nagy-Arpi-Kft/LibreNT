@@ -3612,7 +3612,7 @@ Return Value:
                                           NewOffset,
                                           sizeof(DIRENT),
                                           &NewDirentBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                           &NewDirent,
 #else
                                           (PVOID *)&NewDirent,
@@ -3642,7 +3642,7 @@ Return Value:
                                               SecondPageOffset,
                                               sizeof(DIRENT),
                                               &SecondPageBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                               &SecondPageDirent,
 #else
                                               (PVOID *)&SecondPageDirent,
@@ -3843,7 +3843,7 @@ Return Value:
                                               sizeof(DIRENT),
                                               sizeof(DIRENT),
                                               &DotDotBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                               &DotDotDirent,
 #else
                                               (PVOID *)&DotDotDirent,

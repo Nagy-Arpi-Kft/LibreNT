@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Headers
+ * PROJECT:     LibreNT Headers
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Group Policy and shell
  * COPYRIGHT:   Copyright 2005 Mike McCormack

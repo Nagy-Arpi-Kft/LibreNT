@@ -119,7 +119,7 @@ typedef void (__RPC_USER *NDR_RUNDOWN)(void *context);
 typedef void (__RPC_USER *NDR_NOTIFY_ROUTINE)(void);
 typedef void (__RPC_USER *NDR_NOTIFY2_ROUTINE)(boolean flag);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef __has_declspec_attribute
 # if defined(_MSC_VER)
 #  define __has_declspec_attribute(x) 1

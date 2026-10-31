@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     See COPYING in the top level directory
  * PURPOSE:     Test for NtCreateThread
  * PROGRAMMER:  Aleksandar Andrejevic <theflash AT sdf DOT lonestar DOT org>
@@ -80,7 +80,7 @@ InitializeTestContext(PCONTEXT Context)
     Context->Esi = 0xF0000006;
     Context->Edi = 0xF0000007;
 
-    /* FIXME: Initialize segments to prevent ReactOS from crashing in the kernel */
+    /* FIXME: Initialize segments to prevent LibreNT from crashing in the kernel */
     Context->SegCs = KGDT_R3_CODE | RPL_MASK;
     Context->SegSs = KGDT_R3_DATA | RPL_MASK;
     Context->SegDs = KGDT_R3_DATA | RPL_MASK;

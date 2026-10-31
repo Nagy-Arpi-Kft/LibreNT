@@ -3,7 +3,7 @@
  *
  * Basic Win-API definitions
  *
- * This file is part of the ReactOS SDK.
+ * This file is part of the LibreNT SDK.
  *
  * Contributors:
  *   Created by Timo Kreuzer <timo.kreuzer@reactos.org>
@@ -298,7 +298,7 @@ typedef WIN32_FIND_DATAW WIN32_FIND_DATA, *PWIN32_FIND_DATA, *LPWIN32_FIND_DATA;
 typedef WIN32_FIND_DATAA WIN32_FIND_DATA, *PWIN32_FIND_DATA, *LPWIN32_FIND_DATA;
 #endif
 
-#if (NTDDI_VERSION >= NTDDI_LONGHORN) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_LONGHORN) || defined(__LIBRENT__)
 typedef enum _FILE_INFO_BY_HANDLE_CLASS
 {
     FileBasicInfo,
@@ -317,18 +317,18 @@ typedef enum _FILE_INFO_BY_HANDLE_CLASS
     FileRemoteProtocolInfo,
     FileFullDirectoryInfo,
     FileFullDirectoryRestartInfo,
-#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__LIBRENT__)
     FileStorageInfo,
     FileAlignmentInfo,
     FileIdInfo,
     FileIdExtdDirectoryInfo,
     FileIdExtdDirectoryRestartInfo,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__)
     FileDispositionInfoEx,
     FileRenameInfoEx,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_19H1) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_19H1) || defined(__LIBRENT__)
     FileCaseSensitiveInfo,
     FileNormalizedNameInfo,
 #endif

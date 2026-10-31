@@ -2,11 +2,11 @@
 spec2def(user32.dll user32.spec ADD_IMPORTLIB)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
     include
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine
-    ${REACTOS_SOURCE_DIR}/win32ss/include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libpng)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine
+    ${LIBRENT_SOURCE_DIR}/win32ss/include
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libpng)
 
 list(APPEND SOURCE
     controls/appswitch.c
@@ -64,8 +64,8 @@ list(APPEND SOURCE
     windows/text.c
     windows/window.c
     windows/winpos.c
-    ${REACTOS_SOURCE_DIR}/win32ss/user/rtl/image.c
-    ${REACTOS_SOURCE_DIR}/win32ss/user/rtl/text.c
+    ${LIBRENT_SOURCE_DIR}/win32ss/user/rtl/image.c
+    ${LIBRENT_SOURCE_DIR}/win32ss/user/rtl/text.c
     ${CMAKE_CURRENT_BINARY_DIR}/user32_stubs.c
     include/user32.h)
 
@@ -101,4 +101,4 @@ add_dependencies(user32 asm)
 add_delay_importlibs(user32 usp10 libpng)
 add_importlibs(user32 gdi32 advapi32 kernel32 ntdll)
 add_pch(user32 include/user32.h SOURCE)
-add_cd_file(TARGET user32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET user32 DESTINATION librent/system32 FOR all)

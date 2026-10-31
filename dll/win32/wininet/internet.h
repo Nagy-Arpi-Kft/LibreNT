@@ -25,7 +25,7 @@
 
 #include "wine/list.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <limits.h>
 #endif
 #include <time.h>
@@ -96,14 +96,14 @@ typedef struct
 BOOL is_valid_netconn(netconn_t *);
 void close_netconn(netconn_t *);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline WCHAR *strndupW(const WCHAR *str, size_t max_len)
 #else
 static inline WCHAR *strndupW(const WCHAR *str, UINT max_len)
 #endif
 {
     LPWSTR ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t len;
 #else
     UINT len;
@@ -116,7 +116,7 @@ static inline WCHAR *strndupW(const WCHAR *str, UINT max_len)
         if(str[len] == '\0')
             break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (len >= (size_t)-1 / sizeof(WCHAR))
     {
         SetLastError(ERROR_OUTOFMEMORY);
@@ -128,14 +128,14 @@ static inline WCHAR *strndupW(const WCHAR *str, UINT max_len)
         memcpy(ret, str, sizeof(WCHAR)*len);
         ret[len] = '\0';
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else SetLastError(ERROR_OUTOFMEMORY);
 #endif
 
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline WCHAR *strndupAtoW(const char *str, DWORD len_a, DWORD *len_w)
 #else
 static inline WCHAR *strndupAtoW(const char *str, int len_a, DWORD *len_w)
@@ -144,7 +144,7 @@ static inline WCHAR *strndupAtoW(const char *str, int len_a, DWORD *len_w)
     WCHAR *ret = NULL;
 
     if(str) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         size_t bytes = len_a == ~0u ? strlen(str) : strnlen(str, len_a);
         int len;
 
@@ -171,7 +171,7 @@ static inline WCHAR *strndupAtoW(const char *str, int len_a, DWORD *len_w)
         ret = malloc((len + 1) * sizeof(WCHAR));
 #endif
         if(ret) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (bytes && !MultiByteToWideChar(CP_ACP, 0, str, bytes, ret, len))
             {
                 DWORD error = GetLastError();
@@ -185,7 +185,7 @@ static inline WCHAR *strndupAtoW(const char *str, int len_a, DWORD *len_w)
             ret[len] = 0;
             *len_w = len;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else SetLastError(ERROR_OUTOFMEMORY);
 #endif
     }
@@ -201,7 +201,7 @@ static inline WCHAR *strdupAtoW(const char *str)
         DWORD len;
 
         len = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!len) return NULL;
         if ((size_t)len > (size_t)-1 / sizeof(WCHAR))
         {
@@ -213,7 +213,7 @@ static inline WCHAR *strdupAtoW(const char *str)
         ret = malloc(len * sizeof(WCHAR));
 #endif
         if(ret)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             if (!MultiByteToWideChar(CP_ACP, 0, str, -1, ret, len))
             {
@@ -238,12 +238,12 @@ static inline char *strdupWtoA(const WCHAR *str)
 
     if(str) {
         DWORD size = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!size) return NULL;
 #endif
         ret = malloc(size);
         if(ret)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             if (!WideCharToMultiByte(CP_ACP, 0, str, -1, ret, size, NULL, NULL))
             {
@@ -330,7 +330,7 @@ typedef struct {
     DWORD (*ReadFile)(object_header_t*,void*,DWORD,DWORD*,DWORD,DWORD_PTR);
     DWORD (*WriteFile)(object_header_t*,const void*,DWORD,DWORD*);
     DWORD (*QueryDataAvailable)(object_header_t*,DWORD*,DWORD,DWORD_PTR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD (*FindNextFileW)(object_header_t*,void*,BOOL);
 #else
     DWORD (*FindNextFileW)(object_header_t*,void*);
@@ -371,7 +371,7 @@ typedef struct
     LPWSTR  proxyUsername;
     LPWSTR  proxyPassword;
     DWORD   accessType;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SRWLOCK synced_lock;
     struct list synced_urls;
     BOOL preconfig;
@@ -386,7 +386,7 @@ typedef struct
     LPWSTR  userName;
     LPWSTR  password;
     INTERNET_PORT hostPort; /* the final destination port of the request */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPWSTR  agent;
 #endif
 } http_session_t;
@@ -416,7 +416,7 @@ typedef struct {
     data_stream_t data_stream;
     ULONGLONG content_length;
     ULONGLONG content_read;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL premature_eof;
 #endif
 } netconn_stream_t;
@@ -440,7 +440,7 @@ typedef struct
     DWORD bytesToWrite;
     DWORD bytesWritten;
     BOOL clear_auth; /* Flag to clear the password field on the authorization dialog */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL awaiting_response;
     BOOL no_headers;
     DWORD net_received;
@@ -477,14 +477,14 @@ typedef void (*async_task_proc_t)(task_header_t*);
 struct task_header_t
 {
     async_task_proc_t proc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     async_task_proc_t destroy;
 #endif
     object_header_t *hdr;
 };
 
 void *alloc_async_task(object_header_t*,async_task_proc_t,size_t);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void free_async_task(task_header_t*);
 #endif
 
@@ -542,7 +542,7 @@ server_t *get_server(substr_t,INTERNET_PORT,BOOL,BOOL);
 
 DWORD create_req_file(const WCHAR*,req_file_t**);
 void req_file_release(req_file_t*);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 WCHAR *INTERNET_GetAutoConfigProxy(const WCHAR*,const WCHAR*);
 void INTERNET_AddSessionSyncedUrl(appinfo_t*,const WCHAR*);
 BOOL INTERNET_IsSessionSyncedUrl(appinfo_t*,const WCHAR*);

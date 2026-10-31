@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM software GPU miniport
+ * PROJECT:     LibreNT WDDM software GPU miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Generic root-enumerated firmware framebuffer provider
  */
@@ -894,7 +894,7 @@ SoftGpuPlatformQueryStart(
     Config->Height = SOFTGPU_DEFAULT_HEIGHT;
     Config->Format = SOFTGPU_DEFAULT_FORMAT;
 
-#if (REACTOS_WDDM_TARGET_LEVEL < 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 1200)
     {
         SOFTGPU_LOADER_FRAMEBUFFER LoaderFrameBuffer;
         ULONG LoaderPitch;

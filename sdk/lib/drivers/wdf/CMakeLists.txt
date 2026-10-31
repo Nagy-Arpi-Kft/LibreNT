@@ -3,7 +3,7 @@ add_subdirectory(wdfldr)
 add_subdirectory(wdfdriverentry)
 add_subdirectory(cx)
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 
 list(APPEND SOURCE_SHARED
     shared/core/fxcxdeviceinit.cpp
@@ -190,7 +190,7 @@ add_library(wdf01000 SHARED ${SOURCE_SHARED} ${SOURCE_KM} wdf01000.rc)
 
 set_module_type(wdf01000 kernelmodedriver)
 
-add_cd_file(TARGET wdf01000 DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET wdf01000 DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(wdf01000_reg.inf)
 
 target_compile_definitions(wdf01000
@@ -204,9 +204,9 @@ target_compile_options(wdf01000 PUBLIC # NTDDI_WINBLUE
     -UNTDDI_VERSION -DNTDDI_VERSION=0x06030000)
 
 target_include_directories(wdf01000
-    PUBLIC ${REACTOS_SOURCE_DIR}/sdk/include/wdf/kmdf/1.33
+    PUBLIC ${LIBRENT_SOURCE_DIR}/sdk/include/wdf/kmdf/1.33
     PRIVATE
-        ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/wdf/wdfldr
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/wdf/wdfldr
         shared/inc/primitives/common
         shared/inc/primitives/km
         shared/inc/private/common

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Direct3D diagnostics
+ * PROJECT:     LibreNT Direct3D diagnostics
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Report the Direct3D 11 and 12 feature levels each adapter delivers
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -19,7 +19,7 @@
 #include <d3dcompiler.h>
 #include <d3dkmthk.h>
 #include <d3d12umddi.h>
-#include <reactos/drivers/directx/umd_adapter.h>
+#include <librent/drivers/directx/umd_adapter.h>
 #include <stdio.h>
 #include <stdarg.h>
 

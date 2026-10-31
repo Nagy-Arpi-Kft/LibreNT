@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Serial enumerator driver
+ * PROJECT:         LibreNT Serial enumerator driver
  * FILE:            drivers/bus/serenum/detect.c
  * PURPOSE:         Detection of serial devices
  *

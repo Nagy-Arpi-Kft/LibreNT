@@ -1,5 +1,5 @@
 /*
- * PROJECT:    ReactOS IF Monitor DLL
+ * PROJECT:    LibreNT IF Monitor DLL
  * LICENSE:    GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:    IP context functions
  * COPYRIGHT:  Copyright 2025 Eric Kohl <eric.kohl@reactos.org>

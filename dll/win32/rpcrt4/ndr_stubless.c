@@ -216,7 +216,7 @@ static DWORD calc_arg_size(MIDL_STUB_MESSAGE *pStubMsg, PFORMAT_STRING pFormat)
         size = *(const WORD *)(pFormat + 8 + pStubMsg->CorrDespIncrement + offset);
         break;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case FC_SYSTEM_HANDLE:
         size = sizeof(HANDLE);
         break;
@@ -413,7 +413,7 @@ static void client_free_handle(
                     pArg = ARG_FROM_OFFSET(pStubMsg->StackTop, pDesc->offset);
                 memcpy(&pObject, pArg, pDesc->flag_and_size & 0xf);
                 pGenPair = &pStubMsg->StubDesc->aGenericBindingRoutinePairs[pDesc->binding_routine_pair_index];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (hBinding) pGenPair->pfnUnbind(pObject, hBinding);
 #else
                 pGenPair->pfnUnbind(pObject, hBinding);
@@ -923,7 +923,7 @@ LONG_PTR WINAPI NdrpClientCall2( PMIDL_STUB_DESC pStubDesc, PFORMAT_STRING pForm
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         stubMsg.StubDesc = pStubDesc;
 #endif
         pFormat = convert_old_args( &stubMsg, pFormat, stack_size,

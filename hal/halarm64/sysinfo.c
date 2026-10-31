@@ -1,17 +1,17 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            hal/halarm64/sysinfo.c
  * PURPOSE:         ARM64 HAL services introduced after Windows 7: MSI
  *                  routing, interrupt targeting and ARM64-only stubs
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
 
 #include <hal.h>
-#include <reactos/hal/msi.h>
-#include <reactos/hal/acpi_pci.h>
+#include <librent/hal/msi.h>
+#include <librent/hal/acpi_pci.h>
 #define NDEBUG
 #include <debug.h>
 

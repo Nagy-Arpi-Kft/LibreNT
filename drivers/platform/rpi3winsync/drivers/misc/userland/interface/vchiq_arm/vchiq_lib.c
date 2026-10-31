@@ -46,7 +46,7 @@ SOFTWARE.
 #ifdef WIN32
 
     #ifdef WIN32_KERN
-    #ifdef __REACTOS__
+    #ifdef __LIBRENT__
     #include <ntifs.h>
     #else
     #include <Ntifs.h>

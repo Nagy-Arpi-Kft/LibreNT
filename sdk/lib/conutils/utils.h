@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Console Utilities Library
+ * PROJECT:     LibreNT Console Utilities Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Base set of functions for loading string resources
  *              and message strings, and handle type identification.

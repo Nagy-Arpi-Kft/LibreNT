@@ -26,7 +26,7 @@
 
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline HRESULT WINAPI winegstreamer_create_wm_sync_reader(IUnknown *outer, void **out) { if (out) *out = NULL; return E_NOTIMPL; }
 #else
 HRESULT WINAPI winegstreamer_create_wm_sync_reader(IUnknown *outer, void **out);

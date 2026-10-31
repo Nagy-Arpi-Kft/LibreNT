@@ -27,7 +27,7 @@
 
 
 #ifndef _MSC_VER
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define __cpuidex __cpuidex_ // prevent redeclaration
 #endif
 #if defined(_M_IX86) || defined(_M_AMD64) || defined(__i386__) || defined(__x86_64__)

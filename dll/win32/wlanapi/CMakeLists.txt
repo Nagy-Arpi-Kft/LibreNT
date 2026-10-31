@@ -1,6 +1,6 @@
 
-include_directories( ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
-add_rpc_files(client ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/wlansvc.idl)
+include_directories( ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
+add_rpc_files(client ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/wlansvc.idl)
 spec2def(wlanapi.dll wlanapi.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -16,4 +16,4 @@ add_library(wlanapi MODULE ${SOURCE})
 set_module_type(wlanapi win32dll)
 target_link_libraries(wlanapi wine ${PSEH_LIB})
 add_importlibs(wlanapi rpcrt4 msvcrt kernel32 ntdll)
-add_cd_file(TARGET wlanapi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wlanapi DESTINATION librent/system32 FOR all)

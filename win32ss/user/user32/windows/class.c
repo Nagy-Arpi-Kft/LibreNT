@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS user32.dll
+ * PROJECT:         LibreNT user32.dll
  * COPYRIGHT:       GPL - See COPYING in the top level directory
  * FILE:            win32ss/user/user32/windows/class.c
  * PURPOSE:         Window classes
@@ -196,7 +196,7 @@ ClassNameToVersion(
     {
         /*
          * In windows the default activation context always contains comctl32v5
-         * In reactos we don't have a default activation context so we
+         * In LibreNT we don't have a default activation context so we
          * mimic wine here.
          */
         VersionedClass = is_comctl32_class(SectionName.Buffer);
@@ -424,7 +424,7 @@ GetClassInfoExW(
         IS_ATOM(lpszClass) ? lpszClass : 0,
         lpwcx);
 
-    /* From wine, for speed only, ReactOS supports the correct return in
+    /* From wine, for speed only, LibreNT supports the correct return in
      * Win32k. cbSize is ignored.
      */
     if (!lpwcx)

@@ -232,7 +232,7 @@ target_link_libraries(acpi wdmguid acpica memcmp strtol ${PSEH_LIB})
 add_importlibs(acpi ntoskrnl hal)
 add_pch(acpi precomp.h ACPI_SOURCE)
 set_source_files_properties(gpioint.c PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
-add_cd_file(TARGET acpi DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET acpi DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(acpi acpi.inf)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

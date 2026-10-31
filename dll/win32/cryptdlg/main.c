@@ -31,7 +31,7 @@
 #include "cryptres.h"
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #endif
 

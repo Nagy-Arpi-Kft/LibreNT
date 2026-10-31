@@ -67,11 +67,11 @@ target_link_libraries(comctl32 uuid wine ${PSEH_LIB} oldnames)
 add_delay_importlibs(comctl32 oleacc winmm uxtheme ole32)
 add_importlibs(comctl32 user32 gdi32 advapi32 usp10 imm32 kernelbase_ros oleaut32 msvcrt kernel32 ntdll)
 add_pch(comctl32 precomp.h SOURCE)
-add_cd_file(TARGET comctl32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET comctl32 DESTINATION librent/system32 FOR all)
 
-add_cd_file(TARGET comctl32 DESTINATION reactos/winsxs/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef.manifest DESTINATION reactos/winsxs/manifests FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef.manifest DESTINATION reactos/winsxs/manifests FOR all)
+add_cd_file(TARGET comctl32 DESTINATION librent/winsxs/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef.manifest DESTINATION librent/winsxs/manifests FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef.manifest DESTINATION librent/winsxs/manifests FOR all)
 set_wine_module_FIXME(comctl32) # CORE-5743: No ARRAY_SIZE macro
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

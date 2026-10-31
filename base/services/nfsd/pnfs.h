@@ -293,7 +293,7 @@ enum pnfs_status pnfs_write(
 
 
 /* helper functions */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline int is_dense(
 #else
 FORCEINLINE int is_dense(
@@ -302,7 +302,7 @@ FORCEINLINE int is_dense(
 {
     return (layout->util & NFL4_UFLG_DENSE) != 0;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline int should_commit_to_mds(
 #else
 FORCEINLINE int should_commit_to_mds(
@@ -311,7 +311,7 @@ FORCEINLINE int should_commit_to_mds(
 {
     return (layout->util & NFL4_UFLG_COMMIT_THRU_MDS) != 0;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint32_t layout_unit_size(
 #else
 FORCEINLINE uint32_t layout_unit_size(
@@ -320,7 +320,7 @@ FORCEINLINE uint32_t layout_unit_size(
 {
     return layout->util & NFL4_UFLG_STRIPE_UNIT_SIZE_MASK;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint64_t stripe_unit_number(
 #else
 FORCEINLINE uint64_t stripe_unit_number(
@@ -332,7 +332,7 @@ FORCEINLINE uint64_t stripe_unit_number(
     const uint64_t relative_offset = offset - layout->pattern_offset;
     return relative_offset / unit_size;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint64_t stripe_unit_offset(
 #else
 FORCEINLINE uint64_t stripe_unit_offset(
@@ -343,7 +343,7 @@ FORCEINLINE uint64_t stripe_unit_offset(
 {
     return layout->pattern_offset + unit_size * sui;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint32_t stripe_index(
 #else
 FORCEINLINE uint32_t stripe_index(
@@ -354,7 +354,7 @@ FORCEINLINE uint32_t stripe_index(
 {
     return (uint32_t)((sui + layout->first_index) % stripe_count);
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline uint32_t data_server_index(
 #else
 FORCEINLINE uint32_t data_server_index(

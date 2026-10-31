@@ -9,7 +9,7 @@
 #define RX_WORKQ_POOLTAG ('qWxR')
 #define RX_MISC_POOLTAG ('sMxR')
 #define RX_IRPC_POOLTAG ('rIxR')
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define RX_TLC_POOLTAG ('??xR')
 #endif
 

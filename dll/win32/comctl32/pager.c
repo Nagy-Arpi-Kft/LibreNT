@@ -1156,7 +1156,7 @@ PAGER_Register (void)
     wndClass.cbWndExtra    = sizeof(PAGER_INFO *);
     wndClass.hCursor       = LoadCursorW (0, (LPWSTR)IDC_ARROW);
     wndClass.hbrBackground = (HBRUSH)(COLOR_BTNFACE+1);
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
     /* Explorer owns a private class with the same name.  Keep the common
        control associated with this module so lazy v6 registration does not
        mistake Explorer's class for an existing registration. */

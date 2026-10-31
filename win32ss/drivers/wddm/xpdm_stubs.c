@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Display Driver Model - Win32k/dxgkrnl Bridge
+ * PROJECT:     LibreNT Display Driver Model - Win32k/dxgkrnl Bridge
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     XPDM link stubs for the always-built win32k D3DKMT thunks
  * COPYRIGHT:   Copyright 2026 LiberNT Contributors
@@ -15,8 +15,8 @@
  * WDDM 3.x layouts into an XPDM build.
  */
 
-typedef struct _REACTOS_WIN32K_DXGKRNL_INTERFACE
-    *PREACTOS_WIN32K_DXGKRNL_INTERFACE;
+typedef struct _LIBRENT_WIN32K_DXGKRNL_INTERFACE
+    *PLIBRENT_WIN32K_DXGKRNL_INTERFACE;
 
 /*
  * These structures belong to DDI levels newer than XPDM's header selection.
@@ -189,7 +189,7 @@ WddmBridgeRequireReady(VOID)
 
 VOID
 WddmBridgeInitCallbacks(
-    _Out_ PREACTOS_WIN32K_DXGKRNL_INTERFACE Interface)
+    _Out_ PLIBRENT_WIN32K_DXGKRNL_INTERFACE Interface)
 {
     UNREFERENCED_PARAMETER(Interface);
 }

@@ -39,7 +39,7 @@
 #include "wine/debug.h"
 
 #include "msiserver.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -126,7 +126,7 @@ typedef struct tagMSIDATABASE
     MSISTREAM *streams;
     UINT num_streams;
     UINT num_streams_allocated;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL memory_only;
 #endif
 } MSIDATABASE;
@@ -456,7 +456,7 @@ typedef struct tagMSIPACKAGE
     HANDLE custom_server_64_process;
     HANDLE custom_server_32_pipe;
     HANDLE custom_server_64_pipe;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE custom_server_emulated_process;
     HANDLE custom_server_emulated_pipe;
 #endif
@@ -487,7 +487,7 @@ typedef struct tagMSIPACKAGE
     unsigned char need_reboot_now : 1;
     unsigned char need_rollback : 1;
     unsigned char rpc_server_started : 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned char property_table_held : 1;
     unsigned char install_validated : 1;
     unsigned char short_file_names : 1;
@@ -509,7 +509,7 @@ typedef struct tagMSISUMMARYINFO
     IStorage *storage;
     DWORD update_count;
     PROPVARIANT property[MSI_MAX_PROPS];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD updated;
     DWORD extra_props;
 #endif
@@ -817,7 +817,7 @@ extern VOID msi_destroy_stringtable( string_table *st );
 extern const WCHAR *msi_string_lookup( const string_table *st, UINT id, int *len );
 extern HRESULT msi_init_string_table( IStorage *stg );
 extern string_table *msi_load_string_table( IStorage *stg, UINT *bytes_per_strref );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern UINT msi_save_string_table( const string_table *st, const UINT *refs, IStorage *storage, UINT *bytes_per_strref );
 extern UINT msi_get_string_table_size( const string_table *st );
 extern void msi_add_system_strings( MSIDATABASE *db );
@@ -924,8 +924,8 @@ extern UINT MSI_SetInstallLevel( MSIPACKAGE *package, int iInstallLevel );
 
 /* package internals */
 #define WINE_OPENPACKAGEFLAGS_RECACHE 0x80000000
-#ifdef __REACTOS__
-#define REACTOS_OPENPACKAGEFLAGS_INSTALL 0x40000000
+#ifdef __LIBRENT__
+#define LIBRENT_OPENPACKAGEFLAGS_INSTALL 0x40000000
 #endif
 extern MSIPACKAGE *MSI_CreatePackage( MSIDATABASE * );
 extern UINT MSI_OpenPackageW( LPCWSTR szPackage, DWORD dwOptions, MSIPACKAGE **pPackage );
@@ -1004,7 +1004,7 @@ extern LONG msi_reg_set_subkey_val( HKEY hkey, LPCWSTR path, LPCWSTR name, LPCWS
 /* msi dialog interface */
 extern void msi_dialog_check_messages( HANDLE );
 extern void msi_dialog_destroy( msi_dialog* );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern void msi_dialog_show_cancel( MSIPACKAGE *, BOOL );
 #endif
 extern void msi_dialog_unregister_class( void );
@@ -1048,7 +1048,7 @@ extern UINT ACTION_PerformAction(MSIPACKAGE *package, const WCHAR *action);
 extern void ACTION_FinishCustomActions( const MSIPACKAGE* package);
 extern UINT ACTION_CustomAction(MSIPACKAGE *package, const WCHAR *action);
 extern void custom_stop_server(HANDLE process, HANDLE pipe);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern void custom_release_remote_handle(MSIHANDLE handle);
 #endif
 

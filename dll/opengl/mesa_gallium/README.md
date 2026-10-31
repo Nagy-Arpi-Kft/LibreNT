@@ -25,7 +25,7 @@ display drivers and the software `MSOGL` fallback all register
 `GALLIUM_DRIVER=llvmpipe` forces LLVMpipe in the optional profile.
 
 The `mesa_gallium` target builds and stages the DLL. Mesa uses Release
-settings even when ReactOS is Debug. ARM64 additionally builds its static
+settings even when LibreNT is Debug. ARM64 additionally builds its static
 KMT/zlib dependencies in a nested Release configuration. i386 and AMD64
 do not need those dependencies or the nested support build.
 Native ARM64 and ARM64EC support builds reuse the main build's host tools;
@@ -44,7 +44,7 @@ WGL and Lavapipe share one Mesa CMake configuration and generated-source graph.
 See [Mesa's CMake notes](../../../submodules/mesa/cmake/README.md) for standalone
 build commands and supported profiles.
 
-The ARM64 CMake WGL target links both Broadcom drivers and their ReactOS D3DKMT
+The ARM64 CMake WGL target links both Broadcom drivers and their LibreNT D3DKMT
 winsys code. This establishes the combined build, but does not by itself prove
 VC4 or V3D rendering on Raspberry Pi hardware.
 
@@ -54,7 +54,7 @@ The FEX runtime builds a separate ARM64EC copy of the shared ICD. The nested
 KMT support build disables the shared ICD to prevent recursive builds.
 There is no separate Softpipe build option. `ENABLE_MESA_LLVMPIPE` alone
 keeps this DLL unchanged and packages the prebuilt `mesa_llvmpipe.dll` and
-Lavapipe Vulkan ICD from the LiberNT release payload, with `mesa_llvmpipe.dll`
+Lavapipe Vulkan ICD from the LibreNT release payload, with `mesa_llvmpipe.dll`
 as the `MSOGL` fallback. Adding `MESA_LLVMPIPE_FROM_SOURCE` selects LLVMpipe
 inside the same ICD and also packages the separate Lavapipe Vulkan ICD and
 Khronos loader.

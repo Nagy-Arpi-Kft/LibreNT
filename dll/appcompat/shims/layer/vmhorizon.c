@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS 'Layers' Shim library
+ * PROJECT:     LibreNT 'Layers' Shim library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Shim for VMWare Horizon setup
  * COPYRIGHT:   Copyright 2017 Thomas Faber <thomas.faber@reactos.org>

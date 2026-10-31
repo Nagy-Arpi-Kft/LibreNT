@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Raspberry Pi 3 video support
+# PROJECT:     LibreNT Raspberry Pi 3 video support
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Private user-mode VideoCore MMAL codec exports
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>

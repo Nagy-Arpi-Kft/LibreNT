@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     dxgmms2 video memory segment ownership contract tests
  *
@@ -10,7 +10,7 @@
  */
 
 #include <kmt_test.h>
-#include <reactos/drivers/directx/dxgmms2.h>
+#include <librent/drivers/directx/dxgmms2.h>
 #include "vidmm_core.h"
 
 #define TAG_DXGMMS2_VIDMM_TEST 'mV2D'

@@ -195,12 +195,12 @@ static void DoMessageBoxW(const wchar_t *lead, const wchar_t *message)
 {
   MSGBOXPARAMSW msgbox;
   wchar_t text[2048];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   wchar_t path[MAX_PATH];
 #endif
   INT ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!GetModuleFileNameW(0, path, ARRAY_SIZE(path)))
     path[0] = 0;
   path[ARRAY_SIZE(path) - 1] = 0;

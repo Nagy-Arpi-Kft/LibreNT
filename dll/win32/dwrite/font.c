@@ -1957,7 +1957,7 @@ static HRESULT WINAPI dwritefontface5_GetFontAxisValues(IDWriteFontFace5 *iface,
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL WINAPI dwritefontface5_HasVariations(IDWriteFontFace5 *iface)
 {
     struct dwrite_fontface *fontface = impl_from_IDWriteFontFace5(iface);
@@ -3360,7 +3360,7 @@ static UINT32 collection_find_family(struct dwrite_fontcollection *collection, c
     return ~0u;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR *reactos_family_substitute(const WCHAR *name)
 {
     static const struct { const WCHAR *from; const WCHAR *to; } map[] =
@@ -3399,7 +3399,7 @@ static HRESULT WINAPI dwritefontcollection_FindFamilyName(IDWriteFontCollection3
     TRACE("%p, %s, %p, %p.\n", iface, debugstr_w(name), index, exists);
 
     *index = collection_find_family(collection, name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (*index == ~0u)
     {
         const WCHAR *substitute = reactos_family_substitute(name);

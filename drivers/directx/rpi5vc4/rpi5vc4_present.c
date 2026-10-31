@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 5 WDDM display-only miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 WDDM display-only miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Display-only present path: dirty-rect blits from the OS
  *              shadow surface into the write-combined firmware framebuffer
@@ -13,7 +13,7 @@
 #include "rpi5vc4_crtc.h"
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 /*
  * Kernel VA of the surface the HVS is currently scanning: the firmware

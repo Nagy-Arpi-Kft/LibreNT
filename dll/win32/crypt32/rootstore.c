@@ -759,7 +759,7 @@ void CRYPT_ImportSystemRootCertsToReg(void)
     HCERTSTORE cached = NULL;
     HKEY key = NULL;
     LONG rc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE mutex;
     DWORD wait;
 #else
@@ -771,7 +771,7 @@ void CRYPT_ImportSystemRootCertsToReg(void)
     if (root_certs_imported)
         return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     mutex = CreateMutexW(NULL, FALSE, L"crypt32_root_mutex");
     if (!mutex)
     {
@@ -821,7 +821,7 @@ done:
     RegCloseKey(key);
     CertCloseStore(cached, 0);
     root_certs_imported = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ReleaseMutex(mutex);
     CloseHandle(mutex);
 #else

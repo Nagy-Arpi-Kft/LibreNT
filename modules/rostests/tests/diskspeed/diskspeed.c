@@ -2,7 +2,7 @@
  * Copyright (C) 2004 ReactOS Team
  *
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS diskspeed.exe
+ * PROJECT:         LibreNT diskspeed.exe
  * FILE:            apps/tests/diskspeed/diskspeed.c
  * PURPOSE:         Determines disk transfer rates
  * PROGRAMMER:

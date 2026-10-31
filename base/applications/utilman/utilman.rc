@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Utility Manager (Accessibility)
+ * PROJECT:         LibreNT Utility Manager (Accessibility)
  * LICENSE:         GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:         Main resource file
  * COPYRIGHT:       Copyright 2019-2020 George Bișoc (george.bisoc@reactos.org)
@@ -13,14 +13,14 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_STR_FILE_DESCRIPTION    "LiberNT Accessibility Utility Manager"
-#define REACTOS_STR_INTERNAL_NAME       "utilman"
-#define REACTOS_STR_ORIGINAL_FILENAME   "utilman.exe"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION    "LibreNT Accessibility Utility Manager"
+#define LIBRENT_STR_INTERNAL_NAME       "utilman"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "utilman.exe"
+#include <librent/version.rc>
 
 IDI_ICON_UTILMAN ICON "res/utilman.ico"
 
-#include <reactos/manifest_exe.rc>
+#include <librent/manifest_exe.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

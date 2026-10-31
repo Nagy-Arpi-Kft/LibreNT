@@ -63,7 +63,7 @@ extern void func_gpustats(void);
 extern void func_vidmm(void);
 extern void func_present(void);
 extern void func_dwm(void);
-#ifdef REACTOS_D3DKMT_PRIVATE_DWM_TEST
+#ifdef LIBRENT_D3DKMT_PRIVATE_DWM_TEST
 extern void func_dwmdxexport(void);
 extern void func_dwmdxabi(void);
 extern void func_dwmdxarg(void);
@@ -81,7 +81,7 @@ extern void func_terminalstubs(void);
 extern void func_public27(void);
 extern void func_cle(void);
 extern void func_v3dsmoke(void);
-#ifdef REACTOS_D3DKMT_VC4KMT_TEST
+#ifdef LIBRENT_D3DKMT_VC4KMT_TEST
 extern void func_vc4kmt_smoke(void);
 #endif
 
@@ -149,7 +149,7 @@ const struct test winetest_testlist[] =
     { "vidmm",         func_vidmm },
     { "present",       func_present },
     { "dwm",           func_dwm },
-#ifdef REACTOS_D3DKMT_PRIVATE_DWM_TEST
+#ifdef LIBRENT_D3DKMT_PRIVATE_DWM_TEST
     { "dwmdxexport",   func_dwmdxexport },
     { "dwmdxabi",      func_dwmdxabi },
     { "dwmdxarg",      func_dwmdxarg },
@@ -167,7 +167,7 @@ const struct test winetest_testlist[] =
     { "public27",      func_public27 },
     { "cle",           func_cle },
     { "v3dsmoke",      func_v3dsmoke },
-#ifdef REACTOS_D3DKMT_VC4KMT_TEST
+#ifdef LIBRENT_D3DKMT_VC4KMT_TEST
     { "vc4kmt_smoke",  func_vc4kmt_smoke },
 #endif
     { 0, 0 }

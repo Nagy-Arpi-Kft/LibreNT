@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2003 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /* COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS winlogon
+ * PROJECT:         LibreNT winlogon
  * FILE:            base/system/winlogon/winlogon.h
  * PURPOSE:         Winlogon
  * PROGRAMMER:

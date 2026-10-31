@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/include/internal/kd64.h
  * PURPOSE:         Internal header for the KD64 Library
@@ -797,7 +797,7 @@ extern ULONG Kd_MM_Mask;
 extern ULONG Kd_DFSC_Mask;
 extern ULONG Kd_WOW64_Mask;
 //
-// Components specified in Vista+, some of which we also use in ReactOS
+// Components specified in Vista+, some of which we also use in LibreNT
 //
 extern ULONG Kd_ALPC_Mask;
 extern ULONG Kd_WDI_Mask;

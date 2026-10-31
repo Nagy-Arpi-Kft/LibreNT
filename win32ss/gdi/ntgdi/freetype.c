@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS win32 kernel mode subsystem
+ * PROJECT:         LibreNT win32 kernel mode subsystem
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         FreeType font engine interface
  * PROGRAMMERS:     Copyright 2001 Huw D M Davies for CodeWeavers.
@@ -462,7 +462,7 @@ SharedFace_Create(FT_Face Face, PSHARED_MEM Memory)
         Ptr->Face = Face;
         Ptr->RefCount = 1;
         Ptr->Memory = Memory;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         Ptr->CmapCached = FALSE;
         Ptr->CmapFirst = 0;
         Ptr->CmapLast = 0;
@@ -1688,9 +1688,9 @@ static BOOL select_charmap(FT_Face ft_face, FT_Encoding encoding)
                     break;
             }
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 // Wine bug: for each loop iteration, a FT_Set_Charmap() call is made.
-// ReactOS fix: Instead, loop until we retrieve all the cmap pointers
+// LibreNT fix: Instead, loop until we retrieve all the cmap pointers
 // of interest, then do one single FT_Set_Charmap() call using the
 // preferred cmap.
     }{
@@ -3274,7 +3274,7 @@ static BOOL face_has_symbol_charmap(FT_Face ft_face)
     return FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Get the first and last character of the face's cmap within the BMP,
    which is what Windows reports in the TEXTMETRICW char range, rather
    than the (often inaccurate) OS/2 table fields. Cached per face. */
@@ -3417,7 +3417,7 @@ FillTM(TEXTMETRICW *TM, PFONTGDI FontGDI,
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /* The char range comes from the cmap, while the break char
            is derived from the OS/2 table's first char field */
         IntGetCmapRange(FontGDI->SharedFace);
@@ -4057,7 +4057,7 @@ FontFamilyFillInfo(PFONTFAMILYINFO Info, LPCWSTR FaceName,
 
     Ntm->ntmSizeEM = Otm->otmEMSquare;
     Ntm->ntmCellHeight = (FT_Short)pOS2->usWinAscent + (FT_Short)pOS2->usWinDescent;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Ntm->ntmAvgWidth = pOS2->xAvgCharWidth;
 
     /* For scalable fonts the enumerated metrics describe a nominal
@@ -5698,7 +5698,7 @@ ftGdiGetGlyphOutline(
         if (potm) ExFreePoolWithTag(potm, GDITAG_TEXT);
         return GDI_ERROR;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Some glyphs exceed the boundaries set by the text metrics;
        Windows clips the glyph metrics to the ascent and descent */
     {
@@ -5909,7 +5909,7 @@ ftGdiGetGlyphOutline(
 
     if (iFormat == GGO_METRICS)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /* Windows returns sizeof(GLYPHMETRICS) plus a step for each
            black box dimension above the step size (empirical, see the
            gdi32:GetGlyphOutline apitest) */
@@ -9280,7 +9280,7 @@ GreGetCharWidthW(
         Width = IntFontScaleValue(&Scale, Width, TRUE, FALSE);
         if (!fl)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* The float width is the integer width in 1/16 units
                (GetCharWidthFloat returns exactly GetCharWidth / 16) */
             SafeBuffF[i - FirstChar] = (FLOAT)Width / 16.0f;

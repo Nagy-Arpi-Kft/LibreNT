@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma once
 #endif
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #endif
 
@@ -32,7 +32,7 @@
 #include "winbase.h"
 #include "mmddk.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #endif

@@ -5,7 +5,7 @@ add_definitions(
     -DUSE_MSVCRT_PREFIX
     -DCRTDLL)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/crt/include)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/crt/include)
 
 list(APPEND SOURCE
     dllmain.c
@@ -20,4 +20,4 @@ add_dependencies(crtdll psdk)
 
 add_importlibs(crtdll kernel32 kernel32_vista ntdll)
 add_delay_importlibs(crtdll user32)
-add_cd_file(TARGET crtdll DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET crtdll DESTINATION librent/system32 FOR all)

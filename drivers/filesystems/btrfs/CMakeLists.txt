@@ -1,6 +1,6 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers
-                    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers
+                    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib
                     inc)
 
 set(ZSTD_SRC_FILES
@@ -80,7 +80,7 @@ set_module_type(btrfs kernelmodedriver)
 target_link_libraries(btrfs rtlver zlib_solo chkstk wdmguid ${PSEH_LIB})
 add_importlibs(btrfs ntoskrnl hal)
 
-add_cd_file(TARGET btrfs DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET btrfs DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(btrfs btrfs.inf)
 add_registry_inf(btrfs_reg.inf)
 

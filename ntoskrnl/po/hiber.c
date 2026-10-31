@@ -1,13 +1,13 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Hibernation file and image writer
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include <ntoskrnl.h>
-#include <reactos/drivers/dumpstor.h>
-#include <reactos/hiberfil.h>
+#include <librent/drivers/dumpstor.h>
+#include <librent/hiberfil.h>
 #define NDEBUG
 #include <debug.h>
 
@@ -807,7 +807,7 @@ PopHiberOpenFile(
     RtlZeroMemory(&PopHiber.Storage, sizeof(PopHiber.Storage));
     PopHiber.Storage.BytesPerSector = SizeInfo.BytesPerSector;
     KeInitializeEvent(&Event, NotificationEvent, FALSE);
-    Irp = IoBuildDeviceIoControlRequest(IOCTL_REACTOS_STORAGE_GET_DUMP_INTERFACE, StorageDevice,
+    Irp = IoBuildDeviceIoControlRequest(IOCTL_LIBRENT_STORAGE_GET_DUMP_INTERFACE, StorageDevice,
                                         &PopHiber.Storage, sizeof(PopHiber.Storage),
                                         &PopHiber.Storage, sizeof(PopHiber.Storage), FALSE, &Event, &IoStatus);
     if (Irp == NULL)

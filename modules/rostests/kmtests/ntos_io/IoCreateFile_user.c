@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         GPLv2+ - See COPYING in the top level directory
  * PURPOSE:         Kernel-Mode Test Suite Reparse points test user-mode part
  * PROGRAMMER:      Pierre Schweitzer <pierre@reactos.org>
@@ -19,7 +19,7 @@ START_TEST(IoCreateFile)
     KmtRunKernelTest("IoCreateFile");
 
     if (skip(GetNTVersion() < _WIN32_WINNT_VISTA,
-             "IoCreateFile reparse helper-driver expectations are ReactOS/NT5-specific\n"))
+             "IoCreateFile reparse helper-driver expectations are LibreNT/NT5-specific\n"))
     {
         return;
     }

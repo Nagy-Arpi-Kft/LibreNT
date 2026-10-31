@@ -517,7 +517,7 @@ void MSACM_RePositionDriver(PWINE_ACMDRIVERID padid, DWORD dwPriority)
         while (pTargetPosition->pNextACMDriverID != NULL) {
             pTargetPosition = pTargetPosition->pNextACMDriverID;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         padid->pPrevACMDriverID = pTargetPosition;
         padid->pNextACMDriverID = NULL;
         pTargetPosition->pNextACMDriverID = padid;

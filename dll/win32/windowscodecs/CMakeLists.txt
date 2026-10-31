@@ -7,10 +7,10 @@ add_definitions(
 remove_definitions(-D_CRT_NON_CONFORMING_SWPRINTFS)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libjpeg
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libpng
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libtiff)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libjpeg
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libpng
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libtiff)
 
 spec2def(windowscodecs.dll windowscodecs.spec ADD_IMPORTLIB)
 add_rpcproxy_files(windowscodecs_wincodec.idl)
@@ -91,5 +91,5 @@ add_idl_reg_scripts(windowscodecs registry windowscodecs_wincodec.idl)
 target_link_libraries(windowscodecs jxr wine wine_dll_canunload uuid ${PSEH_LIB} oldnames)
 add_importlibs(windowscodecs libjpeg libpng libtiff ole32 oleaut32 rpcrt4 shlwapi user32 gdi32 advapi32 advapi32_vista propsys msvcrt kernel32 ntdll)
 add_pch(windowscodecs precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET windowscodecs DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET windowscodecs DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(windowscodecs) # CORE-5743: No CONST_VTABLE

@@ -1967,7 +1967,7 @@ static void test_printf_format(void)
                 ok(0, "unknown length %u.\n", tests[i].arg_size);
                 break;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!is_reactos() && (GetNTVersion() < _WIN32_WINNT_VISTA) && (len == -1))
         {
             win_skip("Skipping unsupported format test %u ('%s') on Windows 2003.\n", i, tests[i].spec);
@@ -1999,13 +1999,13 @@ static void test_tolower(void)
 {
     int i, ret, exp_ret;
 
-#ifndef __REACTOS__ // This is nonsense
+#ifndef __LIBRENT__ // This is nonsense
     if (!GetProcAddress(GetModuleHandleA("ntdll"), "NtRemoveIoCompletionEx"))
     {
         win_skip("tolower tests\n");
         return;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     ok(ptolower != NULL, "tolower is not available\n");
 

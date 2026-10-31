@@ -36,7 +36,7 @@ extern "C" {
 #include "hdac_stream.h"
 #include "hda_verbs.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DRIVERNAME "hdaudbus.sys: "
 #else
 #define DRIVERNAME "sklhdaudbus.sys: "
@@ -71,7 +71,7 @@ static inline void mdelay(LONG msec) {
 	KeDelayExecutionThread(KernelMode, FALSE, &Interval);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline void udelay(LONG usec) {
 	KeStallExecutionProcessor((ULONG)usec);
 }

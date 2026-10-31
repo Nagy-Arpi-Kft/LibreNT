@@ -407,7 +407,7 @@ dhcpack(struct packet *packet)
 		ip->client->new->rebind = ip->client->new->renewal +
 		    ip->client->new->renewal / 2 + ip->client->new->renewal / 4;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	ip->client->new->lease = ip->client->new->expiry;
 	ip->client->new->obtained = cur_time;
 #endif
@@ -1038,7 +1038,7 @@ packet_to_lease(struct packet *packet)
 
 	lease->address.len = sizeof(packet->raw->yiaddr);
 	memcpy(lease->address.iabuf, &packet->raw->yiaddr, lease->address.len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (packet->raw->siaddr.S_un.S_addr == 0)
 	{
 		lease->serveraddress.len = packet->client_addr.len;

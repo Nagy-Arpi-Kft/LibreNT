@@ -1,5 +1,5 @@
 /*
-* PROJECT:         ReactOS Kernel
+* PROJECT:         LibreNT Kernel
 * LICENSE:         GPL - See COPYING in the top level directory
 * FILE:            ntoskrnl/fstub/disksup.c
 * PURPOSE:         I/O HAL Routines for Disk Access
@@ -1948,7 +1948,7 @@ xHalIoReadPartitionTable(IN PDEVICE_OBJECT DeviceObject,
                                   SectorSize);
 
                 /* Get the partition number */
-                /* FIXME: REACTOS HACK -- Needed for xHalIoAssignDriveLetters() */
+                /* FIXME: LIBRENT HACK -- Needed for xHalIoAssignDriveLetters() */
                 PartitionInfo->PartitionNumber = (!IsContainerPartition(PartitionType)) ? i + 1 : 0;
             }
             else
@@ -1960,7 +1960,7 @@ xHalIoReadPartitionTable(IN PDEVICE_OBJECT DeviceObject,
                 PartitionInfo->PartitionLength.QuadPart = 0;
                 PartitionInfo->HiddenSectors = 0;
 
-                /* FIXME: REACTOS HACK -- Needed for xHalIoAssignDriveLetters() */
+                /* FIXME: LIBRENT HACK -- Needed for xHalIoAssignDriveLetters() */
                 PartitionInfo->PartitionNumber = 0;
             }
         }
@@ -2054,7 +2054,7 @@ xHalIoReadPartitionTable(IN PDEVICE_OBJECT DeviceObject,
                 PartitionInfo->StartingOffset.QuadPart = 0;
                 PartitionInfo->PartitionLength = DiskGeometryEx.DiskSize;
 
-                /* FIXME: REACTOS HACK -- Needed for xHalIoAssignDriveLetters() */
+                /* FIXME: LIBRENT HACK -- Needed for xHalIoAssignDriveLetters() */
                 PartitionInfo->PartitionNumber = 0;
 
                 /* Set the signature and set the count back to 0 */

@@ -25,7 +25,7 @@ LANGUAGE LANG_HEBREW, SUBLANG_DEFAULT
 
 STRINGTABLE
 BEGIN
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IDS_DEFTITLE     "HTML Help"
 #endif
     IDS_CONTENTS     "תוכ&ן"

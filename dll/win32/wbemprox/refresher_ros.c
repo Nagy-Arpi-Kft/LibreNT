@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS WMI Provider
+ * PROJECT:     LibreNT WMI Provider
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     WBEM refresher implementation
  * COPYRIGHT:   Copyright 2026 Ahmed Jarraya

@@ -2,20 +2,20 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/dll/win32/mmdevapi
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/sound
-    ${REACTOS_SOURCE_DIR}/drivers/wdm/audio/legacy/wdmaud)
+    ${LIBRENT_SOURCE_DIR}/dll/win32/mmdevapi
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/sound
+    ${LIBRENT_SOURCE_DIR}/drivers/wdm/audio/legacy/wdmaud)
 
 set_source_files_properties(
     sessionabi.c
-    ${REACTOS_SOURCE_DIR}/dll/win32/mmdevapi/reactos_session.c
+    ${LIBRENT_SOURCE_DIR}/dll/win32/mmdevapi/reactos_session.c
     PROPERTIES COMPILE_DEFINITIONS __WINESRC__)
 
 list(APPEND SESSION_SOURCE
     sessionabi.c
     sessionguid.c
     sessionharness.c
-    ${REACTOS_SOURCE_DIR}/dll/win32/mmdevapi/reactos_session.c)
+    ${LIBRENT_SOURCE_DIR}/dll/win32/mmdevapi/reactos_session.c)
 
 add_executable(mmdevapi_child mmdevapi_child.c ${SESSION_SOURCE})
 target_compile_definitions(mmdevapi_child PRIVATE _FORCENAMELESSUNION _FORCENAMELESSSTRUCT "CONST_VTABLE=")

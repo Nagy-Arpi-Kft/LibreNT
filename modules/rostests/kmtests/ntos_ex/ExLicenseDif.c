@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel license and absent DIF provider parity tests
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -21,7 +21,7 @@ START_TEST(ExLicenseDif)
     static UNICODE_STRING LicenseName =
         RTL_CONSTANT_STRING(L"Kernel-MUI-Language-Allowed");
     static UNICODE_STRING MissingLicenseName =
-        RTL_CONSTANT_STRING(L"ReactOS-Missing-License-Value");
+        RTL_CONSTANT_STRING(L"LibreNT-Missing-License-Value");
     WCHAR LicenseData[16];
     ULONG ResultDataSize;
     ULONG Type;

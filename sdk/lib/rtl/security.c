@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS system libraries
+ * PROJECT:           LibreNT system libraries
  * FILE:              lib/rtl/security.c
  * PURPOSE:           Security related functions and Security Objects
  * PROGRAMMER:        Eric Kohl
@@ -14,7 +14,7 @@
 
 /* PRIVATE FUNCTIONS **********************************************************/
 
-#include <reactos/acltransform.h>
+#include <librent/acltransform.h>
 
 static NTSTATUS
 RtlpSecurityTransformAcl(PACL Source, BOOLEAN Parent, BOOLEAN MarkInherited,

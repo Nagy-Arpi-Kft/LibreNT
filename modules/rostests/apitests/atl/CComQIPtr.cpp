@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Test for CComQIPtr
  * COPYRIGHT:   Copyright 2018 Mark Jansen (mark.jansen@reactos.org)
@@ -76,7 +76,7 @@ public:
 };
 
 // Yes this sucks, but we have to support GCC. (CORE-12710)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DECLARE_QIPTR(type)     CComQIIDPtr<I_ID(type)>
 #elif defined(__GNUC__)
 #define DECLARE_QIPTR(type)     CComQIIDPtr<I_ID(type)>
@@ -130,7 +130,7 @@ START_TEST(CComQIPtr)
 
         spUnk = ppMarshal;
         ok_long(testObject.m_dwRef, 3);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         // CORE-12710
         todo_if(1)
 #endif

@@ -1,5 +1,5 @@
 ﻿/*
- * ReactOS German Extended (E1) Keyboard layout
+ * LibreNT German Extended (E1) Keyboard layout
  * Copyright (C) 2025 ReactOS
  * License: LGPL, see: LGPL.txt
  *
@@ -373,10 +373,10 @@ ROSDATA VSC_LPWSTR extended_key_names[] = {
   { 0x51, L"Bild-Nach-Unten" },
   { 0x52, L"Einfg" },
   { 0x53, L"Entf" },
-  { 0x54, L"<LiberNT>" },
+  { 0x54, L"<LibreNT>" },
   { 0x55, L"Hilfe" },
-  { 0x56, L"Linke <LiberNT>" },
-  { 0x5b, L"Rechte <LiberNT>" },
+  { 0x56, L"Linke <LibreNT>" },
+  { 0x5b, L"Rechte <LibreNT>" },
   { 0, NULL },
 };
 

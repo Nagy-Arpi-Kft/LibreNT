@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ARM64EC runtime
+ * PROJECT:     LibreNT ARM64EC runtime
  * PURPOSE:     Native NTDLL call bridges for emulated AMD64 imports
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * COPYRIGHT:   Copyright 2000 Jon Griffiths
@@ -8,7 +8,7 @@
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  *
  * ARM64EC context, setjmp, and unwind behavior is adapted from Wine's
- * dlls/ntdll/signal_arm64ec.c. ReactOS/FEX integration is original work.
+ * dlls/ntdll/signal_arm64ec.c. LibreNT/FEX integration is original work.
  */
 
 #include <ntdll.h>
@@ -16,7 +16,7 @@
 #include <ndk/sefuncs.h>
 #include <ndk/dbgkfuncs.h>
 #include <ndk/pofuncs.h>
-#include <reactos/subsys/csr/csr.h>
+#include <librent/subsys/csr/csr.h>
 #include <delayloadhandler.h>
 #include <evntprov.h>
 #include <math.h>
@@ -161,7 +161,7 @@ typedef struct _CHPE_BRIDGE_CPU_AREA_INFO
 
 /*
  * ARM64EC exposes the AMD64 CONTEXT layout to callers while the native
- * ReactOS kernel and ntdll consume ARM64_NT_CONTEXT.  The register mapping
+ * LibreNT kernel and ntdll consume ARM64_NT_CONTEXT.  The register mapping
  * and FP status conversion follow the public ARM64EC ABI documented by the
  * Windows SDK.  FP conversion semantics are derived from Wine's ARM64EC
  * unwind support.
@@ -590,7 +590,7 @@ ChpepExecuteEcHandler(PVOID Argument, PVOID EstablisherFrame, PVOID Handler, PBY
 /*
  * Walk the mixed ARM64EC/AMD64 table-based SEH chain. This follows Wine's
  * public ARM64EC call_seh_handlers algorithm, without Wine's private TEB
- * registration-chain fallback (ReactOS x64/ARM64EC SEH is table based).
+ * registration-chain fallback (LibreNT x64/ARM64EC SEH is table based).
  *
  * Copyright 2023 Alexandre Julliard
  * SPDX-License-Identifier: LGPL-2.1-or-later

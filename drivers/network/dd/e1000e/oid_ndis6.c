@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Intel PRO/1000 Driver
+ * PROJECT:     LibreNT Intel PRO/1000 Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS 6.x OID request handling
  * COPYRIGHT:       2026 Ahmed ARIF (arif.ing@outlook.com)
@@ -253,7 +253,7 @@ E1000QueryInformation(
 
         case OID_GEN_VENDOR_DESCRIPTION:
         {
-            static const char VendorDesc[] = "ReactOS Intel E1000 Driver";
+            static const char VendorDesc[] = "LibreNT Intel E1000 Driver";
             CopySource = (PVOID)VendorDesc;
             CopyLength = sizeof(VendorDesc);
             break;

@@ -3,7 +3,7 @@ PROJECT(DEVMGR)
 spec2def(devmgr.dll devmgr.spec ADD_IMPORTLIB)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/dll
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/dll
     includes)
 
 list(APPEND SOURCE
@@ -36,4 +36,4 @@ target_link_libraries(devmgr uuid wine cpprt atl_classes)
 set_target_cpp_properties(devmgr WITH_EXCEPTIONS WITH_RTTI)
 add_importlibs(devmgr setupapi advapi32 shell32 newdev user32 gdi32 comctl32 version msvcrt kernel32 ole32 oleaut32 uxtheme ntdll)
 add_pch(devmgr precomp.h SOURCE)
-add_cd_file(TARGET devmgr DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET devmgr DESTINATION librent/system32 FOR all)

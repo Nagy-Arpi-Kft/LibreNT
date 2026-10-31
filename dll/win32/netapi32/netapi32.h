@@ -30,7 +30,7 @@
 #include "nbnamecache.h"
 #include "netbios.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
 #endif

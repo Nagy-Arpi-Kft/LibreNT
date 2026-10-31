@@ -1,5 +1,5 @@
 #
-# ReactOS Native WiFi (802.11) intermediate driver - nwifi.sys
+# LibreNT Native WiFi (802.11) intermediate driver - nwifi.sys
 # NDIS 6.20 IM driver: upper virtual 802.3 miniport + lower dot11 protocol.
 #
 
@@ -10,7 +10,7 @@ add_definitions(
     -DNTDDI_VERSION=0x06010000)
 
 # WPA2-PSK (RSNA) supplicant static library (rsna_supplicant.h)
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/drivers/rsna_supplicant)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/rsna_supplicant)
 
 list(APPEND SOURCE
     nwifi.c
@@ -32,5 +32,5 @@ target_link_libraries(nwifi ${PSEH_LIB} rsna_supplicant)
 
 add_importlibs(nwifi ndis ntoskrnl hal cng)
 add_pch(nwifi nwifi.h "")
-add_cd_file(TARGET nwifi DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET nwifi DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(nwifi nwifi.inf)

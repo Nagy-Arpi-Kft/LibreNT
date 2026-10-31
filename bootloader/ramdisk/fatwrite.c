@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Boot Loader
+ * PROJECT:     LibreNT Boot Loader
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Minimal write-only FAT32 populator for in-memory ramdisks
  * COPYRIGHT:   Copyright 2025 Ahmed Arif <arif.ing@outlook.com>
@@ -799,7 +799,7 @@ Fat32AddDirectoryEntry(
 }
 
 /*
- * Resolve a path like "/reactos/system32/file.exe" to find the parent
+ * Resolve a path like "/librent/system32/file.exe" to find the parent
  * directory cluster and extract the leaf name.
  *
  * The path components are separated by '/'. Leading '/' is stripped.

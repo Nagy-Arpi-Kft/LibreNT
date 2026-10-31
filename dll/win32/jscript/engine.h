@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma once
 #endif
 
@@ -267,7 +267,7 @@ struct _jsexcept_t {
 
     BOOL enter_notified;
     jsexcept_t *prev;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL host_info;
     BOOL resource_message;
     jsstr_t *help_file;

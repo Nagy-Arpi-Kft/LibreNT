@@ -1,5 +1,5 @@
 /*
- * PROJECT:    ReactOS wcstombs Test Suite
+ * PROJECT:    LibreNT wcstombs Test Suite
  * LICENSE:    GPL v2 or any later version
  * FILE:       tests/wcstombs-tests/wcstombs-tests.c
  * PURPOSE:    Application for testing the CRT API's (wcstombs and wctomb) and the Win32 API WideCharToMultiByte for the Unicode to MultiByte string conversion

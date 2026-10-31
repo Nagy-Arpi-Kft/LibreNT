@@ -6,7 +6,7 @@ const { Resvg } = require('@resvg/resvg-js');
 const states = { default: 'color', hover: 'hover', pressed: 'pressed' };
 for (const [state, source] of Object.entries(states))
 {
-    const svg = fs.readFileSync(path.join(__dirname, `reactos-start-${source}.svg`), 'utf8');
+    const svg = fs.readFileSync(path.join(__dirname, `librent-start-${source}.svg`), 'utf8');
     // The hover/pressed SVGs add four units around the same 32-unit logo.
     // Give every state that canvas so switching states never rescales the logo.
     const aligned = svg.replace(/<svg\b[^>]*>/,

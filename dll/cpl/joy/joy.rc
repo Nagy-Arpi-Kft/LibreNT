@@ -77,7 +77,7 @@ FONT 8, "Ms Shell Dlg"
     GROUPBOX        "User #2", IDC_XI_USER_2, 15, 150, 291, 60
     GROUPBOX        "User #3", IDC_XI_USER_3, 15, 220, 291, 60
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     LTEXT           "No user detected on slot #0, make sure your " \
                     "gamepad is plugged in, and not overridden for " \
                     "DInput in the Joysticks tab.",

@@ -571,7 +571,7 @@ UefiExitBootServices(VOID)
 }
 
 VOID
-UefiPrepareForReactOS(VOID)
+UefiPrepareForLibreNT(VOID)
 {
     _exituefi();
 }

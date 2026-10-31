@@ -4,11 +4,11 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = Ports
 ClassGUID  = {4D36E978-E325-11CE-BFC1-08002BE10318}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 10/08/2005,1.01.0.0
 
 [DestinationDirs]
@@ -139,7 +139,7 @@ AddService = serenum, , serenum_Service_Inst
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 ; Localizable
 PortsClassName = "Serial and parallel ports"

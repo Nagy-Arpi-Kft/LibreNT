@@ -1,5 +1,5 @@
 /*
- * ReactOS Calc (global resource file)
+ * LibreNT Calc (global resource file)
  *
  * Copyright 2007, Carlo Bramini
  *
@@ -31,7 +31,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 IDI_CALC ICON "res/calc.ico"
 
 /* Manifest */
-#include <reactos/manifest_exe.rc>
+#include <librent/manifest_exe.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

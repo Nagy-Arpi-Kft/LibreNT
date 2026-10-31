@@ -1105,7 +1105,7 @@ static HRESULT DPWS_SendImpl( DPWS_DATA *dpwsData, DPWS_PLAYER *player, SGBUFFER
     {
         DPWS_OUT_CONNECTION *connection = connectionRef->connection;
         DWORD transferred;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD flags;
 #endif
         SOCKET sock;
@@ -1115,7 +1115,7 @@ static HRESULT DPWS_SendImpl( DPWS_DATA *dpwsData, DPWS_PLAYER *player, SGBUFFER
 
         sock = guaranteed ? connection->tcpSock : dpwsData->udpSock;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ( !WSAGetOverlappedResult( sock, &connection->overlapped, &transferred, TRUE, &flags ) )
 #else
         if ( !WSAGetOverlappedResult( sock, &connection->overlapped, &transferred, TRUE, NULL ) )

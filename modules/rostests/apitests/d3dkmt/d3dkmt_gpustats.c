@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     D3DKMTQueryStatistics and the adapter performance-data classes
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -13,7 +13,7 @@
  * implementation -- committed never exceeds the commit limit, a running-time
  * counter never goes backwards, a per-process figure never exceeds the global
  * one -- rather than values, so the same binary is meaningful on Windows 11
- * and on ReactOS with any miniport behind it.
+ * and on LibreNT with any miniport behind it.
  *
  * Reference: Microsoft "D3DKMTQueryStatistics",
  *            "D3DKMT_QUERYSTATISTICS structure",

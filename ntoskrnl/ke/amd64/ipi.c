@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     IPI code for x64
  * COPYRIGHT:   Copyright 2023 Timo Kreuzer <timo.kreuzer@reactos.org>
@@ -8,7 +8,7 @@
 /* INCLUDES *******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 #define NDEBUG
 #include <debug.h>
 

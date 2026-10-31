@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS
+ * PROJECT:         LibreNT
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            include/psdk/common.ver
  * PURPOSE:         Common Version File.
@@ -29,9 +29,9 @@
 //
 #ifndef VER_PRODUCTNAME_STR
 #ifdef RC_INVOKED
-#define VER_PRODUCTNAME_STR L"ReactOS Operating System"
+#define VER_PRODUCTNAME_STR L"LibreNT Operating System"
 #else
-#define VER_PRODUCTNAME_STR "ReactOS Operating System"
+#define VER_PRODUCTNAME_STR "LibreNT Operating System"
 #endif
 #endif
 

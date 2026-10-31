@@ -2957,11 +2957,11 @@ static void test_imagelist_interop(void)
     HRESULT hr;
     INT cx, cy;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR comctl32_path[MAX_PATH];
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetSystemDirectoryW(comctl32_path, ARRAY_SIZE(comctl32_path));
     lstrcatW(comctl32_path, L"\\comctl32.dll");
     comctl32_v5 = LoadLibraryW(comctl32_path);

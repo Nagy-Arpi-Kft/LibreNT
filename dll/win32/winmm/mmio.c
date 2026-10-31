@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <assert.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include "ntstatus.h"

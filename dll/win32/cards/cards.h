@@ -1,5 +1,5 @@
 /*
- * ReactOS Cards
+ * LibreNT Cards
  *
  * Copyright (C) 2003  Filip Navara <xnavara@volny.org>
  *

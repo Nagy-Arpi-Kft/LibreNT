@@ -233,7 +233,7 @@ std::wstring Settings_GetOutputPath(void)
     BOOL UseDefaultPath = TRUE;
 
     CRegKey key;
-    if (key.Open(HKEY_CURRENT_USER, L"SOFTWARE\\ReactOS\\Crash Reporter", KEY_READ) == ERROR_SUCCESS &&
+    if (key.Open(HKEY_CURRENT_USER, L"SOFTWARE\\LibreNT\\Crash Reporter", KEY_READ) == ERROR_SUCCESS &&
         key.QueryStringValue(L"Dump Directory", Buffer, &BufferSize) == ERROR_SUCCESS)
     {
         UseDefaultPath = FALSE;
@@ -253,7 +253,7 @@ std::wstring Settings_GetOutputPath(void)
 BOOL Settings_GetShouldWriteDump(void)
 {
     CRegKey key;
-    if (key.Open(HKEY_CURRENT_USER, L"SOFTWARE\\ReactOS\\Crash Reporter", KEY_READ) != ERROR_SUCCESS)
+    if (key.Open(HKEY_CURRENT_USER, L"SOFTWARE\\LibreNT\\Crash Reporter", KEY_READ) != ERROR_SUCCESS)
     {
         return FALSE;
     }
@@ -347,7 +347,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR cmdLine, INT)
         }
         else if (!wcscmp(arg, L"-?"))
         {
-            MessageBoxA(NULL, szUsage, "LiberNT Crash Reporter", MB_OK);
+            MessageBoxA(NULL, szUsage, "LibreNT Crash Reporter", MB_OK);
             return abort(output, 0);
         }
         else if (!wcscmp(arg, L"/?"))
@@ -359,7 +359,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR cmdLine, INT)
 
     if (!pid)
     {
-        MessageBoxA(NULL, szUsage, "LiberNT Crash Reporter", MB_OK);
+        MessageBoxA(NULL, szUsage, "LibreNT Crash Reporter", MB_OK);
         return abort(stdout, 0);
     }
 
@@ -374,7 +374,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR cmdLine, INT)
         if (res != ERROR_SUCCESS && res != ERROR_ALREADY_EXISTS)
         {
             xfprintf(stdout, "Could not create output directory, not writing dump\n");
-            MessageBoxA(NULL, "Could not create directory to write crash report.", "LiberNT Crash Reporter", MB_ICONERROR | MB_OK);
+            MessageBoxA(NULL, "Could not create directory to write crash report.", "LibreNT Crash Reporter", MB_ICONERROR | MB_OK);
             return abort(stdout, 0);
         }
     }

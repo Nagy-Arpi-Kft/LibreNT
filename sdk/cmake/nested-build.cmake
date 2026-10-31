@@ -6,7 +6,7 @@ else()
     find_program(NESTED_BUILD_PYTHON_EXECUTABLE NAMES python3 python REQUIRED)
     set(_nested_build_python "${NESTED_BUILD_PYTHON_EXECUTABLE}")
 endif()
-set(REACTOS_NESTED_BUILD
+set(LIBRENT_NESTED_BUILD
     "${_nested_build_python}"
     "${CMAKE_CURRENT_LIST_DIR}/build-with-parallel.py"
     "${CMAKE_COMMAND}" --build)

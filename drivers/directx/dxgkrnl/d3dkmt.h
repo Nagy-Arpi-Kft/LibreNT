@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     D3DKMT dispatch private declarations and type definitions
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -102,13 +102,13 @@ typedef struct _D3DKMT_SEGMENTSIZEINFO
 /* ========================================================================
  * D3DKMT IOCTL code definitions
  *
- * DXGKRNL_DEVICE_TYPE (0x23) comes from reactos/rddm/rxgkinterface.h.
+ * DXGKRNL_DEVICE_TYPE (0x23) comes from librent/rddm/rxgkinterface.h.
  * Function codes start at 0x100 to avoid collision with IOCTL_VIDEO_*.
  * All use METHOD_BUFFERED for safe user/kernel data transfer.
  * ====================================================================== */
 
-#include <reactos/rddm/rxgkinterface.h>
-#include <reactos/rddm/rxgkioctl.h>
+#include <librent/rddm/rxgkinterface.h>
+#include <librent/rddm/rxgkioctl.h>
 
 #define IOCTL_D3DKMT_ENUMADAPTERS \
     CTL_CODE(DXGKRNL_DEVICE_TYPE, 0x100, METHOD_BUFFERED, FILE_ANY_ACCESS)
@@ -398,7 +398,7 @@ typedef struct _DXGKP_PROCESS_PRIORITY_REQUEST
     CTL_CODE(DXGKRNL_DEVICE_TYPE, 0x18F, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
 /* IOCTL_DXGKRNL_EXCHANGE_INTERFACE and its handshake structure live in
- * reactos/rddm/rxgkinterface.h (shared with win32k's wddm_bridge). */
+ * librent/rddm/rxgkinterface.h (shared with win32k's wddm_bridge). */
 
 typedef struct _DXGKMT_GETSHADOWSURFACE
 {

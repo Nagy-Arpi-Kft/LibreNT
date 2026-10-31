@@ -830,7 +830,7 @@ static HRESULT STDMETHODCALLTYPE d3d11_device_context_Map(ID3D11DeviceContext4 *
 
     wined3d_resource = wined3d_resource_from_d3d11_resource(resource);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         struct wined3d_resource_desc desc;
         BOOL dynamic;
@@ -3097,7 +3097,7 @@ static void STDMETHODCALLTYPE d3d11_device_context_EndEvent(ID3D11DeviceContext4
 static void STDMETHODCALLTYPE d3d11_device_context_Flush1(ID3D11DeviceContext4 *iface,
         D3D11_CONTEXT_TYPE type, HANDLE event)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct d3d11_device_context *context = impl_from_ID3D11DeviceContext4(iface);
     struct wined3d_query *query;
     HRESULT hr;
@@ -4719,7 +4719,7 @@ static HRESULT STDMETHODCALLTYPE d3d11_device_CheckFormatSupport(ID3D11Device5 *
     };
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, format %u, format_support %p.\n", iface, format, format_support);
 #else
     FIXME("iface %p, format %u, format_support %p partial-stub!\n", iface, format, format_support);
@@ -4792,7 +4792,7 @@ static HRESULT STDMETHODCALLTYPE d3d11_device_CheckFormatSupport(ID3D11Device5 *
                 | D3D11_FORMAT_SUPPORT_MULTISAMPLE_LOAD;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (feature_level < D3D_FEATURE_LEVEL_10_0)
     {
         switch (format)
@@ -5113,7 +5113,7 @@ static HRESULT STDMETHODCALLTYPE d3d11_device_CheckFeatureSupport(ID3D11Device5 
             options->TiledResourcesTier = D3D11_TILED_RESOURCES_NOT_SUPPORTED;
             options->MinMaxFiltering = wined3d_caps.min_max_filtering;
             options->ClearViewAlsoSupportsDepthOnlyFormats = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             options->MapOnDefaultBuffers = device->state->feature_level >= D3D_FEATURE_LEVEL_11_0;
 #else
             options->MapOnDefaultBuffers = FALSE;
@@ -5752,7 +5752,7 @@ static HRESULT STDMETHODCALLTYPE d3d_device_inner_QueryInterface(IUnknown *iface
     {
         *out = &device->ID3D11VideoDevice1_iface;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (device->on12 && (IsEqualGUID(riid, &IID_ID3D11On12Device2)
             || IsEqualGUID(riid, &IID_ID3D11On12Device1)
             || IsEqualGUID(riid, &IID_ID3D11On12Device)))
@@ -5807,7 +5807,7 @@ static ULONG STDMETHODCALLTYPE d3d_device_inner_Release(IUnknown *iface)
         wine_rb_destroy(&device->rasterizer_states, NULL, NULL);
         wine_rb_destroy(&device->depthstencil_states, NULL, NULL);
         wine_rb_destroy(&device->blend_states, NULL, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (device->on12)
             d3d11_on12_destroy(device->on12);
 #endif
@@ -5816,7 +5816,7 @@ static ULONG STDMETHODCALLTYPE d3d_device_inner_Release(IUnknown *iface)
     return refcount;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT d3d11_device_attach_on12(ID3D11Device *iface, IUnknown *on12)
 {
     struct d3d_device *device;

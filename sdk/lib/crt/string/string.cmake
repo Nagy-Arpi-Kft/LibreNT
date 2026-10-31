@@ -83,19 +83,6 @@ elseif(ARCH STREQUAL "arm64")
         string/wcscmp.c
         string/wcsncmp.c
     )
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND LIBCNTPR_STRING_SOURCE
-        string/riscv64/rvbase.c
-        string/strcat.c
-        string/strncat.c
-        string/strncmp.c
-        string/strncpy.c
-        string/wcscat.c
-        string/wcscpy.c
-        string/wcsncat.c
-        string/wcsncpy.c
-    )
-    set_source_files_properties(string/riscv64/rvbase.c PROPERTIES COMPILE_OPTIONS "-fno-builtin")
 elseif(ARCH STREQUAL "amd64")
     list(APPEND LIBCNTPR_STRING_SOURCE
         string/amd64/sse2.c

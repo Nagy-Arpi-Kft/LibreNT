@@ -34,7 +34,7 @@
 #include "scrrun_private.h"
 
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/list.h"
 #endif
 
@@ -50,7 +50,7 @@ struct foldercollection {
     IFolderCollection IFolderCollection_iface;
     LONG ref;
     BSTR path;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list items;
 #endif
 };
@@ -60,7 +60,7 @@ struct filecollection {
     IFileCollection IFileCollection_iface;
     LONG ref;
     BSTR path;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list items;
 #endif
 };
@@ -71,12 +71,12 @@ struct drivecollection {
     LONG ref;
     DWORD drives;
     LONG count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list items;
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct collection_item {
     struct list entry;
     BSTR key;
@@ -491,7 +491,7 @@ static HRESULT WINAPI textstream_get_AtEndOfStream(ITextStream *iface, VARIANT_B
     return S_OK;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT WINAPI textstream_get_AtEndOfLine(ITextStream *iface, VARIANT_BOOL *eol)
 {
     struct textstream *This = impl_from_ITextStream(iface);
@@ -564,7 +564,7 @@ static HRESULT read_more_data(struct textstream *stream)
     return append_read_data(stream, buf, read);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI textstream_get_AtEndOfLine(ITextStream *iface, VARIANT_BOOL *eol)
 {
     struct textstream *This = impl_from_ITextStream(iface);
@@ -899,7 +899,7 @@ static HRESULT WINAPI pipestream_get_AtEndOfLine(ITextStream *iface, VARIANT_BOO
 
 static HRESULT WINAPI pipestream_Read(ITextStream *iface, LONG len, BSTR *text)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct textstream *stream = impl_from_ITextStream(iface);
     HRESULT hr = S_OK;
 
@@ -1608,7 +1608,7 @@ static HRESULT WINAPI foldercoll_enumvariant_Next(IEnumVARIANT *iface, ULONG cel
             BSTR str;
 
             str = get_full_path(This->data.u.foldercoll.coll->path, &data);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!(folder = (IFolder *)collection_item_get(&This->data.u.foldercoll.coll->items, str)))
             {
                 hr = create_folder(str, &folder);
@@ -1769,7 +1769,7 @@ static HRESULT WINAPI filecoll_enumvariant_Next(IEnumVARIANT *iface, ULONG celt,
             BSTR str;
 
             str = get_full_path(This->data.u.filecoll.coll->path, &data);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!(file = (IFile *)collection_item_get(&This->data.u.filecoll.coll->items, str)))
             {
                 hr = create_file(str, &file);
@@ -1894,7 +1894,7 @@ static HRESULT find_next_drive(struct enumvariant *penum)
     int i = penum->data.u.drivecoll.cur == -1 ? 0 : penum->data.u.drivecoll.cur + 1;
 
     for (; i < 32; i++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (penum->data.u.drivecoll.coll->drives & (1u << i))
 #else
         if (penum->data.u.drivecoll.coll->drives & (1 << i))
@@ -1924,7 +1924,7 @@ static HRESULT WINAPI drivecoll_enumvariant_Next(IEnumVARIANT *iface, ULONG celt
         IDrive *drive;
         HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WCHAR key[2] = { 'A' + This->data.u.drivecoll.cur, 0 };
 
         if (!(drive = (IDrive *)collection_item_get(&This->data.u.drivecoll.coll->items, key)))
@@ -1979,7 +1979,7 @@ static HRESULT WINAPI drivecoll_enumvariant_Reset(IEnumVARIANT *iface)
 static HRESULT WINAPI drivecoll_enumvariant_Clone(IEnumVARIANT *iface, IEnumVARIANT **pclone)
 {
     struct enumvariant *This = impl_from_IEnumVARIANT(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 
     TRACE("(%p)->(%p)\n", This, pclone);
@@ -2067,7 +2067,7 @@ static ULONG WINAPI foldercoll_Release(IFolderCollection *iface)
 
     if (!ref)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         collection_items_free(&collection->items);
 #endif
         SysFreeString(collection->path);
@@ -2215,7 +2215,7 @@ static HRESULT create_foldercoll(BSTR path, IFolderCollection **folders)
 
     This->IFolderCollection_iface.lpVtbl = &foldercollvtbl;
     This->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     list_init(&This->items);
 #endif
     This->path = SysAllocString(path);
@@ -2275,7 +2275,7 @@ static ULONG WINAPI filecoll_Release(IFileCollection *iface)
 
     if (!ref)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         collection_items_free(&collection->items);
 #endif
         SysFreeString(collection->path);
@@ -2415,7 +2415,7 @@ static HRESULT create_filecoll(BSTR path, IFileCollection **files)
 
     This->IFileCollection_iface.lpVtbl = &filecollectionvtbl;
     This->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     list_init(&This->items);
 #endif
     This->path = SysAllocString(path);
@@ -2474,7 +2474,7 @@ static ULONG WINAPI drivecoll_Release(IDriveCollection *iface)
 
     if (!ref)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         collection_items_free(&collection->items);
 #endif
         free(collection);
@@ -2596,7 +2596,7 @@ static HRESULT create_drivecoll(IDriveCollection **drives)
 
     This->IDriveCollection_iface.lpVtbl = &drivecollectionvtbl;
     This->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     list_init(&This->items);
 #endif
     This->drives = mask = GetLogicalDrives();
@@ -4269,7 +4269,7 @@ static HRESULT WINAPI filesys_MoveFolder(IFileSystem3 *iface, BSTR src, BSTR dst
     if (!wildcard && !separator)
     {
         /* Ensure that we open a directory by appending a slash. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WCHAR *src_copy;
 
         if (src_len > ~(SIZE_T)0 / sizeof(WCHAR) - 2)
@@ -4288,7 +4288,7 @@ static HRESULT WINAPI filesys_MoveFolder(IFileSystem3 *iface, BSTR src, BSTR dst
         free(src_copy);
         if (ret)
             return S_OK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetLastError() == ERROR_INVALID_NAME || GetLastError() == ERROR_FILE_NOT_FOUND ||
             GetLastError() == ERROR_DIRECTORY)
 #else

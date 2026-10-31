@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Client/Server Runtime SubSystem
+ * PROJECT:     LibreNT Client/Server Runtime SubSystem
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WoW64 CSR API message layouts
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -10,9 +10,9 @@
 #include <wingdi.h>
 #include <wincon.h>
 #include <wincon_undoc.h>
-#include <reactos/subsys/csr/csrwow64.h>
-#include <reactos/subsys/win/basemsg.h>
-#include <reactos/subsys/win/winmsg.h>
+#include <librent/subsys/csr/csrwow64.h>
+#include <librent/subsys/win/basemsg.h>
+#include <librent/subsys/win/winmsg.h>
 
 #define NDEBUG
 #include <debug.h>

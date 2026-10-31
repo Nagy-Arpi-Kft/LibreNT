@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Disk Cleanup
+ * PROJECT:     LibreNT Disk Cleanup
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     CCleanupHandler definition
  * COPYRIGHT:   Copyright 2023-2025 Mark Jansen <mark.jansen@reactos.org>

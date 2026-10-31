@@ -69,7 +69,7 @@ Revision History:
 #define DISK_TAG_UPDATE_CAP     'UDcS'  // "ScDU" - update capacity path
 #define DISK_TAG_WI_CONTEXT     'WDcS'  // "ScDW" - work-item context
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef MdlMappingNoExecute
 #define MdlMappingNoExecute 0
 #define NonPagedPoolNx NonPagedPool
@@ -469,7 +469,7 @@ extern CLASSPNP_SCAN_FOR_SPECIAL_INFO DiskBadControllers[];
 extern const DISK_MEDIA_TYPES_LIST DiskMediaTypes[];
 extern const DISK_MEDIA_TYPES_LIST DiskMediaTypesExclude[];
 
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
 # pragma section("PAGECONS", read)
 # pragma section("PAGEDATA", read,write)
 #endif
@@ -485,60 +485,60 @@ extern const DISK_MEDIA_TYPES_LIST DiskMediaTypesExclude[];
 DRIVER_INITIALIZE DriverEntry;
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskUnload(
     IN PDRIVER_OBJECT DriverObject
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskAddDevice(
     IN PDRIVER_OBJECT DriverObject,
     IN PDEVICE_OBJECT Pdo
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskInitFdo(
     IN PDEVICE_OBJECT Fdo
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskStartFdo(
     IN PDEVICE_OBJECT Fdo
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskStopDevice(
     IN PDEVICE_OBJECT DeviceObject,
     IN UCHAR Type
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskRemoveDevice(
     IN PDEVICE_OBJECT DeviceObject,
     IN UCHAR Type
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskReadWriteVerification(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskDeviceControl(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
     );
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoProcessError(
     PDEVICE_OBJECT DeviceObject,
     PSCSI_REQUEST_BLOCK Srb,
@@ -547,21 +547,21 @@ DiskFdoProcessError(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskShutdownFlush(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskGetCacheInformation(
     IN PFUNCTIONAL_DEVICE_EXTENSION FdoExtension,
     IN PDISK_CACHE_INFORMATION CacheInfo
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskSetCacheInformation(
     IN PFUNCTIONAL_DEVICE_EXTENSION FdoExtension,
     IN PDISK_CACHE_INFORMATION CacheInfo
@@ -680,7 +680,7 @@ DiskCreateFdo(
     );
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskSetSpecialHacks(
     IN PFUNCTIONAL_DEVICE_EXTENSION FdoExtension,
     IN ULONG_PTR Data
@@ -709,7 +709,7 @@ DiskDeleteSymbolicLinks(
 
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoQueryWmiRegInfo(
     IN PDEVICE_OBJECT DeviceObject,
     OUT ULONG *RegFlags,
@@ -717,7 +717,7 @@ DiskFdoQueryWmiRegInfo(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoQueryWmiRegInfoEx(
     IN PDEVICE_OBJECT DeviceObject,
     OUT ULONG *RegFlags,
@@ -726,7 +726,7 @@ DiskFdoQueryWmiRegInfoEx(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoQueryWmiDataBlock(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -736,7 +736,7 @@ DiskFdoQueryWmiDataBlock(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoSetWmiDataBlock(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -746,7 +746,7 @@ DiskFdoSetWmiDataBlock(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoSetWmiDataItem(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -757,7 +757,7 @@ DiskFdoSetWmiDataItem(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskFdoExecuteWmiMethod(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -769,7 +769,7 @@ DiskFdoExecuteWmiMethod(
     );
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DiskWmiFunctionControl(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp,
@@ -989,7 +989,7 @@ DiskIoctlSmartSendDriveCommand(
     IN OUT PIRP Irp
     );
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 PCDB
 GetSrbScsiData(
     _In_ PSTORAGE_REQUEST_BLOCK SrbEx,
@@ -1179,7 +1179,7 @@ Return Value:
     return Cdb;
 }
 
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 VOID
 SetSrbScsiData(
     _In_ PSTORAGE_REQUEST_BLOCK SrbEx,

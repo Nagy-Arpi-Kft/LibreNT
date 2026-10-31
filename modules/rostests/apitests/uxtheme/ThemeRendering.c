@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     End-to-end visual-style activation and rendering test
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -178,7 +178,7 @@ environment_enabled(PCWSTR Name)
 
 START_TEST(ThemeRendering)
 {
-    const WCHAR ClassName[] = L"ReactOSThemeRenderingTest";
+    const WCHAR ClassName[] = L"LibreNTThemeRenderingTest";
     WCHAR ThemePath[MAX_PATH] = L"";
     WCHAR ColorName[64] = L"";
     WCHAR SizeName[64] = L"";

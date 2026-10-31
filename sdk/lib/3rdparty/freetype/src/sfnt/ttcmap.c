@@ -1232,9 +1232,9 @@
     FT_UInt   gindex   = 0;
     FT_Byte*  p;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static FT_UInt bWarnOnce = 0;
-    /* FIXME: HACK for ReactOS not updating fonts when new font copied
+    /* FIXME: HACK for LibreNT not updating fonts when new font copied
      * over existing one. Verify that the table number is 4. CORE-12549 */
     if (TT_PEEK_USHORT(cmap->data) != 4)
     {

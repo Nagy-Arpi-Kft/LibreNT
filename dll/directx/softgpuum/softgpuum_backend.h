@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT user-mode display drivers
+ * PROJECT:     LibreNT user-mode display drivers
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Optional video backend contract for the linear WDDM UMD core
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <reactos/drivers/directx/softgpu_2d_shared.h>
+#include <librent/drivers/directx/softgpu_2d_shared.h>
 
 typedef struct _SOFTGPUUM_SURFACE_LAYOUT
 {

@@ -573,7 +573,7 @@ static void SECUR32_initializeProviders(void)
     }
 
     /* Now load the built-in providers (in Wine, this is done before the registry loading) */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /// FIXME: Interim Wine code until we get Samuel's rewrite!
     SECUR32_initSchannelSP();
     /* First load built-in providers */
@@ -592,7 +592,7 @@ SecurePackage *SECUR32_findPackageW(PCWSTR packageName)
     SecurePackage *ret = NULL;
     BOOL matched = FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!packageTable)
         SECUR32_initializeProviders();
 #endif
@@ -724,7 +724,7 @@ SECURITY_STATUS WINAPI EnumerateSecurityPackagesW(PULONG pcPackages,
 
     TRACE("(%p, %p)\n", pcPackages, ppPackageInfo);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!packageTable)
         SECUR32_initializeProviders();
 #endif

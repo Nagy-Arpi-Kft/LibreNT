@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Testable KMT-to-miniport Present contract helpers
  */
@@ -19,7 +19,7 @@ typedef struct _DXGK_PRESENT_SCANOUT_RETIRE_POLICY
 } DXGK_PRESENT_SCANOUT_RETIRE_POLICY,
   *PDXGK_PRESENT_SCANOUT_RETIRE_POLICY;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 /*
  * Sync refresh counts are public 32-bit serial numbers.  Targets are expected
  * to be within one signed 32-bit interval of the current count; this comparison

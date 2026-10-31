@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/procobj.c
  * PURPOSE:         Kernel Process Management and System Call Tables
@@ -154,7 +154,7 @@ KiAttachProcess(IN PKTHREAD Thread,
     }
     else
     {
-        DPRINT1("Errr. ReactOS doesn't support paging out processes yet...\n");
+        DPRINT1("Errr. LibreNT doesn't support paging out processes yet...\n");
         ASSERT(FALSE);
     }
 }
@@ -188,7 +188,7 @@ KeInitializeProcess(IN OUT PKPROCESS Process,
     Process->Unused0 = DirectoryTableBase[1];
 #ifdef KERNEL_LAYOUT_WIN11_ARM64
     /* Win11 ARM64 KPROCESS: 0x028 = translation root, 0x030 = ASID. Keep the
-     * hyperspace root in the ReactOS-private Unused0 slot (exactly as amd64
+     * hyperspace root in the LibreNT-private Unused0 slot (exactly as amd64
      * does), so 0x030 remains reserved for architecture ASID allocation. */
     Process->Asid = 0;
     Process->Spare0b = 0;

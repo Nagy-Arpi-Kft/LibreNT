@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/amd64/bootshim.h
  * PURPOSE:     AMD64 bootstrap host-test compatibility definitions
  *

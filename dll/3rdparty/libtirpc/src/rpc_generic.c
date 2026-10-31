@@ -488,7 +488,7 @@ __rpc_fd2sockinfo(SOCKET fd, struct __rpc_sockinfo *sip)
 	WSAPROTOCOL_INFO proto_info;
 	int proto_info_size = sizeof(proto_info);
 	if (getsockopt(fd, SOL_SOCKET, SO_PROTOCOL_INFO, (char *)&proto_info, &proto_info_size) == SOCKET_ERROR) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		int err = WSAGetLastError();
 #endif
 		return 0;
@@ -505,7 +505,7 @@ __rpc_fd2sockinfo(SOCKET fd, struct __rpc_sockinfo *sip)
 
 	len = sizeof type;
 	if (getsockopt(fd, SOL_SOCKET, SO_TYPE, (char *)&type, &len) == SOCKET_ERROR) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		int err = WSAGetLastError();
 #endif
 		return 0;
@@ -638,7 +638,7 @@ void freenetbuf(struct netbuf *nbuf)
 	}
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PCSTR
 WSAAPI
 inet_ntop(INT af, const VOID *src, PSTR dst, size_t cnt)
@@ -679,7 +679,7 @@ __rpc_taddr2uaddr_af(int af, const struct netbuf *nbuf)
 
 	switch (af) {
 	case AF_INET:
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 		if (nbuf->len < sizeof(*sin)) {
 			return NULL;
 		}
@@ -695,7 +695,7 @@ __rpc_taddr2uaddr_af(int af, const struct netbuf *nbuf)
 		break;
 #ifdef INET6
 	case AF_INET6:
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 		if (nbuf->len < sizeof(*sin6)) {
 			return NULL;
 		}
@@ -746,7 +746,7 @@ __rpc_uaddr2taddr_af(int af, const char *uaddr)
 
 	port = 0;
 	sin = NULL;
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 	if (uaddr == NULL)
 		return NULL;
 #endif
@@ -785,7 +785,7 @@ __rpc_uaddr2taddr_af(int af, const char *uaddr)
 		memset(sin, 0, sizeof *sin);
 		sin->sin_family = AF_INET;
 		sin->sin_port = htons(port);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		if (inet_pton(AF_INET, addrstr, &sin->sin_addr) <= 0) {
 #else
 		sin->sin_addr.S_un.S_addr = inet_addr(addrstr);

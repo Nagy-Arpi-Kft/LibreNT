@@ -22,7 +22,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include <k32.h>
 #include "japanese.h"   /* Japanese eras */
@@ -57,7 +57,7 @@ LCID WINAPI LocaleNameToLCID(_In_ LPCWSTR, _In_ DWORD);
     #define CAL_SABBREVERASTRING 0x00000039
 #endif
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 #include "config.h"
 #include "wine/port.h"
@@ -77,7 +77,7 @@ LCID WINAPI LocaleNameToLCID(_In_ LPCWSTR, _In_ DWORD);
 
 WINE_DEFAULT_DEBUG_CHANNEL(nls);
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #define DATE_DATEVARSONLY 0x0100  /* only date stuff: yMdg */
 #define TIME_TIMEVARSONLY 0x0200  /* only time stuff: hHmst */
@@ -401,7 +401,7 @@ BOOL NLS_IsUnicodeOnlyLcid(LCID lcid)
 #define IsTimeFmtChar(p)   (p == 'H'||p == 'h'||p == 'm'||p == 's'||p == 't')
 
 /* Only the following flags can be given if a date/time format is specified */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DATE_FORMAT_FLAGS (DATE_DATEVARSONLY | DATE_USE_ALT_CALENDAR)
 #else
 #define DATE_FORMAT_FLAGS (DATE_DATEVARSONLY)
@@ -637,7 +637,7 @@ static INT NLS_GetDateTimeFormatW(LCID lcid, DWORD dwFlags,
         break;
 
       case 'y':
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (IS_LCID_JAPANESE(lcid) && (dwFlags & DATE_USE_ALT_CALENDAR))
         {
             PCJAPANESE_ERA pEra = JapaneseEra_Find(lpTime);
@@ -677,7 +677,7 @@ static INT NLS_GetDateTimeFormatW(LCID lcid, DWORD dwFlags,
         break;
 
       case 'g':
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (IS_LCID_JAPANESE(lcid))
         {
             if (dwFlags & DATE_USE_ALT_CALENDAR)

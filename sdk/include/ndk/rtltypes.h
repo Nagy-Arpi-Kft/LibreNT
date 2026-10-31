@@ -25,7 +25,7 @@ Author:
 #include <umtypes.h>
 #include <mmtypes.h>
 #include <ldrtypes.h>
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -1654,13 +1654,13 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
     UNICODE_STRING ShellInfo;
     UNICODE_STRING RuntimeData;
     RTL_DRIVE_LETTER_CURDIR CurrentDirectories[RTL_MAX_DRIVE_LETTERS];
-#if (NTDDI_VERSION >= NTDDI_LONGHORN) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_LONGHORN) || defined(__LIBRENT__)
     SIZE_T EnvironmentSize;
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN7) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN7) || defined(__LIBRENT__)
     SIZE_T EnvironmentVersion;
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__LIBRENT__)
     PVOID PackageDependencyData;
     ULONG ProcessGroupId;
     ULONG LoaderThreads;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS browseui
+ * PROJECT:     LibreNT browseui
  * LICENSE:     GPL-3.0-or-later
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF
  * PURPOSE:     Modern shell progress dialog; public SDK contract implementation
@@ -7,7 +7,7 @@
 #include "precomp.h"
 #include "operationsprogress.h"
 #include <vssym32.h>
-#include <reactos/dwmsettings.h>
+#include <librent/dwmsettings.h>
 
 #define WM_OP_REFRESH (WM_APP + 30)
 #define WM_OP_CLOSE (WM_APP + 31)

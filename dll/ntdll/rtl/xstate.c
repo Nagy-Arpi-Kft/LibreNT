@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NT Library
+ * PROJECT:     LibreNT NT Library
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Extended processor-state helpers
  * PROGRAMMERS: Wine
@@ -23,7 +23,7 @@ typedef struct _RTL_CONTEXT_EX
     RTL_CONTEXT_CHUNK XState;
 } RTL_CONTEXT_EX, *PRTL_CONTEXT_EX;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG64
 NTAPI
 RtlGetEnabledExtendedFeatures(ULONG64 FeatureMask)

@@ -1,4 +1,4 @@
-set(LIBWIM_PUBLIC_INCLUDE ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libwim)
+set(LIBWIM_PUBLIC_INCLUDE ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libwim)
 
 set(LIBWIM_CORE_SOURCE
     lzx.c

@@ -19,7 +19,7 @@ extern PEXT2_GLOBAL Ext2Global;
 
 #define CMCB_DEBUG_LEVEL DL_NVR
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -55,7 +55,7 @@ Ext2AcquireForLazyWrite (
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -84,7 +84,7 @@ Ext2ReleaseFromLazyWrite (IN PVOID Context)
     IoSetTopLevelIrp( NULL );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -109,7 +109,7 @@ Ext2AcquireForReadAhead (IN PVOID    Context,
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -130,7 +130,7 @@ Ext2ReleaseFromReadAhead (IN PVOID Context)
     ExReleaseResourceLite(Fcb->Header.Resource);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -145,7 +145,7 @@ Ext2NoOpAcquire (
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID

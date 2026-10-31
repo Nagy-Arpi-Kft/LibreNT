@@ -23,8 +23,8 @@ add_library(wow64 MODULE
 
 set_module_type(wow64 win32dll ENTRYPOINT DllMain 12)
 target_compile_definitions(wow64 PRIVATE __WINESRC__)
-target_include_directories(wow64 PRIVATE ${REACTOS_SOURCE_DIR}/ntoskrnl/include)
+target_include_directories(wow64 PRIVATE ${LIBRENT_SOURCE_DIR}/ntoskrnl/include)
 add_importlibs(wow64 ntdll)
 add_dependencies(wow64 xdk)
-add_cd_file(TARGET wow64 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wow64 DESTINATION librent/system32 FOR all)
 set_wine_module(wow64)

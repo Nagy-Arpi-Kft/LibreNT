@@ -83,7 +83,7 @@ interface IDCompositionClip : IUnknown
     pointer_default(unique),
     uuid(9842ad7d-d9cf-4908-aed7-48b51da5e7c2)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionRectangleClip : IDCompositionClip
 {
     HRESULT SetLeftAnimation([in] IDCompositionAnimation *animation);
@@ -167,7 +167,7 @@ interface IDCompositionTransform3D : IDCompositionEffect
     pointer_default(unique),
     uuid(a7929a74-e6b2-4bd6-8b95-4040119ca34d)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionEffectGroup : IDCompositionEffect
 {
     HRESULT SetOpacityAnimation([in] IDCompositionAnimation *animation);
@@ -189,7 +189,7 @@ interface IDCompositionEffectGroup : IDCompositionEffect
     pointer_default(unique),
     uuid(91636d4b-9ba1-4532-aaf7-e3344994d788)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionTranslateTransform3D : IDCompositionTransform3D
 {
     HRESULT SetOffsetXAnimation([in] IDCompositionAnimation *animation);
@@ -217,7 +217,7 @@ interface IDCompositionTranslateTransform3D : IDCompositionTransform3D
     pointer_default(unique),
     uuid(2a9e9ead-364b-4b15-a7c4-a1997f78b389)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionScaleTransform3D : IDCompositionTransform3D
 {
     HRESULT SetScaleXAnimation([in] IDCompositionAnimation *animation);
@@ -257,7 +257,7 @@ interface IDCompositionScaleTransform3D : IDCompositionTransform3D
     pointer_default(unique),
     uuid(d8f5b23f-d429-4a91-b55a-d2f45fd75b18)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionRotateTransform3D : IDCompositionTransform3D
 {
     HRESULT SetAngleAnimation([in] IDCompositionAnimation *animation);
@@ -299,7 +299,7 @@ interface IDCompositionRotateTransform3D : IDCompositionTransform3D
     pointer_default(unique),
     uuid(4b3363f0-643b-41b7-b6e0-ccf22d34467c)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionMatrixTransform3D : IDCompositionTransform3D
 {
     HRESULT SetMatrix([in] const D3DMATRIX *matrix);
@@ -332,7 +332,7 @@ interface IDCompositionTransform : IDCompositionTransform3D
     pointer_default(unique),
     uuid(71fde914-40ef-45ef-bd51-68b037c339f9)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionScaleTransform : IDCompositionTransform
 {
     HRESULT SetScaleXAnimation([in] IDCompositionAnimation *animation);
@@ -364,7 +364,7 @@ interface IDCompositionScaleTransform : IDCompositionTransform
     pointer_default(unique),
     uuid(641ed83c-ae96-46c5-90dc-32774cc5c6d5)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionRotateTransform : IDCompositionTransform
 {
     HRESULT SetAngleAnimation([in] IDCompositionAnimation *animation);
@@ -392,7 +392,7 @@ interface IDCompositionRotateTransform : IDCompositionTransform
     pointer_default(unique),
     uuid(e57aa735-dcdb-4c72-9c61-0591f58889ee)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionSkewTransform : IDCompositionTransform
 {
     HRESULT SetAngleXAnimation([in] IDCompositionAnimation *animation);
@@ -424,7 +424,7 @@ interface IDCompositionSkewTransform : IDCompositionTransform
     pointer_default(unique),
     uuid(16cdff07-c503-419c-83f2-0965c7af1fa6)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionMatrixTransform : IDCompositionTransform
 {
     HRESULT SetMatrix([in] const D2D_MATRIX_3X2_F *matrix);
@@ -447,7 +447,7 @@ interface IDCompositionMatrixTransform : IDCompositionTransform
     pointer_default(unique),
     uuid(06791122-c6f0-417d-8323-269e987f5954)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionTranslateTransform : IDCompositionTransform
 {
     HRESULT SetOffsetXAnimation([in] IDCompositionAnimation *animation);
@@ -471,7 +471,7 @@ interface IDCompositionTranslateTransform : IDCompositionTransform
     local,
     pointer_default(unique)
 ]
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 interface IDCompositionVisual : IUnknown
 {
     HRESULT SetOffsetXAnimation([in] IDCompositionAnimation *animation);

@@ -2221,7 +2221,7 @@ static HRESULT compile_class(compile_ctx_t *ctx, class_decl_t *class_decl)
                 return E_FAIL;
             }
             if(func_decl->args) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ctx->loc = func_decl->decl_end_loc;
 #else
                 ctx->loc = func_decl->loc;
@@ -2236,7 +2236,7 @@ static HRESULT compile_class(compile_ctx_t *ctx, class_decl_t *class_decl)
                 return E_FAIL;
             }
             if(func_decl->args) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ctx->loc = func_decl->decl_end_loc;
 #else
                 ctx->loc = func_decl->loc;
@@ -2506,7 +2506,7 @@ HRESULT compile_script(script_ctx_t *script, const WCHAR *src, const WCHAR *item
     HRESULT hres;
 
     if(item_name) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         item = lookup_context_named_item(script, item_name);
 #else
         item = lookup_named_item(script, item_name, 0);

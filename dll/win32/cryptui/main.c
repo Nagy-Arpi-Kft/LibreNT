@@ -98,7 +98,7 @@ static void add_cert_to_view(HWND lv, PCCERT_CONTEXT cert, DWORD *allocatedLen,
     WCHAR dateFmt[80]; /* sufficient for LOCALE_SSHORTDATE */
     WCHAR date[80];
     SYSTEMTIME sysTime;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPWSTR none = L"";
 #else
     LPWSTR none;
@@ -166,12 +166,12 @@ static void add_cert_to_view(HWND lv, PCCERT_CONTEXT cert, DWORD *allocatedLen,
     {
         if (!CertGetCertificateContextProperty(cert, CERT_FRIENDLY_NAME_PROP_ID,
          *str, &len))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             LoadStringW(hInstance, IDS_FRIENDLY_NAME_NONE, (LPWSTR)&none, 0);
 #endif
             item.pszText = none;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
         else
@@ -373,11 +373,11 @@ static void show_store_certs(HWND hwnd, HCERTSTORE store)
         }
     }
     if (filter == PurposeFilterShowAdvanced)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
 #endif
         advanced = create_advanced_filter();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!advanced) return;
     }
 #endif
@@ -681,7 +681,7 @@ static void save_cert_mgr_usages(HWND hwnd)
                     str = malloc(strlen(info->pszOID) + 1);
                 else
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     LPSTR new_str = realloc(str, strlen(str) + 1 + strlen(info->pszOID) + 1);
                     if (!new_str)
                     {
@@ -694,7 +694,7 @@ static void save_cert_mgr_usages(HWND hwnd)
 #endif
                     firstString = FALSE;
                 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!str) return;
 #endif
                 if (str)
@@ -2290,7 +2290,7 @@ static void set_issuer_statement(HWND hwnd,
                     SetWindowLongPtrW(hwnd, DWLP_USER,
                      (ULONG_PTR)issuerStatement);
                 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 else
                 {
                     free(cps);
@@ -3558,17 +3558,17 @@ static void apply_general_changes(HWND hwnd)
                 if (state == CheckBitmapIndexChecked)
                 {
                     CRYPT_OID_INFO *info = (CRYPT_OID_INFO *)item.lParam;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     LPSTR *identifiers;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     identifiers = realloc(usage.rgpszUsageIdentifier,
 #else
                     usage.rgpszUsageIdentifier = realloc(usage.rgpszUsageIdentifier,
 #endif
                      (usage.cUsageIdentifier + 1) * sizeof(char *));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (!identifiers)
                     {
                         free(usage.rgpszUsageIdentifier);
@@ -7006,7 +7006,7 @@ static void add_cert_to_list(HWND lv, PCCERT_CONTEXT cert, DWORD flags, DWORD *a
     WCHAR dateFmt[80]; /* sufficient for LOCALE_SSHORTDATE */
     WCHAR buf[80];
     SYSTEMTIME sysTime;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPWSTR none = L"", usages;
 #else
     LPWSTR none, usages;
@@ -7095,12 +7095,12 @@ static void add_cert_to_list(HWND lv, PCCERT_CONTEXT cert, DWORD flags, DWORD *a
         if (*str)
         {
             if (!CertGetCertificateContextProperty(cert, CERT_FRIENDLY_NAME_PROP_ID, *str, &len))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 LoadStringW(hInstance, IDS_FRIENDLY_NAME_NONE, (LPWSTR)&none, 0);
 #endif
                 item.pszText = none;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
             else
@@ -7417,14 +7417,14 @@ static void free_prop_sheet_pages(PROPSHEETPAGEW *pages, DWORD num)
 static PROPSHEETPAGEW *prop_sheet_pages_AtoW(LPCPROPSHEETPAGEA pages, DWORD num)
 {
     PROPSHEETPAGEW *psp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD i;
     SIZE_T size;
 #else
     DWORD i, size = sizeof(*psp) * num;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)num > ~(SIZE_T)0 / sizeof(*psp))
         return NULL;
     size = sizeof(*psp) * num;
@@ -7518,7 +7518,7 @@ PCCERT_CONTEXT WINAPI CryptUIDlgSelectCertificateA(PCCRYPTUI_SELECTCERTIFICATE_S
 error:
     free(title);
     free(display_str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pages)
 #else
     if (pcsc->cPropSheetPages)

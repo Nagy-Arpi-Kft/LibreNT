@@ -138,7 +138,7 @@ static HRESULT apartment_add_dll(const WCHAR *library_name, struct opendll **ret
     /* DllCanUnloadNow is optional */
     DllCanUnloadNow = (void *)GetProcAddress(hLibrary, "DllCanUnloadNow");
     DllGetClassObject = (void *)GetProcAddress(hLibrary, "DllGetClassObject");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!DllGetClassObject && !GetProcAddress(hLibrary, "DllGetActivationFactory"))
 #else
     if (!DllGetClassObject)
@@ -299,7 +299,7 @@ static HRESULT WINAPI local_server_QueryService(IServiceProvider *iface, REFGUID
     if (!local_server->apt)
         return E_UNEXPECTED;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         BOOL suspended;
 
@@ -526,7 +526,7 @@ void apartment_release(struct apartment *apt)
              * stub manager list in the apartment and all non-apartment users
              * must have a ref on the apartment and so it cannot be destroyed).
              */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (stubmgr->extern_conn)
             {
                 struct ifstub *ifstub;
@@ -604,7 +604,7 @@ static struct apartment *apartment_get_or_create(DWORD model)
 
             LeaveCriticalSection(&apt_cs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* CSRSS can use an STA to load an in-process shell link without a
              * desktop. Defer its message window until marshalling needs one. */
             if (apt->main && GetThreadDesktop(GetCurrentThreadId()))
@@ -850,7 +850,7 @@ static HRESULT apartment_getclassobject(struct apartment *apt, LPCWSTR dllpath,
 
     LeaveCriticalSection(&apt->cs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && !apartment_loaded_dll->dll->DllGetClassObject)
         hr = CO_E_DLLNOTFOUND;
 #endif
@@ -872,7 +872,7 @@ static HRESULT apartment_getclassobject(struct apartment *apt, LPCWSTR dllpath,
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT apartment_track_dll(struct apartment *apt, const WCHAR *dllpath)
 {
     struct apartment_loaded_dll *apartment_loaded_dll;
@@ -1224,7 +1224,7 @@ HRESULT enter_apartment(struct tlsdata *data, DWORD model)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void apartment_dispatch_pending_calls(struct apartment *apt)
 {
     MSG msg;
@@ -1245,7 +1245,7 @@ static void apartment_dispatch_pending_calls(struct apartment *apt)
 
 void leave_apartment(struct tlsdata *data)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (data->inits == 1)
         apartment_dispatch_pending_calls(data->apt);
 #endif

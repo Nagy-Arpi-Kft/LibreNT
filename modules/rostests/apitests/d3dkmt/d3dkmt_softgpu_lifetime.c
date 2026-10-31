@@ -1,5 +1,5 @@
 /*
- * PROJECT: LiberNT D3DKMT API Tests
+ * PROJECT: LibreNT D3DKMT API Tests
  * LICENSE: GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE: GPUVA allocation lifetime across devices in one process.
  *
@@ -91,7 +91,7 @@ static void round_test(unsigned cross)
                 base = cursor + 1;
         if (!NT_SUCCESS(status) || lstrcmpiW(base, L"softgpuum.dll"))
         {
-            skip("This test requires the ReactOS software GPU\n");
+            skip("This test requires the LibreNT software GPU\n");
             goto cleanup;
         }
     }

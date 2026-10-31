@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Windows Runtime
+ * PROJECT:     LibreNT Windows Runtime
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Toast notification popups shown on the desktop
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -93,8 +93,8 @@ struct popup
     int height;
 };
 
-static const WCHAR host_class[] = L"LiberNTToastHost";
-static const WCHAR popup_class[] = L"LiberNTToastPopup";
+static const WCHAR host_class[] = L"LibreNTToastHost";
+static const WCHAR popup_class[] = L"LibreNTToastPopup";
 static struct list visible_popups = LIST_INIT(visible_popups);
 static struct list pending_popups = LIST_INIT(pending_popups);
 static HWND presenter_window;

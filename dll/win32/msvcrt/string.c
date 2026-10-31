@@ -38,7 +38,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(msvcrt);
 
 #ifdef _MSC_VER
 #pragma function(_strset,memchr,memcmp,memcpy,memset,strcat,strcmp,strcpy,strlen)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if defined(_M_ARM) || _MSC_VER >= 1950
 #pragma function(strncmp,strncpy)
 #endif
@@ -1525,7 +1525,7 @@ int CDECL __STRINGTOLD_L( _LDOUBLE *value, char **endptr,
     pthreadlocinfo locinfo;
     const char *beg, *p;
     int err, ret = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int parsed_exp;
 #endif
     struct fpnum fp;
@@ -1543,14 +1543,14 @@ int CDECL __STRINGTOLD_L( _LDOUBLE *value, char **endptr,
     beg = p;
 
     fp = fpnum_parse(strtod_str_get, strtod_str_unget, &p, locinfo, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     parsed_exp = fp.exp;
 #endif
     if (endptr) *endptr = (p == beg ? (char*)str : (char*)p);
     if (p == beg) ret = 4;
 
     err = fpnum_ldouble(&fp, d);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (err) ret = (d->exp & 0x7fff ? 2 : parsed_exp == INT_MIN ? 1 : 0);
 #else
     if (err) ret = (d->exp & 0x7fff ? 2 : 1);
@@ -2819,7 +2819,7 @@ int __cdecl memcmp(const void *ptr1, const void *ptr2, size_t n)
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #if defined(__i386__) || (defined(__x86_64__) && !defined(__arm64ec__))
 
 #ifdef __i386__
@@ -3188,7 +3188,7 @@ void * __cdecl memmove(void *dst, const void *src, size_t n)
 #endif
 }
 #undef MERGE
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 /*********************************************************************
  *                  memcpy   (MSVCRT.@)

@@ -4,17 +4,17 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = NetTrans
 ClassGUID  = {4D36E975-E325-11CE-BFC1-08002BE10318}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 04/12/2006,1.00
 
 [Manufacturer]
-%ReactOS% = ReactOS
+%LibreNT% = LibreNT
 
-[ReactOS]
+[LibreNT]
 %NDISUIO_DisplayName% = Install, MS_NDISUIO
 
 ;--------------------------- NDISUIO DRIVER -----------------------------
@@ -49,7 +49,7 @@ ndisuio.sys
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 ; Localizable
 NDISUIO_DisplayName = "NDIS Usermode I/O Protocol"

@@ -18,7 +18,7 @@
 #include "vfdapi.h"
 #include "vfdlib.h"
 #include "vfdver.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "vfdmsg.h"
 #else
 #include "vfdmsg_lib.h"
@@ -35,7 +35,7 @@
 //
 //	local functions
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static BOOL CALLBACK VfdPageDlgProc(
 #else
 static INT_PTR CALLBACK VfdPageDlgProc(
@@ -80,7 +80,7 @@ UINT CALLBACK VfdPageCallback(
 //
 //	property page dialog procedure
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 BOOL CALLBACK VfdPageDlgProc(
 #else
 INT_PTR CALLBACK VfdPageDlgProc(
@@ -95,7 +95,7 @@ INT_PTR CALLBACK VfdPageDlgProc(
 
 	switch (uMessage) {
 	case WM_INITDIALOG:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		SetWindowLong(hDlg, DWL_USER, lParam);
 #else
 		SetWindowLongPtr(hDlg, DWLP_USER, lParam);
@@ -110,7 +110,7 @@ INT_PTR CALLBACK VfdPageDlgProc(
 		return TRUE;
 
 	case WM_COMMAND:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		psp = (LPPROPSHEETPAGE)GetWindowLong(hDlg, DWL_USER);
 #else
 		psp = (LPPROPSHEETPAGE)GetWindowLongPtr(hDlg, DWLP_USER);
@@ -181,7 +181,7 @@ INT_PTR CALLBACK VfdPageDlgProc(
 
 	default:
 		if (uMessage == g_nNotifyMsg) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 			psp = (LPPROPSHEETPAGE)GetWindowLong(hDlg, DWL_USER);
 #else
 			psp = (LPPROPSHEETPAGE)GetWindowLongPtr(hDlg, DWLP_USER);
@@ -237,7 +237,7 @@ void OnControl(
 	CHAR			module_path[MAX_PATH];
 	CHAR			full_path[MAX_PATH];
 	PSTR			file_name;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	DWORD			ret;
 #else
 	DWORD_PTR		ret;
@@ -262,7 +262,7 @@ void OnControl(
 
 	VFDTRACE(0, ("Starting %s\n", full_path));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	ret = (DWORD)ShellExecute(
 		hDlg, NULL, full_path, NULL, NULL, SW_SHOW);
 #else

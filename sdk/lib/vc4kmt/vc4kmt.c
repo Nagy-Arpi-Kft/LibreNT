@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 5 VC4 user-mode support
+ * PROJECT:     LibreNT Raspberry Pi 5 VC4 user-mode support
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Private VC4 winsys helper library over D3DKMT.
  */
@@ -16,7 +16,7 @@
 #include <wingdi.h>
 #include <d3dkmthk.h>
 #include <d3dumddi.h>
-#include <reactos/vc4kmt.h>
+#include <librent/vc4kmt.h>
 
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)

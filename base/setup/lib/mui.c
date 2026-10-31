@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2008 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS text-mode setup
+ * PROJECT:         LibreNT text-mode setup
  * FILE:            base/setup/usetup/mui.c
  * PURPOSE:         Text-mode setup
  * PROGRAMMER:
@@ -559,7 +559,7 @@ AddCodePage(
     return FALSE;
 }
 
-#ifdef __REACTOS__ /* HACK */
+#ifdef __LIBRENT__ /* HACK */
 BOOL
 DoRegistryFontFixup(PFONTSUBSTSETTINGS pSettings, LANGID LangID)
 {

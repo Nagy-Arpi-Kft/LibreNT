@@ -26,7 +26,7 @@
 #include <ctype.h>
 #include <math.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "profile.h"
 #endif
 
@@ -45,7 +45,7 @@ static GLboolean fullscreen = GL_FALSE;
 static GLint samples = 0;
 static GLboolean use_srgb = GL_FALSE;
 static GLboolean animate = GL_TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static GLboolean profile = GL_FALSE;
 #endif
 
@@ -70,7 +70,7 @@ usage(void)
    printf("  -samples N         run in multisample mode with at least N samples\n");
    printf("  -fullscreen        run in fullscreen mode\n");
    printf("  -info              display OpenGL renderer info\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    printf("  --profile          dump app, ICD, DWM and kernel timings on exit\n");
 #endif
    printf("  -geometry WxH+X+Y  window geometry\n");
@@ -537,7 +537,7 @@ draw_frame()
       angle = fmodf(angle, 360.0f); /* prevents eventual overflow */
    }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    if (profile) {
       WglGearsProfileFrameStart();
       draw();
@@ -677,7 +677,7 @@ main(int argc, char *argv[])
    int x = CW_USEDEFAULT, y = 0;
    int i;
    GLboolean printInfo = GL_FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    BOOL profileComplete = TRUE;
 #endif
 
@@ -685,7 +685,7 @@ main(int argc, char *argv[])
       if (strcmp(argv[i], "-info") == 0) {
          printInfo = GL_TRUE;
       }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       else if (strcmp(argv[i], "--profile") == 0) {
          profile = GL_TRUE;
       }
@@ -738,14 +738,14 @@ main(int argc, char *argv[])
    init();
    print_resources("running");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    if (profile && !WglGearsProfileStart(wglGetProcAddress("wglControlPresentationTraceROS"))) {
       fprintf(stderr, "Unable to allocate gears profiling capture\n");
       return EXIT_FAILURE;
    }
 #endif
    event_loop();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    if (profile) profileComplete = WglGearsProfileStop();
 #endif
 
@@ -763,7 +763,7 @@ main(int argc, char *argv[])
    UnregisterClass ("wglgears", hInst);
    print_resources("class_unregistered");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    if (!profileComplete)
       return EXIT_FAILURE;
 #endif

@@ -1,6 +1,6 @@
 
 #
-# PROJECT:     ReactOS Network Drivers
+# PROJECT:     LibreNT Network Drivers
 # LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
 # FILE:        drivers/network/dd/CMakeLists.txt
 # PURPOSE:     Network driver build rules
@@ -8,7 +8,7 @@
 #
 
 add_subdirectory(dc21x4)
-math(EXPR _E1000E_NT_NUM "${REACTOS_TARGET_NT} + 0")
+math(EXPR _E1000E_NT_NUM "${LIBRENT_TARGET_NT} + 0")
 if(_E1000E_NT_NUM GREATER_EQUAL 1536)
     add_subdirectory(e1000e)
     add_subdirectory(vmxnet3)
@@ -16,12 +16,7 @@ endif()
 if((ARCH STREQUAL "arm64") AND RPI5_SUPPORT AND (_E1000E_NT_NUM GREATER_EQUAL 1536))
     add_subdirectory(rp1gem)
 endif()
-if((ARCH STREQUAL "riscv64") AND SPACEMIT_K1_SUPPORT AND (_E1000E_NT_NUM GREATER_EQUAL 1536))
-    add_subdirectory(k1xemac)
-endif()
-if(NOT ARCH STREQUAL "riscv64")
-    add_subdirectory(ne2000)
-endif()
+add_subdirectory(ne2000)
 add_subdirectory(netkvm)
 if(ARCH STREQUAL "amd64")
     add_subdirectory(netvsc)

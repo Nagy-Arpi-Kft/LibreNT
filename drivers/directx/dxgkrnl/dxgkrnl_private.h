@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Master internal header for dxgkrnl.sys — defines all private
  *              data structures, global state, and function prototypes shared
@@ -56,7 +56,7 @@
  * at the same level.  Functions such as PsSetCreateProcessNotifyRoutineEx
  * remain declared.
  *
- * The ReactOS build system sets _WIN32_WINNT=0x0502 (Server 2003) globally,
+ * The LibreNT build system sets _WIN32_WINNT=0x0502 (Server 2003) globally,
  * but dxgkrnl is a WDDM driver that only loads on Vista+.  The
  * sdkddkver.h consistency check requires (NTDDI_VERSION >> 16) == _WIN32_WINNT,
  * so both values must be updated together, and must agree with the values the
@@ -98,7 +98,7 @@
 /*
  * d3dukmdt.h (pulled in transitively by d3dkmddi.h) uses UINT before any
  * kernel header defines that type.  windef.h supplies it via minwindef.h.
- * This is safe in kernel mode — other ReactOS kernel drivers do the same.
+ * This is safe in kernel mode — other LibreNT kernel drivers do the same.
  */
 #include <windef.h>
 
@@ -114,11 +114,11 @@
  */
 #include <dispmprt.h>
 #include <d3dkmthk.h>
-#include <reactos/drivers/directx/dxgmms2.h>
+#include <librent/drivers/directx/dxgmms2.h>
 #include "d3dkmt.h"
 
-/* ---- ReactOS WDDM private adapter-level interface ---------------------- */
-#include <reactos/rddm/rxgkinterface.h>
+/* ---- LibreNT WDDM private adapter-level interface ---------------------- */
+#include <librent/rddm/rxgkinterface.h>
 
 struct _DXGK_REDIRECTION_SURFACE_CREATE;
 struct _VIDEO_MODE_INFORMATION;
@@ -154,13 +154,13 @@ extern NTKERNELAPI PVOID MmSystemRangeStart;
 
 /* ---- Debug helpers ----------------------------------------------------- */
 /*
- * Use the full path <reactos/debug.h> to avoid accidentally finding the
+ * Use the full path <librent/debug.h> to avoid accidentally finding the
  * local dxgkrnl "debug.h" via the angle-bracket search path.
- * The local "debug.h" must come after <reactos/debug.h> because it uses
+ * The local "debug.h" must come after <librent/debug.h> because it uses
  * DPRINT / DPRINT1 macros defined by the system header.
  */
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 #include "debug.h"
 
 /* Pool tag for display/vidpn-related allocations */
@@ -402,7 +402,7 @@ struct _DXGKRNL_MINIPORT_CONTEXT
     BOOLEAN                     UseDodLayout;
 
     /* TRUE for the in-box basic-display fallback miniport (softgpu) —
-     * the ReactOS equivalent of Windows' MSBDD.  The fallback only holds
+     * the LibreNT equivalent of Windows' MSBDD.  The fallback only holds
      * the boot display until a real miniport acquires POST display
      * ownership, at which point dxgkrnl stops it (see
      * DxgkCbAcquirePostDisplayOwnership).  OS-side policy knob only; no
@@ -484,7 +484,7 @@ typedef struct _DXGKRNL_SUBMIT_DMA_BUFFER
     /* ResetFenceIdentities invalidates ownership from older epochs. */
     BOOLEAN                     FenceIdentityOwned;
     ULONG                       FenceIdentityEpoch;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* PASSIVE retire worker outcome; failed GPU work must never publish. */
     BOOLEAN                     CleanupAsCompleted;
 #endif
@@ -497,7 +497,7 @@ typedef struct _DXGKRNL_SUBMIT_DMA_BUFFER
      * hardware without GPU-writable fence values). */
     PVOID                       SignalSyncObjectReference;
     ULONG64                     SignalFenceValue;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     /* The DMA stream writes the value; retirement retains lifetime only. */
     BOOLEAN                     SignalWrittenByGpu;
 #endif
@@ -945,7 +945,7 @@ struct _DXGKRNL_ADAPTER
      */
     DXGK_PERIODIC_INTERRUPT_CORE PeriodicInterruptCore;
     BOOLEAN                     PeriodicInterruptOverflowReported;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     /* Type-11 notifications coalesce by node until the adapter DPC evaluates
      * the GPU-written regular monitored-fence pages. */
     volatile LONG               MonitoredFencePendingNodes;
@@ -1540,7 +1540,7 @@ struct _DXGKRNL_DEVICE
     /* WDDM 2.x FromCpu waits share one nonpaged, DPC-safe completion boundary. */
     DXGK_SYNC_WAIT_CORE_REGISTRY SyncWaitRegistry;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* Last valid WDDM 2.0 page-fault report for D3DKMTGetDeviceState. */
     KSPIN_LOCK                  PageFaultLock;
     volatile LONG               PageFaultValid;
@@ -1637,14 +1637,14 @@ struct _DXGKRNL_CONTEXT
     UINT                        NodeOrdinal;
     UINT                        EngineAffinity;
     volatile LONG               SchedulingPriority;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     volatile LONG               InProcessSchedulingPriority;
 #endif
 
     /* TRUE when created through D3DKMTCreateContextVirtual. */
     BOOLEAN                     VirtualAddressing;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* Serialized by the context stream worker. A reset invalidates the
      * miniport association even when VidMm retains the same root address. */
     BOOLEAN                     RootPageTablePublished;
@@ -2167,7 +2167,7 @@ typedef struct _DXGKRNL_SYNC_OBJECT
     ULONG                       SemaphoreLimit;
     PKEVENT                     CpuNotificationEvent;
     BOOLEAN                     CpuNotificationEventReferenced;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     /*
      * WDDM 3.0 SignalByKmd CPU notification ownership.  hKmdCpuEvent is
      * supplied by DxgkDdiCreateCpuEvent and remains private to the miniport.
@@ -2198,7 +2198,7 @@ typedef struct _DXGKRNL_SYNC_OBJECT
     /* GPU VA of the value page in the creating process's address space
      * (CPU_VIRTUAL GpuMmu adapters only), 0 when not mapped. */
     D3DGPU_VIRTUAL_ADDRESS      MonitoredValueGpuVa;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     UINT                        MonitoredEngineAffinity;
     EX_RUNDOWN_REF              MonitoredInterruptRundown;
     ULONG                       MonitoredInterruptSequence;
@@ -2587,7 +2587,7 @@ DxgkYieldKmdTransactionForContextRoom(
     _In_ ULONGLONG Deadline,
     _Inout_ PBOOLEAN TransactionHeld);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 NTSTATUS
 DxgkQueryFeatureState(
     _In_opt_ PDXGKRNL_ADAPTER Adapter,
@@ -3322,7 +3322,7 @@ VOID
 DxgkpDereferenceSyncObject(
     _In_ PDXGKRNL_SYNC_OBJECT SyncObj);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
 NTSTATUS
 APIENTRY
 DxgkCbSignalEvent(
@@ -3414,7 +3414,7 @@ DxgkSyncObjectReferenceTrackedSignal(
     _In_ PDXGKRNL_DEVICE Device,
     _Outptr_ PVOID *Reference);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 NTSTATUS
 NTAPI
 DxgkSyncObjectQueryTrackedSignalAddress(
@@ -4045,7 +4045,7 @@ typedef struct _DXGKRNL_TRACK_DMA_ARGS
     ULONG                           EngineOrdinal;
     D3DKMT_HANDLE                   hSignalSyncObject;
     ULONG64                         SignalFenceValue;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     /* Borrowed pre-reference while an op16 signal is built. */
     PVOID                           SignalSyncObjectReference;
     BOOLEAN                         SignalWrittenByGpu;
@@ -4401,7 +4401,7 @@ DxgkDeviceSetExecutionState(
     _In_ PDXGKRNL_DEVICE Device,
     _In_ D3DKMT_DEVICEEXECUTION_STATE ExecutionState);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 BOOLEAN
 DxgkDeviceSetDmaFaultExecutionState(
     _In_ PDXGKRNL_DEVICE Device);
@@ -4543,7 +4543,7 @@ NTAPI
 DxgkCancelTrackedDmaBuffer(
     _In_opt_ PDXGKRNL_SUBMIT_DMA_BUFFER Entry);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 BOOLEAN
 NTAPI
 DxgkFailTrackedDmaBuffer(

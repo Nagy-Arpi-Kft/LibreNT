@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            ntoskrnl/ke/arm64/trapc.c
  * PURPOSE:         Trap handling stubs for ARM64
@@ -8,7 +8,7 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 #endif
 #include <arm64trap.h>
 #define NDEBUG
@@ -472,7 +472,7 @@ MmArmAccessFault(
  * MmNotPresentFaultSectionView for ROS section views like VACB buffers).
  *
  * ARM64 MUST call this instead of MmArmAccessFault to properly handle
- * kernel section views created by the ReactOS memory manager.
+ * kernel section views created by the LibreNT memory manager.
  */
 NTSTATUS
 NTAPI

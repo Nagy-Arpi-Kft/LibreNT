@@ -55,7 +55,7 @@ static BOOLEAN POWRPROF_GetUserPowerPolicy(LPWSTR szNum, PUSER_POWER_POLICY puse
 static BOOLEAN POWRPROF_GetMachinePowerPolicy(LPWSTR szNum, PMACHINE_POWER_POLICY pmachinePwrPolicy);
 static HANDLE PPRegSemaphore = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const GUID PowrProfVideoSubgroup = { 0x7516B95F, 0xF776, 0x4464, { 0x8C, 0x53, 0x06, 0x16, 0x7F, 0x40, 0xCC, 0x99 } };
 static const GUID PowrProfVideoPowerdownTimeout = { 0x3C0BC021, 0xC8A8, 0x4E07, { 0xA9, 0x73, 0x6B, 0x14, 0xCB, 0xCB, 0x2B, 0x7E } };
 static const GUID PowrProfSleepSubgroup = { 0x238C9FA8, 0x0AAD, 0x41ED, { 0x83, 0xF4, 0x97, 0xBE, 0x24, 0x2C, 0x8F, 0x20 } };
@@ -1435,7 +1435,7 @@ IsPwrSuspendAllowed(VOID)
 DWORD WINAPI
 PowerGetActiveScheme(HKEY UserRootPowerKey, GUID **polguid)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GUID Scheme;
     DWORD Error;
 
@@ -1463,7 +1463,7 @@ PowerGetActiveScheme(HKEY UserRootPowerKey, GUID **polguid)
 
 DWORD WINAPI PowerSetActiveScheme(HKEY UserRootPowerKey, const GUID *polguid)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD Error;
 
     UNREFERENCED_PARAMETER(UserRootPowerKey);
@@ -1755,7 +1755,7 @@ DWORD WINAPI PowerSettingUnregisterNotification(HPOWERNOTIFY handle)
 
 DWORD WINAPI PowerWriteACValueIndex(HKEY key, const GUID *scheme, const GUID *subgroup, const GUID *setting, DWORD index)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD Error;
 
     UNREFERENCED_PARAMETER(key);
@@ -2144,7 +2144,7 @@ DWORD WINAPI PowerWriteDCValueIndex(
    DWORD      index
 )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD Error;
 
     UNREFERENCED_PARAMETER(key);
@@ -2168,7 +2168,7 @@ DWORD WINAPI PowerReadACValueIndex(
    LPDWORD    AcValueIndex
 )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD Error;
 
     UNREFERENCED_PARAMETER(key);
@@ -2192,7 +2192,7 @@ DWORD WINAPI PowerReadDCValueIndex(
     LPDWORD    DcValuetIndex
 )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD Error;
 
     UNREFERENCED_PARAMETER(key);
@@ -2346,7 +2346,7 @@ SetActivePwrScheme(UINT uiID,
     POWER_POLICY tmp;
     HKEY hKey;
     WCHAR Buf[16];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GUID OldScheme;
     DWORD Error;
 #endif
@@ -2366,7 +2366,7 @@ SetActivePwrScheme(UINT uiID,
             return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Error = POWRPROF_ReadActiveScheme(&OldScheme, NULL);
     if (Error != ERROR_SUCCESS)
     {
@@ -2383,7 +2383,7 @@ SetActivePwrScheme(UINT uiID,
 
     if (RegOpenKeyEx(HKEY_CURRENT_USER, szUserPowerConfigSubKey, 0, KEY_WRITE, &hKey) != ERROR_SUCCESS)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         (void)POWRPROF_ApplyScheme(&OldScheme, FALSE);
 #endif
         return FALSE;
@@ -2393,7 +2393,7 @@ SetActivePwrScheme(UINT uiID,
     if (RegSetValueExW(hKey, szCurrentPowerPolicies, 0, REG_SZ, (PBYTE)Buf, (strlenW(Buf) + 1) * sizeof(WCHAR)) != ERROR_SUCCESS)
     {
         RegCloseKey(hKey);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         (void)POWRPROF_ApplyScheme(&OldScheme, FALSE);
 #endif
         return FALSE;

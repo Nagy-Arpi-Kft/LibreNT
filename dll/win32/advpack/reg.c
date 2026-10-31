@@ -185,7 +185,7 @@ static HRESULT write_predefined_strings(HMODULE hm, LPCWSTR ini_path)
         lstrcatW(sys_mod_path, mod_path + 1 + lstrlenW(sys_root));
     }
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WCHAR program_files[MAX_PATH];
 

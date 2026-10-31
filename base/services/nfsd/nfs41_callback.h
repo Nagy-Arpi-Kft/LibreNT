@@ -49,7 +49,7 @@ enum nfs41_callback_op {
     OP_CB_ILLEGAL           = 10044
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int nfs41_handle_callback(void *, void *, void **);
 #else
 int nfs41_handle_callback(void *, void *, struct cb_compound_res **);
@@ -67,7 +67,7 @@ union cb_recall_file_args {
     nfs41_fsid              fsid;
 };
 struct cb_recall {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t type;
 #else
     enum pnfs_return_type   type;
@@ -75,7 +75,7 @@ struct cb_recall {
     union cb_recall_file_args args;
 };
 struct cb_layoutrecall_args {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t type;
     uint32_t iomode;
 #else
@@ -215,7 +215,7 @@ enum notify_deviceid_type4 {
 struct notify_deviceid4 {
     unsigned char           deviceid[16];
     enum notify_deviceid_type4 type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t layouttype;
 #else
     enum pnfs_layout_type   layouttype;

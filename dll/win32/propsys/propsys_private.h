@@ -20,7 +20,7 @@
 
 HRESULT PropertyStore_CreateInstance(IUnknown *outer, REFIID riid, void **ppv);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT propschema_get_by_key(const PROPERTYKEY *key, REFIID riid, void **ppv);
 HRESULT propschema_get_by_name(LPCWSTR name, REFIID riid, void **ppv);
 HRESULT propschema_list_from_string(LPCWSTR text, REFIID riid, void **ppv);

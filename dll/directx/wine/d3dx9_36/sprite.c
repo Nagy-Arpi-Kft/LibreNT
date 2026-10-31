@@ -414,7 +414,7 @@ static HRESULT WINAPI d3dx9_sprite_Flush(ID3DXSprite *iface)
     if(!This->sprite_count) return D3D_OK;
 
 /* TODO: use of a vertex buffer here */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(vertices = malloc(sizeof(*vertices) * 6 * This->sprite_count)))
         return D3DERR_INVALIDCALL;
 #else
@@ -484,7 +484,7 @@ static HRESULT WINAPI d3dx9_sprite_Flush(ID3DXSprite *iface)
 static HRESULT WINAPI d3dx9_sprite_End(ID3DXSprite *iface)
 {
     struct d3dx9_sprite *sprite = impl_from_ID3DXSprite(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
@@ -493,7 +493,7 @@ static HRESULT WINAPI d3dx9_sprite_End(ID3DXSprite *iface)
     if (!sprite->ready)
         return D3DERR_INVALIDCALL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = ID3DXSprite_Flush(iface)))
         return hr;
 #else

@@ -60,7 +60,7 @@ extern "C" {
 #define RtlUlonglongByteSwap(_x) _byteswap_uint64((_x))
 
 #else
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 USHORT
 FASTCALL
@@ -79,7 +79,7 @@ FASTCALL
 RtlUlonglongByteSwap(
     IN ULONGLONG Source
 );
-#endif //#ifndef __REACTOS__
+#endif //#ifndef __LIBRENT__
 #endif
 
 #define __swab16(x) RtlUshortByteSwap(x)
@@ -431,14 +431,14 @@ extern struct task_struct *current;
 //
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline int cond_resched() {
 #else
 static inline cond_resched() {
 #endif
     return FALSE;
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline int need_resched() {
 #else
 static inline need_resched() {
@@ -650,7 +650,7 @@ extern void free_pages(unsigned long addr, unsigned int order);
 #define __free_page(page) __free_pages((page), 0)
 #define free_page(addr) free_pages((addr),0)
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern void truncate_inode_pages(struct address_space *, loff_t);
 #endif
 
@@ -706,7 +706,7 @@ enum bh_state_bits {
 #define PAGE_CACHE_SHIFT (12)
 #define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct buffer_head;
 #endif
 typedef void (bh_end_io_t)(struct buffer_head *bh, int uptodate);
@@ -832,7 +832,7 @@ void mark_buffer_dirty_inode(struct buffer_head *bh, struct inode *inode);
 int inode_has_buffers(struct inode *);
 void invalidate_inode_buffers(struct inode *);
 int remove_inode_buffers(struct inode *inode);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 int sync_mapping_buffers(struct address_space *mapping);
 #endif
 void unmap_underlying_metadata(struct block_device *bdev, sector_t block);

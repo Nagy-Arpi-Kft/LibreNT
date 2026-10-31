@@ -111,7 +111,7 @@ coclass PSFactoryBuffer { interface IPSFactoryBuffer; }
 ]
 coclass ObjrefMoniker { interface IMoniker; }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 [
     helpstring("Component Categories Manager"),
     threading(both),

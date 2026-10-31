@@ -27,7 +27,7 @@
 #define F3_1Pt2_512				(MEDIA_TYPE)17
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern DISK_GEOMETRY const geom_tbl[VFD_MEDIA_MAX] = {
 	{{ 80 },	F3_1Pt44_512,	2,	18,	VFD_BYTES_PER_SECTOR },	// default
 	{{ 40 },	F5_160_512,		1,	8,	VFD_BYTES_PER_SECTOR },	// 160K

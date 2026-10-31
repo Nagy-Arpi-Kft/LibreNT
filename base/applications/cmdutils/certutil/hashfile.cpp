@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS certutil
+ * PROJECT:     LibreNT certutil
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     CertUtil hashfile implementation
  * COPYRIGHT:   Copyright 2020 Mark Jansen (mark.jansen@reactos.org)

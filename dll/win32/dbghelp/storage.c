@@ -22,7 +22,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "wine/debug.h"
 #endif
 

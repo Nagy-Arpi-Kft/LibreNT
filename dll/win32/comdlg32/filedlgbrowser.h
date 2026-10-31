@@ -48,7 +48,7 @@
  */
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct FileOpenDlgInfos
 #else
 typedef struct
@@ -98,7 +98,7 @@ typedef struct
 
     BOOL ole_initialized;
     LPITEMIDLIST places[5];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPVOID pvCWD; /* ICurrentWorkingDirectory */
     LPVOID pvDropDown; /* IAutoCompleteDropDown */
     LPVOID pvACList; /* IACList2 */

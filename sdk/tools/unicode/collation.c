@@ -2,7 +2,7 @@
 /* generated from http://www.unicode.org/reports/tr10/allkeys.txt */
 /* DO NOT EDIT!! */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/unicode.h"
 #else
 #include "windef.h"

@@ -1182,7 +1182,7 @@ end:
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void OLEPictureImpl_PackIndexedBitmap(OLEPictureImpl *This, UINT colors)
 {
     struct
@@ -1418,7 +1418,7 @@ static HRESULT OLEPictureImpl_LoadWICDecoder(OLEPictureImpl *This, REFGUID forma
     if (SUCCEEDED(hr)) /* got framedecode */
     {
         hr = OLEPictureImpl_LoadWICSource(This, factory, (IWICBitmapSource*)framedecode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (SUCCEEDED(hr) && IsEqualGUID(format_guid, &GUID_ContainerFormatGif))
         {
             IWICPalette *palette;
@@ -1453,7 +1453,7 @@ static HRESULT OLEPictureImpl_LoadIcon(OLEPictureImpl *This, BYTE *xbuf, ULONG x
     int	i;
 
     TRACE("(this %p, xbuf %p, xread %lu)\n", This, xbuf, xread);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (xread < FIELD_OFFSET(CURSORICONFILEDIR, idEntries) ||
         cifd->idCount > (xread - FIELD_OFFSET(CURSORICONFILEDIR, idEntries)) /
                        sizeof(cifd->idEntries[0]))
@@ -1494,7 +1494,7 @@ static HRESULT OLEPictureImpl_LoadIcon(OLEPictureImpl *This, BYTE *xbuf, ULONG x
 	}
 	if (i==cifd->idCount) i=0;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (cifd->idEntries[i].dwDIBOffset > xread ||
         cifd->idEntries[i].dwDIBSize > xread - cifd->idEntries[i].dwDIBOffset)
 #else
@@ -1507,7 +1507,7 @@ static HRESULT OLEPictureImpl_LoadIcon(OLEPictureImpl *This, BYTE *xbuf, ULONG x
     }
     if (cifd->idType == 2)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         BYTE *buf;
 
         if (cifd->idEntries[i].dwDIBSize > MAXDWORD - 4)
@@ -1577,7 +1577,7 @@ static HRESULT OLEPictureImpl_LoadEnhMetafile(OLEPictureImpl *This,
     This->origHeight = 0;
     This->himetricWidth = hdr.rclFrame.right - hdr.rclFrame.left;
     This->himetricHeight = hdr.rclFrame.bottom - hdr.rclFrame.top;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->keepOrigFormat = FALSE;
 #endif
 
@@ -1608,7 +1608,7 @@ static HRESULT OLEPictureImpl_LoadAPM(OLEPictureImpl *This,
     This->origHeight = 0;
     This->himetricWidth = MulDiv((INT)header->right - header->left, 2540, header->inch);
     This->himetricHeight = MulDiv((INT)header->bottom - header->top, 2540, header->inch);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->keepOrigFormat = FALSE;
 #endif
     return S_OK;
@@ -1714,7 +1714,7 @@ static HRESULT WINAPI OLEPictureImpl_Load(IPersistStream* iface, IStream *pStm) 
 
       TRACE("Reading all data from stream.\n");
       xbuf = calloc(1, origsize);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!xbuf)
           return E_OUTOFMEMORY;
 #endif
@@ -1730,7 +1730,7 @@ static HRESULT WINAPI OLEPictureImpl_Load(IPersistStream* iface, IStream *pStm) 
           if (!nread || hr != S_OK) /* done, or error */
               break;
           if (xread == origsize) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               BYTE *new_buf;
 
               if (sizeinc > (UINT_MAX - origsize) / 2) {
@@ -1739,7 +1739,7 @@ static HRESULT WINAPI OLEPictureImpl_Load(IPersistStream* iface, IStream *pStm) 
               }
 #endif
               sizeinc = 2*sizeinc; /* exponential increase */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               new_buf = realloc(xbuf, origsize + sizeinc);
               if (!new_buf) {
                   free(xbuf);
@@ -1781,7 +1781,7 @@ static HRESULT WINAPI OLEPictureImpl_Load(IPersistStream* iface, IStream *pStm) 
       This->desc.picType = PICTYPE_NONE;
       return S_OK;
   }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (xread < sizeof(magic))
       return E_FAIL;
 #endif
@@ -1802,7 +1802,7 @@ static HRESULT WINAPI OLEPictureImpl_Load(IPersistStream* iface, IStream *pStm) 
     hr = OLEPictureImpl_LoadWICDecoder(This, &GUID_ContainerFormatJpeg, xbuf, xread);
     break;
   case BITMAP_FORMAT_BMP: /* Bitmap */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = OLEPictureImpl_LoadIndexedBitmap(This, xbuf, xread);
     if (hr == S_FALSE)
         hr = OLEPictureImpl_LoadWICDecoder(This, &GUID_ContainerFormatBmp, xbuf, xread);
@@ -1971,7 +1971,7 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 
 	*ppBuffer = NULL; *pLength = 0;
 	if (GetIconInfo(hIcon, &infoIcon)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		HDC hDC = NULL;
 #else
 		HDC hDC;
@@ -1981,17 +1981,17 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 		unsigned int iDataSize = 0;
 
         pInfoBitmap = calloc(1, sizeof(BITMAPINFOHEADER) + 256 * sizeof(RGBQUAD));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!pInfoBitmap) goto done;
 #endif
 
 		/* Find out icon size */
 		hDC = GetDC(0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!hDC) goto done;
 #endif
 		pInfoBitmap->bmiHeader.biSize = sizeof(pInfoBitmap->bmiHeader);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!GetDIBits(hDC, infoIcon.hbmColor, 0, 0, NULL, pInfoBitmap, DIB_RGB_COLORS))
             goto done;
 #else
@@ -2008,12 +2008,12 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 
 			unsigned int iLengthScanLineMask;
 			unsigned int iNumEntriesPalette;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             unsigned char *new_data;
             ULONGLONG total_size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (pInfoBitmap->bmiHeader.biWidth <= 0 || pInfoBitmap->bmiHeader.biWidth > INT_MAX - 31 ||
                 pInfoBitmap->bmiHeader.biHeight <= 0 || pInfoBitmap->bmiHeader.biHeight > INT_MAX / 2)
                 goto done;
@@ -2039,7 +2039,7 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 			/* Let's start with one CURSORICONFILEDIR and one CURSORICONFILEDIRENTRY */
 			iDataSize += 3 * sizeof(WORD) + sizeof(CURSORICONFILEDIRENTRY) + sizeof(BITMAPINFOHEADER);
 			pIconData = calloc(1, iDataSize);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!pIconData) goto done;
 #endif
 
@@ -2082,7 +2082,7 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 			}
 
 			/*  Add bitmap size and header size to icon data size. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             total_size = iDataSize + (ULONGLONG)iNumEntriesPalette * sizeof(DWORD) +
                          pIconBitmapHeader->biSizeImage +
                          (ULONGLONG)pIconBitmapHeader->biHeight * iLengthScanLineMask;
@@ -2096,7 +2096,7 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 			iDataSize += pIconBitmapHeader->biHeight * iLengthScanLineMask;
 			pIconBitmapHeader->biSizeImage += pIconBitmapHeader->biHeight * iLengthScanLineMask;
 			pIconBitmapHeader->biHeight *= 2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             new_data = realloc(pIconData, iDataSize);
             if (!new_data) goto done;
             pIconData = new_data;
@@ -2149,7 +2149,7 @@ static BOOL serializeIcon(HICON hIcon, void ** ppBuffer, unsigned int * pLength)
 			these bitmaps and delete them when they are no longer
 			necessary.
 		 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
         if (!success) free(pIconData);
 #endif
@@ -2296,7 +2296,7 @@ static HRESULT WINAPI OLEPictureImpl_GetSizeMax(IPersistStream *iface, ULARGE_IN
         hr = S_OK;
         break;
     case PICTYPE_ICON:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->bIsDirty || !This->data)
         {
             void *icon_data;

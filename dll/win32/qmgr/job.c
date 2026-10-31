@@ -285,7 +285,7 @@ static ULONG WINAPI BackgroundCopyJob_Release(IBackgroundCopyJob4 *iface)
 
 /*** IBackgroundCopyJob methods ***/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_valid_name_segments(const WCHAR *name, const WCHAR *separators)
 {
     const WCHAR *segment = name, *p;
@@ -348,7 +348,7 @@ static HRESULT WINAPI BackgroundCopyJob_AddFileSet(IBackgroundCopyJob4 *iface, U
 
     EnterCriticalSection(&job->cs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (job->type != BG_JOB_TYPE_DOWNLOAD && (cFileCount > 1 || job->jobProgress.FilesTotal + cFileCount > 1))
     {
         LeaveCriticalSection(&job->cs);
@@ -368,7 +368,7 @@ static HRESULT WINAPI BackgroundCopyJob_AddFileSet(IBackgroundCopyJob4 *iface, U
     {
         BackgroundCopyFileImpl *file;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* We should return E_INVALIDARG in these cases. */
         FIXME("Check for valid filenames and supported protocols\n");
 #endif
@@ -438,7 +438,7 @@ static HRESULT WINAPI BackgroundCopyJob_Resume(IBackgroundCopyJob4 *iface)
             IBackgroundCopyFile2_Release(job->error.file);
             job->error.file = NULL;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         job->transient_since = 0;
 #endif
         SetEvent(globalMgr.jobEvent);
@@ -756,7 +756,7 @@ static HRESULT WINAPI BackgroundCopyJob_GetNotifyInterface(IBackgroundCopyJob4 *
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI BackgroundCopyJob_SetMinimumRetryDelay(IBackgroundCopyJob4 *iface, ULONG delay)
 {
     BackgroundCopyJobImpl *job = impl_from_IBackgroundCopyJob4(iface);
@@ -1326,7 +1326,7 @@ HRESULT BackgroundCopyJobConstructor(LPCWSTR displayName, BG_JOB_TYPE type, GUID
     This->wait   = CreateEventW(NULL, FALSE, FALSE, NULL);
     This->cancel = CreateEventW(NULL, FALSE, FALSE, NULL);
     This->done   = CreateEventW(NULL, FALSE, FALSE, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->retry_delay = BG_DEFAULT_RETRY_DELAY;
     This->no_progress_timeout = BG_DEFAULT_NO_PROGRESS_TIMEOUT;
     This->error_count = 0;

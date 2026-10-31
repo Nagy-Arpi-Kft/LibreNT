@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/sptilib)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/sptilib)
 
 list(APPEND SOURCE
     atapi.c
@@ -32,5 +32,5 @@ set_module_type(atapi kernelmodedriver)
 target_link_libraries(atapi memcmp sptilib ${PSEH_LIB})
 add_pch(atapi atapi.h SOURCE)
 add_importlibs(atapi ntoskrnl hal wmilib)
-add_cd_file(TARGET atapi DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET atapi DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(atapi_reg.inf)

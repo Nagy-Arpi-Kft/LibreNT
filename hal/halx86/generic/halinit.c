@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            hal/halx86/generic/halinit.c
  * PURPOSE:         HAL Entrypoint and Initialization
@@ -102,7 +102,7 @@ HalInitSystem(
         HalBootViaEfi = LoaderBlock->FirmwareInformation.FirmwareTypeEfi;
 #else
         HalBootViaEfi = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ASSERT(LoaderBlock->Extension != NULL);
         if (LoaderBlock->Extension->Size >= FIELD_OFFSET(LOADER_PARAMETER_EXTENSION, LoaderPerformanceData))
             HalBootViaEfi = LoaderBlock->Extension->BootViaEFI;

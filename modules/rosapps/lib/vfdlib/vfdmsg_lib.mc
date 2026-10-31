@@ -12,7 +12,7 @@
 ;#define _VFDMSG_H_
 ;
 ;/*
-; __REACTOS__:
+; __LIBRENT__:
 ; * Renamed file from vfdmsg.mc.
 ; - Removed Japanese language.
 ; + Added a second blank line between some entries.

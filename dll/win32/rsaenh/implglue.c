@@ -143,7 +143,7 @@ BOOL free_key_impl( ALG_ID algid, KEY_CONTEXT *ctx )
             SymCryptRsakeyFree( ctx->rsa.key );
             ctx->rsa.key = NULL;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free( ctx->rsa.small_modulus );
         ctx->rsa.small_modulus = NULL;
 #endif
@@ -221,7 +221,7 @@ BOOL duplicate_key_impl( ALG_ID algid, const KEY_CONTEXT *src, KEY_CONTEXT *dst 
     case CALG_RSA_SIGN:
     {
         BYTE *blob;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD pubexp, keylen;
         BOOLEAN private;
 
@@ -334,7 +334,7 @@ static BOOL rsa_encrypt( const SYMCRYPT_RSAKEY *key, const BYTE *in, SYMCRYPT_NU
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL rsa_public_small( const struct rsa_key *rsa, const BYTE *in, SYMCRYPT_NUMBER_FORMAT in_format,
                               BYTE *out, SYMCRYPT_NUMBER_FORMAT out_format )
 {
@@ -405,7 +405,7 @@ BOOL encrypt_block_impl( ALG_ID algid, KEY_CONTEXT *ctx, const BYTE *in, BYTE *o
     case CALG_RSA_KEYX:
     case CALG_RSA_SIGN:
     case CALG_SSL3_SHAMD5:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ctx->rsa.key)
             return rsa_public_small( &ctx->rsa, in, SYMCRYPT_NUMBER_FORMAT_MSB_FIRST, out, SYMCRYPT_NUMBER_FORMAT_LSB_FIRST );
 #endif
@@ -503,7 +503,7 @@ BOOL decrypt_block_impl( ALG_ID algid, KEY_CONTEXT *ctx, const BYTE *in, BYTE *o
     case CALG_RSA_KEYX:
     case CALG_RSA_SIGN:
     case CALG_SSL3_SHAMD5:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ctx->rsa.key)
         {
             SetLastError( NTE_BAD_KEY );
@@ -520,7 +520,7 @@ BOOL decrypt_block_impl( ALG_ID algid, KEY_CONTEXT *ctx, const BYTE *in, BYTE *o
 
 BOOL sign_hash_impl( KEY_CONTEXT *ctx, const BYTE *in, BYTE *out )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ctx->rsa.key)
     {
         SetLastError( NTE_BAD_KEY );
@@ -532,7 +532,7 @@ BOOL sign_hash_impl( KEY_CONTEXT *ctx, const BYTE *in, BYTE *out )
 
 BOOL verify_signature_impl( KEY_CONTEXT *ctx, const BYTE *in, BYTE *out )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ctx->rsa.key)
         return rsa_public_small( &ctx->rsa, in, SYMCRYPT_NUMBER_FORMAT_LSB_FIRST, out, SYMCRYPT_NUMBER_FORMAT_MSB_FIRST );
 #endif
@@ -559,7 +559,7 @@ BOOL export_public_key_impl( const KEY_CONTEXT *ctx, BYTE *dst, DWORD *pubexp )
     SIZE_T modulus_size;
     UINT64 pubexp64;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ctx->rsa.key && ctx->rsa.small_modulus)
     {
         memcpy( dst, ctx->rsa.small_modulus, ctx->rsa.small_size );
@@ -590,7 +590,7 @@ BOOL import_public_key_impl( ALG_ID algid, const BYTE *src, DWORD keylen, DWORD 
     if (algid == CALG_RSA_KEYX) ctx->rsa.flags |= SYMCRYPT_FLAG_RSAKEY_ENCRYPT;
     else ctx->rsa.flags |= SYMCRYPT_FLAG_RSAKEY_SIGN | SYMCRYPT_FLAG_RSAKEY_ENCRYPT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ctx->rsa.small_modulus = NULL;
     if (keylen * 8 < SYMCRYPT_RSAKEY_MIN_BITSIZE_MODULUS)
     {

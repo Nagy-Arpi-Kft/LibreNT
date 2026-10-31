@@ -381,7 +381,7 @@ WinLdrGetNLSNames(
         //TRACE("ACP NLS Setting exists, but isn't readable\n");
         //goto Quit;
         AnsiFileName->Length = 0;
-        RtlAppendUnicodeToString(AnsiFileName, L"c_1252.nls"); // HACK: ReactOS bug CORE-6105
+        RtlAppendUnicodeToString(AnsiFileName, L"c_1252.nls"); // HACK: LibreNT bug CORE-6105
     }
     else
     {
@@ -405,7 +405,7 @@ WinLdrGetNLSNames(
         //TRACE("OEMCP NLS setting exists, but isn't readable\n");
         //goto Quit;
         OemFileName->Length = 0;
-        RtlAppendUnicodeToString(OemFileName, L"c_437.nls"); // HACK: ReactOS bug CORE-6105
+        RtlAppendUnicodeToString(OemFileName, L"c_437.nls"); // HACK: LibreNT bug CORE-6105
     }
     else
     {

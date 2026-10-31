@@ -96,7 +96,7 @@ static inline BOOL set_security_flag(HttpProtocol *This, DWORD flags)
     return res;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define _SECURITY_FLAG_CERT_REV_FAILED    0x00800000
 #define _SECURITY_FLAG_CERT_INVALID_CA    0x01000000
 #define _SECURITY_FLAG_CERT_INVALID_CN    0x02000000
@@ -139,7 +139,7 @@ static HRESULT handle_http_error(HttpProtocol *This, DWORD error)
 
     TRACE("(%p %lu)\n", This, error);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(error == ERROR_INTERNET_SEC_CERT_ERRORS) {
         DWORD flags, size = sizeof(flags);
 

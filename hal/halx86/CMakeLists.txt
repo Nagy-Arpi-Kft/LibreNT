@@ -2,13 +2,13 @@
 add_definitions(
     -D_NTHALDLL_
     -D_NTHAL_
-    -DNTDDI_VERSION=${REACTOS_TARGET_NTDDI})
+    -DNTDDI_VERSION=${LIBRENT_TARGET_NTDDI})
 
 include_directories(
     include
-    ${REACTOS_SOURCE_DIR}/hal/arch/common/include
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/fast486)
+    ${LIBRENT_SOURCE_DIR}/hal/arch/common/include
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/include
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/fast486)
 
 function(add_hal _halname)
     cmake_parse_arguments(_haldata "" "" "SOURCES;COMPONENTS" ${ARGN})
@@ -35,7 +35,7 @@ function(add_hal _halname)
     #add_pch(${_halname} include/hal.h)
     add_dependencies(${_halname} psdk asm)
     set_module_type(${_halname} kerneldll ENTRYPOINT HalInitSystem 8)
-    add_cd_file(TARGET ${_halname} DESTINATION reactos/system32 NO_CAB FOR all)
+    add_cd_file(TARGET ${_halname} DESTINATION librent/system32 NO_CAB FOR all)
     if(MSVC)
         target_link_options(${_halname} PRIVATE /ignore:4216 /SECTION:INIT,ERWD)
     endif()

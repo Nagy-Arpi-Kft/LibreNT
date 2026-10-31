@@ -705,7 +705,7 @@ KiClearDpcRequestState(
  * and message vectors start at 0x50, just below CLOCK_LEVEL. Keep in sync
  * with APIC_MAX_IRQ (hal/halx86/apic/apicp.h) and MSI_VECTOR_MIN
  * (hal/halx86/apic/msip.h); IOP_FIXED_INTERRUPT_LIMIT needs
- * <reactos/hal/acpi_pci.h>. */
+ * <librent/hal/acpi_pci.h>. */
 #define IOP_LINE_INTERRUPT_LIMIT    24
 #define IOP_FIXED_INTERRUPT_LIMIT   HAL_ACPI_MAX_GSI_PINS
 #define IOP_MESSAGE_VECTOR_BASE     0x50

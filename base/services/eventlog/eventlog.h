@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS EventLog Service
+ * PROJECT:         LibreNT EventLog Service
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            base/services/eventlog/eventlog.h
  * PURPOSE:         Precompiled Header for the Event logging service

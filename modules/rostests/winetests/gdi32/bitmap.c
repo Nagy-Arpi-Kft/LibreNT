@@ -36,7 +36,7 @@
 
 #include "wine/test.h"
 
-#ifndef __REACTOS__ /* CORE-11331 */
+#ifndef __LIBRENT__ /* CORE-11331 */
 static NTSTATUS (WINAPI *pD3DKMTCreateDCFromMemory)( D3DKMT_CREATEDCFROMMEMORY *desc );
 static NTSTATUS (WINAPI *pD3DKMTDestroyDCFromMemory)( const D3DKMT_DESTROYDCFROMMEMORY *desc );
 #endif
@@ -5698,7 +5698,7 @@ cleanup:
     free( info );
 }
 
-#ifndef __REACTOS__ /* CORE-11331 */
+#ifndef __LIBRENT__ /* CORE-11331 */
 static void test_D3DKMTCreateDCFromMemory( void )
 {
     D3DKMT_DESTROYDCFROMMEMORY destroy_desc;
@@ -5992,7 +5992,7 @@ static void test_D3DKMTCreateDCFromMemory( void )
     ret = VirtualFree( alloc_data, 0, MEM_RELEASE );
     ok(ret, "Failed to free memory, error %lu.\n", GetLastError());
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 static void test_arcs(void)
 {
@@ -6326,7 +6326,7 @@ START_TEST(bitmap)
     HMODULE hdll;
 
     hdll = GetModuleHandleA("gdi32.dll");
-#ifndef __REACTOS__ /* CORE-11331 */
+#ifndef __LIBRENT__ /* CORE-11331 */
     pD3DKMTCreateDCFromMemory  = (void *)GetProcAddress( hdll, "D3DKMTCreateDCFromMemory" );
     pD3DKMTDestroyDCFromMemory = (void *)GetProcAddress( hdll, "D3DKMTDestroyDCFromMemory" );
 #endif
@@ -6368,7 +6368,7 @@ START_TEST(bitmap)
     test_SetDIBits_RLE8();
     test_SetDIBitsToDevice();
     test_SetDIBitsToDevice_RLE8();
-#ifndef __REACTOS__ /* CORE-11331 */
+#ifndef __LIBRENT__ /* CORE-11331 */
     test_D3DKMTCreateDCFromMemory();
 #endif
     test_arcs();

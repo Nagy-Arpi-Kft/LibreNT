@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS RTL
+ * PROJECT:     LibreNT RTL
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     AMD64 dynamic function tables for the ARM64EC ntdll bridge
  * COPYRIGHT:   Copyright 2022-2025 Timo Kreuzer (timo.kreuzer@reactos.org)

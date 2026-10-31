@@ -28,7 +28,7 @@
 #include "wine/debug.h"
 #include "editstr.h"
 #include "rtf.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "undocuser.h"
 #include "riched20.h"
 #endif
@@ -1556,14 +1556,14 @@ LRESULT WINAPI RichEdit10ANSIWndProc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM
     return RichEditANSIWndProc( hwnd, msg, wparam, lparam );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WNDPROC re_combobox_proc;
 static WNDPROC re_listbox_proc;
 #endif
 
 static LRESULT WINAPI REComboWndProc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return CallWindowProcW( re_combobox_proc, hwnd, msg, wparam, lparam );
 #else
     /* FIXME: Not implemented */
@@ -1575,7 +1575,7 @@ static LRESULT WINAPI REComboWndProc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM
 
 static LRESULT WINAPI REListWndProc( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return CallWindowProcW( re_listbox_proc, hwnd, msg, wparam, lparam );
 #else
     /* FIXME: Not implemented */
@@ -1595,11 +1595,11 @@ LRESULT WINAPI REExtendedRegisterClass( void )
 {
     WNDCLASSW wc;
     UINT result;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WNDCLASSW base;
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     FIXME( "semi stub\n" );
 #endif
     wc.cbClsExtra = 0;
@@ -1615,7 +1615,7 @@ LRESULT WINAPI REExtendedRegisterClass( void )
         wc.style = CS_PARENTDC | CS_DBLCLKS | CS_GLOBALCLASS;
         wc.lpfnWndProc = REListWndProc;
         wc.lpszClassName = L"REListBox20W";
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetClassInfoW( NULL, L"ListBox", &base ))
         {
             re_listbox_proc = base.lpfnWndProc;
@@ -1632,7 +1632,7 @@ LRESULT WINAPI REExtendedRegisterClass( void )
         wc.style = CS_PARENTDC | CS_DBLCLKS | CS_GLOBALCLASS | CS_VREDRAW | CS_HREDRAW;
         wc.lpfnWndProc = REComboWndProc;
         wc.lpszClassName = L"REComboBox20W";
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetClassInfoW( NULL, L"ComboBox", &base ))
         {
             re_combobox_proc = base.lpfnWndProc;
@@ -1670,7 +1670,7 @@ static BOOL register_classes( HINSTANCE instance )
     {
         wcW.lpszClassName = RICHEDIT_CLASS20W;
         if (!RegisterClassW( &wcW )) return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wcW.lpszClassName = L"RICHEDIT50W";
 #else
         wcW.lpszClassName = MSFTEDIT_CLASS;

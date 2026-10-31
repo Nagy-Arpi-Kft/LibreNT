@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Boot Loader
+ * PROJECT:         LibreNT Boot Loader
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            boot/freeldr/freeldr/arch/arm/macharm.c
  * PURPOSE:         Provides abstraction between the ARM Boot Loader and FreeLDR
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
@@ -31,7 +31,7 @@ ULONG SecondLevelDcacheFillSize;
 ULONG SecondLevelIcacheSize;
 ULONG SecondLevelIcacheFillSize;
 
-extern ULONG reactos_disk_count;
+extern ULONG librent_disk_count;
 
 ULONG SizeBits[] =
 {
@@ -88,7 +88,7 @@ ArmInit(IN PARM_BOARD_CONFIGURATION_BLOCK BootContext)
 }
 
 VOID
-ArmPrepareForReactOS(VOID)
+ArmPrepareForLibreNT(VOID)
 {
     return;
 }
@@ -127,8 +127,8 @@ ArmHwDetect(
     RamDiskInitialize(TRUE, NULL, NULL);
 
     /* Fill out the ARC disk block */
-    AddReactOSArcDiskInfo("ramdisk(0)", NULL, 0xBADAB00F, 0xDEADBABE, TRUE);
-    ASSERT(reactos_disk_count == 1);
+    AddLibreNTArcDiskInfo("ramdisk(0)", NULL, 0xBADAB00F, 0xDEADBABE, TRUE);
+    ASSERT(librent_disk_count == 1);
 
     /* Return the root node */
     return RootNode;
@@ -227,7 +227,7 @@ MachInit(IN PCCH CommandLine)
     }
 
     /* Setup generic ARM routines for all boards */
-    MachVtbl.PrepareForReactOS = ArmPrepareForReactOS;
+    MachVtbl.PrepareForLibreNT = ArmPrepareForLibreNT;
     MachVtbl.GetMemoryMap = ArmMemGetMemoryMap;
     MachVtbl.InitializeBootDevices = ArmInitializeBootDevices;
     MachVtbl.HwDetect = ArmHwDetect;

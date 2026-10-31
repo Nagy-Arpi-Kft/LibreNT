@@ -1,4 +1,4 @@
-/* ReactOS WinRT shell declarations. LGPL-2.1-or-later. */
+/* LibreNT WinRT shell declarations. LGPL-2.1-or-later. */
 #ifdef __WIDL__
 #pragma winrt ns_prefix
 #endif

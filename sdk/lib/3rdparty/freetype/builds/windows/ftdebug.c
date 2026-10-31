@@ -51,13 +51,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #endif
 
   /* documentation is in ftdebug.h */
 
-#ifndef __REACTOS__ /* win32ss/drivers/font/ftfd/rosglue.c defines this */
+#ifndef __LIBRENT__ /* win32ss/drivers/font/ftfd/rosglue.c defines this */
   FT_BASE_DEF( void )
   FT_Message( const char*  fmt,
               ... )
@@ -77,7 +77,7 @@
 
   /* documentation is in ftdebug.h */
 
-#ifndef __REACTOS__ /* win32ss/drivers/font/ftfd/rosglue.c defines this */
+#ifndef __LIBRENT__ /* win32ss/drivers/font/ftfd/rosglue.c defines this */
   FT_BASE_DEF( void )
   FT_Panic( const char*  fmt,
             ... )

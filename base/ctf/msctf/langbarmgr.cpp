@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CTF
+ * PROJECT:     LibreNT CTF
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     ITfLangBarMgr implementation
  * COPYRIGHT:   Copyright 2010 Justin Chevrier

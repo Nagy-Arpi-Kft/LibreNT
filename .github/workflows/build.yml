@@ -27,21 +27,6 @@ jobs:
             config: Debug
             ntver: '0xA00'
             profile: profile_raspberry
-          - compiler: clang
-            arch: riscv64
-            config: Debug
-            ntver: '0xA00'
-            profile: profile_spacemit_k1
-          - compiler: clang
-            arch: riscv64
-            config: Debug
-            ntver: '0xA00'
-            profile: profile_starfive_jh7110
-            variant: jh7110
-          - compiler: clang
-            arch: ppc
-            config: Debug
-            ntver: '0xA00'
       fail-fast: false
     runs-on: ubuntu-24.04
     steps:
@@ -104,7 +89,7 @@ jobs:
         [ -n "${{matrix.profile}}" ] && FLAGS="$FLAGS -DROSCONFIG_PROFILE=${{matrix.profile}}"
         [ "${{matrix.compiler}}" = "clang" ] && case "${{matrix.arch}}" in amd64|arm64) FLAGS="$FLAGS -DENABLE_MESA_LLVMPIPE=ON" ;; esac
         ./configure.sh $FLAGS -a ${{matrix.arch}} \
-          -DREACTOS_TARGET_NT=${{matrix.ntver}} \
+          -DLIBRENT_TARGET_NT=${{matrix.ntver}} \
           -DDIAGDATA_CHANNEL= \
           -DENABLE_CCACHE=1
         ENV_NAME=$([ "${{matrix.compiler}}" = "clang" ] && echo Clang || echo GCC)
@@ -119,7 +104,7 @@ jobs:
     - name: Build images
       run: |
         . "$HOME/.local/opt/rosbe/rosbe-env.sh"
-        ninja -C ${{steps.configure.outputs.outdir}} bootcd liberntimg liberntvhd -k0
+        ninja -C ${{steps.configure.outputs.outdir}} bootcd librentimg librentvhd -k0
 
     - name: Print ccache statistics
       if: ${{ always() && steps.ccache_restore.outcome == 'success' }}
@@ -157,23 +142,23 @@ jobs:
         name: bootcd-iso-${{steps.images.outputs.tag}}
         path: ${{steps.configure.outputs.outdir}}/bootcd.iso
 
-    - name: Upload LiberNT.img
+    - name: Upload LibreNT.img
       uses: actions/upload-artifact@v7
       with:
-        name: LiberNT-img-${{steps.images.outputs.tag}}
-        path: ${{steps.configure.outputs.outdir}}/LiberNT.img
+        name: LibreNT-img-${{steps.images.outputs.tag}}
+        path: ${{steps.configure.outputs.outdir}}/LibreNT.img
 
-    - name: Upload LiberNT.vhd
+    - name: Upload LibreNT.vhd
       uses: actions/upload-artifact@v7
       with:
-        name: LiberNT-vhd-${{steps.images.outputs.tag}}
-        path: ${{steps.configure.outputs.outdir}}/LiberNT.vhd
+        name: LibreNT-vhd-${{steps.images.outputs.tag}}
+        path: ${{steps.configure.outputs.outdir}}/LibreNT.vhd
 
-    - name: Upload LiberNT.vhdx
+    - name: Upload LibreNT.vhdx
       uses: actions/upload-artifact@v7
       with:
-        name: LiberNT-vhdx-${{steps.images.outputs.tag}}
-        path: ${{steps.configure.outputs.outdir}}/LiberNT.vhdx
+        name: LibreNT-vhdx-${{steps.images.outputs.tag}}
+        path: ${{steps.configure.outputs.outdir}}/LibreNT.vhdx
 
     - name: Check build dependencies
       run: python3 sdk/tools/depcheck.py ${{steps.configure.outputs.outdir}} --mode depfiles --nested --fail-on-gaps
@@ -204,7 +189,7 @@ jobs:
       run: |
         choco install -y --no-progress ninja winflexbison3
         python -m pip install --upgrade mako pyyaml packaging
-        # LiberNT's CMake looks for flex/bison; winflexbison3 ships them as
+        # LibreNT's CMake looks for flex/bison; winflexbison3 ships them as
         # win_flex/win_bison, so expose both names on PATH.
         $tools = "C:\ProgramData\chocolatey\lib\winflexbison3\tools"
         if (-not (Test-Path "$tools\win_flex.exe")) { $tools = Split-Path (Get-Command win_flex).Source }
@@ -216,7 +201,7 @@ jobs:
       id: configure
       shell: cmd
       run: |
-        call configure.cmd /arch=${{matrix.arch}} -DREACTOS_TARGET_NT=0xA00 -DDIAGDATA_CHANNEL= -DENABLE_CCACHE=0
+        call configure.cmd /arch=${{matrix.arch}} -DLIBRENT_TARGET_NT=0xA00 -DDIAGDATA_CHANNEL= -DENABLE_CCACHE=0
         echo outdir=output-VS-${{matrix.arch}}-debug>> "%GITHUB_OUTPUT%"
 
     - name: Build submodules

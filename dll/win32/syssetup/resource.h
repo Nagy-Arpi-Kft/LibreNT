@@ -18,7 +18,7 @@
 
 #pragma once
 
-#define IDB_REACTOS   106
+#define IDB_LIBRENT   106
 #define IDB_LINE      107
 
 #define IDI_ICON1 10

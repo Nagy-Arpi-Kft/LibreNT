@@ -1,7 +1,7 @@
 /*
  * PROJECT:     FreeLoader
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
- * PURPOSE:     ARM64 MMU and memory management for ReactOS
+ * PURPOSE:     ARM64 MMU and memory management for LibreNT
  * COPYRIGHT:   Copyright 2025 Ahmed Arif (arif.ing@outlook.com)
  */
 
@@ -52,7 +52,7 @@ DBG_DEFAULT_CHANNEL(WARNING);
 #define ARM64_PXI_SHIFT       39
 
 /* UART output using runtime-detected address from early_uart.h */
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 
 static inline VOID UartPuts(const char *String) { EarlyUartPuts(String); }
 
@@ -1146,7 +1146,7 @@ get_tcr_for_el(
     tcr |= TCR_T1SZ(47) | TCR_SHARED1_INNER | TCR_ORGN1_WBWA | TCR_IRGN1_WBWA | TCR_TG1_4K
             | TCR_A1;
 
-    /* Keep hardware Access Flag updates disabled; ReactOS seeds AF in entries
+    /* Keep hardware Access Flag updates disabled; LibreNT seeds AF in entries
      * and handles AF faults in software, matching the NT ARM64 TCR contract. */
 
     if (pips) *pips = ips_desired;

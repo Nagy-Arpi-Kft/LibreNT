@@ -143,7 +143,7 @@ BUSMASTER_CONTROLLER_INFORMATION_BASE const BusMasterAdapters[] = {
 
     PCI_DEV_HW_SPEC_BM( 1230, 8086, 0x00, ATA_WDMA2, "Intel PIIX"       , UNIATA_CHAN_TIMINGS                     ),
     PCI_DEV_HW_SPEC_BM( 7010, 8086, 0x00, ATA_WDMA2, "Intel PIIX3"      , 0                                       ),
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PCI_DEV_HW_SPEC_BM( 7111, 8086, 0x00, ATA_UDMA2, "Intel PIIX3"      , 0                                       ),
 #else
     PCI_DEV_HW_SPEC_BM( 7111, 8086, 0x00, ATA_UDMA2, "Intel PIIX4"      , 0                                       ),
@@ -356,7 +356,7 @@ BUSMASTER_CONTROLLER_INFORMATION_BASE const BusMasterAdapters[] = {
     PCI_DEV_HW_SPEC_BM( 9d05, 8086, 0x00, ATA_SA300, "Intel Sunrise Point-LP" , UNIATA_SATA | UNIATA_AHCI | UNIATA_RAID_CONTROLLER),
     PCI_DEV_HW_SPEC_BM( 9d07, 8086, 0x00, ATA_SA300, "Intel Sunrise Point-LP" , UNIATA_SATA | UNIATA_AHCI | UNIATA_RAID_CONTROLLER),
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PCI_DEV_HW_SPEC_BM( a102, 8086, 0x00, ATA_SA300, "Intel Sunrise Point" , UNIATA_SATA | UNIATA_AHCI               ),
 #else
     /* workaround regression CORE-16078 */
@@ -562,7 +562,7 @@ BUSMASTER_CONTROLLER_INFORMATION_BASE const BusMasterAdapters[] = {
     PCI_DEV_HW_SPEC_BM( 6620, 105a, 0x00, ATA_UDMA6, "Promise PDC20620" , PRMIO | 0x00    | UNIATA_RAID_CONTROLLER),
 /*    PCI_DEV_HW_SPEC_BM( 6621, 105a, 0x00, ATA_UDMA6, "Promise PDC20621" , PRMIO | PRSX4X  | UNIATA_RAID_CONTROLLER),
     PCI_DEV_HW_SPEC_BM( 6622, 105a, 0x00, ATA_UDMA6, "Promise PDC20622" , PRMIO | PRSX4X  | UNIATA_RAID_CONTROLLER),*/
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PCI_DEV_HW_SPEC_BM( 3571, 105a, 0x00, ATA_SA150, "Promise PDC40518" , PRMIO | PRSATA2 | UNIATA_RAID_CONTROLLER | UNIATA_SATA),
     PCI_DEV_HW_SPEC_BM( 3d75, 105a, 0x00, ATA_SA150, "Promise PDC40519" , PRMIO | PRSATA2 | UNIATA_RAID_CONTROLLER | UNIATA_SATA),
     PCI_DEV_HW_SPEC_BM( 3574, 105a, 0x00, ATA_SA150, "Promise PDC40718" , PRMIO | PRSATA2 | UNIATA_RAID_CONTROLLER | UNIATA_SATA),
@@ -730,7 +730,7 @@ BUSMASTER_CONTROLLER_INFORMATION_BASE const BusMasterAdapters[] = {
     PCI_DEV_HW_SPEC_BM( ffff, ffff, 0xff, BMLIST_TERMINATOR, NULL       , BMLIST_TERMINATOR )
 };
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const ULONG _NUM_BUSMASTER_ADAPTERS = (sizeof(BusMasterAdapters) / sizeof(BUSMASTER_CONTROLLER_INFORMATION_BASE));
 #else
 const ULONG _NUM_BUSMASTER_ADAPTERS = (sizeof(BusMasterAdapters) / sizeof(BUSMASTER_CONTROLLER_INFORMATION_BASE));

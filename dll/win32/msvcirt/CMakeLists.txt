@@ -1,6 +1,6 @@
 add_definitions(-D_MSVCIRT -D__WINESRC__)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/dll/win32/msvcrt)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/dll/win32/msvcrt)
 
 spec2def(msvcirt.dll msvcirt.spec)
 
@@ -38,4 +38,4 @@ if(MSVC)
     target_link_options(msvcirt PRIVATE "/ignore:4102")
 endif()
 
-add_cd_file(TARGET msvcirt DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msvcirt DESTINATION librent/system32 FOR all)

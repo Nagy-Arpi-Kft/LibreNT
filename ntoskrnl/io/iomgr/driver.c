@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/io/iomgr/driver.c
  * PURPOSE:         Driver Object Management
@@ -1653,7 +1653,7 @@ IopInitializeBootDrivers(VOID)
 #elif 0
             if (NT_SUCCESS(Status))
 #else // Hack still needed...
-            if ((NT_SUCCESS(Status)) || /* ReactOS HACK for SETUPLDR */
+            if ((NT_SUCCESS(Status)) || /* LibreNT HACK for SETUPLDR */
                 ((KeLoaderBlock->SetupLdrBlock) && ((KeyHandle = (PVOID)1)))) // yes, it's an assignment!
 #endif
             {

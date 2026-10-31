@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Advanced Local Procedure Call port services
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF
@@ -1077,7 +1077,7 @@ NtAlpcImpersonateClientContainerOfPort(
     if (!NT_SUCCESS(Status)) return Status;
 
     /*
-     * ReactOS has no server-silo or AppContainer execution context.  Native
+     * LibreNT has no server-silo or AppContainer execution context.  Native
      * returns success after validating the message when the sender has no
      * container context, which is therefore the complete local behavior.
      */

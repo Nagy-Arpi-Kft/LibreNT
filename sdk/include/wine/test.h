@@ -27,7 +27,7 @@
 #include <winbase.h>
 #include <stdio.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef WINETEST_USE_WINE_DEBUG
 #include <wine/debug.h>
 #endif
@@ -47,13 +47,13 @@
 #ifdef __WINE_WINE_UNICODE_H
 #error wine/unicode.h should not be used in Wine tests
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef __WINE_WINE_DEBUG_H
 #error wine/debug.h should not be used in Wine tests
 #endif
 #endif
 
-#if !defined(__REACTOS__) || !defined(__WINE_PRINTF_ATTR)
+#if !defined(__LIBRENT__) || !defined(__WINE_PRINTF_ATTR)
 #ifdef __GNUC__
 # define __WINE_PRINTF_ATTR(fmt,args) __attribute__((format (printf,fmt,args)))
 #else /* __GNUC__ */
@@ -132,10 +132,10 @@ extern int winetest_vprintf( const char *msg, va_list args );
 extern int winetest_get_time(void);
 
 extern int winetest_get_mainargs( char*** pargv );
-#if defined(__REACTOS__) && defined(WINETEST_WAIT_CHILD_PROCESS_INFO)
+#if defined(__LIBRENT__) && defined(WINETEST_WAIT_CHILD_PROCESS_INFO)
 extern void winetest_wait_child_process_info( const PROCESS_INFORMATION *info );
 #define winetest_wait_child_process winetest_wait_child_process_info
-#elif defined(__REACTOS__)
+#elif defined(__LIBRENT__)
 extern void winetest_wait_child_process( HANDLE process );
 #else
 extern void winetest_wait_child_process( const PROCESS_INFORMATION *info );
@@ -187,8 +187,8 @@ extern void winetest_wait_child_process( const PROCESS_INFORMATION *info );
                               winetest_loop_todo(); \
                               winetest_end_todo())
 
-#define todo_ros                todo_if(!strcmp(winetest_platform, "reactos"))
-#define todo_ros_if(is_todo)    todo_if((is_todo) && !strcmp(winetest_platform, "reactos"))
+#define todo_ros                todo_if(!strcmp(winetest_platform, "librent"))
+#define todo_ros_if(is_todo)    todo_if((is_todo) && !strcmp(winetest_platform, "librent"))
 #ifdef USE_WINE_TODOS
 #define todo_wine               todo_ros
 #define todo_wine_if            todo_ros_if
@@ -650,7 +650,7 @@ static inline void winetest_add_failures( LONG new_failures )
 
 #include <stdio.h>
 #include <excpt.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <oleauto.h>
 #endif
 
@@ -660,7 +660,7 @@ struct test
     void (*func)(void);
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern const struct test winetest_testlist_start[];
 const struct test* winetest_testlist = &winetest_testlist_start[1];
 #else
@@ -770,7 +770,7 @@ int winetest_get_mainargs( char ***pargv )
     return winetest_argc;
 }
 
-#if defined(__REACTOS__) && !defined(WINETEST_WAIT_CHILD_PROCESS_INFO)
+#if defined(__LIBRENT__) && !defined(WINETEST_WAIT_CHILD_PROCESS_INFO)
 void winetest_wait_child_process( HANDLE process )
 {
     DWORD exit_code = 1;
@@ -944,7 +944,7 @@ static BOOL running_under_wine(void)
 }
 
 /* main function */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG WINAPI winetest_trace_exception( EXCEPTION_POINTERS *info )
 {
     EXCEPTION_RECORD *record = info->ExceptionRecord;
@@ -977,7 +977,7 @@ int main( int argc, char **argv )
     char p[128];
 
     setvbuf (stdout, NULL, _IONBF, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetEnvironmentVariableA( "WINETEST_TRACE_EXCEPTIONS", p, sizeof(p) ))
         AddVectoredExceptionHandler( 1, winetest_trace_exception );
 #endif
@@ -1007,13 +1007,13 @@ int main( int argc, char **argv )
     return run_test(argv[1]);
 }
 
-#if defined(__REACTOS__) && defined(__cplusplus)
+#if defined(__LIBRENT__) && defined(__cplusplus)
 extern "C" {
 #endif
 
 #endif  /* STANDALONE */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 // These can go away, once all winetests are synced
 #ifdef NONAMELESSUNION
@@ -1054,7 +1054,7 @@ extern "C" {
 # define S5(x) (x)
 #endif
 
-#if !defined(__REACTOS__) || !defined(__WINE_DEBUG_H)
+#if !defined(__LIBRENT__) || !defined(__WINE_DEBUG_H)
 // FIXME: Should include wine/debug.h instead
 #ifdef WINETEST_USE_DBG_SPRINTF
 extern const char *wine_dbg_sprintf( const char *format, ... ) __WINE_PRINTF_ATTR(1,2);
@@ -1214,12 +1214,12 @@ extern void winetest_end_nocount(void);
 #define is_reactos() \
     (*(unsigned*)((size_t)0x7FFE0FFC) == 0x8EAC705)
 
-/* ReactOS specific extensions, useful for patches */
+/* LibreNT specific extensions, useful for patches */
 #define KUSER_SHARED_DATA_UMPTR 0x7FFE0000
 #define GetMajorNTVersion() (*(ULONG*)(KUSER_SHARED_DATA_UMPTR + 0x026C))
 #define GetMinorNTVersion() (*(ULONG*)(KUSER_SHARED_DATA_UMPTR + 0x0270))
 #define GetNTVersion() ((GetMajorNTVersion() << 8) | GetMinorNTVersion())
-#define __REACTOS__WinVer_lt(Ver) ((GetNTVersion() < (Ver)))
+#define __LIBRENT__WinVer_lt(Ver) ((GetNTVersion() < (Ver)))
 
 #ifndef STANDALONE
 struct test
@@ -1300,7 +1300,7 @@ void winetest_end_nocount(void)
     data->nocount_level >>= 2;
 }
 
-#if !defined(__REACTOS__) || !defined(__WINE_DEBUG_H)
+#if !defined(__LIBRENT__) || !defined(__WINE_DEBUG_H)
 /* allocate some tmp space for a string */
 static char *get_temp_buffer( size_t n )
 {
@@ -1514,7 +1514,7 @@ const char *wine_dbgstr_longlong( ULONGLONG ll )
     char *res;
 
     res = get_temp_buffer( 20 );
-    if (/*sizeof(ll) > sizeof(unsigned long) &&*/ ll >> 32) /* ULONGLONG is always > long in ReactOS */
+    if (/*sizeof(ll) > sizeof(unsigned long) &&*/ ll >> 32) /* ULONGLONG is always > long in LibreNT */
         sprintf( res, "%lx%08lx", (unsigned long)(ll >> 32), (unsigned long)ll );
     else
         sprintf( res, "%lx", (unsigned long)ll );
@@ -1581,6 +1581,6 @@ const char * __cdecl __wine_dbg_strdup( const char *str )
 #pragma GCC diagnostic pop
 #endif
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #endif  /* __WINE_WINE_TEST_H */

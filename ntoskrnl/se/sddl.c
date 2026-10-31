@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Security Descriptor Definition Language parsing
  * COPYRIGHT:   Copyright 2003 CodeWeavers Inc. (Ulrich Czekalla)

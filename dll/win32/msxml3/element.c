@@ -533,7 +533,7 @@ static inline HRESULT variant_from_dt(XDR_DT dt, WCHAR *str, VARIANT *v)
         V_VT(v) = VT_I4;
         break;
     case DT_I8:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         V_VT(v) = VT_NULL;
         return S_OK;
 #else
@@ -557,14 +557,14 @@ static inline HRESULT variant_from_dt(XDR_DT dt, WCHAR *str, VARIANT *v)
         V_VT(v) = VT_UI4;
         break;
     case DT_UI8:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         V_VT(v) = VT_NULL;
         return S_OK;
 #else
         V_VT(v) = VT_UI8;
         break;
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case DT_CHAR:
         V_VT(v) = VT_I4;
         V_I4(v) = str ? str[0] : 0;
@@ -596,7 +596,7 @@ static inline HRESULT variant_from_dt(XDR_DT dt, WCHAR *str, VARIANT *v)
     hr = VariantChangeTypeEx(v, &src,
             MAKELCID(MAKELANGID(LANG_ENGLISH,SUBLANG_ENGLISH_US),SORT_DEFAULT),0, V_VT(v));
     VariantClear(&src);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && dt == DT_R8)
     {
         WCHAR *end;

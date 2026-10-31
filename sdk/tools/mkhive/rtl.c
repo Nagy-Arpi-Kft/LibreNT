@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS hive maker
+ * PROJECT:         LibreNT hive maker
  * FILE:            tools/mkhive/rtl.c
  * PURPOSE:         Runtime Library
  */

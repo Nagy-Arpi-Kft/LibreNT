@@ -731,7 +731,7 @@ Return Value:
                                             FALSE,
                                             NULL);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!NT_SUCCESS(status))
         {
             return FALSE;

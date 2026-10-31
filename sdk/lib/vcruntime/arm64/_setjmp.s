@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS vcruntime library
+ * PROJECT:     LibreNT vcruntime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of _setjmp for ARM64
  * COPYRIGHT:   Copyright Timo Kreuzer <timo.kreuzer@reactos.org>

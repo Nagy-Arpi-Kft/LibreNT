@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS KMDF: driver initialization static library
+ * PROJECT:     LibreNT KMDF: driver initialization static library
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Main file
  * COPYRIGHT:   Copyright 2021 Max Korostil <mrmks04@yandex.ru>

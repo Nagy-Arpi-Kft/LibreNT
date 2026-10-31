@@ -214,7 +214,7 @@ static IDirect3DShaderValidator9 shader_validator = {&shader_validator_vtbl};
 
 IDirect3DShaderValidator9 * WINAPI Direct3DShaderValidatorCreate9(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static LONG once;
 
     if (!InterlockedExchange(&once, 1))

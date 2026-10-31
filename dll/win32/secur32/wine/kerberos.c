@@ -26,7 +26,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(secur32);
 
 #define KERBEROS_MAX_BUF 12000
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct kerberos_cred
 {
     ULONG use;
@@ -348,7 +348,7 @@ static SECURITY_STATUS SEC_ENTRY kerberos_AcquireCredentialsHandleA(SEC_CHAR *ps
 }
 
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SECURITY_STATUS SEC_ENTRY kerberos_InitializeSecurityContextW(CredHandle *phCredential, CtxtHandle *phContext, SEC_WCHAR *pszTargetName,
         ULONG fContextReq, ULONG Reserved1, ULONG TargetDataRep, SecBufferDesc *pInput, ULONG Reserved2, CtxtHandle *phNewContext,
         SecBufferDesc *pOutput, ULONG *pfContextAttr, TimeStamp *ptsExpiry)
@@ -492,7 +492,7 @@ static SECURITY_STATUS SEC_ENTRY kerberos_VerifySignature(CtxtHandle *phContext,
     return SEC_E_UNSUPPORTED_FUNCTION;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SECURITY_STATUS SEC_ENTRY kerberos_FreeCredentialsHandle(PCredHandle phCredential)
 {
     struct kerberos_cred *cred;

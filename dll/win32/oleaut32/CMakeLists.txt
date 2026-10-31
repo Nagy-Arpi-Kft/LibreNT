@@ -10,7 +10,7 @@ add_definitions(
 spec2def(oleaut32.dll oleaut32.spec ADD_IMPORTLIB)
 add_rpcproxy_files(oleaut32_oaidl.idl oleaut32_ocidl.idl)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/ucrt)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/ucrt)
 
 add_arm64ec_x64_source(OLEAUT32_THUNKS_SOURCE thunks.c __WINESRC__)
 
@@ -65,7 +65,7 @@ target_link_libraries(oleaut32 wine wine_dll_canunload wineldr uuid ${PSEH_LIB} 
 add_delay_importlibs(oleaut32 comctl32 urlmon windowscodecs)
 add_importlibs(oleaut32 ole32 rpcrt4 user32 gdi32 advapi32 kernel32_vista ucrtbase kernel32 ntdll)
 add_pch(oleaut32 precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET oleaut32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET oleaut32 DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(oleaut32) # CORE-5743: No ARRAY_SIZE and CONST_VTABLE
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

@@ -2,7 +2,7 @@
 #ifndef _MSXML3_PCH_
 #define _MSXML3_PCH_
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/config.h>
 #include <math.h>
 #include <wine/port.h>

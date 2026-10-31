@@ -3,7 +3,7 @@
 
 #include <errno.h>
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define	EPERM		 1      /* Operation not permitted */
 #define	ENOENT		 2      /* No such file or directory */
 #define	ESRCH		 3      /* No such process */
@@ -63,7 +63,7 @@
 #define	ENOSTR		60      /* Device not a stream */
 #endif
 #define	ENODATA		61      /* No data available */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define	ETIME		62      /* Timer expired */
 #define	ENOSR		63      /* Out of streams resources */
 #define	ENONET		64      /* Machine is not on the network */
@@ -78,7 +78,7 @@
 #define	EDOTDOT		73      /* RFS specific error */
 #endif
 #define	EBADMSG		74      /* Not a data message */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define	EOVERFLOW	75      /* Value too large for defined data type */
 #define	ENOTUNIQ	76      /* Name not unique on network */
 #define	EBADFD		77      /* File descriptor in bad state */
@@ -95,14 +95,14 @@
 #define	EDESTADDRREQ	89      /* Destination address required */
 #endif
 #define	EMSGSIZE	90      /* Message too long */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define	EPROTOTYPE	91      /* Protocol wrong type for socket */
 #define	ENOPROTOOPT	92      /* Protocol not available */
 #define	EPROTONOSUPPORT	93      /* Protocol not supported */
 #define	ESOCKTNOSUPPORT	94      /* Socket type not supported */
 #endif
 #define	EOPNOTSUPP	95      /* Operation not supported on transport endpoint */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define	EPFNOSUPPORT	96      /* Protocol family not supported */
 #define	EAFNOSUPPORT	97      /* Address family not supported by protocol */
 #endif

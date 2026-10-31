@@ -4,7 +4,7 @@
 #   1. dxgmms2  (scheduler run queues and VidMm placement; no dxgkrnl dependency)
 #   2. dxgkrnl  (imports the typed dxgmms2 boundary)
 #
-# This directory is entered only for a REACTOS_GRAPHICS_DRIVER_MODEL=WDDM
+# This directory is entered only for a LIBRENT_GRAPHICS_DRIVER_MODEL=WDDM
 # build. XPDM builds retain the legacy VideoPort miniports instead.
 
 add_subdirectory(dxgmms2)
@@ -17,23 +17,13 @@ endif()
 if(ARCH STREQUAL "amd64" OR ARCH STREQUAL "i386")
     add_subdirectory(glkdisp)
 endif()
-if(REACTOS_USE_WDDM AND
-   (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000) AND
+if(LIBRENT_USE_WDDM AND
+   (LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 2000) AND
    (ARCH STREQUAL "arm64") AND RPI3_SUPPORT)
     add_subdirectory(rpi3vc4)  # Raspberry Pi 3 VC4 HVS WDDM2 miniport
 endif()
-if(REACTOS_USE_WDDM AND
-   (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000) AND
+if(LIBRENT_USE_WDDM AND
+   (LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 2000) AND
    (ARCH STREQUAL "arm64") AND RPI5_SUPPORT)
     add_subdirectory(rpi5vc4)  # Raspberry Pi 5 (BCM2712 HVS) WDDM2 display-only miniport
-endif()
-if(REACTOS_USE_WDDM AND
-   (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000) AND
-   (ARCH STREQUAL "riscv64") AND SPACEMIT_K1_SUPPORT)
-    add_subdirectory(k1xdpu)
-endif()
-if(REACTOS_USE_WDDM AND
-   (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000) AND
-   (ARCH STREQUAL "riscv64") AND SPACEMIT_K1_SUPPORT)
-    add_subdirectory(powervr)
 endif()

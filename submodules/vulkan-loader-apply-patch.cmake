@@ -8,7 +8,7 @@ foreach(_required PATCH_EXECUTABLE SOURCE_DIR PATCH_FILE)
 endforeach()
 
 file(READ "${SOURCE_DIR}/loader/loader_windows.c" _loader_windows)
-string(FIND "${_loader_windows}" "ReactOS images can use different SystemRoot drive letters" _patch_marker)
+string(FIND "${_loader_windows}" "LibreNT images can use different SystemRoot drive letters" _patch_marker)
 if(NOT _patch_marker EQUAL -1)
     return()
 endif()
@@ -20,5 +20,5 @@ execute_process(
     OUTPUT_VARIABLE _apply_output
     ERROR_VARIABLE _apply_error)
 if(NOT _apply_result EQUAL 0)
-    message(FATAL_ERROR "Failed to apply Vulkan loader ReactOS patch: ${_apply_output}${_apply_error}")
+    message(FATAL_ERROR "Failed to apply Vulkan loader LibreNT patch: ${_apply_output}${_apply_error}")
 endif()

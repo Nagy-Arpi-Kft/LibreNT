@@ -897,7 +897,7 @@ SymCryptMlDsaExpandA(
 }
 
 _Use_decl_annotations_
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 SYMCRYPT_MLDSA_FORCEINLINE_DEF
 #else
 FORCEINLINE
@@ -1848,7 +1848,7 @@ cleanup:
     return scError;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 SYMCRYPT_MLDSA_FORCEINLINE_DEF
 #else
 FORCEINLINE
@@ -1876,7 +1876,7 @@ SymCryptMlDsaModPlusMinus( UINT32 r, UINT32 modulus )
 }
 
 _Use_decl_annotations_
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 SYMCRYPT_MLDSA_FORCEINLINE_DEF
 #else
 FORCEINLINE
@@ -1924,7 +1924,7 @@ SymCryptMlDsaVectorInfinityNorm( PCSYMCRYPT_MLDSA_VECTOR pvSrc )
 }
 
 _Use_decl_annotations_
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 SYMCRYPT_MLDSA_FORCEINLINE_DEF
 #else
 FORCEINLINE
@@ -2090,7 +2090,7 @@ SymCryptMlDsaVectorPower2Round(
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 SYMCRYPT_MLDSA_FORCEINLINE_DEF
 #else
 FORCEINLINE

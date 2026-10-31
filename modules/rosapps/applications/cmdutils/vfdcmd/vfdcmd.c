@@ -3373,7 +3373,7 @@ const char *SystemError(DWORD err)
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL, err, 0, msg, sizeof(msg), NULL)) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		sprintf(msg, "Unknown system error %lu (0x%08x)\n", err, err);
 #else
 		sprintf(msg, "Unknown system error %lu (0x%08lx)\n", err, err);

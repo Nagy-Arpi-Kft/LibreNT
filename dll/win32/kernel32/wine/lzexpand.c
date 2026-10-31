@@ -33,7 +33,7 @@
  *
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include <k32.h>
 
@@ -47,7 +47,7 @@ DEBUG_CHANNEL(kernel32file);
 
 #define _lwrite(a, b, c) (long)(_hwrite(a, b, (long)c))
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 #include "config.h"
 
@@ -69,7 +69,7 @@ DEBUG_CHANNEL(kernel32file);
 
 WINE_DEFAULT_DEBUG_CHANNEL(file);
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /* The readahead length of the decompressor. Reading single bytes
  * using _lread() would be SLOW.
@@ -342,7 +342,7 @@ INT WINAPI GetExpandedNameW( LPWSTR in, LPWSTR out )
 /***********************************************************************
  *           LZRead   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static INT WINAPI LZReadData( HFILE fd, LPSTR vbuf, INT toread );
 
 INT WINAPI LZRead( HFILE fd, LPSTR vbuf, INT toread )
@@ -512,13 +512,13 @@ LONG WINAPI LZCopy( HFILE src, HFILE dest )
 
 	/* not compressed? just copy */
         if (!IS_LZ_HANDLE(src))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		xread=(_readfun)_hread; // ROSHACK
 #else
 		xread=_lread;
 #endif
 	else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		xread=(_readfun)LZReadData;
 #else
 		xread=(_readfun)LZRead;
@@ -634,7 +634,7 @@ void WINAPI LZClose( HFILE fd )
         }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 /*
  * @implemented
@@ -663,4 +663,4 @@ LZCreateFileW(IN LPCWSTR FileName,
     return ERROR_CALL_NOT_IMPLEMENTED;
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

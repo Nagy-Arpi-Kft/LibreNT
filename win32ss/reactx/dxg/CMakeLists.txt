@@ -14,7 +14,7 @@ list(APPEND SOURCE
     dxg_int.h)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/win32ss/include)
+    ${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 add_library(dxg MODULE
     ${SOURCE}
@@ -25,6 +25,6 @@ set_module_type(dxg kernelmodedriver)
 add_importlibs(dxg dxgthk ntoskrnl)
 add_pch(dxg dxg_int.h SOURCE)
 # dxg.sys left Windows in 8; only the XPDM image delivers it.
-if(REACTOS_USE_XPDM)
-    add_cd_file(TARGET dxg DESTINATION reactos/system32/drivers FOR all)
+if(LIBRENT_USE_XPDM)
+    add_cd_file(TARGET dxg DESTINATION librent/system32/drivers FOR all)
 endif()

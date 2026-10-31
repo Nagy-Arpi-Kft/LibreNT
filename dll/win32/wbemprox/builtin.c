@@ -43,7 +43,7 @@
 #include "devguid.h"
 #include <poclass.h>
 #include <acpiioct.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <cfgmgr32.h>
 #include <lm.h>
 #include <shlobj.h>
@@ -98,7 +98,7 @@ static const struct column col_cache_memory[] =
     { L"BlockSize",      CIM_UINT64 },
     { L"CacheSpeed",     CIM_UINT32 },
     { L"CacheType",      CIM_UINT16 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",       CIM_STRING|COL_FLAG_DYNAMIC },
 #else
     { L"DeviceId",       CIM_STRING|COL_FLAG_DYNAMIC },
@@ -111,7 +111,7 @@ static const struct column col_cache_memory[] =
 };
 static const struct column col_cdromdrive[] =
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Caption",      CIM_STRING|COL_FLAG_DYNAMIC },
     { L"Description",  CIM_STRING|COL_FLAG_DYNAMIC },
     { L"DeviceID",     CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
@@ -172,28 +172,28 @@ static const struct column col_directory[] =
 };
 static const struct column col_diskdrive[] =
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"BytesPerSector", CIM_UINT32 },
     { L"Caption",       CIM_STRING|COL_FLAG_DYNAMIC },
 #else
     { L"Caption",       CIM_STRING },
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",      CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #else
     { L"DeviceId",      CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Description",   CIM_STRING },
 #endif
     { L"Index",         CIM_UINT32 },
     { L"InterfaceType", CIM_STRING },
     { L"Manufacturer",  CIM_STRING },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"MediaLoaded",   CIM_BOOLEAN },
 #endif
     { L"MediaType",     CIM_STRING },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Model",         CIM_STRING|COL_FLAG_DYNAMIC },
     { L"Name",          CIM_STRING|COL_FLAG_DYNAMIC },
     { L"Partitions",    CIM_UINT32 },
@@ -204,18 +204,18 @@ static const struct column col_diskdrive[] =
     { L"PNPDeviceID",   CIM_STRING },
 #endif
     { L"SerialNumber",  CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Signature",     CIM_UINT32|COL_FLAG_NULLABLE },
 #else
     { L"Signature",     CIM_UINT32 },
 #endif
     { L"Size",          CIM_UINT64 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Status",        CIM_STRING },
     { L"TotalCylinders", CIM_UINT64 },
 #endif
     { L"TotalHeads",    CIM_UINT32 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"TotalSectors",  CIM_UINT64 },
     { L"TotalTracks",   CIM_UINT64 },
     { L"TracksPerCylinder", CIM_UINT32 },
@@ -230,18 +230,18 @@ static const struct column col_diskpartition[] =
 {
     { L"Bootable",       CIM_BOOLEAN },
     { L"BootPartition",  CIM_BOOLEAN },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",       CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #else
     { L"DeviceId",       CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #endif
     { L"DiskIndex",      CIM_UINT32 },
     { L"Index",          CIM_UINT32 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Name",           CIM_STRING|COL_FLAG_DYNAMIC },
 #endif
     { L"PNPDeviceID",    CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"PrimaryPartition", CIM_BOOLEAN },
 #endif
     { L"Size",           CIM_UINT64 },
@@ -280,20 +280,20 @@ static const struct column col_localtime[] =
 static const struct column col_logicaldisk[] =
 {
     { L"Caption",            CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",           CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #else
     { L"DeviceId",           CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #endif
     { L"DriveType",          CIM_UINT32 },
     { L"FileSystem",         CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"FreeSpace",          CIM_UINT64|COL_FLAG_NULLABLE },
 #else
     { L"FreeSpace",          CIM_UINT64 },
 #endif
     { L"Name",               CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Size",               CIM_UINT64|COL_FLAG_NULLABLE },
 #else
     { L"Size",               CIM_UINT64 },
@@ -316,7 +316,7 @@ static const struct column col_msft_phys_disk[] =
     { L"Description",                       CIM_STRING },
     { L"DeviceId",                          CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
     { L"EnclosureNumber",                   CIM_UINT16 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"FirmwareVersion",                   CIM_STRING|COL_FLAG_DYNAMIC },
     { L"FriendlyName",                      CIM_STRING|COL_FLAG_DYNAMIC },
 #else
@@ -330,7 +330,7 @@ static const struct column col_msft_phys_disk[] =
     { L"LogicalSectorSize",                 CIM_UINT64 },
     { L"Manufacturer",                      CIM_STRING },
     { L"MediaType",                         CIM_UINT16 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Model",                             CIM_STRING|COL_FLAG_DYNAMIC },
 #else
     { L"Model",                             CIM_STRING },
@@ -357,7 +357,7 @@ static const struct column col_networkadapter[] =
     { L"AdapterType",         CIM_STRING },
     { L"AdapterTypeID",       CIM_UINT16 },
     { L"Description",         CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",            CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #else
     { L"DeviceId",            CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
@@ -366,7 +366,7 @@ static const struct column col_networkadapter[] =
     { L"Index",               CIM_UINT32 },
     { L"InterfaceIndex",      CIM_UINT32 },
     { L"MACAddress",          CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Manufacturer",        CIM_STRING|COL_FLAG_DYNAMIC },
     { L"Name",                CIM_STRING|COL_FLAG_DYNAMIC },
     { L"NetConnectionID",     CIM_STRING|COL_FLAG_DYNAMIC },
@@ -378,7 +378,7 @@ static const struct column col_networkadapter[] =
     { L"NetConnectionStatus", CIM_UINT16 },
     { L"NetEnabled",          CIM_BOOLEAN },
     { L"PhysicalAdapter",     CIM_BOOLEAN },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"PNPDeviceID",         CIM_STRING|COL_FLAG_DYNAMIC },
     { L"ProductName",         CIM_STRING|COL_FLAG_DYNAMIC },
 #else
@@ -392,14 +392,14 @@ static const struct column col_networkadapterconfig[] =
     { L"DefaultIPGateway",     CIM_STRING|CIM_FLAG_ARRAY|COL_FLAG_DYNAMIC },
     { L"Description",          CIM_STRING|COL_FLAG_DYNAMIC },
     { L"DHCPEnabled",          CIM_BOOLEAN },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DHCPServer",           CIM_STRING|COL_FLAG_DYNAMIC },
 #endif
     { L"DNSDomain",            CIM_STRING },
     { L"DNSHostName",          CIM_STRING|COL_FLAG_DYNAMIC },
     { L"DNSServerSearchOrder", CIM_STRING|CIM_FLAG_ARRAY|COL_FLAG_DYNAMIC },
     { L"Index",                CIM_UINT32|COL_FLAG_KEY },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"InterfaceIndex",       CIM_UINT32 },
 #endif
     { L"IPAddress",            CIM_STRING|CIM_FLAG_ARRAY|COL_FLAG_DYNAMIC },
@@ -494,19 +494,19 @@ static const struct column col_pnpentity[] =
 {
     { L"Caption",              CIM_STRING|COL_FLAG_DYNAMIC },
     { L"ClassGuid",            CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",             CIM_STRING|COL_FLAG_DYNAMIC },
 #else
     { L"DeviceId",             CIM_STRING|COL_FLAG_DYNAMIC },
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Description",          CIM_STRING|COL_FLAG_DYNAMIC },
     { L"Manufacturer",         CIM_STRING|COL_FLAG_DYNAMIC },
 #else
     { L"Manufacturer",         CIM_STRING },
 #endif
     { L"Name",                 CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"PNPClass",             CIM_STRING|COL_FLAG_DYNAMIC },
     { L"PNPDeviceID",          CIM_STRING|COL_FLAG_DYNAMIC },
 #endif
@@ -515,7 +515,7 @@ static const struct column col_pnpentity[] =
 static const struct column col_printer[] =
 {
     { L"Attributes",           CIM_UINT32 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",             CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #else
     { L"DeviceId",             CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
@@ -553,7 +553,7 @@ static const struct column col_processor[] =
     { L"CurrentClockSpeed",         CIM_UINT32 },
     { L"DataWidth",                 CIM_UINT16 },
     { L"Description",               CIM_STRING|COL_FLAG_DYNAMIC },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"DeviceID",                  CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
 #else
     { L"DeviceId",                  CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
@@ -635,7 +635,7 @@ static const struct column col_softwarelicensingproduct[] =
  };
 static const struct column col_sounddevice[] =
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Caption",      CIM_STRING|COL_FLAG_DYNAMIC },
     { L"Description",  CIM_STRING|COL_FLAG_DYNAMIC },
     { L"DeviceID",     CIM_STRING|COL_FLAG_DYNAMIC|COL_FLAG_KEY },
@@ -736,7 +736,7 @@ static const struct column col_sysrestore[] =
     { L"GetLastRestoreStatus", CIM_FLAG_ARRAY|COL_FLAG_METHOD },
     { L"Restore",              CIM_FLAG_ARRAY|COL_FLAG_METHOD },
 };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct column col_environment[] =
 {
     { L"Caption",        CIM_STRING|COL_FLAG_DYNAMIC },
@@ -870,7 +870,7 @@ static const struct column col_videocontroller[] =
 
 static const struct column col_volume[] =
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Automount",                    CIM_BOOLEAN },
     { L"BlockSize",                    CIM_UINT64|COL_FLAG_NULLABLE },
     { L"BootVolume",                   CIM_BOOLEAN|COL_FLAG_NULLABLE },
@@ -964,7 +964,7 @@ struct record_cache_memory
 };
 struct record_cdromdrive
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *caption;
     const WCHAR *description;
     const WCHAR *device_id;
@@ -1025,39 +1025,39 @@ struct record_directory
 };
 struct record_diskdrive
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT32       bytespersector;
 #endif
     const WCHAR *caption;
     const WCHAR *device_id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *description;
 #endif
     UINT32       index;
     const WCHAR *interfacetype;
     const WCHAR *manufacturer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int          medialoaded;
 #endif
     const WCHAR *mediatype;
     const WCHAR *model;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *name;
     UINT32       partitions;
 #endif
     const WCHAR *pnpdevice_id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT32       sectorspertrack;
 #endif
     const WCHAR *serialnumber;
     UINT32       signature;
     UINT64       size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *status;
     UINT64       totalcylinders;
 #endif
     UINT32       total_heads;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT64       totalsectors;
     UINT64       totaltracks;
     UINT32       trackspercylinder;
@@ -1075,11 +1075,11 @@ struct record_diskpartition
     const WCHAR *device_id;
     UINT32       diskindex;
     UINT32       index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *name;
 #endif
     const WCHAR *pnpdevice_id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int          primarypartition;
 #endif
     UINT64       size;
@@ -1186,7 +1186,7 @@ struct record_networkadapter
     int          netenabled;
     int          physicaladapter;
     const WCHAR *pnpdevice_id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *productname;
 #endif
     const WCHAR *servicename;
@@ -1197,14 +1197,14 @@ struct record_networkadapterconfig
     const struct array *defaultipgateway;
     const WCHAR        *description;
     int                 dhcpenabled;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR        *dhcpserver;
 #endif
     const WCHAR        *dnsdomain;
     const WCHAR        *dnshostname;
     const struct array *dnsserversearchorder;
     UINT32              index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT32              interface_index;
 #endif
     const struct array *ipaddress;
@@ -1300,12 +1300,12 @@ struct record_pnpentity
     const WCHAR *caption;
     const WCHAR *class_guid;
     const WCHAR *device_id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *description;
 #endif
     const WCHAR *manufacturer;
     const WCHAR *name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *pnp_class;
     const WCHAR *pnp_device_id;
 #endif
@@ -1427,7 +1427,7 @@ struct record_softwarelicensingproduct
 struct record_sounddevice
 {
     const WCHAR *caption;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *description;
 #endif
     const WCHAR *deviceid;
@@ -1519,7 +1519,7 @@ struct record_systemenclosure
     const WCHAR        *serial_number;
     const WCHAR        *tag;
 };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct record_environment
 {
     const WCHAR *caption;
@@ -1653,7 +1653,7 @@ struct record_videocontroller
 
 struct record_volume
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int          automount;
     UINT64       blocksize;
     int          bootvolume;
@@ -2335,7 +2335,7 @@ static enum fill_status fill_rawbiosdata( struct table *table, const struct expr
     return status;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static enum fill_status fill_cdromdrive( struct table *table, const struct expr *cond )
 {
     WCHAR drive[3], root[] = L"A:\\";
@@ -2387,14 +2387,14 @@ static UINT get_physical_processor_count( const char *buf, UINT len, UINT *num_l
     while ((hdr = find_smbios_entry( SMBIOS_TYPE_PROCESSOR, package_count, buf, len )))
     {
         proc = (const struct smbios_processor *)hdr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         thread_count += (hdr->length >= sizeof(*proc)) ? proc->thread_count2 : proc->thread_count;
 #else
         thread_count += proc->thread_count2;
 #endif
         package_count++;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!package_count)
     {
         thread_count = NtCurrentTeb()->Peb->NumberOfProcessors;
@@ -2649,7 +2649,7 @@ static BOOL push_dir( struct dirstack *dirstack, WCHAR *dir, UINT len )
         WCHAR **tmp;
         UINT *len_tmp;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (dirstack->num_allocated > UINT_MAX / 2) return FALSE;
         size = dirstack->num_allocated ? dirstack->num_allocated * 2 : 2;
         if ((size_t)size > ~(size_t)0 / sizeof(WCHAR *) ||
@@ -2660,7 +2660,7 @@ static BOOL push_dir( struct dirstack *dirstack, WCHAR *dir, UINT len )
         if (!(tmp = realloc( dirstack->dirs, size * sizeof(WCHAR *) ))) return FALSE;
 #endif
         dirstack->dirs = tmp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(len_tmp = realloc( dirstack->len_dirs, (size_t)size * sizeof(UINT) ))) return FALSE;
 #else
         if (!(len_tmp = realloc( dirstack->len_dirs, size * sizeof(UINT) ))) return FALSE;
@@ -2712,7 +2712,7 @@ static WCHAR *build_glob( WCHAR drive, const WCHAR *path, UINT len )
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *build_name( WCHAR drive, const WCHAR *path )
 {
     UINT len = lstrlenW( path );
@@ -2926,7 +2926,7 @@ static enum fill_status fill_datafile( struct table *table, const struct expr *c
     if (!resize_table( table, 8, sizeof(*rec) )) return FILL_STATUS_FAILED;
 
     dirstack = alloc_dirstack(2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!dirstack) return FILL_STATUS_FAILED;
 #endif
 
@@ -3058,7 +3058,7 @@ static enum fill_status fill_directory( struct table *table, const struct expr *
     if (!resize_table( table, 4, sizeof(*rec) )) return FILL_STATUS_FAILED;
 
     dirstack = alloc_dirstack(2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!dirstack) return FILL_STATUS_FAILED;
 #endif
 
@@ -3113,7 +3113,7 @@ static enum fill_status fill_directory( struct table *table, const struct expr *
                     rec = (struct record_directory *)(table->data + offset);
                     rec->accessmask = FILE_ALL_ACCESS;
                     rec->name       = build_name( root[0], new_path );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                     free( new_path );
 #endif
                     if (!match_row( table, row, cond, &status ))
@@ -3175,7 +3175,7 @@ static UINT64 get_freespace( const WCHAR *dir, UINT64 *disksize )
     }
     return free.QuadPart;
 }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static WCHAR *get_diskdrive_serialnumber( WCHAR letter )
 {
     WCHAR *ret = NULL;
@@ -3214,7 +3214,7 @@ done:
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *get_device_registry_string( HDEVINFO devices, SP_DEVINFO_DATA *device, DWORD property );
 static WCHAR *get_device_instance_id( HDEVINFO devices, SP_DEVINFO_DATA *device );
 static SP_DEVICE_INTERFACE_DETAIL_DATA_W *get_device_interface_detail(
@@ -3362,7 +3362,7 @@ static UINT get_physical_disks( struct physical_disk *disks, UINT capacity )
     return count;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void free_physical_disks( struct physical_disk *disks, UINT count )
 {
     UINT i;
@@ -3635,7 +3635,7 @@ static struct association *get_diskdrivetodiskpartition_pairs( UINT *count )
                            &query2->view, &query2->mem )) != S_OK) goto done;
     if ((hr = execute_view( query2->view )) != S_OK) goto done;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         UINT j, pairs = 0;
 
@@ -3741,7 +3741,7 @@ static WCHAR *get_filesystem( const WCHAR *root )
     return wcsdup( L"NTFS" );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct wbemprox_partition_info_ex
 {
     DWORD         PartitionStyle;
@@ -4068,7 +4068,7 @@ static enum fill_status fill_diskpartition( struct table *table, const struct ex
             rec = (struct record_diskpartition *)(table->data + offset);
             rec->bootable       = (i == 2) ? -1 : 0;
             rec->bootpartition  = (i == 2) ? -1 : 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 WCHAR volume[] = L"\\\\.\\A:";
                 STORAGE_DEVICE_NUMBER number;
@@ -4233,7 +4233,7 @@ static enum fill_status fill_localtime( struct table *table, const struct expr *
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *get_timezone_display( const WCHAR *key_name )
 {
     WCHAR path[MAX_PATH], system_dir[MAX_PATH], buf[256];
@@ -4775,7 +4775,7 @@ static enum fill_status fill_logicaldisk( struct table *table, const struct expr
             rec->caption            = wcsdup( device_id );
             rec->device_id          = wcsdup( device_id );
             rec->drivetype          = type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (type != DRIVE_FIXED &&
                 !GetVolumeInformationW( root, NULL, 0, NULL, NULL, NULL, NULL, 0 ))
             {
@@ -4817,7 +4817,7 @@ static enum fill_status fill_logicaldisk( struct table *table, const struct expr
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static struct association *get_logicaldisktopartition_pairs( UINT *count )
 {
     struct association *ret = NULL;
@@ -4985,7 +4985,7 @@ static WCHAR *get_mac_address( const BYTE *addr, DWORD len )
 {
     WCHAR *ret;
     if (len != 6 || !(ret = malloc( 18 * sizeof(WCHAR) ))) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     swprintf( ret, 18, L"%02X:%02X:%02X:%02X:%02X:%02X", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5] );
 #else
     swprintf( ret, 18, L"%02x:%02x:%02x:%02x:%02x:%02x", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5] );
@@ -5059,7 +5059,7 @@ static IP_ADAPTER_ADDRESSES *get_network_adapters(void)
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void get_networkadapter_device( const char *adapter_name, const WCHAR **pnpdevice_id,
                                        const WCHAR **manufacturer, const WCHAR **servicename )
 {
@@ -5151,7 +5151,7 @@ static enum fill_status fill_networkadapter( struct table *table, const struct e
         rec->index                = aa->IfIndex;
         rec->interface_index      = aa->IfIndex;
         rec->mac_address          = get_mac_address( aa->PhysicalAddress, aa->PhysicalAddressLength );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         get_networkadapter_device( aa->AdapterName, &rec->pnpdevice_id, &rec->manufacturer, &rec->servicename );
         rec->name                 = wcsdup( aa->Description );
         rec->netconnection_id     = wcsdup( aa->FriendlyName );
@@ -5374,7 +5374,7 @@ static enum fill_status fill_networkadapterconfig( struct table *table, const st
     IP_ADAPTER_ADDRESSES *aa, *buffer;
     UINT row = 0, offset = 0, count = 0;
     enum fill_status status = FILL_STATUS_UNFILTERED;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IP_ADAPTER_INFO *info;
 #endif
 
@@ -5389,7 +5389,7 @@ static enum fill_status fill_networkadapterconfig( struct table *table, const st
         free( buffer );
         return FILL_STATUS_FAILED;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info = get_adapters_info();
 #endif
     for (aa = buffer; aa; aa = aa->Next)
@@ -5399,7 +5399,7 @@ static enum fill_status fill_networkadapterconfig( struct table *table, const st
         rec = (struct record_networkadapterconfig *)(table->data + offset);
         rec->defaultipgateway     = get_defaultipgateway( aa->FirstGatewayAddress );
         rec->description          = wcsdup( aa->Description );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         rec->dhcpenabled          = (aa->Flags & IP_ADAPTER_DHCP_ENABLED) ? -1 : 0;
         rec->dhcpserver           = get_dhcp_server( info, aa->IfIndex );
 #else
@@ -5409,7 +5409,7 @@ static enum fill_status fill_networkadapterconfig( struct table *table, const st
         rec->dnshostname          = get_dnshostname( aa->FirstUnicastAddress );
         rec->dnsserversearchorder = get_dnsserversearchorder( aa->FirstDnsServerAddress );
         rec->index                = aa->IfIndex;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         rec->interface_index      = aa->IfIndex;
         rec->ipaddress            = get_ipaddress( aa->FirstUnicastAddress );
         rec->ipconnectionmetric   = aa->Ipv4Metric;
@@ -5432,7 +5432,7 @@ static enum fill_status fill_networkadapterconfig( struct table *table, const st
     TRACE("created %u rows\n", row);
     table->num_rows = row;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free( info );
 #endif
     free( buffer );
@@ -5546,7 +5546,7 @@ static struct record_pnpentity *get_pnp_entities( UINT *count )
                     {
                         if (!RegOpenKeyExW( key_product, instance, 0, KEY_READ, &key_instance ))
                         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             if (!(ret[i].caption = get_reg_value( key_instance, L"FriendlyName" )))
                                 ret[i].caption = get_reg_value( key_instance, L"DeviceDesc" );
 #else
@@ -5554,7 +5554,7 @@ static struct record_pnpentity *get_pnp_entities( UINT *count )
 #endif
                             ret[i].class_guid = wcslwr( get_reg_value( key_instance, L"ClassGUID" ) );
                             ret[i].device_id = wcsupr( build_pnp_device_id( class, product, instance ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             ret[i].description = get_reg_value( key_instance, L"DeviceDesc" );
                             ret[i].manufacturer = get_reg_value( key_instance, L"Mfg" );
                             ret[i].name = ret[i].caption ? wcsdup( ret[i].caption ) : NULL;
@@ -5577,7 +5577,7 @@ static struct record_pnpentity *get_pnp_entities( UINT *count )
                                         free( (void *)ret[i].caption );
                                         free( (void *)ret[i].class_guid );
                                         free( (void *)ret[i].device_id );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                         free( (void *)ret[i].description );
                                         free( (void *)ret[i].manufacturer );
                                         free( (void *)ret[i].pnp_class );
@@ -5630,12 +5630,12 @@ static enum fill_status fill_pnpentity( struct table *table, const struct expr *
         rec->caption      = entities[i].caption;
         rec->class_guid   = entities[i].class_guid;
         rec->device_id    = entities[i].device_id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         rec->description  = entities[i].description;
 #endif
         rec->manufacturer = entities[i].manufacturer;
         rec->name         = entities[i].name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         rec->pnp_class     = entities[i].pnp_class;
         rec->pnp_device_id = entities[i].pnp_device_id;
 #endif
@@ -5864,7 +5864,7 @@ static enum fill_status fill_cache_memory( struct table *table, const struct exp
 
     while (1)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         char *new_buffer = realloc( buffer, size );
         if (!new_buffer)
         {
@@ -5932,7 +5932,7 @@ static enum fill_status fill_cache_memory( struct table *table, const struct exp
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *get_processor_reg_str( const WCHAR *value, const WCHAR *fallback )
 {
     WCHAR *ret = get_reg_str( HKEY_LOCAL_MACHINE, L"Hardware\\Description\\System\\CentralProcessor\\0", value );
@@ -6027,7 +6027,7 @@ static enum fill_status fill_processor( struct table *table, const struct expr *
     swprintf( version, sizeof(version), L"Model %u, Stepping %u",
               HIBYTE(info.ProcessorRevision), LOBYTE(info.ProcessorRevision) );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!find_smbios_entry( SMBIOS_TYPE_PROCESSOR, 0, buf, len ))
     {
         free( buf );
@@ -6037,7 +6037,7 @@ static enum fill_status fill_processor( struct table *table, const struct expr *
 
     for (i = 0; i < num_packages; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(hdr = find_smbios_entry( SMBIOS_TYPE_PROCESSOR, i, buf, len )) ||
             hdr->length < FIELD_OFFSET(struct smbios_processor, family2))
 #else
@@ -6061,7 +6061,7 @@ static enum fill_status fill_processor( struct table *table, const struct expr *
         rec->manufacturer           = get_processor_manufacturer( i, buf, len );
         rec->maxclockspeed          = get_processor_maxclockspeed( i );
         rec->name                   = get_processor_name( i, buf, len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         rec->num_cores              = (hdr->length >= sizeof(*proc)) ? proc->core_count2 : proc->core_count;
         rec->num_logical_processors = (hdr->length >= sizeof(*proc)) ? proc->thread_count2 : proc->thread_count;
 #else
@@ -6333,7 +6333,7 @@ static enum fill_status fill_operatingsystem( struct table *table, const struct 
     rec->lastbootuptime         = get_lastbootuptime();
     rec->localdatetime          = get_localdatetime();
     rec->locale                 = get_locale();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     rec->manufacturer           = L"Microsoft Corporation";
 #else
     rec->manufacturer           = L"The Wine Project";
@@ -6443,7 +6443,7 @@ static enum fill_status fill_service( struct table *table, const struct expr *co
     if (!ret)
     {
         if (GetLastError() != ERROR_MORE_DATA) goto done;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         size += needed;
 #else
         size = needed;
@@ -6700,7 +6700,7 @@ static enum fill_status fill_systemenclosure( struct table *table, const struct 
 static DWORD get_reg_value_dword( HKEY key, const WCHAR *value )
 {
     DWORD type, ret, size = sizeof(ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (RegQueryValueExW( key, value, NULL, &type, (BYTE *)&ret, &size ) ||
         (type != REG_DWORD && (type != REG_BINARY || size != sizeof(ret)))) return 0;
 #else
@@ -6747,7 +6747,7 @@ static struct display_adapter *get_display_adapters( UINT *count )
 
     if (!(ret = malloc( nb_allocated * sizeof(*ret) ))) return NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((devs = SetupDiGetClassDevsW( &GUID_DEVCLASS_DISPLAY, NULL, NULL, DIGCF_PRESENT )) == INVALID_HANDLE_VALUE)
     {
         free( ret );
@@ -6881,7 +6881,7 @@ static enum fill_status fill_videocontroller( struct table *table, const struct 
     enum fill_status status = FILL_STATUS_UNFILTERED;
     WCHAR mode[44], device_id[32];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(adapters = get_display_adapters( &count )))
     {
         table->num_rows = 0;
@@ -6955,7 +6955,7 @@ static WCHAR *get_volume_driveletter( const WCHAR *volume )
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct wbemprox_fs_control_information
 {
     LARGE_INTEGER FreeSpaceStartFiltering;
@@ -7567,7 +7567,7 @@ failed:
     return FILL_STATUS_FAILED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static enum fill_status fill_sounddevice( struct table *table, const struct expr *cond )
 {
     struct record_sounddevice *rec;
@@ -7672,7 +7672,7 @@ static struct table cimv2_builtin_classes[] =
     { L"Win32_DiskDrive", C(col_diskdrive), 0, 0, NULL, fill_diskdrive },
     { L"Win32_DiskDriveToDiskPartition", C(col_diskdrivetodiskpartition), 0, 0, NULL, fill_diskdrivetodiskpartition },
     { L"Win32_DiskPartition", C(col_diskpartition), 0, 0, NULL, fill_diskpartition },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Win32_Environment", C(col_environment), 0, 0, NULL, fill_environment },
 #endif
     { L"Win32_DisplayControllerConfiguration", C(col_displaycontrollerconfig), 0, 0, NULL, fill_displaycontrollerconfig },
@@ -7697,11 +7697,11 @@ static struct table cimv2_builtin_classes[] =
     { L"Win32_SID", C(col_sid), 0, 0, NULL, fill_sid },
     { L"Win32_Service", C(col_service), 0, 0, NULL, fill_service },
     { L"Win32_SoundDevice", C(col_sounddevice), 0, 0, NULL, fill_sounddevice },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Win32_StartupCommand", C(col_startupcommand), 0, 0, NULL, fill_startupcommand },
 #endif
     { L"Win32_SystemEnclosure", C(col_systemenclosure), 0, 0, NULL, fill_systemenclosure },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"Win32_TimeZone", C(col_timezone), 0, 0, NULL, fill_timezone },
     { L"Win32_UserAccount", C(col_useraccount), 0, 0, NULL, fill_useraccount },
 #endif
@@ -7710,7 +7710,7 @@ static struct table cimv2_builtin_classes[] =
     { L"Win32_WinSAT", C(col_winsat), D(data_winsat) },
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct column col_wmimonitoranalogvideoinputparams[] =
 {
     { L"Active",                    CIM_BOOLEAN },
@@ -8047,7 +8047,7 @@ static enum fill_status fill_wmimonitorid( struct table *table, const struct exp
 static struct table wmi_builtin_classes[] =
 {
     { L"MSSMBios_RawSMBiosTables", C(col_rawsmbiostables), 0, 0, NULL, fill_rawbiosdata },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { L"WmiMonitorAnalogVideoInputParams", C(col_wmimonitoranalogvideoinputparams), 0, 0, NULL, fill_wmimonitoranalogvideoinputparams },
     { L"WmiMonitorBasicDisplayParams", C(col_wmimonitorbasicdisplayparams), 0, 0, NULL, fill_wmimonitorbasicdisplayparams },
     { L"WmiMonitorConnectionParams", C(col_wmimonitorconnectionparams), 0, 0, NULL, fill_wmimonitorconnectionparams },
@@ -8056,7 +8056,7 @@ static struct table wmi_builtin_classes[] =
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *get_storage_descriptor_string( const STORAGE_DEVICE_DESCRIPTOR *desc, DWORD size, DWORD offset )
 {
     const char *start, *end, *limit;

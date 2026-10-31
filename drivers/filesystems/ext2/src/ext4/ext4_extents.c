@@ -14,13 +14,13 @@
  */
 
 #include "ext2fs.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "linux/ext4.h"
 #else
 #include "linux\ext4.h"
 #endif
 
-#if defined(_MSC_VER) && defined(__REACTOS__)
+#if defined(_MSC_VER) && defined(__LIBRENT__)
 #pragma warning(push)
 #pragma warning(disable: 4018)
 #pragma warning(disable: 4242)
@@ -87,7 +87,7 @@ static inline void ext_debug(char *str, ...)
 {
 }
 #if TRUE
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define EXT4_ERROR_INODE(inode, str, ...) do {                      \
             DbgPrint("inode[%p]: " str "\n", inode, ##__VA_ARGS__); \
         } while(0)
@@ -402,7 +402,7 @@ static int __ext4_ext_check(const char *function, unsigned int line,
 {
 	struct ext4_extent_tail *tail;
 	const char *error_msg;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	int max = 0;
 #endif
 
@@ -2186,7 +2186,7 @@ fix_extent_len:
 /*
  * returns 1 if current index have to be freed (even partial)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline int
 #else
 static int inline
@@ -2528,7 +2528,7 @@ int ext4_ext_truncate(void *icb, struct inode *inode, unsigned long start)
 	return ret;
 }
 
-#if defined(_MSC_VER) && defined(__REACTOS__)
+#if defined(_MSC_VER) && defined(__LIBRENT__)
 #pragma warning(pop)
 #endif
 

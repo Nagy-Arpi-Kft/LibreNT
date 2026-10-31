@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Tests for extended state
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>
@@ -85,7 +85,7 @@ struct TXSTATE_CONFIGURATION<NTDDI_WIN11> : TXSTATE_CONFIGURATION<NTDDI_WIN10_RS
 
 ULONG GetXStateNtDdiVersion(void)
 {
-    if (IsReactOS())
+    if (IsLibreNT())
     {
         return NTDDI_WIN11;
     }
@@ -149,9 +149,9 @@ ULONG GetXStateNtDdiVersion(void)
 template<ULONG NtDdiVersion>
 SIZE_T GetXStateOffset(void)
 {
-    if (IsReactOS())
+    if (IsLibreNT())
     {
-        return FIELD_OFFSET(KUSER_SHARED_DATA, XState); // ReactOS
+        return FIELD_OFFSET(KUSER_SHARED_DATA, XState); // LibreNT
     }
     if (NtDdiVersion < NTDDI_WIN8)
     {

@@ -165,7 +165,7 @@ typedef struct tagSUBITEM_INFO
 
 typedef struct tagITEM_ID ITEM_ID;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct tagGROUP_INFO
 {
   INT iGroupId;
@@ -192,7 +192,7 @@ typedef struct tagITEM_INFO
   LPARAM lParam;
   INT iIndent;
   ITEM_ID *id;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   GROUP_INFO *group;
 #endif
 } ITEM_INFO;
@@ -273,7 +273,7 @@ typedef struct tagLISTVIEW_INFO
 
   /* item metrics */
   BOOL bNoItemMetrics;		/* flags if item metrics are not yet computed */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   BOOL bListWidthExplicit;
 #endif
   INT nItemHeight;
@@ -353,7 +353,7 @@ typedef struct tagLISTVIEW_INFO
   /* misc */
   INT iVersion;            /* CCM_[G,S]ETVERSION */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   HDPA hdpaGroups;
   BOOL bGroupView;
   LVGROUPMETRICS groupMetrics;
@@ -468,7 +468,7 @@ enum key_state
  */
 static BOOL LISTVIEW_GetItemT(const LISTVIEW_INFO *, LPLVITEMW, BOOL);
 static void LISTVIEW_GetItemBox(const LISTVIEW_INFO *, INT, LPRECT);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void LISTVIEW_FreeGroup(GROUP_INFO *);
 static GROUP_INFO *LISTVIEW_FindGroup(const LISTVIEW_INFO *, INT, INT *);
 static BOOL LISTVIEW_IsGroupLayout(const LISTVIEW_INFO *);
@@ -1464,7 +1464,7 @@ static BOOL iterator_frameditems_absolute(ITERATOR* i, const LISTVIEW_INFO* info
     if (infoPtr->nItemCount == 0)
         return TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (LISTVIEW_IsGroupLayout(infoPtr))
     {
         INT nItem;
@@ -2238,7 +2238,7 @@ static INT LISTVIEW_UpdateVScroll(LISTVIEW_INFO *infoPtr)
     if (infoPtr->uView == LV_VIEW_DETAILS)
     {
 	vertInfo.nMax = infoPtr->nItemCount;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (LISTVIEW_IsGroupLayout(infoPtr) && infoPtr->nItemHeight > 0)
 	{
 	    LISTVIEW_UpdateGroupLayout(infoPtr);
@@ -2416,7 +2416,7 @@ static void LISTVIEW_GetItemOrigin(const LISTVIEW_INFO *infoPtr, INT nItem, LPPO
 {
     assert(nItem >= 0 && nItem < infoPtr->nItemCount);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (LISTVIEW_IsGroupLayout(infoPtr))
     {
         const POINT *pt = LISTVIEW_GroupItemPos(infoPtr, nItem);
@@ -2994,7 +2994,7 @@ static void LISTVIEW_GetAreaRect(const LISTVIEW_INFO *infoPtr, LPRECT lprcView)
 
     SetRectEmpty(lprcView);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (LISTVIEW_IsGroupLayout(infoPtr))
     {
         LISTVIEW_UpdateGroupLayout((LISTVIEW_INFO *)infoPtr);
@@ -3154,7 +3154,7 @@ static INT LISTVIEW_CalculateItemWidth(const LISTVIEW_INFO *infoPtr)
     return nItemWidth;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Keep the automatic list column width current when the inserted text is
  * already available. Windows does not request callback text during insertion. */
 static void LISTVIEW_UpdateListWidthForItem(LISTVIEW_INFO *infoPtr,
@@ -4526,7 +4526,7 @@ static BOOL set_main_item(LISTVIEW_INFO *infoPtr, const LVITEMW *lpLVItem, BOOL 
     if ((lpLVItem->mask & LVIF_INDENT) && (lpItem->iIndent != lpLVItem->iIndent))
 	uChanged |= LVIF_INDENT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpItem && (lpLVItem->mask & LVIF_GROUPID) &&
         lpItem->group != (lpLVItem->iGroupId >= 0 ? LISTVIEW_FindGroup(infoPtr, lpLVItem->iGroupId, NULL) : NULL))
 	uChanged |= LVIF_GROUPID;
@@ -4591,7 +4591,7 @@ static BOOL set_main_item(LISTVIEW_INFO *infoPtr, const LVITEMW *lpLVItem, BOOL 
     if (lpLVItem->mask & LVIF_INDENT)
 	lpItem->iIndent = lpLVItem->iIndent;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpItem && (lpLVItem->mask & LVIF_GROUPID))
     {
         GROUP_INFO *group = lpLVItem->iGroupId >= 0 ? LISTVIEW_FindGroup(infoPtr, lpLVItem->iGroupId, NULL) : NULL;
@@ -5611,7 +5611,7 @@ static void LISTVIEW_Refresh(LISTVIEW_INFO *infoPtr, HDC hdc, const RECT *prcEra
             LISTVIEW_RefreshReport(infoPtr, &i, hdc, cdmode);
 	else /* LV_VIEW_LIST, LV_VIEW_ICON or LV_VIEW_SMALLICON */
 	    LISTVIEW_RefreshList(infoPtr, &i, hdc, cdmode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	LISTVIEW_DrawGroupHeaders(infoPtr, hdc);
 #endif
 
@@ -7247,7 +7247,7 @@ static BOOL LISTVIEW_GetItemT(const LISTVIEW_INFO *infoPtr, LPLVITEMW lpLVItem, 
         lpLVItem->iIndent = lpItem->iIndent;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpLVItem->mask & LVIF_GROUPID) && lpLVItem->iSubItem == 0)
         lpLVItem->iGroupId = lpItem->group ? lpItem->group->iGroupId : I_GROUPIDNONE;
 #endif
@@ -7661,7 +7661,7 @@ static INT LISTVIEW_GetNextItem(const LISTVIEW_INFO *infoPtr, INT nItem, UINT uF
     UINT uMask = 0;
     LVFINDINFOW lvFindInfo;
     INT nCountPerColumn;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     INT nCountPerRow;
 #endif
     INT i;
@@ -7691,7 +7691,7 @@ static INT LISTVIEW_GetNextItem(const LISTVIEW_INFO *infoPtr, INT nItem, UINT uF
 	return (infoPtr->nFocusedItem == nItem) ? -1 : infoPtr->nFocusedItem;
     }
     
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((uFlags & (LVNI_ABOVE | LVNI_BELOW)) && nItem >= 0 && LISTVIEW_IsGroupLayout(infoPtr))
     {
         BOOL below = (uFlags & LVNI_BELOW) != 0;
@@ -7718,7 +7718,7 @@ static INT LISTVIEW_GetNextItem(const LISTVIEW_INFO *infoPtr, INT nItem, UINT uF
       }
       else
       {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* Special case for autoarrange - move 'til the top of a list */
         if (is_autoarrange(infoPtr))
         {
@@ -7755,7 +7755,7 @@ static INT LISTVIEW_GetNextItem(const LISTVIEW_INFO *infoPtr, INT nItem, UINT uF
       }
       else
       {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* Special case for autoarrange - move 'til the bottom of a list */
         if (is_autoarrange(infoPtr))
         {
@@ -7793,7 +7793,7 @@ static INT LISTVIEW_GetNextItem(const LISTVIEW_INFO *infoPtr, INT nItem, UINT uF
       }
       else if ((infoPtr->uView == LV_VIEW_SMALLICON) || (infoPtr->uView == LV_VIEW_ICON))
       {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* Special case for autoarrange - move 'til the beginning of a row */
         if (is_autoarrange(infoPtr))
         {
@@ -7831,7 +7831,7 @@ static INT LISTVIEW_GetNextItem(const LISTVIEW_INFO *infoPtr, INT nItem, UINT uF
       }
       else if ((infoPtr->uView == LV_VIEW_SMALLICON) || (infoPtr->uView == LV_VIEW_ICON))
       {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* Special case for autoarrange - move 'til the end of a row */
         if (is_autoarrange(infoPtr))
         {
@@ -8174,7 +8174,7 @@ static INT LISTVIEW_InsertItemT(LISTVIEW_INFO *infoPtr, const LVITEMW *lpLVItem,
 
     if (!is_assignable_item(lpLVItem, infoPtr->dwStyle)) return -1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpLVItem->mask & LVIF_GROUPID) && lpLVItem->iGroupId >= 0 &&
         !LISTVIEW_FindGroup(infoPtr, lpLVItem->iGroupId, NULL))
         return -1;
@@ -8290,7 +8290,7 @@ static INT LISTVIEW_InsertItemT(LISTVIEW_INFO *infoPtr, const LVITEMW *lpLVItem,
     if (!IsWindow(hwndSelf))
 	return -1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LISTVIEW_UpdateListWidthForItem(infoPtr, &item, isW);
 #endif
 
@@ -8810,7 +8810,7 @@ static BOOL LISTVIEW_SetColumnWidth(LISTVIEW_INFO *infoPtr, INT nColumn, INT cx)
     if(infoPtr->uView == LV_VIEW_LIST)
     {
 	infoPtr->nItemWidth = cx;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /* Windows preserves an explicit list width across the first paint. */
         infoPtr->bListWidthExplicit = TRUE;
         infoPtr->bNoItemMetrics = FALSE;
@@ -9960,7 +9960,7 @@ static LRESULT LISTVIEW_NCCreate(HWND hwnd, WPARAM wParam, const CREATESTRUCTW *
   infoPtr->nHotItem = -1;
   infoPtr->redraw = TRUE;
   infoPtr->bNoItemMetrics = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   infoPtr->bListWidthExplicit = FALSE;
 #endif
   infoPtr->notify_mask = NOTIFY_MASK_UNMASK_ALL;
@@ -9996,7 +9996,7 @@ static LRESULT LISTVIEW_NCCreate(HWND hwnd, WPARAM wParam, const CREATESTRUCTW *
   if (!(infoPtr->hdpaPosX  = DPA_Create(10))) goto fail;
   if (!(infoPtr->hdpaPosY  = DPA_Create(10))) goto fail;
   if (!(infoPtr->hdpaColumns = DPA_Create(10))) goto fail;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!(infoPtr->hdpaGroups = DPA_Create(4))) goto fail;
   infoPtr->groupMetrics.cbSize = sizeof(infoPtr->groupMetrics);
   infoPtr->groupMetrics.Top = 12;
@@ -10012,7 +10012,7 @@ fail:
     DPA_Destroy(infoPtr->hdpaPosX);
     DPA_Destroy(infoPtr->hdpaPosY);
     DPA_Destroy(infoPtr->hdpaColumns);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DPA_Destroy(infoPtr->hdpaGroups);
 #endif
     Free(infoPtr);
@@ -10893,7 +10893,7 @@ static LRESULT LISTVIEW_NCDestroy(LISTVIEW_INFO *infoPtr)
   DPA_Destroy(infoPtr->hdpaItemIds);
   DPA_Destroy(infoPtr->hdpaPosX);
   DPA_Destroy(infoPtr->hdpaPosY);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   for (i = 0; i < DPA_GetPtrCount(infoPtr->hdpaGroups); i++)
       LISTVIEW_FreeGroup(DPA_GetPtr(infoPtr->hdpaGroups, i));
   DPA_Destroy(infoPtr->hdpaGroups);
@@ -11129,7 +11129,7 @@ static LRESULT LISTVIEW_NCPaint(const LISTVIEW_INFO *infoPtr, HRGN region)
     if (region != (HRGN)1)
         CombineRgn (cliprgn, cliprgn, region, RGN_AND);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dc = GetDCEx(infoPtr->hwndSelf, region, DCX_WINDOW | DCX_CACHE | DCX_INTERSECTRGN);
     ExcludeClipRect(dc, cxEdge, cyEdge, r.right - r.left - cxEdge, r.bottom - r.top - cyEdge);
 #else
@@ -11818,7 +11818,7 @@ static LRESULT LISTVIEW_SetVersion(LISTVIEW_INFO *infoPtr, INT iVersion)
     return COMCTL32_SetVersion(&infoPtr->iVersion, iVersion);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define GROUP_LABEL_LEFT     10
 #define GROUP_LABEL_TOP      2
 #define GROUP_HEADER_EXTRA   6
@@ -12475,7 +12475,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case LVM_EDITLABELW:
     return (LRESULT)LISTVIEW_EditLabelT(infoPtr, (INT)wParam,
                                         uMsg == LVM_EDITLABELW);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_ENABLEGROUPVIEW:
     return LISTVIEW_EnableGroupView(infoPtr, (BOOL)wParam);
 #else
@@ -12519,7 +12519,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case LVM_GETEXTENDEDLISTVIEWSTYLE:
     return infoPtr->dwLvExStyle;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_GETGROUPINFO:
     return LISTVIEW_GetGroupInfo(infoPtr, (INT)wParam, (LVGROUP *)lParam);
 
@@ -12670,7 +12670,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     FIXME("LVM_GETWORKAREAS: unimplemented\n");
     return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_HASGROUP:
     return LISTVIEW_FindGroup(infoPtr, (INT)wParam, NULL) != NULL;
 
@@ -12699,7 +12699,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return LISTVIEW_InsertColumnT(infoPtr, (INT)wParam, (LPLVCOLUMNW)lParam,
                                   uMsg == LVM_INSERTCOLUMNW);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_INSERTGROUP:
     return LISTVIEW_InsertGroupAt(infoPtr, (INT)wParam, (const LVGROUP *)lParam);
 
@@ -12717,7 +12717,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
   /* case LVM_INSERTMARKHITTEST: */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_ISGROUPVIEWENABLED:
     return infoPtr->bGroupView;
 #else
@@ -12733,7 +12733,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case LVM_MAPINDEXTOID:
     return LISTVIEW_MapIndexToId(infoPtr, (INT)wParam);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_MOVEGROUP:
   case LVM_MOVEITEMTOGROUP:
     return 0;
@@ -12746,7 +12746,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case LVM_REDRAWITEMS:
     return LISTVIEW_RedrawItems(infoPtr, (INT)wParam, (INT)lParam);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_REMOVEALLGROUPS:
     LISTVIEW_RemoveAllGroups(infoPtr);
     return 0;
@@ -12787,7 +12787,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
   case LVM_SETEXTENDEDLISTVIEWSTYLE:
     return LISTVIEW_SetExtendedListViewStyle(infoPtr, (DWORD)wParam, (DWORD)lParam);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_SETGROUPINFO:
     return LISTVIEW_SetGroupInfo(infoPtr, (INT)wParam, (const LVGROUP *)lParam);
 
@@ -12884,7 +12884,7 @@ LISTVIEW_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
   /* case LVM_SETWORKAREAS: */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   case LVM_SORTGROUPS:
     return LISTVIEW_SortGroups(infoPtr, (PFNLVGROUPCOMPARE)wParam, (void *)lParam);
 #else

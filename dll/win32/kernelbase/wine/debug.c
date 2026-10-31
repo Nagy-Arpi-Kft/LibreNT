@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include "ntstatus.h"
 #define WIN32_NO_STATUS
@@ -127,7 +127,7 @@ HRESULT WINAPI WerUnregisterFile(const WCHAR *file)
     return E_NOTIMPL;
 }
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 #include <stdio.h>
 #include <string.h>
@@ -1996,4 +1996,4 @@ cleanup:
     HeapFree( GetProcessHeap(), 0, dynamic_buffer );
     return set_ntstatus( status );
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Raspberry Pi 3 VC4 user-mode support
+# PROJECT:     LibreNT Raspberry Pi 3 VC4 user-mode support
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
 

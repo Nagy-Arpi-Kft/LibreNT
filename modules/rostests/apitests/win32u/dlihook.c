@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS delayimport Library
+ * PROJECT:     LibreNT delayimport Library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Delay-import hook for win32u.dll
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

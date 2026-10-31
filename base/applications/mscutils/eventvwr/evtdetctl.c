@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Event Log Viewer
+ * PROJECT:     LibreNT Event Log Viewer
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Event Details Control.
  * COPYRIGHT:   Copyright 2007 Marc Piulachs <marc.piulachs@codexchange.net>
@@ -14,7 +14,7 @@
 
 /**
  * @brief
- * ReactOS-only feature:
+ * LibreNT-only feature:
  * Enable or disable support for copying event info text using space padding
  * between header titles and data, when pressing the SHIFT key while clicking
  * on the "Copy" button, instead of using TABs as separators.

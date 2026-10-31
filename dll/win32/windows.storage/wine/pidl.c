@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  *    pidl Handling
  *
@@ -2583,7 +2583,7 @@ LPITEMIDLIST* _ILCopyCidaToaPidl(LPITEMIDLIST* pidl, const CIDA * cida)
 
     return dst;
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  *    pidl Handling
  *
@@ -2920,7 +2920,7 @@ HRESULT WINAPI ILLoadFromStream (IStream * pStream, LPITEMIDLIST * ppPidl)
     if (*ppPidl && !pcheck(*ppPidl))
     {
         WARN("Check failed\n");
-#ifndef __REACTOS__ /* We don't know all pidl formats, must allow loading unknown */
+#ifndef __LIBRENT__ /* We don't know all pidl formats, must allow loading unknown */
         SHFree(*ppPidl);
         *ppPidl = NULL;
 #endif
@@ -3074,7 +3074,7 @@ LPITEMIDLIST WINAPI ILGlobalClone(LPCITEMIDLIST pidl)
     return newpidl;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline LPITEMIDLIST _ILUnsafeNext(LPCITEMIDLIST pidl)
 {
     return (LPITEMIDLIST)(((BYTE*)pidl) + pidl->mkid.cb);
@@ -3104,7 +3104,7 @@ static BOOL _ILMemCmpEqualIDList(LPCITEMIDLIST p1, LPCITEMIDLIST p2)
             return FALSE;
     }
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 BOOL _ILHACKCompareSimpleIds(LPCITEMIDLIST pidltemp1, LPCITEMIDLIST pidltemp2)
 {
     LPPIDLDATA pdata1 = _ILGetDataPointer(pidltemp1);
@@ -3160,7 +3160,7 @@ BOOL _ILHACKCompareSimpleIds(LPCITEMIDLIST pidltemp1, LPCITEMIDLIST pidltemp2)
 
     return TRUE;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /*************************************************************************
  * ILIsEqual [SHELL32.21]
@@ -3173,7 +3173,7 @@ BOOL WINAPI ILIsEqual(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2)
 
     TRACE("pidl1=%p pidl2=%p\n",pidl1, pidl2);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IShellFolder *psfDesktop;
     UINT depth1;
 
@@ -3187,13 +3187,13 @@ BOOL WINAPI ILIsEqual(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2)
         IShellFolder_Release(psfDesktop);
         return hr == 0;
     }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
     /*
      * Explorer reads from registry directly (StreamMRU),
      * so we can only check here
      */
     if (!pcheck(pidl1) || !pcheck (pidl2))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         /* We don't understand the PIDL content but that does not mean it's invalid */
     }
@@ -3218,7 +3218,7 @@ BOOL WINAPI ILIsEqual(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2)
 
     if (!pidltemp1->mkid.cb && !pidltemp2->mkid.cb)
         return TRUE;
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
     return FALSE;
 }
 
@@ -3288,9 +3288,9 @@ BOOL WINAPI ILIsParent(LPCITEMIDLIST pidlParent, LPCITEMIDLIST pidlChild, BOOL b
 
     TRACE("%p %p %x\n", pidlParent, pidlChild, bImmediate);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return _ILIsParentEx(pParent, pChild, bImmediate) != NULL;
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
     if (!pParent || !pChild)
         return FALSE;
 
@@ -3312,7 +3312,7 @@ BOOL WINAPI ILIsParent(LPCITEMIDLIST pidlParent, LPCITEMIDLIST pidlChild, BOOL b
         return FALSE;
 
     return TRUE;
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 }
 
 /*************************************************************************
@@ -3336,13 +3336,13 @@ BOOL WINAPI ILIsParent(LPCITEMIDLIST pidlParent, LPCITEMIDLIST pidlChild, BOOL b
  */
 PUIDLIST_RELATIVE WINAPI ILFindChild(PIDLIST_ABSOLUTE pidl1, PCIDLIST_ABSOLUTE pidl2)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("pidl1=%p pidl2=%p\n", pidl1, pidl2);
 
     if (_ILIsDesktop(pidl1))
         return (PUIDLIST_RELATIVE)pidl2;
     return (PUIDLIST_RELATIVE)_ILIsParentEx(pidl1, pidl2, FALSE);
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
     LPCITEMIDLIST pidltemp1 = pidl1;
     LPCITEMIDLIST pidltemp2 = pidl2;
     LPCITEMIDLIST ret=NULL;
@@ -3378,7 +3378,7 @@ PUIDLIST_RELATIVE WINAPI ILFindChild(PIDLIST_ABSOLUTE pidl1, PCIDLIST_ABSOLUTE p
     }
     TRACE_(shell)("--- %p\n", ret);
     return (PUIDLIST_RELATIVE)ret; /* pidl 1 is shorter */
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 }
 
 /*************************************************************************
@@ -3438,7 +3438,7 @@ LPITEMIDLIST WINAPI ILCombine(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2)
     return pidlNew;
 }
 
-#ifndef __REACTOS__ /* See ..\utils.cpp */
+#ifndef __LIBRENT__ /* See ..\utils.cpp */
 /*************************************************************************
  *  SHGetRealIDL [SHELL32.98]
  *
@@ -3497,7 +3497,7 @@ HRESULT WINAPI SHGetRealIDL(LPSHELLFOLDER lpsf, LPCITEMIDLIST pidlSimple, LPITEM
  */
 LPITEMIDLIST WINAPI SHLogILFromFSIL(LPITEMIDLIST pidl)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPITEMIDLIST pidlNew = NULL;
     SHELL32_AliasTranslatePidl(pidl, &pidlNew, ALIAS_ANY);
     return pidlNew;
@@ -4301,7 +4301,7 @@ HRESULT WINAPI SHGetNameFromIDList(PCIDLIST_ABSOLUTE pidl, SIGDN sigdnName, PWST
     return ret;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*************************************************************************
  * SHGetItemFromDataObject          [SHELL32.@]
  */
@@ -4478,7 +4478,7 @@ LPITEMIDLIST _ILCreateControlPanel(void)
 
 LPITEMIDLIST _ILCreatePrinters(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     // Note: Wine returns the PIDL as it was in Windows 95, NT5 moved it into CSIDL_CONTROLS
     extern HRESULT SHGetFolderLocationHelper(HWND hwnd, int nFolder, REFCLSID clsid, LPITEMIDLIST *ppidl);
     LPITEMIDLIST pidl;
@@ -4545,7 +4545,7 @@ LPITEMIDLIST _ILCreateGuid(PIDLTYPE type, REFIID guid, BYTE SortOrder)
     return pidlOut;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 LPITEMIDLIST _ILCreateGuidFromStrA(LPCSTR szGUID)
 {
     IID iid;
@@ -4562,7 +4562,7 @@ LPITEMIDLIST _ILCreateGuidFromStrW(LPCWSTR szGUID)
 {
     IID iid;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (FAILED(SHCLSIDFromStringW(szGUID, &iid)))
 #else
     if (!GUIDFromStringW(szGUID, &iid))
@@ -4573,7 +4573,7 @@ LPITEMIDLIST _ILCreateGuidFromStrW(LPCWSTR szGUID)
     }
     return _ILCreateGuid(PT_GUID, &iid);
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 LPITEMIDLIST _ILCreateFromFindDataW( const WIN32_FIND_DATAW *wfd )
 {
@@ -4964,7 +4964,7 @@ static LPWSTR _ILGetTextPointerW(LPCITEMIDLIST pidl)
         /*return (LPSTR)&(pdata->u.network.szNames);*/
         return NULL;
 
-#ifdef __REACTOS__ /* r54423 */
+#ifdef __LIBRENT__ /* r54423 */
     case PT_CPLAPPLET:
         return pdata->u.cpanel.szName;
 #endif
@@ -5324,4 +5324,4 @@ LPITEMIDLIST* _ILCopyCidaToaPidl(LPITEMIDLIST* pidl, const CIDA * cida)
     }
     return dst;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

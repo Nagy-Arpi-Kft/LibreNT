@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later
  * PURPOSE:     Pixel verification of the native DWM draw and copy path.
  */
@@ -9,8 +9,8 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <stdarg.h>
-#include <reactos/dwmprof.h>
-#include <reactos/dwmpresenttracenames.h>
+#include <librent/dwmprof.h>
+#include <librent/dwmpresenttracenames.h>
 #include "gpud3dshader.h"
 
 namespace

@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/ntdll/CMakeLists.txt
 # PURPOSE:     NTDLL host-test build configuration
 #
@@ -8,7 +8,7 @@
 find_package(Threads REQUIRED)
 
 function(ntdll_cfg_variant NAME)
-    add_executable(${NAME} t_cfg.c ${REACTOS_HOST_SOURCE_ROOT}/dll/ntdll/ldr/ldrcfg.c)
+    add_executable(${NAME} t_cfg.c ${LIBRENT_HOST_SOURCE_ROOT}/dll/ntdll/ldr/ldrcfg.c)
     target_include_directories(${NAME} PRIVATE include)
     target_compile_definitions(${NAME} PRIVATE _M_ARM64)
     target_compile_features(${NAME} PRIVATE c_std_11)

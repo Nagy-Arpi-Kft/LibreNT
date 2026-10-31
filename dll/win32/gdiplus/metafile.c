@@ -19,7 +19,7 @@
 #include <stdarg.h>
 #include <math.h>
 #include <assert.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <limits.h>
 #endif
 
@@ -816,7 +816,7 @@ static GpStatus METAFILE_WriteEndOfFile(GpMetafile *metafile)
 {
     GpStatus stat;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (metafile->metafile_type == MetafileTypeEmfPlusOnly &&
             !IsRectEmpty(&metafile->record_bounds))
     {
@@ -951,7 +951,7 @@ static void METAFILE_AdjustFrame(GpMetafile* metafile, const GpPointF *points,
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void METAFILE_RecordDeviceBounds(GpMetafile *metafile, const GpRectF *bounds)
 {
     double left = ceilf(bounds->X), top = ceilf(bounds->Y);
@@ -1056,7 +1056,7 @@ GpStatus METAFILE_GetGraphicsContext(GpMetafile* metafile, GpGraphics **result)
 {
     GpStatus stat;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!metafile->record_dc)
         return OutOfMemory;
     if (metafile->record_graphics)
@@ -1074,7 +1074,7 @@ GpStatus METAFILE_GetGraphicsContext(GpMetafile* metafile, GpGraphics **result)
         metafile->record_graphics->yres = metafile->logical_dpiy;
         metafile->record_graphics->printer_display = metafile->printer_display;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
         metafile->record_graphics = NULL;
 #endif
@@ -1115,7 +1115,7 @@ GpStatus METAFILE_GraphicsClear(GpMetafile* metafile, ARGB color)
         record->Color = color;
 
         METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (metafile->metafile_type == MetafileTypeEmfPlusOnly)
         {
             GpRectF bounds = {0.0, 0.0, 1.0, 1.0};
@@ -1472,7 +1472,7 @@ GpStatus METAFILE_FillRectangles(GpMetafile* metafile, GpBrush* brush,
         METAFILE_WriteRecords(metafile);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (metafile->auto_frame || metafile->metafile_type == MetafileTypeEmfPlusOnly)
 #else
     if (metafile->auto_frame)
@@ -1483,7 +1483,7 @@ GpStatus METAFILE_FillRectangles(GpMetafile* metafile, GpBrush* brush,
 
         for (i=0; i<count; i++)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             METAFILE_RecordRectBounds(metafile, &rects[i], NULL);
             if (!metafile->auto_frame)
                 continue;
@@ -3947,7 +3947,7 @@ struct enum_metafile_data
     EnumerateMetafileProc callback;
     void *callback_data;
     GpMetafile *metafile;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL gdi_records;
 #endif
 };
@@ -3975,7 +3975,7 @@ static int CALLBACK enum_metafile_proc(HDC hDC, HANDLETABLE *lpHTable, const ENH
             {
                 const EmfPlusRecordHeader *record = (const EmfPlusRecordHeader*)&comment->Data[offset];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 data->gdi_records = record->Type == EmfPlusRecordTypeGetDC;
 #endif
                 if (record->DataSize)
@@ -3996,7 +3996,7 @@ static int CALLBACK enum_metafile_proc(HDC hDC, HANDLETABLE *lpHTable, const ENH
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!data->gdi_records && lpEMFR->iType != EMR_HEADER && lpEMFR->iType != EMR_EOF)
         return 1;
 
@@ -4042,7 +4042,7 @@ GpStatus WINGDIPAPI GdipEnumerateMetafileSrcRectDestPoints(GpGraphics *graphics,
     data.callback = callback;
     data.callback_data = callbackData;
     data.metafile = real_metafile;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     data.gdi_records = TRUE;
 #endif
 
@@ -4654,14 +4654,14 @@ GpStatus WINGDIPAPI GdipConvertToEmfPlus(const GpGraphics* ref,
     TRACE("(%p,%p,%p,%u,%s,%p)\n", ref, metafile, succ, emfType,
         debugstr_w(description), out_metafile);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!ref || !metafile || !out_metafile || emfType < EmfTypeEmfPlusOnly || emfType > EmfTypeEmfPlusDual)
 #else
     if(!ref || !metafile || !out_metafile || emfType < EmfTypeEmfOnly || emfType > EmfTypeEmfPlusDual)
 #endif
         return InvalidParameter;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (metafile->metafile_type == MetafileTypeEmfPlusOnly ||
             metafile->metafile_type == MetafileTypeEmfPlusDual)
     {
@@ -4675,7 +4675,7 @@ GpStatus WINGDIPAPI GdipConvertToEmfPlus(const GpGraphics* ref,
 #endif
     *out_metafile = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (metafile->record_dc)
     {
         GpMetafile *converted;
@@ -5125,7 +5125,7 @@ GpStatus METAFILE_DrawImagePointsRect(GpMetafile *metafile, GpImage *image,
     draw_image_record->count = 3;
     memcpy(draw_image_record->PointData.pointsF, points, 3 * sizeof(*points));
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (metafile->metafile_type == MetafileTypeEmfPlusOnly)
     {
         GpPointF corners[4];
@@ -5408,7 +5408,7 @@ GpStatus METAFILE_DrawPath(GpMetafile *metafile, GpPen *pen, GpPath *path)
     draw_path_record->PenId = pen_id;
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     METAFILE_RecordPathBounds(metafile, path, pen);
 #endif
     return Ok;
@@ -5450,7 +5450,7 @@ GpStatus METAFILE_DrawEllipse(GpMetafile *metafile, GpPen *pen, GpRectF *rect)
         memcpy(&record->RectData.rectF, rect, sizeof(*rect));
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     METAFILE_RecordArcBounds(metafile, rect, 0.0, 360.0, FALSE, pen);
 #endif
     return Ok;
@@ -5494,7 +5494,7 @@ GpStatus METAFILE_FillPath(GpMetafile *metafile, GpBrush *brush, GpPath *path)
     }
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     METAFILE_RecordPathBounds(metafile, path, NULL);
 #endif
     return Ok;
@@ -5546,7 +5546,7 @@ GpStatus METAFILE_FillEllipse(GpMetafile *metafile, GpBrush *brush, GpRectF *rec
         memcpy(&record->RectData.rectF, rect, sizeof(*rect));
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     METAFILE_RecordArcBounds(metafile, rect, 0.0, 360.0, FALSE, NULL);
 #endif
     return Ok;
@@ -5602,7 +5602,7 @@ GpStatus METAFILE_FillPie(GpMetafile *metafile, GpBrush *brush, const GpRectF *r
         memcpy(&record->RectData.rectF, rect, sizeof(*rect));
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     METAFILE_RecordArcBounds(metafile, rect, startAngle, sweepAngle, TRUE, NULL);
 #endif
     return Ok;
@@ -5863,7 +5863,7 @@ GpStatus METAFILE_DrawRectangles(GpMetafile *metafile, GpPen *pen, const GpRectF
         memcpy(record->RectData.rectF, rects, sizeof(*rects) * count);
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (metafile->metafile_type == MetafileTypeEmfPlusOnly)
         for (i = 0; i < count; i++)
             METAFILE_RecordRectBounds(metafile, &rects[i], pen);
@@ -5913,7 +5913,7 @@ GpStatus METAFILE_DrawArc(GpMetafile *metafile, GpPen *pen, const GpRectF *rect,
         memcpy(&record->RectData.rectF, rect, sizeof(*rect));
 
     METAFILE_WriteRecords(metafile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     METAFILE_RecordArcBounds(metafile, rect, startAngle, sweepAngle, FALSE, pen);
 #endif
 

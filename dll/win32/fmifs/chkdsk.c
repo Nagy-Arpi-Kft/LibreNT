@@ -51,7 +51,7 @@ Chkdsk(
             goto Quit;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* We really just want to use the disk drive letter */
     wcscpy(VolumeName, DriveName);
 #else

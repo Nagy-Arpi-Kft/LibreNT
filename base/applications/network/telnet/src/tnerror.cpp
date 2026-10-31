@@ -81,7 +81,7 @@ int printit(const char * it){
 	return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int wprintit(LPCWSTR it)
 {
     DWORD numwritten;
@@ -132,7 +132,7 @@ int printm(LPTSTR szModule, BOOL fSystem, DWORD dwMessageId, ...)
 
 	va_list Ellipsis;
 	va_start(Ellipsis, dwMessageId);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	LPWSTR pszMessage = NULL;
 	DWORD dwMessage = 0;
 
@@ -171,7 +171,7 @@ int printm(LPTSTR szModule, BOOL fSystem, DWORD dwMessageId, ...)
 		FreeLibrary(hModule);
 
 	if (dwMessage) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		Result = wprintit(pszMessage);
 #else
 		Result = printit(pszMessage);

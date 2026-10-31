@@ -195,7 +195,7 @@
 
 #define IDI_WORDPAD 102
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define IDI_RTFDOC 103
 #define IDC_ZOOM 104
 #else

@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <string_view>
 #else
 #define string_view string

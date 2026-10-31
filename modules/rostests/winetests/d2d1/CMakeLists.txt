@@ -9,7 +9,7 @@ add_executable(d2d1_winetest
     d2d1.c
     testlist.c)
 
-target_include_directories(d2d1_winetest BEFORE PRIVATE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+target_include_directories(d2d1_winetest BEFORE PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 target_link_libraries(d2d1_winetest dx10guid uuid)
 set_module_type(d2d1_winetest win32cui)
 add_dependencies(d2d1_winetest d3d_idl_headers psdk)

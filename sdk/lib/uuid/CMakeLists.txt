@@ -156,7 +156,7 @@ list(APPEND IDL_SOURCES
 #    xmlparser.idl
 #    xmlprov.idl
 
-# These are others that reactos provides:
+# These are others that LibreNT provides:
     asptlb.idl
     bdaiface.idl
     bits.idl

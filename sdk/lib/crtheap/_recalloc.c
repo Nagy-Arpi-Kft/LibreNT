@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT heap support library
+ * PROJECT:     LibreNT CRT heap support library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of _recalloc
  * COPYRIGHT:   Copyright 2026 Timo Kreuzer <timo.kreuzer@reactos.org>

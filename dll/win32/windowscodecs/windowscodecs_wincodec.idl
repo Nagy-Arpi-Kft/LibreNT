@@ -209,7 +209,7 @@ coclass WICApp1MetadataReader { interface IWICMetadataReader; }
 ]
 coclass WICApp1MetadataWriter { interface IWICMetadataWriter; }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 [
     helpstring("WIC JPEG Luminance Metadata Reader"),
     threading(both),

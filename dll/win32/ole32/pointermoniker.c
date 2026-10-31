@@ -69,7 +69,7 @@ static HRESULT WINAPI PointerMonikerImpl_QueryInterface(IMoniker *iface, REFIID 
     *ppvObject = 0;
 
     if (IsEqualIID(&IID_IUnknown, riid) ||
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         IsEqualIID(&IID_IPersist, riid) ||
 #endif
         IsEqualIID(&IID_IPersistStream, riid) ||
@@ -522,7 +522,7 @@ static HRESULT WINAPI pointer_moniker_marshal_GetMarshalSizeMax(IMarshal *iface,
     TRACE("%p, %s, %p, %ld, %p, %#lx, %p.\n", iface, debugstr_guid(riid), pv, dwDestContext, pvDestContext,
             mshlflags, size);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!moniker->pObject)
         return E_INVALIDARG;
 #endif
@@ -739,7 +739,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_IsDirty(IMoniker *iface)
     return S_FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const IMonikerVtbl VT_ObjrefMonikerImpl;
 
 static ObjrefMonikerImpl *objref_unsafe_impl_from_IMoniker(IMoniker *iface)
@@ -759,7 +759,7 @@ static HRESULT objref_marshal_object(ObjrefMonikerImpl *moniker, IStream *stream
 #endif
 static HRESULT WINAPI ObjrefMonikerImpl_Load(IMoniker *iface, IStream *stream)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface);
     IUnknown *object;
     HRESULT hr;
@@ -783,7 +783,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_Load(IMoniker *iface, IStream *stream)
 
 static HRESULT WINAPI ObjrefMonikerImpl_Save(IMoniker *iface, IStream *stream, BOOL dirty)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface);
 
     TRACE("(%p,%p,%d)\n", iface, stream, dirty);
@@ -799,7 +799,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_Save(IMoniker *iface, IStream *stream, B
 
 static HRESULT WINAPI ObjrefMonikerImpl_GetSizeMax(IMoniker *iface, ULARGE_INTEGER *size)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface);
     ULONG max;
     HRESULT hr;
@@ -824,7 +824,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_GetSizeMax(IMoniker *iface, ULARGE_INTEG
 static HRESULT WINAPI ObjrefMonikerImpl_BindToObject(IMoniker *iface, IBindCtx *pbc, IMoniker *left,
         REFIID riid, void **result)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface);
 
     TRACE("(%p,%p,%p,%s,%p)\n", iface, pbc, left, debugstr_guid(riid), result);
@@ -844,7 +844,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_BindToObject(IMoniker *iface, IBindCtx *
 static HRESULT WINAPI ObjrefMonikerImpl_BindToStorage(IMoniker *iface, IBindCtx *pbc, IMoniker *left,
         REFIID riid, void **result)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface);
 
     TRACE("(%p,%p,%p,%s,%p)\n", iface, pbc, left, debugstr_guid(riid), result);
@@ -864,7 +864,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_BindToStorage(IMoniker *iface, IBindCtx 
 static HRESULT WINAPI ObjrefMonikerImpl_Reduce(IMoniker *iface, IBindCtx *pbc, DWORD howfar,
         IMoniker **left, IMoniker **reduced)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p, %p, %ld, %p, %p.\n", iface, pbc, howfar, left, reduced);
 
     if (!reduced)
@@ -881,7 +881,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_Reduce(IMoniker *iface, IBindCtx *pbc, D
 static HRESULT WINAPI ObjrefMonikerImpl_ComposeWith(IMoniker *iface, IMoniker *right,
         BOOL only_if_not_generic, IMoniker **result)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD order;
 
     TRACE("(%p,%p,%d,%p)\n", iface, right, only_if_not_generic, result);
@@ -911,7 +911,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_Enum(IMoniker *iface, BOOL forward, IEnu
 
 static HRESULT WINAPI ObjrefMonikerImpl_IsEqual(IMoniker *iface, IMoniker *other)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface), *other_moniker;
 
     TRACE("(%p,%p)\n", iface, other);
@@ -945,7 +945,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_Hash(IMoniker *iface, DWORD *hash)
 static HRESULT WINAPI ObjrefMonikerImpl_IsRunning(IMoniker *iface, IBindCtx *pbc, IMoniker *left,
         IMoniker *running)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p,%p,%p,%p)\n", iface, pbc, left, running);
 
     return S_OK;
@@ -964,7 +964,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_GetTimeOfLastChange(IMoniker *iface,
 
 static HRESULT WINAPI ObjrefMonikerImpl_Inverse(IMoniker *iface, IMoniker **moniker)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p,%p)\n", iface, moniker);
 
     return CreateAntiMoniker(moniker);
@@ -976,7 +976,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_Inverse(IMoniker *iface, IMoniker **moni
 
 static HRESULT WINAPI ObjrefMonikerImpl_CommonPrefixWith(IMoniker *iface, IMoniker *other, IMoniker **prefix)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p,%p,%p)\n", iface, other, prefix);
 
     if (!prefix || !other)
@@ -1004,7 +1004,7 @@ static HRESULT WINAPI ObjrefMonikerImpl_RelativePathTo(IMoniker *iface, IMoniker
 static HRESULT WINAPI ObjrefMonikerImpl_GetDisplayName(IMoniker *iface, IBindCtx *pbc,
                                IMoniker *left, LPOLESTR *name)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const WCHAR prefix[] = L"objref:";
     static const char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     ObjrefMonikerImpl *moniker = objref_impl_from_IMoniker(iface);

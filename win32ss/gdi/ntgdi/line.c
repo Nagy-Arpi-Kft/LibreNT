@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Win32k Subsystem
+ * PROJECT:         LibreNT Win32k Subsystem
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            win32ss/gdi/ntgdi/line.c
  * PURPOSE:         Line functions
@@ -64,7 +64,7 @@ AddPenLinesBounds(PDC dc, int count, POINT *points)
     DPRINT("APLB dc %p l %d t %d\n",dc,rect.left,rect.top);
     DPRINT("                 r %d b %d\n",rect.right,rect.bottom);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IntUpdateBoundsRect(dc, &bounds);
 #else
     {

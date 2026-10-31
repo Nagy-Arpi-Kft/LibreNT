@@ -1020,7 +1020,7 @@ static void test_message_arg_eaten( const WCHAR *src, ... )
     ok(ret == 0, "Expected FormatMessageW to return 0, got %lu\n", ret);
     ok(out[0] == 0, "Expected null, got %ls\n", out);
     arg = va_arg( list, WCHAR * );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
      ok(!!arg, "arg should not be NULL!\n");
      if (arg)
 #endif

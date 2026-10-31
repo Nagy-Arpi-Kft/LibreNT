@@ -39,7 +39,7 @@ extern "C" {
 #endif
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if defined(__GNUC__) && !defined(_SHLWAPI_)
 #  undef WINSHLWAPI
 #  define WINSHLWAPI /* FIXME: HACK: CORE-6504 */
@@ -47,7 +47,7 @@ extern "C" {
 #ifndef __MSABI_LONG
 #  define __MSABI_LONG(x)  x ## l
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #ifndef NO_SHLWAPI_HTTP
 
@@ -302,7 +302,7 @@ typedef enum
     ASSOCENUM_NONE
 } ASSOCENUM;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef enum {
     FTA_None                  = 0x00000000,
     FTA_Exclude               = 0x00000001,

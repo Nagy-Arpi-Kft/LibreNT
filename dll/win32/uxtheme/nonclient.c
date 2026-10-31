@@ -1,13 +1,13 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS uxtheme.dll
+ * PROJECT:         LibreNT uxtheme.dll
  * FILE:            dll/win32/uxtheme/nonclient.c
  * PURPOSE:         uxtheme non client area management
  * PROGRAMMER:      Giannis Adamopoulos
  */
 
 #include "uxthemep.h"
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 #include <math.h>
 
 #define NC_PREVIEW_MSGBOX_HALF_WIDTH 75
@@ -15,7 +15,7 @@
 #define NC_PREVIEW_MSGBOX_OFFSET_Y 71
 
 /* Shared with DwmSetWindowAttribute in dwmapi.dll. */
-static const WCHAR immersive_dark_mode_propW[] = L"ReactOS.Dwm.ImmersiveDarkMode";
+static const WCHAR immersive_dark_mode_propW[] = L"LibreNT.Dwm.ImmersiveDarkMode";
 
 #define CAPTION_GLOW_RADIUS 5
 #define CAPTION_GLOW_PASSES 3

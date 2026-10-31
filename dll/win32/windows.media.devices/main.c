@@ -180,7 +180,7 @@ static HRESULT get_default_device_id(EDataFlow direction, AudioDeviceRole role, 
     {
         WARN("GetDefaultAudioEndpoint failed: %08lx\n", hr);
         IMMDeviceEnumerator_Release(devenum);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hr == HRESULT_FROM_WIN32(ERROR_NOT_FOUND))
             return S_OK;
 #endif
@@ -199,7 +199,7 @@ static HRESULT get_default_device_id(EDataFlow direction, AudioDeviceRole role, 
     s = malloc((sizeof(id_fmt_pre) - sizeof(WCHAR)) +
             (sizeof(id_fmt_hash) - sizeof(WCHAR)) +
             (wcslen(devid) + GUID_STR_LEN + 1 /* nul */) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!s)
     {
         hr = E_OUTOFMEMORY;
@@ -222,7 +222,7 @@ static HRESULT get_default_device_id(EDataFlow direction, AudioDeviceRole role, 
 
     free(s);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #endif
     CoTaskMemFree(devid);

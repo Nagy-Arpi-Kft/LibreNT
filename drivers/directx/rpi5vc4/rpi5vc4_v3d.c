@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Raspberry Pi 5 WDDM miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 WDDM miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     BCM2712 V3D 7.1 bring-up and control-list job execution.
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -14,7 +14,7 @@
 #include "rpi5vc4_mbox.h"
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 static ULONG
 Rpi5V3dRead(

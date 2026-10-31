@@ -30635,7 +30635,7 @@ interface IWebBrowserPriv2IE9 : IUnknown
     /* Probably more */
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 [
     object,
     uuid(fc8afc62-f788-4b36-8889-fd073fdd2fd9),

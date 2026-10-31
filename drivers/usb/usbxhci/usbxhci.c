@@ -1,12 +1,12 @@
 /*
- * PROJECT:     ReactOS USB Port Driver
+ * PROJECT:     LibreNT USB Port Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * COPYRIGHT:   Copyright 2025 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include "usbxhci.h"
 #if defined(_M_ARM64)
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 #endif
 
 /*
@@ -13417,7 +13417,7 @@ XHCI_StartController(PVOID MiniPortExtension,
     /*
      * When the poll-fallback quirk is active (QEMU/VBox), the
      * XHCI_TransferPollDpc runs off a KTIMER whose DueTime is clamped
-     * to the system clock quantum. ReactOS defaults to ~10 ms, which
+     * to the system clock quantum. LibreNT defaults to ~10 ms, which
      * pins HID interrupt-IN completions to ~100 Hz and makes the
      * cursor feel laggy. Request a 1 ms system clock resolution so
      * KeSetTimer can honour sub-10 ms intervals. This is reversed in

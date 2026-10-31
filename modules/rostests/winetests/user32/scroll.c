@@ -768,7 +768,7 @@ static void test_subclass(void)
 
     hwnd = CreateWindowExA( 0, "MyTestSubclass2", "Scroll", WS_OVERLAPPEDWINDOW,
                             CW_USEDEFAULT, CW_USEDEFAULT, 100, 100, NULL, NULL, GetModuleHandleA(NULL), 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!hwnd, "Created scrollbar subclass with insufficient extra bytes: %p\n", hwnd);
     if (hwnd) DestroyWindow(hwnd);
 #else

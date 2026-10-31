@@ -57,7 +57,7 @@
 #include "winternl.h"
 #include "winnls.h"
 #include "wingdi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* RegGetValueW is supported by Win2k3 SP1 but headers need Win Vista */
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600
@@ -74,7 +74,7 @@
 #include "shlwapi.h"
 
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C HRESULT DoInitAutoCompleteWithCWD(FileOpenDlgInfos *pInfo, HWND hwndEdit);
 EXTERN_C HRESULT DoReleaseAutoCompleteWithCWD(FileOpenDlgInfos *pInfo);
 #endif
@@ -104,7 +104,7 @@ typedef struct tagLookInInfo
   UINT uSelectedItem;
 } LookInInfos;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* We have to call IShellView::TranslateAccelerator to handle the standard
    key bindings of File Open Dialog. We use hook to realize them. */
 static HHOOK s_hFileDialogHook = NULL;
@@ -271,7 +271,7 @@ static void    FILEDLG95_LOOKIN_Clean(HWND hwnd);
 static void FILEDLG95_MRU_load_filename(LPWSTR stored_path);
 static WCHAR FILEDLG95_MRU_get_slot(LPCWSTR module_name, LPWSTR stored_path, PHKEY hkey_ret);
 static void FILEDLG95_MRU_save_filename(LPCWSTR filename);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void FILEDLG95_MRU_load_ext(LPWSTR stored_path, size_t cchMax, LPCWSTR defext);
 static void FILEDLG95_MRU_save_ext(LPCWSTR filename);
 #endif
@@ -364,7 +364,7 @@ static void filedlg_collect_places_pidls(FileOpenDlgInfos *fodInfos)
 {
     static const int default_places[] =
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         CSIDL_RECENT,
         CSIDL_DESKTOP,
         CSIDL_MYDOCUMENTS,
@@ -536,7 +536,7 @@ static void init_filedlg_infoW(OPENFILENAMEW *ofn, FileOpenDlgInfos *info)
     info->ofnInfos = ofn;
 
     info->title = ofn->lpstrTitle;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ofn->lpstrDefExt)
     {
         INT cchExt = lstrlenW(ofn->lpstrDefExt);
@@ -674,7 +674,7 @@ static BOOL GetFileDialog95(FileOpenDlgInfos *info, UINT dlg_type)
         free((void *)info->filter);
         free((void *)info->customfilter);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
     {
         free((void *)info->defext);
@@ -958,7 +958,7 @@ static INT_PTR CALLBACK FileOpenDlgProcUserTemplate(HWND hwnd, UINT uMsg, WPARAM
     return FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static INT_PTR CALLBACK FileOpenDlgProcHookInit(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     FileOpenDlgInfos *fodInfos = get_filedlg_infoptr(GetParent(hwnd));
@@ -1032,7 +1032,7 @@ static HWND CreateTemplateDialog(FileOpenDlgInfos *fodInfos, HWND hwnd)
           return NULL;
     	}
       }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (fodInfos->unicode)
           hChildDlg = CreateDialogIndirectParamW(hinst, template, hwnd,
               is_dialog_hooked(fodInfos) ? FileOpenDlgProcHookInit : FileOpenDlgProcUserTemplate,
@@ -1159,7 +1159,7 @@ static INT_PTR FILEDLG95_HandleCustomDialogMessages(HWND hwnd, UINT uMsg, WPARAM
 {
     FileOpenDlgInfos *fodInfos = get_filedlg_infoptr(hwnd);
     WCHAR lpstrPath[MAX_PATH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     INT_PTR retval = FALSE;
 #else
     INT_PTR retval;
@@ -1228,7 +1228,7 @@ static INT_PTR FILEDLG95_HandleCustomDialogMessages(HWND hwnd, UINT uMsg, WPARAM
             else retval = FALSE;
             break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case CDM_SETDEFEXT:
         {
             LPWSTR olddefext = (LPWSTR)fodInfos->defext;
@@ -1551,7 +1551,7 @@ INT_PTR CALLBACK FileOpenDlgProc95(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
          if(fodInfos->ofnInfos->Flags & OFN_EXPLORER)
              SendCustomDlgNotificationMessage(hwnd,CDN_SELCHANGE);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
          /* Enable hook and translate */
          EnterCriticalSection(&COMDLG32_OpenFileLock);
          if (++s_nFileDialogHookCount == 1)
@@ -1599,7 +1599,7 @@ INT_PTR CALLBACK FileOpenDlgProc95(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
               SendDlgItemMessageW(hwnd, IDC_TOOLBARPLACES, TB_SETIMAGELIST, 0, 0);
               ImageList_Destroy(himl);
           }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           /* Disable hook and translate */
           EnterCriticalSection(&COMDLG32_OpenFileLock);
           FILEDLG95_AddRemoveTranslate(hwnd, NULL);
@@ -1909,7 +1909,7 @@ static LRESULT FILEDLG95_InitControls(HWND hwnd)
         }
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!handledPath && (!fodInfos->initdir || !*fodInfos->initdir))
   {
       /* 2.5. Win2000+: Recently used defext */
@@ -2066,7 +2066,7 @@ static LRESULT FILEDLG95_InitControls(HWND hwnd)
   /* change Open to Save */
   if (fodInfos->DlgInfos.dwDlgProp & FODPROP_SAVEDLG)
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       WCHAR buf[24];
 #else
       WCHAR buf[16];
@@ -2079,7 +2079,7 @@ static LRESULT FILEDLG95_InitControls(HWND hwnd)
 
   /* Initialize the filter combo box */
   FILEDLG95_FILETYPE_Init(hwnd);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DoInitAutoCompleteWithCWD(fodInfos, fodInfos->DlgInfos.hwndFileName);
 #endif
 
@@ -2638,7 +2638,7 @@ static void FILEDLG95_MRU_load_filename(LPWSTR stored_path)
     FILEDLG95_MRU_get_slot(module_name, stored_path, NULL);
     TRACE("got MRU path: %s\n", wine_dbgstr_w(stored_path));
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static const WCHAR s_subkey[] =
 {
@@ -2858,7 +2858,7 @@ static void FILEDLG95_MRU_save_ext(LPCWSTR filename)
     }
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 void FILEDLG95_OnOpenMessage(HWND hwnd, int idCaption, int idText)
 {
@@ -2872,7 +2872,7 @@ void FILEDLG95_OnOpenMessage(HWND hwnd, int idCaption, int idText)
   MessageBoxW(hwnd,strMsgText, strMsgTitle, MB_OK | MB_ICONHAND);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* The return value needs LocalFree */
 static LPWSTR FILEDLG95_GetFallbackExtension(FileOpenDlgInfos *fodInfos, LPWSTR lpstrPathAndFile)
 {
@@ -3015,7 +3015,7 @@ int FILEDLG95_ValidatePathAction(LPWSTR lpstrPathAndFile, IShellFolder **ppsf,
             PathAddBackslashW(lpwstrTemp);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         dwAttributes = SFGAO_FOLDER | SFGAO_FILESYSANCESTOR;
 #else
         dwAttributes = SFGAO_FOLDER;
@@ -3024,7 +3024,7 @@ int FILEDLG95_ValidatePathAction(LPWSTR lpstrPathAndFile, IShellFolder **ppsf,
         {
             /* the path component is valid, we have a pidl of the next path component */
             TRACE("parse OK attr=0x%08lx pidl=%p\n", dwAttributes, pidl);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if((dwAttributes & (SFGAO_FOLDER | SFGAO_FILESYSANCESTOR)) ==
                (SFGAO_FOLDER | SFGAO_FILESYSANCESTOR))
 #else
@@ -3153,7 +3153,7 @@ BOOL FILEDLG95_OnOpen(HWND hwnd)
   else
     nOpenAction = ONOPEN_BROWSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if ((fodInfos->ofnInfos->Flags & OFN_FILEMUSTEXIST) &&
       !(fodInfos->DlgInfos.dwDlgProp & FODPROP_SAVEDLG))
     FILEDLG95_AddDotExtIfNeeded(fodInfos, lpstrPathAndFile);
@@ -3236,7 +3236,7 @@ BOOL FILEDLG95_OnOpen(HWND hwnd)
     case ONOPEN_OPEN:   /* fill in the return struct and close the dialog */
       TRACE("ONOPEN_OPEN %s\n", debugstr_w(lpstrPathAndFile));
       {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         WCHAR *ext = NULL;
 #endif
 
@@ -3247,12 +3247,12 @@ BOOL FILEDLG95_OnOpen(HWND hwnd)
 	  fodInfos->ofnInfos->Flags &= ~OFN_READONLY;
 
         /* Attach the file extension with file name*/
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /* Add extension if necessary */
         FILEDLG95_AddDotExtIfNeeded(fodInfos, lpstrPathAndFile);
         /* update dialog data */
         SetWindowTextW(fodInfos->DlgInfos.hwndFileName, PathFindFileNameW(lpstrPathAndFile));
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
         ext = PathFindExtensionW(lpstrPathAndFile);
         if (! *ext && fodInfos->defext)
         {
@@ -3326,7 +3326,7 @@ BOOL FILEDLG95_OnOpen(HWND hwnd)
             else
                 fodInfos->ofnInfos->Flags |= OFN_EXTENSIONDIFFERENT;
 	}
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 	/* In Save dialog: check if the file already exists */
 	if (fodInfos->DlgInfos.dwDlgProp & FODPROP_SAVEDLG
@@ -3459,7 +3459,7 @@ BOOL FILEDLG95_OnOpen(HWND hwnd)
 	      goto ret;
 
           FILEDLG95_MRU_save_filename(lpstrPathAndFile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           FILEDLG95_MRU_save_ext(lpstrPathAndFile);
 #endif
 
@@ -4615,7 +4615,7 @@ static LPITEMIDLIST GetPidlFromName(IShellFolder *lpsf,LPWSTR lpcstrFileName)
 */
 static BOOL IsPidlFolder (LPSHELLFOLDER psf, LPCITEMIDLIST pidl)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	ULONG uAttr  = SFGAO_FOLDER | SFGAO_HASSUBFOLDER | SFGAO_FILESYSANCESTOR;
 #else
 	ULONG uAttr  = SFGAO_FOLDER | SFGAO_HASSUBFOLDER;
@@ -4628,7 +4628,7 @@ static BOOL IsPidlFolder (LPSHELLFOLDER psf, LPCITEMIDLIST pidl)
 
 	TRACE("-- 0x%08lx 0x%08lx\n", uAttr, ret);
 	/* see documentation shell 4.1*/
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return (uAttr & (SFGAO_FOLDER | SFGAO_HASSUBFOLDER)) && (uAttr & SFGAO_FILESYSANCESTOR);
 #else
         return uAttr & (SFGAO_FOLDER | SFGAO_HASSUBFOLDER);

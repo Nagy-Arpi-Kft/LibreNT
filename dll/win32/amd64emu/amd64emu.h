@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT AMD64 emulation host
+ * PROJECT:     LibreNT AMD64 emulation host
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Private declarations of the NT front end
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -17,7 +17,7 @@
 #define __WINE_WINNT_EXCEPTION_REGISTRATION_RECORD
 #include <wine/winnt.h>
 #include <pseh/pseh2.h>
-#include <reactos/emulation.h>
+#include <librent/emulation.h>
 #include "cpu.h"
 
 #define EMU_MAX_SERVICE_ARGUMENTS 32

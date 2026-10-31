@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys)
 
 spec2def(basesrv.dll basesrv.spec ADD_IMPORTLIB)
 
@@ -28,4 +28,4 @@ target_link_libraries(basesrv ${PSEH_LIB})
 add_importlibs(basesrv csrsrv ntdll)
 add_pch(basesrv basesrv.h SOURCE)
 add_dependencies(basesrv bugcodes xdk)
-add_cd_file(TARGET basesrv DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET basesrv DESTINATION librent/system32 FOR all)

@@ -152,7 +152,7 @@ static void test_create_env(void)
     for(i=0; i<4; i++)
     {
         r = get_env(env[i], "SystemRoot", &st);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!stricmp(st, "SystemRoot=overwrite"), "%s\n", st);
 #else
         ok(!strcmp(st, "SystemRoot=overwrite"), "%s\n", st);

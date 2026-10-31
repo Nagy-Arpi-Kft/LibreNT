@@ -183,7 +183,7 @@ static HRESULT WINAPI PZIPersistFile_IsDirty(IPersistFile *iface)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR *zone_stream_name(LPCOLESTR file_name)
 {
     static const WCHAR suffix[] = L":Zone.Identifier";
@@ -269,7 +269,7 @@ static HRESULT WINAPI PZIPersistFile_Load(IPersistFile *iface, LPCOLESTR file_na
 
     CloseHandle(hfile);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         DWORD zone;
 
@@ -316,7 +316,7 @@ static HRESULT WINAPI PZIPersistFile_Save(IPersistFile *iface, LPCOLESTR file_na
 
     CloseHandle(hfile);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!This->is_zone_removed)
     {
         HRESULT hr = write_zone_stream(file_name, This->zone);

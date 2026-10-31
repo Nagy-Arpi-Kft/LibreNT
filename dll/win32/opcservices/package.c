@@ -2055,7 +2055,7 @@ HRESULT opc_package_write(IOpcPackage *package, OPC_WRITE_FLAGS flags, IStream *
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct read_content_type
 {
     WCHAR *key;

@@ -791,7 +791,7 @@ typedef PVOID (CALLBACK *PFUNCTION_TABLE_ACCESS_ROUTINE64)(
 typedef DWORD (CALLBACK *PGET_MODULE_BASE_ROUTINE)(
   HANDLE hProcess, DWORD ReturnAddress);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef DWORD64 (CALLBACK *PGET_MODULE_BASE_ROUTINE64)(
   HANDLE hProcess, DWORD64 ReturnAddress);
 #else
@@ -803,7 +803,7 @@ typedef DWORD (CALLBACK *PTRANSLATE_ADDRESS_ROUTINE)(
   HANDLE hProcess, HANDLE hThread, LPADDRESS lpaddr
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef DWORD64 (CALLBACK *PTRANSLATE_ADDRESS_ROUTINE64)(
   HANDLE hProcess, HANDLE hThread, LPADDRESS64 lpaddr
 );
@@ -838,7 +838,7 @@ DWORD   IMAGEAPI GetImageUnusedHeaderBytes(PLOADED_IMAGE LoadedImage, LPDWORD Si
 DWORD   IMAGEAPI GetTimestampForLoadedLibrary(HMODULE Module);
 BOOL    IMAGEAPI ImageAddCertificate(HANDLE FileHandle, LPWIN_CERTIFICATE Certificate, PDWORD Index);
 PVOID   IMAGEAPI ImageDirectoryEntryToData(PVOID Base, BOOLEAN MappedAsImage, USHORT DirectoryEntry, PULONG Size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PVOID   IMAGEAPI ImageDirectoryEntryToDataEx(PVOID Base, BOOLEAN MappedAsImage, USHORT DirectoryEntry, PULONG Size, PIMAGE_SECTION_HEADER *FoundHeader);
 #endif
 BOOL    IMAGEAPI ImageEnumerateCertificates(HANDLE FileHandle, WORD TypeFilter, PDWORD CertificateCount, PDWORD Indices, DWORD IndexCount);

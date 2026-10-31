@@ -20,11 +20,11 @@
 #pragma makedep proxy
 #pragma makedep register
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define QMGRPRXY_EMBEDDED_BITS
 #endif
 #include "bits.idl"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef QMGRPRXY_EMBEDDED_BITS
 #endif
 

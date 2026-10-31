@@ -620,7 +620,7 @@ HRESULT node_insert_before(struct domnode *node, IXMLDOMNode *new_child, const V
             if (ref_node->parent != node)
             {
                 WARN("Reference node is not a child of this node.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 return E_INVALIDARG;
 #else
                 return E_FAIL;
@@ -735,7 +735,7 @@ HRESULT node_put_data(struct domnode *node, const WCHAR *data)
 
     while (p && *p)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (*p == '\r' && !(node->type == NODE_ATTRIBUTE && node_get_doc(node)->properties->version >= MSXML6))
 #else
         if (*p == '\r')
@@ -1032,7 +1032,7 @@ HRESULT domnode_get_attribute(const struct domnode *node, const WCHAR *name, str
     return S_FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR *domnode_get_declaration_value(const struct domnode *node, const WCHAR *name)
 {
     struct domnode *attr, *text;
@@ -1433,7 +1433,7 @@ static struct domdoc_properties* domdoc_properties_clone(struct domdoc_propertie
         pcopy->uri = properties->uri;
         if (pcopy->uri)
             IUri_AddRef(pcopy->uri);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pcopy->free_threaded = properties->free_threaded;
 #endif
     }
@@ -2015,7 +2015,7 @@ bool domnode_is_namespace_declaration(const struct domnode *node)
     return node->flags & DOMNODE_NS_DECL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static bool node_dump_has_default_namespace(struct node_dump_context *context)
 {
     struct node_dump_ns *ns;
@@ -2034,7 +2034,7 @@ static bool is_namespace_defined(struct node_dump_context *context, struct domno
 {
     struct node_dump_ns *ns;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!node->uri)
         return node->type != NODE_ELEMENT || node->prefix || !node_dump_has_default_namespace(context);
 #else
@@ -2057,7 +2057,7 @@ static bool is_namespace_defined(struct node_dump_context *context, struct domno
 
 static void node_dump_namespace_for_node(struct node_dump_context *context, struct domnode *node)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!node->uri)
         node_dump_push_namespace(context, NULL, SysAllocString(L""), true);
     else
@@ -2156,7 +2156,7 @@ static void node_dump(struct domnode *node, struct node_dump_context *context)
             node_dump_append(context, L"<", 1);
             node_dump_qualified_name(context, node);
             node_dump_element_attributes(context, node);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (list_empty(&node->children) && !(node->flags & DOMNODE_EXPLICIT_END_TAG))
 #else
             if (list_empty(&node->children))
@@ -2255,7 +2255,7 @@ HRESULT node_get_xml(struct domnode *node, BSTR *ret)
         LIST_FOR_EACH_ENTRY(n, &node->children, struct domnode, entry)
         {
             node_dump(n, &context);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (node->properties->version < MSXML6 || node->properties->preserving != VARIANT_TRUE)
 #endif
             node_dump_append(&context, L"\r\n", 2);
@@ -4334,7 +4334,7 @@ static HRESULT WINAPI parse_extension_handler_dtd(ISAXExtensionHandler *iface,
     return c->status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI parse_extension_handler_endtag(ISAXExtensionHandler *iface)
 {
     struct parse_context *c = impl_from_ISAXExtensionHandler(iface);
@@ -4353,7 +4353,7 @@ static const ISAXExtensionHandlerVtbl parse_extension_handler_vtbl =
     parse_extension_handler_Release,
     parse_extension_handler_xmldecl,
     parse_extension_handler_dtd,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     parse_extension_handler_endtag,
 #endif
 };
@@ -4657,7 +4657,7 @@ static xmlNodePtr create_xmlnode_element(struct xmldoc_context *context, struct 
     return xmlnode;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void xmldtd_link_element_attributes(void *payload, void *data, const xmlChar *name)
 {
     xmlElementPtr src = payload, dst;
@@ -4697,7 +4697,7 @@ static xmlDtdPtr create_xmldtd_from_domnode(struct domnode *node)
     SysFreeString(str);
 
     if ((dtd = xmlGetIntSubset(doc)))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         xmlDtdPtr copy = xmlCopyDtd(dtd);
 
@@ -4956,7 +4956,7 @@ HRESULT create_attribute_node(const WCHAR *name, const WCHAR *uri, struct domnod
     return create_node(attr, ret);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG validate_error_code(const xmlError *error)
 {
     xmlNodePtr node = error->node, child;
@@ -4998,7 +4998,7 @@ static LONG validate_error_code(const xmlError *error)
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct validate_error_info
 {
     LONG *code;
@@ -5009,7 +5009,7 @@ struct validate_error_info
 static void LIBXML2_LOG_CALLBACK validate_error(void* ctx, char const* msg, ...)
 {
     va_list ap;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct validate_error_info *first = ctx;
     const xmlError *error;
 
@@ -5042,7 +5042,7 @@ HRESULT node_validate(struct domnode *doc, IXMLDOMNode *node_obj, IXMLDOMParseEr
     int validated = 0;
     xmlDocPtr xmldoc;
     xmlNodePtr xmlnode;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BSTR reason = NULL;
     struct validate_error_info info = { &err_code, &reason };
 #endif
@@ -5075,7 +5075,7 @@ HRESULT node_validate(struct domnode *doc, IXMLDOMNode *node_obj, IXMLDOMParseEr
 
         vctx->error = validate_error;
         vctx->warning = validate_warning;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         vctx->userData = &info;
 #endif
         ++validated;
@@ -5085,7 +5085,7 @@ HRESULT node_validate(struct domnode *doc, IXMLDOMNode *node_obj, IXMLDOMParseEr
         {
             /* TODO: get a real error code here */
             TRACE("DTD validation failed\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!err_code)
                 err_code = E_XML_INVALID;
 #else
@@ -5093,7 +5093,7 @@ HRESULT node_validate(struct domnode *doc, IXMLDOMNode *node_obj, IXMLDOMParseEr
 #endif
             hr = S_FALSE;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else
         {
             err_code = 0;
@@ -5109,7 +5109,7 @@ HRESULT node_validate(struct domnode *doc, IXMLDOMNode *node_obj, IXMLDOMParseEr
     if (hr == S_OK && schema)
     {
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = SchemaCache_validate_tree(schema, xmlnode, &reason);
 #else
         hr = SchemaCache_validate_tree(schema, xmlnode);
@@ -5143,7 +5143,7 @@ HRESULT node_validate(struct domnode *doc, IXMLDOMNode *node_obj, IXMLDOMParseEr
         hr = S_FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hr == S_OK && reason)
     {
         SysFreeString(reason);

@@ -23,13 +23,13 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #define CRYPT_OID_INFO_HAS_EXTRA_FIELDS
 #endif
 #include "windef.h"
 #include "winbase.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define NTOS_MODE_USER
 #include "ndk/rtlfuncs.h"
 #ifndef ARRAY_SIZE
@@ -47,7 +47,7 @@
 #include "bcrypt.h"
 #include "ncrypt.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 #include "wine/debug.h"
@@ -55,7 +55,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(secur32);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define GNUTLS_CALL( func, params ) schan_backend_call( unix_ ## func, params )
 #else
 #define GNUTLS_CALL( func, params ) WINE_UNIX_CALL( unix_ ## func, params )
@@ -706,7 +706,7 @@ static BYTE *get_key_blob_ncrypt(const CERT_CONTEXT *ctx, DWORD *size)
     return buf;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BYTE *get_key_blob_capi(const CERT_CONTEXT *ctx, DWORD *size)
 {
     CERT_KEY_CONTEXT keyctx;
@@ -785,7 +785,7 @@ static SECURITY_STATUS acquire_credentials_handle(ULONG fCredentialUse,
     creds->credential_use = fCredentialUse;
     creds->enabled_protocols = enabled_protocols;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (cert && !(key_blob = get_key_blob(cert, &key_size))
              && !(key_blob = get_key_blob_capi(cert, &key_size))
              && !(key_blob = get_key_blob_ncrypt(cert, &key_size))) goto fail;
@@ -1944,7 +1944,7 @@ void SECUR32_initSchannelSP(void)
     };
     SecureProvider *provider;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GNUTLS_CALL( process_attach, NULL ))
 #else
     if (__wine_init_unix_call() || GNUTLS_CALL( process_attach, NULL ))

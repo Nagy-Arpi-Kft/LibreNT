@@ -23,8 +23,8 @@ list(APPEND HEADERS
     apphelp.h
     sdbpapi.h
     sdbstringtable.h
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/appcompat/sdbtagid.h
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/appcompat/sdbtypes.h
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/appcompat/sdbtagid.h
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/appcompat/sdbtypes.h
     sdbwrite.h
     shimeng.h)
 
@@ -37,4 +37,4 @@ add_library(apphelp MODULE
 set_module_type(apphelp win32dll UNICODE ENTRYPOINT DllMain 12)
 add_delay_importlibs(apphelp version)
 add_importlibs(apphelp kernel32 ntdll)
-add_cd_file(TARGET apphelp DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET apphelp DESTINATION librent/system32 FOR all)

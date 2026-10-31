@@ -1,13 +1,13 @@
 
 remove_definitions(-D_CRT_NON_CONFORMING_SWPRINTFS)
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 spec2def(combase.dll combase.spec ADD_IMPORTLIB)
 add_idl_headers(combase_idlheader dcom.idl)
 add_rpc_files(client irpcss.idl)
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/irpcss_c.c
-    DEPENDS ${REACTOS_SOURCE_DIR}/sdk/include/wine/irot.idl ${REACTOS_SOURCE_DIR}/sdk/include/wine/irpcss.idl
+    DEPENDS ${LIBRENT_SOURCE_DIR}/sdk/include/wine/irot.idl ${LIBRENT_SOURCE_DIR}/sdk/include/wine/irpcss.idl
     APPEND)
 
 list(APPEND SOURCE
@@ -39,5 +39,5 @@ endif()
 target_link_libraries(combase wine uuid pseh)
 add_importlibs(combase advapi32 ole32 oleaut32 user32 gdi32 rpcrt4 msvcrt kernelbase kernel32_vista kernel32 ntdll)
 add_dependencies(combase combase_idlheader wineheaders rpcss)
-add_cd_file(TARGET combase DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET combase DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(combase) # CORE-5743: No ARRAY_SIZE macro

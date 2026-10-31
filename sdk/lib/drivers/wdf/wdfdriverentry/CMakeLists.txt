@@ -1,4 +1,4 @@
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 
 function(add_wdfdriverentry_version _target _minor)
     add_library(${_target} STATIC
@@ -23,10 +23,10 @@ function(add_wdfdriverentry_version _target _minor)
         -UNTDDI_VERSION -DNTDDI_VERSION=0x06030000)
 
     target_include_directories(${_target}
-        PUBLIC ${REACTOS_SOURCE_DIR}/sdk/include/wdf/kmdf/1.${_minor}
+        PUBLIC ${LIBRENT_SOURCE_DIR}/sdk/include/wdf/kmdf/1.${_minor}
         PRIVATE
-            ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/wdf/shared/inc/private/common
-            ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/wdf/kmdf/inc/private)
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/wdf/shared/inc/private/common
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/wdf/kmdf/inc/private)
 endfunction()
 
 # Keep the historical target name as the default KMDF 1.17 client stub.

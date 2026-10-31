@@ -225,7 +225,7 @@ static const unsigned short  PDB_STREAM_IPI = 4;
 
 static enum pdb_result pdb_reader_fetch_file_no_cache(struct pdb_reader *pdb, void *buffer, pdboff_t offset, pdbsize_t size)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     OVERLAPPED ov = {.Offset = offset, .OffsetHigh = offset >> 32};
 #else
     OVERLAPPED ov = {.Offset = offset, .OffsetHigh = offset >> 32, .hEvent = (HANDLE)(DWORD_PTR)1};

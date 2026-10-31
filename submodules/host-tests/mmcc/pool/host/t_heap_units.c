@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/pool/host/t_heap_units.c
  * PURPOSE:     Pool heap host-native unit tests
  *

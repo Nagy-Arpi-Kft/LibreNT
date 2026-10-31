@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * The parameters of many functions changes between different OS versions
  * (NT uses Unicode strings, 95 uses ANSI strings)
@@ -2021,7 +2021,7 @@ BOOL WINAPI LinkWindow_UnregisterClass(void)
 void WINAPI SHFlushSFCache(void)
 {
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  * The parameters of many functions changes between different OS versions
  * (NT uses Unicode strings, 95 uses ASCII strings)
@@ -2069,7 +2069,7 @@ void WINAPI SHFlushSFCache(void)
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 WINE_DECLARE_DEBUG_CHANNEL(pidl);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <comctl32_undoc.h>
 #include <shlwapi_undoc.h>
 #else
@@ -2224,7 +2224,7 @@ typedef BOOL (WINAPI *GetOpenFileNameProc)(OPENFILENAMEW *ofn);
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL SHELL_GlobalCounterChanged(LONG *pCounter, SHELL_GCOUNTER_DECLAREPARAMETERS(handle, id))
 {
     LONG count = SHELL_GlobalCounterGet(SHELL_GCOUNTER_PARAMETERS(handle, id));
@@ -2245,14 +2245,14 @@ static UINT g_CachedSSF = 0;
 static REGSHELLSTATE g_ShellState;
 enum { ssf_autocheckselect = 0x00800000, ssf_iconsonly = 0x01000000,
        ssf_showtypeoverlay = 0x02000000, ssf_showstatusbar = 0x04000000 };
-#endif //__REACTOS__
+#endif //__LIBRENT__
 
 /*************************************************************************
  * SHGetSetSettings				[SHELL32.68]
  */
 VOID WINAPI SHGetSetSettings(LPSHELLSTATE lpss, DWORD dwMask, BOOL bSet)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const DWORD inverted = SSF_SHOWEXTENSIONS;
     LPSHELLSTATE gpss = &g_ShellState.ss;
     HKEY hKeyAdv;
@@ -2439,7 +2439,7 @@ VOID WINAPI SHGetSetSettings(LPSHELLSTATE lpss, DWORD dwMask, BOOL bSet)
   {
     SHGetSettings((LPSHELLFLAGSTATE)lpss,dwMask);
   }
-#endif //__REACTOS__
+#endif //__LIBRENT__
 }
 
 /*************************************************************************
@@ -2452,7 +2452,7 @@ VOID WINAPI SHGetSetSettings(LPSHELLSTATE lpss, DWORD dwMask, BOOL bSet)
  */
 VOID WINAPI SHGetSettings(LPSHELLFLAGSTATE lpsfs, DWORD dwMask)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SHELLSTATE ss;
     ZeroMemory(&ss, sizeof(ss));
     SHGetSetSettings(&ss, dwMask & ~(SSF_SORTCOLUMNS | SSF_FILTER), FALSE);
@@ -2505,7 +2505,7 @@ VOID WINAPI SHGetSettings(LPSHELLFLAGSTATE lpsfs, DWORD dwMask)
 	  }
 	}
 	RegCloseKey (hKey);
-#endif //__REACTOS__
+#endif //__LIBRENT__
 	TRACE("-- 0x%04x\n", *(WORD*)lpsfs);
 }
 
@@ -2574,7 +2574,7 @@ BOOL WINAPI RegisterShellHook(
  * See ShellMessageBoxA.
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*
  * shell32.ShellMessageBoxW directly redirects to shlwapi.ShellMessageBoxWrapW,
  * while shell32.ShellMessageBoxA is a copy-paste ANSI adaptation of the
@@ -2586,7 +2586,7 @@ BOOL WINAPI RegisterShellHook(
  * to the corresponding shlwapi functions.
  *
  */
-#else // !__REACTOS__
+#else // !__LIBRENT__
 /*
  * NOTE:
  * shlwapi.ShellMessageBoxWrapW is a duplicate of shell32.ShellMessageBoxW
@@ -2654,7 +2654,7 @@ int ShellMessageBoxW(
  * NOTES
  *     Exported by ordinal
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*
  * Note that we cannot straightforwardly implement ShellMessageBoxA around
  * ShellMessageBoxW, by converting some parameters from ANSI to UNICODE,
@@ -2674,7 +2674,7 @@ int ShellMessageBoxA(
 	UINT uType,
 	...)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CHAR *szText = NULL, szTitle[100];
     LPCSTR pszText, pszTitle = szTitle;
     LPSTR pszTemp;
@@ -2727,7 +2727,7 @@ int ShellMessageBoxA(
     LocalFree(pszTemp);
     return ret;
 
-#else // __REACTOS__
+#else // __LIBRENT__
 
 // Wine version, broken.
 	char	szText[100],szTitle[100];
@@ -2872,7 +2872,7 @@ SignalFileOpen (PCIDLIST_ABSOLUTE pidl)
     return FALSE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 /*************************************************************************
  * SHADD_get_policy - helper function for SHAddToRecentDocs
@@ -2915,7 +2915,7 @@ static INT SHADD_get_policy(LPCSTR policy, LPDWORD type, LPVOID buffer, LPDWORD 
     return ret;
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*************************************************************************
  * SHADD_compare_mru - helper function for SHAddToRecentDocs
@@ -2930,7 +2930,7 @@ static INT SHADD_get_policy(LPCSTR policy, LPDWORD type, LPVOID buffer, LPDWORD 
  */
 static INT CALLBACK SHADD_compare_mru(LPCVOID data1, LPCVOID data2, DWORD cbData)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPCWSTR psz1, psz2;
     INT iCmp = lstrcmpiW(data1, data2);
     if (iCmp != 0)
@@ -2945,7 +2945,7 @@ static INT CALLBACK SHADD_compare_mru(LPCVOID data1, LPCVOID data2, DWORD cbData
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL
 DoStoreMRUData(LPBYTE pbBuffer, LPDWORD pcbBuffer,
                LPCWSTR pszTargetTitle, LPCWSTR pszTargetPath, LPCWSTR pszLinkTitle)
@@ -3053,7 +3053,7 @@ static INT SHADD_create_add_mru_data(HANDLE mruhandle, LPCSTR doc_name, LPCSTR n
  */
 void WINAPI SHAddToRecentDocs (UINT uFlags,LPCVOID pv)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     INT ret;
     WCHAR szTargetPath[MAX_PATH], szLinkDir[MAX_PATH], szLinkFile[MAX_PATH], szDescription[80];
     WCHAR szPath[MAX_PATH];
@@ -3702,7 +3702,7 @@ Quit:
  * NOTES
  *  see IShellFolder::CreateViewObject
  */
- #ifndef __REACTOS__
+ #ifndef __LIBRENT__
 
 HRESULT WINAPI SHCreateShellFolderViewEx(
 	LPCSFV psvcbi,    /* [in] shelltemplate struct */
@@ -3749,7 +3749,7 @@ HRESULT WINAPI SHWinHelp(HWND hwnd, LPCWSTR pszHelp, UINT uCommand, ULONG_PTR dw
  *  SHRunControlPanel [SHELL32.161]
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C BOOL WINAPI
 SHELL32_RunControlPanel(_In_ PCWSTR commandLine, _In_opt_ HWND parent)
 {
@@ -3761,7 +3761,7 @@ SHELL32_RunControlPanel(_In_ PCWSTR commandLine, _In_opt_ HWND parent)
      * "If the specified Control Panel item is already running, SHRunControlPanel
      *  attempts to switch to that instance rather than opening a new instance."
      * This function is not supported as of Windows Vista, where it always returns FALSE.
-     * However we need to keep it "alive" even when ReactOS is compliled as NT6+
+     * However we need to keep it "alive" even when LibreNT is compliled as NT6+
      * in order to keep control panel elements launch commands.
      */
     WCHAR parameters[MAX_PATH] = L"shell32.dll,Control_RunDLL ";
@@ -3774,7 +3774,7 @@ SHELL32_RunControlPanel(_In_ PCWSTR commandLine, _In_opt_ HWND parent)
 
 BOOL WINAPI SHRunControlPanel(_In_ LPCWSTR commandLine, _In_opt_ HWND parent)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%s, %p)n", debugstr_w(commandLine), parent);
     /* MSDN indicates that ROS should have a version check here but Vista+ just forwards to SHUNIMPL
     if (LOBYTE(GetVersion()) >= 6)
@@ -4063,7 +4063,7 @@ BOOL WINAPI WriteCabinetState(CABINETSTATE *cs)
 		RegCloseKey( hkey );
 	}
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	/* TODO: if (r==ERROR_SUCCESS) Increment GLOBALCOUNTER_FOLDERSETTINGSCHANGE */
 #endif
 	return (r==ERROR_SUCCESS);
@@ -4307,14 +4307,14 @@ BOOL WINAPI GUIDFromStringW(LPCWSTR str, LPGUID guid)
 /*************************************************************************
  *      PathIsTemporaryA    [SHELL32.713]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /** @see https://undoc.airesoft.co.uk/shell32.dll/PathIsTemporaryA.php */
 BOOL WINAPI PathIsTemporaryA(_In_ LPCSTR Str)
 #else
 BOOL WINAPI PathIsTemporaryA(LPSTR Str)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR szWide[MAX_PATH];
 
     TRACE("(%s)\n", debugstr_a(Str));
@@ -4330,14 +4330,14 @@ BOOL WINAPI PathIsTemporaryA(LPSTR Str)
 /*************************************************************************
  *      PathIsTemporaryW    [SHELL32.714]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /** @see https://undoc.airesoft.co.uk/shell32.dll/PathIsTemporaryW.php */
 BOOL WINAPI PathIsTemporaryW(_In_ LPCWSTR Str)
 #else
 BOOL WINAPI PathIsTemporaryW(LPWSTR Str)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR szLongPath[MAX_PATH], szTempPath[MAX_PATH];
     DWORD attrs;
     LPCWSTR pszTarget = Str;
@@ -4682,13 +4682,13 @@ BOOL WINAPI SHFindFiles( PCIDLIST_ABSOLUTE pidlFolder, PCIDLIST_ABSOLUTE pidlSav
  *  uFlags can be one or more of the following flags:
  *  GIL_NOTFILENAME - pszHashItem is not a file name.
  *  GIL_SIMULATEDOC - Create a document icon using the specified icon.
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
  * https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shupdateimagew
 #endif
  */
 void WINAPI SHUpdateImageW(LPCWSTR pszHashItem, int iIndex, UINT uFlags, int iImageIndex)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     // If iImageIndex == -1 (undetermined), it will fall back to the default value of 1.
     INT iEffectiveImageIndex = (iImageIndex == -1) ? 1 : iImageIndex;
 
@@ -4722,13 +4722,13 @@ void WINAPI SHUpdateImageW(LPCWSTR pszHashItem, int iIndex, UINT uFlags, int iIm
  *		SHUpdateImageA (SHELL32.191)
  *
  * See SHUpdateImageW.
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
  * https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shupdateimagea
 #endif
  */
 VOID WINAPI SHUpdateImageA(LPCSTR pszHashItem, INT iIndex, UINT uFlags, INT iImageIndex)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR szHashItem[MAX_PATH];
     SHAnsiToUnicode(pszHashItem, szHashItem, _countof(szHashItem));
     SHUpdateImageW(szHashItem, iIndex, uFlags, iImageIndex);
@@ -4737,7 +4737,7 @@ VOID WINAPI SHUpdateImageA(LPCSTR pszHashItem, INT iIndex, UINT uFlags, INT iIma
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /**
  * Upon receiving the SHCNE_UPDATEIMAGE notification, this function returns the
  * corresponding icon index in its system image list.
@@ -4746,7 +4746,7 @@ VOID WINAPI SHUpdateImageA(LPCSTR pszHashItem, INT iIndex, UINT uFlags, INT iIma
 #endif
 INT WINAPI SHHandleUpdateImage(PCIDLIST_ABSOLUTE pidlExtra)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pidlExtra)
         return -1;
 
@@ -4858,7 +4858,7 @@ BOOL WINAPI SHGetNewLinkInfoW(LPCWSTR pszLinkTo, LPCWSTR pszDir, LPWSTR pszName,
 
 HRESULT WINAPI SHStartNetConnectionDialog(HWND hwnd, LPCSTR pszRemoteName, DWORD dwType)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SHELL_OsIsUnicode())
         return SHStartNetConnectionDialogW(hwnd, (LPCWSTR)pszRemoteName, dwType);
     return SHStartNetConnectionDialogA(hwnd, pszRemoteName, dwType);
@@ -4869,7 +4869,7 @@ HRESULT WINAPI SHStartNetConnectionDialog(HWND hwnd, LPCSTR pszRemoteName, DWORD
 #endif
 }
 
-#ifndef __REACTOS__ /* See ../utils.cpp */
+#ifndef __LIBRENT__ /* See ../utils.cpp */
 /*************************************************************************
  *              SHSetLocalizedName (SHELL32.@)
  */
@@ -4881,7 +4881,7 @@ HRESULT WINAPI SHSetLocalizedName(LPCWSTR pszPath, LPCWSTR pszResModule, int ids
 }
 #endif
 
-#ifndef __REACTOS__ // See ../utils.cpp
+#ifndef __LIBRENT__ // See ../utils.cpp
 /*************************************************************************
  *              LinkWindow_RegisterClass (SHELL32.258)
  */
@@ -4926,7 +4926,7 @@ void WINAPI SHFlushSFCache(void)
  */
 HRESULT WINAPI SHGetImageList(int iImageList, REFIID riid, void **ppv)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HIMAGELIST hList = SIC_GetImageList(iImageList);
 
     if (!hList)
@@ -4958,7 +4958,7 @@ HRESULT WINAPI SHGetImageList(int iImageList, REFIID riid, void **ppv)
 #endif
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 /*************************************************************************
  * SHCreateShellFolderView			[SHELL32.256]
@@ -5337,7 +5337,7 @@ SHLimitInputEdit(HWND hWnd, IShellFolder *psf)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  *  SHLimitInputCombo [SHELL32.748]
  *
@@ -5359,4 +5359,4 @@ SHLimitInputCombo(HWND hWnd, IShellFolder *psf)
     return SHLimitInputEdit(hwndEdit, psf);
 }
 #endif
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

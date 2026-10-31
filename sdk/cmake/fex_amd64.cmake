@@ -1,11 +1,11 @@
-# PROJECT:     ReactOS Build System
+# PROJECT:     LibreNT Build System
 # PURPOSE:     Build AMD64 command payloads executed through FEX
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/fex_amd64_targets.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/fex_amd64_targets.cmake")
 
-set(FEX_AMD64_BINARY_DIR "${REACTOS_BINARY_DIR}/_fex_amd64")
+set(FEX_AMD64_BINARY_DIR "${LIBRENT_BINARY_DIR}/_fex_amd64")
 
 foreach(_target IN LISTS FEX_AMD64_COMMAND_TARGETS)
     if(NOT TARGET "${_target}")
@@ -29,7 +29,7 @@ function(_fex_amd64_get_target_file _target _output)
         set(_suffix "${CMAKE_EXECUTABLE_SUFFIX}")
     endif()
 
-    file(RELATIVE_PATH _relative_dir "${REACTOS_BINARY_DIR}" "${_binary_dir}")
+    file(RELATIVE_PATH _relative_dir "${LIBRENT_BINARY_DIR}" "${_binary_dir}")
     set(${_output} "${FEX_AMD64_BINARY_DIR}/${_relative_dir}/${_prefix}${_output_name}${_suffix}" PARENT_SCOPE)
 endfunction()
 
@@ -49,14 +49,14 @@ foreach(_alias IN LISTS FEX_AMD64_COMMAND_ALIASES)
     list(APPEND FEX_AMD64_COMMAND_FILES "${_alias_source}")
     list(APPEND FEX_AMD64_ALIAS_SOURCES "${_alias_source}")
     list(APPEND FEX_AMD64_ALIAS_FILES
-        "${REACTOS_BINARY_DIR}/CMakeFiles/fex-amd64-aliases/${_alias_name}")
+        "${LIBRENT_BINARY_DIR}/CMakeFiles/fex-amd64-aliases/${_alias_name}")
 endforeach()
 
-get_filename_component(_fex_amd64_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${REACTOS_SOURCE_DIR}")
+get_filename_component(_fex_amd64_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${LIBRENT_SOURCE_DIR}")
 if(HOST_TOOLS_DIR)
     set(_fex_amd64_host_tools_dir "${HOST_TOOLS_DIR}")
 else()
-    set(_fex_amd64_host_tools_dir "${REACTOS_BINARY_DIR}/host-tools/bin")
+    set(_fex_amd64_host_tools_dir "${LIBRENT_BINARY_DIR}/host-tools/bin")
 endif()
 
 set(_fex_amd64_cmake_args
@@ -73,10 +73,10 @@ set(_fex_amd64_cmake_args
     -DMESA_GALLIUM_FROM_SOURCE:BOOL=OFF
     -DOPTIMIZE:STRING=${OPTIMIZE}
     -DPCH:BOOL=${PCH}
-    -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=${REACTOS_CLANG_LLVM_MINGW_ROOT}
-    -DREACTOS_GRAPHICS_DRIVER_MODEL:STRING=${REACTOS_GRAPHICS_DRIVER_MODEL}
-    -DREACTOS_TARGET_NT:STRING=${REACTOS_TARGET_NT}
-    -DREACTOS_WDDM_LEVEL:STRING=${REACTOS_WDDM_LEVEL}
+    -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=${LIBRENT_CLANG_LLVM_MINGW_ROOT}
+    -DLIBRENT_GRAPHICS_DRIVER_MODEL:STRING=${LIBRENT_GRAPHICS_DRIVER_MODEL}
+    -DLIBRENT_TARGET_NT:STRING=${LIBRENT_TARGET_NT}
+    -DLIBRENT_WDDM_LEVEL:STRING=${LIBRENT_WDDM_LEVEL}
     -DROSCONFIG_PROFILE:STRING=generic
     -DROSCONFIG_SKIP_OVERRIDES:BOOL=ON
     -DSEPARATE_DBG:BOOL=${SEPARATE_DBG}
@@ -84,16 +84,16 @@ set(_fex_amd64_cmake_args
     -DWITH_DEBUG_SYMBOLS:BOOL=${WITH_DEBUG_SYMBOLS})
 
 string(JOIN "\n" _fex_amd64_configure_signature ${_fex_amd64_cmake_args})
-set(_fex_amd64_signature_file "${REACTOS_BINARY_DIR}/CMakeFiles/fex-amd64-configure.txt")
-set(_fex_amd64_configure_stamp "${REACTOS_BINARY_DIR}/CMakeFiles/fex-amd64-configure.stamp")
+set(_fex_amd64_signature_file "${LIBRENT_BINARY_DIR}/CMakeFiles/fex-amd64-configure.txt")
+set(_fex_amd64_configure_stamp "${LIBRENT_BINARY_DIR}/CMakeFiles/fex-amd64-configure.stamp")
 file(GENERATE OUTPUT "${_fex_amd64_signature_file}" CONTENT "${_fex_amd64_configure_signature}\n")
 
 find_program(NESTED_BUILD_PYTHON_EXECUTABLE NAMES python3 python REQUIRED)
 add_custom_command(
     OUTPUT "${_fex_amd64_configure_stamp}"
-    COMMAND ${CMAKE_COMMAND} -S "${REACTOS_SOURCE_DIR}" -B "${FEX_AMD64_BINARY_DIR}" -G "${CMAKE_GENERATOR}" ${_fex_amd64_cmake_args}
+    COMMAND ${CMAKE_COMMAND} -S "${LIBRENT_SOURCE_DIR}" -B "${FEX_AMD64_BINARY_DIR}" -G "${CMAKE_GENERATOR}" ${_fex_amd64_cmake_args}
     COMMAND "${NESTED_BUILD_PYTHON_EXECUTABLE}"
-        "${REACTOS_SOURCE_DIR}/sdk/tools/cxx-runtime/build-cxx-runtime.py" --reactos-build "${FEX_AMD64_BINARY_DIR}"
+        "${LIBRENT_SOURCE_DIR}/sdk/tools/cxx-runtime/build-cxx-runtime.py" --librent-build "${FEX_AMD64_BINARY_DIR}"
     COMMAND ${CMAKE_COMMAND} -E touch "${_fex_amd64_configure_stamp}"
     BYPRODUCTS "${FEX_AMD64_BINARY_DIR}/build.ninja"
     DEPENDS "${_fex_amd64_signature_file}"
@@ -113,14 +113,14 @@ endif()
 set(_fex_amd64_validate)
 if(VALIDATE_COMPAT_BINARIES)
     set(_fex_amd64_validate COMMAND ${CMAKE_COMMAND}
-        -P "${REACTOS_SOURCE_DIR}/sdk/cmake/fex-amd64-validate.cmake" -- ${FEX_AMD64_COMMAND_FILES})
+        -P "${LIBRENT_SOURCE_DIR}/sdk/cmake/fex-amd64-validate.cmake" -- ${FEX_AMD64_COMMAND_FILES})
 endif()
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
 
 add_custom_target(fex_amd64_commands ALL
     ${_fex_amd64_heal}
-    COMMAND ${REACTOS_NESTED_BUILD} "${FEX_AMD64_BINARY_DIR}" --target ${FEX_AMD64_COMMAND_TARGETS}
+    COMMAND ${LIBRENT_NESTED_BUILD} "${FEX_AMD64_BINARY_DIR}" --target ${FEX_AMD64_COMMAND_TARGETS}
     ${_fex_amd64_validate}
     BYPRODUCTS ${FEX_AMD64_COMMAND_FILES}
     COMMENT "Building AMD64 graphics commands for FEX"
@@ -135,7 +135,7 @@ foreach(_alias_index RANGE 0 ${_fex_amd64_alias_last})
     list(GET FEX_AMD64_ALIAS_FILES ${_alias_index} _alias_file)
     add_custom_command(
         OUTPUT "${_alias_file}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${REACTOS_BINARY_DIR}/CMakeFiles/fex-amd64-aliases"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${LIBRENT_BINARY_DIR}/CMakeFiles/fex-amd64-aliases"
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_alias_source}" "${_alias_file}"
         DEPENDS fex_amd64_commands "${_alias_source}"
         COMMENT "Creating FEX AMD64 command alias ${_alias_file}"
@@ -144,6 +144,6 @@ endforeach()
 
 add_custom_target(fex_amd64_aliases DEPENDS ${FEX_AMD64_ALIAS_FILES})
 add_cd_file(TARGET fex_amd64_aliases FILE ${FEX_AMD64_ALIAS_FILES}
-    DESTINATION reactos/system32 FOR all)
+    DESTINATION librent/system32 FOR all)
 
 message(STATUS "FEX: building ${_fex_amd64_alias_count} prefixed AMD64 graphics commands")

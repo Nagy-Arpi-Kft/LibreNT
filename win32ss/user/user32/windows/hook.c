@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 1998, 1999, 2000, 2001 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  *
- * PROJECT:         ReactOS user32.dll
+ * PROJECT:         LibreNT user32.dll
  * FILE:            win32ss/user/user32/windows/hook.c
  * PURPOSE:         Hooks
  * PROGRAMMER:      Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -104,7 +104,7 @@ IntSetWindowsHook(
 }
 
 /*
-   Since ReactOS uses User32 as the main message source this was needed.
+   Since LibreNT uses User32 as the main message source this was needed.
    Base on the funny rules from the wine tests it left it with this option.
    8^(
  */

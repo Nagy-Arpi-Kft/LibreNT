@@ -20,8 +20,8 @@
  * macros.
  *
  */
-#ifndef _STLP_REACTOS_H
-#define  _STLP_REACTOS_H
+#ifndef _STLP_LIBRENT_H
+#define  _STLP_LIBRENT_H
 
 #if !defined (_STLP_COMPILER)
 #  ifdef _MSC_VER
@@ -31,7 +31,7 @@
 #  elif defined __MINGW32__
 #    define _STLP_COMPILER "gcc"
 #  else
-#    error "Unrecognized compiler for reactos!"
+#    error "Unrecognized compiler for LibreNT!"
 #  endif
 #endif
 

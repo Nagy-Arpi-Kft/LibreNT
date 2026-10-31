@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS NMI Debug Driver
+ * PROJECT:         LibreNT NMI Debug Driver
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            drivers/base/nmidebug/nmidebug.c
  * PURPOSE:         Driver Code
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

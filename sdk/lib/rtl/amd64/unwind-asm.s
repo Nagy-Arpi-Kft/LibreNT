@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS runtime library
+ * PROJECT:     LibreNT runtime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Unwinding related x64 asm functions
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

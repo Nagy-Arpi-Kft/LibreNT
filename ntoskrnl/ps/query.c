@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ps/query.c
  * PURPOSE:         Process Manager: Thread/Process Query/Set Information
@@ -12,9 +12,9 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 #endif
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 #define NDEBUG
 #include <debug.h>
 
@@ -2244,7 +2244,7 @@ NtQueryInformationProcess(
             {
                 _SEH2_TRY
                 {
-                    /* ReactOS models one processor group, so every process belongs to group zero. */
+                    /* LibreNT models one processor group, so every process belongs to group zero. */
                     *(PUSHORT)ProcessInformation = 0;
                     Status = STATUS_SUCCESS;
                 }
@@ -2261,7 +2261,7 @@ NtQueryInformationProcess(
 
         case ProcessSubsystemInformation:
         {
-            /* ReactOS currently has only the native Win32 subsystem. */
+            /* LibreNT currently has only the native Win32 subsystem. */
             Length = sizeof(ULONG);
             if (ProcessInformationLength != Length)
             {
@@ -4792,7 +4792,7 @@ NtSetInformationThread(
             break;
         }
 
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__)
         case ThreadNameInformation:
         {
             UNICODE_STRING CapturedThreadName;
@@ -4888,7 +4888,7 @@ NtSetInformationThread(
             ObDereferenceObject(Thread);
             break;
         }
-#endif /* (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__) */
+#endif /* (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__) */
 
         case ThreadIdealProcessorEx:
         {
@@ -4916,7 +4916,7 @@ NtSetInformationThread(
             }
             _SEH2_END;
 
-            /* Validate it. ReactOS supports a single processor group, and
+            /* Validate it. LibreNT supports a single processor group, and
              * Windows fails a nonzero Reserved field with the same status. */
             if ((ProcessorNumber.Group != 0) ||
                 (ProcessorNumber.Number >= (UCHAR)KeNumberProcessors) ||
@@ -5812,7 +5812,7 @@ NtQueryInformationThread(
             break;
         }
 
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__)
         case ThreadNameInformation:
         {
             PUNICODE_STRING ThreadName;
@@ -5878,7 +5878,7 @@ NtQueryInformationThread(
             ObDereferenceObject(Thread);
             break;
         }
-#endif /* (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__) */
+#endif /* (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__) */
 
         case ThreadCycleTime:
         {
@@ -5990,7 +5990,7 @@ NtQueryInformationThread(
 
             /* ThreadGroupInformation reports the user-requested affinity,
              * ThreadActualGroupAffinity the affinity the scheduler actually
-             * uses. ReactOS supports a single processor group (group 0). */
+             * uses. LibreNT supports a single processor group (group 0). */
             if (ThreadInformationClass == ThreadGroupInformation)
                 AffinityMask = KiThreadUserAffinityMask(&Thread->Tcb);
             else

@@ -1,6 +1,6 @@
 /*
  *    Translated by Saibamen - Adam Stachowicz (Apr, 2011)
- *    Use ReactOS forum PM, IRC or saibamenppl at gmail.com to contact me
+ *    Use LibreNT forum PM, IRC or saibamenppl at gmail.com to contact me
  *    https://reactos.org
  *    IRC: irc.freenode.net #reactos-pl;
  *    UTF-8 conversion by Caemyr (May, 2011)
@@ -9,7 +9,7 @@
 
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 
-IDC_REACTOS_SNDREC32 ACCELERATORS
+IDC_LIBRENT_SNDREC32 ACCELERATORS
 BEGIN
     "?", IDM_ABOUT, ASCII, ALT
     "/", IDM_ABOUT, ASCII, ALT
@@ -62,7 +62,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE "Rejestrator Dźwięku"
-    IDC_REACTOS_SNDREC32 "REACTOS_SNDREC32"
+    IDC_LIBRENT_SNDREC32 "LIBRENT_SNDREC32"
 END
 
 STRINGTABLE

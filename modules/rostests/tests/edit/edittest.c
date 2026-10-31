@@ -1,4 +1,4 @@
-/* Edit Control Test for ReactOS, quick n' dirty. Very rigid too.
+/* Edit Control Test for LibreNT, quick n' dirty. Very rigid too.
  * There you go, is only a test program. Not made to be fast, small
  * easy to mantain, or portable. Lots of duplicated code too.
 

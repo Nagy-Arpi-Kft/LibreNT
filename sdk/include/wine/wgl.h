@@ -117,7 +117,7 @@ typedef unsigned __int64 EGLuint64NV;
 typedef unsigned __int64 EGLuint64KHR;
 typedef __int64 EGLnsecsANDROID;
 typedef int EGLNativeFileDescriptorKHR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef SSIZE_T EGLsizeiANDROID;
 #else
 typedef ssize_t EGLsizeiANDROID;

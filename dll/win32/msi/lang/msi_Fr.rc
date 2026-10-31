@@ -32,9 +32,9 @@ STRINGTABLE
     13 "lecteur réseau pour la fonctionnalité manquante"
     14 "fonctionnalité depuis :"
     15 "sélectionnez le dossier contenant %s"
-#ifdef __REACTOS__
-    34 "Package LiberNT Installer"
-    35 "LiberNT Installer Patch"
+#ifdef __LIBRENT__
+    34 "Package LibreNT Installer"
+    35 "LibreNT Installer Patch"
     36 "Installer" //FIXME: add accel
     37 "Réparer" //FIXME: add accel
     38 "Désinstaller" //FIXME: add accel

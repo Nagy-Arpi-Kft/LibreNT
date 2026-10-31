@@ -25,7 +25,7 @@ list(APPEND CRT_STARTUP_SOURCE
     startup/crt0_c.c
     startup/crt0_w.c
     startup/dllentry.c
-    startup/reactos.c
+    startup/librent.c
 )
 
 if(MSVC)

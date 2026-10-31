@@ -23,7 +23,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 
 STRINGTABLE
 BEGIN
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IDS_DEFTITLE     "Aide HTML"
 #endif
     IDS_CONTENTS     "Somm&aire"

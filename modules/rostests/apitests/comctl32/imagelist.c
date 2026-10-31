@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Test for imagelist
  * COPYRIGHT:   Copyright 2024 Whindmar Saksit <whindsaks@proton.me>

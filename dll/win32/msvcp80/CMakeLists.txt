@@ -1,7 +1,7 @@
 set(VC80_ASSEMBLY ${WINARCH}_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9680_none_deadbeef)
-set(MSVCP90_DIR ${REACTOS_SOURCE_DIR}/dll/win32/msvcp90)
+set(MSVCP90_DIR ${LIBRENT_SOURCE_DIR}/dll/win32/msvcp90)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 include_directories(${MSVCP90_DIR})
 add_definitions(-D_MSVCR_VER=80 -D_MSVCP_VER=80 -D__WINESRC__)
@@ -45,4 +45,4 @@ set_module_type(msvcp80 win32dll ENTRYPOINT DllMain 12)
 target_link_libraries(msvcp80 wine)
 add_importlibs(msvcp80 msvcr80 kernel32 ntdll)
 add_dependencies(msvcp80 psdk)
-add_cd_file(TARGET msvcp80 DESTINATION reactos/winsxs/${VC80_ASSEMBLY} FOR all)
+add_cd_file(TARGET msvcp80 DESTINATION librent/winsxs/${VC80_ASSEMBLY} FOR all)

@@ -34,7 +34,7 @@ typedef struct {
     HANDLE file;
     ULONG size;
     LONG priority;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL terminated;
 #endif
 
@@ -183,7 +183,7 @@ static HRESULT WINAPI FileProtocol_Terminate(IInternetProtocolEx *iface, DWORD d
 
     TRACE("(%p)->(%08lx)\n", This, dwOptions);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->terminated = TRUE;
 #endif
     return S_OK;
@@ -249,7 +249,7 @@ static HRESULT WINAPI FileProtocol_UnlockRequest(IInternetProtocolEx *iface)
 
     TRACE("(%p)\n", This);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->terminated && This->file != INVALID_HANDLE_VALUE)
     {
         SetFilePointer(This->file, 0, NULL, FILE_BEGIN);
@@ -442,7 +442,7 @@ HRESULT FileProtocol_Construct(IUnknown *outer, LPVOID *ppobj)
     ret->IInternetProtocolEx_iface.lpVtbl = &FileProtocolExVtbl;
     ret->IInternetPriority_iface.lpVtbl = &FilePriorityVtbl;
     ret->file = INVALID_HANDLE_VALUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret->terminated = FALSE;
 #endif
     ret->priority = 0;

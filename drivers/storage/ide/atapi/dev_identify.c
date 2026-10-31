@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ATA Port Driver
+ * PROJECT:     LibreNT ATA Port Driver
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Device identification
  * COPYRIGHT:   Copyright 2026 Dmitry Borisov <di.sean@protonmail.com>

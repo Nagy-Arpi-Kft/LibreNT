@@ -34,7 +34,7 @@
 #include "winnls.h"
 #include "winternl.h"
 #include "wine/test.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define REG_APP_HIVE 0x10
 #endif
 
@@ -352,7 +352,7 @@ static void test_NtOpenKey(void)
     status = pNtCreateKey( &subkey, KEY_ALL_ACCESS, &attr, 0, 0, 0, 0);
     ok(status == STATUS_SUCCESS, "NtCreateKey failed: 0x%08lx\n", status);
     pNtClose( subkey );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pNtOpenKeyEx == NULL)
     {
         pNtClose(key);
@@ -812,7 +812,7 @@ static void test_NtQueryValueKey(void)
     pNtClose(key);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void delete_subkeys_and_values(HKEY hkey)
 {
     NTSTATUS status;
@@ -865,7 +865,7 @@ static void test_NtDeleteKey(void)
     ok(status == STATUS_SUCCESS, "NtOpenKey Failed: 0x%08lx\n", status);
 
     status = pNtDeleteKey(hkey);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_WIN7)
     {
         /* On older Windows versions the key cannot be deleted, if it still has keys/values in it */
@@ -1461,7 +1461,7 @@ static void _check_enum_value( int line, const WCHAR *name, DWORD flags, int sub
     pRtlInitUnicodeString( &str, name );
     status = pNtOpenKey( &key, flags, &attr );
     ok_( __FILE__, line )( status == STATUS_SUCCESS, "NtOpenKey failed: 0x%08lx\n", status );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status != STATUS_SUCCESS)
         return;
 #endif
@@ -2531,7 +2531,7 @@ static void test_NtRegLoadKeyEx(void)
     UNICODE_STRING hivefile_pathW, key_pathW;
     HANDLE key = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
     {
         win_skip("Skipping tests for NtLoadKeyEx on pre-NT6\n");
@@ -2623,7 +2623,7 @@ struct query_reg_values_test
     ULONG size_limit;
 };
 
-#if !defined(__REACTOS__) || (DLL_EXPORT_VERSION >= _WIN32_WINNT_WIN7)
+#if !defined(__LIBRENT__) || (DLL_EXPORT_VERSION >= _WIN32_WINNT_WIN7)
 static unsigned int query_routine_calls;
 
 static NTSTATUS WINAPI query_routine(const WCHAR *value_name, ULONG value_type, void *value_data, ULONG value_data_size,
@@ -3155,7 +3155,7 @@ static void test_RtlQueryRegistryValues(void)
 
 START_TEST(reg)
 {
-#if !defined(__REACTOS__) || (DLL_EXPORT_VERSION >= _WIN32_WINNT_WIN7)
+#if !defined(__LIBRENT__) || (DLL_EXPORT_VERSION >= _WIN32_WINNT_WIN7)
     LSTATUS status;
 #endif
 
@@ -3186,7 +3186,7 @@ START_TEST(reg)
     test_redirection();
     test_NtRenameKey();
     test_NtRegLoadKeyEx();
-#if !defined(__REACTOS__) || (DLL_EXPORT_VERSION >= _WIN32_WINNT_WIN7)
+#if !defined(__LIBRENT__) || (DLL_EXPORT_VERSION >= _WIN32_WINNT_WIN7)
     test_RtlQueryRegistryValues();
 
     status = RegDeleteTreeW(HKEY_CURRENT_USER, L"WineTest");

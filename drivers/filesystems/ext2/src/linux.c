@@ -469,7 +469,7 @@ get_block_bh_mdl(
     bh->b_blocknr = block;
     bh->b_size = size;
     bh->b_data = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitializeListHead(&bh->b_link);
 #endif
 
@@ -648,7 +648,7 @@ get_block_bh_pin(
     bh->b_blocknr = block;
     bh->b_size = size;
     bh->b_data = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitializeListHead(&bh->b_link);
 #endif
 
@@ -664,7 +664,7 @@ again:
                             FALSE,
                             PIN_WAIT,
                             &bh->b_bcb,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             (PVOID *)&bh->b_data)) {
 #else
                             &bh->b_data)) {
@@ -678,7 +678,7 @@ again:
                         bh->b_size,
                         PIN_WAIT,
                         &bh->b_bcb,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         (PVOID *)&bh->b_data)) {
 #else
                         &bh->b_data)) {
@@ -825,7 +825,7 @@ void __brelse(struct buffer_head *bh)
         return;
     }
     KeQuerySystemTime(&bh->b_ts_drop);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!IsListEmpty(&bh->b_link))
 #endif
     RemoveEntryList(&bh->b_link);

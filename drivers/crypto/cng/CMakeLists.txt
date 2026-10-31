@@ -9,4 +9,4 @@ add_library(cng MODULE
 set_module_type(cng kernelmodedriver)
 add_importlibs(cng ntoskrnl hal)
 add_dependencies(cng ksecdd)
-add_cd_file(TARGET cng DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET cng DESTINATION librent/system32/drivers NO_CAB FOR all)

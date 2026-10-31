@@ -545,7 +545,7 @@ RPC_STATUS WINAPI UuidToStringA(UUID *Uuid, RPC_CSTR* StringUuid)
 
   if (!Uuid) Uuid = &uuid_nil;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   sprintf( (char*)*StringUuid, "%08lx-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
                  Uuid->Data1, Uuid->Data2, Uuid->Data3,
                  Uuid->Data4[0], Uuid->Data4[1], Uuid->Data4[2],
@@ -576,7 +576,7 @@ RPC_STATUS WINAPI UuidToStringW(UUID *Uuid, RPC_WSTR* StringUuid)
 
   if (!Uuid) Uuid = &uuid_nil;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   sprintf(buf, "%08lx-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
                Uuid->Data1, Uuid->Data2, Uuid->Data3,
                Uuid->Data4[0], Uuid->Data4[1], Uuid->Data4[2],
@@ -900,7 +900,7 @@ int WINAPI RpcExceptionFilter(ULONG ExceptionCode)
     case STATUS_INSTRUCTION_MISALIGNMENT:
     case STATUS_STACK_OVERFLOW:
     case STATUS_POSSIBLE_DEADLOCK:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case STATUS_GUARD_PAGE_VIOLATION:
     case STATUS_IN_PAGE_ERROR:
     case STATUS_HANDLE_NOT_CLOSABLE:

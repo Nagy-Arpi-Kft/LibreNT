@@ -146,7 +146,7 @@ static struct listener *alloc_listener(void)
 
     prop_init( listener_props, count, ret->prop, &ret[1] );
     ret->prop_count = count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WS_IP_VERSION version = WS_IP_VERSION_AUTO;
         prop_set( ret->prop, ret->prop_count, WS_LISTENER_PROPERTY_IP_VERSION, &version, sizeof(version) );
@@ -618,7 +618,7 @@ HRESULT WINAPI WsSetListenerProperty( WS_LISTENER *handle, WS_LISTENER_PROPERTY_
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (id == WS_LISTENER_PROPERTY_LISTEN_BACKLOG || id == WS_LISTENER_PROPERTY_IP_VERSION) hr = E_INVALIDARG;
     else
 #endif

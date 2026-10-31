@@ -106,7 +106,7 @@ void set_ldids(HINF hInf, LPCWSTR pszInstallSection, LPCWSTR pszWorkingDir)
     DWORD size;
     int ldid;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetupSetDirectoryIdW(hInf, 0, NULL);
 #endif
 
@@ -541,7 +541,7 @@ HRESULT WINAPI SetPerUserSecValuesA(PERUSERSECTIONA* pPerUser)
  *   Success: S_OK.
  *   Failure: E_FAIL.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void save_rollback_value(HKEY key, const WCHAR *from, const WCHAR *to)
 {
     WCHAR value[MAX_PATH];
@@ -574,7 +574,7 @@ HRESULT WINAPI SetPerUserSecValuesW(PERUSERSECTIONW* pPerUser)
         return E_FAIL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pPerUser->bRollback)
     {
         save_rollback_value(guid, NULL, L"OldDisplayName");

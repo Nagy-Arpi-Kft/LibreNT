@@ -1,7 +1,7 @@
 
 remove_definitions(-D_CRT_NON_CONFORMING_SWPRINTFS)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 
 add_definitions(
     -D_WINE
@@ -34,5 +34,5 @@ add_delay_importlibs(winhttp oleaut32 crypt32 secur32 iphlpapi dhcpcsvc ws2_32 j
 add_importlibs(winhttp user32 advapi32 kernel32_vista msvcrt kernel32 ntdll)
 add_dependencies(winhttp stdole2)
 add_pch(winhttp precomp.h SOURCE)
-add_cd_file(TARGET winhttp DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winhttp DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(winhttp) # CORE-5743: No ARRAY_SIZE macro

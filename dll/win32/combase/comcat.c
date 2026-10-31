@@ -31,7 +31,7 @@
 
 #include "ole2.h"
 #include "comcat.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "combase_private.h"
 #else
 #include "compobj_private.h"

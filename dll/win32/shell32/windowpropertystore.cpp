@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS shell32
+ * PROJECT:     LibreNT shell32
  * LICENSE:     LGPL-2.1-or-later
  * PURPOSE:     Window property stores
  */
@@ -7,7 +7,7 @@
 #include "precomp.h"
 #include <propsys.h>
 
-static const WCHAR propertyPrefix[] = L"ReactOS.PropertyStore.";
+static const WCHAR propertyPrefix[] = L"LibreNT.PropertyStore.";
 
 class CWindowPropertyStore :
     public CComObjectRootEx<CComMultiThreadModel>,
@@ -77,7 +77,7 @@ public:
             return HRESULT_FROM_WIN32(ERROR_INVALID_WINDOW_HANDLE);
         m_window = window;
         WCHAR name[96];
-        StringCchPrintfW(name, _countof(name), L"Local\\ReactOS.WindowPropertyStore.%lu.%08lx",
+        StringCchPrintfW(name, _countof(name), L"Local\\LibreNT.WindowPropertyStore.%lu.%08lx",
                          m_process, HandleToUlong(window));
         m_mutex = CreateMutexW(NULL, FALSE, name);
         return m_mutex ? S_OK : HRESULT_FROM_WIN32(GetLastError());

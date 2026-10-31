@@ -64,7 +64,7 @@ enum ldap_attr {
 struct idmap_lookup {
     enum ldap_attr attr;
     enum ldap_class klass;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t type;
 #else
     enum config_type type;
@@ -74,7 +74,7 @@ struct idmap_lookup {
 };
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* configuration */
 static const char CONFIG_FILENAME[] = "C:\\Windows\\System32\\drivers\\etc\\ms-nfs41-idmap.conf";
 #endif
@@ -363,7 +363,7 @@ static int config_init(
     struct idmap_config *config)
 {
     int status;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char config_path[MAX_PATH];
 #endif
 
@@ -374,7 +374,7 @@ static int config_init(
         goto out;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetSystemDirectoryA(config_path, ARRAYSIZE(config_path)))
     {
         StringCchCatA(config_path, ARRAYSIZE(config_path), "\\drivers\\etc\\ms-nfs41-idmap.conf");
@@ -388,13 +388,13 @@ static int config_init(
 #endif
 
     /* load configuration from file */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = config_load(config, config_path);
 #else
     status = config_load(config, CONFIG_FILENAME);
 #endif
     if (status) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         eprintf("config_load('%s') failed with %d\n", config_path, status);
 #else
         eprintf("config_load('%s') failed with %d\n", CONFIG_FILENAME, status);

@@ -193,7 +193,7 @@ static BOOL WINAPI winsock_startup( INIT_ONCE *once, void *param, void **ctx )
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void winsock_init(void)
 #else
 static void winsock_init(void)
@@ -462,7 +462,7 @@ static DWORD send_ssl_chunk( struct netconn *conn, const void *msg, size_t size,
     if ((res = EncryptMessage(&conn->ssl_ctx, 0, &buf_desc, 0)) != SEC_E_OK)
     {
         WARN( "EncryptMessage failed: %#lx\n", res );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ERROR_WINHTTP_SECURE_CHANNEL_ERROR;
 #else
         return res;
@@ -564,7 +564,7 @@ static DWORD read_ssl_chunk( struct netconn *conn, void *buf, SIZE_T buf_size, S
 
         case SEC_I_RENEGOTIATE:
             TRACE("renegotiate\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             for(i = 0; i < ARRAY_SIZE(bufs); i++) {
                 if(bufs[i].BufferType == SECBUFFER_EXTRA && bufs[i].cbBuffer) {
                     if(!(conn->extra_buf = malloc(bufs[i].cbBuffer)))
@@ -662,7 +662,7 @@ DWORD netconn_recv( struct netconn *conn, void *buf, size_t len, int flags, int 
             if ((res = read_ssl_chunk( conn, (BYTE *)buf + size, len - size, &cread, &eof )))
             {
                 WARN( "read_ssl_chunk failed: %lu\n", res );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (res == SEC_E_INCOMPLETE_MESSAGE)
                     res = ERROR_WINHTTP_CONNECTION_ERROR;
                 else if (FAILED((HRESULT)res) && HRESULT_FACILITY(res) == FACILITY_SECURITY)
@@ -713,7 +713,7 @@ BOOL netconn_is_valid( struct netconn *netconn )
     return netconn && netconn->socket != -1;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD netconn_renegotiate( struct netconn *conn, const WCHAR *hostname, CredHandle *cred_handle )
 {
     SecBuffer out_buf = {0, SECBUFFER_TOKEN, NULL}, in_bufs[2] = {{0, SECBUFFER_TOKEN}, {0, SECBUFFER_EMPTY}};

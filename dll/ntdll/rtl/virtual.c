@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NT Library
+ * PROJECT:     LibreNT NT Library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NTDLL virtual-memory compatibility exports
  */
@@ -216,7 +216,7 @@ NtMapViewOfSectionEx(HANDLE SectionHandle,
         if (!NT_SUCCESS(Status))
             return Status;
 
-        /* ReactOS currently packages ARM64 and ARM64EC images separately, so
+        /* LibreNT currently packages ARM64 and ARM64EC images separately, so
          * it cannot select a second architecture from one ARM64X section yet.
          * It can still enforce the observable 32/64-bit view boundary here. */
         if (RtlpIs64BitMachine(ImageMachine) !=

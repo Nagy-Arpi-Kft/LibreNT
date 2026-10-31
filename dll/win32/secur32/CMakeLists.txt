@@ -1,8 +1,8 @@
 
 add_definitions(-D__SECUR32__)
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/mbedtls)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/mbedtls)
 spec2def(secur32.dll secur32.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -32,4 +32,4 @@ set_module_type(secur32 win32dll UNICODE)
 target_link_libraries(secur32 lsalib wine)
 add_importlibs(secur32 mbedtls crypt32 ncrypt advapi32 netapi32 msvcrt kernel32 ntdll)
 add_pch(secur32 precomp.h SOURCE)
-add_cd_file(TARGET secur32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET secur32 DESTINATION librent/system32 FOR all)

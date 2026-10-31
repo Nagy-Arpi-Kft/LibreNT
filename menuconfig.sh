@@ -1,16 +1,16 @@
 #!/bin/sh
-# menuconfig.sh - interactive ReactOS build configuration (OpenWrt/kconfig
+# menuconfig.sh - interactive LibreNT build configuration (OpenWrt/kconfig
 # style). The host tool is built in the source tree, while selections and the
 # generated CMake fragment are owned by one output tree.
 
-REACTOS_SOURCE_DIR=$(cd "$(dirname "$0")" && pwd -P)
-REACTOS_START_DIR=$(pwd -P)
-REACTOS_DEFAULT_BUILD_DIR="$REACTOS_SOURCE_DIR/output-Clang-amd64-debug"
+LIBRENT_SOURCE_DIR=$(cd "$(dirname "$0")" && pwd -P)
+LIBRENT_START_DIR=$(pwd -P)
+LIBRENT_DEFAULT_BUILD_DIR="$LIBRENT_SOURCE_DIR/output-Clang-amd64-debug"
 
-ROSCONFIG_DIR="$REACTOS_SOURCE_DIR/.rosconfig"
+ROSCONFIG_DIR="$LIBRENT_SOURCE_DIR/.rosconfig"
 ROSCONFIG_BIN="$ROSCONFIG_DIR/rosconfig"
-ROSCONFIG_BUILD="$REACTOS_SOURCE_DIR/sdk/tools/rosconfig/build.sh"
-ROSCONFIG_DEF="$REACTOS_SOURCE_DIR/sdk/cmake/rosconfig.def"
+ROSCONFIG_BUILD="$LIBRENT_SOURCE_DIR/sdk/tools/rosconfig/build.sh"
+ROSCONFIG_DEF="$LIBRENT_SOURCE_DIR/sdk/cmake/rosconfig.def"
 
 fail() {
 	echo "menuconfig.sh: $*" >&2
@@ -19,7 +19,7 @@ fail() {
 
 usage() {
 	echo "Usage: ./menuconfig.sh [--build-dir <output-directory>] [--self-test]" >&2
-	echo "Default build directory: $REACTOS_DEFAULT_BUILD_DIR" >&2
+	echo "Default build directory: $LIBRENT_DEFAULT_BUILD_DIR" >&2
 	exit 2
 }
 
@@ -94,12 +94,12 @@ if [ "$#" -eq 2 ]; then
 	[ "$1" = "--build-dir" ] || usage
 	case "$2" in
 		/*) BUILD_DIR=$2 ;;
-		*) BUILD_DIR="$REACTOS_START_DIR/$2" ;;
+		*) BUILD_DIR="$LIBRENT_START_DIR/$2" ;;
 	esac
 else
-	case "$(basename "$REACTOS_START_DIR")" in
-		output-*) BUILD_DIR=$REACTOS_START_DIR ;;
-		*) BUILD_DIR=$REACTOS_DEFAULT_BUILD_DIR ;;
+	case "$(basename "$LIBRENT_START_DIR")" in
+		output-*) BUILD_DIR=$LIBRENT_START_DIR ;;
+		*) BUILD_DIR=$LIBRENT_DEFAULT_BUILD_DIR ;;
 	esac
 fi
 
@@ -107,7 +107,7 @@ fi
 if [ -d "$BUILD_DIR" ]; then
 	BUILD_DIR=$(cd "$BUILD_DIR" && pwd -P)
 fi
-[ "$BUILD_DIR" != "$REACTOS_SOURCE_DIR" ] || fail "run from an output directory or pass --build-dir output-<toolchain>-<arch>-<type>"
+[ "$BUILD_DIR" != "$LIBRENT_SOURCE_DIR" ] || fail "run from an output directory or pass --build-dir output-<toolchain>-<arch>-<type>"
 
 ROSCONFIG_STATE_DIR="$BUILD_DIR/.rosconfig"
 ROSCONFIG_CACHE="$ROSCONFIG_STATE_DIR/config.cache"

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 5 WDDM display-only miniport
+ * PROJECT:     LibreNT Raspberry Pi 5 WDDM display-only miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shared declarations for the RPi5 (BCM2712) WDDM2 KMDOD.
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -31,11 +31,11 @@
 #include <wdm.h>
 #include <windef.h>
 #include <dispmprt.h>
-#include <reactos/rddm/rxgkpresent.h>
-#include <reactos/loader_framebuffer.h>
+#include <librent/rddm/rxgkpresent.h>
+#include <librent/loader_framebuffer.h>
 #include "rpi5vc4_pointer.h"
-#include <reactos/rpi5vc4_umd.h>
-#include <reactos/rpi5vc4_xpdm.h>
+#include <librent/rpi5vc4_umd.h>
+#include <librent/rpi5vc4_xpdm.h>
 
 #ifndef DXGKDDI_INTERFACE_VERSION_WDDM2_0
 #define DXGKDDI_INTERFACE_VERSION_WDDM2_0 0x5023
@@ -317,7 +317,7 @@ struct _RPI5VC4_DEVICE_EXTENSION
     PDEVICE_OBJECT PhysicalDeviceObject;
     BOOLEAN Started;
 
-    /* Optional ReactOS shadow-present interface, acquired through the
+    /* Optional LibreNT shadow-present interface, acquired through the
      * standard DxgkDdiQueryInterface DDI without changing the WDDM table. */
     KSPIN_LOCK ShadowPresentInterfaceLock;
     volatile LONG ShadowPresentInterfaceQueriesOpen;

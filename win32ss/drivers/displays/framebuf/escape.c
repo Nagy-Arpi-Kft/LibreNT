@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT Framebuffer Display Driver
+ * PROJECT:     LibreNT Framebuffer Display Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DrvEscape bridge to the WDDM miniport GPU services
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 /*
- * ReactOS Generic Framebuffer display driver
+ * LibreNT Generic Framebuffer display driver
  *
  * PURPOSE: DrvEscape bridge to the WDDM miniport GPU services.
  *
@@ -20,8 +20,8 @@
  */
 
 #include "framebuf.h"
-#include <reactos/rpi5vc4_xpdm.h>
-#include <reactos/dwmframe.h>
+#include <librent/rpi5vc4_xpdm.h>
+#include <librent/dwmframe.h>
 
 #define FRAMEBUF_OPENGL_ICD_VERSION 1
 #define FRAMEBUF_OPENGL_ICD_DRIVER_VERSION 1

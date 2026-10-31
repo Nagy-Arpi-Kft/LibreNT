@@ -21,7 +21,7 @@
 
 #include <stdarg.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ndk/kefuncs.h>
 #include <ndk/rtlfuncs.h>
 #else
@@ -32,16 +32,16 @@
 #include "winbase.h"
 #include "wingdi.h"
 #include "winuser.h"
-#ifdef __REACTOS__
-#include <reactos/user32_vista.h>
-#include <reactos/dwmframe.h>
+#ifdef __LIBRENT__
+#include <librent/user32_vista.h>
+#include <librent/dwmframe.h>
 #endif
 #include "dwmapi.h"
 #include "wine/debug.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(dwmapi);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Chromium intentionally discovers DirectComposition with GetModuleHandleW()
  * after loading the desktop composition stack. Keep dcomp.dll resident as a
  * real dwmapi dependency, matching that system-level availability contract. */
@@ -52,25 +52,25 @@ DWORD_PTR NTAPI NtUserCallOneParam(DWORD_PTR Param, DWORD Routine);
 #endif
 
 /* Shared with the themed non-client renderer in uxtheme.dll. */
-static const WCHAR immersive_dark_mode_propW[] = L"ReactOS.Dwm.ImmersiveDarkMode";
-static const WCHAR nc_rendering_policy_propW[] = L"ReactOS.Dwm.NcRenderingPolicy";
-static const WCHAR transitions_disabled_propW[] = L"ReactOS.Dwm.TransitionsDisabled";
-static const WCHAR allow_ncpaint_propW[] = L"ReactOS.Dwm.AllowNcPaint";
-static const WCHAR nc_rtl_layout_propW[] = L"ReactOS.Dwm.NcRtlLayout";
-static const WCHAR force_iconic_propW[] = L"ReactOS.Dwm.ForceIconicRepresentation";
-static const WCHAR has_iconic_bitmap_propW[] = L"ReactOS.Dwm.HasIconicBitmap";
-static const WCHAR disallow_peek_propW[] = L"ReactOS.Dwm.DisallowPeek";
-static const WCHAR excluded_from_peek_propW[] = L"ReactOS.Dwm.ExcludedFromPeek";
-static const WCHAR cloak_propW[] = L"ReactOS.Dwm.Cloak";
-static const WCHAR freeze_representation_propW[] = L"ReactOS.Dwm.FreezeRepresentation";
-static const WCHAR passive_update_propW[] = L"ReactOS.Dwm.PassiveUpdateMode";
-static const WCHAR host_backdrop_propW[] = L"ReactOS.Dwm.UseHostBackdropBrush";
-static const WCHAR corner_preference_propW[] = L"ReactOS.Dwm.WindowCornerPreference";
-static const WCHAR border_color_propW[] = L"ReactOS.Dwm.BorderColor";
-static const WCHAR caption_color_propW[] = L"ReactOS.Dwm.CaptionColor";
-static const WCHAR text_color_propW[] = L"ReactOS.Dwm.TextColor";
-static const WCHAR system_backdrop_propW[] = L"ReactOS.Dwm.SystemBackdropType";
-static const WCHAR mica_effect_propW[] = L"ReactOS.Dwm.MicaEffect";
+static const WCHAR immersive_dark_mode_propW[] = L"LibreNT.Dwm.ImmersiveDarkMode";
+static const WCHAR nc_rendering_policy_propW[] = L"LibreNT.Dwm.NcRenderingPolicy";
+static const WCHAR transitions_disabled_propW[] = L"LibreNT.Dwm.TransitionsDisabled";
+static const WCHAR allow_ncpaint_propW[] = L"LibreNT.Dwm.AllowNcPaint";
+static const WCHAR nc_rtl_layout_propW[] = L"LibreNT.Dwm.NcRtlLayout";
+static const WCHAR force_iconic_propW[] = L"LibreNT.Dwm.ForceIconicRepresentation";
+static const WCHAR has_iconic_bitmap_propW[] = L"LibreNT.Dwm.HasIconicBitmap";
+static const WCHAR disallow_peek_propW[] = L"LibreNT.Dwm.DisallowPeek";
+static const WCHAR excluded_from_peek_propW[] = L"LibreNT.Dwm.ExcludedFromPeek";
+static const WCHAR cloak_propW[] = L"LibreNT.Dwm.Cloak";
+static const WCHAR freeze_representation_propW[] = L"LibreNT.Dwm.FreezeRepresentation";
+static const WCHAR passive_update_propW[] = L"LibreNT.Dwm.PassiveUpdateMode";
+static const WCHAR host_backdrop_propW[] = L"LibreNT.Dwm.UseHostBackdropBrush";
+static const WCHAR corner_preference_propW[] = L"LibreNT.Dwm.WindowCornerPreference";
+static const WCHAR border_color_propW[] = L"LibreNT.Dwm.BorderColor";
+static const WCHAR caption_color_propW[] = L"LibreNT.Dwm.CaptionColor";
+static const WCHAR text_color_propW[] = L"LibreNT.Dwm.TextColor";
+static const WCHAR system_backdrop_propW[] = L"LibreNT.Dwm.SystemBackdropType";
+static const WCHAR mica_effect_propW[] = L"LibreNT.Dwm.MicaEffect";
 
 static BOOL (WINAPI *dwm_theme_defwndproc)(HWND, UINT, WPARAM, LPARAM, LRESULT *);
 static VOID (WINAPI *dwm_theme_frame_changed)(HWND);
@@ -277,7 +277,7 @@ dwm_set_dword_attribute(HWND hwnd, DWORD attribute, DWORD value)
  */
 HRESULT WINAPI DwmIsCompositionEnabled(BOOL *enabled)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     RTL_OSVERSIONINFOEXW version;
 #endif
 
@@ -286,11 +286,11 @@ HRESULT WINAPI DwmIsCompositionEnabled(BOOL *enabled)
     if (!enabled)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     (void)dcomp_create_device3_import;
 #endif
     *enabled = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *enabled = NtUserCallOneParam(0, DWM_ROUTINE_ISENABLED) != 0 && !dwm_composition_disabled_by_layer();
 #else
     version.dwOSVersionInfoSize = sizeof(version);
@@ -311,7 +311,7 @@ HRESULT WINAPI DwmEnableComposition(UINT uCompositionAction)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL dwm_get_caption_button_bounds(HWND hwnd, RECT *rect)
 {
     static const WCHAR *const buttons[] =
@@ -352,7 +352,7 @@ static BOOL dwm_get_caption_button_bounds(HWND hwnd, RECT *rect)
  */
 HRESULT WINAPI DwmExtendFrameIntoClientArea(HWND hwnd, const MARGINS* margins)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG top, left, right, bottom;
 
     TRACE("(%p, %p)\n", hwnd, margins);
@@ -578,7 +578,7 @@ HRESULT WINAPI DwmGetGraphicsStreamTransformHint(UINT uIndex, MilMatrix3x2D *pTr
  */
 HRESULT WINAPI DwmEnableBlurBehindWindow(HWND hWnd, const DWM_BLURBEHIND *pBlurBuf)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWM_BLUR_REQUEST Request;
     NTSTATUS Status;
 #endif
@@ -594,7 +594,7 @@ HRESULT WINAPI DwmEnableBlurBehindWindow(HWND hWnd, const DWM_BLURBEHIND *pBlurB
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RtlZeroMemory(&Request, sizeof(Request));
     Request.StructSize = sizeof(Request);
     Request.Flags = pBlurBuf->dwFlags;
@@ -622,7 +622,7 @@ HRESULT WINAPI DwmEnableBlurBehindWindow(HWND hWnd, const DWM_BLURBEHIND *pBlurB
  */
 BOOL WINAPI DwmDefWindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *plResult)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dwm_load_theme_hooks();
     if (dwm_theme_defwndproc)
         return dwm_theme_defwndproc(hWnd, Msg, wParam, lParam, plResult);
@@ -716,7 +716,7 @@ HRESULT WINAPI DwmGetWindowAttribute(HWND hwnd, DWORD attribute, PVOID pv_attrib
         if (size < sizeof(*rect))
             return E_NOT_SUFFICIENT_BUFFER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (dwm_get_caption_button_bounds(hwnd, rect))
         {
             hr = S_OK;
@@ -872,7 +872,7 @@ HRESULT WINAPI DwmFlush(void)
     LARGE_INTEGER qpf, qpc, delay;
     LONG64 qpc_refresh_period;
     int display_frequency;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NTSTATUS status;
 
     if (!GdiFlush())

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Display Driver Model - Win32k/dxgkrnl Bridge
+ * PROJECT:     LibreNT Display Driver Model - Win32k/dxgkrnl Bridge
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel-to-kernel communication channel to \Device\DxgKrnl
  * COPYRIGHT:   Copyright 2025 LiberNT Contributors
@@ -16,7 +16,7 @@
  *   3. win32k stores the table and dispatches each NtGdiDdDDI* syscall
  *      directly to the appropriate callback — no further IOCTL overhead.
  *
- * In the current ReactOS path, win32k must complete the private interface
+ * In the current LibreNT path, win32k must complete the private interface
  * exchange before D3DKMT thunks are exposed.  A missing or incompatible
  * dxgkrnl device is reported as a real failure rather than a partial WDDM
  * startup.
@@ -30,8 +30,8 @@
 #include <ntifs.h>
 #include <windef.h>
 #include <d3dkmthk.h>
-#include <reactos/rddm/rxgkinterface.h>
-#include <reactos/rddm/rxgkioctl.h>
+#include <librent/rddm/rxgkinterface.h>
+#include <librent/rddm/rxgkioctl.h>
 #include "wddm_bridge.h"
 #define NDEBUG
 #include <debug.h>
@@ -69,12 +69,12 @@ C_ASSERT(FIELD_OFFSET(RXGK_SETCOMPOSITORSOURCEOWNER_PACKET, Generation) == 40);
  */
 PFILE_OBJECT   g_DxgkrnlFileObject   = NULL;
 PDEVICE_OBJECT g_DxgkrnlDeviceObject = NULL;
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_XPDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_XPDM)
 static NTSTATUS g_WddmBridgeStatus = STATUS_NOT_SUPPORTED;
 #else
 static NTSTATUS g_WddmBridgeStatus = STATUS_DEVICE_NOT_CONNECTED;
 #endif
-static REACTOS_WIN32K_DXGKRNL_INTERFACE g_DxgkrnlInterface;
+static LIBRENT_WIN32K_DXGKRNL_INTERFACE g_DxgkrnlInterface;
 static BOOLEAN g_DxgkrnlInterfaceValid = FALSE;
 static ULONG g_DxgkrnlInterfaceVersion = 0;
 
@@ -271,7 +271,7 @@ WddmBridgeGetInterfaceVersion(VOID)
 
 NTSTATUS
 WddmBridgeGetInterface(
-    _Out_ PREACTOS_WIN32K_DXGKRNL_INTERFACE Interface)
+    _Out_ PLIBRENT_WIN32K_DXGKRNL_INTERFACE Interface)
 {
     NTSTATUS Status;
 
@@ -314,7 +314,7 @@ WddmBridgeInit(VOID)
     PFILE_OBJECT FileObject = NULL;
     PDEVICE_OBJECT DeviceObject = NULL;
     DXGKRNL_INTERFACE_EXCHANGE_IN ExchangeIn;
-    REACTOS_WIN32K_DXGKRNL_INTERFACE ExchangeOut;
+    LIBRENT_WIN32K_DXGKRNL_INTERFACE ExchangeOut;
     ULONG_PTR Information = 0;
 
     if (KeGetCurrentIrql() != PASSIVE_LEVEL)
@@ -371,7 +371,7 @@ WddmBridgeInit(VOID)
      */
     ExchangeIn.Version = DXGKRNL_INTERFACE_VERSION_CURRENT;
     ExchangeIn.Size = DXGKRNL_INTERFACE_VERSION_CURRENT_SIZE;
-    ExchangeIn.ConfiguredWddmLevel = REACTOS_WDDM_TARGET_LEVEL;
+    ExchangeIn.ConfiguredWddmLevel = LIBRENT_WDDM_TARGET_LEVEL;
     RtlZeroMemory(&ExchangeOut, sizeof(ExchangeOut));
     Status = WddmBridgeSendIoctlToDevice(DeviceObject, IOCTL_DXGKRNL_EXCHANGE_INTERFACE, &ExchangeIn, sizeof(ExchangeIn), &ExchangeOut, sizeof(ExchangeOut), &Information);
 
@@ -461,7 +461,7 @@ WddmBridgeInit(VOID)
         Status = STATUS_INVALID_DEVICE_STATE;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (NT_SUCCESS(Status) &&
         (ExchangeOut.RxgkIntPfnMakeResident == NULL ||
          ExchangeOut.RxgkIntPfnEvict == NULL ||
@@ -496,7 +496,7 @@ WddmBridgeInit(VOID)
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     if (NT_SUCCESS(Status) &&
         ExchangeIn.Version >= DXGKRNL_INTERFACE_VERSION_7 &&
         (ExchangeOut.RxgkIntPfnGetDwmVerticalBlankEvent == NULL ||
@@ -506,7 +506,7 @@ WddmBridgeInit(VOID)
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
     if (NT_SUCCESS(Status) &&
         ExchangeIn.Version >= DXGKRNL_INTERFACE_VERSION_3 &&
         ExchangeOut.RxgkIntPfnCreateAllocation2 == NULL)
@@ -522,7 +522,7 @@ WddmBridgeInit(VOID)
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (NT_SUCCESS(Status) &&
         ExchangeIn.Version >= DXGKRNL_INTERFACE_VERSION_4 &&
         ExchangeOut.RxgkIntPfnGetAllocationPriority == NULL)
@@ -792,7 +792,7 @@ WddmBridgeIsExpectedControlStatus(
         return TRUE;
     if (IoControlCode == IOCTL_D3DKMT_PUBLIC_OPERATION && (Status == STATUS_INVALID_HANDLE || Status == STATUS_INVALID_PARAMETER || Status == STATUS_GRAPHICS_VAIL_STATE_CHANGED))
         return TRUE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (Status == STATUS_NOT_IMPLEMENTED &&
         (IoControlCode == IOCTL_D3DKMT_CREATEHWCONTEXT ||
          IoControlCode == IOCTL_D3DKMT_DESTROYHWCONTEXT))
@@ -859,7 +859,7 @@ WddmBridgeSendIoctlToDevice(
      * Patch to IRP_MJ_INTERNAL_DEVICE_CONTROL.
      * IoBuildDeviceIoControlRequest always sets MajorFunction to
      * IRP_MJ_DEVICE_CONTROL regardless of the InternalDeviceIoControl flag
-     * in some ReactOS versions.  Explicitly setting the field here is
+     * in some LibreNT versions.  Explicitly setting the field here is
      * unconditionally correct.
      */
     IoGetNextIrpStackLocation(Irp)->MajorFunction = IRP_MJ_INTERNAL_DEVICE_CONTROL;

@@ -1770,7 +1770,7 @@ void wined3d_context_gl_bind_dummy_textures(const struct wined3d_context_gl *con
         if (gl_info->supported[ARB_TEXTURE_MULTISAMPLE])
         {
             gl_info->gl_ops.gl.p_glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textures->tex_2d_ms);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (gl_info->supported[EXT_TEXTURE_ARRAY])
 #endif
                 gl_info->gl_ops.gl.p_glBindTexture(GL_TEXTURE_2D_MULTISAMPLE_ARRAY, textures->tex_2d_ms_array);
@@ -1876,7 +1876,7 @@ HGLRC context_create_wgl_attribs(const struct wined3d_gl_info *gl_info, HDC hdc,
 static BOOL wined3d_context_gl_create_wgl_ctx(struct wined3d_context_gl *context_gl,
         struct wined3d_swapchain_gl *swapchain_gl, BOOL *new_drawable)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     enum wined3d_swap_effect swap_effect = swapchain_gl->s.state.desc.swap_effect;
 #endif
     const struct wined3d_format *colour_format, *ds_format;
@@ -1896,7 +1896,7 @@ static BOOL wined3d_context_gl_create_wgl_ctx(struct wined3d_context_gl *context
     target = &context->current_rt.texture->resource;
     target_bind_flags = target->bind_flags;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     swap_effect_copy = true;
 #else
     swap_effect_copy = swap_effect == WINED3D_SWAP_EFFECT_COPY || swap_effect == WINED3D_SWAP_EFFECT_COPY_VSYNC;

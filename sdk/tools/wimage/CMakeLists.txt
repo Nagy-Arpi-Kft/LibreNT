@@ -2,7 +2,7 @@ add_host_tool(wimage wimage.c)
 set_property(TARGET wimage PROPERTY C_STANDARD 11)
 
 target_compile_definitions(wimage PRIVATE
-    WIMAGE_VERSION_STRING="1.0-reactos")
+    WIMAGE_VERSION_STRING="1.0-librent")
 
 if(NOT MSVC)
     target_compile_definitions(wimage PRIVATE

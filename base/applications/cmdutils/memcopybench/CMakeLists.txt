@@ -10,7 +10,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
 endif()
 target_link_libraries(memcopybench pseh)
 add_importlibs(memcopybench msvcrt kernel32)
-add_cd_file(TARGET memcopybench DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET memcopybench DESTINATION librent/system32 FOR all)
 # Optional direct comparison of external Mesa source snapshots. No dependency
 # on Mesa is introduced for ordinary builds of this diagnostic.
 set(MEMCOPYBENCH_MESA_BEFORE "" CACHE FILEPATH "Previous v3d_cpu_tiling.h for copy measurements")

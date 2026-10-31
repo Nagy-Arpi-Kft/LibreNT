@@ -1,5 +1,5 @@
 /*
- *  ReactOS regedit
+ *  LibreNT regedit
  *
  *  regdump.c
  *

@@ -78,7 +78,7 @@ static SECURITY_STATUS SEC_ENTRY nego_AcquireCredentialsHandleA(
     SECURITY_STATUS ret = SEC_E_INSUFFICIENT_MEMORY;
     SEC_WCHAR *user = NULL, *domain = NULL, *passwd = NULL, *package = NULL;
     SEC_WINNT_AUTH_IDENTITY_W *identityW = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SEC_WINNT_AUTH_IDENTITY_W ex_view;
 #endif
 
@@ -95,7 +95,7 @@ static SECURITY_STATUS SEC_ENTRY nego_AcquireCredentialsHandleA(
     }
     if (pAuthData)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SEC_WINNT_AUTH_IDENTITY_A *identity = SECUR32_identityView(pAuthData, &ex_view);
         int user_len, domain_len, passwd_len;
 
@@ -157,7 +157,7 @@ done:
     HeapFree( GetProcessHeap(), 0, user );
     HeapFree( GetProcessHeap(), 0, domain );
     HeapFree( GetProcessHeap(), 0, passwd );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (identityW != (SEC_WINNT_AUTH_IDENTITY_W *)pAuthData && identityW != &ex_view)
         HeapFree( GetProcessHeap(), 0, identityW );
 #else

@@ -2287,7 +2287,7 @@ static HRESULT WINAPI upnpnat_get_DynamicPortMappingCollection(IUPnPNAT *iface, 
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct nat_event_manager
 {
     INATEventManager INATEventManager_iface;

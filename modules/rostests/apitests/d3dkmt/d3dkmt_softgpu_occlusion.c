@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Window present occlusion must not fault the rendering device.
  *
@@ -290,7 +290,7 @@ START_TEST(softgpu_occlusion)
         if (*cursor == L'\\' || *cursor == L'/') base = cursor + 1;
     if (!NT_SUCCESS(status) || lstrcmpiW(base, L"softgpuum.dll"))
     {
-        skip("Requires the ReactOS software GPU\n");
+        skip("Requires the LibreNT software GPU\n");
         goto cleanup;
     }
     device = CreateTestDevice(adapter);

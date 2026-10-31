@@ -20,7 +20,7 @@
 #define _NTGDI_
 
 #include <wingdi.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/winternl.h>
 #else
 #include <winternl.h>
@@ -29,7 +29,7 @@
 #include <ddk/d3dkmthk.h>
 
 #ifndef W32KAPI
-# if defined(__REACTOS__) && defined(_GDI32_)
+# if defined(__LIBRENT__) && defined(_GDI32_)
 #  define W32KAPI
 # elif defined(_WIN32U_) || defined(WINE_UNIX_LIB)
 #  define W32KAPI DECLSPEC_EXPORT

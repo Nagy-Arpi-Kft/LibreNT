@@ -399,7 +399,7 @@ ldap_send_server_request(
 		case LDAP_REQ_ABANDON:
 			break;
 		}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		(void)rtag;
 #endif
 		if ( tag != LDAP_REQ_ABANDON ) {
@@ -1012,7 +1012,7 @@ ldap_free_request_int( LDAP *ld, LDAPRequest *lr )
 	Debug3( LDAP_DEBUG_TRACE, "ldap_free_request_int: "
 			"lr %p msgid %d%s removed\n",
 			(void *) lr, lr->lr_msgid, removed ? "" : " not" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	(void)removed;
 #endif
 

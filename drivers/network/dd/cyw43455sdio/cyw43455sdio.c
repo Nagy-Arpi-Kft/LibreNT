@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT CYW43455 SDIO Function Transport
+ * PROJECT:     LibreNT CYW43455 SDIO Function Transport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Own CYW43455 SDIO control and companion function stacks
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -8,7 +8,7 @@
 #include <ntddk.h>
 #include <ntddsd.h>
 #include <initguid.h>
-#include <reactos/drivers/cyw43455sdio.h>
+#include <librent/drivers/cyw43455sdio.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -783,7 +783,7 @@ Cyw43455SdioAddDevice(
 
     Status = IoRegisterDeviceInterface(
         PhysicalDeviceObject,
-        &GUID_DEVINTERFACE_REACTOS_CYW43455_SDIO_CONTROL,
+        &GUID_DEVINTERFACE_LIBRENT_CYW43455_SDIO_CONTROL,
         NULL,
         &DeviceExtension->InterfaceName);
     if (!NT_SUCCESS(Status))

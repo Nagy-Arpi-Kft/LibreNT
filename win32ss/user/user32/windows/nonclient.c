@@ -1,5 +1,5 @@
 /*
- * ReactOS User32 Library
+ * LibreNT User32 Library
  * - Window non-client area management
  *
  * Copyright (C) 2003 ReactOS Team

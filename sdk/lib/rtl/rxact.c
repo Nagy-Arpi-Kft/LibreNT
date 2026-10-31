@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Runtime Library (RTL)
+ * PROJECT:     LibreNT Runtime Library (RTL)
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Registry Transaction API
  * COPYRIGHT:   Copyright 2014 Timo Kreuzer <timo.kreuzer@reactos.org>

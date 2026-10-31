@@ -168,7 +168,7 @@ ControllerDoOneTransferPollMode(
     size_t bytesToWrite = 0;
     size_t bytesToRead = 0;
     NTSTATUS status = STATUS_SUCCESS;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t readByteIndex;
     size_t writeByteIndex;
     size_t transferByteLength;
@@ -238,7 +238,7 @@ ControllerDoOneTransferPollMode(
             pDevice->pCurrentTarget->Settings.DeviceSelection);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     readByteIndex = 0;
     writeByteIndex = 0;
     transferByteLength = max(bytesToWrite, bytesToRead);
@@ -259,7 +259,7 @@ ControllerDoOneTransferPollMode(
         (transferByteLength * 2));
 
 #ifdef DBG
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     numPolls = 0;
 #else
     ULONGLONG numPolls = 0;

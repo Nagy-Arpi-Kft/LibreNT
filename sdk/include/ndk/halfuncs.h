@@ -326,7 +326,7 @@ HalEnableSystemInterrupt(
     _In_ KINTERRUPT_MODE InterruptMode
 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTHALAPI
 VOID
 NTAPI

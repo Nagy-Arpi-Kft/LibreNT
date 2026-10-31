@@ -14,18 +14,18 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning(push,3)
 #endif
 #include <commdlg.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning(pop)
 #endif
 
 #include "vfdtypes.h"
 #include "vfdapi.h"
 #include "vfdlib.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "vfdmsg.h"
 #else
 #include "vfdmsg_lib.h"
@@ -35,7 +35,7 @@
 //
 //	local functions
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static INT CALLBACK SaveDialogProc(
 #else
 static INT_PTR CALLBACK SaveDialogProc(
@@ -123,7 +123,7 @@ DWORD GuiSaveParam(
 //
 // The dialog procedure
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 INT CALLBACK SaveDialogProc(
 #else
 INT_PTR CALLBACK SaveDialogProc(
@@ -195,7 +195,7 @@ void OnInit(
 {
 	//	Store parameters
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SetWindowLong(hDlg, GWL_USERDATA, (ULONG)pParam);
 #else
 	SetWindowLongPtr(hDlg, GWLP_USERDATA, (ULONG_PTR)pParam);
@@ -297,7 +297,7 @@ void OnTarget(
 	//
 	//	get the current image info
 	//
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	param = (PCSAVE_PARAM)GetWindowLong(hDlg, GWL_USERDATA);
 #else
 	param = (PCSAVE_PARAM)GetWindowLongPtr(hDlg, GWLP_USERDATA);
@@ -430,7 +430,7 @@ void OnBrowse(
 	ofn.lpstrInitialDir = dir;
 	ofn.lpstrTitle	= title ? title : "Save Image";
 	ofn.lpstrFilter	= "*.*\0*.*\0";
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	ofn.Flags		= OFN_ENABLESIZING | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST;
 #else
 	ofn.Flags		= OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST;
@@ -481,7 +481,7 @@ DWORD OnOK(
 	BOOL			truncate;
 	DWORD			ret;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	param = (PCSAVE_PARAM)GetWindowLong(hDlg, GWL_USERDATA);
 #else
 	param = (PCSAVE_PARAM)GetWindowLongPtr(hDlg, GWLP_USERDATA);

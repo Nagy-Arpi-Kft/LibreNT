@@ -27,7 +27,7 @@
 #include <wine/debug.h>
 #include <wine/unicode.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 EXTERN_C HRESULT VariantChangeTypeForRead(_Inout_ VARIANTARG *pvarg, _In_ VARTYPE vt);
 EXTERN_C DECLSPEC_HIDDEN HINSTANCE shlwapi_hInstance;
 EXTERN_C ULONG WINAPI GetProcessOsVersion(void);

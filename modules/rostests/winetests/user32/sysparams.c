@@ -258,7 +258,7 @@ static LRESULT CALLBACK SysParamsTestWndProc( HWND hWnd, UINT msg, WPARAM wParam
             /* ignore these messages when caused by other actions */
             case SPI_ICONVERTICALSPACING:
             case SPI_SETWORKAREA:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case SPI_SETBORDER: /* WS03 */
             case SPI_SETNONCLIENTMETRICS: /* WS03 */
 #endif
@@ -295,7 +295,7 @@ static void test_change_message( int action, int optional )
         return;
     ok( change_counter >= 1, "Missed a message: change_counter=%d\n", change_counter );
     change_counter = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( action == change_last_param || broken(action == SPI_SETBORDER) || broken(action == SPI_SETNONCLIENTMETRICS), "Wrong action got %d expected %d\n", change_last_param, action );
 #else
     ok( action == change_last_param, "Wrong action got %d expected %d\n", change_last_param, action );
@@ -2509,7 +2509,7 @@ static void test_WM_DISPLAYCHANGE(void)
     ok( ret, "EnumDisplaySettingsW failed, error %#lx\n", GetLastError() );
 
     ok( settings.dmFields & DM_BITSPERPEL, "got dmFields %#lx\n", settings.dmFields );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( settings.dmBitsPerPel == 32 || settings.dmBitsPerPel == 24 /* ROS testbot */, "got dmBitsPerPel %lu\n", settings.dmBitsPerPel );
 #else
     ok( settings.dmBitsPerPel == 32, "got dmBitsPerPel %lu\n", settings.dmBitsPerPel );

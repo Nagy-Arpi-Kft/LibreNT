@@ -39,7 +39,7 @@
 
 #include <wintirpc.h>
 #include <rpc/rpc.h>
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 #include "rpc_com.h"
 #endif
 
@@ -63,7 +63,7 @@ xdr_rpcbs_addrlist(xdrs, objp)
 	    if (!xdr_int(xdrs, &objp->failure)) {
 		return (FALSE);
 	    }
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 	    if (!xdr_string(xdrs, &objp->netid, RPC_MAXDATASIZE)) {
 #else
 	    if (!xdr_string(xdrs, &objp->netid, (u_int)~0)) {
@@ -118,7 +118,7 @@ xdr_rpcbs_rmtcalllist(xdrs, objp)
 		IXDR_PUT_INT32(buf, objp->failure);
 		IXDR_PUT_INT32(buf, objp->indirect);
 	}
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->netid, RPC_MAXDATASIZE)) {
 #else
 	if (!xdr_string(xdrs, &objp->netid, (u_int)~0)) {
@@ -160,7 +160,7 @@ xdr_rpcbs_rmtcalllist(xdrs, objp)
 		objp->failure = (int)IXDR_GET_INT32(buf);
 		objp->indirect = (int)IXDR_GET_INT32(buf);
 	}
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->netid, RPC_MAXDATASIZE)) {
 #else
 	if (!xdr_string(xdrs, &objp->netid, (u_int)~0)) {
@@ -192,7 +192,7 @@ xdr_rpcbs_rmtcalllist(xdrs, objp)
 	if (!xdr_int(xdrs, &objp->indirect)) {
 		return (FALSE);
 	}
-#ifdef __REACTOS__ // CVE-2017-8779
+#ifdef __LIBRENT__ // CVE-2017-8779
 	if (!xdr_string(xdrs, &objp->netid, RPC_MAXDATASIZE)) {
 #else
 	if (!xdr_string(xdrs, &objp->netid, (u_int)~0)) {

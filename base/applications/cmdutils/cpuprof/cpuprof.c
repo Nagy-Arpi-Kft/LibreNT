@@ -7,13 +7,13 @@
 #include <initguid.h>
 #include <poclass.h>
 #include <acpiioct.h>
-#include <reactos/drivers/sensorprovider.h>
+#include <librent/drivers/sensorprovider.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 #include <wchar.h>
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 
 typedef LONG (NTAPI *QUERY_SYSTEM)(ULONG, PVOID, ULONG, PULONG);
 typedef struct
@@ -387,7 +387,7 @@ static BOOL FinishClockProbe(const WCHAR *Path)
 
 static void ReportSensors(const char *Phase)
 {
-    HDEVINFO Devices = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_REACTOS_SENSOR_PROVIDER,
+    HDEVINFO Devices = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_LIBRENT_SENSOR_PROVIDER,
                                            NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     ULONG Channels = 0;
     if (Devices == INVALID_HANDLE_VALUE) return;
@@ -395,10 +395,10 @@ static void ReportSensors(const char *Phase)
     {
         SP_DEVICE_INTERFACE_DATA Interface = { .cbSize = sizeof(Interface) };
         PSP_DEVICE_INTERFACE_DETAIL_DATA_W Detail;
-        REACTOS_SENSOR_PROVIDER_INFORMATION Provider;
+        LIBRENT_SENSOR_PROVIDER_INFORMATION Provider;
         DWORD Size = 0, Returned;
         HANDLE Device;
-        if (!SetupDiEnumDeviceInterfaces(Devices, NULL, &GUID_DEVINTERFACE_REACTOS_SENSOR_PROVIDER, i, &Interface)) break;
+        if (!SetupDiEnumDeviceInterfaces(Devices, NULL, &GUID_DEVINTERFACE_LIBRENT_SENSOR_PROVIDER, i, &Interface)) break;
         SetupDiGetDeviceInterfaceDetailW(Devices, &Interface, NULL, 0, &Size, NULL);
         Detail = calloc(1, Size);
         if (!Detail) continue;
@@ -412,17 +412,17 @@ static void ReportSensors(const char *Phase)
                              NULL, OPEN_EXISTING, 0, NULL);
         free(Detail);
         if (Device == INVALID_HANDLE_VALUE) continue;
-        if (DeviceIoControl(Device, IOCTL_REACTOS_SENSOR_QUERY_PROVIDER, NULL, 0,
+        if (DeviceIoControl(Device, IOCTL_LIBRENT_SENSOR_QUERY_PROVIDER, NULL, 0,
                             &Provider, sizeof(Provider), &Returned, NULL) &&
-            Provider.Version == REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION &&
-            Provider.ChannelCount <= REACTOS_SENSOR_PROVIDER_MAX_CHANNELS)
+            Provider.Version == LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION &&
+            Provider.ChannelCount <= LIBRENT_SENSOR_PROVIDER_MAX_CHANNELS)
         {
             for (ULONG j = 0; j < Provider.ChannelCount; ++j)
             {
-                REACTOS_SENSOR_READ_INPUT Input = { .Version = REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION,
+                LIBRENT_SENSOR_READ_INPUT Input = { .Version = LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION,
                     .Size = sizeof(Input), .ChannelIndex = j };
-                REACTOS_SENSOR_READING Reading;
-                if (DeviceIoControl(Device, IOCTL_REACTOS_SENSOR_READ_CHANNEL, &Input, sizeof(Input),
+                LIBRENT_SENSOR_READING Reading;
+                if (DeviceIoControl(Device, IOCTL_LIBRENT_SENSOR_READ_CHANNEL, &Input, sizeof(Input),
                                     &Reading, sizeof(Reading), &Returned, NULL))
                 {
                     printf("PROFILE_SENSOR phase=%s name=%ls type=%lu unit=%lu value=%lld raw=%lu flags=0x%lx\n",

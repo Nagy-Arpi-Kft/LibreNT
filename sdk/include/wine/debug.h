@@ -33,7 +33,7 @@
 #define __RELFILE__ __FILE__
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef __WINE_WINE_TEST_H
 #error This file should not be used in Wine tests
 #endif
@@ -99,7 +99,7 @@ struct __wine_debug_channel
 #define __WINE_DBG_LOG(...) \
     ros_dbg_log( __dbcl, __dbch, __RELFILE__, __FUNCTION__, __LINE__, __VA_ARGS__); } } while(0)
 
-#if !defined(__REACTOS__) // (defined(__GNUC__) || defined(__clang__)) && (defined(__MINGW32__) || defined (_MSC_VER) || !defined(__WINE_USE_MSVCRT))
+#if !defined(__LIBRENT__) // (defined(__GNUC__) || defined(__clang__)) && (defined(__MINGW32__) || defined (_MSC_VER) || !defined(__WINE_USE_MSVCRT))
 #define __WINE_PRINTF_ATTR(fmt,args) __attribute__((format (printf,fmt,args)))
 #else
 #define __WINE_PRINTF_ATTR(fmt,args)
@@ -151,7 +151,7 @@ extern int wine_dbg_vlog( enum __wine_debug_class cls, struct __wine_debug_chann
 extern int wine_dbg_log( enum __wine_debug_class cls, struct __wine_debug_channel *ch, const char *func,
                          const char *format, ... ) __WINE_PRINTF_ATTR(4,5);
 extern int __cdecl __wine_dbg_output( const char *str );
-/* ReactOS compliant debug format */
+/* LibreNT compliant debug format */
 extern int ros_dbg_log( enum __wine_debug_class cls, struct __wine_debug_channel *ch, const char *file,
                          const char *func, const int line, const char *format, ... ) __WINE_PRINTF_ATTR(6,7);
 
@@ -215,7 +215,7 @@ static __inline const char *wine_dbgstr_rect( const RECT *rect )
 
 static __inline const char *wine_dbgstr_longlong( ULONGLONG ll )
 {
-    if (/*sizeof(ll) > sizeof(unsigned long) &&*/ ll >> 32) /* ULONGLONG is always > long in ReactOS */
+    if (/*sizeof(ll) > sizeof(unsigned long) &&*/ ll >> 32) /* ULONGLONG is always > long in LibreNT */
         return wine_dbg_sprintf( "%lx%08lx", (unsigned long)(ll >> 32), (unsigned long)ll );
     else return wine_dbg_sprintf( "%lx", (unsigned long)ll );
 }

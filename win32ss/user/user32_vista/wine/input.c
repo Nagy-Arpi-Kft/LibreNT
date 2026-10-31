@@ -24,7 +24,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
@@ -32,7 +32,7 @@
 #include <wingdi.h>
 #include <winuser.h>
 #include <winbase.h>
-#include <reactos/usertouch.h>
+#include <librent/usertouch.h>
 typedef enum
 {
     POINTER_FEEDBACK_DEFAULT = 1,
@@ -155,12 +155,12 @@ typedef struct tagPOINTER_TOUCH_INFO
 #include "dbt.h"
 #endif
 #include "wine/debug.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/plugplay.h"
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(win);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 WINE_DECLARE_DEBUG_CHANNEL(keyboard);
 
 /***********************************************************************
@@ -839,7 +839,7 @@ BOOL WINAPI GetTouchInputInfo( HTOUCHINPUT handle, UINT count, TOUCHINPUT *ptr, 
  */
 BOOL WINAPI IsTouchWindow( HWND hwnd, ULONG *flags )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG state = NtUserCallTwoParam((DWORD_PTR)hwnd, 0, ROS_TOUCH_QUERY);
 
     if (!(state & ROS_TOUCH_REGISTERED))
@@ -858,7 +858,7 @@ BOOL WINAPI IsTouchWindow( HWND hwnd, ULONG *flags )
  */
 BOOL WINAPI RegisterTouchWindow( HWND hwnd, ULONG flags )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return NtUserCallTwoParam((DWORD_PTR)hwnd, flags, ROS_TOUCH_REGISTER);
 #else
     FIXME( "hwnd %p, flags %#lx stub!\n", hwnd, flags );
@@ -871,7 +871,7 @@ BOOL WINAPI RegisterTouchWindow( HWND hwnd, ULONG flags )
  */
 BOOL WINAPI UnregisterTouchWindow( HWND hwnd )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return NtUserCallTwoParam((DWORD_PTR)hwnd, 0, ROS_TOUCH_UNREGISTER);
 #else
     FIXME( "hwnd %p stub!\n", hwnd );
@@ -933,7 +933,7 @@ BOOL WINAPI SetGestureConfig( HWND hwnd, DWORD reserved, UINT count,
     return FALSE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 BOOL WINAPI GetPointerTouchInfo( UINT32 id, POINTER_TOUCH_INFO *info )
 {
     FIXME( "id %u, info %p stub!\n", id, info );
@@ -949,7 +949,7 @@ BOOL WINAPI GetPointerTouchInfoHistory( UINT32 id, UINT32 *count, POINTER_TOUCH_
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*******************************************************************
  *           SetForegroundWindow  (USER32.@)
  */

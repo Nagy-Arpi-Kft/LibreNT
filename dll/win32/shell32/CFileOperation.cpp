@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS shell32
+ * PROJECT:     LibreNT shell32
  * LICENSE:     GPL-3.0-or-later
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF
  * PURPOSE:     IFileOperation using the shell's file engine and progress UI

@@ -206,7 +206,7 @@ static HRESULT get_moniker_comparison_data(IMoniker *pMoniker, MonikerComparison
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL rot_server_identity_allows_any_client(void)
 {
     WCHAR path[MAX_PATH], appid[CHARS_IN_GUID], key[MAX_PATH + 8];
@@ -332,7 +332,7 @@ RunningObjectTableImpl_Register(IRunningObjectTable* iface, DWORD flags,
     if (punkObject==NULL || pmkObjectName==NULL || pdwRegister==NULL)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((flags & ROTFLAGS_ALLOWANYCLIENT) && !rot_server_identity_allows_any_client())
         return CO_E_WRONG_SERVER_IDENTITY;
 #endif
@@ -397,7 +397,7 @@ RunningObjectTableImpl_Register(IRunningObjectTable* iface, DWORD flags,
         hr = S_OK;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     hr = get_moniker_comparison_data(pmkObjectName,
                                      &rot_entry->moniker_data);
     if (hr != S_OK)
@@ -434,7 +434,7 @@ RunningObjectTableImpl_Register(IRunningObjectTable* iface, DWORD flags,
             GlobalUnlock(hglobal);
         }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hr == S_OK && FAILED(hr = get_moniker_comparison_data(pmkObjectName, &rot_entry->moniker_data)))
     {
         LARGE_INTEGER zero;
@@ -1016,7 +1016,7 @@ HRESULT WINAPI GetClassFile(LPCOLESTR filePathName,CLSID *pclsid)
 
     res = PathCchFindExtension(filePathName, PATHCCH_MAX_CCH, &extension);
     if (FAILED(res) || !extension || !*extension || !wcscmp(extension, L"."))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return GetFileAttributesW(filePathName) == INVALID_FILE_ATTRIBUTES ? MK_E_CANTOPENFILE : MK_E_INVALIDEXTENSION;
 #else
         return MK_E_INVALIDEXTENSION;
@@ -1037,7 +1037,7 @@ HRESULT WINAPI GetClassFile(LPCOLESTR filePathName,CLSID *pclsid)
     else
         res = HRESULT_FROM_WIN32(ret);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (res != S_OK && GetFileAttributesW(filePathName) == INVALID_FILE_ATTRIBUTES)
         return MK_E_CANTOPENFILE;
 #endif

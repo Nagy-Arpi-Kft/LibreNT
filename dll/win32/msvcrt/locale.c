@@ -82,7 +82,7 @@ __lc_time_data cloc_time_data =
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WORD cloc_ctype[257];
 #endif
 
@@ -1533,7 +1533,7 @@ static pthreadlocinfo create_locinfo(int category,
     } else {
         locinfo->lc_clike = 1;
         locinfo->mb_cur_max = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         locinfo->pctype = cloc_ctype+1;
 #else
         locinfo->pctype = MSVCRT__ctype+1;
@@ -2140,7 +2140,7 @@ BOOL msvcrt_init_locale(void)
 {
     int i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(cloc_ctype, MSVCRT__ctype, sizeof(cloc_ctype));
 #endif
     _lock_locales();

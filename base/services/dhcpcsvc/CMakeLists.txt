@@ -1,8 +1,8 @@
 
-include_directories(include ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
+include_directories(include ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
 
-add_rpc_file(client ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/dhcpcsvc.idl PREFIX_CLIENT Client_ PREFIX_SERVER Server_)
-add_rpc_file(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/dhcpcsvc.idl PREFIX_CLIENT Client_ PREFIX_SERVER Server_)
+add_rpc_file(client ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/dhcpcsvc.idl PREFIX_CLIENT Client_ PREFIX_SERVER Server_)
+add_rpc_file(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/dhcpcsvc.idl PREFIX_CLIENT Client_ PREFIX_SERVER Server_)
 
 spec2def(dhcpcsvc.dll dhcpcsvc.spec ADD_IMPORTLIB)
 
@@ -35,4 +35,4 @@ set_module_type(dhcpcsvc win32dll)
 target_link_libraries(dhcpcsvc oldnames ${PSEH_LIB})
 add_importlibs(dhcpcsvc ws2_32 rpcrt4 iphlpapi advapi32 msvcrt kernel32 ntdll)
 add_pch(dhcpcsvc include/rosdhcp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET dhcpcsvc DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dhcpcsvc DESTINATION librent/system32 FOR all)

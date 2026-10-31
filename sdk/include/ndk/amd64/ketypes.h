@@ -73,7 +73,7 @@ Author:
 #define KF_SSE4_1               0x0001000000000000ULL
 #define KF_SSE4_2               0x0002000000000000ULL
 
-// ReactOS specific
+// LibreNT specific
 #define KF_AVX                  0x1000000000000000ULL
 #define KF_AVX2                 0x2000000000000000ULL
 #define KF_AVX512F              0x4000000000000000ULL
@@ -905,7 +905,7 @@ typedef struct _KPRCB
     UCHAR PrcbPad10[3];
 #if (NTDDI_VERSION >= NTDDI_WINBLUE)
     // Win 8.1+ widened FeatureBits to 64 bits; expose a high-dword accessor
-    // (FeatureBitsHigh) for ReactOS code that still composes it from halves.
+    // (FeatureBitsHigh) for LibreNT code that still composes it from halves.
     union
     {
         ULONG64 FeatureBits;
@@ -966,7 +966,7 @@ typedef struct _KPRCB
     CACHE_DESCRIPTOR Cache[5];
     ULONG CacheCount;
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if  (NTDDI_VERSION < NTDDI_WINBLUE)
     // On Win 8.1+ the FeatureBits field is extended to 64 bits
     ULONG FeatureBitsHigh;
@@ -1062,7 +1062,7 @@ typedef struct _KEXCEPTION_FRAME
     ULONG64 P4Home;
     ULONG64 P5;
 #if (NTDDI_VERSION >= NTDDI_WIN8)
-    ULONG64 InitialStack;                // Win8+ name: Spare1 [ReactOS reuses the freed slot]
+    ULONG64 InitialStack;                // Win8+ name: Spare1 [LibreNT reuses the freed slot]
 #else
     ULONG64 InitialStack;
 #endif
@@ -1083,7 +1083,7 @@ typedef struct _KEXCEPTION_FRAME
     ULONG64 OutputBuffer;
     ULONG64 OutputLength;
 #if (NTDDI_VERSION >= NTDDI_WIN8)
-    ULONG64 CallbackStack;               // Win8+ name: Spare2 [ReactOS reuses the freed slot]
+    ULONG64 CallbackStack;               // Win8+ name: Spare2 [LibreNT reuses the freed slot]
 #endif
     ULONG64 MxCsr;
     ULONG64 Rbp;

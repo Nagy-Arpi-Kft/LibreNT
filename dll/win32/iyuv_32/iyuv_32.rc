@@ -18,7 +18,7 @@
 
 #include "iyuv_private.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <windef.h>
 #include <winuser.h>
 #else

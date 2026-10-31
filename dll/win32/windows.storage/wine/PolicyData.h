@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell32
+ * PROJECT:     LibreNT Shell32
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Defining shell policy data
  * COPYRIGHT:   Copyright 2022 Hermès Bélusca-Maïto
@@ -306,7 +306,7 @@ DEFINE_POLICY( REST_USEDESKTOPINICACHE,             "Explorer",         "UseDesk
 // NOTE: This is a SHDOCVW-only policy.
 // DEFINE_POLICY( 0x50000024,   "Explorer",     "NoFileUrl" ),
 
-#if defined(__REACTOS__) && defined(_SHELL32_)
+#if defined(__LIBRENT__) && defined(_SHELL32_)
 // Internal SHELL32 policies (keep these at the end of the list)
 DEFINE_POLICY( REST_SH32_ENABLESHELLEXECUTEHOOKS,   "Explorer",         "EnableShellExecuteHooks"          ),
 #endif

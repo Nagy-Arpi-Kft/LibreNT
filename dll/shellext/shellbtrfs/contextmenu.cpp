@@ -16,7 +16,7 @@
  * along with WinBtrfs.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "shellext.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #include <strsafe.h>
 #include <stddef.h>
@@ -39,7 +39,7 @@
 
 #include "contextmenu.h"
 #include "resource.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"
@@ -295,7 +295,7 @@ void BtrfsContextMenu::get_uac_icon() {
     IWICBitmap* bitmap;
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void **)&factory);
 #else
     hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&factory));
@@ -491,7 +491,7 @@ static void create_snapshot(HWND hwnd, const wstring& fn) {
                 ULONG num = 2;
 
                 do {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                     name = nameorig + L" (" + to_wstring(num) + L")";
 #else
                     {
@@ -1048,7 +1048,7 @@ HRESULT __stdcall BtrfsContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO picia) {
                         ULONG num = 2;
 
                         do {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                             name = nameorig + L" (" + to_wstring(num) + L")";
 #else
                             {

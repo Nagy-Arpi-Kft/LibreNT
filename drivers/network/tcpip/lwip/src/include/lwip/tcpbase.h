@@ -72,7 +72,7 @@ enum tcp_state {
 /* Flags for "apiflags" parameter in tcp_write */
 #define TCP_WRITE_FLAG_COPY 0x01
 #define TCP_WRITE_FLAG_MORE 0x02
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define TCP_WRITE_FLAG_URG  0x04
 #endif
 

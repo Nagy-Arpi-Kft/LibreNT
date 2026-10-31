@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * PURPOSE:          Support for meta devices
  * FILE:             win32ss/gdi/eng/mdevobj.c
  * PROGRAMER:        Hervé Poussineau

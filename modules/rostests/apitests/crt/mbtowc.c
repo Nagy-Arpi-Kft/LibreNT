@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS API tests
+ * PROJECT:         LibreNT API tests
  * LICENSE:         GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:         Tests for mbtowc
  * COPYRIGHT:       Copyright 2020 George Bișoc <george.bisoc@reactos.org>

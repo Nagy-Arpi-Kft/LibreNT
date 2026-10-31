@@ -43,7 +43,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(ieframe);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "intshcut_ext.h"
 #else
 typedef struct
@@ -160,7 +160,7 @@ static HRESULT Unknown_QueryInterface(InternetShortcut *This, REFIID riid, PVOID
         *ppvObject = &This->IPersistFile_iface;
     else if (IsEqualGUID(&IID_IPropertySetStorage, riid))
         *ppvObject = &This->IPropertySetStorage_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (FAILED(InternetShortcutExt_QueryInterface(This, riid, ppvObject)))
         return E_NOINTERFACE;
 #else
@@ -197,7 +197,7 @@ static ULONG Unknown_Release(InternetShortcut *This)
     count = InterlockedDecrement(&This->refCount);
     if (count == 0)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         InternetShortcutExt_Free(This);
 #endif
         CoTaskMemFree(This->url);
@@ -230,7 +230,7 @@ static ULONG WINAPI UniformResourceLocatorW_Release(IUniformResourceLocatorW *ur
     return Unknown_Release(This);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT intshcut_set_url(InternetShortcut *This, const WCHAR *url, DWORD flags)
 {
     WCHAR guessed[L_MAX_URL_LENGTH];
@@ -267,7 +267,7 @@ static HRESULT intshcut_set_url(InternetShortcut *This, const WCHAR *url, DWORD 
 
 static HRESULT WINAPI UniformResourceLocatorW_SetUrl(IUniformResourceLocatorW *url, LPCWSTR pcszURL, DWORD dwInFlags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InternetShortcut *This = impl_from_IUniformResourceLocatorW(url);
     TRACE("(%p, %s, 0x%lx)\n", url, debugstr_w(pcszURL), dwInFlags);
     return intshcut_set_url(This, pcszURL, dwInFlags);
@@ -378,7 +378,7 @@ static HRESULT WINAPI UniformResourceLocatorA_SetUrl(IUniformResourceLocatorA *u
     WCHAR *newURL = NULL;
     InternetShortcut *This = impl_from_IUniformResourceLocatorA(url);
     TRACE("(%p, %s, 0x%lx)\n", url, debugstr_a(pcszURL), dwInFlags);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pcszURL != NULL)
     {
         HRESULT hr;
@@ -585,7 +585,7 @@ static HRESULT WINAPI PersistFile_Load(IPersistFile *pFile, LPCOLESTR pszFileNam
         ps.ulKind = PRSPEC_PROPID;
         ps.propid = PID_IS_ICONINDEX;
         pv.vt = VT_I4;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pv.lVal = iconindex;
 #else
         pv.iVal = iconindex;
@@ -597,7 +597,7 @@ static HRESULT WINAPI PersistFile_Load(IPersistFile *pFile, LPCOLESTR pszFileNam
     CoTaskMemFree(iconindexstring);
 
     IPropertyStorage_Release(pPropStg);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InternetShortcutExt_LoadFile(This, pszFileName);
 #endif
     return hr;
@@ -703,7 +703,7 @@ static HRESULT WINAPI PersistFile_Save(IPersistFile *pFile, LPCOLESTR pszFileNam
             }
 
             CloseHandle(file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             InternetShortcutExt_SaveFile(This, pszFileName);
 #endif
             if (pszFileName == NULL || fRemember)
@@ -782,7 +782,7 @@ static HRESULT WINAPI PropertySetStorage_Create(
                                       ppprstg);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct shortcut_propstg
 {
     IPropertyStorage IPropertyStorage_iface;
@@ -965,7 +965,7 @@ static HRESULT WINAPI PropertySetStorage_Open(
     if ((grfMode & STGM_ACCESS_MASK) == STGM_WRITE)
         grfMode = (grfMode & ~STGM_ACCESS_MASK) | STGM_READWRITE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         struct shortcut_propstg *wrapper;
         IPropertyStorage *inner;
@@ -1070,7 +1070,7 @@ static InternetShortcut *create_shortcut(void)
         newshortcut->IUniformResourceLocatorW_iface.lpVtbl = &uniformResourceLocatorWVtbl;
         newshortcut->IPersistFile_iface.lpVtbl = &persistFileVtbl;
         newshortcut->IPropertySetStorage_iface.lpVtbl = &propertySetStorageVtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         InternetShortcutExt_Init(newshortcut);
 #endif
         newshortcut->refCount = 1;

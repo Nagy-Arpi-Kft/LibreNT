@@ -25,7 +25,7 @@
 #include <wmidata.h>
 #include "serial.h"
 #include "serialp.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "Trace.h"
 #else
 #include "trace.h"

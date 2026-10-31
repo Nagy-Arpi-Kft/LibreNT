@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:            See COPYING in the top level directory
- * PROJECT:              ReactOS kernel
+ * PROJECT:              LibreNT kernel
  * FILE:                 lib/opengl32/icdload.c
  * PURPOSE:              OpenGL32 lib, ICD dll loader
  */
@@ -8,7 +8,7 @@
 #include "opengl32.h"
 
 #include <d3dkmthk.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 #include <winreg.h>
 #include <wchar.h>
 
@@ -38,7 +38,7 @@ static CRITICAL_SECTION icdload_cs = {NULL, -1, 0, 0, 0, 0};
 static struct ICD_Data* ICD_Data_List = NULL;
 static DWORD IcdLoadingThreadId;
 static const WCHAR OpenGLDrivers_Key[] = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\OpenGLDrivers";
-static const WCHAR CustomDrivers_Key[] = L"SOFTWARE\\ReactOS\\OpenGL";
+static const WCHAR CustomDrivers_Key[] = L"SOFTWARE\\LibreNT\\OpenGL";
 static Drv_Opengl_Info CustomDrvInfo;
 static CUSTOM_DRIVER_STATE CustomDriverState = OGL_CD_NOT_QUERIED;
 
@@ -1230,8 +1230,8 @@ struct ICD_Data* IntGetIcdData(
     if (AdapterLuidValid != NULL)
         *AdapterLuidValid = FALSE;
 
-    /* The following code is ReactOS specific and allows us to easily load an arbitrary ICD:
-     * It checks HKCU\Software\ReactOS\OpenGL for a custom ICD and will always load it
+    /* The following code is LibreNT specific and allows us to easily load an arbitrary ICD:
+     * It checks HKCU\Software\LibreNT\OpenGL for a custom ICD and will always load it
      * no matter what driver the DC is associated with. It can also force using the
      * built-in Software Implementation*/
     if(CustomDriverState == OGL_CD_NOT_QUERIED)
@@ -1251,10 +1251,10 @@ struct ICD_Data* IntGetIcdData(
         if((ret != ERROR_SUCCESS) || (dwValueType != REG_SZ) || !wcslen(CustomDrvInfo.DriverName))
             goto custom_end;
 
-        if(!_wcsicmp(CustomDrvInfo.DriverName, L"ReactOS Software Implementation"))
+        if(!_wcsicmp(CustomDrvInfo.DriverName, L"LibreNT Software Implementation"))
         {
             /* Always announce the fact that we're forcing ROSSWI */
-            ERR("Forcing ReactOS Software Implementation\n");
+            ERR("Forcing LibreNT Software Implementation\n");
             CustomDriverState = OGL_CD_ROSSWI;
             return NULL;
         }
@@ -1346,7 +1346,7 @@ custom_end:
     CurrentThreadId = GetCurrentThreadId();
     if (IcdLoadingThreadId == CurrentThreadId)
     {
-        /* A vendor ICD may initialize DXGI from DrvValidateVersion.  ReactOS's
+        /* A vendor ICD may initialize DXGI from DrvValidateVersion.  LibreNT's
          * DXGI backend probes WGL, which must use its software bootstrap path
          * until the outer ICD has finished publishing a complete dispatch
          * table. */

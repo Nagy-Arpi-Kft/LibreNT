@@ -59,7 +59,7 @@ static HRESULT WINAPI factory_QueryInterface(IActivationFactory *iface, REFIID i
             || IsEqualGUID(iid, &IID_IAgileObject)
             || IsEqualGUID(iid, &IID_IActivationFactory))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *out = &impl->IActivationFactory_iface;
         IInspectable_AddRef(*(IActivationFactory **)out);
 #else
@@ -148,7 +148,7 @@ HRESULT WINAPI DllGetActivationFactory(HSTRING classid, IActivationFactory **fac
 
     if (!wcscmp(buffer, L"Wine.Test.Class"))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *factory = &class_factory.IActivationFactory_iface;
         IActivationFactory_AddRef(*factory);
 #else
@@ -158,7 +158,7 @@ HRESULT WINAPI DllGetActivationFactory(HSTRING classid, IActivationFactory **fac
     }
     if (!wcscmp(buffer, L"Wine.Test.Trusted"))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *factory = &trusted_factory.IActivationFactory_iface;
         IActivationFactory_AddRef(*factory);
 #else

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VidPN (Video Present Network) manager private declarations
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -193,7 +193,7 @@ NTSTATUS
 DxgkVidPnReleaseProcessOwners(
     _In_ PEPROCESS Process);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 NTSTATUS
 DxgkVidPnQueryExclusiveOwnership(
     _In_ HANDLE ProcessId,

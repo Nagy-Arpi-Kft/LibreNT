@@ -207,7 +207,7 @@
 #define RSIZE_MAX ((rsize_t)(-1) >> 1)
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define __STDC_SECURE_LIB__ 200411L
 #define __GOT_SECURE_LIB__ __STDC_SECURE_LIB__
 #define _SECURECRT_FILL_BUFFER_PATTERN 0xFD

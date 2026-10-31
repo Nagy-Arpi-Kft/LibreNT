@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Module entry point and global state
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -455,7 +455,7 @@ DxgkpBootLogHoldsDisplay(VOID)
 
 /*
  * Exported build and bugcheck state consumed as data by dxgmms2. The Windows
- * 11 public symbols and consumer accesses define the widths; retail ReactOS
+ * 11 public symbols and consumer accesses define the widths; retail LibreNT
  * is neither an internal nor a checked Microsoft build.
  */
 ULONG g_DxgMmsBugcheckExportIndex = 2;
@@ -486,7 +486,7 @@ BOOLEAN g_bVSyncEnabledForLogging = FALSE;
 
 /*
  * The native dxgmms2 consumer treats a false result as a request to skip its
- * optional telemetry event. ReactOS has no equivalent provider or rate-limit
+ * optional telemetry event. LibreNT has no equivalent provider or rate-limit
  * policy, so keep the ABI available while declining every event.
  */
 BOOLEAN
@@ -513,7 +513,7 @@ DxgkD3dkmtNotSupported(
 /*
  * Layout-free TDR policy query consumed by dxgmms2. The public symbol fixes a
  * no-argument BOOLEAN contract, and the native entry reads only the enabled
- * policy state. ReactOS derives that state from its documented TdrLevel value.
+ * policy state. LibreNT derives that state from its documented TdrLevel value.
  */
 BOOLEAN
 NTAPI
@@ -535,7 +535,7 @@ TdrIsTimeoutForcedFlip(VOID)
  * do not define recovery-context sizes, field offsets, ownership, or calling
  * contracts, and no paired black-box contract has cleared those details.
  */
-#if REACTOS_WDDM_PRIVATE_TDR_ABI
+#if LIBRENT_WDDM_PRIVATE_TDR_ABI
 
 /* Pool tag for TDR recovery context allocations ("vTDR" = 0x52445476) */
 #define TAG_TDR_CONTEXT 0x52445476
@@ -1059,7 +1059,7 @@ TdrAllowToDebugEngineTimeout(
  * TdrCollectDbgInfoStage1 / TdrCollectDbgInfoStage2
  *
  * Collect debug information about a GPU hang.  Depends on watchdog.sys
- * infrastructure which is not present in ReactOS.  Stubs for now.
+ * infrastructure which is not present in LibreNT.  Stubs for now.
  */
 NTSTATUS
 NTAPI
@@ -1099,7 +1099,7 @@ TdrUpdateDbgReport(
     UNREFERENCED_PARAMETER(Stage);
 }
 
-#endif /* REACTOS_WDDM_PRIVATE_TDR_ABI */
+#endif /* LIBRENT_WDDM_PRIVATE_TDR_ABI */
 
 /*
  * DxgkVidMmAllowFailOnOfferReclaimErrors
@@ -1115,7 +1115,7 @@ DxgkVidMmAllowFailOnOfferReclaimErrors(VOID)
 {
     /*
      * Windows 11 returns TRUE when no current adapter exists and otherwise
-     * evaluates an adapter policy. ReactOS has no corresponding public policy
+     * evaluates an adapter policy. LibreNT has no corresponding public policy
      * input yet, so keep the no-fail permissive result without importing a
      * private native layout.
      */
@@ -1218,7 +1218,7 @@ DpiSetSchedulerCallbackState(
 /* ========================================================================
  * SQM telemetry stubs
  *
- * Software Quality Metrics instrumentation.  No-op stubs for ReactOS.
+ * Software Quality Metrics instrumentation.  No-op stubs for LibreNT.
  * ====================================================================== */
 
 NTSTATUS
@@ -1312,7 +1312,7 @@ DxgkSqmGenericString(
 }
 
 /*
- * DxgkSqmOptedIn — returns FALSE (no SQM telemetry in ReactOS).
+ * DxgkSqmOptedIn — returns FALSE (no SQM telemetry in LibreNT).
  */
 BOOLEAN
 NTAPI
@@ -1338,7 +1338,7 @@ DxgkSqmSetDword(
 /* ========================================================================
  * ETW tracing stubs
  *
- * Event Tracing for Windows instrumentation.  No-op stubs for ReactOS.
+ * Event Tracing for Windows instrumentation.  No-op stubs for LibreNT.
  * ====================================================================== */
 
 /*

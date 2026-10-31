@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     End-to-end softgpu UMD linear 2D execution
  */
@@ -312,8 +312,8 @@ Test_SoftGpu2DEndToEnd(void)
     memset(&AdapterFuncs, 0, sizeof(AdapterFuncs));
     memset(&Open, 0, sizeof(Open));
     Open.hAdapter = (HANDLE)(ULONG_PTR)hAdapter;
-    Open.Interface = REACTOS_EXPECTED_UMD_INTERFACE_VERSION;
-    Open.Version = REACTOS_EXPECTED_UMD_INTERFACE_VERSION;
+    Open.Interface = LIBRENT_EXPECTED_UMD_INTERFACE_VERSION;
+    Open.Version = LIBRENT_EXPECTED_UMD_INTERFACE_VERSION;
     Open.pAdapterCallbacks = &AdapterCallbacks;
     Open.pAdapterFuncs = &AdapterFuncs;
     Result = pOpenAdapter(&Open);
@@ -325,12 +325,12 @@ Test_SoftGpu2DEndToEnd(void)
     hUmdAdapter = Open.hAdapter;
 
     if (Open.DriverVersion !=
-        REACTOS_EXPECTED_UMD_INTERFACE_VERSION)
+        LIBRENT_EXPECTED_UMD_INTERFACE_VERSION)
     {
         skip("UMD interface 0x%04X does not match image interface "
              "0x%04X\n",
              (unsigned)Open.DriverVersion,
-             (unsigned)REACTOS_EXPECTED_UMD_INTERFACE_VERSION);
+             (unsigned)LIBRENT_EXPECTED_UMD_INTERFACE_VERSION);
         goto Cleanup;
     }
 
@@ -371,9 +371,9 @@ Test_SoftGpu2DEndToEnd(void)
     memset(&CreateDevice, 0, sizeof(CreateDevice));
     CreateDevice.hDevice = hRuntimeDevice;
     CreateDevice.Interface =
-        REACTOS_EXPECTED_UMD_INTERFACE_VERSION;
+        LIBRENT_EXPECTED_UMD_INTERFACE_VERSION;
     CreateDevice.Version =
-        REACTOS_EXPECTED_UMD_INTERFACE_VERSION;
+        LIBRENT_EXPECTED_UMD_INTERFACE_VERSION;
     CreateDevice.pCallbacks = &Callbacks;
     CreateDevice.pDeviceFuncs = &DeviceFuncs;
     Result = AdapterFuncs.pfnCreateDevice(

@@ -162,7 +162,7 @@ ScratchBuffer_ExecuteCdbEx(
     );
 
 _IRQL_requires_max_(APC_LEVEL)
-FORCEINLINE // __REACTOS__
+FORCEINLINE // __LIBRENT__
 NTSTATUS
 ScratchBuffer_ExecuteCdb(
     _Inout_ PCDROM_DEVICE_EXTENSION DeviceExtension,

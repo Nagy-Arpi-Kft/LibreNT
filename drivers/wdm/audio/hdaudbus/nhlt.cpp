@@ -94,7 +94,7 @@ NHLTQuery(
 		status = STATUS_SUCCESS;
 	}
 	else if (!NT_SUCCESS(status)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		SklHdAudBusPrint(DEBUG_LEVEL_INFO, DBG_INIT, "Failed first ioctl\n");
 #else
 		SklHdAudBusPrint(DEBUG_LEVEL_ERROR, DBG_INIT, "Failed first ioctl\n");

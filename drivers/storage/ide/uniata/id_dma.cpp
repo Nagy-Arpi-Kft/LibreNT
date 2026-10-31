@@ -1337,7 +1337,7 @@ dma_cs55xx:
             apiomode = 4;
 
         if(ChipType == CYRIX_3x) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             static const ULONG cyr_piotiming[] =
                 { 0x00009172, 0x00012171, 0x00020080, 0x00032010, 0x00040010 };
             static const ULONG cyr_wdmatiming[] = { 0x00077771, 0x00012121, 0x00002020 };
@@ -1368,7 +1368,7 @@ dma_cs55xx:
             }
         } else
         if(ChipType == CYRIX_OLD) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             static const UCHAR cyr_piotiming_old[] = { 11, 6, 3, 2, 1 };
 #else
             UCHAR cyr_piotiming_old[] =
@@ -1431,7 +1431,7 @@ dma_cs55xx:
         /* National */
         /************/
         if(!ChipType) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             static const ULONG nat_piotiming[] =
                 { 0x9172d132, 0x21717121, 0x00803020, 0x20102010, 0x00100010, 0x00803020,
                   0x20102010, 0x00100010, 0x00100010, 0x00100010, 0x00100010 };
@@ -1562,7 +1562,7 @@ dma_cs55xx:
         ULONG  new40  = 0;
         UCHAR  mask44 = 0;
         UCHAR  new44  = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         static const UCHAR intel_timings[] =
             { 0x00, 0x00, 0x10, 0x21, 0x23, 0x10, 0x21, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23, 0x23 };
         static const UCHAR intel_utimings[] = { 0x00, 0x01, 0x02, 0x01, 0x02, 0x01, 0x02 };

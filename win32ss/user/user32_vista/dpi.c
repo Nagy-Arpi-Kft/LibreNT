@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel - Vista+ APIs
+ * PROJECT:     LibreNT Kernel - Vista+ APIs
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     DPI functions for user32 and user32_vista.
  * COPYRIGHT:   Copyright 2024 Carl Bialorucki <cbialo2@outlook.com>
@@ -561,7 +561,7 @@ GetDpiForMonitorInternal(_In_ HMONITOR Monitor, _In_ UINT Type, _Out_ UINT *DpiX
     }
 
     /*
-     * ReactOS currently has one logical DPI for the desktop. Raw and angular
+     * LibreNT currently has one logical DPI for the desktop. Raw and angular
      * monitor DPI require EDID physical dimensions, which GOP does not expose.
      */
     Awareness = GetAwarenessFromDpiAwarenessContext(GetThreadDpiAwarenessContext());
@@ -978,7 +978,7 @@ LogicalToPhysicalPoint(
     return IntValidatePerMonitorDpiPoint(hWnd, Point);
 }
 
-/* ReactOS currently uses physical coordinates for all DPI awareness modes. */
+/* LibreNT currently uses physical coordinates for all DPI awareness modes. */
 BOOL
 WINAPI
 LogicalToPhysicalPointForPerMonitorDPI(
@@ -988,7 +988,7 @@ LogicalToPhysicalPointForPerMonitorDPI(
     return IntValidatePerMonitorDpiPoint(hwnd, point);
 }
 
-/* ReactOS currently uses physical coordinates for all DPI awareness modes. */
+/* LibreNT currently uses physical coordinates for all DPI awareness modes. */
 BOOL
 WINAPI
 PhysicalToLogicalPointForPerMonitorDPI(

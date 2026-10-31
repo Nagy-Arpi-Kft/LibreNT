@@ -1,15 +1,7 @@
 
-option(ENABLE_ROSAPPS "Enable building the ReactOS extra applications" OFF)
+option(ENABLE_ROSAPPS "Enable building the LibreNT extra applications" OFF)
 option(ENABLE_KMTESTS "Build kernel-mode tests without the full test suite" OFF)
 option(ENABLE_APPSMOKE_TESTS "Build the fast application smoke tests without the full test suite" OFF)
-option(ENABLE_RISCV64_TESTS "Build and package the RISC-V port regression tests" OFF)
-
-if(ENABLE_RISCV64_TESTS)
-    if(NOT ARCH STREQUAL "riscv64")
-        message(FATAL_ERROR "ENABLE_RISCV64_TESTS requires ARCH=riscv64")
-    endif()
-    add_subdirectory(rostests/tests/riscv64)
-endif()
 
 if(ENABLE_ROSAPPS)
     add_subdirectory(rosapps)
@@ -62,11 +54,11 @@ endif()
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/)
     file(GLOB_RECURSE EXTRA_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/ ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/*)
     foreach(item ${EXTRA_FILES})
-        add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/${item} DESTINATION reactos/3rdParty NAME_ON_CD ${item} FOR bootcd)
+        add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/${item} DESTINATION librent/3rdParty NAME_ON_CD ${item} FOR bootcd)
     endforeach(item)
 endif()
 
 # Add font file DroidSansFallback.ttf for LiveCD
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/optional/DroidSansFallback.ttf)
-    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/optional/DroidSansFallback.ttf" DESTINATION reactos/Fonts FOR all)
+    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/optional/DroidSansFallback.ttf" DESTINATION librent/Fonts FOR all)
 endif()

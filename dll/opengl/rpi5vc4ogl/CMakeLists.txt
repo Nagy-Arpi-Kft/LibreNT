@@ -5,13 +5,13 @@
 # so it must build and ship under both display models. That is why the build
 # rules live here rather than in the XPDM-gated miniport directory.
 
-set(VC4OGL_DIR ${REACTOS_SOURCE_DIR}/win32ss/drivers/miniport/rpi5vc4)
-set(RPI5VC4_MESA_V3D_ICD "$ENV{REACTOS_MESA_V3D_ICD}" CACHE FILEPATH
+set(VC4OGL_DIR ${LIBRENT_SOURCE_DIR}/win32ss/drivers/miniport/rpi5vc4)
+set(RPI5VC4_MESA_V3D_ICD "$ENV{LIBRENT_MESA_V3D_ICD}" CACHE FILEPATH
     "Optional modern Mesa V3D WGL ICD to deploy for the Raspberry Pi 5")
 
 include_directories(BEFORE
-    ${REACTOS_SOURCE_DIR}/dll/opengl/mesa
-    ${REACTOS_SOURCE_DIR}/dll/opengl/opengl32)
+    ${LIBRENT_SOURCE_DIR}/dll/opengl/mesa
+    ${LIBRENT_SOURCE_DIR}/dll/opengl/opengl32)
 
 spec2def(rpi5vc4ogl.dll ../../../win32ss/drivers/miniport/rpi5vc4/rpi5vc4ogl.spec)
 add_library(rpi5vc4ogl MODULE
@@ -64,7 +64,7 @@ if(RPI5VC4_MESA_V3D_ICD)
     add_cd_file(
         FILE "${RPI5VC4_MESA_ICD_STAGE}"
         TARGET rpi5vc4_mesa_icd_stage
-        DESTINATION reactos/system32
+        DESTINATION librent/system32
         FOR all)
 endif()
 
@@ -88,8 +88,8 @@ if(RPI5VC4_MESA_V3D_ICD OR TARGET mesa_gallium)
     add_cd_file(
         FILE "${RPI5VC4_LEGACY_ICD_STAGE}"
         TARGET rpi5vc4_legacy_icd_stage
-        DESTINATION reactos/system32
+        DESTINATION librent/system32
         FOR all)
 else()
-    add_cd_file(TARGET rpi5vc4ogl DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET rpi5vc4ogl DESTINATION librent/system32 FOR all)
 endif()

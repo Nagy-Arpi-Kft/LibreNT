@@ -1555,7 +1555,7 @@ PROPSHEET_WizardSubclassProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
       return TRUE;
 
     case WM_CTLCOLORSTATIC:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       SetTextColor((HDC)wParam, GetSysColor(COLOR_WINDOWTEXT));
 #endif
       SetBkColor((HDC)wParam, GetSysColor(COLOR_WINDOW));
@@ -2632,7 +2632,7 @@ static void PROPSHEET_SetWizButtons(HWND hwndDlg, DWORD dwFlags)
   HWND hwndNext   = GetDlgItem(hwndDlg, IDC_NEXT_BUTTON);
   HWND hwndFinish = GetDlgItem(hwndDlg, IDC_FINISH_BUTTON);
   BOOL enable_finish = ((dwFlags & PSWIZB_FINISH) || psInfo->hasFinish) && !(dwFlags & PSWIZB_DISABLEDFINISH);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   HWND hwndFocus = GetFocus();
 #endif
 
@@ -2670,7 +2670,7 @@ static void PROPSHEET_SetWizButtons(HWND hwndDlg, DWORD dwFlags)
       ShowWindow(hwndNext, SW_SHOW);
     }
   }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   {
     if ((hwndFocus == hwndBack || hwndFocus == hwndNext || hwndFocus == hwndFinish) &&
         (!IsWindowVisible(hwndFocus) || !IsWindowEnabled(hwndFocus)))
@@ -3497,7 +3497,7 @@ static LRESULT PROPSHEET_Paint(HWND hwnd, HDC hdcParam)
             SelectObject(hdcSrc, hbmp);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	clrOld = SetTextColor (hdc, GetSysColor(COLOR_WINDOWTEXT));
 #else
 	clrOld = SetTextColor (hdc, 0x00000000);

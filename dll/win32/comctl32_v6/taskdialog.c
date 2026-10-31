@@ -1128,7 +1128,7 @@ static void taskdialog_layout(struct taskdialog_info *dialog_info)
 
     /* Add height for spacing, title height and frame height */
     dialog_height += v_spacing;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         RECT window_rect = { 0, 0, dialog_width, dialog_height };
 

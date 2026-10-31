@@ -2725,7 +2725,7 @@ static DWORD WINAPI test_MultiThreadApartment_Thread(void *param) {
 
     hr = CoCreateInstance(&CLSID_TF_ThreadMgr, NULL, CLSCTX_INPROC_SERVER, &IID_ITfThreadMgrEx, (LPVOID *)&thmgr);
     ok(SUCCEEDED(hr), "Failed to create ITfThreadMgrEx instance\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr)) goto err_out;
 #endif
 
@@ -2742,7 +2742,7 @@ static DWORD WINAPI test_MultiThreadApartment_Thread(void *param) {
     hr = ITfThreadMgrEx_Release(thmgr);
     ok(SUCCEEDED(hr), "Failed to Release thread manager\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 err_out:
 #endif
     CoUninitialize();

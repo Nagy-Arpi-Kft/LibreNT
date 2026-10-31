@@ -1,4 +1,4 @@
-/* ReactOS API tests. LGPL-2.1-or-later. */
+/* LibreNT API tests. LGPL-2.1-or-later. */
 #include <apitest.h>
 #include <shlobj.h>
 

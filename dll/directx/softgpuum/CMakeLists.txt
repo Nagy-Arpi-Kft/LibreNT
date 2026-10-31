@@ -19,4 +19,4 @@ add_library(softgpuum MODULE
 set_module_type(softgpuum win32dll ENTRYPOINT DllMain 12)
 add_importlibs(softgpuum msvcrt kernel32 ntdll)
 add_dependencies(softgpuum psdk)
-add_cd_file(TARGET softgpuum DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET softgpuum DESTINATION librent/system32 FOR all)

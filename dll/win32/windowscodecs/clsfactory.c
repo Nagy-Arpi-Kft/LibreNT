@@ -78,7 +78,7 @@ static const classinfo wic_classes[] = {
     {&CLSID_WICApp1MetadataReader, App1MetadataReader_CreateInstance},
     {&CLSID_WICApp0MetadataWriter, App0MetadataWriter_CreateInstance},
     {&CLSID_WICApp1MetadataWriter, App1MetadataWriter_CreateInstance},
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {&CLSID_WICJpegLuminanceMetadataReader, JpegLuminanceReader_CreateInstance},
     {&CLSID_WICJpegChrominanceMetadataReader, JpegChrominanceReader_CreateInstance},
 #endif

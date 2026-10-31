@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     D3DKMT resource/object sharing and NT-handle interop contract tests
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -43,8 +43,8 @@ typedef struct _SHARED_OPEN_BUFFERS
     PVOID TotalPrivateDriverData;
 } SHARED_OPEN_BUFFERS;
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 static D3DKMT_HANDLE
 OpenAdapterFromDisplay1WithLuid(
     _Out_ LUID *AdapterLuid)
@@ -189,8 +189,8 @@ static void Test_Sharing_NullContract(void)
     CHECK_NULL_REJECTED(PFND3DKMT_OPENSYNCOBJECTFROMNTHANDLE,     "D3DKMTOpenSyncObjectFromNtHandle");
     CHECK_NULL_REJECTED(PFND3DKMT_OPENSYNCOBJECTFROMNTHANDLE2,    "D3DKMTOpenSyncObjectFromNtHandle2");
     CHECK_NULL_REJECTED(PFND3DKMT_OPENSYNCOBJECTNTHANDLEFROMNAME, "D3DKMTOpenSyncObjectNtHandleFromName");
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     CHECK_NULL_REJECTED(PFND3DKMT_GETSHAREDRESOURCEADAPTERLUID,   "D3DKMTGetSharedResourceAdapterLuid");
 #endif
     CHECK_NULL_REJECTED(PFND3DKMT_CHECKSHAREDRESOURCEACCESS,      "D3DKMTCheckSharedResourceAccess");
@@ -348,8 +348,8 @@ static void Test_NameOpens_BadAttributes(void)
 /* D3DKMTGetSharedResourceAdapterLuid -- bogus legacy share handle and  */
 /* bogus NT handle must both fail (no valid shared resource exists).    */
 /* ------------------------------------------------------------------ */
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 static void Test_GetSharedResourceAdapterLuid_BadHandles(void)
 {
     D3DKMT_GETSHAREDRESOURCEADAPTERLUID Data;
@@ -626,7 +626,7 @@ Cleanup:
 
 /* Exercise the buffered bridge with nonzero runtime/resource data and three
  * distinct allocation-private slices. Native drivers may reject the synthetic
- * allocation metadata; ReactOS test miniports accept it and must preserve every
+ * allocation metadata; LibreNT test miniports accept it and must preserve every
  * byte, pointer offset, and opened-alias lifetime. */
 static void Test_SharedResource_MultiAllocationRoundTrip(void)
 {
@@ -656,8 +656,8 @@ static void Test_SharedResource_MultiAllocationRoundTrip(void)
     D3DKMT_HANDLE hOpenerDevice = 0;
     NTSTATUS Status = STATUS_UNSUCCESSFUL;
     UINT Index;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     PFND3DKMT_GETSHAREDRESOURCEADAPTERLUID pGetAdapterLuid;
     D3DKMT_GETSHAREDRESOURCEADAPTERLUID SharedResourceLuid;
     LUID ExpectedAdapterLuid;
@@ -673,8 +673,8 @@ static void Test_SharedResource_MultiAllocationRoundTrip(void)
         return;
     }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     hAdapter = OpenAdapterFromDisplay1WithLuid(&ExpectedAdapterLuid);
 #else
     hAdapter = OpenAdapterFromDisplay1();
@@ -718,8 +718,8 @@ static void Test_SharedResource_MultiAllocationRoundTrip(void)
     if (Create.hResource == 0 || Create.hGlobalShare == 0)
         goto Cleanup;
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     pGetAdapterLuid =
         (PFND3DKMT_GETSHAREDRESOURCEADAPTERLUID)
             LoadD3DKMTProc(
@@ -1039,8 +1039,8 @@ START_TEST(sharing)
     Test_ShareObjects_Contract();
     Test_OpenQuery_NoDevice_BadHandles();
     Test_NameOpens_BadAttributes();
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     Test_GetSharedResourceAdapterLuid_BadHandles();
 #endif
     Test_CheckSharedResourceAccess_BadHandle();

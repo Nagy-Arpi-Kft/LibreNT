@@ -8,7 +8,7 @@
  * LICENSE: LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <fcntl.h>
 #include <io.h>
 #include "regedit.h"
@@ -142,7 +142,7 @@ struct parser
     void              *data;           /* value data */
     DWORD              data_size;      /* size of the data (in bytes) */
     BOOL               backslash;      /* TRUE if the current line contains a backslash */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL               unicode_in_asc; /* TRUE if ASCII file contains Unicode entry */
 #endif
     enum parser_state  state;          /* current parser state */
@@ -310,7 +310,7 @@ static BOOL parse_data_type(struct parser *parser, WCHAR **line)
 
     const struct data_type *ptr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD len = wcslen(*line);
 
     parser->unicode_in_asc = FALSE;
@@ -347,7 +347,7 @@ static BOOL parse_data_type(struct parser *parser, WCHAR **line)
 
             /* "hex(xx):" is special */
             val = wcstoul(*line, &end, 16);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* Up to 8 hex digits, "hex(000000002)" is invalid */
             if (*end != ')' || *(end + 1) != ':' || (val == ~0u && errno == ERANGE) || end - *line > 8)
 #else
@@ -424,7 +424,7 @@ static HKEY parse_key_name(WCHAR *key_name, WCHAR **key_path)
     for (i = 0; i < ARRAY_SIZE(reg_class_keys); i++)
     {
         int len = lstrlenW(reg_class_namesW[i]);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!_wcsnicmp(key_name, reg_class_namesW[i], len) &&
 #else
         if (!wcsnicmp(key_name, reg_class_namesW[i], len) &&
@@ -494,7 +494,7 @@ static void prepare_hex_string_data(struct parser *parser)
     if (parser->data_type == REG_EXPAND_SZ || parser->data_type == REG_MULTI_SZ ||
         parser->data_type == REG_SZ)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (parser->is_unicode || (!parser->is_unicode && parser->unicode_in_asc))
 #else
         if (parser->is_unicode)
@@ -1122,7 +1122,7 @@ void delete_registry_key(WCHAR *reg_key_name)
     if (!(key_class = parse_key_name(reg_key_name, &key_name)))
     {
         if (key_name) *(key_name - 1) = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         output_message(STRING_INVALID_SYSTEM_KEY, reg_key_name);
         return;
 #else
@@ -1131,7 +1131,7 @@ void delete_registry_key(WCHAR *reg_key_name)
     }
 
     if (!key_name || !*key_name)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         output_message(STRING_DELETE_FAILED, reg_key_name);
         return;
@@ -1140,7 +1140,7 @@ void delete_registry_key(WCHAR *reg_key_name)
         error_exit(STRING_DELETE_FAILED, reg_key_name);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SHDeleteKey(key_class, key_name);
 #else
     RegDeleteTreeW(key_class, key_name);
@@ -1219,7 +1219,7 @@ static size_t export_value_name(FILE *fp, WCHAR *name, size_t len, BOOL unicode)
     {
         WCHAR *str = REGPROC_escape_string(name, len, &line_len);
         WCHAR *buf = malloc((line_len + 4) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         StringCchPrintfW(buf, line_len + 4, L"\"%s\"=", str);
         line_len = wcslen(buf);
 #else
@@ -1247,7 +1247,7 @@ static void export_string_data(WCHAR **buf, WCHAR *data, size_t size)
         len = size / sizeof(WCHAR) - 1;
     str = REGPROC_escape_string(data, len, &line_len);
     *buf = malloc((line_len + 3) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     StringCchPrintfW(*buf, line_len + 3, L"\"%s\"", str);
 #else
     swprintf(*buf, line_len + 3, L"\"%s\"", str);
@@ -1258,7 +1258,7 @@ static void export_string_data(WCHAR **buf, WCHAR *data, size_t size)
 static void export_dword_data(WCHAR **buf, DWORD *data)
 {
     *buf = malloc(15 * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     StringCchPrintfW(*buf, 15, L"dword:%08x", *data);
 #else
     swprintf(*buf, 15, L"dword:%08x", *data);
@@ -1278,7 +1278,7 @@ static size_t export_hex_data_type(FILE *fp, DWORD type, BOOL unicode)
     else
     {
         WCHAR *buf = malloc(15 * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         StringCchPrintfW(buf, 15, L"hex(%x):", type);
         line_len = wcslen(buf);
 #else
@@ -1310,7 +1310,7 @@ static void export_hex_data(FILE *fp, WCHAR **buf, DWORD type, DWORD line_len,
 
     for (i = 0, pos = 0; i < size; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         StringCchPrintfW(*buf + pos, 3, L"%02x", ((BYTE *)data)[i]);
         pos += wcslen(*buf + pos);
 #else
@@ -1377,7 +1377,7 @@ static WCHAR *build_subkey_path(WCHAR *path, DWORD path_len, WCHAR *subkey_name,
     WCHAR *subkey_path;
 
     subkey_path = malloc((path_len + subkey_len + 2) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     StringCchPrintfW(subkey_path, path_len + subkey_len + 2, L"%s\\%s", path, subkey_name);
 #else
     swprintf(subkey_path, path_len + subkey_len + 2, L"%s\\%s", path, subkey_name);
@@ -1391,7 +1391,7 @@ static void export_key_name(FILE *fp, WCHAR *name, BOOL unicode)
     WCHAR *buf;
 
     buf = malloc((lstrlenW(name) + 7) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     StringCchPrintfW(buf, lstrlenW(name) + 7, L"\r\n[%s]\r\n", name);
 #else
     swprintf(buf, lstrlenW(name) + 7, L"\r\n[%s]\r\n", name);
@@ -1489,7 +1489,7 @@ static FILE *REGPROC_open_export_file(WCHAR *file_name, BOOL unicode)
         if (!file)
         {
             _wperror(L"regedit");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             output_message(STRING_CANNOT_OPEN_FILE, file_name);
             return NULL;
 #else
@@ -1540,7 +1540,7 @@ static BOOL export_key(WCHAR *file_name, WCHAR *path, BOOL unicode)
         return FALSE;
 
     fp = REGPROC_open_export_file(file_name, unicode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!fp)
         return TRUE; /* Error message is already displayed */
 #endif
@@ -1560,7 +1560,7 @@ static BOOL export_all(WCHAR *file_name, WCHAR *path, BOOL unicode)
     WCHAR *class_name;
 
     fp = REGPROC_open_export_file(file_name, unicode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!fp)
         return TRUE; /* Error message is already displayed */
 #endif

@@ -22,8 +22,8 @@
  */
 
 #include "precomp.h"
-#include <reactos/buildno.h>
-#include <reactos/version.h>
+#include <librent/buildno.h>
+#include <librent/version.h>
 
 OSVERSIONINFO osvi;
 TCHAR szOSName[50] = _T("");
@@ -139,7 +139,7 @@ INT cmd_ver (LPTSTR param)
      * Application compatibility: installers and batch scripts parse this line
      * by token position (e.g. "for /f "tokens=6 delims=[]. " %%G in ('ver')"),
      * so it must keep the exact Windows 11 shape and wording. The name is an
-     * interoperability string only, not a product claim; this is LiberNT.
+     * interoperability string only, not a product claim; this is LibreNT.
      */
     ConOutPrintf(_T("\nMicrosoft Windows [Version %lu.%lu.%lu.%lu]"),
                  osvi.dwMajorVersion, osvi.dwMinorVersion,
@@ -185,7 +185,7 @@ INT cmd_ver (LPTSTR param)
                 ConOutResPuts(STRING_VERSION_HELP6);
                 ConOutResPuts(STRING_FREEDOS_DEV);
                 ConOutResPuts(STRING_VERSION_HELP7);
-                ConOutResPuts(STRING_REACTOS_DEV);
+                ConOutResPuts(STRING_LIBRENT_DEV);
             }
             else
             {

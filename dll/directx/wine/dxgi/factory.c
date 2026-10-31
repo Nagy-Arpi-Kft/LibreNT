@@ -21,7 +21,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(dxgi);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT dxgi_factory_create_warp_adapter(unsigned int flags, REFIID iid, void **adapter);
 #endif
 
@@ -83,7 +83,7 @@ static ULONG STDMETHODCALLTYPE dxgi_factory_Release(IWineDXGIFactory *iface)
 
         wined3d_decref(factory->wined3d);
         wined3d_private_store_cleanup(&factory->private_store);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(factory->associations);
 #endif
         free(factory);
@@ -131,7 +131,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_GetParent(IWineDXGIFactory *iface,
     return E_NOINTERFACE;
 }
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
 static HRESULT dxgi_factory_enum_adapter(IWineDXGIFactory *iface, UINT adapter_idx,
         DXGI_GPU_PREFERENCE preference, IDXGIAdapter1 **adapter)
 #else
@@ -141,7 +141,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters1(IWineDXGIFactory *if
 {
     struct dxgi_factory *factory = impl_from_IWineDXGIFactory(iface);
     struct dxgi_adapter *adapter_object;
-#if !defined(__REACTOS__) || !defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if !defined(__LIBRENT__) || !defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     UINT adapter_count;
 #else
     DXGI_GPU_PREFERENCE user_preference = dxgi_get_user_gpu_preference();
@@ -155,7 +155,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters1(IWineDXGIFactory *if
     if (!adapter)
         return DXGI_ERROR_INVALID_CALL;
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     if (user_preference != DXGI_GPU_PREFERENCE_UNSPECIFIED)
         preference = user_preference;
     if (FAILED(hr = dxgi_get_wddm_adapter(factory->wined3d, adapter_idx, preference, &adapter_idx, &luid, &foreign)))
@@ -167,7 +167,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters1(IWineDXGIFactory *if
 #endif
     {
         *adapter = NULL;
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
         return hr;
 #else
         return DXGI_ERROR_NOT_FOUND;
@@ -179,7 +179,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters1(IWineDXGIFactory *if
         *adapter = NULL;
         return hr;
     }
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     adapter_object->wddm_luid = luid;
     adapter_object->wddm_foreign = foreign;
 #endif
@@ -191,7 +191,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters1(IWineDXGIFactory *if
     return S_OK;
 }
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
 static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters1(IWineDXGIFactory *iface,
         UINT adapter_idx, IDXGIAdapter1 **adapter)
 {
@@ -207,7 +207,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapters(IWineDXGIFactory *ifa
     return dxgi_factory_EnumAdapters1(iface, adapter_idx, (IDXGIAdapter1 **)adapter);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void dxgi_factory_set_association(struct dxgi_factory *factory, HWND window, UINT flags)
 {
     struct dxgi_window_association *associations;
@@ -279,7 +279,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_MakeWindowAssociation(IWineDXGIFac
     if (!window)
     {
         wined3d_unregister_windows(factory->wined3d);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         dxgi_factory_set_association(factory, NULL, 0);
 #endif
         return S_OK;
@@ -287,7 +287,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_MakeWindowAssociation(IWineDXGIFac
 
     if (!wined3d_register_window(factory->wined3d, window, NULL, flags))
         return E_FAIL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dxgi_factory_set_association(factory, window, flags);
 #endif
 
@@ -494,7 +494,7 @@ static void STDMETHODCALLTYPE dxgi_factory_UnregisterOcclusionStatus(IWineDXGIFa
 static HRESULT STDMETHODCALLTYPE dxgi_factory_CreateSwapChainForComposition(IWineDXGIFactory *iface,
         IUnknown *device, const DXGI_SWAP_CHAIN_DESC1 *desc, IDXGIOutput *output, IDXGISwapChain1 **swapchain)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DXGI_SWAP_CHAIN_FULLSCREEN_DESC fullscreen_desc = {0};
     IWineDXGISwapChainFactory *swapchain_factory;
     HRESULT hr;
@@ -581,7 +581,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapterByLuid(IWineDXGIFactory
 static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumWarpAdapter(IWineDXGIFactory *iface,
         REFIID iid, void **adapter)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, iid %s, adapter %p.\n", iface, debugstr_guid(iid), adapter);
 
     if (!adapter)
@@ -636,7 +636,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_factory_EnumAdapterByGpuPreference(IWineDX
     TRACE("iface %p, adapter_idx %u, gpu_preference %#x, iid %s, adapter %p.\n",
             iface, adapter_idx, gpu_preference, debugstr_guid(iid), adapter);
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     if (FAILED(hr = dxgi_factory_enum_adapter(iface, adapter_idx, gpu_preference, &adapter_object)))
         return hr;
 #else
@@ -730,7 +730,7 @@ struct dxgi_factory *unsafe_impl_from_IDXGIFactory(IDXGIFactory *iface)
     return factory;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static struct wined3d *dxgi_cached_wined3d;
 static BOOL dxgi_wined3d_initialized;
 /* Protected by the recursive WineD3D mutex. ICD pixel-format initialization
@@ -756,7 +756,7 @@ static HRESULT dxgi_factory_init(struct dxgi_factory *factory, BOOL extended)
     wined3d_private_store_init(&factory->private_store);
 
     wined3d_mutex_lock();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (dxgi_is_icd_initializing() ||
             dxgi_wined3d_initializing_thread == GetCurrentThreadId())
     {
@@ -793,7 +793,7 @@ static HRESULT dxgi_factory_init(struct dxgi_factory *factory, BOOL extended)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT dxgi_factory_init_software(struct dxgi_factory *factory, unsigned int flags)
 {
     factory->IWineDXGIFactory_iface.lpVtbl = &dxgi_factory_vtbl;

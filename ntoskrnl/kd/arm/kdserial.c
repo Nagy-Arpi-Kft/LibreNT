@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/kd/arm/kdbg.c
  * PURPOSE:         Serial Port Kernel Debugging Transport Library
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
@@ -24,7 +24,7 @@ CPPORT DefaultPort = {0, 0, 0};
 //
 #define HACK 24000000
 
-/* REACTOS FUNCTIONS **********************************************************/
+/* LIBRENT FUNCTIONS **********************************************************/
 
 BOOLEAN
 NTAPI

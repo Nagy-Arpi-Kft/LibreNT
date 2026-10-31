@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Tests for RtlIsNameInExpression
  * COPYRIGHT:   Copyright 2026 Carl Bialorucki <carl.bialorucki@reactos.org>
@@ -192,10 +192,10 @@ RtlExpressionTest RtlExpressionTests[] =
     { L"?*?",                L"aa",                         FALSE,  NULL,               TRUE  },
     { L"?*?",                L"aaa",                        FALSE,  NULL,               TRUE  },
     { L"?*?",                L"aaaa",                       FALSE,  NULL,               TRUE  },
-    { L"C:\\ReactOS\\**",    L"C:\\ReactOS\\dings.bmp",     FALSE,  NULL,               TRUE  },
-    { L"C:\\ReactOS\\***",   L"C:\\ReactOS\\dings.bmp",     FALSE,  NULL,               TRUE  },
-    { L"C:\\Windows\\*a*",   L"C:\\ReactOS\\dings.bmp",     FALSE,  NULL,               FALSE },
-    { L"C:\\ReactOS\\*.bmp", L"C:\\Windows\\explorer.exe",  FALSE,  NULL,               FALSE },
+    { L"C:\\LibreNT\\**",    L"C:\\LibreNT\\dings.bmp",     FALSE,  NULL,               TRUE  },
+    { L"C:\\LibreNT\\***",   L"C:\\LibreNT\\dings.bmp",     FALSE,  NULL,               TRUE  },
+    { L"C:\\Windows\\*a*",   L"C:\\LibreNT\\dings.bmp",     FALSE,  NULL,               FALSE },
+    { L"C:\\LibreNT\\*.bmp", L"C:\\Windows\\explorer.exe",  FALSE,  NULL,               FALSE },
     { L"*.bmp;*.dib",        L"winhlp32.exe",               FALSE,  NULL,               FALSE },
     { L"*.*.*.*",            L"127.0.0.1",                  FALSE,  NULL,               TRUE  },
     { L"*?*?*?*",            L"1.0.0.1",                    FALSE,  NULL,               TRUE  },

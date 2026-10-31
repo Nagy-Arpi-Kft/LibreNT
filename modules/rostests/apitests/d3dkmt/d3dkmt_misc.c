@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Miscellaneous D3DKMT user-mode surface tests:
  *              output duplication, GPU clock calibration, stable power state,
@@ -437,8 +437,8 @@ static void Test_SetProcessSchedulingPriorityClass_InvalidClass(void)
  *  In-process context scheduling priority
  * ===================================================================== */
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 static void Test_SetContextInProcessSchedulingPriority_NullArg(void)
 {
     LOADFN(PFND3DKMT_SETCONTEXTINPROCESSSCHEDULINGPRIORITY, p,
@@ -944,7 +944,7 @@ static void Test_QueryVideoMemoryInfo_HighPhysAdapterIndex(void)
  * the caller's pointer rather than copied, which is the whole point: a copy
  * would defeat having locked the surface at all.
  *
- * ReactOS gdi32 implements these exports through gdi32_vista and forwards them
+ * LibreNT gdi32 implements these exports through gdi32_vista and forwards them
  * to their win32k syscall slots.  Keep both the rejection checks and a complete
  * create/destroy round trip here so a broken export or syscall mapping cannot
  * turn the negative cases into vacuous coverage.
@@ -1069,8 +1069,8 @@ START_TEST(misc)
     Test_SetProcessSchedulingPriorityClass_InvalidClass();
 
     /* In-process context scheduling priority */
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && \
-    (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && \
+    (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     Test_SetContextInProcessSchedulingPriority_NullArg();
     Test_SetContextInProcessSchedulingPriority_BadHandle();
     Test_GetContextInProcessSchedulingPriority_NullArg();

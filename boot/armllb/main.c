@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Boot Loader
+ * PROJECT:         LibreNT Boot Loader
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            boot/armllb/main.c
  * PURPOSE:         Main LLB Code
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 #include "precomp.h"
@@ -26,7 +26,7 @@ LlbStartup(IN ULONG Reserved,
     LlbVideoClearScreen(FALSE);
 
     /* Print header */
-    printf("\nReactOS ARM Low-Level Boot Loader [" __DATE__ " "__TIME__ "]\n");
+    printf("\nLibreNT ARM Low-Level Boot Loader [" __DATE__ " "__TIME__ "]\n");
 
     /* Boot the OS Loader */
     LlbBoot();

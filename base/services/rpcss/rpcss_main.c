@@ -29,7 +29,7 @@
 #include "irot.h"
 #include "epm.h"
 #include "irpcss.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <objbase.h>
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #endif
@@ -148,7 +148,7 @@ HRESULT __cdecl irpcss_get_thread_seq_id(handle_t h, DWORD *id)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HKEY open_appid_key(const GUID *clsid, REGSAM view)
 {
     WCHAR appid[39], path[MAX_PATH];
@@ -301,7 +301,7 @@ static DWORD WINAPI service_handler( DWORD ctrl, DWORD event_type, LPVOID event_
     SERVICE_STATUS status;
 
     status.dwServiceType             = SERVICE_WIN32;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status.dwControlsAccepted        = 0;
 #else
     status.dwControlsAccepted        = SERVICE_ACCEPT_STOP;
@@ -332,7 +332,7 @@ static DWORD WINAPI service_handler( DWORD ctrl, DWORD event_type, LPVOID event_
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern VOID DoRpcSsSetupConfiguration(VOID);
 #endif
 
@@ -356,7 +356,7 @@ static void WINAPI ServiceMain( DWORD argc, LPWSTR *argv )
 
     status.dwServiceType             = SERVICE_WIN32;
     status.dwCurrentState            = SERVICE_RUNNING;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status.dwControlsAccepted        = 0;
 #else
     status.dwControlsAccepted        = SERVICE_ACCEPT_STOP;
@@ -364,14 +364,14 @@ static void WINAPI ServiceMain( DWORD argc, LPWSTR *argv )
     status.dwWin32ExitCode           = 0;
     status.dwServiceSpecificExitCode = 0;
     status.dwCheckPoint              = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status.dwWaitHint                = 0;
 #else
     status.dwWaitHint                = 10000;
 #endif
     SetServiceStatus( service_handle, &status );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DoRpcSsSetupConfiguration();
 #endif
 

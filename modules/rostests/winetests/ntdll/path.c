@@ -557,7 +557,7 @@ static void test_RtlDosPathNameToNtPathName_U(void)
         {L"\\??",           L"\\??\\C:\\??",                 7},
         {L"\\??\\",         L"\\??\\C:\\??\\",              -1},
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {L"\\??\\/",        L"\\??\\/",                      4, L"\\??\\C:\\??\\" /* Windows 2003 */ },
         {L"\\??\\foo",      L"\\??\\foo",                    4, L"\\??\\C:\\??\\foo" /* Windows 2003 */ },
         {L"\\??\\foo/",     L"\\??\\foo/",                   4, L"\\??\\C:\\??\\foo\\" /* Windows 2003 */ },
@@ -609,7 +609,7 @@ static void test_RtlDosPathNameToNtPathName_U(void)
         if (pRtlDosPathNameToNtPathName_U_WithStatus)
         {
             status = pRtlDosPathNameToNtPathName_U_WithStatus(error_paths[i], &nameW, &file_part, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (GetNTVersion() < _WIN32_WINNT_VISTA)
                 ok(status == STATUS_OBJECT_PATH_NOT_FOUND, "Got status %#lx.\n", status);
             else
@@ -637,9 +637,9 @@ static void test_RtlDosPathNameToNtPathName_U(void)
             ok(status == STATUS_SUCCESS, "%s: Got status %#lx.\n", debugstr_w(tests[i].dos), status);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!nameW.Buffer) continue;
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
         ok(!wcscmp(nameW.Buffer, tests[i].nt)
                 || (tests[i].alt_nt && broken(!wcscmp(nameW.Buffer, tests[i].alt_nt))),

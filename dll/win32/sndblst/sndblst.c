@@ -1,6 +1,6 @@
 
 /*
- * PROJECT:     ReactOS Sound System
+ * PROJECT:     LibreNT Sound System
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        dll/win32/sndblst/sndblst.c
  *

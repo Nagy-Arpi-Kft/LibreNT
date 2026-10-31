@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <windows.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <dbghelp.h>
 #include <cvconst.h>
 
@@ -61,7 +61,7 @@ typedef enum CV_call_e {
    CV_CALL_CLRCALL   = 0x16
 } CV_call_e;
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 
 typedef enum _PARAM_TYPES

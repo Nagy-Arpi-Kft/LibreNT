@@ -440,7 +440,7 @@ Pc98VideoSync(VOID)
 }
 
 VOID
-Pc98VideoPrepareForReactOS(VOID)
+Pc98VideoPrepareForLibreNT(VOID)
 {
     REGS Regs;
 

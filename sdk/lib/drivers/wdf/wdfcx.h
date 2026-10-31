@@ -64,7 +64,7 @@ typedef struct _WDFCX_FILEOBJECT_CONFIG {
 /*
  * KMDF 1.25+ class-extension PnP/power ABI.
  *
- * These declarations are private framework ABI, not a ReactOS driver-facing
+ * These declarations are private framework ABI, not a LibreNT driver-facing
  * API.  Keep the member order and native pointer alignment identical to the
  * Microsoft KMDF 1.33 table consumed by inbox class extensions.
  */

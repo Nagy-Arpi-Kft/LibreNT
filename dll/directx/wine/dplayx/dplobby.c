@@ -1176,7 +1176,7 @@ HRESULT DPL_CreateCompoundAddress
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       dwSizeRequired += sizeof( DPADDRESS ) + lpElements->dwDataSize;
 #else
       WARN( "Skipping Unknown GUID %s\n", debugstr_guid(&lpElements->guidDataType) );
@@ -1273,7 +1273,7 @@ HRESULT DPL_CreateCompoundAddress
       CopyMemory( lpAddress, lpElements->lpData, sizeof( DPADDRESS ) );
       lpAddress = (char *) lpAddress + sizeof( DPADDRESS );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
     {
       LPDPADDRESS lpdpAddress = lpAddress;

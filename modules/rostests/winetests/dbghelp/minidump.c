@@ -414,7 +414,7 @@ static struct memory_description minidump_get_memory_description(void *data, DWO
                     switch (dir)
                     {
                     case IMAGE_DIRECTORY_ENTRY_EXCEPTION:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (dir_start && nthdr->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64)
 #else
                         if (nthdr->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64)

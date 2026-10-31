@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Setup Library
+ * PROJECT:         LibreNT Setup Library
  * FILE:            base/setup/lib/infsupp.c
  * PURPOSE:         Interfacing with Setup* API .INF Files support functions
  * PROGRAMMERS:     Hervé Poussineau

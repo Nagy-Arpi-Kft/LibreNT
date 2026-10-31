@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS GUI/console setup
+ * PROJECT:         LibreNT GUI/console setup
  * FILE:            base/setup/setup/setup.c
  * PURPOSE:         Second stage setup
  * PROGRAMMER:      Eric Kohl
@@ -19,11 +19,11 @@ typedef INT (WINAPI *PINSTALL_REACTOS)(INT argc, WCHAR** argv);
 
 static
 INT
-RunInstallReactOS(INT argc, WCHAR* argv[])
+RunInstallLibreNT(INT argc, WCHAR* argv[])
 {
     INT RetVal;
     HMODULE hDll;
-    PINSTALL_REACTOS InstallReactOS;
+    PINSTALL_REACTOS InstallLibreNT;
 
     hDll = LoadLibraryW(L"syssetup.dll");
     if (hDll == NULL)
@@ -34,15 +34,15 @@ RunInstallReactOS(INT argc, WCHAR* argv[])
     DPRINT("Loaded 'syssetup.dll'!\n");
 
     /* Call the standard Windows-compatible export */
-    InstallReactOS = (PINSTALL_REACTOS)GetProcAddress(hDll, "InstallWindowsNt");
-    if (InstallReactOS == NULL)
+    InstallLibreNT = (PINSTALL_REACTOS)GetProcAddress(hDll, "InstallWindowsNt");
+    if (InstallLibreNT == NULL)
     {
         RetVal = GetLastError();
         DPRINT("Failed to get address for 'InstallWindowsNt()'!\n");
     }
     else
     {
-        RetVal = InstallReactOS(argc, argv);
+        RetVal = InstallLibreNT(argc, argv);
     }
 
     return RetVal;
@@ -65,7 +65,7 @@ INT wmain(INT argc, WCHAR* argv[])
 
     if (_wcsicmp(p, L"target") == 0 || _wcsicmp(p, L"mini") == 0)
     {
-        return RunInstallReactOS(argc, argv);
+        return RunInstallLibreNT(argc, argv);
     }
 
 #if 0

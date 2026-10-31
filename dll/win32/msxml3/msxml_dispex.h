@@ -61,7 +61,7 @@ typedef enum tid_t
     IXMLDOMSelection_tid,
     IXMLDOMText_tid,
     IXMLElement2_tid,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IXMLAttribute_tid,
 #endif
     IXMLDocument2_tid,
@@ -151,7 +151,7 @@ static inline HRESULT return_bstrn(const WCHAR *value, int len, BSTR *p)
 }
 
 extern HRESULT dom_document_create(MSXML_VERSION class_version, void **document);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HRESULT dom_freethreaded_document_create(MSXML_VERSION class_version, void **document);
 #endif
 

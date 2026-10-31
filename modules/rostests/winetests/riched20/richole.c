@@ -183,7 +183,7 @@ static HRESULT reolecb_obj_Create(struct reolecb_obj **objptr)
     obj = calloc(sizeof(struct reolecb_obj), 1);
     if (!obj) return E_OUTOFMEMORY;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     obj->IRichEditOleCallback_iface.lpVtbl = (IRichEditOleCallbackVtbl*)&reolecb_obj_Vtbl;
 #else
     obj->IRichEditOleCallback_iface.lpVtbl = &reolecb_obj_Vtbl;
@@ -602,13 +602,13 @@ static HRESULT testoleobj_Create( struct testoleobj **objptr )
     if (!obj) return E_OUTOFMEMORY;
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     obj->IOleObject_iface.lpVtbl = (IOleObjectVtbl*)&testoleobj_IOleObject_Vtbl;
 #else
     obj->IOleObject_iface.lpVtbl = &testoleobj_IOleObject_Vtbl;
 #endif
     obj->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     obj->IViewObject_iface.lpVtbl = (IViewObjectVtbl*)&testoleobj_IViewObject_Vtbl;
 #else
     obj->IViewObject_iface.lpVtbl = &testoleobj_IViewObject_Vtbl;
@@ -4074,7 +4074,7 @@ static void subtest_InsertObject(struct reolecb_obj *callback)
   SendMessageW(hwnd, EM_SETSEL, 5, 6);
   CHECK_REOBJECT_STRUCT(reole, REO_IOB_SELECTION, REO_GETOBJ_ALL_INTERFACES, 1, 5, NULL, NULL, reo2.polesite, 2);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   expected_string = L"abc\xfffc"L"d\xfffc"L"efg";
 #else
   expected_string = L"abc\xfffc""d\xfffc""efg";
@@ -4134,7 +4134,7 @@ static void subtest_InsertObject(struct reolecb_obj *callback)
   ok(result == strlen(expected_stringA), "Got wrong length: %ld.\n", result);
   ok(!strcmp(bufferA, expected_stringA), "Got wrong content: %s.\n", bufferA);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   expected_string = L"abc\xfffc"L"d\xfffc"L"efg\r";
 #else
   expected_string = L"abc\xfffc""d\xfffc""efg\r";
@@ -4191,7 +4191,7 @@ static void subtest_InsertObject(struct reolecb_obj *callback)
   ok(!lstrcmpW(string, expected_string), "Got wrong content: %s.\n", debugstr_w(string));
   GlobalUnlock(stgmedium.hGlobal);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   expected_string = L"abc\xfffc"L"d\xfffc"L"efg";
 #else
   expected_string = L"abc\xfffc""d\xfffc""efg";
@@ -4231,7 +4231,7 @@ static void subtest_InsertObject(struct reolecb_obj *callback)
   ok(result == strlen(expected_stringA), "Got wrong length: %ld.\n", result);
   ok(!strcmp(bufferA, expected_stringA), "Got wrong content: %s.\n", bufferA);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   expected_string = L"abc\xfffc"L"d\xfffc"L"efg";
 #else
   expected_string = L"abc\xfffc""d\xfffc""efg";
@@ -5029,7 +5029,7 @@ static void _clipboard_range_contains(ITextRange *range, LONG start, LONG end, c
   ok_(__FILE__,line)(global != NULL, "GetClipboardData failed: %p\n", global);
   clipboard_text = GlobalLock(global);
   ok_(__FILE__,line)(clipboard_text != NULL, "GlobalLock failed: %p\n", clipboard_text);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (expected != NULL && clipboard_text != NULL)
     todo_wine_if(todo) ok_(__FILE__,line)(!strcmp(expected, clipboard_text), "unexpected contents: %s\n", wine_dbgstr_a(clipboard_text));
   else

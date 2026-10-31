@@ -26,7 +26,7 @@
 #include "winbase.h"
 #include "winnt.h"
 #include "winternl.h"
-#include <reactos/subsys/csr/csrwow64.h>
+#include <librent/subsys/csr/csrwow64.h>
 #include "wow64_private.h"
 #include "wine/debug.h"
 
@@ -83,7 +83,7 @@ static NTSTATUS put_port_message_header32( CSR_PORT_MESSAGE32 *out, const CSR_PO
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #define WOW64_CSR_API(server, api) (((ULONG)(server) << 16) | (ULONG)(api))
 #define WOW64_BASESRV_INDEX 1
@@ -1323,7 +1323,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationJobObject( UINT *args )
 
     default:
         if (class >= MaxJobObjectInfoClass) return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQueryInformationJobObject: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1467,7 +1467,7 @@ NTSTATUS WINAPI wow64_NtQueryObject( UINT *args )
     }
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQueryObject: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1876,7 +1876,7 @@ NTSTATUS WINAPI wow64_NtSetInformationJobObject( UINT *args )
 
     default:
         if (class >= MaxJobObjectInfoClass) return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtSetInformationJobObject: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1902,7 +1902,7 @@ NTSTATUS WINAPI wow64_NtSetInformationObject( UINT *args )
         return NtSetInformationObject( handle, class, ptr, len );
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtSetInformationObject: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -2079,7 +2079,7 @@ static BOOL filter_out_state_change( HANDLE handle, DBGUI_WAIT_STATE_CHANGE *sta
     case DbgUnloadDllStateChange:
         filter_out = ((ULONG_PTR)state->StateInfo.UnloadDll.BaseAddress >> 32) != 0;
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case DbgExceptionStateChange:
     case DbgBreakpointStateChange:
     case DbgSingleStepStateChange:
@@ -2155,7 +2155,7 @@ NTSTATUS WINAPI wow64_NtWaitForDebugEvent( UINT *args )
         case DbgExceptionStateChange:
         case DbgBreakpointStateChange:
         case DbgSingleStepStateChange:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (state.StateInfo.Exception.ExceptionRecord.ExceptionCode == STATUS_WX86_BREAKPOINT)
             {
                 state.StateInfo.Exception.ExceptionRecord.ExceptionCode = STATUS_BREAKPOINT;

@@ -33,7 +33,7 @@
 #include "wine/exception.h"
 #include "wine/list.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "svcctl_c.h"
 #include "plugplay_c.h"
 #else
@@ -1326,7 +1326,7 @@ static DWORD WINAPI notify_thread(void *user)
         QueueUserAPC((PAPCFUNC)data->notify_buffer->pfnNotifyCallback,
                 data->calling_thread, (ULONG_PTR)data->notify_buffer);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MIDL_user_free(cparams);
         MIDL_user_free(list);
 #else
@@ -1351,7 +1351,7 @@ static DWORD WINAPI notify_thread(void *user)
         WARN("CloseNotifyHandle server call failed: %lu\n", err);
 
     CloseHandle(data->calling_thread);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(data);
 #else
     HeapFree(GetProcessHeap(), 0, data);
@@ -1992,7 +1992,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH StartServiceCtrlDispatcherW( const SERVICE_TABLE_E
 
 static HANDLE device_notify_thread;
 static struct list device_notify_list = LIST_INIT(device_notify_list);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD device_notify_thread_id;
 static struct device_notify *device_notify_delivering;
 static CONDITION_VARIABLE device_notify_delivered = CONDITION_VARIABLE_INIT;
@@ -2007,7 +2007,7 @@ struct device_notify
     WCHAR *path;
     HANDLE handle;
     device_notify_callback callback;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct device_notify *source;
     LONG refs;
     BOOL removed;
@@ -2025,7 +2025,7 @@ static struct device_notify *device_notify_copy( struct device_notify *notify, D
     event->magic = DEVICE_NOTIFY_MAGIC;
     event->handle = notify->handle;
     event->callback = notify->callback;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     event->source = notify;
     notify->refs++;
 #endif
@@ -2076,7 +2076,7 @@ static DWORD WINAPI device_notify_proc( void *arg )
     BYTE *buf;
 
     SetThreadDescription( GetCurrentThread(), L"wine_sechost_device_notify" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     device_notify_thread_id = GetCurrentThreadId();
 #endif
 
@@ -2142,7 +2142,7 @@ static DWORD WINAPI device_notify_proc( void *arg )
 
         LIST_FOR_EACH_ENTRY_SAFE( event, next, &events, struct device_notify, entry )
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             struct device_notify *source = event->source;
 
             EnterCriticalSection( &service_cs );
@@ -2262,7 +2262,7 @@ BOOL WINAPI I_ScUnregisterDeviceNotification( HDEVNOTIFY handle )
         else
         {
             list_remove( &notify->entry );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             notify->magic = 0;
             notify->removed = TRUE;
             while (device_notify_delivering == notify && GetCurrentThreadId() != device_notify_thread_id)

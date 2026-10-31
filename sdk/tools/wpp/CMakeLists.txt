@@ -33,10 +33,10 @@ if(CMAKE_CROSSCOMPILING)
         -Dstrtoll=_strtoi64
         -Dopen=_open
         -Dclose=_close)
-    include_directories(${REACTOS_SOURCE_DIR}/sdk/include/wine)
+    include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 endif()
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/tools/widl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/tools/widl)
 
 FLEX_TARGET(pp_scanner ppl.l ${CMAKE_CURRENT_BINARY_DIR}/ppl.yy.c)
 BISON_TARGET(pp_parser ppy.y ${CMAKE_CURRENT_BINARY_DIR}/ppy.tab.c)

@@ -142,7 +142,7 @@ static BOOL is_old_loader_struct(void)
     HMODULE hexe;
 
     /* Check for old LDR data strcuture. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
         return TRUE;
 #endif
@@ -798,7 +798,7 @@ static void test_LoadLibraryEx_search_flags(void)
         ok( GetLastError() == ERROR_MOD_NOT_FOUND, "wrong error %lu\n", GetLastError() );
         SetLastError( 0xdeadbeef );
         mod = LoadLibraryExA( "ext-ms-win-ras-rasapi32-l1-1-0.dll", NULL, LOAD_LIBRARY_SEARCH_APPLICATION_DIR );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( !!mod, "rasapi32 not loaded %lu\n", GetLastError() );
 #else
         todo_wine /* rasapi32 doesn't have interesting dependencies on wine */
@@ -1031,7 +1031,7 @@ static void testGetModuleHandleEx(void)
     ret = GetModuleHandleExA( 0, longname, &mod );
     error = GetLastError();
     ok( !ret, "unexpected success\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( error == ERROR_MOD_NOT_FOUND || broken(error == ERROR_FILENAME_EXCED_RANGE) /* WS03 */, "got %lu\n", error );
 #else
     ok( error == ERROR_MOD_NOT_FOUND, "got %lu\n", error );
@@ -1335,7 +1335,7 @@ static void check_refcount( HMODULE mod, unsigned int refcount )
     for (i = 0; i < min( refcount, 10 ); ++i)
     {
         ret = FreeLibrary( mod );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( ret || broken( refcount == ~0u && GetLastError() == ERROR_MOD_NOT_FOUND && (i == 2) ) /* Win8 */ || broken( refcount == 2 && GetLastError() == ERROR_MOD_NOT_FOUND && i == 1 ) /* WS03 */,
             "Refcount test failed, i %u, error %lu, refcount %u.\n", i, GetLastError(), refcount );
 #else
@@ -1403,7 +1403,7 @@ static void test_LdrGetDllHandleEx(void)
     loaded_mod = LoadLibraryW( name.Buffer );
     ok( !!loaded_mod, "Failed to load module.\n" );
     status = pLdrGetDllHandleEx( 4, NULL, NULL, (void *)&name, &mod );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( !status || broken(status == STATUS_INVALID_PARAMETER) /* WS03 */, "Got unexpected status %#lx.\n", status );
     ok( mod == loaded_mod || broken(mod == NULL) /* WS03 */, "got %p\n", mod );
 #else
@@ -1607,7 +1607,7 @@ static void test_apisets(void)
 
 static void test_ddag_node(void)
 {
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     struct dll_dependency {
         const WCHAR *dllname;
         BOOL optional;
@@ -1648,7 +1648,7 @@ static void test_ddag_node(void)
     unsigned int i;
     HMODULE hexe;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("test_ddag_node() crashes on WS03.\n");
         return;
@@ -1691,7 +1691,7 @@ static void test_ddag_node(void)
 
     prev_node = NULL;
     se = node->Dependencies.Tail;
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         expected_exe_dependencies = expected_exe_dependencies_Win8;
         expected_exe_dependencies_size = ARRAY_SIZE(expected_exe_dependencies_Win8);

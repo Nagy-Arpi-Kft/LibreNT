@@ -321,7 +321,7 @@ static int is_user_type(const type_t *t)
     return get_user_type(t, NULL) != NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static int is_system_handle_type(const type_t *t)
 {
     return is_aliaschain_attr(t, ATTR_SYSTEMHANDLE);
@@ -330,7 +330,7 @@ static int is_system_handle_type(const type_t *t)
 #endif
 enum typegen_type typegen_detect_type(const type_t *type, const attr_list_t *attrs, unsigned int flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_system_handle_type(type))
         return TGT_SYSTEM_HANDLE;
 #endif
@@ -460,7 +460,7 @@ static unsigned int get_stack_size( const var_t *var, unsigned int *stack_align,
     case TGT_STRUCT:
     case TGT_UNION:
     case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
         stack_size = type_memsize_and_alignment( var->declspec.type, &align );
@@ -584,7 +584,7 @@ unsigned char get_struct_fc(const type_t *type)
     {
     case TGT_USER_TYPE:
     case TGT_IFACE_POINTER:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
         return FC_BOGUS_STRUCT;
@@ -708,7 +708,7 @@ static unsigned char get_array_fc(const type_t *type, const attr_list_t *attrs)
     switch (typegen_detect_type(elem_type, attrs, TDT_IGNORE_STRINGS))
     {
     case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
         fc = FC_BOGUS_ARRAY;
@@ -769,7 +769,7 @@ static int type_has_pointers(const type_t *type, const attr_list_t *attrs)
     switch (typegen_detect_type(type, attrs, TDT_IGNORE_STRINGS))
     {
     case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
         return FALSE;
@@ -853,7 +853,7 @@ static int type_has_full_pointer_recurse(const type_t *type, const attr_list_t *
     switch (typegen_detect_type(type, attrs, TDT_IGNORE_STRINGS))
     {
     case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
         return FALSE;
@@ -970,7 +970,7 @@ static int is_embedded_complex(const type_t *type, const attr_list_t *attrs)
     switch (typegen_detect_type(type, attrs, TDT_IGNORE_STRINGS))
     {
     case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
     case TGT_STRUCT:
@@ -1132,7 +1132,7 @@ static unsigned char get_parameter_fc( const var_t *var, int is_return, unsigned
     case TGT_STRUCT:
     case TGT_UNION:
     case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
 #endif
         *flags |= MustFree | (is_byval ? IsByValue : IsSimpleRef);
@@ -1196,7 +1196,7 @@ static unsigned char get_parameter_fc( const var_t *var, int is_return, unsigned
             case TGT_UNION:
             case TGT_USER_TYPE:
             case TGT_RANGE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case TGT_SYSTEM_HANDLE:
 #endif
                 *flags |= MustFree | IsSimpleRef;
@@ -2654,7 +2654,7 @@ static unsigned int write_user_tfs(FILE *file, type_t *type, unsigned int *tfsof
     return start;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static unsigned int write_system_handle_tfs(FILE *file, type_t *type, unsigned int *tfsoff)
 {
     const system_handle_attr_t *sh = get_aliaschain_attrp(type, ATTR_SYSTEMHANDLE);
@@ -2800,7 +2800,7 @@ static int write_pointer_description_offsets(
 {
     int written = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_system_handle_type(type))
         return 0;
 #endif
@@ -2903,7 +2903,7 @@ static int write_no_repeat_pointer_descriptions(
 {
     int written = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_system_handle_type(type))
         return 0;
 #endif
@@ -3933,7 +3933,7 @@ static unsigned int write_type_tfs(FILE *file, const attr_list_t *attrs, int top
         return write_contexthandle_tfs(file, attrs, type, context, typeformat_offset);
     case TGT_USER_TYPE:
         return write_user_tfs(file, type, typeformat_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
         return write_system_handle_tfs(file, type, typeformat_offset);
 #endif
@@ -4503,7 +4503,7 @@ void write_parameter_conf_or_var_exprs(FILE *file, int indent, const char *local
             continue;
         case TGT_INVALID:
         case TGT_USER_TYPE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case TGT_SYSTEM_HANDLE:
 #endif
         case TGT_CTXT_HANDLE:
@@ -4604,7 +4604,7 @@ static void write_remoting_arg(FILE *file, int indent, const var_t *func, const 
     case TGT_USER_TYPE:
         print_phase_function(file, indent, "UserMarshal", local_var_prefix, phase, var, start_offset);
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TGT_SYSTEM_HANDLE:
         error("%s: system_handle parameters need interpreted stubs\n", var->name);
         break;
@@ -4856,7 +4856,7 @@ static void write_remoting_arg(FILE *file, int indent, const var_t *func, const 
 
             print_phase_function(file, indent, type_str, local_var_prefix, phase, var, start_offset);
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case TGT_SYSTEM_HANDLE:
             error("%s: system_handle parameters need interpreted stubs\n", var->name);
             break;
@@ -5082,7 +5082,7 @@ void assign_stub_out_args( FILE *file, int indent, const var_t *func, const char
                 case TGT_POINTER:
                 case TGT_RANGE:
                 case TGT_IFACE_POINTER:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 case TGT_SYSTEM_HANDLE:
 #endif
                     print_file(file, indent, "%s_W%u = 0;\n", local_var_prefix, i);

@@ -3,7 +3,7 @@ spec2def(user32_vista.dll user32_vista.spec ADD_IMPORTLIB)
 
 include_directories(
     include
-    ${REACTOS_SOURCE_DIR}/win32ss/include)
+    ${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 list(APPEND VISTA_SOURCE 
      wine/input.c
@@ -47,4 +47,4 @@ set_module_type(user32_vista win32dll UNICODE ENTRYPOINT 0)
 add_importlibs(user32_vista user32 gdi32 kernel32 ntdll)
 target_link_libraries(user32_vista user32_vista_static win32ksys)
 add_dependencies(user32_vista psdk)
-add_cd_file(TARGET user32_vista DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET user32_vista DESTINATION librent/system32 FOR all)

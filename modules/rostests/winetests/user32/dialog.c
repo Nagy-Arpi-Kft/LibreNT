@@ -35,7 +35,7 @@
 
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef wait_child_process
 #define wait_child_process(pi) wait_child_process_(__FILE__, __LINE__)((pi)->hProcess)
 #endif
@@ -2243,7 +2243,7 @@ static LRESULT CALLBACK msgbox_hook_proc(INT code, WPARAM wParam, LPARAM lParam)
                 expected_exstyles |= WS_EX_DLGMODALFRAME;
 
             todo_wine_if(system_modal && exstyles == (expected_exstyles | WS_EX_DLGMODALFRAME))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(exstyles == expected_exstyles || broken(exstyles == (expected_exstyles & ~WS_EX_TOPMOST)) /* Vista */, "got %#lx, expected %#lx\n", exstyles, expected_exstyles);
 #else
             ok(exstyles == expected_exstyles, "got %#lx, expected %#lx\n", exstyles, expected_exstyles);

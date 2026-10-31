@@ -126,7 +126,7 @@ diff -pudN e:\wine\dlls\riched20/richole.c e:\reactos\dll\win32\riched20/richole
  static HRESULT WINAPI ITextRange_fnDelete(ITextRange *me, LONG unit, LONG count, LONG *delta)
  {
      ITextRangeImpl *This = impl_from_ITextRange(me);
-+#ifdef __REACTOS__
++#ifdef __LIBRENT__
 +    ME_Cursor cursor;
 +#endif
  
@@ -135,7 +135,7 @@ diff -pudN e:\wine\dlls\riched20/richole.c e:\reactos\dll\win32\riched20/richole
      if (!This->child.reole)
          return CO_E_RELEASED;
  
-+#ifdef __REACTOS__
++#ifdef __LIBRENT__
 +    if (!count)
 +    {
 +        if (This->start == This->end)

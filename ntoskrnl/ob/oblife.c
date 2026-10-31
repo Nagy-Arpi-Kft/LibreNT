@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ob/oblife.c
  * PURPOSE:         Manages the lifetime of an Object, including its creation,
@@ -14,7 +14,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 #define NDEBUG
 #include <debug.h>
 

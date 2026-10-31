@@ -4,7 +4,7 @@ The PNGs in this directory are the 512-pixel transparent RGBA artwork from
 `/Users/mac/Downloads/Control-Panel-Icons`. Their filenames identify the
 classic Control Panel items whose existing icon resources they replace.
 
-| Artwork | ReactOS resource |
+| Artwork | LibreNT resource |
 | --- | --- |
 | Add Hardware | `hdwwiz.cpl,-100` |
 | Administrative Tools | `main.cpl,-500` |
@@ -45,5 +45,5 @@ python media/graphics/control-panel-icons/render-icons.py
 ```
 
 The shared ICO encoder writes 16, 20, 24, 32, 40, 48, 64, 96, 128, and 256
-pixel 32-bit DIB frames with alpha and legacy AND masks. Ordinary ReactOS
+pixel 32-bit DIB frames with alpha and legacy AND masks. Ordinary LibreNT
 builds consume the generated ICO files directly.

@@ -1306,14 +1306,14 @@ BOOL WINAPI PlayEnhMetaFileRecord(
     case EMR_EXTSELECTCLIPRGN:
       {
 	const EMREXTSELECTCLIPRGN *lpRgn = (const EMREXTSELECTCLIPRGN *)mr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	const RGNDATA *pRgnData = (const RGNDATA *)lpRgn->RgnData;
 	DWORD dwSize = sizeof(RGNDATAHEADER) + pRgnData->rdh.nCount * sizeof(RECT);
 #endif
 	HRGN hRgn = 0;
 
         if (mr->nSize >= sizeof(*lpRgn) + sizeof(RGNDATAHEADER))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hRgn = ExtCreateRegion( &info->init_transform, dwSize, pRgnData );
 #else
             hRgn = ExtCreateRegion( &info->init_transform, 0, (const RGNDATA *)lpRgn->RgnData );

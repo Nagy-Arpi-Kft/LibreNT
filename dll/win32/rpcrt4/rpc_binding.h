@@ -48,7 +48,7 @@ typedef struct _RpcAuthInfo
    * takes an NT auth identity */
   SEC_WINNT_AUTH_IDENTITY_W *nt_identity;
   LPWSTR server_principal_name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   ULONG AuthzSvc;
 #endif
 } RpcAuthInfo;

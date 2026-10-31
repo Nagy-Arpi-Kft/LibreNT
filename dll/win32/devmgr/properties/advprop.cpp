@@ -1,5 +1,5 @@
 /*
- * ReactOS Device Manager Applet
+ * LibreNT Device Manager Applet
  * Copyright (C) 2004 - 2005 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or
@@ -18,9 +18,9 @@
  */
 /*
  *
- * PROJECT:         ReactOS devmgr.dll
+ * PROJECT:         LibreNT devmgr.dll
  * FILE:            lib/devmgr/advprop.c
- * PURPOSE:         ReactOS Device Manager
+ * PURPOSE:         LibreNT Device Manager
  * PROGRAMMER:      Thomas Weidenmueller <w3seek@reactos.com>
  *                  Ged Murphy <gedmurphy@reactos.org>
  * UPDATE HISTORY:

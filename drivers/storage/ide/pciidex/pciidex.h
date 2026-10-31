@@ -18,8 +18,8 @@
 #include <ide.h>
 
 #include <scsi.h>
-#include <reactos/drivers/ata/ata_shared.h>
-#include <reactos/drivers/ata/ata_user.h>
+#include <librent/drivers/ata/ata_shared.h>
+#include <librent/drivers/ata/ata_user.h>
 #include "debug.h"
 #include "ahci.h"
 

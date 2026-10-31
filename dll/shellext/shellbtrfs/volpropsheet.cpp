@@ -19,7 +19,7 @@
 #define STRSAFE_NO_DEPRECATE
 
 #include "shellext.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #include <strsafe.h>
 #include <winternl.h>
@@ -38,13 +38,13 @@
 
 #include "volpropsheet.h"
 #include "resource.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "mountmgr.h"
 #else
 #include "mountmgr_local.h"
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const NTSTATUS STATUS_OBJECT_NAME_NOT_FOUND = 0xC0000034;
 #endif
 
@@ -281,7 +281,7 @@ void BtrfsVolPropSheet::FormatUsage(HWND hwndDlg, wstring& s, btrfs_usage* usage
 
     wstring_sprintf(t, u, v.c_str());
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     s += t + L"\r\n"s;
 #else
     s += t + L"\r\n";
@@ -296,7 +296,7 @@ void BtrfsVolPropSheet::FormatUsage(HWND hwndDlg, wstring& s, btrfs_usage* usage
 
     wstring_sprintf(t, u, v.c_str());
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     s += t + L"\r\n"s;
 #else
     s += t + L"\r\n";
@@ -310,7 +310,7 @@ void BtrfsVolPropSheet::FormatUsage(HWND hwndDlg, wstring& s, btrfs_usage* usage
 
         wstring_sprintf(t, u, (float)data_alloc / (float)data_size);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         s += t + L"\r\n"s;
 #else
         s += t + L"\r\n";
@@ -372,7 +372,7 @@ void BtrfsVolPropSheet::FormatUsage(HWND hwndDlg, wstring& s, btrfs_usage* usage
 
                             wstring_sprintf(t, typestring, bue->devices[k].dev_id);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                             s += t + L"\t"s + sizestring + L"\r\n"s;
 #else
                             s += t + L"\t" + sizestring + L"\r\n";
@@ -396,7 +396,7 @@ void BtrfsVolPropSheet::FormatUsage(HWND hwndDlg, wstring& s, btrfs_usage* usage
     if (!load_string(module, IDS_USAGE_UNALLOC, t))
         throw last_error(GetLastError());
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     s += t + L"\r\n"s;
 #else
     s += t + L"\r\n";
@@ -808,7 +808,7 @@ void BtrfsVolPropSheet::ResetStats(HWND hwndDlg) {
 
     GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     t = L"\""s + modfn + L"\",ResetStats " + fn + L"|" + sel;
 #else
     t = wstring(L"\"") + modfn + wstring(L"\",ResetStats ") + fn + wstring(L"|") + sel;
@@ -1011,7 +1011,7 @@ INT_PTR CALLBACK BtrfsVolPropSheet::DeviceDlgProc(HWND hwndDlg, UINT uMsg, WPARA
 
                                 GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                 t = L"\""s + modfn + L"\",AddDevice "s + fn;
 #else
                                 t = wstring(L"\"") + modfn + wstring(L"\",AddDevice ") + fn;
@@ -1108,7 +1108,7 @@ INT_PTR CALLBACK BtrfsVolPropSheet::DeviceDlgProc(HWND hwndDlg, UINT uMsg, WPARA
 
                                 GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                 t = L"\""s + modfn + L"\",RemoveDevice "s + fn + L"|"s + sel;
 #else
                                 t = wstring(L"\"") + modfn + wstring(L"\",RemoveDevice ") + fn + wstring(L"|") + sel;
@@ -1160,7 +1160,7 @@ INT_PTR CALLBACK BtrfsVolPropSheet::DeviceDlgProc(HWND hwndDlg, UINT uMsg, WPARA
 
                                 GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                 t = L"\""s + modfn + L"\",ResizeDevice "s + fn + L"|"s + sel;
 #else
                                 t = wstring(L"\"") + modfn + wstring(L"\",ResizeDevice ") + fn + wstring(L"|") + sel;
@@ -1273,7 +1273,7 @@ void BtrfsVolPropSheet::ShowScrub(HWND hwndDlg) {
 
     GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     t = L"\""s + modfn + L"\",ShowScrub "s + fn;
 #else
     t = wstring(L"\"") + modfn + wstring(L"\",ShowScrub ") + fn;
@@ -1303,7 +1303,7 @@ void BtrfsVolPropSheet::ShowChangeDriveLetter(HWND hwndDlg) {
 
     GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     t = L"\""s + modfn + L"\",ShowChangeDriveLetter "s + fn;
 #else
     t = wstring(L"\"") + modfn + wstring(L"\",ShowChangeDriveLetter ") + fn;
@@ -1484,7 +1484,7 @@ void BtrfsChangeDriveLetter::do_change(HWND hwndDlg) {
 
             dd[12] = fn[0];
         } else
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             throw runtime_error("Volume path was not root of drive.");
 #else
             error_message(nullptr, "Volume path was not root of drive.");
@@ -1497,7 +1497,7 @@ void BtrfsChangeDriveLetter::do_change(HWND hwndDlg) {
             auto v = mm.query_points(dd);
 
             if (v.empty())
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 throw runtime_error("Error finding device name.");
 #else
                 error_message(nullptr, "Error finding device name.");

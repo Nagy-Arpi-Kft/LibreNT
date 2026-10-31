@@ -23,7 +23,7 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void die(const char *msg, ...)
     __attribute((noreturn, format(printf, 1, 2)));
 #else
@@ -37,7 +37,7 @@ do {                    \
 
 /* Displays a prinf-style message and terminates the program. */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void pdie(const char *msg, ...)
     __attribute((noreturn, format(printf, 1, 2)));
 #else
@@ -51,7 +51,7 @@ do {                    \
 
 /* Like die, but appends an error message according to the state of errno. */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void *alloc(int size);
 #else
 void *vfalloc(int size);
@@ -70,7 +70,7 @@ void qfree(void **root);
 
 /* Deallocates all qalloc'ed data areas described by ROOT. */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 int min(int a, int b);
 #endif
 

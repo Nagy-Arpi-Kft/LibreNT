@@ -713,7 +713,7 @@ static const IMF2DBuffer2Vtbl memory_2d_buffer_vtbl =
 static HRESULT d3d9_surface_buffer_lock(struct buffer *buffer, MF2DBuffer_LockFlags flags, BYTE **scanline0,
         LONG *pitch, BYTE **buffer_start, DWORD *buffer_length)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONGLONG length = 0;
     ULONGLONG surface_pitch;
 #endif
@@ -728,7 +728,7 @@ static HRESULT d3d9_surface_buffer_lock(struct buffer *buffer, MF2DBuffer_LockFl
 
     if (SUCCEEDED(hr))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (buffer_length)
         {
             surface_pitch = buffer->d3d9_surface.rect.Pitch < 0
@@ -754,7 +754,7 @@ static HRESULT d3d9_surface_buffer_lock(struct buffer *buffer, MF2DBuffer_LockFl
         if (buffer_start)
             *buffer_start = *scanline0;
         if (buffer_length)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *buffer_length = (DWORD)length;
 #else
             *buffer_length = buffer->d3d9_surface.rect.Pitch * buffer->_2d.height;

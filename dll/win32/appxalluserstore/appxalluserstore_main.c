@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS appxalluserstore.dll
+ * PROJECT:     LibreNT appxalluserstore.dll
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Per-machine app package store
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>

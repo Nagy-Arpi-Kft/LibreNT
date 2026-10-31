@@ -1,5 +1,5 @@
 /*
- * FILE  : reactos/apps/shm/shmsrv.c
+ * FILE  : librent/apps/shm/shmsrv.c
  * AUTHOR: David Welch
  */
 #include <ddk/ntddk.h>

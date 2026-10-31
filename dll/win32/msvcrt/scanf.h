@@ -201,7 +201,7 @@ _FUNCTION_ {
     pthreadlocinfo locinfo;
     int rd = 0, consumed = 0;
     int nch;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSVCRT_CHECK_PMT(format != NULL)) return EOF;
 #endif
     if (!*format) return 0;

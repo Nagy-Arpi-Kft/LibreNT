@@ -5,7 +5,7 @@
  * drivers that need to add filters or sublayers at runtime. User-mode
  * callers use fwpuclnt.h instead; this file is the kernel counterpart.
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created for the dev-nt6-1 branch as part of the NT 5.2 -> NT 6.1 upgrade.

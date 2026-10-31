@@ -53,7 +53,7 @@ DEFINE_GUID(CLSID_XSLTemplate60, 0x88d96a08, 0xf192, 0x11d4, 0xa6, 0x5f, 0x00, 0
 
 WINE_DEFAULT_DEBUG_CHANNEL(msxml);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern GUID CLSID_XMLSchemaCache60;
 #endif
 
@@ -335,7 +335,7 @@ HRESULT WINAPI DllGetClassObject( REFCLSID rclsid, REFIID riid, void **ppv )
              IsEqualCLSID( rclsid, &CLSID_FreeThreadedDOMDocument40 ) ||
              IsEqualCLSID( rclsid, &CLSID_FreeThreadedDOMDocument60 ))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return DOMClassFactory_Create(rclsid, riid, ppv, dom_freethreaded_document_create);
 #else
         return DOMClassFactory_Create(rclsid, riid, ppv, dom_document_create);

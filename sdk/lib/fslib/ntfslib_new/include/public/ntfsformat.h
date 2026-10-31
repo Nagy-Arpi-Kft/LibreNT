@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NTFS library
+ * PROJECT:     LibreNT NTFS library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NTFS volume formatter public interface
  */
@@ -96,7 +96,7 @@ typedef struct NtfsFormatParameters
  * Lays down a fresh NTFS 3.1 volume. On success the volume carries a valid
  * BPB, both boot sectors, MFT records 0-23 and an empty root directory.
  *
- * The bootstrap area of $Boot is left zeroed: on ReactOS the boot code is
+ * The bootstrap area of $Boot is left zeroed: on LibreNT the boot code is
  * installed separately from loader\ntfs.bin (see InstallNtfsBootCode), which
  * preserves the BPB this function writes.
  */

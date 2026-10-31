@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Windows Runtime
+ * PROJECT:     LibreNT Windows Runtime
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WindowsIntegrityPolicy activation and S-mode state
  */
@@ -101,7 +101,7 @@ DEFINE_IINSPECTABLE_(policy, IWindowsIntegrityPolicyStatics, struct integrity_po
 static HRESULT WINAPI policy_disabled(IWindowsIntegrityPolicyStatics *iface, boolean *value)
 {
     if (!value) return E_POINTER;
-    /* ReactOS does not enforce Windows S mode or provide a mode transition. */
+    /* LibreNT does not enforce Windows S mode or provide a mode transition. */
     *value = FALSE;
     return S_OK;
 }

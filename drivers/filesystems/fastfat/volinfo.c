@@ -1196,7 +1196,7 @@ Return Value:
                                               ByteOffset,
                                               sizeof(DIRENT),
                                               &DirentBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                               &Dirent,
 #else
                                               (PVOID *)&Dirent,

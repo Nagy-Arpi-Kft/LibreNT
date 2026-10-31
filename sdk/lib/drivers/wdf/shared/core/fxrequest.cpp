@@ -3185,7 +3185,7 @@ FxRequestFromLookaside::SelfDestruct(
     //
     // Destroy the object
     //
-    // FxRequestFromLookaside::~FxRequestFromLookaside(); __REACTOS__
+    // FxRequestFromLookaside::~FxRequestFromLookaside(); __LIBRENT__
 
     if (IsRequestForwardedToParent()) {
 

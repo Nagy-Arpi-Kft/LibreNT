@@ -140,7 +140,7 @@ err_t            tcp_process_refused_data(struct tcp_pcb *pcb);
 #endif
 
 #ifndef  TCP_KEEPINTVL_DEFAULT
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* According to https://learn.microsoft.com/en-us/windows/win32/winsock/sio-keepalive-vals, default keep alive interval is 1 second */
 #define  TCP_KEEPINTVL_DEFAULT    1000UL   /* Default Time between KEEPALIVE probes in milliseconds */
 #else
@@ -149,7 +149,7 @@ err_t            tcp_process_refused_data(struct tcp_pcb *pcb);
 #endif
 
 #ifndef  TCP_KEEPCNT_DEFAULT
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* According to https://learn.microsoft.com/en-us/windows/win32/winsock/sio-keepalive-vals, default probe count is 10 for vista+ */
 #define  TCP_KEEPCNT_DEFAULT      10U        /* Default Counter for KEEPALIVE probes */
 #else
@@ -466,7 +466,7 @@ struct tcp_seg *tcp_seg_copy(struct tcp_seg *seg);
 #define tcp_ack_now(pcb)                           \
   tcp_set_flags(pcb, TF_ACK_NOW)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define TCP_QUICKACK_SEGMENTS   16
 #define TCP_QUICKACK_IDLE_TICKS (200 / TCP_SLOW_INTERVAL)
 #endif

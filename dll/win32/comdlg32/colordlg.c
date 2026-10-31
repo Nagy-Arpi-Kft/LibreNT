@@ -1100,7 +1100,7 @@ static LRESULT CC_WMLButtonUp( CCPRIV *infoPtr )
 {
    if (infoPtr->capturedGraph)
    {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        ClipCursor(NULL);
 #endif
        infoPtr->capturedGraph = 0;
@@ -1137,7 +1137,7 @@ static LRESULT CC_WMMouseMove( CCPRIV *infoPtr, LPARAM lParam )
       }
       else
       {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           ClipCursor(NULL);
 #endif
           ReleaseCapture();
@@ -1175,7 +1175,7 @@ static LRESULT CC_WMLButtonDown( CCPRIV *infoPtr, LPARAM lParam )
    if ( i == 2 )
    {
       SetCapture(infoPtr->hwndSelf);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       {
          RECT rect;
          GetWindowRect(GetDlgItem(infoPtr->hwndSelf, infoPtr->capturedGraph), &rect);
@@ -1235,7 +1235,7 @@ static INT_PTR CALLBACK ColorDlgProc( HWND hDlg, UINT message,
 	  case WM_INITDIALOG:
 	                return CC_WMInitDialog(hDlg, wParam, lParam);
 	  case WM_NCDESTROY:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (lpp->capturedGraph) ClipCursor(NULL);
 #endif
 	                DeleteDC(lpp->hdcMem);
@@ -1259,7 +1259,7 @@ static INT_PTR CALLBACK ColorDlgProc( HWND hDlg, UINT message,
 	                if (CC_WMMouseMove(lpp, lParam))
 			  return TRUE;
 			break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  case WM_LBUTTONUP:
 #else
 	  case WM_LBUTTONUP:  /* FIXME: ClipCursor off (if in color graph)*/
@@ -1267,7 +1267,7 @@ static INT_PTR CALLBACK ColorDlgProc( HWND hDlg, UINT message,
                         if (CC_WMLButtonUp(lpp))
                            return TRUE;
 			break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  case WM_LBUTTONDOWN:
 #else
 	  case WM_LBUTTONDOWN:/* FIXME: ClipCursor on  (if in color graph)*/

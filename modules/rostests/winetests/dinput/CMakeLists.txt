@@ -9,7 +9,7 @@ foreach(TEST_DRIVER driver_bus driver_hid driver_hid_poll)
         SUFFIX ".dll")
     target_compile_definitions(dinput_${TEST_DRIVER} PRIVATE __WINESRC__)
     target_include_directories(dinput_${TEST_DRIVER} BEFORE PRIVATE
-        ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+        ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
     if(TEST_DRIVER STREQUAL "driver_bus")
         add_importlibs(dinput_${TEST_DRIVER} ntoskrnl hal)
     else()
@@ -34,7 +34,7 @@ target_compile_definitions(dinput_winetest PRIVATE
     __WINESRC__
     WINETEST_WAIT_CHILD_PROCESS_INFO)
 target_include_directories(dinput_winetest BEFORE PRIVATE
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 target_link_libraries(dinput_winetest dinput_data_formats uuid)
 set_module_type(dinput_winetest win32cui)
 add_importlibs(dinput_winetest

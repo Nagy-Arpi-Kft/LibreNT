@@ -1015,7 +1015,7 @@ typedef struct
 
 static void* CDECL type_info_entry_malloc(size_t size)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     type_info_entry *ret;
 
     if (size > ~(size_t)0 - FIELD_OFFSET(type_info_entry, name)) return NULL;

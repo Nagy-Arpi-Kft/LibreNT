@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NDIS library
+ * PROJECT:     LibreNT NDIS library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        drivers/network/ndis/ndis/60io.c
  * PURPOSE:     NDIS 6 hardware integration — MMIO, IO port range, DMA,
@@ -505,7 +505,7 @@ NdisMAllocateNetBufferSGList(
     CurrentVa = (PUCHAR)MmGetMdlVirtualAddress(Mdl) + MdlOffset;
 
     /* NDIS_SG_LIST_WRITE_TO_DEVICE == 0x01 — for TX direction (most sends).
-     * The symbol isn't in the ReactOS NDIS headers yet; use the literal. */
+     * The symbol isn't in the LibreNT NDIS headers yet; use the literal. */
     WriteToDevice = (Flags & 0x00000001) ? TRUE : FALSE;
 
     ctx = (PNDIS6_SG_CALL_CONTEXT)ExAllocatePoolWithTag(
@@ -644,7 +644,7 @@ Ndis6MFreeSharedMemory(
  *  that walks Ext->IntChars.InterruptDpcHandler. The miniport's per-interrupt
  *  context is stashed in Ext->MiniportInterruptContext.
  *
- *  ReactOS HAL only supports CONNECT_FULLY_SPECIFIED in IoConnectInterruptEx,
+ *  LibreNT HAL only supports CONNECT_FULLY_SPECIFIED in IoConnectInterruptEx,
  *  so we silently fall back to line-based via the legacy IoConnectInterrupt
  *  even if the driver requested MSI-X. e1000e (interrupt_ndis6.c:91-148) and
  *  every other NDIS 6 driver in the tree handles the line-based fallback.

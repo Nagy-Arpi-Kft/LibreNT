@@ -165,7 +165,7 @@ static void init_psfactory( CStdPSFactoryBuffer *psfac, const ProxyFileInfo **fi
                 fill_delegated_proxy_table( (IUnknownVtbl *)vtbl, stubs[j]->header.DispatchTableCount );
                 pSrcRpcStubVtbl = (void * const *)&CStdStubBuffer_Delegating_Vtbl;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else
             {
                 void **vtbl = proxies[j]->Vtbl;

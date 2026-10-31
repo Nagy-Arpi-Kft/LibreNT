@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS User API Server DLL
+ * PROJECT:         LibreNT User API Server DLL
  * FILE:            win32ss/user/winsrv/usersrv/shutdown.c
  * PURPOSE:         Logout/shutdown
  * PROGRAMMERS:
@@ -605,7 +605,7 @@ Cleanup:
 }
 
 static NTSTATUS FASTCALL
-UserExitReactOS(PCSR_THREAD CsrThread, UINT Flags)
+UserExitLibreNT(PCSR_THREAD CsrThread, UINT Flags)
 {
     NTSTATUS Status;
     LUID CallerLuid;
@@ -812,7 +812,7 @@ UserClientShutdown(IN PCSR_PROCESS CsrProcess,
 CSR_API(SrvExitWindowsEx)
 {
     NTSTATUS Status;
-    PUSER_EXIT_REACTOS ExitReactOSRequest = &((PUSER_API_MESSAGE)ApiMessage)->Data.ExitReactOSRequest;
+    PUSER_EXIT_LIBRENT ExitLibreNTRequest = &((PUSER_API_MESSAGE)ApiMessage)->Data.ExitLibreNTRequest;
 
     Status = NtUserSetInformationThread(NtCurrentThread(),
                                         UserThreadUseActiveDesktop,
@@ -824,9 +824,9 @@ CSR_API(SrvExitWindowsEx)
         return Status;
     }
 
-    Status = UserExitReactOS(CsrGetClientThread(), ExitReactOSRequest->Flags);
-    ExitReactOSRequest->Success   = NT_SUCCESS(Status);
-    ExitReactOSRequest->LastError = GetLastError();
+    Status = UserExitLibreNT(CsrGetClientThread(), ExitLibreNTRequest->Flags);
+    ExitLibreNTRequest->Success   = NT_SUCCESS(Status);
+    ExitLibreNTRequest->LastError = GetLastError();
 
     NtUserSetInformationThread(NtCurrentThread(), UserThreadRestoreDesktop, NULL, 0);
 

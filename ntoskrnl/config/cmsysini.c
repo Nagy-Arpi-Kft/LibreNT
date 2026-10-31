@@ -1,8 +1,8 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * PURPOSE:         Configuration Manager - System Initialization Code
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  *                  Alex Ionescu (alex.ionescu@reactos.org)
  */
 
@@ -529,7 +529,7 @@ CmpSetSystemValues(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     if (!NT_SUCCESS(Status))
         goto Quit;
 
-#if (NTDDI_VERSION >= NTDDI_VISTA) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_VISTA) || defined(__LIBRENT__)
     /* Setup the value for the firmware boot (i.e. system partition) device in ARC format */
     RtlInitUnicodeString(&KeyName, L"FirmwareBootDevice");
     if (!RtlCreateUnicodeStringFromAsciiz(&ValueName, LoaderBlock->ArcHalDeviceName))
@@ -648,7 +648,7 @@ CmpCreateControlSet(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     PLOADER_PARAMETER_EXTENSION LoaderExtension;
     PAGED_CODE();
 
-    /* ReactOS Hack: Hard-code current to 001 for SetupLdr */
+    /* LibreNT Hack: Hard-code current to 001 for SetupLdr */
     if (LoaderBlock->RegistryBase == NULL)
     {
         /* Build the ControlSet001 key */
@@ -773,7 +773,7 @@ CmpCreateControlSet(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
         goto Cleanup;
     }
 
-    /* ReactOS Hack: Hard-code current to 001 for SetupLdr */
+    /* LibreNT Hack: Hard-code current to 001 for SetupLdr */
     if (LoaderBlock->RegistryBase == NULL)
     {
         HwProfile = 0;
@@ -845,7 +845,7 @@ CmpCreateControlSet(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
     LoaderExtension = LoaderBlock->Extension;
     if (LoaderExtension)
     {
-        DPRINT("ReactOS doesn't support NTLDR Profiles yet!\n");
+        DPRINT("LibreNT doesn't support NTLDR Profiles yet!\n");
     }
 
     /* Create the current hardware profile key */
@@ -951,7 +951,7 @@ CmpLinkHiveToMaster(IN PUNICODE_STRING LinkName,
     /* Mark the hive as clean */
     RegistryHive->Hive.DirtyFlag = FALSE;
 
-    /* ReactOS Hack: Keep alive */
+    /* LibreNT Hack: Keep alive */
     Status = ObReferenceObjectByHandle(KeyHandle,
                                        0,
                                        CmpKeyObjectType,

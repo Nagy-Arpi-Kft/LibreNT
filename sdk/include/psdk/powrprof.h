@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define NEWSCHEME (UINT)-1
 
 typedef enum _POWER_PLATFORM_ROLE {

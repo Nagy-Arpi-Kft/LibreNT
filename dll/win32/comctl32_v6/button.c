@@ -63,7 +63,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(button);
 #define BUTTON_BTNPRESSED      0x40
 #define BUTTON_UNKNOWN2        0x20
 #define BUTTON_UNKNOWN3        0x10
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define BUTTON_BMCLICK         0x100
 #endif
 
@@ -643,7 +643,7 @@ static LRESULT CALLBACK BUTTON_WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
                 SendMessageW( hWnd, BM_SETCHECK, !(infoPtr->state & BST_CHECKED), 0 );
                 break;
             case BS_AUTORADIOBUTTON:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 SendMessageW( hWnd, BM_SETCHECK, BST_CHECKED, 0 );
                 BUTTON_CheckAutoRadioButton( hWnd );
 #else
@@ -899,14 +899,14 @@ static LRESULT CALLBACK BUTTON_WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
         break;
     }
     case BM_CLICK:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (infoPtr->state & BUTTON_BMCLICK)
             break;
         infoPtr->state |= BUTTON_BMCLICK;
 #endif
 	SendMessageW( hWnd, WM_LBUTTONDOWN, 0, 0 );
 	SendMessageW( hWnd, WM_LBUTTONUP, 0, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         infoPtr->state &= ~BUTTON_BMCLICK;
 #endif
 	break;
@@ -1003,7 +1003,7 @@ static LRESULT CALLBACK BUTTON_WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
             NotifyWinEvent( UIA_ToggleToggleStatePropertyId, hWnd, OBJID_CLIENT, 0 );
             NotifyWinEvent( EVENT_OBJECT_STATECHANGE, hWnd, OBJID_CLIENT, 0 );
         }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if ((btn_type == BS_AUTORADIOBUTTON) && (wParam == BST_CHECKED) && (style & WS_CHILD))
             BUTTON_CheckAutoRadioButton( hWnd );
 #endif
@@ -1411,8 +1411,8 @@ static BOOL CB_GetIdealSize(BUTTON_INFO *infoPtr, SIZE *size)
     return TRUE;
 }
 
-#ifdef __REACTOS__
-static BOOL PB_GetIdealSizeReactOS(BUTTON_INFO *infoPtr, SIZE *size)
+#ifdef __LIBRENT__
+static BOOL PB_GetIdealSizeLibreNT(BUTTON_INFO *infoPtr, SIZE *size)
 {
     const RECT *textMargin = BUTTON_GetTextMargin(infoPtr);
     LOGFONTW themeFontInfo = {0};
@@ -1504,9 +1504,9 @@ cleanup:
 static BOOL PB_GetIdealSize(BUTTON_INFO *infoPtr, SIZE *size)
 {
     SIZE labelSize;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!size->cx)
-        return PB_GetIdealSizeReactOS(infoPtr, size);
+        return PB_GetIdealSizeLibreNT(infoPtr, size);
 #endif
 
     if (SendMessageW(infoPtr->hwnd, WM_GETTEXTLENGTH, 0, 0) == 0)
@@ -1554,7 +1554,7 @@ static BOOL CL_GetIdealSize(BUTTON_INFO *infoPtr, SIZE *size)
     RECT margin;
     WCHAR *text;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_themed_paint_supported(theme, get_button_type(GetWindowLongW(infoPtr->hwnd, GWL_STYLE))))
         theme = NULL;
 #endif

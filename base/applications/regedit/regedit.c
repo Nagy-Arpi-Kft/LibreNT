@@ -5,7 +5,7 @@
  * LICENSE: LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <stdlib.h>
 #include <windows.h>
 #include <commctrl.h>
@@ -19,13 +19,13 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(regedit);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL silent;
 #endif
 
 static void output_writeconsole(const WCHAR *str, DWORD wlen)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* This is win32gui application, don't ever try writing to console.
      * For the console version we have a separate reg.exe application. */
     if (!silent)
@@ -57,12 +57,12 @@ static void output_formatstring(const WCHAR *fmt, va_list va_args)
     WCHAR *str;
     DWORD len;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetLastError(NO_ERROR);
 #endif
     len = FormatMessageW(FORMAT_MESSAGE_FROM_STRING|FORMAT_MESSAGE_ALLOCATE_BUFFER,
                          fmt, 0, 0, (WCHAR *)&str, 0, &va_args);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (len == 0 && GetLastError() != NO_ERROR)
 #else
     if (len == 0 && GetLastError() != ERROR_NO_WORK_DONE)
@@ -97,7 +97,7 @@ void WINAPIV error_exit(unsigned int id, ...)
 
     if (!LoadStringW(GetModuleHandleW(NULL), id, fmt, ARRAY_SIZE(fmt)))
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         WINE_FIXME("LoadString failed with %lu\n", GetLastError());
 #endif
         return;
@@ -113,7 +113,7 @@ typedef enum {
     ACTION_ADD, ACTION_EXPORT, ACTION_DELETE
 } REGEDIT_ACTION;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void PerformRegAction(REGEDIT_ACTION action, WCHAR **argv, int *i, BOOL silent)
 #else
 static void PerformRegAction(REGEDIT_ACTION action, WCHAR **argv, int *i)
@@ -125,7 +125,7 @@ static void PerformRegAction(REGEDIT_ACTION action, WCHAR **argv, int *i)
             WCHAR *realname = NULL;
             FILE *reg_file;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* Request import confirmation */
             if (!silent)
             {
@@ -209,7 +209,7 @@ static void PerformRegAction(REGEDIT_ACTION action, WCHAR **argv, int *i)
             break;
         }
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         output_message(STRING_UNHANDLED_ACTION);
 #else
         error_exit(STRING_UNHANDLED_ACTION);
@@ -264,7 +264,7 @@ BOOL ProcessCmdLine(WCHAR *cmdline)
             /* unhandled */;
             break;
         case 'S':
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             silent = TRUE;
             break;
 #endif
@@ -293,7 +293,7 @@ BOOL ProcessCmdLine(WCHAR *cmdline)
     }
 
     for (; i < argc; i++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         PerformRegAction(action, argv, &i, silent);
 #else
         PerformRegAction(action, argv, &i);

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "precomp.h"
 #endif
 
@@ -2649,7 +2649,7 @@ static void _check_item(HWND hwnd, HTREEITEM item, BOOL is_version_6, int line)
         }
         else
             width = data->width;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         todo_wine_if(!is_version_6)
 #else
     todo_wine

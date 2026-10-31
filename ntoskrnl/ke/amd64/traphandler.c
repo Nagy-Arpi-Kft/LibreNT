@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         x64 trap handlers
  * PROGRAMMERS:     Timo Kreuzer (timo.kreuzer@reactos.org)
@@ -8,7 +8,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 
 #define NDEBUG
 #include <debug.h>

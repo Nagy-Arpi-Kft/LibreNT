@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS SystemInfo Command
+ * PROJECT:     LibreNT SystemInfo Command
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Displays system information.
  * COPYRIGHT:   Copyright 2007 Dmitry Chapyshev <lentind@yandex.ru>
@@ -463,7 +463,7 @@ AllSysInfo(VOID)
     /* Clean SMBIOS data */
     FreeSMBiosData(SMBiosBuf);
 
-    /* Getting ReactOS Directory */
+    /* Getting LibreNT Directory */
     if (!GetWindowsDirectoryW(Buf, _countof(Buf)))
         ConPrintf(StdErr, L"Error! GetWindowsDirectory failed.");
     else

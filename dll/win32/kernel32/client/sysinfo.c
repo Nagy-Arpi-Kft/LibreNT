@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Win32 Base API
+ * PROJECT:         LibreNT Win32 Base API
  * LICENSE:         GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:         System Information Functions
  * COPYRIGHT:       Emanuele Aliberti
@@ -467,7 +467,7 @@ GetNumaProcessorNodeEx(IN PPROCESSOR_NUMBER Processor, OUT PUSHORT NodeNumber)
     ULONG Node;
     ULONGLONG Mask;
 
-    /* ReactOS currently exposes one processor group. */
+    /* LibreNT currently exposes one processor group. */
     if (Processor->Group != 0 || Processor->Reserved != 0 || Processor->Number >= 64)
     {
         *NodeNumber = 0xffff;

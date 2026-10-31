@@ -1,4 +1,4 @@
-# PROJECT:  ReactOS WDDM Null/Software GPU Miniport
+# PROJECT:  LibreNT WDDM Null/Software GPU Miniport
 # LICENSE:  GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:  Build file for BasicDisplay.sys — configurable WDDM software miniport
 #           with a physical scanout provider and software command engine.
@@ -9,15 +9,15 @@
 #   2. dxgkrnl   — imports dxgmms2; owns the internal resolver device
 #   3. softgpu   — resolves DxgkInitialize through the static displib wrapper
 
-include(${REACTOS_SOURCE_DIR}/sdk/lib/drivers/softgpu/softgpu.cmake)
+include(${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/softgpu/softgpu.cmake)
 spec2def(BasicDisplay.sys ${SOFTGPU_ENGINE_SPEC} ADD_IMPORTLIB)
 
 # softgpu MUST compile with the same current header version as dxgkrnl so
 # DRIVER_INITIALIZATION_DATA, DXGK_INTERFACE and every DXGKARG_* structure are
 # byte-identical. InitData.Version is selected and capped in softgpu.c. Mirror
 # dxgkrnl/CMakeLists.txt exactly.
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT})
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT})
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x0603 -DWINVER=0x0603)
 add_definitions(-DNTDDI_VERSION=0x06030000)    # NTDDI_WINBLUE
 
@@ -36,5 +36,5 @@ set_target_properties(softgpu PROPERTIES OUTPUT_NAME "BasicDisplay")
 set_module_type(softgpu kernelmodedriver)
 target_link_libraries(softgpu softgpu_engine displib)
 add_importlibs(softgpu ntoskrnl hal)
-add_cd_file(TARGET softgpu DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET softgpu DESTINATION librent/system32/drivers FOR all)
 add_driver_inf(softgpu basicdisplay.inf)

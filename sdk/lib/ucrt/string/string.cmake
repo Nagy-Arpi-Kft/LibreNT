@@ -111,21 +111,21 @@ elseif(${ARCH} STREQUAL "amd64")
 else()
     if(ARCH STREQUAL "arm64" AND NOT ARM64EC_RUNTIME)
         list(APPEND UCRT_STRING_ASM_SOURCES
-            ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcpy.S
-            ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strlen.S
-            ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strncmp.S
-            ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strnlen.S
-            ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/wcsnlen.S
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcpy.S
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strlen.S
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strncmp.S
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strnlen.S
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/wcsnlen.S
             string/arm64/strcmp_simd.S
             string/arm64/wcscmp_simd.S
         )
         list(APPEND UCRT_STRING_SOURCES
-            ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcopy.c
+            ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcopy.c
             string/arm64/strcmp.c
         )
         if(MSVC)
             set_source_files_properties(
-                ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcopy.c
+                ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcopy.c
                 string/arm64/strcmp.c
                 PROPERTIES COMPILE_OPTIONS /Oi-)
         endif()

@@ -1,5 +1,5 @@
 /*
- * ReactOS FAX API Support
+ * LibreNT FAX API Support
  * Copyright (C) 2004 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 /*
- * PROJECT:         ReactOS FAX API Support
+ * PROJECT:         LibreNT FAX API Support
  * FILE:            lib/winfax/winfax.c
- * PURPOSE:         ReactOS FAX API Support
+ * PURPOSE:         LibreNT FAX API Support
  * PROGRAMMER:      Thomas Weidenmueller <w3seek@reactos.com>
  *
  * UPDATE HISTORY:

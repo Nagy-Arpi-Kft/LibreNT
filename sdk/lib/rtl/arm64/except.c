@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Run-Time Library
+ * PROJECT:     LibreNT Run-Time Library
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     ARM64 exception support
  */

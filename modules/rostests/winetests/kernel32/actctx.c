@@ -1983,9 +1983,9 @@ static void test_find_progid_redirection(HANDLE handle, const GUID *clsid, const
     struct strsection_header *header;
     BOOL ret;
 
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     if (is_reactos()) {
-        ok(FALSE, "FIXME: This crashes on MSVC ReactOS\n");
+        ok(FALSE, "FIXME: This crashes on MSVC LibreNT\n");
         return;
     }
 #endif
@@ -2831,7 +2831,7 @@ static void run_child_process(void)
     sprintf(cmdline, "\"%s\" %s manifest1", argv[0], argv[1]);
     ret = CreateProcessA(argv[0], cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
     ok(ret, "Could not create process: %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wait_child_process( pi.hProcess );
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
@@ -3154,7 +3154,7 @@ todo_wine {
     actctx.cbSize = sizeof(actctx);
     actctx.lpResourceName = MAKEINTRESOURCEA(1);
     actctx.dwFlags = ACTCTX_FLAG_HMODULE_VALID | ACTCTX_FLAG_RESOURCE_NAME_VALID;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char path_explorer[MAX_PATH];
     GetWindowsDirectoryA(path_explorer, sizeof(path_explorer));
     strcat(path_explorer, "\\explorer.exe");
@@ -3164,7 +3164,7 @@ todo_wine {
         winetest_push_context("%lu", flags[i]);
 
         /* use explorer.exe because using modules already loaded has a different behavior */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() < _WIN32_WINNT_VISTA && i > 0)
             break; // Only the first test is valid for WS03.
         actctx.hModule = LoadLibraryExA(path_explorer, NULL, flags[i]);
@@ -3193,7 +3193,7 @@ static void test_CreateActCtx_share_mode(void)
     actctx.lpSource = tmp_manifest_pathname;
 
     handle = CreateActCtxW(&actctx);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(handle != INVALID_HANDLE_VALUE || GetLastError() == ERROR_SHARING_VIOLATION /* WS03 */, "CreateActCtxW returned error %lu\n", GetLastError());
 #else
     ok(handle != INVALID_HANDLE_VALUE, "CreateActCtxW returned error %lu\n", GetLastError());
@@ -3966,7 +3966,7 @@ static void test_builtin_sxs(void)
     ULONG_PTR cookie;
     HANDLE handle_context;
     BOOL success;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static char expected_path[MAX_PATH];
     GetWindowsDirectoryA(expected_path, sizeof(expected_path));
     strcat(expected_path, "\\WinSxS");
@@ -4196,7 +4196,7 @@ static DWORD subtest_manifest_res_(int line, const char *manifest_exe, const cha
 
     if (lang)
     {
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         r = LCIDToLocaleName(MAKELCID(lang, SORT_DEFAULT),
                              locale_name, ARRAY_SIZE(locale_name), LOCALE_ALLOW_NEUTRAL_NAMES);
         ok(r > 0, "lang 0x%04x, error %lu.\n", lang, GetLastError());
@@ -4295,7 +4295,7 @@ static DWORD subtest_manifest_res_(int line, const char *manifest_exe, const cha
 /* Test loading DLL with dependency assembly in manifest resource */
 static void test_manifest_resources(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     skip("test_manifest_resources() is invalid for WS03 - Win10 1607.\n");
 #else
     static const struct manifest_res_spec wrong_manifest_resources_numbered[] = {
@@ -4471,7 +4471,7 @@ static void subtest_valid_manifest_resources_locale(LANGID actctx_lang)
         actctx_lang = ConvertDefaultLocale(actctx_lang);
         ok(actctx_lang != MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
            "unexpected neutral locale\n");
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         ret = LCIDToLocaleName(MAKELCID(actctx_lang, SORT_DEFAULT),
                                locale_name, ARRAY_SIZE(locale_name), LOCALE_ALLOW_NEUTRAL_NAMES);
         ok(ret > 0, "error %lu.\n", GetLastError());
@@ -4529,7 +4529,7 @@ static void subtest_valid_manifest_resources_locale(LANGID actctx_lang)
 
 static void test_valid_manifest_resources_locale(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     skip("test_valid_manifest_resources_locale() is invalid for WS03 - Win10 1607.\n");
 #else
     static const LANGID langs[] = {
@@ -4593,7 +4593,7 @@ static void run_child_process_two_dll(int run)
     ret = CreateProcessA(exe, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
     ok(ret, "Could not create process: %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wait_child_process( pi.hProcess );
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
@@ -4614,7 +4614,7 @@ static void test_manifest_in_module(void)
     ACTCTXW ctx;
     HANDLE handle;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("test_manifest_in_module() crashes on WS03.\n");
         return;
@@ -4649,7 +4649,7 @@ static void test_manifest_resource_name_omitted(void)
     err = GetLastError();
     ok(handle == INVALID_HANDLE_VALUE, "CreateActCtxW shall fail\n");
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(err == ERROR_RESOURCE_TYPE_NOT_FOUND || broken(err == ERROR_NOT_ENOUGH_MEMORY) /* WS03 */, "got %lu\n", err);
 #else
     ok(err == ERROR_RESOURCE_TYPE_NOT_FOUND, "got %lu\n", err);
@@ -4663,7 +4663,7 @@ static void test_manifest_resource_name_omitted(void)
     handle = CreateActCtxW(&ctx);
     err = GetLastError();
     ok(handle == INVALID_HANDLE_VALUE, "CreateActCtxW shall fail\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(err == ERROR_INVALID_PARAMETER || broken(err == ERROR_NOT_ENOUGH_MEMORY) /* WS03 */, "got %lu\n", err);
 #else
     ok(err == ERROR_INVALID_PARAMETER, "got %lu\n", err);

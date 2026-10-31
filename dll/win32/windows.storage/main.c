@@ -19,14 +19,14 @@
 
 #include "initguid.h"
 #include "private.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "rpcproxy.h"
 #include "objects.h"
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(storage);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI DllMain( HINSTANCE instance, DWORD reason, void *reserved )
 {
     switch (reason)
@@ -44,7 +44,7 @@ BOOL WINAPI DllMain( HINSTANCE instance, DWORD reason, void *reserved )
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI DllRegisterServer( void )
 {
     HRESULT hr = __wine_register_resources();
@@ -62,7 +62,7 @@ HRESULT WINAPI DllUnregisterServer( void )
 
 HRESULT WINAPI DllGetClassObject( REFCLSID clsid, REFIID riid, void **out )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr = WSTORAGE_GetObjectsClassObject( clsid, riid, out );
     if (hr != CLASS_E_CLASSNOTAVAILABLE) return hr;
 #endif

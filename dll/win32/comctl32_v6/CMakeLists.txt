@@ -3,7 +3,7 @@ add_definitions(
     -D_COMCTL32_
     -D__WINE_COMCTL32_VERSION=6)
 
-set(COMCTL32_COMMON_DIR ${REACTOS_SOURCE_DIR}/dll/win32/comctl32)
+set(COMCTL32_COMMON_DIR ${LIBRENT_SOURCE_DIR}/dll/win32/comctl32)
 include_directories(BEFORE ${COMCTL32_COMMON_DIR})
 
 spec2def(comctl32.dll comctl32_v6.spec ADD_IMPORTLIB)
@@ -75,7 +75,7 @@ add_dependencies(comctl32_v6 psdk)
 add_cd_file(
     TARGET comctl32_v6
     NAME_ON_CD comctl32.dll
-    DESTINATION reactos/winsxs/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef
+    DESTINATION librent/winsxs/${WINARCH}_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef
     FOR all)
 
 set_wine_module_FIXME(comctl32_v6)

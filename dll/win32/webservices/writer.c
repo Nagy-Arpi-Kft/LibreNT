@@ -88,7 +88,7 @@ struct writer
     void                        *output_cb_state;
     struct xmlbuf               *output_buf;
     BOOL                         output_buf_user;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WS_XML_TEXT_TYPE             attr_text_type;
 #endif
     WS_HEAP                     *output_heap;
@@ -150,7 +150,7 @@ static void write_insert_bof( struct writer *writer, struct node *bof )
     writer->current = writer->root = bof;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline BOOL is_closed_element( const struct node *node )
 {
     return node_type( node ) == WS_XML_NODE_TYPE_ELEMENT && (node->flags & NODE_FLAG_CLOSED_ELEMENT);
@@ -160,7 +160,7 @@ static inline BOOL is_closed_element( const struct node *node )
 static void write_insert_node( struct writer *writer, struct node *parent, struct node *node )
 {
     node->parent = parent;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_closed_element( writer->current ) && writer->current->parent == parent)
         list_add_after( &writer->current->entry, &node->entry );
     else
@@ -171,7 +171,7 @@ static void write_insert_node( struct writer *writer, struct node *parent, struc
 
 static struct node *find_parent( struct writer *writer )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_closed_element( writer->current )) return writer->current->parent;
 #endif
     if (is_valid_parent( writer->current )) return writer->current;
@@ -312,7 +312,7 @@ HRESULT WINAPI WsGetWriterProperty( WS_XML_WRITER *handle, WS_XML_WRITER_PROPERT
         case WS_XML_WRITER_PROPERTY_BYTES:
         {
             WS_BYTES *bytes = buf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (size != sizeof(*bytes) || writer->output_buf_user) hr = E_INVALIDARG;
 #else
             if (size != sizeof(*bytes)) hr = E_INVALIDARG;
@@ -913,7 +913,7 @@ static ULONG format_uint64( const UINT64 *ptr, unsigned char *buf )
     return wsprintfA( (char *)buf, "%I64u", *ptr );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static ULONG format_double( const double *ptr, unsigned char *buf )
 {
     char str[32], sig[20], *e, *q;
@@ -1797,7 +1797,7 @@ static HRESULT set_current_namespace( struct writer *writer, const WS_XML_STRING
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_reserved_prefix( const WS_XML_STRING *prefix, const WS_XML_STRING *ns )
 {
     static const WS_XML_STRING xml = {3, (BYTE *)"xml"};
@@ -1815,7 +1815,7 @@ static HRESULT set_namespaces( struct writer *writer )
     WS_XML_ELEMENT_NODE *elem = &writer->current->hdr;
     HRESULT hr;
     ULONG i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG j;
 
     for (i = 0; i < elem->attributeCount; i++)
@@ -2004,7 +2004,7 @@ static struct node *write_find_startelement( struct writer *writer )
     struct node *node;
     for (node = writer->current; node; node = node->parent)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (is_closed_element( node )) continue;
 #endif
         if (node_type( node ) == WS_XML_NODE_TYPE_ELEMENT) return node;
@@ -2079,7 +2079,7 @@ static HRESULT write_close_element( struct writer *writer, struct node *node )
     return write_endelement( writer, elem );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT write_tree( struct writer * );
 static void write_rewind( struct writer * );
 
@@ -2112,7 +2112,7 @@ static HRESULT write_endelement_node( struct writer *writer )
         if ((hr = write_startelement( writer )) != S_OK) return hr;
     }
     if ((hr = write_close_element( writer, node )) != S_OK) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     node->flags |= NODE_FLAG_CLOSED_ELEMENT;
     if (is_out_of_order( node ))
     {
@@ -2403,7 +2403,7 @@ HRESULT WINAPI WsWriteEndCData( WS_XML_WRITER *handle, WS_ERROR *error )
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_second_root( struct writer *writer, const struct node *parent )
 {
     const struct node *child;
@@ -2427,7 +2427,7 @@ static HRESULT write_add_element_node( struct writer *writer, const WS_XML_STRIN
     WS_XML_ELEMENT_NODE *elem;
 
     if (!(parent = find_parent( writer ))) return WS_E_INVALID_FORMAT;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_second_root( writer, parent )) return WS_E_INVALID_FORMAT;
 #endif
 
@@ -2646,7 +2646,7 @@ static HRESULT write_set_attribute_value( struct writer *writer, const WS_XML_TE
     case WS_XML_TEXT_TYPE_UTF8:
     case WS_XML_TEXT_TYPE_UTF16:
     case WS_XML_TEXT_TYPE_BASE64:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (elem->attributes[elem->attributeCount - 1]->value && writer->attr_text_type != value->textType)
             return WS_E_INVALID_OPERATION;
 #endif
@@ -2691,7 +2691,7 @@ static HRESULT write_set_attribute_value( struct writer *writer, const WS_XML_TE
         return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     writer->attr_text_type = value->textType;
 #endif
     return S_OK;
@@ -3732,7 +3732,7 @@ static HRESULT write_type_bytes( struct writer *writer, WS_TYPE_MAPPING mapping,
 
     if (!option) return E_INVALIDARG;
     if ((hr = get_value_ptr( option, value, size, sizeof(WS_BYTES), (const void **)&ptr )) != S_OK) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((option == WS_WRITE_NILLABLE_VALUE && !ptr->length && !ptr->bytes) ||
 #else
     if ((option == WS_WRITE_NILLABLE_VALUE && is_nil_value( value, size )) ||
@@ -4469,7 +4469,7 @@ done:
 /**************************************************************************
  *          WsWriteXmlBuffer		[webservices.@]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL fragment_allowed( struct writer *writer )
 {
     BOOL allow = FALSE;
@@ -4520,7 +4520,7 @@ HRESULT WINAPI WsWriteXmlBuffer( WS_XML_WRITER *handle, WS_XML_BUFFER *buffer, W
     struct writer *writer = (struct writer *)handle;
     struct xmlbuf *xmlbuf = (struct xmlbuf *)buffer;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct node *parent, *current, *node, *next;
     struct list nodes = LIST_INIT( nodes );
 #endif
@@ -4545,7 +4545,7 @@ HRESULT WINAPI WsWriteXmlBuffer( WS_XML_WRITER *handle, WS_XML_BUFFER *buffer, W
         goto done;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (read_xmlbuf_nodes( writer, buffer, &nodes ) != S_OK) list_init( &nodes );
     if (!(parent = find_parent( writer )))
     {
@@ -4562,7 +4562,7 @@ HRESULT WINAPI WsWriteXmlBuffer( WS_XML_WRITER *handle, WS_XML_BUFFER *buffer, W
     if ((hr = write_commit( writer )) != S_OK) goto done;
     if ((hr = write_grow_buffer( writer, xmlbuf->bytes.length )) != S_OK) goto done;
     write_bytes( writer, xmlbuf->bytes.bytes, xmlbuf->bytes.length );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(parent = find_parent( writer )))
     {
         hr = WS_E_INVALID_FORMAT;
@@ -4579,7 +4579,7 @@ HRESULT WINAPI WsWriteXmlBuffer( WS_XML_WRITER *handle, WS_XML_BUFFER *buffer, W
 #endif
 
 done:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LIST_FOR_EACH_ENTRY_SAFE( node, next, &nodes, struct node, entry )
     {
         list_remove( &node->entry );
@@ -4632,7 +4632,7 @@ HRESULT WINAPI WsWriteXmlBufferToBytes( WS_XML_WRITER *handle, WS_XML_BUFFER *bu
         if (hr != S_OK) goto done;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         struct list nodes = LIST_INIT( nodes );
         struct node *node, *next;
@@ -4749,7 +4749,7 @@ static HRESULT write_move_to( struct writer *writer, WS_MOVE_TO move, BOOL *foun
     BOOL success = FALSE;
     struct node *node = writer->current;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((move == WS_MOVE_TO_PREVIOUS_ELEMENT || move == WS_MOVE_TO_PREVIOUS_NODE) &&
         (node_type( node ) == WS_XML_NODE_TYPE_BOF ||
          (node_type( node ) == WS_XML_NODE_TYPE_ELEMENT && !is_closed_element( node ))) &&
@@ -4844,7 +4844,7 @@ HRESULT WINAPI WsMoveWriter( WS_XML_WRITER *handle, WS_MOVE_TO move, BOOL *found
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (writer->output_type != WS_XML_WRITER_OUTPUT_TYPE_BUFFER || !writer->output_buf_user) hr = WS_E_INVALID_OPERATION;
 #else
     if (writer->output_type != WS_XML_WRITER_OUTPUT_TYPE_BUFFER) hr = WS_E_INVALID_OPERATION;
@@ -4877,7 +4877,7 @@ HRESULT WINAPI WsGetWriterPosition( WS_XML_WRITER *handle, WS_XML_NODE_POSITION 
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!writer->output_type || !writer->output_buf_user) hr = WS_E_INVALID_OPERATION;
 #else
     if (!writer->output_type) hr = WS_E_INVALID_OPERATION;
@@ -4886,7 +4886,7 @@ HRESULT WINAPI WsGetWriterPosition( WS_XML_WRITER *handle, WS_XML_NODE_POSITION 
     {
         pos->buffer = (WS_XML_BUFFER *)writer->output_buf;
         pos->node   = writer->current;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((node_type( writer->current ) == WS_XML_NODE_TYPE_BOF ||
              (node_type( writer->current ) == WS_XML_NODE_TYPE_ELEMENT && !is_closed_element( writer->current ))) &&
             list_count( &writer->current->children ) > 1)
@@ -5075,7 +5075,7 @@ HRESULT WINAPI WsWriteNode( WS_XML_WRITER *handle, const WS_XML_NODE *node, WS_E
     TRACE( "%p %p %p\n", handle, node, error );
     if (error) FIXME( "ignoring error parameter\n" );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!writer) return E_INVALIDARG;
 #else
     if (!writer || !node) return E_INVALIDARG;
@@ -5090,7 +5090,7 @@ HRESULT WINAPI WsWriteNode( WS_XML_WRITER *handle, const WS_XML_NODE *node, WS_E
     }
 
     if (!writer->output_type) hr = WS_E_INVALID_OPERATION;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (!node) hr = E_INVALIDARG;
 #endif
     else hr = write_node( writer, node );
@@ -5222,7 +5222,7 @@ HRESULT WINAPI WsCopyNode( WS_XML_WRITER *handle, WS_XML_READER *reader, WS_ERRO
         if ((hr = write_tree( writer )) != S_OK) goto done;
         writer->current = current;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         move_reader_next_node( reader );
 #else
         WsMoveReader( reader, WS_MOVE_TO_NEXT_NODE, NULL, NULL );

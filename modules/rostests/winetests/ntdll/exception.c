@@ -35,7 +35,7 @@
 #include "excpt.h"
 #include "wine/test.h"
 #include "intrin.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/exception.h>
 #ifdef _M_AMD64
 USHORT __readsegds(void);
@@ -46,9 +46,9 @@ USHORT __readsegss(void);
 void __cld(void);
 void Call_NtRaiseException(PEXCEPTION_RECORD ExceptionRecord, PCONTEXT Context, BOOLEAN FirstChance, PVOID pNtRaiseException);
 #endif // _M_AMD64
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
-#if defined(__REACTOS__) && (defined(__i386__) || defined(__x86_64__))
+#if defined(__LIBRENT__) && (defined(__i386__) || defined(__x86_64__))
 static BOOL is_qemu_tcg(void)
 {
     int regs[4];
@@ -1070,10 +1070,10 @@ static void test_exceptions(void)
     run_exception_test(dreg_handler, &dreg_test, &segfault_code, sizeof(segfault_code), 0);
     check_debug_registers(2, &dreg_test);
 
-#if defined(__REACTOS__)
+#if defined(__LIBRENT__)
     if (is_reactos())
     {
-        skip("Skipping test of single stepping behavior and int3 handling on ReactOS due to crashes\n");
+        skip("Skipping test of single stepping behavior and int3 handling on LibreNT due to crashes\n");
         return;
     }
 #endif
@@ -1330,7 +1330,7 @@ static void test_debugger(DWORD cont_status, BOOL with_WaitForDebugEventEx)
                 else if (stage == STAGE_SEGMENTS)
                 {
                     USHORT ss;
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
                     USHORT segss;
                     __asm  mov [segss], ss
                     ss = segss;
@@ -2057,7 +2057,7 @@ static void test_KiUserExceptionDispatcher(void)
         return;
     }
 
-#ifdef __REACTOS__ // This hangs on Windows 10 WOW64
+#ifdef __LIBRENT__ // This hangs on Windows 10 WOW64
     if (is_wow64)
     {
         win_skip("Skipping test that hangs on WOW64\n");
@@ -2839,7 +2839,7 @@ static DWORD WINAPI prot_fault_handler( EXCEPTION_RECORD *rec, ULONG64 frame,
     if (!is_arm64ec)
     {
         USHORT ds, es, fs, gs, ss;
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
         ds = __readsegds();
         es = __readseges();
         fs = __readsegfs();
@@ -3165,7 +3165,7 @@ static void test_exceptions(void)
         ok( got_exception == 4,"expected 4 exceptions, got %d\n", got_exception);
     }
 
-#if defined(__REACTOS__)
+#if defined(__LIBRENT__)
     if (is_reactos())
     {
         skip("Skipping tests that crash\n");
@@ -3190,7 +3190,7 @@ static void test_exceptions(void)
     run_exception_test(direction_flag_handler, NULL, direction_flag_code, sizeof(direction_flag_code), 0);
     ok(got_exception == 1, "got %d exceptions, expected 1\n", got_exception);
 #ifndef __arm64ec__
-#if defined(__REACTOS__ ) && defined(_MSC_VER)
+#if defined(__LIBRENT__ ) && defined(_MSC_VER)
     if (is_arm64ec) __cld();
 #else
     if (is_arm64ec) __asm__ volatile( "cld" ); /* needed on Windows */
@@ -3208,7 +3208,7 @@ static void test_exceptions(void)
         ctx.ContextFlags = CONTEXT_CONTROL | CONTEXT_SEGMENTS;
         res = pNtGetContextThread( GetCurrentThread(), &ctx );
         ok( res == STATUS_SUCCESS, "NtGetContextThread failed with %lx\n", res );
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
         ds = __readsegds();
         es = __readseges();
         fs = __readsegfs();
@@ -3235,7 +3235,7 @@ static void test_exceptions(void)
         ctx.SegFs = ctx.SegSs;
         res = pNtSetContextThread( GetCurrentThread(), &ctx );
         ok( res == STATUS_SUCCESS, "NtGetContextThread failed with %lx\n", res );
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
         ds = __readsegds();
         es = __readseges();
         fs = __readsegfs();
@@ -3351,7 +3351,7 @@ static void test_simd_exceptions(void)
         skip("system doesn't support SSE\n");
         return;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_qemu_tcg())
     {
         skip("QEMU TCG does not raise SIMD floating-point exceptions\n");
@@ -3380,7 +3380,7 @@ static void test_prot_fault(void)
 
     for (i = 0; i < ARRAY_SIZE(exceptions); i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (is_qemu_tcg() && (i == 14 || i == 37))
         {
             skip("%u: QEMU TCG does not emulate this instruction like x64 hardware\n", i);
@@ -3694,7 +3694,7 @@ static void run_rtlraiseexception_test(DWORD exceptioncode)
 
 static void test_rtlraiseexception(void)
 {
-#if defined(__REACTOS__)
+#if defined(__LIBRENT__)
     if (is_reactos())
     {
         skip("Skipping tests that crash\n");
@@ -3911,7 +3911,7 @@ static void test_debugger(DWORD cont_status, BOOL with_WaitForDebugEventEx)
                 {
 #ifdef __arm64ec__
                     USHORT ss = 0x2b;
-#elif defined(__REACTOS__) && defined(_MSC_VER)
+#elif defined(__LIBRENT__) && defined(_MSC_VER)
                     USHORT ss = __readsegss();
 #else
                     USHORT ss;
@@ -4414,7 +4414,7 @@ static void test_continue(void)
 
 static void test_wow64_context(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char appname[MAX_PATH];
 #else
     const char appname[] = "C:\\windows\\syswow64\\cmd.exe";
@@ -4435,7 +4435,7 @@ static void test_wow64_context(void)
     unsigned int i, cs32, cs64;
     ULONG_PTR ecx, rcx;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((pRtlWow64GetThreadContext == NULL) ||
         (pRtlWow64SetThreadContext == NULL))
     {
@@ -4444,7 +4444,7 @@ static void test_wow64_context(void)
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetSystemWow64DirectoryA(appname, MAX_PATH);
     strcat(appname, "\\cmd.exe");
 #endif
@@ -4614,7 +4614,7 @@ static void test_wow64_context(void)
         ctx.ContextFlags = WOW64_CONTEXT_ALL | CONTEXT_EXCEPTION_REQUEST;
         ret = pRtlWow64GetThreadContext( pi.hThread, &ctx );
         ok(ret == STATUS_SUCCESS, "got %#lx\n", ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() <= _WIN32_WINNT_WIN7)
             ok( ctx.ContextFlags == (WOW64_CONTEXT_ALL | CONTEXT_EXCEPTION_REQUEST),
                 "got context flags %#lx\n", ctx.ContextFlags );
@@ -4850,7 +4850,7 @@ static LONG WINAPI dbg_except_continue_vectored_handler(struct _EXCEPTION_POINTE
 
     if (rec->ExceptionCode == 0xceadbeef)
     {
-#ifndef __REACTOS__ // Broken on Windows Vista and Windows 10
+#ifndef __LIBRENT__ // Broken on Windows Vista and Windows 10
         ok(context->P1Home == (ULONG64)0xdeadbeeffeedcafe, "Got unexpected context->P1Home %#Ix.\n", context->P1Home);
 #endif
         context->R12 = test_kiuserexceptiondispatcher_saved_r12;
@@ -4885,7 +4885,7 @@ static void * WINAPI hook_KiUserExceptionDispatcher(EXCEPTION_RECORD *rec, CONTE
             "Got unexpected ExceptionCode %#lx.\n", rec->ExceptionCode);
 
     ok( !((ULONG_PTR)context & 15), "unaligned context %p\n", context );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_WIN8)
     {
         win_skip("No extended context support.\n");
@@ -4900,7 +4900,7 @@ static void * WINAPI hook_KiUserExceptionDispatcher(EXCEPTION_RECORD *rec, CONTE
     ok( (void *)(xctx + 1) == (void *)rec, "wrong ptrs %p / %p\n", xctx, rec );
     ok( frame->rip == context->Rip, "wrong rip %Ix / %Ix\n", frame->rip, context->Rip );
     ok( frame->rsp == context->Rsp, "wrong rsp %Ix / %Ix\n", frame->rsp, context->Rsp );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -5134,7 +5134,7 @@ static void test_KiUserExceptionDispatcher(void)
         test_kiuserexceptiondispatcher_saved_r12 = ctx.R12;
         ctx.R12 = (ULONG64)0xdeadbeeffeedcafe;
 
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
         Call_NtRaiseException(&record, &ctx, TRUE, pNtRaiseException);
 #else
 #ifdef __GNUC__
@@ -5169,7 +5169,7 @@ static void * WINAPI hook_KiUserApcDispatcher(CONTEXT *context)
            context, context->Rip, context->Rsp,
            (char *)context->Rsp - (char *)context, context->ContextFlags );
 
-#ifndef __REACTOS__ // Broken on Windows Vista and Windows 10
+#ifndef __LIBRENT__ // Broken on Windows Vista and Windows 10
     ok( context->P1Home == 0x1234, "wrong p1 %#Ix\n", context->P1Home );
 #endif
     ok( context->P2Home == 0x5678, "wrong p2 %#Ix\n", context->P2Home );
@@ -8081,7 +8081,7 @@ static void rtlraiseexception_handler_( EXCEPTION_RECORD *rec, void *frame, CONT
 
     ok( addr == (char *)code_mem + 0x0c,
         "ExceptionAddress at %p instead of %p\n", addr, (char *)code_mem + 0x0c );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( context->ContextFlags == (CONTEXT_FULL | CONTEXT_DEBUG_REGISTERS),
         "wrong context flags %lx\n", context->ContextFlags );
 #else
@@ -8322,7 +8322,7 @@ static PVOID CALLBACK test_consolidate_dummy(EXCEPTION_RECORD *rec)
     return (PVOID)rec->ExceptionInformation[2];
 }
 
-#if defined(__REACTOS__) && defined(__clang__)
+#if defined(__LIBRENT__) && defined(__clang__)
 __attribute__((optnone)) static void test_restore_context(void)
 #else
 static void test_restore_context(void)
@@ -8604,7 +8604,7 @@ static void test_debug_registers_wow64(void)
     NTSTATUS ret;
     BOOL bret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((pRtlWow64GetThreadContext == NULL) ||
         (pRtlWow64SetThreadContext == NULL))
     {
@@ -9906,7 +9906,7 @@ static DWORD test_extended_context_handler(EXCEPTION_RECORD *rec, EXCEPTION_REGI
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!is_qemu_tcg())
 #endif
         ok((xs->Mask & 7) == (xsaveopt_enabled ? 0 : 4), "Got unexpected Mask %#I64x.\n", xs->Mask);
@@ -10972,7 +10972,7 @@ static void test_extended_context(void)
     expected_compaction = compaction_enabled ? ((ULONG64)1 << 63) | (xstate_supported_features & ~(UINT64)3) : 0;
 
     xs = (XSTATE *)((BYTE *)context_ex + context_ex->XState.Offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_qemu_tcg())
 #endif
     ok((xs->Mask & supported_features) == (xsaveopt_enabled ? 0 : 4), "Got unexpected Mask %#I64x.\n", xs->Mask);
@@ -11053,7 +11053,7 @@ static void test_extended_context(void)
     bret = GetThreadContext(thread, context);
     ok(bret, "Got unexpected bret %#x, GetLastError() %lu.\n", bret, GetLastError());
     todo_wine_if (!xsaveopt_enabled)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_qemu_tcg())
 #endif
     ok((xs->Mask & supported_features) == (xsaveopt_enabled ? 0 : 4), "Got unexpected Mask %#I64x.\n", xs->Mask);
@@ -11120,7 +11120,7 @@ static void test_extended_context(void)
     memset(&xs->YmmContext, 0xcc, sizeof(xs->YmmContext));
     bret = GetThreadContext(thread, context);
     ok(bret, "Got unexpected bret %#x, GetLastError() %lu.\n", bret, GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_qemu_tcg())
 #endif
     todo_wine_if (!xsaveopt_enabled && sizeof(void *) != 4)
@@ -11947,7 +11947,7 @@ static void test_context_exception_request(void)
     while (ReadAcquire( &p.sync ) != 5)
         SwitchToThread();
 
-#if defined(__REACTOS__) && defined(__i386__) && !defined(__GNUC__)
+#if defined(__LIBRENT__) && defined(__i386__) && !defined(__GNUC__)
     if (is_wow64)
     {
         win_skip("Skipping on WOW64 with MSVC builds, because it makes the test crash\n");
@@ -11962,7 +11962,7 @@ static void test_context_exception_request(void)
     c.ContextFlags = CONTEXT_CONTROL | CONTEXT_EXCEPTION_REQUEST;
     ret = GetThreadContext( thread, &c );
     ok( ret, "got error %lu.\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
         ok( c.ContextFlags == (expected_flags & ~CONTEXT_EXCEPTION_REPORTING), "got %#lx.\n", c.ContextFlags );
     else
@@ -11973,7 +11973,7 @@ static void test_context_exception_request(void)
                      | CONTEXT_EXCEPTION_ACTIVE;
     ret = GetThreadContext( thread, &c );
     ok( ret, "got error %lu.\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
         ok( c.ContextFlags == (expected_flags | CONTEXT_SERVICE_ACTIVE | CONTEXT_EXCEPTION_ACTIVE), "got %#lx, expected %#lx.\n", c.ContextFlags, expected_flags );
     else

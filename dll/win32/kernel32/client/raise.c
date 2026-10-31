@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Win32 Base API
+ * PROJECT:     LibreNT Win32 Base API
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     RaiseException for architectures without an assembly version
  * COPYRIGHT:   Copyright 1998 Ariadne (ariadne@xs4all.nl)
@@ -50,7 +50,7 @@ RaiseException(
                       nNumberOfArguments * sizeof(ULONG_PTR));
     }
 
-    /* Better handling of Delphi Exceptions... a ReactOS Hack */
+    /* Better handling of Delphi Exceptions... a LibreNT Hack */
     if (dwExceptionCode == 0xeedface || dwExceptionCode == 0xeedfade)
     {
         DPRINT1("Delphi Exception at address: %p\n", ExceptionRecord.ExceptionInformation[0]);

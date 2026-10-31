@@ -30,7 +30,7 @@ target_link_libraries(d2d1 dx10guid uuid wine)
 add_importlibs(d2d1 d3d10_1 d3dcompiler_47 gdi32 user32 advapi32 msvcrt ucrtbase kernel32 ntdll)
 add_delay_importlibs(d2d1 dwrite xmllite ole32)
 add_dependencies(d2d1 d3d_idl_headers psdk)
-add_cd_file(TARGET d2d1 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET d2d1 DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(d2d1)
 
 if(MSVC)

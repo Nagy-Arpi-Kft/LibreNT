@@ -57,13 +57,13 @@
 #include <wine/debug.h>
 WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
 #endif
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef __WINESRC__
 #endif
 
@@ -273,7 +273,7 @@ struct FileLog /* HSPFILELOG */
 };
 
 extern HINSTANCE hInstance;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SETUPAPI_hInstance hInstance
 #endif
 extern OSVERSIONINFOEXW OsVersionInfo;

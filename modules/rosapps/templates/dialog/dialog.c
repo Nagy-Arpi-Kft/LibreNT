@@ -1,5 +1,5 @@
 /*
- *  ReactOS Standard Dialog Application Template
+ *  LibreNT Standard Dialog Application Template
  *
  *  Copyright (C) 2002 Robert Dickenson <robd@reactos.org>
  *

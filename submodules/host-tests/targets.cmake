@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/targets.cmake
 # PURPOSE:     Optional host-native test build and execution targets
 #
@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 get_filename_component(HOST_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
-set(HOST_TEST_BUILD_DIR "${REACTOS_BINARY_DIR}/host-tests" CACHE PATH "Native host test build directory")
+set(HOST_TEST_BUILD_DIR "${LIBRENT_BINARY_DIR}/host-tests" CACHE PATH "Native host test build directory")
 set(HOST_TEST_JOBS 4 CACHE STRING "Parallel jobs for native host tests")
 if(NOT HOST_TEST_C_COMPILER AND HOST_TOOLS_C_COMPILER)
     set(HOST_TEST_C_COMPILER "${HOST_TOOLS_C_COMPILER}" CACHE FILEPATH "Native host test C compiler")

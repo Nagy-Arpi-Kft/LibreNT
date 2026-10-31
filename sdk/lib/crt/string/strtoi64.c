@@ -18,7 +18,7 @@ __int64 CDECL _strtoi64_l(const char *nptr, char **endptr, int base, _locale_t l
     TRACE("(%s %p %d %p)\n", debugstr_a(nptr), endptr, base, locale);
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (!MSVCRT_CHECK_PMT(nptr != NULL)) return 0;
 #endif
     if (!MSVCRT_CHECK_PMT(base == 0 || base >= 2)) return 0;

@@ -214,7 +214,7 @@ XboxVideoSync(VOID)
 }
 
 VOID
-XboxVideoPrepareForReactOS(VOID)
+XboxVideoPrepareForLibreNT(VOID)
 {
     VidFbClearScreenColor(MAKE_COLOR(0, 0, 0), TRUE);
     XboxVideoHideShowTextCursor(FALSE);

@@ -146,7 +146,7 @@ static void test_image(HBITMAP image)
     HDC hdc;
     BITMAPINFO info;
     BYTE bits[4];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT display_bpp;
 
     hdc = GetDC(0);
@@ -157,7 +157,7 @@ static void test_image(HBITMAP image)
     GetObjectW(image, sizeof(bm), &bm);
     ok(bm.bmWidth == 1, "got %ld\n", bm.bmWidth);
     ok(bm.bmHeight == 1, "got %ld\n", bm.bmHeight);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bm.bmBitsPixel == display_bpp, "got %d\n", bm.bmBitsPixel);
 #else
     ok(bm.bmBitsPixel == 32, "got %d\n", bm.bmBitsPixel);
@@ -180,7 +180,7 @@ static void test_image(HBITMAP image)
     GetDIBits(hdc, image, 0, bm.bmHeight, bits, &info, DIB_RGB_COLORS);
     DeleteDC(hdc);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bits[0] == 0x11 &&  bits[1] == 0x22 &&  bits[2] == 0x33 && (display_bpp == 32 ? bits[3] == 0x44 : bits[3] == 0x00),
        "bits: %02x %02x %02x %02x\n", bits[0], bits[1], bits[2], bits[3]);
 #else

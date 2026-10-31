@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shared scaffolding for the Core Audio session registry tests
@@ -16,7 +16,7 @@
 #include <audiopolicy.h>
 #include <mmdeviceapi.h>
 
-#define REACTOS_AUDIO_SESSION_MAX_CHANNELS 32
+#define LIBRENT_AUDIO_SESSION_MAX_CHANNELS 32
 
 struct reactos_audio_session_id
 {
@@ -34,7 +34,7 @@ struct reactos_audio_session_snapshot
     LONG generation;
     float master_volume;
     BOOL mute;
-    float channel_volumes[REACTOS_AUDIO_SESSION_MAX_CHANNELS];
+    float channel_volumes[LIBRENT_AUDIO_SESSION_MAX_CHANNELS];
     WCHAR process_path[MAX_PATH];
     WCHAR display_name[128];
     WCHAR icon_path[MAX_PATH];
@@ -92,7 +92,7 @@ typedef struct _TEST_SHARED_SESSION
     UINT32 ChannelCount;
     float MasterVolume;
     BOOL Mute;
-    float ChannelVolumes[REACTOS_AUDIO_SESSION_MAX_CHANNELS];
+    float ChannelVolumes[LIBRENT_AUDIO_SESSION_MAX_CHANNELS];
     WCHAR EndpointId[MAX_PATH];
     WCHAR ProcessPath[MAX_PATH];
     WCHAR DisplayName[128];

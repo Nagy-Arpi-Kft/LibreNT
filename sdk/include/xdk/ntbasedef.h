@@ -172,7 +172,7 @@
 #endif /* DECLSPEC_IMPORT */
 
 #ifndef DECLSPEC_EXPORT
- #if defined(__REACTOS__) || defined(__WINESRC__)
+ #if defined(__LIBRENT__) || defined(__WINESRC__)
   #define DECLSPEC_EXPORT __declspec(dllexport)
  #endif
 #endif /* DECLSPEC_EXPORT */
@@ -1194,7 +1194,7 @@ $endif(_WINNT_)
 #define LANG_YORUBA                               0x6a
 #define LANG_ZULU                                 0x35
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* WINE extensions */
 /* These are documented by the MSDN but are missing from the Windows header */
 #define LANG_MALAGASY       0x8d
@@ -1457,7 +1457,7 @@ $endif(_WINNT_)
 #define SUBLANG_YORUBA_NIGERIA                      0x01
 #define SUBLANG_ZULU_SOUTH_AFRICA                   0x01
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* WINE extensions */
 #define SUBLANG_DUTCH_SURINAM              0x03
 #define SUBLANG_ROMANIAN_MOLDAVIA          0x02

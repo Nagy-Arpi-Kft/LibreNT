@@ -3,7 +3,7 @@
  */
 #include <windows.h>
 #include <string.h>
-#include <reactos/dwmprof.h>
+#include <librent/dwmprof.h>
 
 typedef struct _DPT_CLIENT
 {
@@ -48,7 +48,7 @@ static LRESULT CALLBACK DwmTraceReply(HWND Window, UINT Message,
 HRESULT WINAPI DwmPresentationTraceControl(const DPT_REQUEST *Request,
                                            DPT_SNAPSHOT *Output, ULONG Bytes)
 {
-    static const WCHAR ClassName[] = L"ReactOS.Dwm.TraceReply.v1";
+    static const WCHAR ClassName[] = L"LibreNT.Dwm.TraceReply.v1";
     WNDCLASSW Class = {0};
     DPT_CLIENT Client = {0};
     HWND Reply;
@@ -59,7 +59,7 @@ HRESULT WINAPI DwmPresentationTraceControl(const DPT_REQUEST *Request,
         (!Request->Session && Request->Operation != DPT_QUERY) || Request->Operation < DPT_START || Request->Operation > DPT_QUERY ||
         !Output || Bytes < sizeof(*Output))
         return E_INVALIDARG;
-    Client.Server = FindWindowExW(NULL, NULL, L"ReactOS.Dwm.Notification", NULL);
+    Client.Server = FindWindowExW(NULL, NULL, L"LibreNT.Dwm.Notification", NULL);
     if (!Client.Server)
         return HRESULT_FROM_WIN32(ERROR_NOT_READY);
     Class.lpfnWndProc = DwmTraceReply;

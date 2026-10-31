@@ -3,9 +3,9 @@
 #include <ddrawint.h>
 #include <d3dkmthk.h>
 #include <ddkernel.h>
-#include <reactos/drivers/directx/directxint.h>
-#include <reactos/drivers/directx/dxg.h>
-#include <reactos/drivers/directx/dxeng.h>
+#include <librent/drivers/directx/directxint.h>
+#include <librent/drivers/directx/dxg.h>
+#include <librent/drivers/directx/dxeng.h>
 
 /* From ddraw.c */
 NTSTATUS APIENTRY DxDdStartupDxGraphics(ULONG, PDRVENABLEDATA, ULONG, PDRVENABLEDATA, PULONG, PEPROCESS);

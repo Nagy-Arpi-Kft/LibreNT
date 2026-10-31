@@ -5,15 +5,15 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Sample Control Panel"
-#define REACTOS_STR_INTERNAL_NAME     "cplsample"
-#define REACTOS_STR_ORIGINAL_FILENAME "cplsample.cpl"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Sample Control Panel"
+#define LIBRENT_STR_INTERNAL_NAME     "cplsample"
+#define LIBRENT_STR_ORIGINAL_FILENAME "cplsample.cpl"
+#include <librent/version.rc>
 
 IDC_CPLICON_1 ICON "resources/cpl_icon1.ico"
 
-#include <reactos/manifest_hosted.rc>
+#include <librent/manifest_hosted.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

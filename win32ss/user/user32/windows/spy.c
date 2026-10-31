@@ -1122,7 +1122,7 @@ static const char * const CCMMessageTypeNames[SPY_MAX_CCMMSGNUM + 1] =
 
 #define SPY_MAX_WINEMSGNUM   9
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const char * const WINEMessageTypeNames[SPY_MAX_WINEMSGNUM + 1] =
 {
     "WM_WINE_DESTROYWINDOW",
@@ -2064,7 +2064,7 @@ static const char *SPY_GetMsgInternal( UINT msg )
 
     if (msg >= CCM_FIRST && msg <= CCM_FIRST + SPY_MAX_CCMMSGNUM)
         return CCMMessageTypeNames[msg-CCM_FIRST];
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (msg >= WM_WINE_DESTROYWINDOW && msg <= WM_WINE_DESTROYWINDOW + SPY_MAX_WINEMSGNUM)
         return WINEMessageTypeNames[msg-WM_WINE_DESTROYWINDOW];
 #endif

@@ -1,5 +1,5 @@
 /*
-    ReactOS Operating System
+    LibreNT Operating System
     Sound Blaster KS Driver
 
     AUTHORS:

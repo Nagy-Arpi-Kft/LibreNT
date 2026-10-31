@@ -1,6 +1,6 @@
 /*
  *    Translated by Caemyr - Olaf Siejka (May, 2011)
- *    Use ReactOS forum PM or IRC to contact me
+ *    Use LibreNT forum PM or IRC to contact me
  *    https://reactos.org
  *    IRC: irc.freenode.net #reactos-pl;
  *    UTF-8 conversion by Caemyr (May, 2011)
@@ -81,7 +81,7 @@ BEGIN
     END
     POPUP "Pomo&c", FCIDM_MENU_HELP
     BEGIN
-        MENUITEM "&LiberNT - informacje", IDM_HELP_ABOUT
+        MENUITEM "&LibreNT - informacje", IDM_HELP_ABOUT
     END
 END
 
@@ -335,8 +335,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PARSE_ADDR_ERR_TITLE "Eksplorator LiberNT"
-    IDS_PARSE_ADDR_ERR_TEXT "Eksplorator systemu LiberNT nie może znaleźć elementu '%1'. Sprawdź pisownię i ponów próbę."
+    IDS_PARSE_ADDR_ERR_TITLE "Eksplorator LibreNT"
+    IDS_PARSE_ADDR_ERR_TEXT "Eksplorator systemu LibreNT nie może znaleźć elementu '%1'. Sprawdź pisownię i ponów próbę."
 END
 
 STRINGTABLE

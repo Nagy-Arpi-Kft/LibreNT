@@ -13,4 +13,4 @@ add_library(smclib MODULE
 
 set_module_type(smclib kernelmodedriver ENTRYPOINT 0)
 add_importlibs(smclib ntoskrnl hal)
-add_cd_file(TARGET smclib DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET smclib DESTINATION librent/system32/drivers NO_CAB FOR all)

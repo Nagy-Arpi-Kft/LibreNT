@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/cc/host/ccntshim.h
  * PURPOSE:     NT cache manager host-test compatibility definitions
  *

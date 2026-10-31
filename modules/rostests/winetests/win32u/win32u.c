@@ -887,7 +887,7 @@ static void test_NtUserBuildHwndList(void)
     NTSTATUS status;
     HDESK desktop;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Ambient harness windows (e.g. OleMainThreadWndClass) may already live
      * on this thread; snapshot and discount them instead of filtering in the
      * kernel. */
@@ -899,7 +899,7 @@ static void test_NtUserBuildHwndList(void)
     size = 0xdeadbeef;
     status = NtUserBuildHwndList( 0, 0, FALSE, FALSE, GetCurrentThreadId(), ARRAYSIZE(buf), buf, &size );
     ok( !status, "NtUserBuildHwndList failed: %#lx\n", status );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     base = size - 1;
     if (base) trace( "%lu ambient thread windows\n", base );
 #endif

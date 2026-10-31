@@ -287,32 +287,32 @@ list(APPEND KMTEST_DRV_SOURCE
     win32ss/CddDisplay.c
     ${COMMON_SOURCE}
 
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/gpuva_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/adapter_map_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/adapter_start_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/fence_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/node_stats_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/dma_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/residency_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/paging_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/feature_query_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/display_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/object_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/keyedmutex_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/device_work_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/present_queue_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/submit_reservation_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/context_sync_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/sync_wait_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/tracked_work_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl/vidmm_worker_drain_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgmms2/context_stream_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgmms2/scheduler_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgmms2/timeline_core.c
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgmms2/vidmm_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/gpuva_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/adapter_map_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/adapter_start_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/fence_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/node_stats_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/dma_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/residency_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/paging_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/feature_query_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/display_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/object_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/keyedmutex_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/device_work_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/present_queue_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/submit_reservation_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/context_sync_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/sync_wait_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/tracked_work_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl/vidmm_worker_drain_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgmms2/context_stream_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgmms2/scheduler_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgmms2/timeline_core.c
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgmms2/vidmm_core.c
     kmtest_drv/kmtest_drv.rc)
 
-if(REACTOS_USE_WDDM)
+if(LIBRENT_USE_WDDM)
     list(APPEND KMTEST_DRV_SOURCE
         directx/DxgkWddmAbi.c
         directx/SoftGpu2DPolicy.c
@@ -324,7 +324,7 @@ if(REACTOS_USE_WDDM)
     set(KMTEST_SOFTGPU_VSYNC_POLICY TRUE)
 endif()
 
-if(REACTOS_USE_WDDM AND (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))
+if(LIBRENT_USE_WDDM AND (LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))
     list(APPEND KMTEST_DRV_SOURCE directx/SoftGpuGpuVaIsolation.c)
     set(KMTEST_SOFTGPU_GPUVA_ISOLATION TRUE)
 endif()
@@ -387,10 +387,10 @@ endif()
 
 add_library(kmtest_drv MODULE ${KMTEST_DRV_SOURCE})
 target_include_directories(kmtest_drv PRIVATE
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgkrnl
-    ${REACTOS_SOURCE_DIR}/drivers/directx/dxgmms2
-    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/softgpu
-    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/arblib)
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgkrnl
+    ${LIBRENT_SOURCE_DIR}/drivers/directx/dxgmms2
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/softgpu
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/arblib)
 if(KMTEST_DXGK_WDDM_ABI)
     target_compile_definitions(kmtest_drv PRIVATE
         KMT_DXGK_WDDM_ABI)
@@ -422,7 +422,7 @@ else()
 endif()
 target_link_libraries(kmtest_drv kmtest_printf chkstk memcmp poguid wdmguid arblib ${PSEH_LIB})
 add_importlibs(kmtest_drv ksecdd ndis smclib ntoskrnl hal)
-if(REACTOS_USE_WDDM)
+if(LIBRENT_USE_WDDM)
     add_importlibs(kmtest_drv dxgkrnl dxgmms2)
 endif()
 if(KMTEST_KSR_APISET)
@@ -445,17 +445,17 @@ add_dependencies(kmtest_drv bugcodes xdk)
 if(ARCH STREQUAL "arm64")
     add_dependencies(kmtest_drv asm)
 endif()
-target_compile_definitions(kmtest_drv PRIVATE KMT_KERNEL_MODE NTDDI_VERSION=${REACTOS_TARGET_NTDDI})
+target_compile_definitions(kmtest_drv PRIVATE KMT_KERNEL_MODE NTDDI_VERSION=${LIBRENT_TARGET_NTDDI})
 #add_pch(kmtest_drv include/kmt_test.h)
 add_rostests_file(TARGET kmtest_drv)
 
 add_library(kmtest_printf
     kmtest_drv/printf_stubs.c
-    ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/strnlen.c
-    ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/wcsnlen.c
-    ${REACTOS_SOURCE_DIR}/sdk/lib/crt/printf/streamout.c)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/strnlen.c
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/wcsnlen.c
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/printf/streamout.c)
 target_compile_definitions(kmtest_printf PRIVATE _LIBCNT_ _USER32_WSPRINTF wctomb=KmtWcToMb)
-target_include_directories(kmtest_printf PRIVATE ${REACTOS_SOURCE_DIR}/sdk/lib/crt/include)
+target_include_directories(kmtest_printf PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/include)
 
 #
 # kmtest.exe loader application
@@ -511,7 +511,7 @@ target_link_libraries(kmtest ${PSEH_LIB})
 # kmtest/filter.c resolves fltlib.dll at runtime so kmtest still starts on
 # NT 5.x systems without Filter Manager.
 add_importlibs(kmtest advapi32 ws2_32 setupapi newdev fwpuclnt user32 msvcrt kernel32 ntdll)
-target_compile_definitions(kmtest PRIVATE KMT_USER_MODE NTDDI_VERSION=${REACTOS_TARGET_NTDDI})
+target_compile_definitions(kmtest PRIVATE KMT_USER_MODE NTDDI_VERSION=${LIBRENT_TARGET_NTDDI})
 #add_pch(kmtest include/kmt_test.h)
 add_rostests_file(TARGET kmtest)
 configure_file(ntos_po/kmtest_pofx.inf kmtest_pofx.inf COPYONLY)

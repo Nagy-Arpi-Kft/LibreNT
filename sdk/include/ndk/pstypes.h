@@ -78,7 +78,7 @@ extern POBJECT_TYPE NTSYSAPI PsJobType;
 #define FLG_ENABLE_HANDLE_TYPE_TAGGING          0x01000000
 #define FLG_HEAP_PAGE_ALLOCS                    0x02000000
 #define FLG_DEBUG_INITIAL_COMMAND_EX            0x04000000
-#define FLG_DISABLE_DEBUG_PROMPTS               0x08000000 // ReactOS-specific
+#define FLG_DISABLE_DEBUG_PROMPTS               0x08000000 // LibreNT-specific
 #define FLG_VALID_BITS                          0x0FFFFFFF
 
 //
@@ -1123,7 +1123,7 @@ typedef enum _APPCOMPAT_FLAGS_HIGHPART
 {
     PosixDeleteDisabled = 0x1,
 
-    // ReactOS-specific
+    // LibreNT-specific
     RendererFull3D = 0x80000000,    // CORE-20322
 } APPCOMPAT_FLAGS_HIGHPART;
 
@@ -1834,16 +1834,16 @@ typedef struct _ETHREAD
     ULONG CacheManagerCount;
 #endif
     // TODO: Missing Vista+ members
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__)
     PUNICODE_STRING ThreadName;
     // TODO: Missing Win10+ members
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__LIBRENT__)
     ULONG PowerThrottlingControlMask;
     ULONG PowerThrottlingStateMask;
 #endif
     volatile LONG ExecutableWriteAllowed;
-#if defined(__REACTOS__)
+#if defined(__LIBRENT__)
     CHAR Win32kPriorityFloor;
     volatile LONG DynamicCodeOptOut;
 #endif

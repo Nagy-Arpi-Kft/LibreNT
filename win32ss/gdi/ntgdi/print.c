@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS win32 kernel mode subsystem
+ * PROJECT:         LibreNT win32 kernel mode subsystem
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            win32ss/gdi/ntgdi/print.c
  * PURPOSE:         Print functions
@@ -7,7 +7,7 @@
  */
 
 #include <win32k.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 
 #define NDEBUG
 #include <debug.h>

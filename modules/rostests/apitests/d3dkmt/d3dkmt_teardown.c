@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Teardown, exhaustion and contention
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -382,7 +382,7 @@ static void Test_MultiThreadContention(void)
  * The obvious expectation -- that the devices go with it -- is wrong, and
  * measuring both kernels is what showed it: on Windows 11 the device
  * handles stay valid and stay destroyable after D3DKMTCloseAdapter, and
- * ReactOS agrees exactly.  CloseAdapter closes the *handle*; the devices
+ * LibreNT agrees exactly.  CloseAdapter closes the *handle*; the devices
  * hold their own reference to the adapter object underneath it.  So what
  * is asserted here is that both survive, because an application that
  * destroys its devices after closing the adapter works on Windows and

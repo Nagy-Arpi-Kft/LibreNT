@@ -11,7 +11,7 @@
 #include <wingdi.h>
 #include <objbase.h>
 #include <initguid.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <audioclient.h>
 #include <devicetopology.h>
 #include <devpkey.h>
@@ -24,6 +24,6 @@
 
 /* NO CODE HERE, THIS IS JUST REQUIRED FOR THE GUID DEFINITIONS */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DEFINE_GUID(CLSID_DSoundRender, 0x79376820, 0x07d0, 0x11cf, 0xa2,0x4d, 0x00,0x20,0xaf,0xd7,0x97,0x67);
 #endif

@@ -1,21 +1,17 @@
 
-if(NOT ARCH STREQUAL "riscv64" AND NOT ARCH STREQUAL "ppc")
-    add_subdirectory(bochs)
-    add_subdirectory(vbe)
-    add_subdirectory(vga)
-endif()
+add_subdirectory(bochs)
+add_subdirectory(vbe)
+add_subdirectory(vga)
 #add_subdirectory(vga_new)
 add_subdirectory(uefifb)
 
-if(REACTOS_USE_XPDM)
+if(LIBRENT_USE_XPDM)
     add_driver_inf(uefifb uefifb/uefifb.inf)
     add_registry_inf(uefifb/uefifb_reg.inf)
 endif()
 
-if(REACTOS_USE_XPDM)
-    if(NOT ARCH STREQUAL "riscv64" AND NOT ARCH STREQUAL "ppc")
-        add_subdirectory(vmx_svga)
-    endif()
+if(LIBRENT_USE_XPDM)
+    add_subdirectory(vmx_svga)
     add_subdirectory(virtgpu)
 
     if((ARCH STREQUAL "arm64") AND RPI5_SUPPORT)

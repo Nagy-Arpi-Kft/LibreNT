@@ -1671,7 +1671,7 @@ FatZeroData (
 
 --*/
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     LARGE_INTEGER ZeroStart = {0,0};
     LARGE_INTEGER BeyondZeroEnd = {0,0};
 #else

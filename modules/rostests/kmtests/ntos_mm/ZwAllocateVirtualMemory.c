@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         GPLv2+ - See COPYING in the top level directory
  * PURPOSE:         Kernel-Mode Test Suite ZwAllocateVirtualMemory/ZwFreeVirtualMemory
  * PROGRAMMER:      Nikolay Borisov <nib9@aber.ac.uk>
@@ -32,7 +32,7 @@ typedef struct _TEST_CONTEXT
 
 static
 BOOLEAN
-IsReactOS(VOID)
+IsLibreNT(VOID)
 {
     return *(PULONG)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
 }
@@ -323,7 +323,7 @@ CommitAccountingChecks(VOID)
     PVOID CommitBase;
     SIZE_T RegionSize;
 
-    if (skip(IsReactOS(), "EPROCESS commit-charge layout is internal and NT-version-specific\n"))
+    if (skip(IsLibreNT(), "EPROCESS commit-charge layout is internal and NT-version-specific\n"))
         return;
 
     RegionSize = 3 * PAGE_SIZE;
@@ -666,7 +666,7 @@ START_TEST(MmPrivatePages)
     NTSTATUS Status;
     ULONG Round, Page;
 
-    if (skip(IsReactOS(), "NumberOfPrivatePages is a ReactOS-internal layout\n"))
+    if (skip(IsLibreNT(), "NumberOfPrivatePages is a LibreNT-internal layout\n"))
         return;
 
     Process = PsGetCurrentProcess();
@@ -764,8 +764,8 @@ START_TEST(ZwAllocateVirtualMemory)
 
     CommitAccountingChecks();
 
-    if (IsReactOS())
+    if (IsLibreNT())
         SystemProcessTest();
     else
-        skip(FALSE, "System-process virtual allocation stress is ReactOS-specific\n");
+        skip(FALSE, "System-process virtual allocation stress is LibreNT-specific\n");
 }

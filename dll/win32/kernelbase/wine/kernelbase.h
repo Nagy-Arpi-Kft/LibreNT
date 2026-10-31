@@ -24,9 +24,9 @@
 #include "windef.h"
 #include "winbase.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "synchacks.h"
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 struct pseudo_console
 {
@@ -49,7 +49,7 @@ extern const WCHAR system_dir[];
 static const BOOL is_win64 = (sizeof(void *) > sizeof(int));
 extern BOOL is_wow64;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI GetWindowsAccountDomainSid( PSID sid, PSID domain_sid, DWORD *size );
 void WINAPI RtlMapGenericMask( ACCESS_MASK *access, const GENERIC_MAPPING *mapping );
 #endif

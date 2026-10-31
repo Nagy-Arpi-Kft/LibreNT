@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS NT User-Mode Library
+ * PROJECT:         LibreNT NT User-Mode Library
  * FILE:            dll/ntdll/ldr/ldrinit.c
  * PURPOSE:         User-Mode Process/Thread Startup
  * PROGRAMMERS:     Alex Ionescu (alex@relsoft.net)
@@ -12,7 +12,7 @@
 #include <ntdll.h>
 #include <compat_undoc.h>
 #include <compatguid_undoc.h>
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -1592,7 +1592,7 @@ LdrpGrowThreadTlsVector(
      * snapshot that cannot fully close that window, so guard the access and
      * simply skip a thread that has since vanished rather than fault the
      * process.  (The fully-correct design is lazy per-thread growth so no
-     * foreign TEB is ever written; that needs machinery ReactOS ntdll lacks.)
+     * foreign TEB is ever written; that needs machinery LibreNT ntdll lacks.)
      */
     Status = STATUS_SUCCESS;
     _SEH2_TRY
@@ -2205,12 +2205,12 @@ LdrpInitializeProcessCompat(PVOID pProcessActctx, PVOID* pOldShimData)
     SIZE_T SizeRequired;
     NTSTATUS Status;
     DWORD n, cur;
-    ReactOS_ShimData* pShimData = *pOldShimData;
+    LibreNT_ShimData* pShimData = *pOldShimData;
 
     if (pShimData)
     {
-        if (pShimData->dwMagic != REACTOS_SHIMDATA_MAGIC ||
-            pShimData->dwSize != sizeof(ReactOS_ShimData))
+        if (pShimData->dwMagic != LIBRENT_SHIMDATA_MAGIC ||
+            pShimData->dwSize != sizeof(LibreNT_ShimData))
         {
             DPRINT1("LdrpInitializeProcessCompat: Corrupt pShimData (0x%x, %u)\n", pShimData->dwMagic, pShimData->dwSize);
             return;
@@ -2220,7 +2220,7 @@ LdrpInitializeProcessCompat(PVOID pProcessActctx, PVOID* pOldShimData)
 #endif
         if (pShimData->dwRosProcessCompatVersion)
         {
-            if (pShimData->dwRosProcessCompatVersion == REACTOS_COMPATVERSION_IGNOREMANIFEST)
+            if (pShimData->dwRosProcessCompatVersion == LIBRENT_COMPATVERSION_IGNOREMANIFEST)
             {
                 DPRINT1("LdrpInitializeProcessCompat: ProcessCompatVersion set to ignore manifest\n");
             }
@@ -2290,7 +2290,7 @@ LdrpInitializeProcessCompat(PVOID pProcessActctx, PVOID* pOldShimData)
                     }
 
                     pShimData->dwSize = sizeof(*pShimData);
-                    pShimData->dwMagic = REACTOS_SHIMDATA_MAGIC;
+                    pShimData->dwMagic = LIBRENT_SHIMDATA_MAGIC;
 #ifdef _M_AMD64
                     /* The process did not ask for shims, but we want to make sure that if the Peb->pShimData is available, the data in it is complete */
                     pShimData->RtlGetCurrentDirectory_U_RtlpMsysDecoy = &RtlGetCurrentDirectory_U_RtlpMsysDecoy;
@@ -2616,7 +2616,7 @@ LdrpInitializeProcess(IN PCONTEXT Context,
     /* Save the old Shim Data */
     OldShimData = Peb->pShimData;
 
-    /* ReactOS specific: do not clear it. (Windows starts doing the same in later versions) */
+    /* LibreNT specific: do not clear it. (Windows starts doing the same in later versions) */
     //Peb->pShimData = NULL;
 
     /* Save the number of processors and CS timeout */

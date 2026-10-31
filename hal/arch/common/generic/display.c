@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            hal/arch/common/generic/display.c
  * PURPOSE:         Screen Display Routines, now useless since NT 5.1+

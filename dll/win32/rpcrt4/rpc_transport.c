@@ -88,7 +88,7 @@ static void release_np_event(RpcConnection_np *connection, HANDLE event)
         CloseHandle(event);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /**
  * @brief
  * Creates a security descriptor for RPC4 pipe
@@ -287,7 +287,7 @@ Quit:
 static RPC_STATUS rpcrt4_conn_create_pipe(RpcConnection *conn)
 {
     RpcConnection_np *connection = (RpcConnection_np *) conn;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD ErrCode;
     SECURITY_ATTRIBUTES SecurityAttributes;
     PSECURITY_DESCRIPTOR PipeSecDesc = NULL;
@@ -295,7 +295,7 @@ static RPC_STATUS rpcrt4_conn_create_pipe(RpcConnection *conn)
 
     TRACE("listening on %s\n", connection->listen_pipe);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ErrCode = rpcrt4_create_pipe_security(&PipeSecDesc);
     if (ErrCode != ERROR_SUCCESS)
     {
@@ -379,7 +379,7 @@ static RPC_STATUS rpcrt4_conn_open_pipe(RpcConnection *Connection, LPCSTR pname,
       }
       TRACE("connection failed, error=%lx\n", err);
       return RPC_S_SERVER_TOO_BUSY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     } else if (err == ERROR_BAD_NETPATH) {
       TRACE("connection failed, error=%x\n", err);
       return RPC_S_SERVER_UNAVAILABLE;
@@ -462,13 +462,13 @@ static RPC_STATUS rpcrt4_protseq_ncalrpc_open_endpoint(RpcServerProtseq* protseq
   return r;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static char *ncacn_pipe_name(const char *server, const char *endpoint)
 #else
 static char *ncacn_pipe_name(const char *endpoint)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   static const char prefix[] = "\\\\";
   static const char local[] = ".";
   char ComputerName[MAX_COMPUTERNAME_LENGTH + 1];
@@ -478,7 +478,7 @@ static char *ncacn_pipe_name(const char *endpoint)
 #endif
   char *pipe_name;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (server != NULL && *server != 0)
   {
     /* Trim any leading UNC server prefix. */
@@ -500,7 +500,7 @@ static char *ncacn_pipe_name(const char *endpoint)
 #endif
 
   /* protseq=ncacn_np: named pipes */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   pipe_name = I_RpcAllocate(sizeof(prefix) + strlen(server) + strlen(endpoint));
   strcpy(pipe_name, prefix);
   strcat(pipe_name, server);
@@ -522,7 +522,7 @@ static RPC_STATUS rpcrt4_ncacn_np_open(RpcConnection* Connection)
   if (npc->pipe)
     return RPC_S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   pname = ncacn_pipe_name(Connection->NetworkAddr, Connection->Endpoint);
 #else
   pname = ncacn_pipe_name(Connection->Endpoint);
@@ -554,7 +554,7 @@ static RPC_STATUS rpcrt4_protseq_ncacn_np_open_endpoint(RpcServerProtseq *protse
   if (r != RPC_S_OK)
     return r;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   ((RpcConnection_np*)Connection)->listen_pipe = ncacn_pipe_name(NULL, Connection->Endpoint);
 #else
   ((RpcConnection_np*)Connection)->listen_pipe = ncacn_pipe_name(Connection->Endpoint);
@@ -609,7 +609,7 @@ static RPC_STATUS rpcrt4_ncacn_np_is_server_listening(const char *endpoint)
   char *pipe_name;
   RPC_STATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   pipe_name = ncacn_pipe_name(NULL, endpoint);
 #else
   pipe_name = ncacn_pipe_name(endpoint);
@@ -1218,7 +1218,7 @@ static size_t rpcrt4_ip_tcp_get_top_of_tower(unsigned char *tower_data,
     hints.ai_canonname      = NULL;
     hints.ai_next           = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static BOOL wsa_inited;
     if (!wsa_inited)
     {

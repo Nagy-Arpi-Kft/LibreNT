@@ -1,5 +1,5 @@
 #include <windef.h>
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 typedef PVOID PREADERMODEINFO;
 

@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/tzlib)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/tzlib)
 
 spec2def(syssetup.dll syssetup.spec ADD_IMPORTLIB)
 
@@ -25,4 +25,4 @@ add_pch(syssetup precomp.h SOURCE)
 set_module_type(syssetup win32dll UNICODE)
 target_link_libraries(syssetup uuid wine tzlib ${PSEH_LIB})
 add_importlibs(syssetup advapi32 gdi32 user32 samlib userenv comctl32 setupapi rpcrt4 ole32 shell32 shlwapi msvcrt kernel32 ntdll)
-add_cd_file(TARGET syssetup DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET syssetup DESTINATION librent/system32 FOR all)

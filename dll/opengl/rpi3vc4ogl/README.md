@@ -37,9 +37,9 @@ unpacked by `CMakeLists.txt` when the packaged rollback is selected.
 
 | | |
 |---|---|
-| Mesa version | 26.1.0-devel (base `e7f6c8ab7ed2ff61185caa3082c693284b0cbcaa`, ReactOS VC4 worktree) |
+| Mesa version | 26.1.0-devel (base `e7f6c8ab7ed2ff61185caa3082c693284b0cbcaa`, LibreNT VC4 worktree) |
 | Gallium driver | `vc4` |
-| Target | ReactOS ARM64 (PE32+, machine `0xaa64`) |
+| Target | LibreNT ARM64 (PE32+, machine `0xaa64`) |
 | Unpacked MD5 | `059f7fa33f3ef4245ab05285431533b5` |
 | Unpacked SHA-256 | `68b6584ab2f03c39cff2c3c0ad9a0fffeb3fbd9f26215805adb554bc1418cebd` |
 | Reports | `GL_RENDERER = VC4 V3D 2.1`, `GL_VERSION = 2.1 Mesa 26.1.0-devel` |
@@ -91,7 +91,7 @@ packaged binary; it does not add a new hardware performance measurement.
 ## Shared DWM surfaces (September 8 bring-up)
 
 The packaged ICD now includes `wglBindSharedTextureROS` and
-`wglUpdateSharedTextureROS`, matching `sdk/include/reactos/dwmgpuinterop.h`.
+`wglUpdateSharedTextureROS`, matching `sdk/include/librent/dwmgpuinterop.h`.
 DWM imports shared window allocations instead of uploading CPU snapshots.
 Publication IDs avoid repeated linear-to-tiled GPU conversions for unchanged
 content. This still permits GPU conversions on content changes; it is not a
@@ -119,7 +119,7 @@ escape ABI (`ESCAPE_PACKET_MAGIC_V2` `0x32454756`, `RESOURCE_LIST_MAGIC_V3`
 `0x3352474c`, `RPI3VC4_ESCAPE_INFO` 96 bytes, `RPI3VC4KMT_SUBMIT_CL` 160
 bytes). That ABI was introduced by commit `0b59cb64953`.
 
-**Changing `sdk/include/reactos/rpi3vc4kmt.h` or
+**Changing `sdk/include/librent/rpi3vc4kmt.h` or
 `sdk/lib/rpi3vc4kmt/rpi3vc4kmt.c` requires rebuilding this binary.**
 
 ## Source rebuild / overriding
@@ -127,7 +127,7 @@ bytes). That ABI was introduced by commit `0b59cb64953`.
 The current ARM64 source build is the shared native CMake Mesa project described
 in `dll/opengl/mesa_gallium/README.md`. It builds VC4 and V3D together and creates
 its matching Release KMT/zlib support tree automatically, even for a Debug
-ReactOS image. To test a separately built result without replacing the archive:
+LibreNT image. To test a separately built result without replacing the archive:
 
     cmake -DRPI3VC4_MESA_VC4_ICD=/path/to/libgallium_wgl.dll .
 

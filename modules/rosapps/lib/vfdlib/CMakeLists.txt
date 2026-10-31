@@ -27,8 +27,8 @@ add_library(vfd MODULE
     vfdlib.rc
     ${CMAKE_CURRENT_BINARY_DIR}/vfd.def)
 
-include_directories(${REACTOS_SOURCE_DIR}/modules/rosapps/include/vfd
-                    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+include_directories(${LIBRENT_SOURCE_DIR}/modules/rosapps/include/vfd
+                    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 set_module_type(vfd win32dll ENTRYPOINT DllMain 12)
 target_link_libraries(vfd zlib_solo uuid cppstl)
 set_target_cpp_properties(vfd WITH_EXCEPTIONS)
@@ -40,4 +40,4 @@ endif()
 
 add_importlibs(vfd advapi32 user32 gdi32 shell32 comdlg32 comctl32 ole32 version psapi msvcrt kernel32 ntdll)
 add_dependencies(vfd vfdmsg_lib)
-add_cd_file(TARGET vfd DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET vfd DESTINATION librent/system32 FOR all)

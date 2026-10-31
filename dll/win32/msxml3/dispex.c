@@ -105,7 +105,7 @@ static tid_id_t tid_ids[] = {
     { &IID_IXMLDOMSelection, LibXml2 },
     { &IID_IXMLDOMText, LibXml2 },
     { &IID_IXMLElement2, LibXml },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { &IID_IXMLAttribute, LibXml },
 #endif
     { &IID_IXMLDocument2, LibXml },

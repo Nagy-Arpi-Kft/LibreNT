@@ -79,7 +79,7 @@ typedef struct _WAVEFORMATEX {
 } WAVEFORMATEX, *PWAVEFORMATEX, *NPWAVEFORMATEX, *LPWAVEFORMATEX;
 #endif /* _WAVEFORMATEX_ */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef const WAVEFORMATEX *LPCWAVEFORMATEX;
 #endif
 
@@ -371,7 +371,7 @@ typedef struct pcmwaveformat_tag {
 #endif
 #define WAVE_FORMAT_DEVELOPMENT			(0xffff)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define MM_UNMAPPED 0xffff
 #define MM_PID_UNMAPPED MM_UNMAPPED
 #define MM_MSFT_WDMAUDIO_WAVEOUT 100

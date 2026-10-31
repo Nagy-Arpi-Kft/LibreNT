@@ -33,7 +33,7 @@ Revision History:
 
 #include <ntddk.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <pseh/pseh2.h>
 #endif
 
@@ -62,7 +62,7 @@ Revision History:
 
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef MdlMappingNoExecute
 #define MdlMappingNoExecute 0
 #define NonPagedPoolNx NonPagedPool
@@ -1240,7 +1240,7 @@ ClasspIsIdleRequestSupported(
     PIRP Irp
     )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     IO_PRIORITY_HINT ioPriority = IoGetIoPriorityHint(Irp);
     return ((ioPriority <= IoPriorityLow) && (FdoData->IdlePrioritySupported == TRUE));
 #else
@@ -1255,7 +1255,7 @@ ClasspMarkIrpAsIdle(
     BOOLEAN Idle
     )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 // truncation is not an issue for this use case
 // nonstandard extension used is not an issue for this use case
 #pragma warning(suppress:4305; suppress:4213)
@@ -1285,7 +1285,7 @@ ClasspGetCurrentTime(
 {
     LARGE_INTEGER currentTime;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     currentTime.QuadPart = KeQueryUnbiasedInterruptTimePrecise((ULONG64*)&currentTime.QuadPart);
 #else
     currentTime = KeQueryPerformanceCounter(NULL);
@@ -1606,7 +1606,7 @@ _Dispatch_type_(IRP_MJ_POWER)
 DRIVER_DISPATCH ClassDispatchPower;
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClassMinimalPowerHandler(
     IN PDEVICE_OBJECT DeviceObject,
     IN PIRP Irp
@@ -1693,7 +1693,7 @@ ClasspScanForSpecialInRegistry(
     );
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 ClasspScanForClassHacks(
     IN PFUNCTIONAL_DEVICE_EXTENSION FdoExtension,
     IN ULONG_PTR Data
@@ -2653,7 +2653,7 @@ ClasspLowerLayerNotSupport (
             (Status == STATUS_INVALID_PARAMETER_1));
 }
 
-#if defined(__REACTOS__) && (NTDDI_VERSION >= NTDDI_WINBLUE)
+#if defined(__LIBRENT__) && (NTDDI_VERSION >= NTDDI_WINBLUE)
 FORCEINLINE
 BOOLEAN
 ClasspSrbTimeOutStatus (

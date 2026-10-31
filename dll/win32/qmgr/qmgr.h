@@ -32,7 +32,7 @@
 #include <string.h>
 #include "wine/list.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define BG_MIN_RETRY_DELAY             60
 #define BG_DEFAULT_RETRY_DELAY         600
 #define BG_DEFAULT_NO_PROGRESS_TIMEOUT 1209600
@@ -72,7 +72,7 @@ typedef struct
     HANDLE wait;
     HANDLE cancel;
     HANDLE done;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG retry_delay;
     ULONG no_progress_timeout;
     ULONG error_count;

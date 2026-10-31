@@ -35,7 +35,7 @@ typedef SSIZE_T streamsize;
 #endif
 
 void __cdecl _invalid_parameter_noinfo(void);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void __cdecl _invalid_parameter(const wchar_t *expr, const wchar_t *func, const wchar_t *file,
                                 unsigned int line, uintptr_t arg);
 #endif

@@ -375,7 +375,7 @@ static HRESULT WINAPI opc_factory_CreatePackage(IOpcFactory *iface, IOpcPackage 
 static HRESULT WINAPI opc_factory_ReadPackageFromStream(IOpcFactory *iface, IStream *stream,
         OPC_READ_FLAGS flags, IOpcPackage **package)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, stream %p, flags %#x, package %p.\n", iface, stream, flags, package);
 
     if (!package)

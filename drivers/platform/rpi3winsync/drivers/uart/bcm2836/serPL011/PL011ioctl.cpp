@@ -848,7 +848,7 @@ PL011IoctlGetDtrRts(
 {
     NTSTATUS status;
     ULONG_PTR reqStatusInfo = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG regUARTCR;
 #endif
 
@@ -870,7 +870,7 @@ PL011IoctlGetDtrRts(
     //
     // Get current UART control
     //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     regUARTCR = 0;
 #else
     ULONG regUARTCR = 0;
@@ -928,7 +928,7 @@ PL011IoctlGetProperties(
 {
     NTSTATUS status;
     ULONG_PTR reqStatusInfo = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const PL011_DEVICE_EXTENSION* devExtPtr;
 #endif
 
@@ -948,7 +948,7 @@ PL011IoctlGetProperties(
     }
     RtlZeroMemory(serialCommPropertiesPtr, sizeof(SERIAL_COMMPROP));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     devExtPtr = PL011DeviceGetExtension(WdfDevice);
 #else
     const PL011_DEVICE_EXTENSION* devExtPtr =
@@ -1134,7 +1134,7 @@ PL011IoctlGetCommStatus(
 {
     NTSTATUS status;
     ULONG_PTR reqStatusInfo = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PL011_DEVICE_EXTENSION* devExtPtr;
 #endif
 
@@ -1154,7 +1154,7 @@ PL011IoctlGetCommStatus(
     }
     RtlZeroMemory(serialStatusPtr, sizeof(SERIAL_STATUS));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     devExtPtr = PL011DeviceGetExtension(WdfDevice);
 #else
     PL011_DEVICE_EXTENSION* devExtPtr = PL011DeviceGetExtension(WdfDevice);
@@ -1213,7 +1213,7 @@ PL011IoctlGetModemStatus(
     NTSTATUS status;
     ULONG_PTR reqStatusInfo = 0;
     ULONG modemStatus = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG regUARTCR;
 #endif
 
@@ -1249,7 +1249,7 @@ PL011IoctlGetModemStatus(
     // and translate PL011 to 16550.
     //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     regUARTCR = 0;
 #else
     ULONG regUARTCR = 0;
@@ -1326,7 +1326,7 @@ PL011IoctlSetFifoControl(
     )
 {
     NTSTATUS status;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOLEAN isFifoOn;
     UARTIFLS_TXIFLSEL txFifoLevel;
     UARTIFLS_RXIFLSEL rxFifoLevel;
@@ -1362,7 +1362,7 @@ PL011IoctlSetFifoControl(
         goto done;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     isFifoOn = (fifoControl & SERIAL_FCR_ENABLE) != 0;
 #else
     BOOLEAN isFifoOn = (fifoControl & SERIAL_FCR_ENABLE) != 0;
@@ -1371,7 +1371,7 @@ PL011IoctlSetFifoControl(
     //
     // Select TX FIFO level
     //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     txFifoLevel = UARTIFLS_TXIFLSEL::TXIFLSEL_1_8;
 #else
     UARTIFLS_TXIFLSEL txFifoLevel = UARTIFLS_TXIFLSEL::TXIFLSEL_1_8;
@@ -1399,7 +1399,7 @@ PL011IoctlSetFifoControl(
     //
     // Select RX FIFO level
     //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     rxFifoLevel = UARTIFLS_RXIFLSEL::RXIFLSEL_7_8;
 #else
     UARTIFLS_RXIFLSEL rxFifoLevel = UARTIFLS_RXIFLSEL::RXIFLSEL_7_8;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS shell32
+ * PROJECT:     LibreNT shell32
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     SHBrowseForFolderA/W functions
  * COPYRIGHT:   Copyright 1999 Juergen Schmied

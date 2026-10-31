@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/amd64/t_pte.c
  * PURPOSE:     AMD64 page-table entry regression tests
  *

@@ -31,9 +31,9 @@ STRINGTABLE
     13 "periferica di rete per la funzionalità mancante"
     14 "funzionalità da:"
     15 "selezionare la cartella che contiene %s"
-#ifdef __REACTOS__
-    34 "Pacchetto di installazione di LiberNT"
-    35 "LiberNT Installer Patch"
+#ifdef __LIBRENT__
+    34 "Pacchetto di installazione di LibreNT"
+    35 "LibreNT Installer Patch"
     36 "Installa" //FIXME: add accel
     37 "Ripara" //FIXME: add accel
     38 "Rimuovi" //FIXME: add accel

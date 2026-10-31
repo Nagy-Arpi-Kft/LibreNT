@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Win32 Base API
+ * PROJECT:     LibreNT Win32 Base API
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Packaged application queries
  * COPYRIGHT:   Adapted from Wine dlls/kernelbase/version.c

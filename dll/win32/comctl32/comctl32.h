@@ -34,7 +34,7 @@
 #include "winuser.h"
 #include "winnls.h"
 #include "commctrl.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "windowsx.h"
 
 #undef COMCTL32_VERSION
@@ -131,7 +131,7 @@ extern HBRUSH  COMCTL32_hPattern55AABrush;
 #define IDS_TD_EXPANDED   3020
 #define IDS_TD_COLLAPSED  3021
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define WM_SYSTIMER     0x0118
 #endif
 
@@ -263,8 +263,8 @@ extern void EDIT_Register(void);
 extern void LISTBOX_Register(void);
 extern void SYSLINK_Register(void);
 extern void STATIC_Register(void);
-#ifdef __REACTOS__
-int WINAPI COMCTL32_ReactOSDrawShadowText(HDC hdc, const WCHAR *text, UINT length, RECT *rect,
+#ifdef __LIBRENT__
+int WINAPI COMCTL32_LibreNTDrawShadowText(HDC hdc, const WCHAR *text, UINT length, RECT *rect,
         DWORD flags, COLORREF text_color, COLORREF shadow_color, int offset_x, int offset_y);
 #endif
 #endif
@@ -293,7 +293,7 @@ int MONTHCAL_MonthLength(int month, int year);
 int MONTHCAL_CalculateDayOfWeek(SYSTEMTIME *date, BOOL inplace);
 LONG MONTHCAL_CompareSystemTime(const SYSTEMTIME *first, const SYSTEMTIME *second);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define wcsnicmp _wcsnicmp
 #define GetDpiForWindow(PVOID) 96
 #endif

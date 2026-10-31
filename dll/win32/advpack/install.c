@@ -139,7 +139,7 @@ static HRESULT register_ocxs_callback(HINF hinf, PCWSTR field, const void *arg)
         hm = LoadLibraryExW(buffer, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
         if (hm)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (do_ocx_reg(hm, !arg, NULL, NULL) != S_OK)
 #else
             if (do_ocx_reg(hm, TRUE, NULL, NULL) != S_OK)
@@ -351,7 +351,7 @@ static HRESULT adv_install(ADVInfo *info)
         return hr;
 
     OleInitialize(NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = iterate_section_fields(info->hinf, info->install_sec,
                                 L"UnregisterOCXs", register_ocxs_callback, info);
     if (hr == S_OK)

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Bluetooth APIs
+ * PROJECT:     LibreNT Bluetooth APIs
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Local service publication and installed service enumeration
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <bthsdpdef.h>
 #include <bluetoothapis.h>
-#include <reactos/drivers/bthlocal.h>
+#include <librent/drivers/bthlocal.h>
 
 #ifndef STATUS_PRIVILEGE_NOT_HELD
 #define STATUS_PRIVILEGE_NOT_HELD ((DWORD)0xC0000061)

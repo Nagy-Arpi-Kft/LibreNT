@@ -1636,7 +1636,7 @@ static void test_NtMapViewOfSection(void)
 
         ok(status == STATUS_SUCCESS || status == STATUS_IMAGE_NOT_AT_BASE, "NtMapViewOfSection returned %08lx\n", status);
         ok(!((ULONG_PTR)ptr & 0xffff), "returned memory %p is not aligned to 64k\n", ptr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() < _WIN32_WINNT_WIN7 && !is_reactos())
             win_skip("Skipping test on pre-Win7, because it's broken\n");
         else
@@ -3032,55 +3032,55 @@ START_TEST(virtual)
     page_size = sbi.PageSize;
     if (!pIsWow64Process || !pIsWow64Process(NtCurrentProcess(), &is_wow64)) is_wow64 = FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_NtAllocateVirtualMemory\n");
 #endif
     test_NtAllocateVirtualMemory();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_NtAllocateVirtualMemoryEx\n");
 #endif
     test_NtAllocateVirtualMemoryEx();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_NtAllocateVirtualMemoryEx_address_requirements\n");
 #endif
     test_NtAllocateVirtualMemoryEx_address_requirements();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_NtFreeVirtualMemory\n");
 #endif
     test_NtFreeVirtualMemory();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_RtlCreateUserStack\n");
 #endif
     test_RtlCreateUserStack();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_NtMapViewOfSection\n");
 #endif
     test_NtMapViewOfSection();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_NtMapViewOfSectionEx\n");
 #endif
     test_NtMapViewOfSectionEx();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_prefetch\n");
 #endif
     test_prefetch();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_user_shared_data\n");
 #endif
     test_user_shared_data();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_syscalls\n");
 #endif
     test_syscalls();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_query_region_information\n");
 #endif
     test_query_region_information();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_query_image_information\n");
 #endif
     test_query_image_information();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trace("test_exec_memory_writes\n");
 #endif
     test_exec_memory_writes();

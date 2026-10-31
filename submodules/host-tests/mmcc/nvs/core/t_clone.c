@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/core/t_clone.c
  * PURPOSE:     Address-space cloning host-native regression tests
  *

@@ -1117,7 +1117,7 @@ int* CDECL __processing_throw(void)
 
 LONG __C_ExecuteExceptionFilter( EXCEPTION_POINTERS *ptrs, void *frame, PEXCEPTION_FILTER filter, BYTE *nonvolatile );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline BOOL is_unwind_target_in_scope( const SCOPE_TABLE *table, unsigned int scope,
                                               ULONG_PTR base, ULONG_PTR target )
 {
@@ -1146,7 +1146,7 @@ static inline BOOL is_unwind_target_in_scope( const SCOPE_TABLE *table, unsigned
 #define __C_specific_handler __C_specific_handler_arm64
 #endif
 
-#if defined(__REACTOS__) && !defined(__arm64ec__)
+#if defined(__LIBRENT__) && !defined(__arm64ec__)
 EXCEPTION_DISPOSITION __cdecl __C_specific_handler( EXCEPTION_RECORD *rec, void *frame,
                                                     CONTEXT *context, DISPATCHER_CONTEXT *dispatch )
 #else
@@ -1172,7 +1172,7 @@ EXCEPTION_DISPOSITION WINAPI __C_specific_handler( EXCEPTION_RECORD *rec, void *
         {
             if (pc < base + table->ScopeRecord[i].BeginAddress) continue;
             if (pc >= base + table->ScopeRecord[i].EndAddress) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (rec->ExceptionFlags & EXCEPTION_TARGET_UNWIND &&
                 is_unwind_target_in_scope( table, i, base, dispatch->TargetPc ))
             {
@@ -1209,7 +1209,7 @@ EXCEPTION_DISPOSITION WINAPI __C_specific_handler( EXCEPTION_RECORD *rec, void *
 
                 handler = (void *)(base + table->ScopeRecord[i].HandlerAddress);
                 TRACE_(unwind)( "scope %u calling filter %p ptrs %p frame %p\n", i, handler, &ptrs, frame );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 {
                     LONG filter_result = __C_ExecuteExceptionFilter( &ptrs, frame, handler, dispatch->NonVolatileRegisters );
 
@@ -1270,7 +1270,7 @@ EXCEPTION_DISPOSITION WINAPI __C_specific_handler( EXCEPTION_RECORD *rec, void *
         {
             if (pc < base + table->ScopeRecord[i].BeginAddress) continue;
             if (pc >= base + table->ScopeRecord[i].EndAddress) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (rec->ExceptionFlags & EXCEPTION_TARGET_UNWIND &&
                 is_unwind_target_in_scope( table, i, base, dispatch->TargetPc ))
             {
@@ -1307,7 +1307,7 @@ EXCEPTION_DISPOSITION WINAPI __C_specific_handler( EXCEPTION_RECORD *rec, void *
 
                 handler = (void *)(base + table->ScopeRecord[i].HandlerAddress);
                 TRACE_(unwind)( "scope %u calling filter %p ptrs %p frame %p\n", i, handler, &ptrs, frame );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 {
                     LONG filter_result = __C_ExecuteExceptionFilter( &ptrs, frame, handler, dispatch->NonVolatileRegisters );
 
@@ -1367,7 +1367,7 @@ EXCEPTION_DISPOSITION WINAPI __C_specific_handler( EXCEPTION_RECORD *rec, void *
         {
             if (pc < base + table->ScopeRecord[i].BeginAddress) continue;
             if (pc >= base + table->ScopeRecord[i].EndAddress) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (rec->ExceptionFlags & EXCEPTION_TARGET_UNWIND &&
                 is_unwind_target_in_scope( table, i, base, dispatch->TargetIp ))
             {
@@ -1407,7 +1407,7 @@ EXCEPTION_DISPOSITION WINAPI __C_specific_handler( EXCEPTION_RECORD *rec, void *
                 PEXCEPTION_FILTER filter = (void *)(base + table->ScopeRecord[i].HandlerAddress);
 
                 TRACE_(unwind)( "scope %u calling filter %p ptrs %p frame %p\n", i, filter, &ptrs, frame );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 {
                     LONG filter_result = filter( &ptrs, frame );
 

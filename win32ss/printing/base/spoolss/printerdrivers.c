@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Spooler Router
+ * PROJECT:     LibreNT Spooler Router
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Functions related to Printer Configuration Data
  * COPYRIGHT:   Copyright 2020 ReactOS

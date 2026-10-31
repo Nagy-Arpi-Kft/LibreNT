@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Explorer
+ * PROJECT:     LibreNT Explorer
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     "Customize Start Menu" dialog
  * COPYRIGHT:   Copyright 2006-2007 Thomas Weidenmueller <w3seek@reactos.org>
@@ -61,7 +61,7 @@ static BOOL RecentHasShortcut(HWND hwnd)
 static const PCWSTR g_MruKeys[] = 
 {
     L"Software\\Microsoft\\Internet Explorer\\TypedURLs",
-    L"Software\\ReactOS\\StartMenu2\\RecentApps",
+    L"Software\\LibreNT\\StartMenu2\\RecentApps",
     L"Explorer\\RunMRU",
     L"Explorer\\Comdlg32\\OpenSaveMRU",
     L"Explorer\\Comdlg32\\LastVisitedMRU",

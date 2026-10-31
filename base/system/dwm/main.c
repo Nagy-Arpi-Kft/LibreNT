@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Desktop Window Manager
+ * PROJECT:     LibreNT Desktop Window Manager
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DWM application host and native-compatible startup sequence
@@ -11,7 +11,7 @@
 #include <windows.h>
 #include <objbase.h>
 #include <d3dkmthk.h>
-#include <reactos/dwmcore.h>
+#include <librent/dwmcore.h>
 
 typedef struct _DWM_APP_HOST
 {
@@ -132,7 +132,7 @@ DwmNotificationWindowProc(HWND Window, UINT Message, WPARAM WParam,
 static HWND
 DwmCreateNotificationWindow(HINSTANCE Instance, DWM_APP_HOST *Host)
 {
-    static const WCHAR ClassName[] = L"ReactOS.Dwm.Notification";
+    static const WCHAR ClassName[] = L"LibreNT.Dwm.Notification";
     WNDCLASSEXW Class;
 
     ZeroMemory(&Class, sizeof(Class));

@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include <malloc.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <corecrt_startup.h>
 #else
 #include <internal.h>

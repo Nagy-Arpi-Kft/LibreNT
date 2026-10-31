@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Logon GINA DLL msgina.dll
+ * PROJECT:     LibreNT Logon GINA DLL msgina.dll
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Miscellaneous utility functions.
  * COPYRIGHT:   Copyright 2006 Hervé Poussineau <hpoussin@reactos.org>

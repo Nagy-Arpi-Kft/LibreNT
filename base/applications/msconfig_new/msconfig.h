@@ -7,7 +7,7 @@ extern "C" {
 extern BOOL bIsWindows;
 extern BOOL bIsPreVistaOSVersion;
 
-extern const LPCWSTR IDS_REACTOS;
+extern const LPCWSTR IDS_LIBRENT;
 extern const LPCWSTR IDS_MICROSOFT;
 extern const LPCWSTR IDS_WINDOWS;
 

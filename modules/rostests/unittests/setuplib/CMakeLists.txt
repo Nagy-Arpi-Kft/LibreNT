@@ -2,8 +2,8 @@
 PROJECT(setuplib_unittest)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/modules/rostests/apitests/include
-    ${REACTOS_SOURCE_DIR}/base/setup/lib)
+    ${LIBRENT_SOURCE_DIR}/modules/rostests/apitests/include
+    ${LIBRENT_SOURCE_DIR}/base/setup/lib)
 
 list(APPEND SOURCE
     IsValidInstallDirectory.c

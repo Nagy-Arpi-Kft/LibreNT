@@ -1,7 +1,7 @@
 macro(add_sdk_compat_header _source)
     get_filename_component(_name ${_source} NAME)
-    set(_src ${REACTOS_SOURCE_DIR}/${_source})
-    set(_dst ${REACTOS_BINARY_DIR}/sdk/include/${_name})
+    set(_src ${LIBRENT_SOURCE_DIR}/${_source})
+    set(_dst ${LIBRENT_BINARY_DIR}/sdk/include/${_name})
     add_custom_command(
         OUTPUT ${_dst}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${_src} ${_dst}
@@ -10,8 +10,8 @@ macro(add_sdk_compat_header _source)
 endmacro()
 
 macro(add_sdk_compat_header_path _source _relative_destination)
-    set(_src ${REACTOS_SOURCE_DIR}/${_source})
-    set(_dst ${REACTOS_BINARY_DIR}/sdk/include/${_relative_destination})
+    set(_src ${LIBRENT_SOURCE_DIR}/${_source})
+    set(_dst ${LIBRENT_BINARY_DIR}/sdk/include/${_relative_destination})
     get_filename_component(_dst_dir ${_dst} DIRECTORY)
     add_custom_command(
         OUTPUT ${_dst}
@@ -74,7 +74,7 @@ add_subdirectory(asm)
 add_subdirectory(dxsdk)
 add_subdirectory(ndk/tests)
 add_subdirectory(psdk)
-add_subdirectory(reactos)
+add_subdirectory(librent)
 add_subdirectory(wine)
 add_subdirectory(xdk)
 

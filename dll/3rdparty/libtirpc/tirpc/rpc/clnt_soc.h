@@ -62,7 +62,7 @@
  *	u_int recvsz;
  */
 __BEGIN_DECLS
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern CLIENT *clnttcp_create(struct sockaddr_in *, u_long, u_long, SOCKET *,
 			      u_int, u_int);
 #else

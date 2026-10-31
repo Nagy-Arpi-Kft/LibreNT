@@ -37,7 +37,7 @@ extern PEXT2_GLOBAL Ext2Global;
  *    N/A
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -86,7 +86,7 @@ Ext2OplockComplete (
  *    N/A
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -182,7 +182,7 @@ Ext2QueueRequest (IN PEXT2_IRP_CONTEXT IrpContext)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -300,7 +300,7 @@ Ext2DispatchRequest (IN PEXT2_IRP_CONTEXT IrpContext)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS

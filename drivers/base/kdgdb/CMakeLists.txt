@@ -24,7 +24,7 @@ add_library(kdgdb MODULE
     ${SOURCE}
     kdgdb.rc
     ${CMAKE_CURRENT_BINARY_DIR}/kdgdb.def)
-target_compile_definitions(kdgdb PRIVATE NTDDI_VERSION=${REACTOS_TARGET_NTDDI})
+target_compile_definitions(kdgdb PRIVATE NTDDI_VERSION=${LIBRENT_TARGET_NTDDI})
 add_pch(kdgdb kdgdb.h SOURCE)
 
 set_module_type(kdgdb kerneldll ENTRYPOINT 0)
@@ -36,4 +36,4 @@ if(GDB) ## See PR #5187
 else()
     set(KDGDB_NAME_ON_CD "$<TARGET_FILE_NAME:kdgdb>")
 endif()
-add_cd_file(TARGET kdgdb DESTINATION reactos/system32 NO_CAB NAME_ON_CD ${KDGDB_NAME_ON_CD} FOR all)
+add_cd_file(TARGET kdgdb DESTINATION librent/system32 NO_CAB NAME_ON_CD ${KDGDB_NAME_ON_CD} FOR all)

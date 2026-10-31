@@ -1489,7 +1489,7 @@ typedef struct _SE_EXPORTS {
   PSID SeHighMandatorySid;
   PSID SeSystemMandatorySid;
   PSID SeOwnerRightsSid;
-#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__LIBRENT__)
   PSID SeAllAppPackagesSid;
   PSID SeUserModeDriversSid;
 #endif

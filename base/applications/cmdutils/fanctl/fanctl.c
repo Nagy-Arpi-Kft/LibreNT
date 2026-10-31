@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT fan control utility
+ * PROJECT:     LibreNT fan control utility
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Control ACPI thermal zones through the Windows thermal ABI
  * COPYRIGHT:   Copyright 2026 LiberNT Project
@@ -11,7 +11,7 @@
 #include <initguid.h>
 #include <poclass.h>
 #include <acpiioct.h>
-#include <reactos/drivers/acpi/acpithermal.h>
+#include <librent/drivers/acpi/acpithermal.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -43,7 +43,7 @@ static BOOL FanctlGetIntegerArgument(PACPI_METHOD_ARGUMENT Argument, PUCHAR End,
 
 static VOID FanctlUsage(VOID)
 {
-    wprintf(L"LiberNT ACPI fan control (Windows thermal ABI)\n\n");
+    wprintf(L"LibreNT ACPI fan control (Windows thermal ABI)\n\n");
     wprintf(L"Usage:\n");
     wprintf(L"  fanctl status\n");
     wprintf(L"  fanctl max\n");

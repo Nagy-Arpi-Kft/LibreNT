@@ -22,7 +22,7 @@
 
 #if defined(UEFIBOOT) && (defined(_M_ARM64) || defined(_M_RISCV64))
 #if defined(_M_ARM64)
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 #endif
 BOOLEAN UefiSerialInitialize(VOID);
 VOID UefiSerialPutChar(_In_ UCHAR Character);
@@ -37,7 +37,7 @@ VOID UefiLogPutChar(_In_ UCHAR Character);
 // #define DEBUG_WARN
 // #define DEBUG_ERR
 // #define DEBUG_INIFILE
-// #define DEBUG_REACTOS
+// #define DEBUG_LIBRENT
 #define DEBUG_CUSTOM      /* DPRINT_DISK + DPRINT_FILESYSTEM at full trace */
 // #define DEBUG_NONE
 
@@ -109,8 +109,8 @@ DebugInit(
 
 #if defined (DEBUG_INIFILE)
     DbgChannels[DPRINT_INIFILE] = MAX_LEVEL;
-#elif defined (DEBUG_REACTOS)
-    DbgChannels[DPRINT_REACTOS] = MAX_LEVEL;
+#elif defined (DEBUG_LIBRENT)
+    DbgChannels[DPRINT_LIBRENT] = MAX_LEVEL;
     DbgChannels[DPRINT_REGISTRY] = MAX_LEVEL;
 #elif defined (DEBUG_CUSTOM)
     /* Enable full trace for the ramdisk / WIM extraction path during

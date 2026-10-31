@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Task Manager
+ * PROJECT:     LibreNT Task Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Users page (sessions with expandable process lists)
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>

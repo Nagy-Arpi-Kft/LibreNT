@@ -1,8 +1,8 @@
 /*
- * PROJECT:     ReactOS Networking
+ * PROJECT:     LibreNT Networking
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        dll/win32/iphlpapi/iphlpapi_reactos.c
- * PURPOSE:     ReactOS compatibility helpers
+ * PURPOSE:     LibreNT compatibility helpers
  * PROGRAMMERS: Pierre Schweitzer <pierre@reactos.org>
  */
 
@@ -12,7 +12,7 @@
 #include <netiodef.h>
 #include <wine/nsi.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD get_interface_alias(const GUID *guid, WCHAR *name, ULONG *size)
 {
     WCHAR alias[IF_MAX_STRING_SIZE + 1];

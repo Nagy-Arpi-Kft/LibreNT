@@ -1,6 +1,6 @@
-#define REACTOS_STR_FILE_DESCRIPTION   "LiberNT TCP/IPv4 Win32 arp"
-#define REACTOS_STR_INTERNAL_NAME      "arp"
-#define REACTOS_STR_ORIGINAL_FILENAME  "arp.exe"
-#define REACTOS_STR_ORIGINAL_COPYRIGHT "Ged Murphy (gedmurphy@gmail.com)"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION   "LibreNT TCP/IPv4 Win32 arp"
+#define LIBRENT_STR_INTERNAL_NAME      "arp"
+#define LIBRENT_STR_ORIGINAL_FILENAME  "arp.exe"
+#define LIBRENT_STR_ORIGINAL_COPYRIGHT "Ged Murphy (gedmurphy@gmail.com)"
+#include <librent/version.rc>
 #include <arp_msg.rc>

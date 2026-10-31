@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(profapi MODULE ${SOURCE})
 set_module_type(profapi win32dll ENTRYPOINT DllMain 12)
 add_importlibs(profapi msvcrt kernel32 ntdll)
-add_cd_file(TARGET profapi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET profapi DESTINATION librent/system32 FOR all)

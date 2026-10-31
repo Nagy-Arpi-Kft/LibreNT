@@ -35,7 +35,7 @@
 #include "ldap_defaults.h"
 #include "lutil.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct ldapoptions ldap_int_global_options = {
 	.ldo_valid = LDAP_UNINITIALIZED,
 	.ldo_debug = LDAP_DEBUG_NONE
@@ -268,7 +268,7 @@ ldap_pvt_conf_option(
 	char *cmd, char *opt, int userconf )
 {
 	struct ldapoptions *gopts;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	int rc = LDAP_OPT_ERROR;
 #endif
 
@@ -292,7 +292,7 @@ static void openldap_ldap_init_w_conf(
 {
 	char linebuf[ AC_LINE_MAX ];
 	FILE *fp;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	int i;
 #endif
 	char *cmd, *opt;

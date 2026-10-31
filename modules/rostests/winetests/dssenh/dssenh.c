@@ -202,7 +202,7 @@ struct keylength_test {
     int todo_error;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define BASE_DSS_UNSUPPORTED_TODO 0
 #else
 #define BASE_DSS_UNSUPPORTED_TODO 1

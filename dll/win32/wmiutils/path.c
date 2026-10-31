@@ -527,7 +527,7 @@ static HRESULT WINAPI path_SetText(
     TRACE("%p, %lu, %s\n", iface, uMode, debugstr_w(pszPath));
 
     if (!uMode || !pszPath) return WBEM_E_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(uMode & (WBEMPATH_CREATE_ACCEPT_RELATIVE | WBEMPATH_CREATE_ACCEPT_ABSOLUTE | WBEMPATH_CREATE_ACCEPT_ALL)))
         return WBEM_E_INVALID_PARAMETER;
 #endif
@@ -537,7 +537,7 @@ static HRESULT WINAPI path_SetText(
     clear_path( path );
     if (!pszPath[0]) goto done;
     if ((hr = parse_text( path, uMode, pszPath )) != S_OK) goto done;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(uMode & (WBEMPATH_CREATE_ACCEPT_RELATIVE | WBEMPATH_CREATE_ACCEPT_ALL)) &&
         !(path->flags & WBEMPATH_INFO_PATH_HAD_SERVER))
     {
@@ -705,7 +705,7 @@ static WCHAR *build_path( struct path *path, LONG flags, int *len )
         return ret;
     }
     case WBEMPATH_GET_SERVER_TOO:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!path->len_server && !path->num_namespaces && !path->len_class)
         {
             *len = 0;

@@ -2,7 +2,7 @@
 add_definitions(-DXAUDIO2_VER=9)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/faudio/include
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/faudio/include
     ${CMAKE_CURRENT_BINARY_DIR})
 
 spec2def(xaudio2_9.dll xaudio2_9.spec)
@@ -32,7 +32,7 @@ target_compile_definitions(xaudio2_9 PRIVATE __WINESRC__)
 target_link_libraries(xaudio2_9 faudio mfuuid uuid wine)
 add_importlibs(xaudio2_9 mfplat mfreadwrite propsys advapi32 ole32 user32 msvcrt kernel32 ntdll)
 add_dependencies(xaudio2_9 xaudio2_9_idlheader)
-add_cd_file(TARGET xaudio2_9 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET xaudio2_9 DESTINATION librent/system32 FOR all)
 set_wine_module(xaudio2_9)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

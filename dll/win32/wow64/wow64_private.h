@@ -24,7 +24,7 @@
 #include "ntsyscalls.h"
 #include "struct32.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define GetCurrentProcess() NtCurrentProcess()
 #define GetCurrentThread() NtCurrentThread()
 #define GetCurrentProcessId() HandleToULong(NtCurrentTeb()->ClientId.UniqueProcess)
@@ -38,13 +38,13 @@ NTSYSAPI DWORD WINAPI RtlRunOnceExecuteOnce(PRTL_RUN_ONCE, PRTL_RUN_ONCE_INIT_FN
 ALL_SYSCALLS32
 #undef SYSCALL_ENTRY
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "rossyscall.h"
 #endif
 
 extern void init_image_mapping( HMODULE module );
 extern void init_file_redirects(void);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern void init_reactos_wow64_environment(void);
 #endif
 extern BOOL get_file_redirect( OBJECT_ATTRIBUTES *attr );
@@ -69,7 +69,7 @@ extern void     (WINAPI *pBTCpuNotifyUnmapViewOfSection)( void *, BOOL, NTSTATUS
 extern void     (WINAPI *pBTCpuUpdateProcessorInformation)( SYSTEM_CPU_INFORMATION * );
 extern void     (WINAPI *pBTCpuProcessTerm)( HANDLE, BOOL, NTSTATUS );
 extern void     (WINAPI *pBTCpuThreadTerm)( HANDLE, LONG );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern NTSTATUS WINAPI Wow64SuspendLocalThread( HANDLE, ULONG * );
 #endif
 
@@ -80,7 +80,7 @@ struct object_attr64
     SECURITY_DESCRIPTOR sd;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern WCHAR wow64_windows_dir[MAX_PATH];
 extern WCHAR wow64_windows_prefix[MAX_PATH];
 extern WCHAR wow64_native_dir[MAX_PATH];
@@ -90,7 +90,7 @@ extern WCHAR wow64_guest_dir[MAX_PATH];
 /* cf. GetSystemWow64Directory2 */
 static inline const WCHAR *get_machine_wow64_dir( USHORT machine )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     switch (machine)
     {
     case IMAGE_FILE_MACHINE_TARGET_HOST: return wow64_native_dir;
@@ -252,7 +252,7 @@ static inline ALPC_PORT_ATTRIBUTES *alpc_port_attributes_32to64( ALPC_PORT_ATTRI
     return out;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void wow64_csr_port_connected( const UNICODE_STRING *name, HANDLE handle );
 BOOL wow64_csr_request( HANDLE handle, ULONG flags, const void *send_msg, void *recv_msg, ULONG *size32,
                         LARGE_INTEGER *timeout, NTSTATUS *status );
@@ -588,7 +588,7 @@ static inline void put_iosb( IO_STATUS_BLOCK32 *io32, const IO_STATUS_BLOCK *io 
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef __aarch64__
 static inline ULONG_PTR host_context_pc( const CONTEXT *context ) { return context->Pc; }
 static inline ULONG_PTR host_context_param( const CONTEXT *context, unsigned int index ) { return index ? context->X1 : context->X0; }

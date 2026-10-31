@@ -330,7 +330,7 @@ PL011EvtSerCx2SetWaitMask(
 {
     NTSTATUS status;
     PL011_DEVICE_EXTENSION* devExtPtr = PL011DeviceGetExtension(WdfDevice);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG eventsToEnable;
 #endif
 
@@ -371,7 +371,7 @@ PL011EvtSerCx2SetWaitMask(
     }
 
     // The events to enable
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     eventsToEnable = 0;
 #else
     ULONG eventsToEnable = 0;

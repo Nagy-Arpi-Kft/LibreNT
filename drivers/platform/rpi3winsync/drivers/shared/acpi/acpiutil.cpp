@@ -16,7 +16,7 @@
 //  Kernel mode only
 //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntddk.h>
 #else
 #include <Ntddk.h>
@@ -356,7 +356,7 @@ AcpiSendIoctlSynchronously(
 
     NTSTATUS status;
     VOID* intermediateBufferPtr = nullptr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IO_STACK_LOCATION* irpStackPtr;
 #endif
 
@@ -384,7 +384,7 @@ AcpiSendIoctlSynchronously(
     irpPtr->IoStatus.Information = 0;
     irpPtr->UserBuffer = nullptr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     irpStackPtr = IoGetNextIrpStackLocation(irpPtr);
 #else
     IO_STACK_LOCATION* irpStackPtr = IoGetNextIrpStackLocation(irpPtr);
@@ -761,7 +761,7 @@ AcpiFormatDsmFunctionNoParamsInputBuffer(
 
     NTSTATUS status;
     ACPI_EVAL_INPUT_BUFFER_COMPLEX* inputBufferPtr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ACPI_METHOD_ARGUMENT UNALIGNED* argumentPtr;
 #endif
 
@@ -798,7 +798,7 @@ AcpiFormatDsmFunctionNoParamsInputBuffer(
     //
     // Argument 0: UUID
     //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     argumentPtr = &inputBufferPtr->Argument[0];
 #else
     ACPI_METHOD_ARGUMENT UNALIGNED* argumentPtr = &inputBufferPtr->Argument[0];

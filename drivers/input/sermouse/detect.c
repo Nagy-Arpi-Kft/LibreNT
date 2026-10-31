@@ -1,11 +1,11 @@
 /*
- * PROJECT:     ReactOS Serial mouse driver
+ * PROJECT:     LibreNT Serial mouse driver
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/input/sermouse/detect.c
  * PURPOSE:     Detect serial mouse type
  * PROGRAMMERS: Copyright Jason Filby (jasonfilby@yahoo.com)
                 Copyright Filip Navara (xnavara@volny.cz)
-                Copyright 2005-2006 Hervé Poussineau (hpoussin@reactos.org)
+                Copyright 2005-2006 Hervï¿½ Poussineau (hpoussin@reactos.org)
  */
 
 #include "sermouse.h"
@@ -13,7 +13,7 @@
 #include <ntifs.h>
 #include <debug.h>
 
-/* Most of this file is ripped from reactos/drivers/bus/serenum/detect.c */
+/* Most of this file is ripped from librent/drivers/bus/serenum/detect.c */
 
 static NTSTATUS
 DeviceIoControl(

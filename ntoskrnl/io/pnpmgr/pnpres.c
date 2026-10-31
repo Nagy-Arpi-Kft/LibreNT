@@ -1,10 +1,10 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * COPYRIGHT:       GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/io/pnpmgr/pnpres.c
  * PURPOSE:         Resource handling code
  * PROGRAMMERS:     Cameron Gutman (cameron.gutman@reactos.org)
- *                  ReactOS Portable Systems Group
+ *                  LibreNT Portable Systems Group
  */
 
 #include <ntoskrnl.h>
@@ -12,9 +12,9 @@
 #define NDEBUG
 #include <debug.h>
 
-#include <reactos/hal/acpi_pci.h>
+#include <librent/hal/acpi_pci.h>
 #ifdef _WIN64
-#include <reactos/hal/msi.h>
+#include <librent/hal/msi.h>
 #endif
 
 /* Line and message interrupts must stay in disjoint vector ranges. An
@@ -524,7 +524,7 @@ IopFindInterruptResource(
         }
         else if (IoDesc->u.Interrupt.MinimumVector == IoDesc->u.Interrupt.MaximumVector)
         {
-            /* Accept the count encoding used by older ReactOS bus drivers. */
+            /* Accept the count encoding used by older LibreNT bus drivers. */
             MessageCount = IoDesc->u.Interrupt.MaximumVector;
         }
         else

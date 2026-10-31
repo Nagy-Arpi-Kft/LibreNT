@@ -83,13 +83,13 @@ static UINT CREATE_close( struct tagMSIVIEW *view )
 static UINT CREATE_get_dimensions( struct tagMSIVIEW *view, UINT *rows, UINT *cols )
 {
     struct create_view *cv = (struct create_view *)view;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const column_info *col;
 #endif
 
     TRACE("%p %p %p\n", cv, rows, cols );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( rows || !cols )
         return ERROR_FUNCTION_FAILED;
 

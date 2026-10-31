@@ -55,20 +55,20 @@ HRESULT WINAPI HlinkCreateFromMoniker( IMoniker *pimkTrgt, LPCWSTR pwzLocation,
             debugstr_w(pwzFriendlyName), pihlsite, dwSiteData, piunkOuter,
             debugstr_guid(riid), ppvObj);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *ppvObj = NULL;
 #endif
     hr = CoCreateInstance(&CLSID_StdHlink, piunkOuter, CLSCTX_INPROC_SERVER, &IID_IHlink, (LPVOID*)&hl);
     if (FAILED(hr))
         return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = IHlink_SetMonikerReference(hl, HLINKSETF_LOCATION | HLINKSETF_TARGET, pimkTrgt, pwzLocation);
 #else
     IHlink_SetMonikerReference(hl, HLINKSETF_LOCATION | HLINKSETF_TARGET, pimkTrgt, pwzLocation);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && pwzFriendlyName)
         hr = IHlink_SetFriendlyName(hl, pwzFriendlyName);
     if (SUCCEEDED(hr) && pihlsite)
@@ -80,7 +80,7 @@ HRESULT WINAPI HlinkCreateFromMoniker( IMoniker *pimkTrgt, LPCWSTR pwzLocation,
         IHlink_SetHlinkSite(hl, pihlsite, dwSiteData);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr))
         hr = IHlink_QueryInterface(hl, riid, ppvObj);
 #else
@@ -107,7 +107,7 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
             debugstr_w(pwzLocation), debugstr_w(pwzFriendlyName), pihlsite,
             dwSiteData, piunkOuter, debugstr_guid(riid), ppvObj);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *ppvObj = NULL;
 #endif
     hr = CoCreateInstance(&CLSID_StdHlink, piunkOuter, CLSCTX_INPROC_SERVER, &IID_IHlink, (void **)&hl);
@@ -123,7 +123,7 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
                 tgt = NULL;
             else
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 SIZE_T tgt_len = hash - pwzTarget;
                 if (tgt_len >= ~(SIZE_T)0 / sizeof(WCHAR))
                 {
@@ -135,12 +135,12 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
 #endif
                 tgt = malloc((tgt_len + 1) * sizeof(WCHAR));
                 if (!tgt)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 {
                     IHlink_Release(hl);
 #endif
                     return E_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 }
 #endif
                 memcpy(tgt, pwzTarget, tgt_len * sizeof(WCHAR));
@@ -155,12 +155,12 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
         {
             tgt = wcsdup(pwzTarget);
             if (!tgt)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 IHlink_Release(hl);
 #endif
                 return E_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
             loc = pwzLocation;
@@ -172,7 +172,7 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
         loc = pwzLocation;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = IHlink_SetStringReference(hl, HLINKSETF_TARGET | HLINKSETF_LOCATION, tgt, loc);
 #else
     IHlink_SetStringReference(hl, HLINKSETF_TARGET | HLINKSETF_LOCATION, tgt, loc);
@@ -180,7 +180,7 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
 
     free(tgt);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && pwzFriendlyName)
         hr = IHlink_SetFriendlyName(hl, pwzFriendlyName);
 #else
@@ -188,7 +188,7 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
         IHlink_SetFriendlyName(hl, pwzFriendlyName);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && pihlsite)
         hr = IHlink_SetHlinkSite(hl, pihlsite, dwSiteData);
 #else
@@ -196,7 +196,7 @@ HRESULT WINAPI HlinkCreateFromString( LPCWSTR pwzTarget, LPCWSTR pwzLocation,
         IHlink_SetHlinkSite(hl, pihlsite, dwSiteData);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr))
         hr = IHlink_QueryInterface(hl, riid, ppvObj);
 #else

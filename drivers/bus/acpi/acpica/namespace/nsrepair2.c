@@ -801,7 +801,7 @@ AcpiNsRepair_TSS (
      * In this case, it is best to just return the _TSS package as-is.
      * (May, 2011)
      */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     Status = AcpiNsGetNodeUnlocked (Info->Node, "^_PSS",
         ACPI_NS_NO_UPSEARCH, &Node);
 #else

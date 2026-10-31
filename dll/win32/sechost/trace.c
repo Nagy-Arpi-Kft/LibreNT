@@ -31,7 +31,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(eventlog);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /******************************************************************************
  *     ControlTraceA   (sechost.@)
  */
@@ -68,7 +68,7 @@ ULONG WINAPI EnableTraceEx2( TRACEHANDLE handle, const GUID *provider, ULONG con
     return ERROR_SUCCESS;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /******************************************************************************
  *     QueryAllTracesA   (sechost.@)
  */

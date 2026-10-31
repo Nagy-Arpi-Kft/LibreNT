@@ -51,7 +51,7 @@ __forceinline void* __cdecl operator new ( size_t, void* Ptr ) throw ()
     return Ptr;
 } // operator new ( size_t, void* )
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void __cdecl operator delete ( void* Ptr ) throw ()
 #else
 __forceinline void __cdecl operator delete ( void* Ptr ) throw ()

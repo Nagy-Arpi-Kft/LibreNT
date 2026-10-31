@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Cicero
+ * PROJECT:     LibreNT Cicero
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Cicero base
  * COPYRIGHT:   Copyright 2023-2024 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -177,12 +177,12 @@ CicSystemModulePath::Init(
     SIZE_T cchPath;
     if (bSysWinDir)
     {
-        // Usually C:\Windows or C:\ReactOS
+        // Usually C:\Windows or C:\LibreNT
         cchPath = ::GetSystemWindowsDirectory(m_szPath, _countof(m_szPath));
     }
     else
     {
-        // Usually C:\Windows\system32 or C:\ReactOS\system32
+        // Usually C:\Windows\system32 or C:\LibreNT\system32
         cchPath = ::GetSystemDirectory(m_szPath, _countof(m_szPath));
     }
 

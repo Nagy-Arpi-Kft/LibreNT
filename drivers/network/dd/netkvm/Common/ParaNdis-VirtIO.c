@@ -254,7 +254,7 @@ static int PCIReadConfig(PPARANDIS_ADAPTER pContext,
 {
     ULONG read;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     read = NdisMGetBusData(
         pContext->MiniportHandle,
         PCI_WHICHSPACE_CONFIG,

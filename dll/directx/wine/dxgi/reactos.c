@@ -1,11 +1,11 @@
-/* ReactOS-specific DXGI integration. */
+/* LibreNT-specific DXGI integration. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include "dxgi_private.h"
 
 #include <d3dkmthk.h>
-#include <reactos/rddm/rxgkadvcolor.h>
+#include <librent/rddm/rxgkadvcolor.h>
 
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(status) ((NTSTATUS)(status) >= 0)
@@ -463,4 +463,4 @@ HRESULT WINAPI DXGIDeclareAdapterRemovalSupport(void)
     return S_OK;
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

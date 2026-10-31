@@ -25,7 +25,7 @@
 
 #include "wine/unicode.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif
 
@@ -468,7 +468,7 @@ int vsnprintfW(WCHAR *str, size_t len, const WCHAR *format, va_list valist)
                 /* FIXME: for unrecognised types, should ignore % when printing */
                 char *bufaiter = bufa;
                 if (*iter == 'p')
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     sprintf(bufaiter, "%p", va_arg(valist, void*));
 #else
                     sprintf(bufaiter, "%0*lX", 2 * (int)sizeof(void*),

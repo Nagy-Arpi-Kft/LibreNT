@@ -41,7 +41,7 @@
     ROUND_DOWN(((ULONG)n) + (align) - 1, (align))
 
 /* Public headers */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntddk.h>
 #include <ntifs.h>
 #include <ioaccess.h>

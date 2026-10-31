@@ -54,7 +54,7 @@ DWORD InitializeConnectionInfo(
     return result;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 FORCEINLINE SIZE_T ConnectionBufferSize(
 #else
 static FORCEINLINE SIZE_T ConnectionBufferSize(

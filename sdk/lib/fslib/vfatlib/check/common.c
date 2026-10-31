@@ -34,7 +34,7 @@ typedef struct _link {
     struct _link *next;
 } LINK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DECLSPEC_NORETURN // __attribute((noreturn))
 void exit(int exitcode)
 {
@@ -54,20 +54,20 @@ void die(const char *msg, ...)
     va_list args;
 
     va_start(args, msg);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     vfprintf(stderr, msg, args);
 #else
     DPRINT1("Unrecoverable problem!\n");
     VfatPrintV((char*)msg, args);
 #endif
     va_end(args);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     fprintf(stderr, "\n");
 #endif
     exit(1);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DECLSPEC_NORETURN // __attribute((noreturn))
 void pdie_func(const char *msg, ...) // pdie
 #else
@@ -77,20 +77,20 @@ void pdie(const char *msg, ...)
     va_list args;
 
     va_start(args, msg);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     vfprintf(stderr, msg, args);
 #else
     DPRINT1("Unrecoverable problem!\n");
     VfatPrintV((char*)msg, args);
 #endif
     va_end(args);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     fprintf(stderr, ":%s\n", strerror(errno));
 #endif
     exit(1);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void *alloc(int size)
 {
     void *this;
@@ -140,14 +140,14 @@ void *qalloc(void **root, int size)
 {
     LINK *link;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     link = alloc(sizeof(LINK));
 #else
     link = vfalloc(sizeof(LINK));
 #endif
     link->next = *root;
     *root = link;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     return link->data = alloc(size);
 #else
     return link->data = vfalloc(size);
@@ -161,7 +161,7 @@ void qfree(void **root)
     while (*root) {
 	this = (LINK *) * root;
 	*root = this->next;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	free(this->data);
 	free(this);
 #else
@@ -171,7 +171,7 @@ void qfree(void **root)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef min
 #undef min
 #endif
@@ -183,7 +183,7 @@ int min(int a, int b)
 
 char get_key(const char *valid, const char *prompt)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     int ch, okay;
 
     while (1) {

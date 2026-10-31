@@ -2027,7 +2027,7 @@ static HRESULT byte_stream_plugin_create(IUnknown *outer, REFIID riid, void **ou
 
 static BOOL use_gst_byte_stream_handler(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return FALSE;
 #else
     BOOL result;

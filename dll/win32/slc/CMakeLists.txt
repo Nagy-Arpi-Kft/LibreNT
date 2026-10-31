@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(slc MODULE ${SOURCE})
 set_module_type(slc win32dll ENTRYPOINT DllMain 12)
 add_importlibs(slc msvcrt kernel32 ntdll)
-add_cd_file(TARGET slc DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET slc DESTINATION librent/system32 FOR all)

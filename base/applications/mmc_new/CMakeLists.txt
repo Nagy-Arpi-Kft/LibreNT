@@ -1,7 +1,7 @@
 
 PROJECT(mmc)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/atl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/atl)
 add_definitions(-D_ATL_NO_EXCEPTIONS)
 
 list(APPEND CPP_SOURCE
@@ -39,4 +39,4 @@ target_link_libraries(mmc_new uuid cpprt mmc_uuids)
 add_importlibs(mmc_new oleaut32 ole32 shlwapi shell32 advapi32 comdlg32 comctl32 user32 gdi32 msvcrt kernel32 ntdll)
 add_pch(mmc_new precomp.h CPP_SOURCE)
 add_dependencies(mmc_new psdk)
-add_cd_file(TARGET mmc_new DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mmc_new DESTINATION librent/system32 FOR all)

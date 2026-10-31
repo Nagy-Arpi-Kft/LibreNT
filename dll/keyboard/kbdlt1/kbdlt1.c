@@ -1,5 +1,5 @@
 /*
- * ReactOS Lithuanian Keyboard layout
+ * LibreNT Lithuanian Keyboard layout
  * Copyright (C) 2007 ReactOS
  * Author: Vytis Girdþijauskas, "CMan", cman@cman.us
  * License: LGPL, see: LGPL.txt
@@ -341,10 +341,10 @@ ROSDATA VSC_LPWSTR extended_key_names[] = {
   { 0x51, L"Page Down" },
   { 0x52, L"Insert" },
   { 0x53, L"Delete" },
-  { 0x54, L"<LiberNT>" },
+  { 0x54, L"<LibreNT>" },
   { 0x55, L"Help" },
-  { 0x56, L"Left LiberNT" },
-  { 0x5b, L"Right LiberNT" },
+  { 0x56, L"Left LibreNT" },
+  { 0x5b, L"Right LibreNT" },
   { 0, NULL },
 };
 

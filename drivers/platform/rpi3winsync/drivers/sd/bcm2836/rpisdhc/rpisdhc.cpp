@@ -16,7 +16,7 @@
 #include "precomp.hpp"
 #pragma hdrstop
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "sdhclogging.h"
 #else
 #include "SdhcLogging.h"
@@ -1700,7 +1700,7 @@ void SDHC::completeRequest (
         this->sdhcStats.LongFsmStateWaitCount += this->currRequestStats.LongFsmStateWaitCount;
         this->sdhcStats.TotalLongFsmStateWaitTimeUs += this->currRequestStats.LongFsmStateWaitTimeUs;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (RequestPtr->Command.TransferDirection == SdTransferDirectionWrite) {
 #else
         if ((RequestPtr->Command.TransferDirection == SdTransferDirectionWrite)) {
@@ -1855,7 +1855,7 @@ SDHC::_CMD SDHC::buildCommand (
     case SdTransferDirectionWrite:
         cmd.Fields.WriteCmd = 1;
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
     case SdTransferDirectionUndefined:
         break;
@@ -2119,7 +2119,7 @@ SDHC::SDHC (
     basePhysicalAddress(BasePhysicalAddress),
     basePtr(BasePtr),
     baseSpaceSize(BaseSpaceSize),
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sdhcCapabilities(),
     outstandingRequestPtr(nullptr),
 #else

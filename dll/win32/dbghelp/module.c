@@ -24,13 +24,13 @@
 #include <string.h>
 #include <assert.h>
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "ntstatus.h"
 #define WIN32_NO_STATUS
 #endif
 #include "dbghelp_private.h"
 #include "image_private.h"
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "psapi.h"
 #include "tlhelp32.h"
 #include "winternl.h"
@@ -486,7 +486,7 @@ static BOOL image_check_debug_link_crc(const WCHAR* file, struct image_file_map*
     SetFilePointer(handle, 0, 0, FILE_BEGIN);
     if (ReadFile(handle, &magic, sizeof(magic), &read_bytes, NULL) && magic == IMAGE_DOS_SIGNATURE)
         ret = pe_map_file(handle, fmap);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
         ret = FALSE;
 #else
@@ -516,7 +516,7 @@ static BOOL image_check_debug_link_gnu_id(const WCHAR* file, struct image_file_m
 
     if (ReadFile(handle, &magic, sizeof(magic), &read_bytes, NULL) && magic == IMAGE_DOS_SIGNATURE)
         ret = pe_map_file(handle, fmap);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
         ret = FALSE;
 #else
@@ -648,7 +648,7 @@ static WCHAR* append_hex(WCHAR* dst, const BYTE* id, const BYTE* end)
     return dst;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static BOOL image_locate_build_id_target_in_dir(struct image_file_map *fmap_link, const BYTE* id, unsigned idlen, const WCHAR *from)
 {
     size_t from_len = wcslen(from);
@@ -690,7 +690,7 @@ static struct image_file_map* image_locate_build_id_target(const BYTE* id, unsig
 
     if (!(fmap_link = HeapAlloc(GetProcessHeap(), 0, sizeof(*fmap_link))))
         return NULL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (image_locate_build_id_target_in_dir(fmap_link, id, idlen, L"/usr/lib/debug/.build-id/"))
         return fmap_link;
     if (image_locate_build_id_target_in_dir(fmap_link, id, idlen, L"/usr/lib/.build-id/"))
@@ -945,7 +945,7 @@ DWORD64 WINAPI  SymLoadModuleExW(HANDLE hProcess, HANDLE hFile, PCWSTR wImageNam
     struct process*     pcs;
     struct module*      module = NULL;
     struct module*      altmodule;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD               last_error = GetLastError();
 #endif
 
@@ -1049,7 +1049,7 @@ DWORD64 WINAPI  SymLoadModuleExW(HANDLE hProcess, HANDLE hFile, PCWSTR wImageNam
 
     if ((dbghelp_options & SYMOPT_DEFERRED_LOADS) == 0 && !module_get_container(pcs, module))
         module_load_debug(module);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetLastError(last_error);
 #endif
     return module->module.BaseOfImage;
@@ -1301,7 +1301,7 @@ BOOL  WINAPI EnumerateLoadedModulesW64(HANDLE process,
                                        PENUMLOADED_MODULES_CALLBACKW64 enum_cb,
                                        PVOID user)
 {
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
     return TRUE;
 #else
     OBJECT_BASIC_INFORMATION obi;

@@ -180,7 +180,7 @@ SetupLdrScanBootDrivers(
             InfGetDataField(&InfContext, 0, &DriverName) &&
             InfGetDataField(&InfContext, 13, &dirIndex))
         {
-            if ((strcmp(Media, "x") == 0) && // HACK: ReactOS-specific
+            if ((strcmp(Media, "x") == 0) && // HACK: LibreNT-specific
                 InfFindFirstLine(InfHandle, "Directories", dirIndex, &dirContext) &&
                 InfGetDataField(&dirContext, 1, &ImagePath))
             {
@@ -382,7 +382,7 @@ NtLdrGetHigherPriorityOptions(
 
 
 ARC_STATUS
-LoadReactOSSetup(
+LoadLibreNTSetup(
     IN ULONG Argc,
     IN PCHAR Argv[],
     IN PCHAR Envp[])
@@ -455,7 +455,7 @@ LoadReactOSSetup(
     /* Let the user know we started loading */
     UiDrawBackdrop(UiGetScreenHeight());
     UiDrawStatusText("Setup is loading...");
-    UiDrawProgressBarCenter("Loading LiberNT Setup...");
+    UiDrawProgressBarCenter("Loading LibreNT Setup...");
 
     /* Retrieve the system path */
     *BootPath = ANSI_NULL;

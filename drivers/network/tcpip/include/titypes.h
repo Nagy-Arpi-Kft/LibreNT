@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS TCP/IP protocol driver
+ * PROJECT:     LibreNT TCP/IP protocol driver
  * FILE:        include/titypes.h
  * PURPOSE:     TCP/IP protocol driver types
  */
@@ -332,7 +332,7 @@ typedef struct _TI_QUERY_CONTEXT {
     PMDL InputMdl;     /* legacy NDIS_BUFFER expected by InfoTdiQuery* */
     PMDL OutputMdl;    /* legacy NDIS_BUFFER expected by Info* helpers */
     TCP_REQUEST_QUERY_INFORMATION_EX QueryInfo;
-    /* dev-nt6-1: kernel-pool copies of the user buffers. ReactOS's
+    /* dev-nt6-1: kernel-pool copies of the user buffers. LibreNT's
      * MmProbeAndLockPages raises STATUS_ACCESS_VIOLATION on valid user
      * stack pointers, so we copy in/out via SEH and pass MDLs that map
      * the kernel-pool copies through to InfoTdi*. */

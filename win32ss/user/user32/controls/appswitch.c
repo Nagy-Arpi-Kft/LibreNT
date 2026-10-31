@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS user32.dll
+ * PROJECT:     LibreNT user32.dll
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     App switching functionality
  * COPYRIGHT:   Copyright Johannes Anderwald (johannes.anderwald@reactos.org)
@@ -167,7 +167,7 @@ void CompleteSwitch(BOOL doSwitch)
       if(selectedWindow >= windowCount)
          return;
 
-      // FIXME: workaround because reactos fails to activate the previous window correctly.
+      // FIXME: workaround because LibreNT fails to activate the previous window correctly.
       //if(selectedWindow != 0)
       {
          HWND hwnd = windowList[selectedWindow];

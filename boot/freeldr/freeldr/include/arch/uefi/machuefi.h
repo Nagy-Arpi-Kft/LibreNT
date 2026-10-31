@@ -158,7 +158,7 @@ UefiHwDetect(
     _In_opt_ PCSTR Options);
 
 VOID
-UefiPrepareForReactOS(VOID);
+UefiPrepareForLibreNT(VOID);
 
 VOID
 UefiHwIdle(VOID);

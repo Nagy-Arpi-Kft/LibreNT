@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     KernelBase sandbox surface: mitigation policies, token membership, AppContainer paths
  */
@@ -472,7 +472,7 @@ TestBrowserProfileRegistration(void)
        "unregistered SID lookup returned 0x%lx, %p\n", hr, Returned);
     if (SUCCEEDED(hr) && Returned) pFree(Returned);
 
-    hr = pRegister(Package, Moniker, L"ReactOS browser sandbox parity test");
+    hr = pRegister(Package, Moniker, L"LibreNT browser sandbox parity test");
     ok(hr == S_OK, "AppContainerRegisterSid failed 0x%lx\n", hr);
     Registered = SUCCEEDED(hr);
     if (!Registered) goto Cleanup;
@@ -487,7 +487,7 @@ TestBrowserProfileRegistration(void)
         Returned = NULL;
     }
 
-    hr = pRegister(Package, Moniker, L"ReactOS browser sandbox parity test");
+    hr = pRegister(Package, Moniker, L"LibreNT browser sandbox parity test");
     ok(hr == HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS),
        "duplicate AppContainerRegisterSid returned 0x%lx\n", hr);
 

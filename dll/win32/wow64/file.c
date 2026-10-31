@@ -31,14 +31,14 @@
 #include "wow64_private.h"
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define wcsnicmp _wcsnicmp
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(wow);
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     LARGE_INTEGER index;
@@ -103,7 +103,7 @@ static inline ULONG starts_with_path( const WCHAR *name, ULONG name_len, const W
 void init_file_redirects(void)
 {
     OBJECT_ATTRIBUTES attr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UNICODE_STRING windows, system32;
 #else
     UNICODE_STRING windows = RTL_CONSTANT_STRING( L"\\??\\C:\\windows" );
@@ -112,7 +112,7 @@ void init_file_redirects(void)
     IO_STATUS_BLOCK io;
     HANDLE handle;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RtlInitUnicodeString(&windows, wow64_windows_dir);
     RtlInitUnicodeString(&system32, wow64_native_dir);
 #endif
@@ -181,7 +181,7 @@ BOOL get_file_redirect( OBJECT_ATTRIBUTES *attr )
         L"system32\\catroot", L"system32\\catroot2", L"system32\\driverstore",
         L"system32\\drivers\\etc", L"system32\\logfiles", L"system32\\spool"
     };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *windirW = wow64_windows_prefix;
 #else
     static const WCHAR windirW[] = L"\\??\\C:\\windows\\";
@@ -200,7 +200,7 @@ BOOL get_file_redirect( OBJECT_ATTRIBUTES *attr )
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FILE_REDIRECT_ID id;
 
         if (get_file_id( attr->RootDirectory, &id )) return FALSE;
@@ -246,7 +246,7 @@ BOOL get_file_redirect( OBJECT_ATTRIBUTES *attr )
     for (i = 0; i < ARRAY_SIZE( no_redirect ); i++)
         if (starts_with_path( name + prefix_len, len - prefix_len, no_redirect[i] )) return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     syswow64dir = L"SysWOW64";
 #else
     syswow64dir = get_machine_wow64_dir( current_machine ) + wcslen( windirW );
@@ -907,7 +907,7 @@ NTSTATUS WINAPI wow64_NtSetInformationFile( UINT *args )
         break;
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtSetInformationFile: unsupported class %u\n", class );
         return STATUS_INVALID_INFO_CLASS;
 #else

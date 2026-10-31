@@ -1,7 +1,7 @@
 /*
- * ReactOS CRT compatibility for the Wine 11.14 vkd3d-shader sources.
+ * LibreNT CRT compatibility for the Wine 11.14 vkd3d-shader sources.
  *
- * The legacy ReactOS CRT math.h does not expose the C99 classification
+ * The legacy LibreNT CRT math.h does not expose the C99 classification
  * macros or exp2f()/log2f(). Keep the adaptation at the library boundary so
  * the imported shader sources remain otherwise identical to Wine.
  */

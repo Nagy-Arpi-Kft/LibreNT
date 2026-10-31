@@ -176,7 +176,7 @@ main(int argc, char *argv[])
     NativeStateNull native_state;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         char module_path[MAX_PATH];
         DWORD length = GetModuleFileNameA(NULL, module_path, MAX_PATH);

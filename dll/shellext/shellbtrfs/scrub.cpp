@@ -18,7 +18,7 @@
 #include "shellext.h"
 #include "scrub.h"
 #include "resource.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"
@@ -26,7 +26,7 @@
 #include <shlobj.h>
 #include <uxtheme.h>
 #include <stdio.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <strsafe.h>
 #include <winternl.h>
 #else

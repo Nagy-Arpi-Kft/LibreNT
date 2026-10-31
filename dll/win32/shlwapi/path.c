@@ -23,7 +23,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/unicode.h"
 #endif
 #include "windef.h"
@@ -34,14 +34,14 @@
 #include "winternl.h"
 #define NO_SHLWAPI_STREAM
 #include "shlwapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winnetwk.h"
 #endif
 #include "wine/debug.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include <shlobj.h>
 #include <shlwapi_undoc.h>
@@ -67,7 +67,7 @@ static HMODULE SHLWAPI_hshell32;
 typedef BOOL (WINAPI *fnpIsNetDrive)(int);
 static  fnpIsNetDrive pIsNetDrive;
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 HRESULT WINAPI SHGetWebFolderFilePathW(LPCWSTR,LPWSTR,DWORD);
 
@@ -184,7 +184,7 @@ BOOL WINAPI PathFileExistsDefExtW(LPWSTR lpszPath,DWORD dwWhich)
   if (!lpszPath || PathIsUNCServerW(lpszPath) || PathIsUNCServerShareW(lpszPath))
     return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (dwWhich)
   {
     size_t iChoose;
@@ -644,7 +644,7 @@ BOOL WINAPI PathIsDirectoryA(LPCSTR lpszPath)
 
   if (PathIsUNCServerShareA(lpszPath))
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPSTR lpSystem = NULL;
     BYTE buffer[512] = {0};
     DWORD cbBuffer = sizeof(buffer);
@@ -688,7 +688,7 @@ BOOL WINAPI PathIsDirectoryW(LPCWSTR lpszPath)
 
   if (PathIsUNCServerShareW(lpszPath))
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPWSTR lpSystem = NULL;
     BYTE buffer[1024] = {0};
     DWORD cbBuffer = sizeof(buffer);
@@ -1328,7 +1328,7 @@ BOOL WINAPI PathIsNetworkPathA(LPCSTR lpszPath)
   dwDriveNum = PathGetDriveNumberA(lpszPath);
   if (dwDriveNum == -1)
     return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return IsNetDrive(dwDriveNum);
 #else
   GET_FUNC(pIsNetDrive, shell32, (LPCSTR)66, FALSE); /* ord 66 = shell32.IsNetDrive */
@@ -1354,7 +1354,7 @@ BOOL WINAPI PathIsNetworkPathW(LPCWSTR lpszPath)
   dwDriveNum = PathGetDriveNumberW(lpszPath);
   if (dwDriveNum == -1)
     return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return IsNetDrive(dwDriveNum);
 #else
   GET_FUNC(pIsNetDrive, shell32, (LPCSTR)66, FALSE); /* ord 66 = shell32.IsNetDrive */

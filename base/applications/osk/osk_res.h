@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS On-Screen Keyboard
+ * PROJECT:         LibreNT On-Screen Keyboard
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         On-Screen Keyboard resource identifiers
  * COPYRIGHT:       Denis ROBERT
@@ -17,7 +17,7 @@
 #define IDI_CAPS_LOCK                       203
 #define IDI_RETURN                          204
 #define IDI_SHIFT                           205
-#define IDI_REACTOS                         206
+#define IDI_LIBRENT                         206
 #define IDI_MENU                            207
 #define IDI_HOME                            208
 #define IDI_PG_UP                           209

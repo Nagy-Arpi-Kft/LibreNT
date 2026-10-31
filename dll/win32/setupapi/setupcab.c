@@ -36,7 +36,7 @@
 #include "fdi.h"
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 OSVERSIONINFOEXW OsVersionInfo;
 HINSTANCE hInstance;
 #else
@@ -54,7 +54,7 @@ typedef struct
     char most_recent_target[MAX_PATH];
 } SC_HSC_A, *PSC_HSC_A;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 #endif
 
@@ -453,7 +453,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
     switch (fdwReason) {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls(hinstDLL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         OsVersionInfo.dwOSVersionInfoSize = sizeof(OsVersionInfo);
         if (!NT_SUCCESS(RtlGetVersion((PRTL_OSVERSIONINFOW)&OsVersionInfo)))
             return FALSE;

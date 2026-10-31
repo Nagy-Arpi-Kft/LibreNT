@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Pool Allocator
+ * PROJECT:     LibreNT Pool Allocator
  * FILE:        ntoskrnl/nvs/pool/ex/exinit.c
  * PURPOSE:     Executive pool initialization
  *

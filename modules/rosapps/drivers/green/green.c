@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS VT100 emulator
+ * PROJECT:     LibreNT VT100 emulator
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/base/green/green.c
  * PURPOSE:     Driver entry point

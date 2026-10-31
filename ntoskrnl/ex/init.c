@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ex/init.c
  * PURPOSE:         Executive Initialization Code
@@ -10,8 +10,8 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/buildno.h>
-#include <reactos/smpdbg.h>
+#include <librent/buildno.h>
+#include <librent/smpdbg.h>
 #include "inbv/logo.h"
 
 #define NDEBUG
@@ -79,7 +79,7 @@ static WCHAR ExpArm64VersionBuffer[64];
 #endif
 
 CHAR NtBuildLab[] = KERNEL_VERSION_BUILD_STR "."
-                    REACTOS_COMPILER_NAME "_" REACTOS_COMPILER_VERSION;
+                    LIBRENT_COMPILER_NAME "_" LIBRENT_COMPILER_VERSION;
 
 /* Init flags and settings */
 ULONG ExpInitializationPhase;
@@ -320,7 +320,7 @@ ExpInitNls(IN PLOADER_PARAMETER_BLOCK LoaderBlock)
         else
         {
             /*
-            * In NT, the memory blocks are contiguous, but in ReactOS they aren't,
+            * In NT, the memory blocks are contiguous, but in LibreNT they aren't,
             * so unless someone fixes FreeLdr, we'll have to use this icky hack.
             */
             RtlCopyMemory(ExpNlsTableBase,
@@ -1495,7 +1495,7 @@ ExpInitializeExecutive(IN ULONG Cpu,
     MmWriteableSharedUserData->ImageNumberHigh = IMAGE_FILE_MACHINE_NATIVE;
     MmWriteableSharedUserData->NativeProcessorArchitecture = KeProcessorArchitecture;
 
-    /* ReactOS magic */
+    /* LibreNT magic */
     *(PULONG)((ULONG_PTR)MmWriteableSharedUserData + PAGE_SIZE - sizeof(ULONG)) = 0x8eac705;
 }
 
@@ -1673,7 +1673,7 @@ Phase1InitializationDiscard(IN PVOID Context)
 #ifdef CONFIG_SMP
     /*
      * IMPORTANT NOTE:
-     * Because ReactOS is a "nice" OS, we do not care _at all_
+     * Because LibreNT is a "nice" OS, we do not care _at all_
      * about any number of registered/licensed processors:
      * no usage of KeRegisteredProcessors nor KeLicensedProcessors.
      */
@@ -1690,13 +1690,13 @@ Phase1InitializationDiscard(IN PVOID Context)
         /* Check for ONECPU: force uniprocessor operation (cap at one CPU). */
         if (strstr(CommandLine, "ONECPU")) KeNumprocSpecified = 1;
 
-        /* Check for BOOTPROC (NT6+ and ReactOS): maximum number
+        /* Check for BOOTPROC (NT6+ and LibreNT): maximum number
          * of logical processors that can be started at boot-time */
         Option = strstr(CommandLine, "BOOTPROC");
         if (Option) Option = strstr(Option, "=");
         if (Option) KeBootprocSpecified = atol(Option + 1);
 
-        /* Check for MAXPROC (NT6+ and ReactOS): forces the kernel to report
+        /* Check for MAXPROC (NT6+ and LibreNT): forces the kernel to report
          * as existing the maximum number of processors that can be handled */
         if (strstr(CommandLine, "MAXPROC"))
             KeMaximumProcessors = MAXIMUM_PROCESSORS;

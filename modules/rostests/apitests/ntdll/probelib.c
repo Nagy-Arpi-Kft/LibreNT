@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Small library with probing utilities for thread/process classes information
  * COPYRIGHT:   Copyright 2020 George Bișoc <george.bisoc@reactos.org>
@@ -428,10 +428,10 @@ QuerySetThreadValidator(
                 }
 
                 /* ThreadNameInformation is Windows 10+, but
-                 * ReactOS supports this class, so don't exclude it */
+                 * LibreNT supports this class, so don't exclude it */
                 case ThreadNameInformation:
                 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                     if (GetNTVersion() < _WIN32_WINNT_WIN10)
                         SpecialStatus = STATUS_INVALID_INFO_CLASS;
 #else
@@ -530,10 +530,10 @@ QuerySetThreadValidator(
                 }
 
                 /* ThreadNameInformation is Windows 10+, but
-                 * ReactOS supports this class, so don't exclude it */
+                 * LibreNT supports this class, so don't exclude it */
                 case ThreadNameInformation:
                 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                     if (GetNTVersion() < _WIN32_WINNT_WIN10)
                         SpecialStatus = STATUS_INVALID_INFO_CLASS;
 #endif

@@ -35,24 +35,24 @@ list(APPEND SOURCE
 
 file(GLOB explorer_rc_deps res/*.*)
 add_rc_deps(explorer.rc ${explorer_rc_deps}
-    ${REACTOS_SOURCE_DIR}/media/graphics/start-button/default.png
-    ${REACTOS_SOURCE_DIR}/media/graphics/start-button/hover.png
-    ${REACTOS_SOURCE_DIR}/media/graphics/start-button/pressed.png
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_1.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_2.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_3.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_4.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_x.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_warn.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/netshell/res/tray/wired.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_0.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_1.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_2.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_3.ico
-    ${REACTOS_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_mute.ico)
+    ${LIBRENT_SOURCE_DIR}/media/graphics/start-button/default.png
+    ${LIBRENT_SOURCE_DIR}/media/graphics/start-button/hover.png
+    ${LIBRENT_SOURCE_DIR}/media/graphics/start-button/pressed.png
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_1.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_2.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_3.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_4.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_x.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wifi_warn.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/netshell/res/tray/wired.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_0.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_1.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_2.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_3.ico
+    ${LIBRENT_SOURCE_DIR}/dll/shellext/stobject/resources/tray/speaker_mute.ico)
 add_executable(explorer ${SOURCE} explorer.rc)
 target_link_libraries(explorer shellframe uuid wine cpprt atl_classes)
 set_module_type(explorer win32gui UNICODE)
 add_importlibs(explorer setupapi advapi32 gdi32 gdiplus user32 comctl32 ole32 oleaut32 shell32 explorerframe shlwapi shdocvw version uxtheme winmm iphlpapi powrprof msvcrt kernel32 ntdll)
 add_pch(explorer precomp.h SOURCE)
-add_cd_file(TARGET explorer DESTINATION reactos FOR all)
+add_cd_file(TARGET explorer DESTINATION librent FOR all)

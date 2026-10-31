@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell
+ * PROJECT:     LibreNT Shell
  * LICENSE:     LGPL-2.1+ (https://spdx.org/licenses/LGPL-2.1+)
  * PURPOSE:     AssocCreateElement
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>

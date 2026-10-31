@@ -1,5 +1,5 @@
 /*
- *  ReactOS Standard Dialog Application Template
+ *  LibreNT Standard Dialog Application Template
  *
  *  page3.c
  *

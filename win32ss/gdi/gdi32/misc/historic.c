@@ -1,5 +1,5 @@
 /*
- * reactos/lib/gdi32/misc/historic.c
+ * librent/lib/gdi32/misc/historic.c
  *
  * GDI32.DLL Stubs
  *

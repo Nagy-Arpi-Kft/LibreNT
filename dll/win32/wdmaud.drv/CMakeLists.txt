@@ -1,9 +1,9 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/sound
-    ${REACTOS_SOURCE_DIR}/drivers/wdm/audio/legacy/wdmaud
-    ${REACTOS_SOURCE_DIR}/sdk/lib/drivers/sound/mmixer
-    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/libsamplerate)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/sound
+    ${LIBRENT_SOURCE_DIR}/drivers/wdm/audio/legacy/wdmaud
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/sound/mmixer
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/libsamplerate)
 
 spec2def(wdmaud.drv wdmaud.spec)
 
@@ -27,4 +27,4 @@ endif()
 target_link_libraries(wdmaud.drv mmebuddy libsamplerate mmixer)
 add_importlibs(wdmaud.drv user32 winmm advapi32 msvcrt setupapi ksuser kernel32 ntdll)
 add_pch(wdmaud.drv wdmaud.h SOURCE)
-add_cd_file(TARGET wdmaud.drv DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wdmaud.drv DESTINATION librent/system32 FOR all)

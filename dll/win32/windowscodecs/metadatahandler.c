@@ -144,7 +144,7 @@ static HRESULT WINAPI MetadataHandler_GetMetadataHandlerInfo(IWICMetadataWriter 
 
     TRACE("%p,%p\n", iface, ppIHandler);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = GetCachedComponentInfo(This->vtable->clsid, &component_info);
 #else
     hr = CreateComponentInfo(This->vtable->clsid, &component_info);
@@ -168,7 +168,7 @@ static HRESULT WINAPI MetadataHandler_GetMetadataFormat(IWICMetadataWriter *ifac
 
     if (!pguidMetadataFormat) return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         IWICComponentInfo *component_info;
         MetadataHandler *This = impl_from_IWICMetadataWriter(iface);
@@ -217,7 +217,7 @@ static HRESULT WINAPI MetadataHandler_GetValueByIndex(IWICMetadataWriter *iface,
     if (index >= This->item_count)
     {
         LeaveCriticalSection(&This->lock);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return This->vtable->invalid_index_error ? This->vtable->invalid_index_error : E_INVALIDARG;
 #else
         return E_INVALIDARG;
@@ -323,7 +323,7 @@ static HRESULT WINAPI MetadataHandler_GetValue(IWICMetadataWriter *iface,
 
     EnterCriticalSection(&This->lock);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!This->item_count && This->vtable->empty_value_error)
         hr = This->vtable->empty_value_error;
 
@@ -1203,7 +1203,7 @@ HRESULT UnknownMetadataWriter_CreateInstance(REFIID iid, void** ppv)
     return MetadataReader_Create(&UnknownMetadataWriter_Vtbl, iid, ppv);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT LoadJpegQuantizationTable(MetadataHandler *handler, IStream *input,
         const GUID *vendor, DWORD options)
 {

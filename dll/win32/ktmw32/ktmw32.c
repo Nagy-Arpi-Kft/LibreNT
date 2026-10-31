@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel Transaction Manager API
+ * PROJECT:     LibreNT Kernel Transaction Manager API
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Transaction API entry points
  * COPYRIGHT:   Copyright 2010 Vincent Povirk for CodeWeavers

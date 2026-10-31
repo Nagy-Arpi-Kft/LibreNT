@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <advapi32.h>
 #include <stdlib.h>
 #include <wincred.h>
@@ -43,7 +43,7 @@
 #include "wine/debug.h"
 
 #include "advapi32_misc.h"
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 WINE_DEFAULT_DEBUG_CHANNEL(cred);
 
@@ -111,7 +111,7 @@ static DWORD registry_read_credential(HKEY hkey, PCREDENTIALW credential,
     ret = RegQueryValueExW(hkey, L"Comment", 0, &type, NULL, &count);
     if (ret != ERROR_FILE_NOT_FOUND && ret != ERROR_SUCCESS)
         return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (ret == ERROR_SUCCESS && type != REG_SZ)
 #else
     else if (type != REG_SZ)
@@ -136,7 +136,7 @@ static DWORD registry_read_credential(HKEY hkey, PCREDENTIALW credential,
     ret = RegQueryValueExW(hkey, L"TargetAlias", 0, &type, NULL, &count);
     if (ret != ERROR_FILE_NOT_FOUND && ret != ERROR_SUCCESS)
         return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (ret == ERROR_SUCCESS && type != REG_SZ)
 #else
     else if (type != REG_SZ)
@@ -161,7 +161,7 @@ static DWORD registry_read_credential(HKEY hkey, PCREDENTIALW credential,
     ret = RegQueryValueExW(hkey, L"UserName", 0, &type, NULL, &count);
     if (ret != ERROR_FILE_NOT_FOUND && ret != ERROR_SUCCESS)
         return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (ret == ERROR_SUCCESS && type != REG_SZ)
 #else
     else if (type != REG_SZ)
@@ -221,7 +221,7 @@ static DWORD registry_read_credential(HKEY hkey, PCREDENTIALW credential,
         return ret;
     else if (type != REG_DWORD)
         return ERROR_REGISTRY_CORRUPT;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (credential->Type == CRED_TYPE_DOMAIN_PASSWORD ||
         credential->Type == CRED_TYPE_DOMAIN_CERTIFICATE)
     {
@@ -324,7 +324,7 @@ static DWORD registry_write_credential(HKEY hkey, const CREDENTIALW *credential,
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD host_write_credential( const CREDENTIALW *credential, BOOL preserve_blob )
 {
     UNREFERENCED_PARAMETER(credential);
@@ -399,7 +399,7 @@ static DWORD host_write_credential( const CREDENTIALW *credential, BOOL preserve
 
     return ret ? ERROR_SUCCESS : GetLastError();
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 static DWORD open_cred_mgr_key(HKEY *hkey, BOOL open_for_write)
 {
@@ -784,7 +784,7 @@ BOOL WINAPI CredDeleteA(LPCSTR TargetName, DWORD Type, DWORD Flags)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD host_delete_credential( const WCHAR *targetname )
 {
     UNREFERENCED_PARAMETER(targetname);
@@ -820,7 +820,7 @@ static DWORD host_delete_credential( const WCHAR *targetname )
 
     return ret ? ERROR_SUCCESS : GetLastError();
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /******************************************************************************
  * CredDeleteW [ADVAPI32.@]
@@ -946,7 +946,7 @@ BOOL WINAPI CredEnumerateA(LPCSTR Filter, DWORD Flags, DWORD *Count,
 
 #define CRED_LIST_COUNT 16
 #define CRED_DATA_SIZE  2048
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD host_enumerate_credentials( const WCHAR *filter, CREDENTIALW **credentials, char *buf, DWORD *len, DWORD *count )
 {
     UNREFERENCED_PARAMETER(filter);
@@ -1056,7 +1056,7 @@ done:
     CloseHandle( mgr );
     return ret;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /******************************************************************************
  * CredEnumerateW [ADVAPI32.@]
@@ -1216,7 +1216,7 @@ BOOL WINAPI CredReadA(LPCSTR TargetName, DWORD Type, DWORD Flags, PCREDENTIALA *
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD host_read_credential( const WCHAR *targetname, CREDENTIALW **ret_credential )
 {
     UNREFERENCED_PARAMETER(targetname);
@@ -1303,7 +1303,7 @@ done:
     CloseHandle( mgr );
     return err;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /******************************************************************************
  * CredReadW [ADVAPI32.@]

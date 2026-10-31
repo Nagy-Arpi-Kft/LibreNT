@@ -1,9 +1,9 @@
 /*
- * ReactOS Win32 Applications
+ * LibreNT Win32 Applications
  * Copyright (C) 2005 ReactOS Team
  *
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS arp utility
+ * PROJECT:     LibreNT arp utility
  * FILE:        apps/utils/gettype/gettype.c
  * PURPOSE:
  * PROGRAMMERS: Brandon Turner (turnerb7@msu.edu)

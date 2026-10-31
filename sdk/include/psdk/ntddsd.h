@@ -1,6 +1,6 @@
 /**
  * This file has no copyright assigned and is placed in the Public Domain.
- * This file is part of the ReactOS PSDK package.
+ * This file is part of the LibreNT PSDK package.
  * No warranty is given; refer to the file DISCLAIMER within this package.
  */
 
@@ -66,7 +66,7 @@ typedef enum {
     SDP_CHAINED_MDL_SUPPORTED,
     SDP_HPI_SUPPORTED,
 
-    /* ReactOS extension: total sector count exposed by the bus driver */
+    /* LibreNT extension: total sector count exposed by the bus driver */
     SDP_TOTAL_SECTORS = 0x100,
     SDP_ROS_CARD_TYPE
 } SDBUS_PROPERTY;

@@ -3,7 +3,7 @@
 This directory builds the existing `ntfslib_new` parser natively on Linux and
 exposes it as a read-only FUSE 3 filesystem. It also provides image-inspection
 and focused mutation commands that do not require FUSE privileges.
-This is a dedicated Linux test build and is not added to ReactOS's top-level
+This is a dedicated Linux test build and is not added to LibreNT's top-level
 CMake targets.
 
 The mounted frontend is intentionally read-only and single-threaded. Normal
@@ -94,7 +94,7 @@ after growth.
 `--reparse` writes the complete validated raw value to standard output.
 `--set-reparse` consumes a complete Microsoft or third-party reparse buffer;
 `--delete-reparse` consumes its matching zero-data deletion envelope.
-These commands exercise the same shared mutation API as the ReactOS reparse
+These commands exercise the same shared mutation API as the LibreNT reparse
 FSCTLs.
 `--ea` prints each validated native NTFS EA as its `NEED_EA` marker, ASCII
 name, value length, and hexadecimal value. `--set-ea` reads an opaque value
@@ -279,8 +279,8 @@ incorrect result fails instead of being reported as fast.
   allocation changes; their external metadata and old clusters are then
   removed. Explicit basic timestamp and attribute updates work. Ordinary
   data/EOF changes automatically maintain last-write/change, allocation-only
-  changes maintain change, and ReactOS writable reads maintain last-access.
-  ReactOS also honors per-handle `-1` suppression and `-2` resume state for
+  changes maintain change, and LibreNT writable reads maintain last-access.
+  LibreNT also honors per-handle `-1` suppression and `-2` resume state for
   the three automatic timestamp fields.
 - `$ATTRIBUTE_LIST` lookup validates extension records and merges ordered,
   contiguous nonresident attribute segments into one cached logical run list.
@@ -291,7 +291,7 @@ incorrect result fails instead of being reported as fast.
   fragmented list copy-on-write, and releases replacement clusters again if
   the multi-record update aborts.
 - Logical `$DATA` stream enumeration is shared by the Linux inspector and
-  ReactOS `FileStreamInformation`. It includes named streams stored in
+  LibreNT `FileStreamInformation`. It includes named streams stored in
   `$ATTRIBUTE_LIST` extension records, reports physical allocation separately
   from logical size, and validates each referenced record and attribute before
   exposing it. Existing resident extension streams can be modified, resized,
@@ -306,10 +306,10 @@ incorrect result fails instead of being reported as fast.
   VCN-zero owner, including zero-length resident demotion.
 - Retrieval-pointer queries cover ordinary, sparse, compressed,
   `$ATTRIBUTE_LIST`-spanned, ADS, and nonresident directory streams. Volume
-  bitmap queries return literal `$Bitmap` state. ReactOS exposes both through
+  bitmap queries return literal `$Bitmap` state. LibreNT exposes both through
   `FSCTL_GET_RETRIEVAL_POINTERS` and `FSCTL_GET_VOLUME_BITMAP`.
 - Exact 64-bit volume geometry and downward, in-use MFT-record enumeration are
-  shared core operations. ReactOS exposes them through
+  shared core operations. LibreNT exposes them through
   `FSCTL_GET_NTFS_VOLUME_DATA` and `FSCTL_GET_NTFS_FILE_RECORD`; the latter
   returns only records that passed signature, bounds, attribute-layout, and
   update-sequence validation.
@@ -320,18 +320,18 @@ incorrect result fails instead of being reported as fast.
   filter-owned payload formats remain unsupported.
 - Native reparse buffers are validated and mutable through the shared core,
   including resident/nonresident transitions, tag/GUID replacement rules, and
-  duplicated parent metadata. ReactOS serves get/set/delete reparse FSCTLs.
+  duplicated parent metadata. LibreNT serves get/set/delete reparse FSCTLs.
   Symbolic-link and mount-point buffers are exposed as links; other tags remain
-  available through the raw API but need tag-specific consumers. ReactOS
+  available through the raw API but need tag-specific consumers. LibreNT
   create-time `STATUS_REPARSE` traversal remains unimplemented.
 - Native `$EA` / `$EA_INFORMATION` pairs are validated, readable, and mutable
-  through the shared core. ReactOS serves query/set EA IRPs and advertises the
+  through the shared core. LibreNT serves query/set EA IRPs and advertises the
   feature. Mutation is copy-on-write for the data pair and releases old runs
   only after the new MFT record is durable, but files needing
   `$ATTRIBUTE_LIST` extent allocation remain unsupported and multi-record
   crash atomicity still depends on future LFS transactions.
 - Legacy per-file and NTFS 3.x centralized security descriptors are validated
-  and readable through the shared core; ReactOS serves the requested security
+  and readable through the shared core; LibreNT serves the requested security
   components through `IRP_MJ_QUERY_SECURITY`. Creating descriptors and
   transactionally updating `$Secure` indexes remain unimplemented.
 - Exact pathname lookup descends `$I30` lazily and validates only the selected

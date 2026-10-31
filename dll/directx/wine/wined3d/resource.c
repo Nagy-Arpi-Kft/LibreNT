@@ -31,7 +31,7 @@ WINE_DECLARE_DEBUG_CHANNEL(d3d_perf);
 static void resource_check_usage(uint32_t usage, unsigned int access)
 {
     static const uint32_t handled = WINED3DUSAGE_DYNAMIC
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             | WINED3DUSAGE_SOFTWAREPROCESSING
             | WINED3DUSAGE_POINTS
 #endif
@@ -93,7 +93,7 @@ HRESULT resource_init(struct wined3d_resource *resource, struct wined3d_device *
 
     if (bind_flags & (WINED3D_BIND_RENDER_TARGET | WINED3D_BIND_DEPTH_STENCIL))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         BOOL access_is_valid = (access & (WINED3D_RESOURCE_ACCESS_CPU | WINED3D_RESOURCE_ACCESS_GPU))
                 == WINED3D_RESOURCE_ACCESS_GPU;
 
@@ -457,7 +457,7 @@ void wined3d_resource_update_draw_binding(struct wined3d_resource *resource)
 {
     const struct wined3d_d3d_info *d3d_info = &resource->device->adapter->d3d_info;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (d3d_info->wined3d_creation_flags & WINED3D_NO3D)
     {
         resource->draw_binding = resource->map_binding;

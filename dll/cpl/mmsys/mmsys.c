@@ -1,8 +1,8 @@
 /*
  *
- * PROJECT:         ReactOS Multimedia Control Panel
+ * PROJECT:         LibreNT Multimedia Control Panel
  * FILE:            dll/cpl/mmsys/mmsys.c
- * PURPOSE:         ReactOS Multimedia Control Panel
+ * PURPOSE:         LibreNT Multimedia Control Panel
  * PROGRAMMER:      Thomas Weidenmueller <w3seek@reactos.com>
  *                  Dmitry Chapyshev <dmitry@reactos.org>
  * UPDATE HISTORY:
@@ -46,14 +46,14 @@ static EVENT_LABEL_ITEM EventLabels[] =
 {
     {
         L"WindowsLogon",
-        L"LiberNT Logon",
-        IDS_REACTOS_LOGON,
+        L"LibreNT Logon",
+        IDS_LIBRENT_LOGON,
         L"ReactOS_Logon.wav"
     },
     {
         L"WindowsLogoff",
-        L"LiberNT Logoff",
-        IDS_REACTOS_LOGOFF,
+        L"LibreNT Logoff",
+        IDS_LIBRENT_LOGOFF,
         L"ReactOS_Logoff.wav"
     },
     {
@@ -68,8 +68,8 @@ static SYSTEM_SCHEME_ITEM SystemSchemes[] =
 {
     {
         L".Default",
-        L"LiberNT Standard",
-        IDS_REACTOS_DEFAULT_SCHEME
+        L"LibreNT Standard",
+        IDS_LIBRENT_DEFAULT_SCHEME
     },
     {
         L".None",

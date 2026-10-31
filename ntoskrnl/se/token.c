@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Security access token implementation base support routines
  * COPYRIGHT:   Copyright David Welch <welch@cwcom.net>
@@ -2743,7 +2743,7 @@ SeIsParentOfChildAppContainer(
     UNREFERENCED_PARAMETER(ParentLowboxNumber);
     UNREFERENCED_PARAMETER(ChildLowboxNumber);
 
-    /* ReactOS does not create lowbox token hierarchies. */
+    /* LibreNT does not create lowbox token hierarchies. */
     return FALSE;
 }
 

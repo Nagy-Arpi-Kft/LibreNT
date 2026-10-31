@@ -166,7 +166,7 @@ AcpiExSystemMemorySpaceHandler (
 
         /* Create a new mapping starting at the address given */
 
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
         /* ACPI tables are normal memory, but OperationRegions can be MMIO or
          * shared firmware buffers and must not inherit the table mapping's
          * cached ARM64 alias. MmNonCached selects Device memory for MMIO and
@@ -219,7 +219,7 @@ access:
      * transfer up into smaller (byte-size) chunks because the AML specifically
      * asked for a transfer width that the hardware may require.
      */
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
     /* Order Normal-NC shared-buffer accesses against Device MMIO doorbells. */
     KeMemoryBarrier();
 #endif
@@ -296,7 +296,7 @@ access:
         break;
     }
 
-#if defined(__REACTOS__) && defined(_M_ARM64)
+#if defined(__LIBRENT__) && defined(_M_ARM64)
     KeMemoryBarrier();
 #endif
 

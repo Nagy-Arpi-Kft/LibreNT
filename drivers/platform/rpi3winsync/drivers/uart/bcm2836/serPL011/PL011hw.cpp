@@ -318,7 +318,7 @@ done:
     // Log new UART control information
     //
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         static const char* updateModeStrings[] = {
 #else
         static char* updateModeStrings[] = {

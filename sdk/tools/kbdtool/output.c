@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS Build Tools [Keyboard Layout Compiler]
+ * PROJECT:         LibreNT Build Tools [Keyboard Layout Compiler]
  * LICENSE:         BSD - See COPYING.BSD in the top level directory
  * FILE:            tools/kbdtool/output.c
  * PURPOSE:         Output Logic (Source Builder)
- * PROGRAMMERS:     ReactOS Foundation
+ * PROGRAMMERS:     LibreNT Foundation
  */
 
 /* INCLUDES *******************************************************************/
@@ -404,8 +404,8 @@ kbd_rc(IN PKEYNAME DescriptionData,
             InternalName,
             gVersion,
             gSubVersion,
-            "Created by ReactOS KbdTool",
-            "Created by ReactOS KbdTool",
+            "Created by LibreNT KbdTool",
+            "Created by LibreNT KbdTool",
             gCopyright,
             InternalName,
             gVersion,

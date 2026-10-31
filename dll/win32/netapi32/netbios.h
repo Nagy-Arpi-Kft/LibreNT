@@ -20,12 +20,12 @@
 #include <stdarg.h>
 #include "windef.h"
 #include "winbase.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "lm.h"
 #endif
 #include "nb30.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
 #endif

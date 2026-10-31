@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS USB Port Driver
+ * PROJECT:     LibreNT USB Port Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     USBPort declarations
  * COPYRIGHT:   Copyright 2017 Vadim Galyant <vgal@rambler.ru>
@@ -23,7 +23,7 @@
 #include <usbdlib.h>
 #include <usbuser.h>
 #include <drivers/usbport/usbmport.h>
-#include <reactos/drivers/dumpstor.h>
+#include <librent/drivers/dumpstor.h>
 
 #if DBG
 #define USBPORT_LOG_IRQL(Tag)                                                      \

@@ -3,7 +3,7 @@
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            drivers/storage/class/ramdisk/ramdisk.c
  * PURPOSE:         Main Driver Routines
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  *                  Ahmed ARIF 2025 <arif193@gmail.com>
  */
 
@@ -24,7 +24,7 @@
 #include <iotypes.h>
 #include <rtlfuncs.h>
 #include <arc/arc.h>
-#include <reactos/drivers/ntddrdsk.h>
+#include <librent/drivers/ntddrdsk.h>
 #include "../../../filesystems/fs_rec/fs_rec.h"
 #include <stdio.h>
 #include <limits.h>

@@ -5,7 +5,7 @@
  * COPYRIGHT:   Copyright 2026 LiberNT Team
  *
  * GCC 16's libstdc++ uses the mingw-w64 POSIX-style large-file wrappers.
- * Redirect them to the equivalent MSVCRT entry points exported by ReactOS.
+ * Redirect them to the equivalent MSVCRT entry points exported by LibreNT.
  */
 
 typedef struct _iobuf FILE;

@@ -34,7 +34,7 @@
 #include "shlobj.h"
 #include "mlang.h"
 #include "ddeml.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/unicode.h"
 #endif
 #include "wine/debug.h"
@@ -351,7 +351,7 @@ HRESULT WINAPI StrRetToStrW(LPSTRRET lpStrRet, const ITEMIDLIST *pidl, LPWSTR *p
   switch (lpStrRet->uType)
   {
   case STRRET_WSTR:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hRet = lpStrRet->pOleStr ? S_OK : E_FAIL;
     *ppszName = lpStrRet->pOleStr;
     lpStrRet->pOleStr = NULL; /* Windows does this, presumably in case someone calls SHFree */
@@ -825,7 +825,7 @@ typedef struct tagSHLWAPI_BYTEFORMATS
   double   dDivisor;
   double   dNormaliser;
   int      nDecimals;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   UINT     nFormatID;
 #else
   WCHAR     wPrefix;
@@ -882,7 +882,7 @@ HRESULT WINAPI StrFormatByteSizeEx(LONGLONG llBytes, SFBS_FLAGS flags, LPWSTR lp
 
   static const SHLWAPI_BYTEFORMATS bfFormats[] =
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { 10*KB, 10.24, 100.0, 2, IDS_KB_FORMAT }, /* 10 KB */
     { 100*KB, 102.4, 10.0, 1, IDS_KB_FORMAT }, /* 100 KB */
     { 1000*KB, 1024.0, 1.0, 0, IDS_KB_FORMAT }, /* 1000 KB */
@@ -918,7 +918,7 @@ HRESULT WINAPI StrFormatByteSizeEx(LONGLONG llBytes, SFBS_FLAGS flags, LPWSTR lp
     { 0, 10995116277.76, 100.00, 2, 'E' } /* EB's, catch all */
 #endif
   };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   WCHAR szBuff[40], wszFormat[40];
 #else
   WCHAR wszAdd[] = L" ?B";
@@ -971,7 +971,7 @@ HRESULT WINAPI StrFormatByteSizeEx(LONGLONG llBytes, SFBS_FLAGS flags, LPWSTR lp
       return E_INVALIDARG;
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!FormatDouble(dBytes, bfFormats[i].nDecimals, szBuff, ARRAYSIZE(szBuff)))
     return E_FAIL;
   LoadStringW(shlwapi_hInstance, bfFormats[i].nFormatID, wszFormat, ARRAYSIZE(wszFormat));

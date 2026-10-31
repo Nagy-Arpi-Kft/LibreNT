@@ -1,12 +1,12 @@
 
 
 # Setup settings file
-add_cd_file(FILE ${REACTOS_BINARY_DIR}/boot/bootdata/txtsetup.$<CONFIG>.sif DESTINATION reactos NO_CAB NAME_ON_CD txtsetup.sif FOR bootcd)
-add_cd_file(FILE ${REACTOS_BINARY_DIR}/boot/bootdata/txtsetup.$<CONFIG>.sif DESTINATION ${ARCH} NAME_ON_CD txtsetup.sif FOR preinstall)
+add_cd_file(FILE ${LIBRENT_BINARY_DIR}/boot/bootdata/txtsetup.$<CONFIG>.sif DESTINATION librent NO_CAB NAME_ON_CD txtsetup.sif FOR bootcd)
+add_cd_file(FILE ${LIBRENT_BINARY_DIR}/boot/bootdata/txtsetup.$<CONFIG>.sif DESTINATION ${ARCH} NAME_ON_CD txtsetup.sif FOR preinstall)
 
 add_custom_target(converted_caroots_inf DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/caroots.inf)
 utf16le_convert(${CMAKE_CURRENT_SOURCE_DIR}/caroots.inf ${CMAKE_CURRENT_BINARY_DIR}/caroots.inf)
-add_cd_file(TARGET converted_caroots_inf FILE ${CMAKE_CURRENT_BINARY_DIR}/caroots.inf DESTINATION reactos NO_CAB FOR bootcd)
+add_cd_file(TARGET converted_caroots_inf FILE ${CMAKE_CURRENT_BINARY_DIR}/caroots.inf DESTINATION librent NO_CAB FOR bootcd)
 add_cd_file(TARGET converted_caroots_inf FILE ${CMAKE_CURRENT_BINARY_DIR}/caroots.inf DESTINATION ${ARCH} FOR preinstall)
 
 # Common hives
@@ -17,7 +17,7 @@ add_registry_inf(
     hivesys.inf
     hivebcd.inf)
 
-if(REACTOS_USE_XPDM)
+if(LIBRENT_USE_XPDM)
     add_registry_inf(hivesys_xpdm.inf)
 endif()
 
@@ -27,21 +27,14 @@ if(ARCH STREQUAL "arm64")
         add_registry_inf(hivesys_rpi3.inf)
     endif()
     if(RPI5_SUPPORT AND
-       (REACTOS_USE_XPDM OR
-        (REACTOS_USE_WDDM AND (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))))
+       (LIBRENT_USE_XPDM OR
+        (LIBRENT_USE_WDDM AND (LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))))
         add_registry_inf(hivesys_rpi5.inf)
     endif()
 elseif(ARCH STREQUAL "amd64")
     add_registry_inf(hivesys_x86.inf hivesys_amd64.inf)
 elseif(ARCH STREQUAL "i386")
     add_registry_inf(hivesys_x86.inf hivesys_i386.inf)
-elseif(ARCH STREQUAL "riscv64")
-    add_registry_inf(hivesys_riscv64.inf)
-    if(SPACEMIT_K1_SUPPORT)
-        add_registry_inf(hivesys_spacemit_k1.inf)
-    endif()
-elseif(ARCH STREQUAL "ppc")
-    add_registry_inf(hivesys_ppc.inf)
 endif()
 
 if(LATTEPANDAMU_SUPPORT)
@@ -57,7 +50,7 @@ if(ENABLE_WOW64)
 endif()
 
 # Regtest
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/bootcdregtest/regtest.cmd DESTINATION reactos/bin FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/bootcdregtest/regtest.cmd DESTINATION librent/bin FOR all)
 
 # autorun.inf
 add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/autorun.inf DESTINATION root NO_CAB FOR bootcd livecd)
@@ -67,15 +60,15 @@ add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/icon.ico DESTINATION root NO_CAB FO
 
 # readme.txt
 add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/readme.txt DESTINATION root NO_CAB FOR bootcd livecd)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/readme.txt DESTINATION reactos FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/system.ini DESTINATION reactos FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/win.ini DESTINATION reactos FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/readme.txt DESTINATION librent FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/system.ini DESTINATION librent FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/win.ini DESTINATION librent FOR all)
 
 ## NOTE: The root setup.exe file is a renamed welcome.exe for BootCD purposes.
 # welcome.exe optional custom configuration (only for LiveImage)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/welcome_config/)
     # Copy the main configuration file
-    add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/welcome_config/welcome.ini DESTINATION reactos NO_CAB FOR livecd)
+    add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/welcome_config/welcome.ini DESTINATION librent NO_CAB FOR livecd)
 
     # Convert the translation files (name format: xx-YY.ini) into UTF-16
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/welcome_config)
@@ -84,7 +77,7 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/welcome_config/)
         set(_converted_file ${CMAKE_CURRENT_BINARY_DIR}/welcome_config/${_file})
         set(_source_file ${CMAKE_CURRENT_SOURCE_DIR}/welcome_config/${_file})
         utf16le_convert(${_source_file} ${_converted_file})
-        add_cd_file(TARGET converted_welcome_i18n_files FILE ${_converted_file} DESTINATION reactos/welcome NO_CAB NAME_ON_CD ${_file} FOR livecd)
+        add_cd_file(TARGET converted_welcome_i18n_files FILE ${_converted_file} DESTINATION librent/welcome NO_CAB NAME_ON_CD ${_file} FOR livecd)
         list(APPEND _converted_welcome_i18n_files ${_converted_file})
     endforeach(_file)
     add_custom_target(converted_welcome_i18n_files DEPENDS ${_converted_welcome_i18n_files})
@@ -95,13 +88,13 @@ set(_boot_media_freeldr_ini "${FREELDR_BOOTCD_INI}")
 add_cd_file(FILE ${_boot_media_freeldr_ini} DESTINATION root NO_CAB NAME_ON_CD freeldr.ini FOR bootcd livecd)
 
 # Unattend
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/bootcd/unattend.inf DESTINATION reactos NO_CAB FOR bootcd)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/livecd/unattend.inf DESTINATION reactos NO_CAB FOR livecd)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/livecd/unattend.inf DESTINATION reactos NO_CAB FOR livecd)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/preinstall/unattend.inf DESTINATION reactos FOR preinstall)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/bootcd/unattend.inf DESTINATION librent NO_CAB FOR bootcd)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/livecd/unattend.inf DESTINATION librent NO_CAB FOR livecd)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/livecd/unattend.inf DESTINATION librent NO_CAB FOR livecd)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/preinstall/unattend.inf DESTINATION librent FOR preinstall)
 
 # Keep a blank hook for commands added manually before building the image.
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/app_launcher.cmd DESTINATION "reactos/system32" FOR preinstall livecd)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/app_launcher.cmd DESTINATION "librent/system32" FOR preinstall livecd)
 
 # LiveImage shortcuts
 add_custom_target(livecd_links)
@@ -157,14 +150,14 @@ set(dir_startmenu_accessibility "${dir_startmenu_accessories}/Accessibility")
 set(dir_startmenu_comms         "${dir_startmenu_accessories}/Communications")
 set(dir_startmenu_entertainment "${dir_startmenu_accessories}/Entertainment")
 set(dir_startmenu_systemtools   "${dir_startmenu_accessories}/System Tools")
-set(dir_quicklaunch             "reactos/system32/config/systemprofile/AppData/Roaming/Microsoft/Internet Explorer/Quick Launch")
+set(dir_quicklaunch             "librent/system32/config/systemprofile/AppData/Roaming/Microsoft/Internet Explorer/Quick Launch")
 
 cmdenvvar(envvar_systemdrive "SystemDrive" TRUE)
 cmdenvvar(envvar_archdir     "PROCESSOR_ARCHITECTURE:x86=I386" TRUE)
-add_livecd_shortcut("Install LiberNT"
+add_livecd_shortcut("Install LibreNT"
     "shell:system\\cmd.exe"
-    CMDLINE_ARGS "/D /E:ON /C \"start ${envvar_systemdrive}\\${envvar_archdir}\\libernt.exe\""
-    ICON "${envvar_systemdrive}\\${envvar_archdir}\\libernt.exe"
+    CMDLINE_ARGS "/D /E:ON /C \"start ${envvar_systemdrive}\\${envvar_archdir}\\librent.exe\""
+    ICON "${envvar_systemdrive}\\${envvar_archdir}\\librent.exe"
     MINIMIZE
     DESTINATION "${dir_allusers_desktop}")
 
@@ -172,7 +165,7 @@ add_livecd_shortcut("Read Me"
     "shell:windows\\readme.txt"
     ICON "${envvar_systemroot}\\system32\\shell32.dll" ICON_INDEX -152
     DESTINATION "${dir_allusers_desktop}")
-add_livecd_shortcut("LiberNT Explorer"
+add_livecd_shortcut("LibreNT Explorer"
     "shell:windows\\explorer.exe" ICON_INDEX 1
     WORKDIR "${envvar_homedrive}${envvar_homepath}"
     DESTINATION "${dir_startmenu_programs}" "${dir_quicklaunch}")
@@ -240,7 +233,7 @@ add_livecd_shortcut("Task Manager 11"
 add_livecd_shortcut("LntGet"
     "shell:system\\lntget.exe" ICON_INDEX 0 CMDLINE_ARGS "gui"
     DESTINATION "${dir_startmenu_systemtools}")
-add_livecd_shortcut("LiberNT Driver Installer"
+add_livecd_shortcut("LibreNT Driver Installer"
     "shell:system\\lntdrv.exe" ICON_INDEX 0
     DESTINATION "${dir_startmenu_systemtools}")
 add_livecd_shortcut("Calculator"

@@ -18,7 +18,7 @@
 #pragma once
 
 #include <shlobj.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #include "../btrfs.h"
 #else

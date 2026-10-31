@@ -1,13 +1,13 @@
-# ReactOS WINE porting/syncing reference file
+# LibreNT WINE porting/syncing reference file
 # Update this file when you port/sync a dll/program from WINE.
 
-The ReactOS Project shares quite a bit of code with the WINE project.
+The LibreNT Project shares quite a bit of code with the WINE project.
 This document should provide a complete reference for all of the
-locations in the ReactOS source tree where code is shared between the
+locations in the LibreNT source tree where code is shared between the
 two projects. If you find something is missing from this documentation
 please add it.
 
-If you find that a function in ReactOS that is not implemented properly
+If you find that a function in LibreNT that is not implemented properly
 and is based on WINE sources, check the latest Winehq CVS and see if
 it has been fixed there. If so, please submit a patch to
 ros-dev@reactos.org. Otherwise please send a patch to both
@@ -37,7 +37,7 @@ dll/directx/wine/d3dcompiler_47 # Synced to Wine-11.14
 dll/directx/wine/d3drm          # Synced to Wine-11.14
 dll/directx/wine/d3dx9_24 => 43 # Synced to Wine-11.14
 dll/directx/wine/d3dxof         # Synced to Wine-11.14
-dll/directx/wine/dcomp          # Synced to Wine-11.14 (ReactOS composition backend)
+dll/directx/wine/dcomp          # Synced to Wine-11.14 (LibreNT composition backend)
 dll/directx/wine/ddraw          # Synced to Wine-11.14
 dll/directx/wine/devenum        # Synced to Wine-11.14
 dll/directx/wine/dinput         # Synced to Wine-11.14
@@ -54,7 +54,7 @@ dll/directx/wine/qcap           # Synced to Wine-11.14
 dll/directx/wine/qedit          # Synced to Wine-11.14
 dll/directx/wine/quartz         # Synced to Wine-11.14
 dll/directx/wine/wined3d        # Synced to Wine-11.14
-dll/directx/wine/winegstreamer  # Synced to Wine-11.14 (ReactOS native parser backend)
+dll/directx/wine/winegstreamer  # Synced to Wine-11.14 (LibreNT native parser backend)
 
 dll/win32/activeds            # Synced to Wine-11.14
 dll/win32/activeds.tlb        # Synced to Wine-11.14
@@ -65,11 +65,11 @@ dll/win32/atl80               # Synced to Wine-11.14
 dll/win32/atl100              # Synced to Wine-11.14
 dll/win32/avifil32            # Synced to Wine-11.14
 dll/win32/avrt                # Synced to Wine-11.14
-dll/win32/iyuv_32             # Synced to Wine-11.14 (ReactOS native colorspace backend)
+dll/win32/iyuv_32             # Synced to Wine-11.14 (LibreNT native colorspace backend)
 dll/win32/bcrypt              # Synced to Wine-11.14
 dll/win32/bcryptprimitives    # Synced to Wine-11.14
 dll/win32/bluetoothapis       # Synced to Wine-11.14
-dll/win32/explorerframe       # Synced to Wine-11.14 browseui (ReactOS shell extensions retained)
+dll/win32/explorerframe       # Synced to Wine-11.14 browseui (LibreNT shell extensions retained)
 dll/win32/cabinet             # Synced to Wine-11.14
 dll/win32/cfgmgr32            # Synced to Wine-11.14
 dll/win32/clusapi             # Synced to Wine-11.14
@@ -249,7 +249,7 @@ dll/win32/updspapi            # Synced to Wine-11.14
 dll/win32/url                 # Synced to Wine-11.14
 dll/win32/urlmon              # Synced to Wine-11.14
 dll/win32/usp10               # Synced to Wine-11.14
-dll/win32/uxtheme             # Synced to Wine-11.14 (ReactOS native theme hooks and rendering retained)
+dll/win32/uxtheme             # Synced to Wine-11.14 (LibreNT native theme hooks and rendering retained)
 dll/win32/vbscript            # Synced to Wine-11.14
 dll/win32/version             # Synced to Wine-11.14
 dll/win32/vssapi              # Synced to Wine-11.14
@@ -298,7 +298,7 @@ dll/win32/winscard            # Synced to Wine-11.14
 dll/win32/wintrust            # Synced to Wine-11.14
 dll/win32/winusb              # Synced to Wine-11.14
 dll/win32/wintypes            # Synced to Wine-11.14
-dll/win32/winedmo             # Synced to Wine-11.14 (ReactOS native FFmpeg backend)
+dll/win32/winedmo             # Synced to Wine-11.14 (LibreNT native FFmpeg backend)
 dll/win32/wldap32             # Synced to Wine-11.14
 dll/win32/wmi                 # Synced to Wine-11.14
 dll/win32/wmiutils            # Synced to Wine-11.14
@@ -326,7 +326,7 @@ dll/cpl/joy                   # Synced to Wine-11.14
 
 win32ss/printing/monitors/localmon/ui/  # Synced to Wine-11.14 (known there as /dlls/localui)
 
-ReactOS shares the following programs with Winehq.
+LibreNT shares the following programs with Winehq.
 
 base/applications/cmdutils/cscript  # Synced to Wine-11.14
 base/applications/cmdutils/reg      # Synced to Wine-11.14

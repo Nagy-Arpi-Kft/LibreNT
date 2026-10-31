@@ -1,5 +1,5 @@
-#ifndef _REACTOS_SUPPORT_CODE_H
-#define _REACTOS_SUPPORT_CODE_H
+#ifndef _LIBRENT_SUPPORT_CODE_H
+#define _LIBRENT_SUPPORT_CODE_H
 
 #include <stdarg.h>
 #include <stdio.h>

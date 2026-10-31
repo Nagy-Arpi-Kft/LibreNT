@@ -334,7 +334,7 @@ static void test_dtm_get_monthcal(void)
 
     flush_sequences(sequences, NUM_MSG_SEQUENCES);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     {
@@ -505,7 +505,7 @@ static void test_dtm_set_range_swap_min_max(void)
     expect(1, r);
     r = SendMessageA(hWnd, DTM_GETRANGE, 0, (LPARAM)getSt);
     ok(r == (GDTR_MIN | GDTR_MAX), "Expected %x, not %x(GDTR_MIN) or %x(GDTR_MAX), got %Ix\n", (GDTR_MIN | GDTR_MAX), GDTR_MIN, GDTR_MAX, r);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     {
@@ -527,7 +527,7 @@ static void test_dtm_set_range_swap_min_max(void)
     /* the time part seems to not change after swapping the min and max values
     and doing DTM_SETSYSTEMTIME */
     expect_systime_date(&st[0], &getSt[0]);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     {
@@ -548,7 +548,7 @@ static void test_dtm_set_range_swap_min_max(void)
     swapped*/
     r = SendMessageA(hWnd, DTM_GETRANGE, 0, (LPARAM)getSt);
     ok(r == (GDTR_MIN | GDTR_MAX), "Expected %x, not %x(GDTR_MIN) or %x(GDTR_MAX), got %Ix\n", (GDTR_MIN | GDTR_MAX), GDTR_MIN, GDTR_MAX, r);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine
 #endif
     {

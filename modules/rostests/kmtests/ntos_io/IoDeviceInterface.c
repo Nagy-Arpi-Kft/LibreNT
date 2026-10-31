@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Test for Device Interface functions
  * COPYRIGHT:   Copyright 2011 Filip Navara <xnavara@volny.cz>
@@ -64,7 +64,7 @@ Test_IoOpenDeviceInterfaceRegistryKey(
     size_t n;
 
     RtlInitUnicodeString(&SymbolicLinkName, SymbolicLink);
-    RtlInitUnicodeString(&KeyName, L"ReactOS_kmtest");
+    RtlInitUnicodeString(&KeyName, L"LibreNT_kmtest");
 
     /* It's okay to call this from a user process's thread */
     Status = IoOpenDeviceInterfaceRegistryKey(&SymbolicLinkName, KEY_CREATE_SUB_KEY, &DeviceInterfaceKey);

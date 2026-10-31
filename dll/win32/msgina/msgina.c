@@ -1,5 +1,5 @@
 /*
- *  ReactOS GINA
+ *  LibreNT GINA
  *  Copyright (C) 2003-2004, 2006 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,9 +17,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /*
- * PROJECT:         ReactOS msgina.dll
+ * PROJECT:         LibreNT msgina.dll
  * FILE:            dll/win32/msgina/msgina.c
- * PURPOSE:         ReactOS Logon GINA DLL
+ * PURPOSE:         LibreNT Logon GINA DLL
  * PROGRAMMER:      Thomas Weidenmueller (w3seek@users.sourceforge.net)
  *                  Hervé Poussineau (hpoussin@reactos.org)
  */

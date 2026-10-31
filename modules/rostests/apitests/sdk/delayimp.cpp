@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Tests for delayload
  * COPYRIGHT:   Copyright 2023-2025 Mark Jansen <mark.jansen@reactos.org>
@@ -38,7 +38,7 @@
 #define VcppException(sev,err)  ((sev) | (FACILITY_VISUALCPP<<16) | err)
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WINMM_DLLNAME   "winmm.dll"
 #else
 #define WINMM_DLLNAME   "WINMM.dll"

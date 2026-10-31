@@ -213,7 +213,7 @@ static HRESULT lookup_identifier(exec_ctx_t *ctx, BSTR name, vbdisp_invoke_type_
             return S_OK;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(ctx->func->code_ctx->named_item &&
        !(ctx->func->code_ctx->named_item->flags & SCRIPTITEM_CODEONLY) &&
        get_named_item_context_disp(ctx->script, ctx->func->code_ctx->named_item))
@@ -2113,7 +2113,7 @@ static HRESULT interp_me(exec_ctx_t *ctx)
     if(ctx->vbthis) {
         disp = (IDispatch*)&ctx->vbthis->IDispatchEx_iface;
     }else if(ctx->code->named_item) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         disp = (ctx->code->named_item->flags & SCRIPTITEM_CODEONLY)
                ? (IDispatch*)&ctx->code->named_item->script_obj->IDispatchEx_iface
                : get_named_item_context_disp(ctx->script, ctx->code->named_item);

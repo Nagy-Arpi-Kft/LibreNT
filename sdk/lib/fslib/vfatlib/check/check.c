@@ -251,7 +251,7 @@ static time_t date_dos2unix(unsigned short time, unsigned short date)
     return secs;
 }
 
-#ifdef __REACTOS__ // Old version!
+#ifdef __LIBRENT__ // Old version!
 
 static char *file_stat(DOS_FILE * file)
 {
@@ -349,7 +349,7 @@ static int bad_name(DOS_FILE * file)
     if (atari_format && suspicious)
 	return 1;
 
-#ifdef __REACTOS__ // Old !!!!!!!!!!!!!!!
+#ifdef __LIBRENT__ // Old !!!!!!!!!!!!!!!
 
     /* Only complain about too much suspicious chars in interactive mode,
      * never correct them automatically. The chars are all basically ok, so we
@@ -461,13 +461,13 @@ static void auto_rename(DOS_FILE * file)
 
 static void rename_file(DOS_FILE * file)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     unsigned char name[46];
     unsigned char *walk, *here;
 #endif
 
     if (!file->offset) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	printf("Cannot rename FAT32 root dir\n");
 #else
 	VfatPrint( "Cannot rename FAT32 root dir\n" );
@@ -475,7 +475,7 @@ static void rename_file(DOS_FILE * file)
 	return;			/* cannot rename FAT32 root dir */
     }
     while (1) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	printf("New name: ");
 	fflush(stdout);
 	if (fgets((char *)name, 45, stdin)) {
@@ -520,13 +520,13 @@ static int handle_dot(DOS_FS * fs, DOS_FILE * file, int dots)
 	if (interactive)
 	    printf("1) Drop it\n2) Auto-rename\n3) Rename\n"
 		   "4) Convert to directory\n");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	else
 #else
 	else if (rw)
 #endif
 	    printf("  Auto-renaming it.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (rw || interactive) {
 #endif
 	switch (interactive ? get_key("1234", "?") : '2') {
@@ -544,7 +544,7 @@ static int handle_dot(DOS_FS * fs, DOS_FILE * file, int dots)
 	    MODIFY(file, size, htole32(0));
 	    MODIFY(file, attr, file->dir_ent.attr | ATTR_DIR);
 	    break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		}
 #endif
 	}
@@ -565,7 +565,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 
     if (file->dir_ent.attr & ATTR_DIR) {
 	if (le32toh(file->dir_ent.size)) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    printf("%s\n  Directory has non-zero size. Fixing it.\n",
 		   path_name(file));
 #else
@@ -582,7 +582,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	    if (FSTART(file, fs) != expect) {
 		printf("%s\n  Start (%lu) does not point to parent (%lu)\n",
 		       path_name(file), (unsigned long)FSTART(file, fs), (long)expect);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (rw)
 #endif
 		MODIFY_START(file, expect, fs);
@@ -599,7 +599,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	    if (FSTART(file, fs) != expect) {
 		printf("%s\n  Start (%lu) does not point to .. (%lu)\n",
 		       path_name(file), (unsigned long)FSTART(file, fs), (unsigned long)expect);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (rw)
 #endif
 		MODIFY_START(file, expect, fs);
@@ -607,7 +607,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	    return 0;
 	}
 	if (FSTART(file, fs) == 0) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    printf("%s\n Start does point to root directory. Deleting dir. \n",
 		   path_name(file));
 #else
@@ -624,14 +624,14 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	       path_name(file));
 	if (!file->offset)
 	    die("Bad FAT32 root directory! (bad start cluster 1)\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (rw)
 #endif
 	MODIFY_START(file, 0, fs);
     }
     if (FSTART(file, fs) >= fs->data_clusters + 2) {
 	printf
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    ("%s\n  Start cluster beyond limit (%lu > %lu). Truncating file.\n",
 	     path_name(file), (unsigned long)FSTART(file, fs),
 	     (unsigned long)(fs->data_clusters + 1));
@@ -645,7 +645,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	    die("Bad FAT32 root directory! (start cluster beyond limit: %lu > %lu)\n",
 		(unsigned long)FSTART(file, fs),
 		(unsigned long)(fs->data_clusters + 1));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (rw)
 #endif
 	MODIFY_START(file, 0, fs);
@@ -657,7 +657,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	get_fat(&curEntry, fs->fat, curr, fs);
 
 	if (!curEntry.value || bad_cluster(fs, curr)) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    printf("%s\n  Contains a %s cluster (%lu). Assuming EOF.\n",
 		   path_name(file), curEntry.value ? "bad" : "free", (unsigned long)curr);
 #else
@@ -666,18 +666,18 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 		   (rw) ? " Assuming EOF." : "");
 #endif
 	    if (prev)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    {
 	    if (rw)
 #endif
 		set_fat(fs, prev, -1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    }
 #endif
 	    else if (!file->offset)
 		die("FAT32 root dir starts with a bad cluster!");
 	    else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (rw)
 #endif
 		MODIFY_START(file, 0, fs);
@@ -685,7 +685,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	}
 	if (!(file->dir_ent.attr & ATTR_DIR) && le32toh(file->dir_ent.size) <=
 	    (uint64_t)clusters * fs->cluster_size) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (rw) {
 #endif
 	    printf
@@ -695,7 +695,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 		 (unsigned long long)clusters * fs->cluster_size,
 		 le32toh(file->dir_ent.size));
 	    truncate_file(fs, file, clusters);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    } else {
 	    printf
 		("%s\n  File size is %u bytes, cluster chain length is > %llu "
@@ -718,7 +718,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 		else
 		    clusters2++;
 	    restart = file->dir_ent.attr & ATTR_DIR;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    if (!owner->offset) {
 #else
 	    if (!owner->offset && rw) {
@@ -727,7 +727,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 		       "is FAT32 root dir.\n",
 		       (unsigned long long)clusters * fs->cluster_size);
 		do_trunc = 2;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    } else if (!file->offset) {
 #else
 	    } else if (!file->offset && rw) {
@@ -743,12 +743,12 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 		       restart ? " and restart" : "",
 		       (unsigned long long)clusters * fs->cluster_size);
 	    else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (rw)
 #endif
 		printf("  Truncating second to %llu bytes.\n",
 		       (unsigned long long)clusters * fs->cluster_size);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    if (do_trunc != 2
 		&& (do_trunc == 1
 #else
@@ -796,7 +796,7 @@ static int check_file(DOS_FS * fs, DOS_FILE * file)
 	prev = curr;
     }
     if (!(file->dir_ent.attr & ATTR_DIR) && le32toh(file->dir_ent.size) >
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	(uint64_t)clusters * fs->cluster_size) {
 #else
 	(uint64_t)clusters * fs->cluster_size && rw) {
@@ -843,7 +843,7 @@ static int check_dir(DOS_FS * fs, DOS_FILE ** root, int dots)
 	       path_name(parent), bad, good + bad);
 	if (!dots)
 	    printf("  Not dropping root directory.\n");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	else if (!interactive)
 #else
 	else if (!interactive || !rw)
@@ -874,7 +874,7 @@ static int check_dir(DOS_FS * fs, DOS_FILE ** root, int dots)
 		dotdot++;
 	}
 	if (!((*walk)->dir_ent.attr & ATTR_VOLUME) && bad_name(*walk)) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    puts(path_name(*walk));
 	    printf("  Bad short file name (%s).\n",
 		   file_name((*walk)->dir_ent.name));
@@ -886,11 +886,11 @@ static int check_dir(DOS_FS * fs, DOS_FILE ** root, int dots)
 		printf("1) Drop file\n2) Rename file\n3) Auto-rename\n"
 		       "4) Keep it\n");
 	    else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (rw)
 #endif
 		printf("  Auto-renaming it.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (rw || interactive) {
 #endif
 	    switch (interactive ? get_key("1234", "?") : '3') {
@@ -908,7 +908,7 @@ static int check_dir(DOS_FS * fs, DOS_FILE ** root, int dots)
 		break;
 	    case '4':
 		break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    }
 #endif
 	    }
@@ -930,11 +930,11 @@ static int check_dir(DOS_FS * fs, DOS_FILE ** root, int dots)
 			     "4) Rename second\n5) Auto-rename first\n"
 			     "6) Auto-rename second\n");
 		    else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    if (rw)
 #endif
 			printf("  Auto-renaming second.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    if (rw || interactive) {
 #endif
 		    switch (interactive ? get_key("123456", "?") : '6') {
@@ -967,7 +967,7 @@ static int check_dir(DOS_FS * fs, DOS_FILE ** root, int dots)
 			printf("  Renamed to %s\n",
 			       file_name((*scan)->dir_ent.name));
 			break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			    }
 #endif
 		    }

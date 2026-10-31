@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS SDK
+ * PROJECT:     LibreNT SDK
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     API definitions for api-ms-win-core-processthreads-l1
  * COPYRIGHT:   Copyright 2024 Timo Kreuzer (timo.kreuzer@reactos.org)
@@ -151,9 +151,9 @@ WINAPI
 DeleteProcThreadAttributeList(
     _Inout_ LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList);
 
-#endif // (_WIN32_WINNT >= 0x0600) || defined(__REACTOS__)
+#endif // (_WIN32_WINNT >= 0x0600) || defined(__LIBRENT__)
 
-#if (_WIN32_WINNT >= 0x602) || defined(__REACTOS__)
+#if (_WIN32_WINNT >= 0x602) || defined(__LIBRENT__)
 
 FORCEINLINE
 HANDLE
@@ -179,7 +179,7 @@ GetCurrentThreadEffectiveToken(
     return (HANDLE)(LONG_PTR)-6;
 }
 
-#endif // (_WIN32_WINNT >= 0x602) || defined(__REACTOS__)
+#endif // (_WIN32_WINNT >= 0x602) || defined(__LIBRENT__)
 
 typedef enum _PROCESS_INFORMATION_CLASS
 {
@@ -221,7 +221,7 @@ typedef enum _THREAD_INFORMATION_CLASS
     ThreadInformationClassMax
 } THREAD_INFORMATION_CLASS;
 
-#if (_WIN32_WINNT >= 0x0602) || defined(__REACTOS__)
+#if (_WIN32_WINNT >= 0x0602) || defined(__LIBRENT__)
 
 #define MEMORY_PRIORITY_LOWEST       0
 #define MEMORY_PRIORITY_VERY_LOW     1
@@ -271,9 +271,9 @@ SetThreadInformation(
     _In_reads_bytes_(ThreadInformationSize) PVOID ThreadInformation,
     _In_ DWORD ThreadInformationSize);
 
-#endif // (_WIN32_WINNT >= 0x0602) || defined(__REACTOS__)
+#endif // (_WIN32_WINNT >= 0x0602) || defined(__LIBRENT__)
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN10_RS3) || defined(__REACTOS__)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN10_RS3) || defined(__LIBRENT__)
 
 #define THREAD_POWER_THROTTLING_CURRENT_VERSION 1
 #define PROCESS_POWER_THROTTLING_CURRENT_VERSION 1
@@ -304,7 +304,7 @@ typedef struct _THREAD_POWER_THROTTLING_STATE
 } THREAD_POWER_THROTTLING_STATE;
 #endif
 
-#endif // (_WIN32_WINNT >= _WIN32_WINNT_WIN10_RS3) || defined(__REACTOS__)
+#endif // (_WIN32_WINNT >= _WIN32_WINNT_WIN10_RS3) || defined(__LIBRENT__)
 
 #ifdef __cplusplus
 } // extern "C"

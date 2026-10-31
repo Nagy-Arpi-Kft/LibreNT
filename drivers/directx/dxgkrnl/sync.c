@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GPU synchronisation objects (fences, semaphores)
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -65,12 +65,12 @@ static FAST_MUTEX DxgkSyncShareLock;
 static KSPIN_LOCK DxgkSyncPeriodicLock;
 static LIST_ENTRY DxgkSyncShareListHead;
 static LIST_ENTRY DxgkSyncPeriodicListHead;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 static KSPIN_LOCK DxgkSyncMonitoredLock;
 static LIST_ENTRY DxgkSyncMonitoredListHead;
 static volatile LONG DxgkSyncMonitoredInterruptSequence;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
 static KSPIN_LOCK DxgkSyncKmdCpuEventLock;
 static LIST_ENTRY DxgkSyncKmdCpuEventListHead;
 #endif
@@ -89,11 +89,11 @@ DxgkpSyncShareInitialize(VOID)
         KeInitializeSpinLock(&DxgkSyncPeriodicLock);
         InitializeListHead(&DxgkSyncShareListHead);
         InitializeListHead(&DxgkSyncPeriodicListHead);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         KeInitializeSpinLock(&DxgkSyncMonitoredLock);
         InitializeListHead(&DxgkSyncMonitoredListHead);
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
         KeInitializeSpinLock(&DxgkSyncKmdCpuEventLock);
         InitializeListHead(&DxgkSyncKmdCpuEventListHead);
 #endif
@@ -116,7 +116,7 @@ DxgkpSyncAllocateShareHandle(VOID)
     return Handle;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 static BOOLEAN
 DxgkpSyncMonitoredInterruptSupported(
     _In_opt_ PDXGKRNL_ADAPTER Adapter)
@@ -125,7 +125,7 @@ DxgkpSyncMonitoredInterruptSupported(
            Adapter->MiniportContext != NULL &&
            !Adapter->MiniportContext->UseDodLayout &&
            DxgkMonitoredInterruptCoreSupported(
-               REACTOS_WDDM_TARGET_LEVEL,
+               LIBRENT_WDDM_TARGET_LEVEL,
                DxgkCapsCoreInterfaceVersionToLevel(
                    Adapter->MiniportContext->InitData.s.Version),
                Adapter->NodeCount);
@@ -271,7 +271,7 @@ DxgkpSyncPeriodicCallbacksSupported(
     if (Adapter == NULL ||
         Adapter->MiniportContext == NULL ||
         Adapter->MiniportContext->UseDodLayout ||
-        REACTOS_WDDM_TARGET_LEVEL < DXGK_CAPS_CORE_LEVEL_WDDM_2_2 ||
+        LIBRENT_WDDM_TARGET_LEVEL < DXGK_CAPS_CORE_LEVEL_WDDM_2_2 ||
         !DxgkCapsCoreInterfaceVersionAtLeast(
             Adapter->MiniportContext->InitData.s.Version,
             DXGK_CAPS_CORE_LEVEL_WDDM_2_2))
@@ -720,7 +720,7 @@ DxgkSyncNotifyPeriodicFenceCount(
     return Status;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 /*
  * Type 11 carries an engine identity, not a fence handle.  Evaluate every
  * authoritative regular monitored fence mapped to this physical adapter and
@@ -907,7 +907,7 @@ DxgkpReferenceSyncObjectByHandle(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
 static VOID
 DxgkpPublishKmdCpuEventCookie(
     _Inout_ PDXGKRNL_SYNC_OBJECT SyncObj)
@@ -1314,13 +1314,13 @@ DxgkpDereferenceSyncObject(
         PDXGKRNL_DEVICE Device = SyncObj->Device;
         PDXGKRNL_SYNC_OBJECT Backing = SyncObj->BackingSyncObject;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         DxgkpSyncUnregisterMonitoredFence(SyncObj);
 #endif
         DxgkpSyncUnpublishShare(SyncObj);
         DxgkpSyncDestroyPeriodicNotification(SyncObj);
         DxgkpSyncReleaseMonitoredPage(SyncObj);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
         ASSERT(InterlockedCompareExchange(
                    &SyncObj->KmdCpuEventCreated, 0, 0) == 0);
 #endif
@@ -1585,7 +1585,7 @@ DxgkSyncObjectAttachMonitoredPage(
         if (!NT_SUCCESS(Status))
             goto Fail;
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (SyncObj->PublicType == D3DDDI_MONITORED_FENCE)
     {
         Status = DxgkpSyncRegisterMonitoredFence(SyncObj);
@@ -1601,7 +1601,7 @@ DxgkSyncObjectAttachMonitoredPage(
     return STATUS_SUCCESS;
 
 Fail:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     DxgkpSyncUnregisterMonitoredFence(SyncObj);
 #endif
     DxgkpSyncDestroyPeriodicNotification(SyncObj);
@@ -1663,7 +1663,7 @@ DxgkpCreateSynchronizationObjectInternal(
     PDXGKRNL_DEVICE Device;
     PDXGKRNL_SYNC_OBJECT SyncObj;
     BOOLEAN InitialEventState = FALSE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     BOOLEAN KmdCpuEventCreateInFlight = FALSE;
     BOOLEAN OwnsTeardown;
     NTSTATUS DestroyStatus;
@@ -1685,7 +1685,7 @@ DxgkpCreateSynchronizationObjectInternal(
     {
         if (Info->Type != D3DDDI_CPU_NOTIFICATION || Info->Flags.Shared)
             return STATUS_INVALID_PARAMETER;
-#if (REACTOS_WDDM_TARGET_LEVEL < 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 3000)
         return STATUS_NOT_SUPPORTED;
 #endif
     }
@@ -1767,7 +1767,7 @@ DxgkpCreateSynchronizationObjectInternal(
     SyncObj->PublicType = Info->Type;
     SyncObj->Flags = Info->Flags;
     SyncObj->RefCount = 1;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     ExInitializeRundownProtection(
         &SyncObj->MonitoredInterruptRundown);
     if (Info->Type == D3DDDI_MONITORED_FENCE)
@@ -1776,7 +1776,7 @@ DxgkpCreateSynchronizationObjectInternal(
             Info->MonitoredFence.EngineAffinity;
     }
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     ExInitializeRundownProtection(&SyncObj->KmdCpuEventRundown);
     InitializeListHead(&SyncObj->KmdCpuEventListEntry);
 #endif
@@ -1867,7 +1867,7 @@ DxgkpCreateSynchronizationObjectInternal(
      * share can never outlive the object in the global list.
      */
     InterlockedIncrement(&SyncObj->RefCount);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     if (SyncObj->PublicType == D3DDDI_CPU_NOTIFICATION &&
         SyncObj->Flags.SignalByKmd)
     {
@@ -1882,7 +1882,7 @@ DxgkpCreateSynchronizationObjectInternal(
     }
 #endif
     ExReleaseFastMutex(&Device->DeviceMutex);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     if (KmdCpuEventCreateInFlight)
     {
         Status = DxgkpCreateKmdCpuEvent(SyncObj);
@@ -2076,10 +2076,10 @@ DxgkOpenSynchronizationObject(
     InitializeListHead(&Alias->DeviceSyncObjListEntry);
     InitializeListHead(&Alias->GlobalShareListEntry);
     InitializeListHead(&Alias->PeriodicListEntry);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     InitializeListHead(&Alias->KmdCpuEventListEntry);
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     ExInitializeRundownProtection(
         &Alias->MonitoredInterruptRundown);
     Alias->MonitoredEngineAffinity =
@@ -2232,10 +2232,10 @@ DxgkDestroySynchronizationObject(
         InitializeListHead(&SyncObj->DeviceSyncObjListEntry);
     }
     ExReleaseFastMutex(&SyncObj->Device->DeviceMutex);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     DestroyStatus = DxgkpDestroyKmdCpuEvent(SyncObj);
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     DxgkpSyncUnregisterMonitoredFence(SyncObj);
 #endif
     DxgkSyncWaitCoreCancelObject(&SyncObj->Device->SyncWaitRegistry, SyncObj, STATUS_DELETE_PENDING);
@@ -2459,7 +2459,7 @@ DxgkTdrResetAdapterSynchronizationObjects(
                 KeSetEvent(&SyncObj->CpuEvent, IO_NO_INCREMENT, FALSE);
                 if (SyncObj->PublicType == D3DDDI_CPU_NOTIFICATION &&
                     SyncObj->CpuNotificationEvent != NULL
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
                     && !SyncObj->Flags.SignalByKmd
 #endif
                     )
@@ -2597,7 +2597,7 @@ DxgkSyncObjectReferenceTrackedSignal(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 NTSTATUS
 NTAPI
 DxgkSyncObjectQueryTrackedSignalAddress(
@@ -2768,7 +2768,7 @@ DxgkSyncObjectCpuWaitBatch(
     Request->ObjectCount = ObjectCount;
     for (Index = 0; Index < ObjectCount; ++Index)
     {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         if (InterlockedCompareExchange(&Request->Objects[Index]->Destroying, 0, 0) == 0 &&
             ExAcquireRundownProtection(&Request->Objects[Index]->MonitoredInterruptRundown))
         {
@@ -2901,7 +2901,7 @@ DxgkCleanupDeviceSynchronizationObjects(
 {
     PLIST_ENTRY Entry;
     ULONG Cleaned = 0;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     NTSTATUS Status;
 #endif
 
@@ -2937,7 +2937,7 @@ DxgkCleanupDeviceSynchronizationObjects(
             continue;
         }
         ASSERT(InterlockedCompareExchange(&SyncObj->TeardownClaimed, 1, 1) == 1);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
         Status = DxgkpDestroyKmdCpuEvent(SyncObj);
         if (!NT_SUCCESS(Status))
         {

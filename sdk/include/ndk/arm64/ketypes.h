@@ -135,7 +135,7 @@ typedef struct _KARM64_VFP_STATE
  * Win11 26100 ARM64 layout, sizeof 0x150.
  *
  * Windows overlays PreviousMode/PreviousIrql at 0x003 and
- * FaultAddress/TrapFrame at 0x008. ReactOS needs the interrupted IRQL while
+ * FaultAddress/TrapFrame at 0x008. LibreNT needs the interrupted IRQL while
  * PreviousMode is live, so SavedIrql uses the low byte of the Windows Reserved
  * dword. The SVC previous-mode cookie already reserves only bits 8 through 31.
  */
@@ -154,7 +154,7 @@ typedef struct _KTRAP_FRAME
         ULONG Reserved;                  // 0x004
         struct
         {
-            UCHAR SavedIrql;             // 0x004 [ReactOS]
+            UCHAR SavedIrql;             // 0x004 [LibreNT]
             UCHAR ReservedBytes[3];      // 0x005
         };
     };
@@ -454,7 +454,7 @@ typedef struct _REQUEST_MAILBOX
 
 //
 // Processor Control Block, Win11 26100 arm64 layout (ntkrnlmp.pdb 10.0.26100.8036)
-// sizeof == 0xA000; members marked [ReactOS] live inside Win11 pad regions
+// sizeof == 0xA000; members marked [LibreNT] live inside Win11 pad regions
 //
 typedef struct _KPRCB
 {
@@ -497,7 +497,7 @@ typedef struct _KPRCB
     union
     {
         ULONG64 GroupSetMember;                          // 0x780
-        ULONG64 SetMember;                               // [ReactOS] legacy alias
+        ULONG64 SetMember;                               // [LibreNT] legacy alias
     };
     UCHAR Group;                                         // 0x788
     UCHAR GroupIndex;                                    // 0x789
@@ -506,20 +506,20 @@ typedef struct _KPRCB
     ULONG CoresPerPhysicalProcessor;                     // 0x790
     ULONG LogicalProcessorsPerCore;                      // 0x794
     ULONG64 QpcToTscIncrement;                           // 0x798
-    // Win11 PrcbPad4[12] region: named pad at its PDB offset, ReactOS legacy
+    // Win11 PrcbPad4[12] region: named pad at its PDB offset, LibreNT legacy
     // scheduler/DPC state packed into the remainder before LockQueue
     ULONG64 PrcbPad4[4];                                 // 0x7A0
-    struct _KNODE *ParentNode;                           // 0x7C0 [ReactOS]
-    ULONG64 MultiThreadProcessorSet;                     // 0x7C8 [ReactOS]
-    struct _KPRCB *MultiThreadSetMaster;                 // 0x7D0 [ReactOS]
-    ULONG64 TimerRequest;                                // 0x7D8 [ReactOS]
-    ULONG64 TimerHand;                                   // 0x7E0 [ReactOS]
-    volatile ULONG64 TargetSet;                          // 0x7E8 [ReactOS]
-    volatile LONG DpcSetEventRequest;                    // 0x7F0 [ReactOS]
-    LONG Sleeping;                                       // 0x7F4 [ReactOS]
+    struct _KNODE *ParentNode;                           // 0x7C0 [LibreNT]
+    ULONG64 MultiThreadProcessorSet;                     // 0x7C8 [LibreNT]
+    struct _KPRCB *MultiThreadSetMaster;                 // 0x7D0 [LibreNT]
+    ULONG64 TimerRequest;                                // 0x7D8 [LibreNT]
+    ULONG64 TimerHand;                                   // 0x7E0 [LibreNT]
+    volatile ULONG64 TargetSet;                          // 0x7E8 [LibreNT]
+    volatile LONG DpcSetEventRequest;                    // 0x7F0 [LibreNT]
+    LONG Sleeping;                                       // 0x7F4 [LibreNT]
     UCHAR PrcbPad4b;                                     // 0x7F8
-    volatile UCHAR DpcThreadRequested;                   // 0x7F9 [ReactOS]
-    volatile UCHAR DpcThreadActive;                      // 0x7FA [ReactOS]
+    volatile UCHAR DpcThreadRequested;                   // 0x7F9 [LibreNT]
+    volatile UCHAR DpcThreadActive;                      // 0x7FA [LibreNT]
     UCHAR PrcbPad4a[5];                                  // 0x7FB
     KSPIN_LOCK_QUEUE LockQueue[17];                      // 0x800 Win11 LockQueueMaximumLock == 17
     UCHAR ProcessorVendorString[2];                      // 0x910
@@ -623,7 +623,7 @@ typedef struct _KPRCB
     union
     {
         KEVENT DpcGate;                                  // 0xC00 Win11 type: KGATE
-        KEVENT DpcEvent;                                 // [ReactOS] legacy alias
+        KEVENT DpcEvent;                                 // [LibreNT] legacy alias
     };
     ULONG64 MPAffinity;                                  // 0xC18
     KDPC CallDpc;                                        // 0xC20
@@ -795,7 +795,7 @@ typedef struct _KPRCB
     union
     {
         UCHAR TimerTable[16920];                         // 0x1B80 KTIMER_TABLE (opaque)
-        KSPIN_LOCK_QUEUE TimerTableLockQueue[LOCK_QUEUE_TIMER_TABLE_LOCKS]; // [ReactOS] legacy timer locks
+        KSPIN_LOCK_QUEUE TimerTableLockQueue[LOCK_QUEUE_TIMER_TABLE_LOCKS]; // [LibreNT] legacy timer locks
     };
     UCHAR PrcbPad5D98[104];                              // 0x5D98
 #if (NTDDI_VERSION >= NTDDI_LONGHORN)
@@ -875,7 +875,7 @@ typedef struct _KIPCR
             ULONG TibPad0[4];                       // 0x000
             PVOID Spare1;                           // 0x010
             struct _KPCR *Self;                     // 0x018
-            struct _KPRCB *CurrentPrcb;             // 0x020 Win11 name: PcrReserved0, ReactOS keeps &Prcb here
+            struct _KPRCB *CurrentPrcb;             // 0x020 Win11 name: PcrReserved0, LibreNT keeps &Prcb here
             struct _KSPIN_LOCK_QUEUE* LockArray;    // 0x028
             PVOID Used_Self;                        // 0x030
         };
@@ -1095,7 +1095,7 @@ KeGetCurrentPrcb(VOID)
 #endif
 #endif
 #if defined(_MSC_VER) && !defined(__clang__)
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 #define _KeGetCurrentThread() ((PKTHREAD)__readx18qword(ARM64_KPCR_PRCB_CURRENT_THREAD))
 #define _KeGetPreviousMode() (_KeGetCurrentThread()->PreviousMode)
 FORCEINLINE

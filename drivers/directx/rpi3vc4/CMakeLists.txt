@@ -1,13 +1,13 @@
-# PROJECT:     ReactOS Raspberry Pi 3 VC4 WDDM miniport
+# PROJECT:     LibreNT Raspberry Pi 3 VC4 WDDM miniport
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
 # PURPOSE:     Build the BCM2837 platform provider over the common KMDOD core
 
-include(${REACTOS_SOURCE_DIR}/sdk/lib/drivers/softgpu/softgpu.cmake)
+include(${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/softgpu/softgpu.cmake)
 spec2def(rpi3vc4.sys ${SOFTGPU_ENGINE_SPEC} ADD_IMPORTLIB)
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT})
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT})
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x0601 -DWINVER=0x0601)
 add_definitions(-DNTDDI_VERSION=0x06010000)
 
@@ -39,7 +39,7 @@ set_module_type(rpi3vc4 kernelmodedriver)
 target_link_libraries(rpi3vc4 rpi3vc4_softgpu displib)
 add_importlibs(rpi3vc4 ntoskrnl hal)
 add_pch(rpi3vc4 ${SOFTGPU_ENGINE_DIR}/softgpu.h "${SOURCE}")
-add_cd_file(TARGET rpi3vc4 DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET rpi3vc4 DESTINATION librent/system32/drivers FOR all)
 set(RPI3VC4_OPENGL_ICD rpi3vc4ogl.dll)
 if(TARGET mesa_gallium AND NOT RPI3VC4_MESA_VC4_ICD)
     set(RPI3VC4_OPENGL_ICD mesa_gallium.dll)

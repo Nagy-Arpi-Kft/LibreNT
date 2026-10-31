@@ -1030,7 +1030,7 @@ FX_DRIVER_TRACKER_CACHE_AWARE::Register(
     //
     // Intialize the procgrp down level library.
     //
-    // WdmlibProcgrpInitialize(); __REACTOS__ : haha we don't support ProcGrp
+    // WdmlibProcgrpInitialize(); __LIBRENT__ : haha we don't support ProcGrp
 
     //
     // Capture maximum number of processors.

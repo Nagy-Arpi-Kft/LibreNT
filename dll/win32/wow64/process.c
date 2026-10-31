@@ -62,7 +62,7 @@ static BOOL is_process_id_wow64( const CLIENT_ID *id )
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SIZE_T get_environment_size( const WCHAR *env )
 {
     const WCHAR *end = env;
@@ -163,12 +163,12 @@ static RTL_USER_PROCESS_PARAMETERS *process_params_32to64( RTL_USER_PROCESS_PARA
 {
     UNICODE_STRING image, dllpath, curdir, cmdline, title, desktop, shell, runtime;
     RTL_USER_PROCESS_PARAMETERS *ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *env;
 #endif
 
     *params = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     env = get_native_environment( ULongToPtr( params32->Environment ) );
     if (RtlCreateProcessParametersEx( &ret, unicode_str_32to64( &image, &params32->ImagePathName ), unicode_str_32to64( &dllpath, &params32->DllPath ), unicode_str_32to64( &curdir, &params32->CurrentDirectory.DosPath ), unicode_str_32to64( &cmdline, &params32->CommandLine ), env ? env : ULongToPtr( params32->Environment ), unicode_str_32to64( &title, &params32->WindowTitle ), unicode_str_32to64( &desktop, &params32->Desktop ), unicode_str_32to64( &shell, &params32->ShellInfo ), unicode_str_32to64( &runtime, &params32->RuntimeInfo ), PROCESS_PARAMS_FLAG_NORMALIZED ))
     {
@@ -461,14 +461,14 @@ NTSTATUS WINAPI wow64_NtCreateThread( UINT *args )
     HANDLE process = get_handle( &args );
     CLIENT_ID32 *id32 = get_ptr( &args );
     I386_CONTEXT *context = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG *initial_teb32 = get_ptr( &args );
 #else
     void *initial_teb = get_ptr( &args );
 #endif
     BOOLEAN suspended = get_ulong( &args );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct object_attr64 attr;
     INITIAL_TEB teb;
     CLIENT_ID id;
@@ -585,7 +585,7 @@ NTSTATUS WINAPI wow64_NtCreateUserProcess( UINT *args )
     NTSTATUS status;
 
     *process_handle_ptr = *thread_handle_ptr = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset( &info, 0, sizeof(info) );
     info.Size = sizeof(info);
     info.State = info32->State;
@@ -725,7 +725,7 @@ NTSTATUS WINAPI wow64_NtOpenThread( UINT *args )
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define PROCESS_HANDLE_TRACING_MAX_STACKS 16
 
 typedef struct _POOLED_USAGE_AND_LIMITS
@@ -889,7 +889,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationProcess( UINT *args )
 
             if (!(status = NtQueryInformationProcess( handle, class, &info, sizeof(info), NULL )))
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 {
                     ULONG_PTR peb32 = 0;
                     if (NtQueryInformationProcess( handle, ProcessWow64Information, &peb32, sizeof(peb32), NULL )) peb32 = 0;
@@ -910,7 +910,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationProcess( UINT *args )
             }
             return status;
         }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (retlen) *retlen = sizeof(PROCESS_BASIC_INFORMATION32);
 #endif
         return STATUS_INFO_LENGTH_MISMATCH;
@@ -921,7 +921,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationProcess( UINT *args )
     case ProcessPriorityClass:  /* PROCESS_PRIORITY_CLASS */
     case ProcessPriorityBoost:  /* ULONG */
     case ProcessHandleCount:  /* ULONG */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ProcessDeviceMap:  /* PROCESS_DEVICEMAP_INFORMATION.Query */
     case ProcessMitigationPolicy:  /* ULONG policy, ULONG flags */
     case ProcessHandleCheckingMode:  /* ULONG */
@@ -944,7 +944,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationProcess( UINT *args )
         /* FIXME: check buffer alignment */
         return NtQueryInformationProcess( handle, class, ptr, len, retlen );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ProcessQuotaLimits:  /* QUOTA_LIMITS or QUOTA_LIMITS_EX */
         if (len != sizeof(QUOTA_LIMITS32) && len != sizeof(QUOTA_LIMITS_EX32)) return STATUS_INFO_LENGTH_MISMATCH;
         if ((status = check_info_buffer32( ptr, len, len, sizeof(ULONG) ))) return status;
@@ -1075,7 +1075,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationProcess( UINT *args )
             }
             return status;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (retlen) *retlen = sizeof(VM_COUNTERS32);
 #else
         if (retlen) *retlen = sizeof(VM_COUNTERS_EX32);
@@ -1141,7 +1141,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationProcess( UINT *args )
         return STATUS_INFO_LENGTH_MISMATCH;
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQueryInformationProcess: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1171,7 +1171,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationThread( UINT *args )
         THREAD_BASIC_INFORMATION32 info32;
         THREAD_BASIC_INFORMATION info;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((status = check_info_buffer32( ptr, len, sizeof(info32), sizeof(ULONG) ))) return status;
 #endif
         status = NtQueryInformationThread( handle, class, &info, sizeof(info), NULL );
@@ -1201,7 +1201,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationThread( UINT *args )
     case ThreadPriorityBoost:   /* ULONG */
     case ThreadIdealProcessorEx: /* PROCESSOR_NUMBER */
     case ThreadCycleTime:  /* THREAD_CYCLE_TIME_INFORMATION */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ThreadPerformanceCount:  /* LARGE_INTEGER */
     case ThreadBreakOnTermination:  /* ULONG */
     case ThreadIoPriority:  /* ULONG */
@@ -1224,7 +1224,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationThread( UINT *args )
         /* FIXME: check buffer alignment */
         return NtQueryInformationThread( handle, class, ptr, len, retlen );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ThreadSystemThreadInformation:  /* SYSTEM_THREAD_INFORMATION */
     {
         SYSTEM_THREAD_INFORMATION info;
@@ -1258,7 +1258,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationThread( UINT *args )
     {
         ULONG_PTR data;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((status = check_info_buffer32( ptr, len, sizeof(ULONG), sizeof(ULONG) ))) return status;
 #endif
         status = NtQueryInformationThread( handle, class, &data, sizeof(data), NULL );
@@ -1277,13 +1277,13 @@ NTSTATUS WINAPI wow64_NtQueryInformationThread( UINT *args )
         return STATUS_INVALID_INFO_CLASS;
 
     case ThreadGroupInformation:  /* GROUP_AFFINITY */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ThreadActualGroupAffinity:  /* GROUP_AFFINITY */
 #endif
     {
         GROUP_AFFINITY info;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((status = check_info_buffer32( ptr, len, sizeof(GROUP_AFFINITY32), sizeof(ULONG) ))) return status;
 #endif
         status = NtQueryInformationThread( handle, class, &info, sizeof(info), NULL );
@@ -1323,7 +1323,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationThread( UINT *args )
     }
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQueryInformationThread: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1438,7 +1438,7 @@ NTSTATUS WINAPI wow64_NtSetInformationProcess( UINT *args )
     case ProcessPowerThrottlingState:   /* PROCESS_POWER_THROTTLING_STATE */
     case ProcessLeapSecondInformation:   /* PROCESS_LEAP_SECOND_INFO */
     case ProcessWineGrantAdminToken:   /* NULL */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ProcessMitigationPolicy:  /* ULONG policy, ULONG flags */
     case ProcessHandleCheckingMode:  /* ULONG */
     case ProcessRaisePriority:  /* ULONG */
@@ -1457,7 +1457,7 @@ NTSTATUS WINAPI wow64_NtSetInformationProcess( UINT *args )
 #endif
         return NtSetInformationProcess( handle, class, ptr, len );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ProcessQuotaLimits:  /* QUOTA_LIMITS or QUOTA_LIMITS_EX */
         if (len != sizeof(QUOTA_LIMITS32) && len != sizeof(QUOTA_LIMITS_EX32)) return STATUS_INFO_LENGTH_MISMATCH;
         if ((status = check_info_buffer32( ptr, len, len, sizeof(ULONG) ))) return status;
@@ -1498,7 +1498,7 @@ NTSTATUS WINAPI wow64_NtSetInformationProcess( UINT *args )
         else return STATUS_INFO_LENGTH_MISMATCH;
 
     case ProcessAffinityMask:   /* ULONG_PTR */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((status = check_info_buffer32( ptr, len, sizeof(ULONG), sizeof(ULONG) ))) return status;
 #endif
         if (len == sizeof(ULONG))
@@ -1559,7 +1559,7 @@ NTSTATUS WINAPI wow64_NtSetInformationProcess( UINT *args )
         else return STATUS_INFO_LENGTH_MISMATCH;
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtSetInformationProcess: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1589,7 +1589,7 @@ NTSTATUS WINAPI wow64_NtSetInformationThread( UINT *args )
     case ThreadPowerThrottlingState:  /* THREAD_POWER_THROTTLING_STATE */
     case ThreadIdealProcessor:   /* ULONG */
     case ThreadPriorityBoost:   /* ULONG */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ThreadBreakOnTermination:  /* ULONG */
     case ThreadSwitchLegacyState:  /* ULONG */
     case ThreadCSwitchPmu:  /* not supported */
@@ -1607,7 +1607,7 @@ NTSTATUS WINAPI wow64_NtSetInformationThread( UINT *args )
 #endif
         return NtSetInformationThread( handle, class, ptr, len );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ThreadSetTlsArrayAddress:  /* PVOID */
     case ThreadAttachContainer:  /* HANDLE */
     {
@@ -1621,7 +1621,7 @@ NTSTATUS WINAPI wow64_NtSetInformationThread( UINT *args )
 #endif
 
     case ThreadImpersonationToken:   /* HANDLE */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (len != sizeof(ULONG)) return STATUS_INFO_LENGTH_MISMATCH;
         if ((ULONG_PTR)ptr & (sizeof(ULONG) - 1)) return STATUS_DATATYPE_MISALIGNMENT;
 #endif
@@ -1634,7 +1634,7 @@ NTSTATUS WINAPI wow64_NtSetInformationThread( UINT *args )
 
     case ThreadAffinityMask:  /* ULONG_PTR */
     case ThreadQuerySetWin32StartAddress:   /* PRTL_THREAD_START_ROUTINE */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (len != sizeof(ULONG)) return STATUS_INFO_LENGTH_MISMATCH;
         if ((ULONG_PTR)ptr & (sizeof(ULONG) - 1)) return STATUS_DATATYPE_MISALIGNMENT;
 #endif
@@ -1650,7 +1650,7 @@ NTSTATUS WINAPI wow64_NtSetInformationThread( UINT *args )
         return STATUS_INVALID_INFO_CLASS;
 
     case ThreadGroupInformation:   /* GROUP_AFFINITY */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (len != sizeof(GROUP_AFFINITY32)) return STATUS_INFO_LENGTH_MISMATCH;
         if ((ULONG_PTR)ptr & (sizeof(ULONG) - 1)) return STATUS_DATATYPE_MISALIGNMENT;
 #endif
@@ -1677,7 +1677,7 @@ NTSTATUS WINAPI wow64_NtSetInformationThread( UINT *args )
         else return STATUS_INFO_LENGTH_MISMATCH;
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtSetInformationThread: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -1718,7 +1718,7 @@ NTSTATUS WINAPI wow64_NtSuspendThread( UINT *args )
     HANDLE handle = get_handle( &args );
     ULONG *count = get_ptr( &args );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return Wow64SuspendLocalThread( handle, count );
 #else
     return NtSuspendThread( handle, count );
@@ -1726,7 +1726,7 @@ NTSTATUS WINAPI wow64_NtSuspendThread( UINT *args )
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void wait_other_threads(void)
 {
     THREAD_BASIC_INFORMATION info;
@@ -1759,7 +1759,7 @@ NTSTATUS WINAPI wow64_NtTerminateProcess( UINT *args )
 
     if (!handle && pBTCpuProcessTerm) pBTCpuProcessTerm( handle, FALSE, 0 );
     status = NtTerminateProcess( handle, exit_code );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!handle && !status) wait_other_threads();
 #endif
     if (!handle && pBTCpuProcessTerm) pBTCpuProcessTerm( handle, TRUE, status );
@@ -1775,7 +1775,7 @@ NTSTATUS WINAPI wow64_NtTerminateThread( UINT *args )
     HANDLE handle = get_handle( &args );
     LONG exit_code = get_ulong( &args );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pBTCpuThreadTerm) pBTCpuThreadTerm( handle ? handle : GetCurrentThread(), exit_code );
 #else
     if (pBTCpuThreadTerm) pBTCpuThreadTerm( handle, exit_code );

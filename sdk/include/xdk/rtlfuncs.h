@@ -38,7 +38,7 @@ RtlFailFast(
 #define NO_KERNEL_LIST_ENTRY_CHECKS
 #endif
 
-#if !defined(EXTRA_KERNEL_LIST_ENTRY_CHECKS) && defined(__REACTOS__)
+#if !defined(EXTRA_KERNEL_LIST_ENTRY_CHECKS) && defined(__LIBRENT__)
 #define EXTRA_KERNEL_LIST_ENTRY_CHECKS
 #endif
 
@@ -868,7 +868,7 @@ RtlSetDaclSecurityDescriptor(
 // These functions are really bad and shouldn't be used.
 // They have no type checking and can easily overwrite the target
 // variable or only set half of it.
-// Use Read/WriteUnalignedU16/U32/U64 from reactos/unaligned.h instead.
+// Use Read/WriteUnalignedU16/U32/U64 from librent/unaligned.h instead.
 //
 #if defined(_AMD64_) || defined(_M_AMD64) || defined(_X86) || defined(_M_IX86)
 
@@ -3400,7 +3400,7 @@ RtlCheckBit(
 # define NT_ASSERTMSGW NT_ASSERTMSGW_NOASSUME
 #endif /* NT_ASSERT_ALWAYS_ASSUMES */
 
-#if defined(_MSC_VER) && (defined(__REACTOS__) || defined(ASSERT_ALWAYS_NT_ASSERT)) && !defined(_BLDR_)
+#if defined(_MSC_VER) && (defined(__LIBRENT__) || defined(ASSERT_ALWAYS_NT_ASSERT)) && !defined(_BLDR_)
 #undef ASSERT
 #define ASSERT NT_ASSERT
 #undef ASSERTMSG

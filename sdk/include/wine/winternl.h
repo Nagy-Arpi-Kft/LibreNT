@@ -21,16 +21,16 @@
 #ifndef __WINE_WINTERNL_H
 #define __WINE_WINTERNL_H
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <ntdef.h>
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 #include <windef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* defined(__cplusplus) */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef enum _TIMER_TYPE {
     NotificationTimer,
     SynchronizationTimer
@@ -92,7 +92,7 @@ typedef struct _RTL_RB_TREE
 } RTL_RB_TREE, *PRTL_RB_TREE;
 #endif
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /**********************************************************************
  * Fundamental types and data structures
@@ -101,9 +101,9 @@ typedef struct _RTL_RB_TREE
 #ifndef WINE_NTSTATUS_DECLARED
 #define WINE_NTSTATUS_DECLARED
 typedef LONG NTSTATUS;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef NTSTATUS *PNTSTATUS;
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 #endif
 
 typedef const char *PCSZ;
@@ -168,7 +168,7 @@ typedef struct _RTL_SYSTEM_TIME {
     WORD wMilliseconds;
 } RTL_SYSTEM_TIME, *PRTL_SYSTEM_TIME;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct _TIME_FIELDS {
     CSHORT Year;
     CSHORT Month;
@@ -179,19 +179,19 @@ typedef struct _TIME_FIELDS {
     CSHORT Milliseconds;
     CSHORT Weekday;
 } TIME_FIELDS, *PTIME_FIELDS;
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 typedef struct _RTL_TIME_ZONE_INFORMATION {
     LONG Bias;
     WCHAR StandardName[32];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TIME_FIELDS StandardDate;
 #else
     RTL_SYSTEM_TIME StandardDate;
 #endif
     LONG StandardBias;
     WCHAR DaylightName[32];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TIME_FIELDS DaylightDate;
 #else
     RTL_SYSTEM_TIME DaylightDate;
@@ -203,14 +203,14 @@ typedef struct _RTL_TIME_DYNAMIC_ZONE_INFORMATION
 {
     LONG Bias;
     WCHAR StandardName[32];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TIME_FIELDS StandardDate;
 #else
     RTL_SYSTEM_TIME StandardDate;
 #endif
     LONG StandardBias;
     WCHAR DaylightName[32];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TIME_FIELDS DaylightDate;
 #else
     RTL_SYSTEM_TIME DaylightDate;
@@ -399,7 +399,7 @@ typedef struct _TEB_FLS_DATA
     void          **fls_data_chunks[8];
 } TEB_FLS_DATA, *PTEB_FLS_DATA;
 
-#include <reactos/wow64shared.h>
+#include <librent/wow64shared.h>
 
 typedef struct _CHPE_V2_CPU_AREA_INFO
 {
@@ -549,7 +549,7 @@ typedef struct _PEB
     PVOID                        LeapSecondData;                    /* 470/7b8 */
     ULONG                        LeapSecondFlags;                   /* 474/7c0 */
     ULONG                        NtGlobalFlag2;                     /* 478/7c4 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONGLONG                    ExtendedFeatureDisableMask;        /* 480/7c8 */
 #endif
 } PEB, *PPEB;
@@ -682,7 +682,7 @@ typedef struct _TEB
 /***********************************************************************
  * The 32-bit/64-bit version of the PEB and TEB for WoW64
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _NT_TIB32
 {
     ULONG ExceptionList;        /* 0000 */
@@ -718,7 +718,7 @@ typedef struct _CLIENT_ID64
    ULONG64 UniqueThread;
 } CLIENT_ID64;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _LIST_ENTRY32
 {
     ULONG Flink;
@@ -998,12 +998,12 @@ typedef struct _PEB32
     ULONG                        LeapSecondData;                    /* 0470 */
     ULONG                        LeapSecondFlags;                   /* 0474 */
     ULONG                        NtGlobalFlag2;                     /* 0478 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONGLONG                    ExtendedFeatureDisableMask;        /* 0480 */
 #endif
 } PEB32;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 C_ASSERT( sizeof(PEB32) == 0x488 );
 #else
 C_ASSERT( sizeof(PEB32) == 0x480 );
@@ -1119,12 +1119,12 @@ typedef struct _PEB64
     ULONG64                      LeapSecondData;                    /* 07b8 */
     ULONG                        LeapSecondFlags;                   /* 07c0 */
     ULONG                        NtGlobalFlag2;                     /* 07c4 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONGLONG                    ExtendedFeatureDisableMask;        /* 07c8 */
 #endif
 } PEB64;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 C_ASSERT( sizeof(PEB64) == 0x7d0 );
 #else
 C_ASSERT( sizeof(PEB64) == 0x7c8 );
@@ -3213,7 +3213,7 @@ typedef struct _SYSTEM_PROCESS_ID_INFORMATION
     UNICODE_STRING ImageName;
 } SYSTEM_PROCESS_ID_INFORMATION, *PSYSTEM_PROCESS_ID_INFORMATION;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _TIME_FIELDS
 {   CSHORT Year;
     CSHORT Month;
@@ -3674,7 +3674,7 @@ typedef struct _LPC_SECTION_WRITE {
   ULONG Length;
   HANDLE SectionHandle;
   ULONG SectionOffset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   SIZE_T ViewSize;
 #else
   ULONG ViewSize;
@@ -3685,7 +3685,7 @@ typedef struct _LPC_SECTION_WRITE {
 
 typedef struct _LPC_SECTION_READ {
   ULONG Length;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   SIZE_T ViewSize;
 #else
   ULONG ViewSize;
@@ -4387,7 +4387,7 @@ void      WINAPI Wow64ProcessPendingCrossProcessItems(void);
 NTSTATUS  WINAPI Wow64RaiseException(int,EXCEPTION_RECORD*);
 NTSTATUS  WINAPI Wow64SystemServiceEx(UINT,UINT*);
 
-#if defined(__WINESRC__) && !defined(__REACTOS__)
+#if defined(__WINESRC__) && !defined(__LIBRENT__)
 /* undocumented layout of LdrSystemDllInitBlock */
 /* this varies across Windows version; we are using the win10-2004 layout */
 typedef struct
@@ -4472,7 +4472,7 @@ typedef struct _KCONTINUE_ARGUMENT
 #define KCONTINUE_FLAG_TEST_ALERT  0x01
 #define KCONTINUE_FLAG_DELIVER_APC 0x02
 
-#include <reactos/alpc.h>
+#include <librent/alpc.h>
 
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(status) (((NTSTATUS)(status)) >= 0)
@@ -4538,7 +4538,7 @@ NTSYSAPI void      WINAPI LdrShutdownThread(void);
 NTSYSAPI NTSTATUS  WINAPI LdrUnloadDll(HMODULE);
 NTSYSAPI NTSTATUS  WINAPI LdrUnlockLoaderLock(ULONG,ULONG_PTR);
 NTSYSAPI NTSTATUS  WINAPI LdrUnregisterDllNotification(void*);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSYSAPI NTSTATUS  WINAPI NtAcceptConnectPort(PHANDLE,ULONG,PLPC_MESSAGE,BOOLEAN,PLPC_SECTION_WRITE,PLPC_SECTION_READ);
 #else
 NTSYSAPI NTSTATUS  WINAPI NtAcceptConnectPort(PHANDLE,PVOID,PLPC_MESSAGE,BOOLEAN,PLPC_SECTION_WRITE,PLPC_SECTION_READ);
@@ -4648,7 +4648,7 @@ NTSYSAPI NTSTATUS  WINAPI NtFlushBuffersFileEx(HANDLE,ULONG,void*,ULONG,IO_STATU
 NTSYSAPI NTSTATUS  WINAPI NtFlushInstructionCache(HANDLE,LPCVOID,SIZE_T);
 NTSYSAPI NTSTATUS  WINAPI NtFlushKey(HANDLE);
 NTSYSAPI NTSTATUS  WINAPI NtFlushProcessWriteBuffers(void);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSYSAPI NTSTATUS  WINAPI NtFlushVirtualMemory(HANDLE,LPCVOID*,SIZE_T*,ULONG);
 #else
 NTSYSAPI NTSTATUS  WINAPI NtFlushVirtualMemory(HANDLE,LPCVOID*,SIZE_T*,IO_STATUS_BLOCK*);
@@ -4771,7 +4771,7 @@ NTSYSAPI NTSTATUS  WINAPI NtRemoveProcessDebug(HANDLE,HANDLE);
 NTSYSAPI NTSTATUS  WINAPI NtRenameKey(HANDLE,UNICODE_STRING*);
 NTSYSAPI NTSTATUS  WINAPI NtReplaceKey(POBJECT_ATTRIBUTES,HANDLE,POBJECT_ATTRIBUTES);
 NTSYSAPI NTSTATUS  WINAPI NtReplyPort(HANDLE,PLPC_MESSAGE);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSYSAPI NTSTATUS  WINAPI NtReplyWaitReceivePort(HANDLE,PULONG,PLPC_MESSAGE,PLPC_MESSAGE);
 #else
 NTSYSAPI NTSTATUS  WINAPI NtReplyWaitReceivePort(HANDLE,PVOID*,PLPC_MESSAGE,PLPC_MESSAGE);
@@ -4916,7 +4916,7 @@ NTSYSAPI NTSTATUS  WINAPI RtlCopyExtendedContext(CONTEXT_EX*,ULONG,CONTEXT_EX*);
 NTSYSAPI void      WINAPI RtlCopyLuid(PLUID,const LUID*);
 NTSYSAPI void      WINAPI RtlCopyLuidAndAttributesArray(ULONG,const LUID_AND_ATTRIBUTES*,PLUID_AND_ATTRIBUTES);
 NTSYSAPI NTSTATUS  WINAPI RtlCopySecurityDescriptor(PSECURITY_DESCRIPTOR,PSECURITY_DESCRIPTOR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSYSAPI NTSTATUS  WINAPI RtlCopySid(DWORD,PSID,PSID);
 #else
 NTSYSAPI BOOLEAN   WINAPI RtlCopySid(DWORD,PSID,PSID);
@@ -5323,7 +5323,7 @@ NTSYSAPI void      WINAPI TpWaitForWork(TP_WORK *,BOOL);
 NTSYSAPI NTSTATUS  WINAPI vDbgPrintEx(ULONG,ULONG,LPCSTR,__ms_va_list);
 NTSYSAPI NTSTATUS  WINAPI vDbgPrintExWithPrefix(LPCSTR,ULONG,ULONG,LPCSTR,__ms_va_list);
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 // Wine has this in wincon.h, but it is not in the official SDK
 BOOL WINAPI VerifyConsoleIoHandle(_In_ HANDLE);
 #endif
@@ -5391,19 +5391,19 @@ NTSYSAPI NTSTATUS WINAPI wine_unix_to_nt_file_name( const char *name, WCHAR *buf
 #define NtCurrentProcess() ((HANDLE)~(ULONG_PTR)0)
 #define NtCurrentThread()  ((HANDLE)~(ULONG_PTR)1)
 
-#if !defined(__REACTOS__) || !defined(RtlFillMemory)
+#if !defined(__LIBRENT__) || !defined(RtlFillMemory)
 #define RtlFillMemory(Destination,Length,Fill) memset((Destination),(Fill),(Length))
-#endif // !defined(__REACTOS__) || !defined(RtlFillMemory)
-#if !defined(__REACTOS__) || !defined(RtlMoveMemory)
+#endif // !defined(__LIBRENT__) || !defined(RtlFillMemory)
+#if !defined(__LIBRENT__) || !defined(RtlMoveMemory)
 #define RtlMoveMemory(Destination,Source,Length) memmove((Destination),(Source),(Length))
-#endif // !defined(__REACTOS__) || !defined(RtlMoveMemory)
+#endif // !defined(__LIBRENT__) || !defined(RtlMoveMemory)
 #define RtlStoreUlong(p,v)  do { ULONG _v = (v); memcpy((p), &_v, sizeof(_v)); } while (0)
 #define RtlStoreUlonglong(p,v) do { ULONGLONG _v = (v); memcpy((p), &_v, sizeof(_v)); } while (0)
 #define RtlRetrieveUlong(p,s) memcpy((p), (s), sizeof(ULONG))
 #define RtlRetrieveUlonglong(p,s) memcpy((p), (s), sizeof(ULONGLONG))
-#if !defined(__REACTOS__) || !defined(RtlZeroMemory)
+#if !defined(__LIBRENT__) || !defined(RtlZeroMemory)
 #define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
-#endif // !defined(__REACTOS__) || !defined(RtlZeroMemory)
+#endif // !defined(__LIBRENT__) || !defined(RtlZeroMemory)
 
 static inline BOOLEAN RtlCheckBit(PCRTL_BITMAP lpBits, ULONG ulBit)
 {

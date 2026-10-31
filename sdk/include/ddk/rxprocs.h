@@ -238,7 +238,7 @@ RxTrackPagingIoResource(
     }                                                                     \
     RxTrackPagingIoResource(Fcb, 1, __LINE__, __FILE__)
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define RxAcquirePagingIoResourceShared(RxContext, Fcb, Flag)             \
     ExAcquireResourceSharedLite((Fcb)->Header.PagingIoResource, Flag);    \
     if (AcquiredFile)                                                     \
@@ -281,7 +281,7 @@ RxTrackPagingIoResource(
     }                                                              \
     ExReleaseResourceForThreadLite((Fcb)->Header.PagingIoResource, (Thread))
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID
 __RxWriteReleaseResources(
     PRX_CONTEXT RxContext,
@@ -802,7 +802,7 @@ RxCancelRoutine(
     _In_ PDEVICE_OBJECT DeviceObject,
     _In_ PIRP Irp);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define RxWriteCacheingAllowed(F, S) (                              \
     BooleanFlagOn((F)->FcbState, FCB_STATE_WRITECACHING_ENABLED) && \
     !BooleanFlagOn((S)->Flags, SRVOPEN_FLAG_DONTUSE_WRITE_CACHING))

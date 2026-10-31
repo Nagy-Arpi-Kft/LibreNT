@@ -745,7 +745,7 @@ static void test_GetCalendarInfo(void)
     ret2 = WideCharToMultiByte( CP_ACP, 0, bufferW, -1, NULL, 0, NULL, NULL );
     ok( ret == ret2, "got %d, expected %d\n", ret, ret2 );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     for (i = CAL_GREGORIAN; i <= CAL_UMALQURA; i++)
@@ -756,7 +756,7 @@ static void test_GetCalendarInfo(void)
         {
             ret2 = pGetCalendarInfoW( 0x0409, i, j, bufferW, ARRAY_SIZE(bufferW), NULL);
             if (ret || j == CAL_ITWODIGITYEARMAX)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ok( ret2 || broken(j == CAL_SRELATIVELONGDATE) /* Win7 */ || broken(j == CAL_SMONTHDAY || j == CAL_SABBREVERASTRING), /* Vista */
 #else
                 ok( ret2 || broken(j == CAL_SRELATIVELONGDATE),  /* win7 doesn't have this */
@@ -767,7 +767,7 @@ static void test_GetCalendarInfo(void)
                     i, wine_dbgstr_w(name), j, wine_dbgstr_w(bufferW) );
         }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 }

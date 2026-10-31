@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel-Mode Test Suite ExAllocatePool2 flag validation
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -96,9 +96,9 @@ START_TEST(ExPool2)
     NTSTATUS Status;
     PVOID Block;
     ULONG Index, Round;
-    BOOLEAN IsReactOS;
+    BOOLEAN IsLibreNT;
 
-    IsReactOS = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
+    IsLibreNT = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
     Block = ExAllocatePool2(POOL_FLAG_NON_PAGED, 0, TEST_TAG);
     ok(Block != NULL, "zero bytes: allocated=%u\n", Block != NULL);
     if (Block != NULL)
@@ -151,7 +151,7 @@ START_TEST(ExPool2)
     for (Index = 0; Index < RTL_NUMBER_OF(Cases); Index++)
     {
         Case = &Cases[Index];
-        if (Case->CrashesWindows && !IsReactOS)
+        if (Case->CrashesWindows && !IsLibreNT)
             continue;
 
         Block = ExAllocatePool2(Case->Flags, TEST_SIZE, TEST_TAG);

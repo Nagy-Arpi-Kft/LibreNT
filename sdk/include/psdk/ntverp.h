@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS
+ * PROJECT:         LibreNT
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            include/psdk/ntverp.h
  * PURPOSE:         Master Version File.
@@ -152,8 +152,8 @@
 // Company and Trademarks
 //
 #define VER_COMPANYNAME_STR                 \
-    "ReactOS Project"
+    "LibreNT Project"
 #define VER_PRODUCTNAME_STR                 \
-    "LiberNT Operating System"
+    "LibreNT Operating System"
 #define VER_LEGALTRADEMARKS_STR             \
-    "ReactOS is a registered trademark of ReactOS Deutschland e.V."
+    "LibreNT is a registered trademark of LibreNT Deutschland e.V."

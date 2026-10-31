@@ -1,5 +1,5 @@
 #
-# PROJECT:     LiberNT software GPU engine
+# PROJECT:     LibreNT software GPU engine
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the WDDM software GPU engine for a display miniport
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -23,8 +23,8 @@ function(add_softgpu_engine _target)
     target_include_directories(${_target} PUBLIC ${SOFTGPU_ENGINE_DIR})
     target_compile_definitions(${_target} PUBLIC
         ${_engine_DEFINITIONS}
-        REACTOS_WDDM_TARGET_LEVEL=${REACTOS_WDDM_TARGET_LEVEL}
-        REACTOS_WDDM_TARGET_INTERFACE_VERSION=${REACTOS_WDDM_TARGET_INTERFACE_VERSION})
+        LIBRENT_WDDM_TARGET_LEVEL=${LIBRENT_WDDM_TARGET_LEVEL}
+        LIBRENT_WDDM_TARGET_INTERFACE_VERSION=${LIBRENT_WDDM_TARGET_INTERFACE_VERSION})
     add_pch(${_target} ${SOFTGPU_ENGINE_DIR}/softgpu.h "${_source}")
     add_dependencies(${_target} bugcodes xdk)
 endfunction()

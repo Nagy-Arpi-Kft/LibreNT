@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Encode the supplied Control Panel artwork as ReactOS icon resources."""
+"""Encode the supplied Control Panel artwork as LibreNT icon resources."""
 
 from pathlib import Path
 import runpy

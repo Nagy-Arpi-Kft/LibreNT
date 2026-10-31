@@ -678,7 +678,7 @@ NTSTATUS WINAPI wow64_NtQueryVirtualMemory( UINT *args )
         break;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case MemoryWineLoadUnixLibWow64:
     case MemoryWineLoadUnixLibByNameWow64:
         return STATUS_INVALID_INFO_CLASS;
@@ -700,7 +700,7 @@ NTSTATUS WINAPI wow64_NtQueryVirtualMemory( UINT *args )
 #endif
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQueryVirtualMemory: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );

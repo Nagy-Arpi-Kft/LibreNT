@@ -31,7 +31,7 @@
  * the Initial Developer. All Rights Reserved.
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma once
 #endif
 

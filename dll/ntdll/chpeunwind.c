@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS runtime library
+ * PROJECT:     LibreNT runtime library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     AMD64 unwind primitives for the ARM64EC ntdll bridge
  * COPYRIGHT:   Copyright 2010-2025 Timo Kreuzer <timo.kreuzer@reactos.org>

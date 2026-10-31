@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX GPU Memory Manager and Scheduler
+ * PROJECT:     LibreNT DirectX GPU Memory Manager and Scheduler
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM GPU paging engine — internal header for paging.c
  * COPYRIGHT:   Copyright 2024 LiberNT Team
@@ -60,12 +60,12 @@
  * DXGK paging DDI types
  *
  * These types are defined in the Windows DDK's dispmprt.h / d3dkmddi.h but
- * are not present in the ReactOS SDK headers at this stage.  We define a
+ * are not present in the LibreNT SDK headers at this stage.  We define a
  * self-contained subset here so that paging.c can call the miniport DDI
  * without depending on external SDK headers.
  *
  * Naming and layout match the Windows 10 WDK definitions exactly so that
- * these declarations can be removed once the ReactOS SDK is updated.
+ * these declarations can be removed once the LibreNT SDK is updated.
  * ========================================================================= */
 
 /*

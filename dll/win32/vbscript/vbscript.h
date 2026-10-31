@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma once
 #endif
 
@@ -194,7 +194,7 @@ typedef struct {
 typedef struct named_item_t {
     ScriptDisp *script_obj;
     IDispatch *disp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IDispatch *context_disp;
 #endif
     unsigned ref;
@@ -477,7 +477,7 @@ BOOL is_exec_local_scope(exec_ctx_t*);
 HRESULT exec_add_caller_dynamic_var(script_ctx_t*,exec_ctx_t*,const WCHAR*);
 void release_dynamic_var(dynamic_var_t*);
 named_item_t *lookup_named_item(script_ctx_t*,const WCHAR*,unsigned);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 named_item_t *lookup_context_named_item(script_ctx_t*,const WCHAR*);
 IDispatch *get_named_item_context_disp(script_ctx_t*,named_item_t*);
 #endif

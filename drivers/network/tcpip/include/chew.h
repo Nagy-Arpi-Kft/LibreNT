@@ -1,14 +1,14 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kernel
- * FILE:            include/reactos/chew/chew.h
+ * PROJECT:         LibreNT kernel
+ * FILE:            include/librent/chew/chew.h
  * PURPOSE:         Common Highlevel Executive Worker
  *
  * PROGRAMMERS:     arty (ayerkes@speakeasy.net)
  */
 
-#ifndef _REACTOS_CHEW_H
-#define _REACTOS_CHEW_H
+#ifndef _LIBRENT_CHEW_H
+#define _LIBRENT_CHEW_H
 
 /**
  * Initialize CHEW, given a device object (since IoAllocateWorkItem relies on
@@ -27,4 +27,4 @@ VOID ChewShutdown(VOID);
 BOOLEAN ChewCreate(VOID (*Worker)(PVOID), PVOID WorkerContext);
 BOOLEAN ChewCreateHighPriority(VOID (*Worker)(PVOID), PVOID WorkerContext);
 
-#endif/*_REACTOS_CHEW_H*/
+#endif/*_LIBRENT_CHEW_H*/

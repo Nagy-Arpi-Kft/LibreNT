@@ -23,7 +23,7 @@
 
 #include "msvcp90.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 errno_t __cdecl rand_s(unsigned int*);
 #endif
 

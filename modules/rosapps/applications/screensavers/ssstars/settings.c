@@ -172,7 +172,7 @@ static void SetupControls(HWND hWnd)
     HBITMAP   hCosmos;
     HDC       hDC, hMemDC;
     HGDIOBJ   hOldBmp, hOldFnt;
-    SIZE      sizeReactOS;
+    SIZE      sizeLibreNT;
     SIZE      sizeStarfield;
     BITMAP    bm;
 
@@ -212,15 +212,15 @@ static void SetupControls(HWND hWnd)
 
     x = LoadString(hInstance, IDS_DESCRIPTION, Strings, sizeof(Strings)/sizeof(TCHAR));
 
-    GetTextExtentPoint32(hMemDC, _T("ReactOS"), 7, &sizeReactOS);
+    GetTextExtentPoint32(hMemDC, _T("LibreNT"), 7, &sizeLibreNT);
     GetTextExtentPoint32(hMemDC, Strings,       x, &sizeStarfield);
 
     GetObject(hCosmos, sizeof(BITMAP), &bm);
 
-    gap = bm.bmHeight - sizeReactOS.cy - sizeStarfield.cy;
+    gap = bm.bmHeight - sizeLibreNT.cy - sizeStarfield.cy;
 
-    TextOut(hMemDC, 16, gap * 2 / 5, _T("ReactOS"), 7);
-    TextOut(hMemDC, 16, gap * 3 / 5 + sizeReactOS.cy, Strings, x);
+    TextOut(hMemDC, 16, gap * 2 / 5, _T("LibreNT"), 7);
+    TextOut(hMemDC, 16, gap * 3 / 5 + sizeLibreNT.cy, Strings, x);
 
     SelectObject(hMemDC, hOldBmp);
     SelectObject(hMemDC, hOldFnt);

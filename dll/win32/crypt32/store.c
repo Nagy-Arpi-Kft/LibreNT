@@ -144,7 +144,7 @@ BOOL WINAPI I_CertUpdateStore(HCERTSTORE store1, HCERTSTORE store2, DWORD unk0,
     DWORD i;
 
     TRACE("(%p, %p, %08lx, %08lx)\n", store1, store2, unk0, unk1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((unk0 || unk1) && !warned)
 #else
     if (!warned)
@@ -509,7 +509,7 @@ static WINECRYPT_CERTSTORE *CRYPT_SysRegOpenStoreW(HCRYPTPROV hCryptProv,
         break;
     case CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE:
         /* hklm\Software\Microsoft\EnterpriseCertificates */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         root = HKEY_LOCAL_MACHINE;
         base = L"Software\\Microsoft\\EnterpriseCertificates";
         break;
@@ -1378,7 +1378,7 @@ static LONG CRYPT_OpenParentStore(DWORD dwFlags,
         break;
     case CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE:
         /* hklm\Software\Microsoft\EnterpriseCertificates */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         root = HKEY_LOCAL_MACHINE;
         base = L"Software\\Microsoft\\EnterpriseCertificates";
         break;
@@ -1393,7 +1393,7 @@ static LONG CRYPT_OpenParentStore(DWORD dwFlags,
     return RegOpenKeyExW(root, base, 0, KEY_READ, key);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const LPCWSTR CRYPT_CurrentUserSystemStores[] =
 {
     L"My", L"Root", L"Trust", L"CA", L"UserDS", L"TrustedPublisher",
@@ -1415,7 +1415,7 @@ BOOL WINAPI CertEnumSystemStore(DWORD dwFlags, void *pvSystemStoreLocationPara,
     LONG rc;
     HKEY key;
     CERT_SYSTEM_STORE_INFO info = { sizeof(info) };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const LPCWSTR *predefined = NULL;
     DWORD predefinedCount = 0, i;
 #endif
@@ -1423,7 +1423,7 @@ BOOL WINAPI CertEnumSystemStore(DWORD dwFlags, void *pvSystemStoreLocationPara,
     TRACE("(%08lx, %p, %p, %p)\n", dwFlags, pvSystemStoreLocationPara, pvArg,
         pfnEnum);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     switch (dwFlags & CERT_SYSTEM_STORE_LOCATION_MASK)
     {
     case CERT_SYSTEM_STORE_CURRENT_USER:
@@ -1454,7 +1454,7 @@ BOOL WINAPI CertEnumSystemStore(DWORD dwFlags, void *pvSystemStoreLocationPara,
 
             rc = RegEnumKeyExW(key, index++, name, &size, NULL, NULL, NULL,
                 NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!rc)
             {
                 for (i = 0; i < predefinedCount; i++)
@@ -1472,17 +1472,17 @@ BOOL WINAPI CertEnumSystemStore(DWORD dwFlags, void *pvSystemStoreLocationPara,
         } while (ret && !rc);
         if (ret && rc != ERROR_NO_MORE_ITEMS)
             SetLastError(rc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         RegCloseKey(key);
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (!predefinedCount)
 #else
     else
 #endif
         SetLastError(rc);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* Include root store for the local machine location (it isn't in the
      * registry)
      */
@@ -1591,7 +1591,7 @@ static BOOL EmptyStore_add(WINECRYPT_CERTSTORE *store, context_t *context,
 {
     TRACE("(%p, %p, %p, %p)\n", store, context, replace, ret_context);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(ret_context) {
         *ret_context = context->vtbl->clone(context, store, use_link);
         if(!*ret_context)

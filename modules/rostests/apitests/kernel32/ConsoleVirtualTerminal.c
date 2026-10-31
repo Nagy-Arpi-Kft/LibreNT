@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     End-to-end tests for the Win32 virtual terminal path
  */
@@ -577,7 +577,7 @@ static VOID
 TestEditFrontendInput(HANDLE Input,
                       HANDLE Output,
                       PREAD_CONSOLE_INPUT_EX_W ReadConsoleInputExW_,
-                      BOOL RunningOnReactOS)
+                      BOOL RunningOnLibreNT)
 {
     WCHAR Characters[128];
     HWND Window;
@@ -649,8 +649,8 @@ TestEditFrontendInput(HANDLE Input,
     Success = FlushConsoleInputBuffer(Input);
     ok(Success, "FlushConsoleInputBuffer failed with error %lu\n", GetLastError());
 
-    /* ID_SYSTEM_EDIT_PASTE is a ReactOS frontend-private command identifier. */
-    if (RunningOnReactOS &&
+    /* ID_SYSTEM_EDIT_PASTE is a LibreNT frontend-private command identifier. */
+    if (RunningOnLibreNT &&
         SetClipboardText(Window, L"paste") &&
         SendConsoleMessage(Window, WM_COMMAND, ID_SYSTEM_EDIT_PASTE, 0))
     {
@@ -691,17 +691,17 @@ START_TEST(ConsoleVirtualTerminal)
     BOOL HaveTitle = FALSE;
     BOOL AllocatedConsole = FALSE;
     BOOL TestBufferActive = FALSE;
-    BOOL RunningOnReactOS;
+    BOOL RunningOnLibreNT;
     BOOL NativeNt63;
     BOOL Success;
     ULONG NtVersion;
 
     NtVersion = GetNTVersion();
-    RunningOnReactOS = is_reactos();
-    NativeNt63 = !RunningOnReactOS && NtVersion == _WIN32_WINNT_WINBLUE;
+    RunningOnLibreNT = is_reactos();
+    NativeNt63 = !RunningOnLibreNT && NtVersion == _WIN32_WINNT_WINBLUE;
     trace("Running Edit VT tests on NT %lu.%lu\n", NtVersion >> 8, NtVersion & 0xff);
-    /* ReactOS exposes this VT path independently of its reported NT version. */
-    if (!RunningOnReactOS && NtVersion < _WIN32_WINNT_WINBLUE)
+    /* LibreNT exposes this VT path independently of its reported NT version. */
+    if (!RunningOnLibreNT && NtVersion < _WIN32_WINNT_WINBLUE)
     {
         skip("The Edit VT baseline requires native NT 6.3 or newer\n");
         return;
@@ -903,7 +903,7 @@ START_TEST(ConsoleVirtualTerminal)
             TestEditFrontendInput(Input,
                                   Output,
                                   ReadConsoleInputExW_,
-                                  RunningOnReactOS);
+                                  RunningOnLibreNT);
     }
 
 Cleanup:

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Version Program
+ * PROJECT:     LibreNT Version Program
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Main header file
  * COPYRIGHT:   Copyright 2025 Thamatip Chitpong <thamatip.chitpong@reactos.org>

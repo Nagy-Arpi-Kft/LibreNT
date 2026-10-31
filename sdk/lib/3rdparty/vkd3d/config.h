@@ -6,7 +6,7 @@
 #define PATH_MAX 1024
 #endif
 #define SONAME_LIBVULKAN "vulkan-1.dll"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define HAVE__STRTOD_L 1
 #else
 #define HAVE__STRTOF_L 1

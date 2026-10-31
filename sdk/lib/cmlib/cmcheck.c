@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Configuration Manager Library - Registry Validation
  * COPYRIGHT:   Copyright 2022 George Bișoc <george.bisoc@reactos.org>
@@ -1690,7 +1690,7 @@ CmCheckRegistry(
     }
 
     /*
-     * A registry repair tool such as the ReactOS Check Registry
+     * A registry repair tool such as the LibreNT Check Registry
      * Utility wants the damaged hive to be fixed as we check the
      * target hive.
      */
@@ -1700,7 +1700,7 @@ CmCheckRegistry(
     }
 
     /*
-     * FIXME: Currently ReactOS does not implement security
+     * FIXME: Currently LibreNT does not implement security
      * caching algorithms so it's pretty pointless to implement
      * security descriptors validation checks at this moment.
      * When the time comes to implement these, we would need

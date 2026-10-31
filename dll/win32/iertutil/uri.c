@@ -4645,7 +4645,7 @@ static HRESULT WINAPI Uri_IsEqual(IUri *iface, IUri *pUri, BOOL *pfEqual)
 
     /* Try to convert it to a Uri (allows for a more simple comparison). */
     if(!(other = get_uri_obj(pUri))) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IUri *copy;
         BSTR str;
         HRESULT hres;
@@ -4833,7 +4833,7 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
     struct persist_uri *data;
     parse_data parse;
     DWORD size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG read;
     WCHAR *raw_uri;
     SIZE_T raw_offset = offsetof(struct persist_uri, data) + 2 * sizeof(DWORD);
@@ -4847,21 +4847,21 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
     if(!pStm)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = IStream_Read(pStm, &size, sizeof(DWORD), &read);
 #else
     hr = IStream_Read(pStm, &size, sizeof(DWORD), NULL);
 #endif
     if(FAILED(hr))
         return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(read != sizeof(DWORD) || size < sizeof(DWORD) + 2)
         return E_UNEXPECTED;
 #endif
     data = malloc(size);
     if(!data)
         return E_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = IStream_Read(pStm, data->unk1, size-sizeof(DWORD)-2, &read);
     if(FAILED(hr) || read != size-sizeof(DWORD)-2) {
 #else
@@ -4869,7 +4869,7 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
     if(FAILED(hr)) {
 #endif
         free(data);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return FAILED(hr) ? hr : E_UNEXPECTED;
 #else
         return hr;
@@ -4881,7 +4881,7 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
         return S_OK;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(size - 2 < raw_offset + sizeof(WCHAR)) {
         free(data);
         return E_UNEXPECTED;
@@ -4899,7 +4899,7 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
         return E_UNEXPECTED;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->raw_uri = SysAllocString(raw_uri);
 #else
     This->raw_uri = SysAllocString((WCHAR*)(data->data+sizeof(DWORD)*2));
@@ -4916,7 +4916,7 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
     parse.uri = This->raw_uri;
     if(!parse_uri(&parse, This->create_flags)) {
         SysFreeString(This->raw_uri);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         This->raw_uri = NULL;
 #endif
         This->create_flags = 0;
@@ -4926,7 +4926,7 @@ static HRESULT WINAPI PersistStream_Load(IPersistStream *iface, IStream *pStm)
     hr = canonicalize_uri(&parse, This, This->create_flags);
     if(FAILED(hr)) {
         SysFreeString(This->raw_uri);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         This->raw_uri = NULL;
 #endif
         This->create_flags = 0;
@@ -5245,7 +5245,7 @@ static HRESULT WINAPI Marshal_UnmarshalInterface(IMarshal *iface,
 {
     Uri *This = impl_from_IMarshal(iface);
     DWORD header[2];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG read;
 #endif
     HRESULT hres;
@@ -5257,14 +5257,14 @@ static HRESULT WINAPI Marshal_UnmarshalInterface(IMarshal *iface,
     if(!pStm || !riid || !ppv)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = IStream_Read(pStm, header, sizeof(header), &read);
 #else
     hres = IStream_Read(pStm, header, sizeof(header), NULL);
 #endif
     if(FAILED(hres))
         return hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(read != sizeof(header))
         return E_UNEXPECTED;
 #endif
@@ -5277,14 +5277,14 @@ static HRESULT WINAPI Marshal_UnmarshalInterface(IMarshal *iface,
         struct inproc_marshal_uri data;
         parse_data parse;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hres = IStream_Read(pStm, data.unk, sizeof(data)-2*sizeof(DWORD), &read);
 #else
         hres = IStream_Read(pStm, data.unk, sizeof(data)-2*sizeof(DWORD), NULL);
 #endif
         if(FAILED(hres))
             return hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(read != sizeof(data)-2*sizeof(DWORD))
             return E_UNEXPECTED;
 #endif
@@ -5322,7 +5322,7 @@ static HRESULT WINAPI Marshal_ReleaseMarshalData(IMarshal *iface, IStream *pStm)
     Uri *This = impl_from_IMarshal(iface);
     LARGE_INTEGER off;
     DWORD header[2];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG read;
 #endif
     HRESULT hres;
@@ -5332,14 +5332,14 @@ static HRESULT WINAPI Marshal_ReleaseMarshalData(IMarshal *iface, IStream *pStm)
     if(!pStm)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = IStream_Read(pStm, header, 2*sizeof(DWORD), &read);
 #else
     hres = IStream_Read(pStm, header, 2*sizeof(DWORD), NULL);
 #endif
     if(FAILED(hres))
         return hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(read != sizeof(header))
         return E_UNEXPECTED;
 #endif
@@ -5347,14 +5347,14 @@ static HRESULT WINAPI Marshal_ReleaseMarshalData(IMarshal *iface, IStream *pStm)
     if(header[1] == MSHCTX_INPROC) {
         struct inproc_marshal_uri data;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hres = IStream_Read(pStm, data.unk, sizeof(data)-2*sizeof(DWORD), &read);
 #else
         hres = IStream_Read(pStm, data.unk, sizeof(data)-2*sizeof(DWORD), NULL);
 #endif
         if(FAILED(hres))
             return hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(read != sizeof(data)-2*sizeof(DWORD))
             return E_UNEXPECTED;
 #endif
@@ -6354,7 +6354,7 @@ static HRESULT combine_uri(Uri *base, Uri *relative, DWORD flags, IUri **result,
             }
 
             /* Check if the dot segments need to be removed from the path. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(!(flags & URL_DONT_SIMPLIFY) && (!data.is_opaque || (data.is_relative && path_len && *path == '/'))) {
 #else
             if(!(flags & URL_DONT_SIMPLIFY) && !data.is_opaque) {
@@ -6542,7 +6542,7 @@ static HRESULT parse_canonicalize(const Uri *uri, DWORD flags, LPWSTR output,
 
     if(len < output_len)
         output[len] = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if(output_len)
 #else
     else
@@ -6551,7 +6551,7 @@ static HRESULT parse_canonicalize(const Uri *uri, DWORD flags, LPWSTR output,
 
     /* The null terminator isn't included in the length. */
     *result_len = len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(len >= output_len && allow_unescape && (flags & URL_UNESCAPE)) {
         *result_len = 0;
         return S_OK;

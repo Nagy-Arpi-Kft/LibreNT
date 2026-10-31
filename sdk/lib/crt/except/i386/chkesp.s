@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS C run time library
+ * PROJECT:           LibreNT C run time library
  * PURPOSE:           Stack checker
  * PROGRAMMERS:       Jérôme Gardou
  */

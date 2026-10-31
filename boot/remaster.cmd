@@ -1,14 +1,14 @@
 ::
-:: PROJECT:     ReactOS ISO Remastering Script
+:: PROJECT:     LibreNT ISO Remastering Script
 :: LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
-:: PURPOSE:     Allows easy remastering of customized ReactOS ISO images.
-::              Based on the boot/boot_images.cmake script in the ReactOS
+:: PURPOSE:     Allows easy remastering of customized LibreNT ISO images.
+::              Based on the boot/boot_images.cmake script in the LibreNT
 ::              source tree. Requires a MKISOFS-compatible utility.
 :: COPYRIGHT:   Copyright 2023-2025 Hermès Bélusca-Maïto <hermes.belusca-maito@reactos.org>
 ::
 
 @echo off
-:: title ReactOS ISO Remastering Script
+:: title LibreNT ISO Remastering Script
 
 setlocal enabledelayedexpansion
 
@@ -16,8 +16,8 @@ setlocal enabledelayedexpansion
 :: Customizable settings
 ::
 :: ISO image identifier names
-set ISO_MANUFACTURER="LiberNT Project"& :: For both the publisher and the preparer
-set ISO_VOLNAME="ReactOS"&              :: For both the Volume ID and the Volume set ID
+set ISO_MANUFACTURER="LibreNT Project"& :: For both the publisher and the preparer
+set ISO_VOLNAME="LibreNT"&              :: For both the Volume ID and the Volume set ID
 
 :: Image names of the MKISOFS and ISOHYBRID tools
 set MKISOFS=MKISOFS.EXE
@@ -30,7 +30,7 @@ set ISOHYBRID=ISOHYBRID.EXE
 cls
 echo *******************************************************************************
 echo *                                                                             *
-echo *                       ReactOS ISO Remastering Script                        *
+echo *                       LibreNT ISO Remastering Script                        *
 echo *                                                                             *
 echo *******************************************************************************
 echo.
@@ -86,7 +86,7 @@ set efisys_file=loader/efisys.bin
 
 set ISOBOOT_PATH=%isoboot_file%
 ::CHOICE /c 12 /n /m "Please choose the ISO boot file: 1) isoboot.bin ; 2) isobtrt.bin!\n![default: 1]: "
-CHOICE /c YN /n /m "Do you want the ReactOS media to wait for a key-press before booting [Y,N]? "
+CHOICE /c YN /n /m "Do you want the LibreNT media to wait for a key-press before booting [Y,N]? "
 echo.
 if errorlevel 2 set ISOBOOT_PATH=%isobtrt_file%
 
@@ -119,7 +119,7 @@ echo.
 :: Create a mkisofs sort file to specify an explicit ordering for the boot files
 :: to place them at the beginning of the image (makes ISO image analysis easier).
 :: See mkisofs/schilytools/mkisofs/README.sort and boot/boot_images.cmake script
-:: in the ReactOS source tree for more details.
+:: in the LibreNT source tree for more details.
 :: https://stackoverflow.com/a/29635767
 (
     ::echo ${CMAKE_CURRENT_BINARY_DIR}/empty/boot.catalog 4

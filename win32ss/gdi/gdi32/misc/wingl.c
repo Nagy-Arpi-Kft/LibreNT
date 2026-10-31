@@ -1,5 +1,5 @@
 /*
- *  ReactOS Gdi32
+ *  LibreNT Gdi32
  *  Copyright (C) 2003 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or

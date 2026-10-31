@@ -773,7 +773,7 @@ static const style_tbl_entry_t *lookup_style_tbl(CSSStyle *style, const WCHAR *n
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT fix_px_value(nsAString *nsstr)
 #else
 static void fix_px_value(nsAString *nsstr)
@@ -795,18 +795,18 @@ static void fix_px_value(nsAString *nsstr)
 
         if(!*ptr || iswspace(*ptr)) {
             LPWSTR ret, p;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SIZE_T len = (SIZE_T)lstrlenW(val)+1;
 #else
             int len = lstrlenW(val)+1;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (len > ~(SIZE_T)0 / sizeof(WCHAR) - 2)
                 return E_OUTOFMEMORY;
 #endif
             ret = malloc((len + 2) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!ret)
                 return E_OUTOFMEMORY;
 #endif
@@ -826,12 +826,12 @@ static void fix_px_value(nsAString *nsstr)
         while(*ptr && !iswspace(*ptr))
             ptr++;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT fix_url_value(LPCWSTR val, WCHAR **result)
 #else
 static LPWSTR fix_url_value(LPCWSTR val)
@@ -841,18 +841,18 @@ static LPWSTR fix_url_value(LPCWSTR val)
 
     static const WCHAR urlW[] = {'u','r','l','('};
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = NULL;
 #endif
     if(wcsncmp(val, urlW, ARRAY_SIZE(urlW)) || !wcschr(val, '\\'))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return S_OK;
 #else
         return NULL;
 #endif
 
     ret = wcsdup(val);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret)
         return E_OUTOFMEMORY;
 #endif
@@ -862,7 +862,7 @@ static LPWSTR fix_url_value(LPCWSTR val)
             *ptr = '/';
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = ret;
     return S_OK;
 #else
@@ -892,7 +892,7 @@ static HRESULT var_to_styleval(CSSStyle *style, VARIANT *v, const style_tbl_entr
         ? entry->flags : 0;
 
     hres = variant_to_nsstr(v, !!(flags & ATTR_HEX_INT), nsstr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hres) && (flags & ATTR_FIX_PX)) {
         hres = fix_px_value(nsstr);
         if(FAILED(hres))
@@ -930,7 +930,7 @@ static inline HRESULT set_style_property(CSSStyle *style, styleid_t sid, const W
             }
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(flags & ATTR_FIX_URL) {
             hres = fix_url_value(value, &val);
             if(FAILED(hres))
@@ -943,7 +943,7 @@ static inline HRESULT set_style_property(CSSStyle *style, styleid_t sid, const W
     }
 
     nsAString_InitDepend(&value_str, val ? val : value);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = flags & ATTR_FIX_PX ? fix_px_value(&value_str) : S_OK;
     if(SUCCEEDED(hres))
         hres = set_nsstyle_property(style->nsstyle, sid, &value_str);

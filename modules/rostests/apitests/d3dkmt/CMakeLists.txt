@@ -3,22 +3,22 @@
 # queues & GPU virtual addressing (2.0), HW queues (2.2), EnumAdapters3 (2.7),
 # etc. -- and so tests can compare the visible Windows 11-era surface. Entry
 # points are still resolved dynamically via GetProcAddress, so the same binary
-# degrades gracefully on hosts (e.g. WDDM 2.0 ReactOS) that lack newer exports.
+# degrades gracefully on hosts (e.g. WDDM 2.0 LibreNT) that lack newer exports.
 remove_definitions(-DDXGKDDI_INTERFACE_VERSION=0x1052)
 add_definitions(-DDXGKDDI_INTERFACE_VERSION=0x11007)
 
-option(REACTOS_D3DKMT_PRIVATE_DWM_TEST
-    "Build ReactOS-private DWM redirection ABI probes" OFF)
+option(LIBRENT_D3DKMT_PRIVATE_DWM_TEST
+    "Build LibreNT-private DWM redirection ABI probes" OFF)
 
 # Compile the tests against the same UMD callback layout as the runtime and
 # in-tree UMDs.  A lower private test selector changes D3DDDI_DEVICECALLBACKS
 # itself, so handing that shorter buffer to the current runtime corrupts the
 # caller rather than testing an older contract in isolation.
-if(REACTOS_USE_WDDM)
-    set(REACTOS_EXPECTED_UMD_INTERFACE_VERSION
-        ${REACTOS_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION})
+if(LIBRENT_USE_WDDM)
+    set(LIBRENT_EXPECTED_UMD_INTERFACE_VERSION
+        ${LIBRENT_WDDM_EFFECTIVE_UMD_INTERFACE_VERSION})
 else()
-    set(REACTOS_EXPECTED_UMD_INTERFACE_VERSION 0x000C)
+    set(LIBRENT_EXPECTED_UMD_INTERFACE_VERSION 0x000C)
 endif()
 
 list(APPEND SOURCE
@@ -77,11 +77,11 @@ list(APPEND SOURCE
     cursor_test.c
     display_test.c)
 
-if(REACTOS_D3DKMT_PRIVATE_DWM_TEST)
+if(LIBRENT_D3DKMT_PRIVATE_DWM_TEST)
     list(APPEND SOURCE dwmdx_test.c)
 endif()
 
-if(REACTOS_USE_WDDM AND (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))
+if(LIBRENT_USE_WDDM AND (LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))
     list(APPEND SOURCE d3dkmt_vc4kmt_smoke.c)
 endif()
 
@@ -93,15 +93,15 @@ add_executable(d3dkmt_apitest
     ${PCH_SKIP_SOURCE})
 
 target_compile_definitions(d3dkmt_apitest PRIVATE
-    REACTOS_EXPECTED_UMD_INTERFACE_VERSION=${REACTOS_EXPECTED_UMD_INTERFACE_VERSION})
-if(REACTOS_D3DKMT_PRIVATE_DWM_TEST)
+    LIBRENT_EXPECTED_UMD_INTERFACE_VERSION=${LIBRENT_EXPECTED_UMD_INTERFACE_VERSION})
+if(LIBRENT_D3DKMT_PRIVATE_DWM_TEST)
     target_compile_definitions(d3dkmt_apitest PRIVATE
-        REACTOS_D3DKMT_PRIVATE_DWM_TEST)
+        LIBRENT_D3DKMT_PRIVATE_DWM_TEST)
 endif()
 target_link_libraries(d3dkmt_apitest wine ${PSEH_LIB})
-if(REACTOS_USE_WDDM AND (REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))
+if(LIBRENT_USE_WDDM AND (LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 2000))
     target_link_libraries(d3dkmt_apitest vc4kmt)
-    target_compile_definitions(d3dkmt_apitest PRIVATE REACTOS_D3DKMT_VC4KMT_TEST)
+    target_compile_definitions(d3dkmt_apitest PRIVATE LIBRENT_D3DKMT_VC4KMT_TEST)
 endif()
 set_module_type(d3dkmt_apitest win32cui)
 add_importlibs(d3dkmt_apitest gdi32 user32 advapi32 msvcrt kernel32 ntdll)

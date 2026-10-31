@@ -3,14 +3,14 @@
 #define IDC_MYICON           2
 #define IDB_BITMAP2_STOP_DIS 8
 
-#define IDD_REACTOS_SNDREC32_DIALOG 102
+#define IDD_LIBRENT_SNDREC32_DIALOG 102
 #define IDS_APP_TITLE               103
 #define IDM_ABOUT                   104
-#define IDI_REACTOS_SNDREC32        107
-#define IDI_REACTOS_SNDREC32LL      107
+#define IDI_LIBRENT_SNDREC32        107
+#define IDI_LIBRENT_SNDREC32LL      107
 #define IDI_SNDREC32                107
 #define IDI_SMALL                   108
-#define IDC_REACTOS_SNDREC32        109
+#define IDC_LIBRENT_SNDREC32        109
 
 #define IDR_MAINFRAME         128
 #define IDB_BITMAP1           132

@@ -136,7 +136,7 @@ typedef ULONG_PTR NCRYPT_SECRET_HANDLE;
 #define NCRYPT_SCARD_PIN_ID                     L"SmartCardPinId"
 #define NCRYPT_SCARD_PIN_INFO                   L"SmartCardPinInfo"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define MS_KEY_STORAGE_PROVIDER            L"Microsoft Software Key Storage Provider"
 #define MS_SMART_CARD_KEY_STORAGE_PROVIDER L"Microsoft Smart Card Key Storage Provider"
 #define MS_PLATFORM_KEY_STORAGE_PROVIDER   L"Microsoft Platform Crypto Provider"
@@ -209,7 +209,7 @@ SECURITY_STATUS WINAPI NCryptOpenStorageProvider(NCRYPT_PROV_HANDLE *, const WCH
 SECURITY_STATUS WINAPI NCryptSetProperty(NCRYPT_HANDLE, const WCHAR *, BYTE *, DWORD, DWORD);
 SECURITY_STATUS WINAPI NCryptSignHash(NCRYPT_KEY_HANDLE, void *, BYTE *, DWORD, BYTE *, DWORD, DWORD *, DWORD);
 SECURITY_STATUS WINAPI NCryptVerifySignature(NCRYPT_KEY_HANDLE, void *, BYTE *, DWORD, BYTE *, DWORD, DWORD);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 SECURITY_STATUS WINAPI NCryptDeleteKey(NCRYPT_KEY_HANDLE, DWORD);
 SECURITY_STATUS WINAPI NCryptEnumAlgorithms(NCRYPT_PROV_HANDLE, DWORD, DWORD *, NCryptAlgorithmName **, DWORD);
 SECURITY_STATUS WINAPI NCryptEnumKeys(NCRYPT_PROV_HANDLE, const WCHAR *, NCryptKeyName **, PVOID *, DWORD);

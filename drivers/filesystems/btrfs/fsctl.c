@@ -20,7 +20,7 @@
 #include "crc32c.h"
 #include <ntddstor.h>
 #include <ntdddisk.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <sys/stat.h>
 #endif
 
@@ -4908,7 +4908,7 @@ static NTSTATUS fsctl_oplock(device_extension* Vcb, PIRP* Pirp) {
     bool oplock_request = false;
 #endif
     ULONG oplock_count = 0;
-#if defined(__REACTOS__) && (NTDDI_VERSION < NTDDI_WIN7)
+#if defined(__LIBRENT__) && (NTDDI_VERSION < NTDDI_WIN7)
     bool shared_request;
 #endif
 

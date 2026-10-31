@@ -159,7 +159,7 @@ static void test_GetDiskFreeSpaceA(void)
     ret = GetDiskFreeSpaceA("C:\\", &sectors_per_cluster, &bytes_per_sector, &free_clusters, &total_clusters);
     ok(ret, "GetDiskFreeSpaceA error %ld\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ret = GetVolumeNameForVolumeMountPointA("C:\\", volume_guid_path, ARRAY_SIZE(volume_guid_path));
@@ -167,7 +167,7 @@ static void test_GetDiskFreeSpaceA(void)
 
     ret = GetDiskFreeSpaceA(volume_guid_path, &sectors_per_cluster, &bytes_per_sector, &free_clusters, &total_clusters);
     ok(ret, "GetDiskFreeSpaceA error %ld\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 

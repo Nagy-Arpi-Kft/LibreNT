@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/kd64/kdinit.c
  * PURPOSE:         KD64 Initialization Code
@@ -10,7 +10,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/buildno.h>
+#include <librent/buildno.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -92,7 +92,7 @@ KdpPrintBanner(VOID)
     SIZE_T MemSizeMBs = KdpGetMemorySizeInMBs(KeLoaderBlock);
 
     DPRINT1("-----------------------------------------------------\n");
-    DPRINT1("LiberNT " KERNEL_VERSION_STR " (Build " KERNEL_VERSION_BUILD_STR ") (Commit " KERNEL_VERSION_COMMIT_HASH ")\n");
+    DPRINT1("LibreNT " KERNEL_VERSION_STR " (Build " KERNEL_VERSION_BUILD_STR ") (Commit " KERNEL_VERSION_COMMIT_HASH ")\n");
     DPRINT1("%u System Processor [%u MB Memory]\n", KeNumberProcessors, MemSizeMBs);
 
     if (KeLoaderBlock)
@@ -404,7 +404,7 @@ KdInitSystem(
         /* Let user-mode know that it's enabled as well */
         MmWriteableSharedUserData->KdDebuggerEnabled = TRUE;
 
-        /* Display separator + ReactOS version at the start of the debug log */
+        /* Display separator + LibreNT version at the start of the debug log */
         KdpPrintBanner();
 
         /* Check if the debugger should be disabled initially */

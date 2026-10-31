@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     D3DKMT IOCTL dispatch and user-mode API implementation
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -33,11 +33,11 @@
 #include "vidpn.h"
 #include "present.h"
 #include "pnp.h"
-#include <reactos/rddm/rxgkadvcolor.h>
-#include <reactos/rddm/rxgkmonitor.h>
+#include <librent/rddm/rxgkadvcolor.h>
+#include <librent/rddm/rxgkmonitor.h>
 #include "caps_core.h"
 #include "paging_core.h"
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 #include "feature_query_core.h"
 #endif
 
@@ -48,7 +48,7 @@ C_ASSERT(RXGK_SUBMITCOMMAND_MAX_PRIMARIES == D3DDDI_MAX_WRITTEN_PRIMARIES);
 C_ASSERT(sizeof(RXGK_PUBLIC_OPERATION_PACKET) == RXGK_PUBLIC_OPERATION_PACKET_V1_SIZE);
 C_ASSERT(FIELD_OFFSET(RXGK_PUBLIC_OPERATION_PACKET, Pointer0) == 32);
 C_ASSERT(FIELD_OFFSET(RXGK_PUBLIC_OPERATION_PACKET, Value0) == 40);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 C_ASSERT(sizeof(RXGK_ISFEATUREENABLED_PACKET) == RXGK_ISFEATUREENABLED_PACKET_SIZE);
 #endif
 C_ASSERT(sizeof(RXGK_GETRESOURCEPRESENTPRIVATE_PACKET) == RXGK_GETRESOURCEPRESENTPRIVATE_PACKET_V1_SIZE);
@@ -74,7 +74,7 @@ C_ASSERT(FIELD_OFFSET(RXGK_SETCOMPOSITORSOURCEOWNER_PACKET, Generation) == 40);
 C_ASSERT(FIELD_OFFSET(RXGK_SETCOMPOSITORSOURCEOWNER_PACKET, Width) == 48);
 C_ASSERT(FIELD_OFFSET(RXGK_RESOLVESHAREDRESOURCENTHANDLE_PACKET, NtHandle) == 8);
 C_ASSERT(FIELD_OFFSET(RXGK_RESOLVESHAREDRESOURCENTHANDLE_PACKET, GlobalShareHandle) == 16);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 C_ASSERT(sizeof(RXGK_GETDWMVERTICALBLANKEVENT_PACKET) ==
          RXGK_GETDWMVERTICALBLANKEVENT_PACKET_V1_SIZE);
 C_ASSERT(FIELD_OFFSET(RXGK_GETDWMVERTICALBLANKEVENT_PACKET, Size) == 0);
@@ -102,7 +102,7 @@ C_ASSERT(FIELD_OFFSET(RXGK_GETSHAREDRESOURCEADAPTERLUID_PACKET, NtHandle) == 16)
 C_ASSERT(FIELD_OFFSET(RXGK_GETSHAREDRESOURCEADAPTERLUID_PACKET, AdapterLuidLowPart) == 24);
 C_ASSERT(FIELD_OFFSET(RXGK_GETSHAREDRESOURCEADAPTERLUID_PACKET, AdapterLuidHighPart) == 28);
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 C_ASSERT(sizeof(RXGK_CONTEXTINPROCESSPRIORITY_PACKET) ==
          RXGK_CONTEXTINPROCESSPRIORITY_PACKET_V1_SIZE);
 C_ASSERT(FIELD_OFFSET(RXGK_CONTEXTINPROCESSPRIORITY_PACKET, Size) == 0);
@@ -110,7 +110,7 @@ C_ASSERT(FIELD_OFFSET(RXGK_CONTEXTINPROCESSPRIORITY_PACKET, Version) == 4);
 C_ASSERT(FIELD_OFFSET(RXGK_CONTEXTINPROCESSPRIORITY_PACKET, ContextHandle) == 8);
 C_ASSERT(FIELD_OFFSET(RXGK_CONTEXTINPROCESSPRIORITY_PACKET, Priority) == 12);
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 C_ASSERT(sizeof(RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET) ==
          RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET_V1_SIZE);
 C_ASSERT(FIELD_OFFSET(RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET, Size) == 0);
@@ -147,7 +147,7 @@ C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS2_PACKET, HandlesOffset) == 20);
 C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS2_PACKET, DiscardedOffset) == 24);
 C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS2_PACKET, Reserved) == 28);
 C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS2_PACKET, PagingFenceValue) == 32);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 C_ASSERT(sizeof(RXGK_UPDATEALLOCATIONPROPERTY_PACKET) == RXGK_UPDATEALLOCATIONPROPERTY_PACKET_V1_SIZE);
 C_ASSERT(FIELD_OFFSET(RXGK_UPDATEALLOCATIONPROPERTY_PACKET, Size) == 0);
 C_ASSERT(FIELD_OFFSET(RXGK_UPDATEALLOCATIONPROPERTY_PACKET, Version) == 4);
@@ -169,7 +169,7 @@ C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS3_PACKET, ResultsOffset) == 24);
 C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS3_PACKET, Reserved) == 28);
 C_ASSERT(FIELD_OFFSET(RXGK_RECLAIMALLOCATIONS3_PACKET, PagingFenceValue) == 32);
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 C_ASSERT(FIELD_OFFSET(RXGK_ISFEATUREENABLED_PACKET, AdapterHandle) == 0);
 C_ASSERT(FIELD_OFFSET(RXGK_ISFEATUREENABLED_PACKET, FeatureId) == 4);
 C_ASSERT(FIELD_OFFSET(RXGK_ISFEATUREENABLED_PACKET, ResultVersion) == 8);
@@ -262,7 +262,7 @@ DxgkUnInitialize(
 #define PROCESS_SET_INFORMATION 0x0200
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static NTSTATUS
 DxgkpDirectMakeResident(
     _Inout_ D3DDDI_MAKERESIDENT *Data);
@@ -492,8 +492,8 @@ DxgkpResolveSharedResourceNtHandle(
  */
 #define DXGKP_OS_COMPLETED_WDDM_LEVEL KMT_DRIVERVERSION_WDDM_1_3
 
-#ifndef REACTOS_WDDM_TARGET_LEVEL
-#define REACTOS_WDDM_TARGET_LEVEL KMT_DRIVERVERSION_WDDM_2_0
+#ifndef LIBRENT_WDDM_TARGET_LEVEL
+#define LIBRENT_WDDM_TARGET_LEVEL KMT_DRIVERVERSION_WDDM_2_0
 #endif
 
 /*
@@ -611,7 +611,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
         case IOCTL_D3DKMT_RECLAIMALLOCATIONS:
         case IOCTL_D3DKMT_SETVIDPNSOURCEOWNER1:
         case IOCTL_D3DKMT_WAITFORVERTICALBLANKEVENT2:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
         case IOCTL_D3DKMT_GETDWMVERTICALBLANKEVENT:
         case IOCTL_D3DKMT_SETSYNCREFRESHCOUNTWAITTARGET:
 #endif
@@ -621,7 +621,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
         case IOCTL_DXGKRNL_GET_DOD_INIT_ENTRY:
             return DXGK_CAPS_CORE_LEVEL_WDDM_1_2;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         /* Exported KMT entry points first exposed at WDDM 1.3. */
         case IOCTL_D3DKMT_SETCONTEXTINPROCESSPRIORITY:
         case IOCTL_D3DKMT_GETCONTEXTINPROCESSPRIORITY:
@@ -653,7 +653,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
         case IOCTL_D3DKMT_WAITFORSYNCHRONIZATIONOBJECTFROMGPU:
         case IOCTL_D3DKMT_SIGNALSYNCHRONIZATIONOBJECTFROMGPU:
         case IOCTL_D3DKMT_SIGNALSYNCHRONIZATIONOBJECTFROMGPU2:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         case IOCTL_D3DKMT_QUERYVIDPNEXCLUSIVEOWNERSHIP:
 #endif
         case IOCTL_DXGKRNL_PREPAREMAPGPUVIRTUALADDRESS:
@@ -661,7 +661,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
         case IOCTL_DXGKRNL_GET_UNINIT_ENTRY:
             return DXGK_CAPS_CORE_LEVEL_WDDM_2_0;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
         /* Mandatory WDDM 2.1 allocation-property and reclaim contracts. */
         case IOCTL_D3DKMT_UPDATEALLOCATIONPROPERTY:
         case IOCTL_D3DKMT_RECLAIMALLOCATIONS3:
@@ -670,7 +670,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
             return DXGK_CAPS_CORE_LEVEL_WDDM_2_1;
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case IOCTL_D3DKMT_CREATEHWCONTEXT:
         case IOCTL_D3DKMT_DESTROYHWCONTEXT:
         case IOCTL_RXGK_GETMULTIPLANEOVERLAYCAPS:
@@ -686,7 +686,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
         case IOCTL_D3DKMT_SUBMITSIGNALSYNCOBJECTSTOHWQUEUE:
             return DXGK_CAPS_CORE_LEVEL_WDDM_2_2;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
         case IOCTL_D3DKMT_SETMONITORCOLORSPACETRANSFORM:
 #endif
         case IOCTL_D3DKMT_SETVIDPNSOURCEOWNER2:
@@ -698,7 +698,7 @@ DxgkpKmtIoctlMinimumConfiguredLevel(
         case IOCTL_D3DKMT_SUBMITPRESENTTOHWQUEUE:
             return DXGK_CAPS_CORE_LEVEL_WDDM_2_5;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
         /* D3DKMTIsFeatureEnabled was introduced with WDDM 3.2. */
         case IOCTL_D3DKMT_ISFEATUREENABLED:
             return DXGK_CAPS_CORE_LEVEL_WDDM_3_2;
@@ -733,7 +733,7 @@ DxgkpGetReportedDriverVersion(
     Input.ProviderCompletedLevel =
         DxgkCapsCoreInterfaceVersionToLevel(
             Adapter->Mms2HighestCompleteWddmVersion);
-    Input.ConfiguredLevel = REACTOS_WDDM_TARGET_LEVEL;
+    Input.ConfiguredLevel = LIBRENT_WDDM_TARGET_LEVEL;
 
     return (D3DKMT_DRIVERVERSION)DxgkCapsCoreReportedVersion(&Input);
 }
@@ -1337,7 +1337,7 @@ DxgkpValidateAdapterOnlyForIoctl(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 typedef struct _DXGKP_FEATURE_DESCRIPTOR
 {
     BOOLEAN KnownFeature;
@@ -1410,7 +1410,7 @@ DxgkpDescribeFeature(
     }
 
     /*
-     * Except for KMD-signaled CPU events above, the remaining ReactOS
+     * Except for KMD-signaled CPU events above, the remaining LibreNT
      * contracts are not complete enough to advertise, including native
      * fences, HWSCH, UMS, page-based VidMm, and GPUVAIOMMU.
      */
@@ -1741,7 +1741,7 @@ DxgkpIsFeatureEnabled(
     Packet->ResultValue = Result.Value;
     return Status;
 }
-#endif /* REACTOS_WDDM_TARGET_LEVEL >= 3200 */
+#endif /* LIBRENT_WDDM_TARGET_LEVEL >= 3200 */
 
 static NTSTATUS
 DxgkpValidateGlobalShareForIoctl(
@@ -1757,7 +1757,7 @@ DxgkpValidateGlobalShareForIoctl(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 static NTSTATUS
 DxgkpGetSharedResourceAdapterLuid(
     _Inout_ PRXGK_GETSHAREDRESOURCEADAPTERLUID_PACKET Packet)
@@ -1773,7 +1773,7 @@ DxgkpGetSharedResourceAdapterLuid(
     Packet->AdapterLuidHighPart = 0;
 
     /*
-     * The two input handles are alternatives.  ReactOS VidMm currently has a
+     * The two input handles are alternatives.  LibreNT VidMm currently has a
      * real global-share namespace, but it does not yet create NT resource
      * objects.  Reject that unimplemented model explicitly instead of
      * interpreting an arbitrary process handle as a VidMm handle.
@@ -1811,7 +1811,7 @@ Cleanup:
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static NTSTATUS
 DxgkpQueryVidPnExclusiveOwnershipPacket(
     _Inout_ PRXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET Packet)
@@ -2219,7 +2219,7 @@ DxgkpEnumAdapters2(
      * Count query: when the caller passes a NULL array it only wants the
      * adapter count.  Per the D3DKMT contract this SUCCEEDS with NumAdapters
      * set — it is not an error.  Returning STATUS_BUFFER_TOO_SMALL here would
-     * additionally lose the count, because ReactOS skips the METHOD_BUFFERED
+     * additionally lose the count, because LibreNT skips the METHOD_BUFFERED
      * output copy-back for a non-success status, so the caller would read back
      * its unmodified input (zero).
      */
@@ -2421,7 +2421,7 @@ DxgkpOpenAdapterByDisplayOrdinal(
 
             if (DesktopOnly)
             {
-                /* ReactOS currently registers one GDI bridge/source. A
+                /* LibreNT currently registers one GDI bridge/source. A
                  * headless hardware adapter must not steal DISPLAY1 from
                  * the registered owner merely because it supports VidPNs. */
                 if (Adapter->DisplayDeviceName[0] == L'\0')
@@ -2864,7 +2864,7 @@ DxgkpQueryAdapterInfoMinimumLevel(
             return TRUE;
 
         case KMTQAITYPE_WDDM_1_3_CAPS:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         case KMTQAITYPE_MULTIPLANEOVERLAY_SUPPORT:
 #endif
             *MinimumLevel = DXGK_CAPS_CORE_LEVEL_WDDM_1_3;
@@ -3777,7 +3777,7 @@ DxgkpQueryAdapterInfoCaptured(
                     pQueryAdapterInfo->PrivateDriverDataSize));
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         case KMTQAITYPE_MULTIPLANEOVERLAY_SUPPORT:
         {
             D3DKMT_MULTIPLANEOVERLAY_SUPPORT Support;
@@ -3791,7 +3791,7 @@ DxgkpQueryAdapterInfoCaptured(
             /* Either DDI generation backs the public check and present. */
             RtlZeroMemory(&Support, sizeof(Support));
             Support.Supported = DxgkPresentCoreMpoV1Supported(
-                                    REACTOS_WDDM_TARGET_LEVEL,
+                                    LIBRENT_WDDM_TARGET_LEVEL,
                                     DxgkMpoSupported(Adapter),
                                     DxgkMpoSupported(Adapter),
                                     TRUE,
@@ -4514,7 +4514,7 @@ DxgkpQueryAdapterInfoWithAccessMode(
     CapturedQuery = *pQueryAdapterInfo;
     if (!DxgkpQueryAdapterInfoMinimumLevel((UINT)CapturedQuery.Type,
                                            &MinimumLevel) ||
-        REACTOS_WDDM_TARGET_LEVEL < MinimumLevel)
+        LIBRENT_WDDM_TARGET_LEVEL < MinimumLevel)
     {
         return STATUS_INVALID_PARAMETER;
     }
@@ -5265,7 +5265,7 @@ DxgkpSubmitVirtGpuCommandEscape(
  *
  * These functions wrap the Lock/Unlock/Escape logic so they can be called
  * both from the IOCTL dispatch (with IRP context) and from the
- * REACTOS_WIN32K_DXGKRNL_INTERFACE exchange (without IRP context).
+ * LIBRENT_WIN32K_DXGKRNL_INTERFACE exchange (without IRP context).
  * ====================================================================== */
 
 /* Windows LockCommon waits on the fence values stored on the allocation.
@@ -5505,7 +5505,7 @@ DxgkpEscapeCaptured(
     UINT             DmaBufferBytes;
     NTSTATUS         Status;
     BOOLEAN          MiniportCallbackAcquired = FALSE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     PDXGKRNL_SYNC_OBJECT CpuEventSyncObject = NULL;
     D3DDDI_DRIVERESCAPE_CPUEVENTUSAGE *CpuEventUsage = NULL;
     UINT64 OriginalKmdCpuEvent = 0;
@@ -5581,7 +5581,7 @@ DxgkpEscapeCaptured(
         goto Cleanup;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     if (pEscape->Flags.DriverKnownEscape)
     {
         CONST D3DDDI_DRIVERESCAPETYPE *KnownEscapeType;
@@ -5745,7 +5745,7 @@ DxgkpEscapeCaptured(
         DxgkReleaseKmdCall(Adapter);
 
 Cleanup:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     if (CpuEventUsage != NULL)
         CpuEventUsage->hKmdCpuEvent = OriginalKmdCpuEvent;
     if (CpuEventSyncObject != NULL)
@@ -5943,7 +5943,7 @@ DxgkSetContextSchedulingPriority(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 static NTSTATUS
 DxgkpSetContextInProcessSchedulingPriority(
     _In_ D3DKMT_HANDLE ContextHandle,
@@ -6040,7 +6040,7 @@ DxgkGetDeviceState(
         return Status;
 
     if (!DxgkpGetDeviceStateMinimumLevel(pData->StateType, &MinimumLevel) ||
-        REACTOS_WDDM_TARGET_LEVEL < MinimumLevel)
+        LIBRENT_WDDM_TARGET_LEVEL < MinimumLevel)
     {
         DxgkDereferenceDevice(Device);
         return STATUS_INVALID_PARAMETER;
@@ -6068,7 +6068,7 @@ DxgkGetDeviceState(
             Status = STATUS_NOT_SUPPORTED;
             break;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         case D3DKMT_DEVICESTATE_PAGE_FAULT:
             Status = DxgkDeviceGetPageFaultState(
                          Device,
@@ -6078,7 +6078,7 @@ DxgkGetDeviceState(
             break;
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
         case D3DKMT_DEVICESTATE_PRESENT_QUEUE:
             Status = DxgkPresentGetQueueLimitState(Device, pData->PresentQueueState.VidPnSourceId, &pData->PresentQueueState.bQueuedPresentLimitReached);
             break;
@@ -7873,7 +7873,7 @@ DxgkpReclaimResourceAllocationSnapshots(
     return Status;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 static NTSTATUS
 DxgkpReclaimResourceAllocationSnapshots3(
     _In_reads_(ResourceCount)
@@ -7979,7 +7979,7 @@ DxgkWaitForVerticalBlankEvent(
     return Status;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 static NTSTATUS
 DxgkpOpenDwmVerticalBlankEvent(
     _In_ D3DKMT_HANDLE hAdapter,
@@ -8110,13 +8110,13 @@ DxgkOfferAllocations(
         DxgkDereferenceDevice(Device);
         return STATUS_INVALID_PARAMETER;
     }
-#if (REACTOS_WDDM_TARGET_LEVEL < 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 2000)
     if (pData->Flags.Value != 0)
     {
         DxgkDereferenceDevice(Device);
         return STATUS_INVALID_PARAMETER;
     }
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2100)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2100)
     if (pData->Flags.AllowDecommit)
     {
         DxgkDereferenceDevice(Device);
@@ -8341,7 +8341,7 @@ DxgkCreateSynchronizationObject2(
             return STATUS_NOT_SUPPORTED;
     }
 
-    if (REACTOS_WDDM_TARGET_LEVEL < MinimumLevel)
+    if (LIBRENT_WDDM_TARGET_LEVEL < MinimumLevel)
     {
         /* Windows 11, whose reference adapter is itself below the periodic
          * monitored-fence level, refuses that type with
@@ -8395,7 +8395,7 @@ DxgkCreateSynchronizationObject2(
             DxgkDereferenceDevice(Device);
             return STATUS_INVALID_PARAMETER;
         }
-#if (REACTOS_WDDM_TARGET_LEVEL < 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 3000)
         DxgkDereferenceDevice(Device);
         return STATUS_NOT_SUPPORTED;
 #else
@@ -8428,7 +8428,7 @@ DxgkCreateSynchronizationObject2(
          * no other flag applies to them. */
         RtlZeroMemory(&SupportedFlags, sizeof(SupportedFlags));
         SupportedFlags.Shared = 1;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000) && \
     (DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM3_0)
         if (pData->Info.Type == D3DDDI_CPU_NOTIFICATION)
             SupportedFlags.SignalByKmd = 1;
@@ -9004,7 +9004,7 @@ DxgkpReclaimAllocationsPacket(
                      &TotalAllocationCount);
         if (!NT_SUCCESS(Status))
             goto Cleanup;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
         if (ThreeStateResults)
         {
             Status = DxgkpReclaimResourceAllocationSnapshots3(
@@ -9037,7 +9037,7 @@ DxgkpReclaimAllocationsPacket(
                  Index < NumAllocations && NT_SUCCESS(Status);
                  ++Index)
             {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
                 if (ThreeStateResults)
                 {
                     Status = DxgkVidMmReclaimReferencedAllocation3(
@@ -9214,7 +9214,7 @@ Cleanup:
         DxgkDereferenceDevice(Device);
     UNREFERENCED_PARAMETER(NumBytesToTrim);
     UNREFERENCED_PARAMETER(PagingQueued);
-#if (REACTOS_WDDM_TARGET_LEVEL < 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 2100)
     UNREFERENCED_PARAMETER(ThreeStateResults);
 #endif
     return Status;
@@ -9247,7 +9247,7 @@ DxgkpReclaimAllocations2Packet(
                &Packet->PagingFenceValue);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 static NTSTATUS
 DxgkpReclaimAllocations3Packet(
     _Inout_ PRXGK_RECLAIMALLOCATIONS3_PACKET Packet)
@@ -10360,7 +10360,7 @@ DxgkpReferencePublicOperationNtObject(_In_ ULONGLONG HandleValue)
     return STATUS_NOT_SUPPORTED;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
 /*
  * D3DKMTGetMultiPlaneOverlayCaps: the miniport's own report, through
  * DxgkDdiGetMultiPlaneOverlayCaps (required of WDDM 2.2 miniports with
@@ -10424,7 +10424,7 @@ DxgkpGetMultiPlaneOverlayCaps(
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 /*
  * D3DKMTCheckMultiPlaneOverlaySupport(2,3): each plane's resource is
  * resolved to the allocation the miniport knows, then the miniport is asked
@@ -10593,7 +10593,7 @@ static NTSTATUS
 DxgkpDispatchPublicOperation(_Inout_ PRXGK_PUBLIC_OPERATION_PACKET Packet)
 {
     PDXGKRNL_ADAPTER Adapter;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     DXGKARG_GETPOSTCOMPOSITIONCAPS Caps;
 #endif
     NTSTATUS Status;
@@ -10610,7 +10610,7 @@ DxgkpDispatchPublicOperation(_Inout_ PRXGK_PUBLIC_OPERATION_PACKET Packet)
         case RxgkPublicRegisterVailProcess:
             return STATUS_GRAPHICS_VAIL_STATE_CHANGED;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case RxgkPublicGetPostCompositionCaps:
             Status = DxgkpValidateAdapterVidPnSourceForIoctl(Packet->Handle0, Packet->Handle1, &Adapter);
             if (!NT_SUCCESS(Status))
@@ -11003,7 +11003,7 @@ DxgkpDispatchBufferedIoctlWorker(
     NTSTATUS Status;
 
     MinimumLevel = DxgkpKmtIoctlMinimumConfiguredLevel(IoControlCode);
-    if (MinimumLevel == 0 || REACTOS_WDDM_TARGET_LEVEL < MinimumLevel)
+    if (MinimumLevel == 0 || LIBRENT_WDDM_TARGET_LEVEL < MinimumLevel)
         return STATUS_NOT_SUPPORTED;
 
     switch (IoControlCode)
@@ -11069,7 +11069,7 @@ DxgkpDispatchBufferedIoctlWorker(
             return Status;
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
         case IOCTL_D3DKMT_ISFEATUREENABLED:
         {
             if (InputLength < sizeof(RXGK_ISFEATUREENABLED_PACKET) ||
@@ -11090,7 +11090,7 @@ DxgkpDispatchBufferedIoctlWorker(
         }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
         case IOCTL_D3DKMT_SETFSEBLOCK:
         case IOCTL_D3DKMT_QUERYFSEBLOCK:
         {
@@ -11098,7 +11098,7 @@ DxgkpDispatchBufferedIoctlWorker(
         }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case IOCTL_D3DKMT_CREATEHWCONTEXT:
         case IOCTL_D3DKMT_DESTROYHWCONTEXT:
         {
@@ -11106,7 +11106,7 @@ DxgkpDispatchBufferedIoctlWorker(
         }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
         case IOCTL_D3DKMT_SETMONITORCOLORSPACETRANSFORM:
         {
             return KmtRequest->Internal ? STATUS_NOT_SUPPORTED : STATUS_ACCESS_DENIED;
@@ -11341,7 +11341,7 @@ DxgkpDispatchBufferedIoctlWorker(
             }
 
             /*
-             * ReactOS currently has two D3DKMT transport paths:
+             * LibreNT currently has two D3DKMT transport paths:
              *   - win32k WDDM bridge: IRP_MJ_INTERNAL_DEVICE_CONTROL
              *   - direct user runtimes/tests: IRP_MJ_DEVICE_CONTROL from user mode
              *   - CDD/EngDeviceIoControl: IRP_MJ_DEVICE_CONTROL from kernel mode
@@ -11525,7 +11525,7 @@ DxgkpDispatchBufferedIoctlWorker(
             return Status == STATUS_BUFFER_TOO_SMALL ? STATUS_BUFFER_OVERFLOW : Status;
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         case IOCTL_D3DKMT_GETRESOURCEPRESENTPRIVATEDRIVERDATA:
         {
             PRXGK_GETRESOURCEPRESENTPRIVATE_PACKET Packet;
@@ -11695,7 +11695,7 @@ DxgkpDispatchBufferedIoctlWorker(
             return Status;
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
         case IOCTL_D3DKMT_UPDATEALLOCATIONPROPERTY:
         {
             PRXGK_UPDATEALLOCATIONPROPERTY_PACKET Packet;
@@ -11947,7 +11947,7 @@ DxgkpDispatchBufferedIoctlWorker(
             return Status;
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         case IOCTL_RXGK_CHECKMULTIPLANEOVERLAYSUPPORT:
         {
             if (SystemBuffer == NULL || InputLength < sizeof(RXGK_CHECKMPO_PACKET) ||
@@ -11960,7 +11960,7 @@ DxgkpDispatchBufferedIoctlWorker(
         }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case IOCTL_RXGK_GETMULTIPLANEOVERLAYCAPS:
         {
             if (SystemBuffer == NULL ||
@@ -12800,7 +12800,7 @@ DxgkpDispatchBufferedIoctlWorker(
             }
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
         case IOCTL_D3DKMT_GETSHAREDRESOURCEADAPTERLUID:
         {
             PRXGK_GETSHAREDRESOURCEADAPTERLUID_PACKET Packet;
@@ -12954,7 +12954,7 @@ DxgkpDispatchBufferedIoctlWorker(
             return DxgkpSetCompositorSourceOwner(Packet);
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         case IOCTL_D3DKMT_QUERYVIDPNEXCLUSIVEOWNERSHIP:
         {
             PRXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET Packet;
@@ -13001,7 +13001,7 @@ DxgkpDispatchBufferedIoctlWorker(
         }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         case IOCTL_D3DKMT_SETCONTEXTINPROCESSPRIORITY:
         case IOCTL_D3DKMT_GETCONTEXTINPROCESSPRIORITY:
         {
@@ -13485,7 +13485,7 @@ DxgkpDispatchBufferedIoctlWorker(
             return Status;
         }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
         case IOCTL_D3DKMT_GETDWMVERTICALBLANKEVENT:
         {
             PRXGK_GETDWMVERTICALBLANKEVENT_PACKET Packet;
@@ -13732,7 +13732,7 @@ DxgkpDispatchBufferedIoctlWorker(
              *
              * win32k sends a DXGKRNL_INTERFACE_EXCHANGE_IN describing its
              * expected version and buffer size.  dxgkrnl validates and fills
-             * the output buffer with a REACTOS_WIN32K_DXGKRNL_INTERFACE
+             * the output buffer with a LIBRENT_WIN32K_DXGKRNL_INTERFACE
              * populated with function pointers to the IOCTL-forwarding stubs.
              *
              * Since the actual D3DKMT handlers live inside dxgkrnl's IOCTL
@@ -13742,7 +13742,7 @@ DxgkpDispatchBufferedIoctlWorker(
              * and that all callbacks can be populated.
             */
             PDXGKRNL_INTERFACE_EXCHANGE_IN pExchangeIn;
-            PREACTOS_WIN32K_DXGKRNL_INTERFACE pInterface;
+            PLIBRENT_WIN32K_DXGKRNL_INTERFACE pInterface;
             ULONG Version;
             ULONG InterfaceSize;
 
@@ -13757,13 +13757,13 @@ DxgkpDispatchBufferedIoctlWorker(
             if (InputLength >= sizeof(*pExchangeIn) &&
                 pExchangeIn->ConfiguredWddmLevel != 0 &&
                 pExchangeIn->ConfiguredWddmLevel !=
-                    REACTOS_WDDM_TARGET_LEVEL)
+                    LIBRENT_WDDM_TARGET_LEVEL)
             {
                 DXGKRNL_WARN(
                     "IOCTL_DXGKRNL_EXCHANGE_INTERFACE: caller WDDM level "
                     "%lu does not match configured level %lu\n",
                     pExchangeIn->ConfiguredWddmLevel,
-                    (ULONG)REACTOS_WDDM_TARGET_LEVEL);
+                    (ULONG)LIBRENT_WDDM_TARGET_LEVEL);
                 return STATUS_REVISION_MISMATCH;
             }
 
@@ -13802,7 +13802,7 @@ DxgkpDispatchBufferedIoctlWorker(
              * dxgkrnl's D3DKMT handler function pointers.  win32k uses these
              * to call directly into dxgkrnl without going through IOCTLs.
              */
-            pInterface = (PREACTOS_WIN32K_DXGKRNL_INTERFACE)SystemBuffer;
+            pInterface = (PLIBRENT_WIN32K_DXGKRNL_INTERFACE)SystemBuffer;
             RtlZeroMemory(pInterface, InterfaceSize);
 
             /* Populate the interface with dxgkrnl's D3DKMT handlers */
@@ -13853,7 +13853,7 @@ DxgkpDispatchBufferedIoctlWorker(
             pInterface->RxgkIntPfnSetQueuedLimit       = (PDXGADAPTER_SETQUEUEDLIMIT)DxgkSetQueuedLimit;
             pInterface->RxgkIntPfnWaitForIdle          = (PDXGADAPTER_WAITFORIDLE)DxgkWaitForIdle;
             pInterface->RxgkIntPfnWaitForVerticalBlankEvent = (PDXGADAPTER_WAITFORVERTICALBLANKEVENT)DxgkWaitForVerticalBlankEvent;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
             pInterface->RxgkIntPfnEnumAdapters         = (PDXGADAPTER_ENUMADAPTERS)DxgkEnumAdapters;
             pInterface->RxgkIntPfnOpenAdapterFromLuid  = (PDXGADAPTER_OPENADAPTERFROMLUID)DxgkOpenAdapterFromLuid;
             pInterface->RxgkIntPfnOfferAllocations     = (PDXGADAPTER_OFFERALLOCATIONS)DxgkOfferAllocations;
@@ -13861,12 +13861,12 @@ DxgkpDispatchBufferedIoctlWorker(
             pInterface->RxgkIntPfnSetVidPnSourceOwner1 = (PDXGADAPTER_SETVIDPNSOURCEOWNER1)DxgkSetVidPnSourceOwner1;
             pInterface->RxgkIntPfnWaitForVerticalBlankEvent2 = (PDXGADAPTER_WAITFORVERTICALBLANKEVENT2)DxgkWaitForVerticalBlankEvent2;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
             pInterface->RxgkIntPfnCreateSynchronizationObject2 = (PDXGADAPTER_CREATESYNCHRONIZATIONOBJECT2)DxgkCreateSynchronizationObject2;
             pInterface->RxgkIntPfnWaitForSynchronizationObject2 = (PDXGADAPTER_WAITFORSYNCHRONIZATIONOBJECT2)DxgkWaitForSynchronizationObject2;
             pInterface->RxgkIntPfnSignalSynchronizationObject2 = (PDXGADAPTER_SIGNALSYNCHRONIZATIONOBJECT2)DxgkSignalSynchronizationObject2;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             pInterface->RxgkIntPfnMakeResident =
                 DxgkpDirectMakeResident;
             pInterface->RxgkIntPfnEvict =
@@ -13888,26 +13888,26 @@ DxgkpDispatchBufferedIoctlWorker(
                 DxgkpDirectSignalSynchronizationObjectFromCpu;
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             if (Version >= DXGKRNL_INTERFACE_VERSION_2)
             {
                 pInterface->RxgkIntPfnCreateContextVirtual = (PDXGADAPTER_CREATECONTEXTVIRTUAL)DxgkCreateContextVirtual;
                 pInterface->RxgkIntPfnSubmitCommand = (PDXGADAPTER_SUBMITCOMMAND)DxgkSubmitCommand;
             }
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
             if (Version >= DXGKRNL_INTERFACE_VERSION_3)
                 pInterface->RxgkIntPfnCreateAllocation2 = (PDXGADAPTER_CREATEALLOCATION2)DxgkCreateAllocation2;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
             if (Version >= DXGKRNL_INTERFACE_VERSION_4)
                 pInterface->RxgkIntPfnGetAllocationPriority = (PDXGADAPTER_GETALLOCATIONPRIORITY)DxgkGetAllocationPriority;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
             if (Version >= DXGKRNL_INTERFACE_VERSION_5)
                 pInterface->RxgkIntPfnOpenSynchronizationObject = (PDXGADAPTER_OPENSYNCHRONIZATIONOBJECT)DxgkOpenSynchronizationObject;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             if (Version >= DXGKRNL_INTERFACE_VERSION_6)
             {
                 pInterface->RxgkIntPfnWaitForSynchronizationObjectFromGpu = (PDXGADAPTER_WAITFORSYNCHRONIZATIONOBJECTFROMGPU)DxgkWaitForSynchronizationObjectFromGpu;
@@ -13915,7 +13915,7 @@ DxgkpDispatchBufferedIoctlWorker(
                 pInterface->RxgkIntPfnSignalSynchronizationObjectFromGpu2 = (PDXGADAPTER_SIGNALSYNCHRONIZATIONOBJECTFROMGPU2)DxgkSignalSynchronizationObjectFromGpu2;
             }
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
             if (Version >= DXGKRNL_INTERFACE_VERSION_7)
             {
                 pInterface->RxgkIntPfnGetDwmVerticalBlankEvent =
@@ -13941,7 +13941,7 @@ DxgkpDispatchBufferedIoctlWorker(
     }
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /*
  * The exchanged table is a kernel-private interface.  Its callers must pass
  * an already captured top-level packet and kernel-resident embedded arrays.
@@ -14176,7 +14176,7 @@ DxgkpIsBufferedKmtIoctl(
         case IOCTL_D3DKMT_OPENADAPTERFROMLUID:
         case IOCTL_D3DKMT_CLOSEADAPTER:
         case IOCTL_D3DKMT_QUERYADAPTERINFO:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
         case IOCTL_D3DKMT_ISFEATUREENABLED:
 #endif
         case IOCTL_D3DKMT_GETDISPLAYMODELIST:
@@ -14194,10 +14194,10 @@ DxgkpIsBufferedKmtIoctl(
         case IOCTL_D3DKMT_RENDER:
         case IOCTL_D3DKMT_PRESENT:
         case IOCTL_D3DKMT_PRESENTOVERLAYS:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         case IOCTL_RXGK_CHECKMULTIPLANEOVERLAYSUPPORT:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case IOCTL_RXGK_GETMULTIPLANEOVERLAYCAPS:
 #endif
         case IOCTL_D3DKMT_WAITFORSYNCHRONIZATIONOBJECT:
@@ -14217,29 +14217,29 @@ DxgkpIsBufferedKmtIoctl(
         case IOCTL_D3DKMT_GETRESOURCEPRESENTPRIVATEDRIVERDATA:
         case IOCTL_D3DKMT_INVALIDATECACHE:
         case IOCTL_D3DKMT_RECLAIMALLOCATIONS2:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
         case IOCTL_D3DKMT_GETDWMVERTICALBLANKEVENT:
         case IOCTL_D3DKMT_SETSYNCREFRESHCOUNTWAITTARGET:
         case IOCTL_D3DKMT_GETSHAREDRESOURCEADAPTERLUID:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
         case IOCTL_D3DKMT_SETCONTEXTINPROCESSPRIORITY:
         case IOCTL_D3DKMT_GETCONTEXTINPROCESSPRIORITY:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         case IOCTL_D3DKMT_QUERYVIDPNEXCLUSIVEOWNERSHIP:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
         case IOCTL_D3DKMT_UPDATEALLOCATIONPROPERTY:
         case IOCTL_D3DKMT_RECLAIMALLOCATIONS3:
         case IOCTL_D3DKMT_SETFSEBLOCK:
         case IOCTL_D3DKMT_QUERYFSEBLOCK:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
         case IOCTL_D3DKMT_CREATEHWCONTEXT:
         case IOCTL_D3DKMT_DESTROYHWCONTEXT:
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
         case IOCTL_D3DKMT_SETMONITORCOLORSPACETRANSFORM:
 #endif
         case IOCTL_D3DKMT_PUBLIC_OPERATION:
@@ -14485,7 +14485,7 @@ DxgkDispatchDeviceControl(
             MinimumLevel = DxgkpKmtIoctlMinimumConfiguredLevel(
                 Stack->Parameters.DeviceIoControl.IoControlCode);
             if (MinimumLevel == 0 ||
-                REACTOS_WDDM_TARGET_LEVEL < MinimumLevel)
+                LIBRENT_WDDM_TARGET_LEVEL < MinimumLevel)
             {
                 Status = STATUS_NOT_SUPPORTED;
                 Irp->IoStatus.Information = 0;

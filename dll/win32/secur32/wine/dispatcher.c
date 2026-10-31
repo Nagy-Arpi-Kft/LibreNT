@@ -26,7 +26,7 @@
 #include <errno.h>
 #include <fcntl.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define close _close
 #define read  _read
 #define write _write
@@ -78,7 +78,7 @@ SECURITY_STATUS fork_helper(PNegoHelper *new_helper, const char *prog,
 {
     int pipe_in[2];
     int pipe_out[2];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE hPipe;
     PROCESS_INFORMATION pi;
     STARTUPINFOA si;
@@ -94,7 +94,7 @@ SECURITY_STATUS fork_helper(PNegoHelper *new_helper, const char *prog,
     }
     TRACE("\n");
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 #ifdef HAVE_PIPE2
     if (pipe2( pipe_in, O_CLOEXEC ) < 0 )
@@ -143,7 +143,7 @@ SECURITY_STATUS fork_helper(PNegoHelper *new_helper, const char *prog,
         return SEC_E_INSUFFICIENT_MEMORY;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     helper->helper_pid = fork();
 #else
 
@@ -191,7 +191,7 @@ SECURITY_STATUS fork_helper(PNegoHelper *new_helper, const char *prog,
 
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if(helper->helper_pid == -1)
 #else
     if(helper->helper_pid == (HANDLE)-1)
@@ -205,7 +205,7 @@ SECURITY_STATUS fork_helper(PNegoHelper *new_helper, const char *prog,
         return SEC_E_INTERNAL_ERROR;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if(helper->helper_pid == 0)
     {
         /* We're in the child now */
@@ -388,7 +388,7 @@ void cleanup_helper(PNegoHelper helper)
     close(helper->pipe_out);
     close(helper->pipe_in);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 #ifdef HAVE_FORK
     if (helper->helper_pid > 0) /* reap child */

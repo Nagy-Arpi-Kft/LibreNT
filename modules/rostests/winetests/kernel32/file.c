@@ -20,7 +20,7 @@
  *
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "precomp.h"
 #endif
 
@@ -41,7 +41,7 @@
 #include "fileapi.h"
 #include "native_machine.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #undef DeleteFile  /* needed for FILE_DISPOSITION_INFO */
 #endif
 
@@ -1249,8 +1249,8 @@ static void test_CopyFileEx(void)
     ok(ret, "DeleteFileA failed with error %ld\n", GetLastError());
     ret = DeleteFileA(dest);
     ok(!ret, "DeleteFileA unexpectedly succeeded\n");
-#ifdef __REACTOS__
-    /* Cover ReactOS bug in CORE-10271:
+#ifdef __LIBRENT__
+    /* Cover LibreNT bug in CORE-10271:
      * BasepCopyFileExW was handling any set flags as COPY_FILE_FAIL_IF_EXISTS.
      * This affected CopyFileEx, PrivCopyFileEx, and MoveFileWithProgress */
     ret = GetTempFileNameA(temp_path, prefix, 0, source);
@@ -5920,7 +5920,7 @@ static void test_file_readonly_access(void)
 
 static void test_find_file_stream(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR path[MAX_PATH];
 #else
     WCHAR path[] = {'C',':','\\','w','i','n','d','o','w','s',0};
@@ -5935,7 +5935,7 @@ static void test_find_file_stream(void)
         return;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetWindowsDirectoryW(path, ARRAY_SIZE(path));
 #endif
     SetLastError(0xdeadbeef);
@@ -6017,7 +6017,7 @@ static void test_hard_link(void)
 
     status = NtQueryInformationFile( file, &io, name_buffer, sizeof(name_buffer), FileNameInformation );
     ok(!status, "got status %#lx\n", status);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!status)
 #endif
     ok(!wcsncmp(name_info->FileName + (name_info->FileNameLength / sizeof(WCHAR)) - wcslen(L"\\winetest_file3"),
@@ -6366,7 +6366,7 @@ static void test_eof(void)
     ok(ret, "failed to delete %s, error %lu\n", debugstr_a(filename), GetLastError());
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL file_test_selected(const char *selection, const char *name)
 {
     const char *end;
@@ -6471,7 +6471,7 @@ START_TEST(file)
 {
     char temp_path[MAX_PATH];
     DWORD ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const char *selection = getenv("ROS_FILE_TESTS");
 
     if (!validate_file_tests(selection)) return;
@@ -6486,7 +6486,7 @@ START_TEST(file)
     ret = DeleteFileA(filename);
     ok(ret != 0, "DeleteFile error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define run_file_test(func, ...) do { \
     if (file_test_selected(selection, #func)) { \
         trace("Running %s...\n", #func); \

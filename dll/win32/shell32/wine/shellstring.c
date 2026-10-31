@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * Copyright 2000 Juergen Schmied
  *
@@ -205,7 +205,7 @@ DWORD WINAPI CheckEscapesW(
 	}
 	return size;
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  * Copyright 2000 Juergen Schmied
  *
@@ -477,4 +477,4 @@ VOID WINAPI CheckEscapesW(
 	  *d = '"';
 	}
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

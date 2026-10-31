@@ -1,4 +1,4 @@
-This file contains 3rd party projects which are used by the ReactOS
+This file contains 3rd party projects which are used by the LibreNT
 Files synced with Wine can be found in /media/doc/WINESYNC.txt
 
 Projects are sorted alphabetically by a path.
@@ -11,7 +11,7 @@ Path: base/applications/cmdutils/glmark2
 Used Version: 2023.01 (22c527cb0556f3a1ac4445aaa52cc532760928d5)
 License: GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later.html), SGI notice for src/scene-ideas (COPYING.SGI)
 URL: https://github.com/glmark2/glmark2
-Modifications: dropped android, doc, fastlane, meson and the bundled libjpeg-turbo; executable-relative data path and 5 second default scene duration under __REACTOS__
+Modifications: dropped android, doc, fastlane, meson and the bundled libjpeg-turbo; executable-relative data path and 5 second default scene duration under __LIBRENT__
 
 Title: rdesktop
 Path: base/applications/mstsc
@@ -98,12 +98,6 @@ Used Version: 20260930
 License: GPL-2.0 (https://spdx.org/licenses/GPL-2.0.html)
 URL: https://acpica.org/
 
-Title: Imagination PowerVR Rogue firmware
-Path: drivers/directx/powervr/fw
-Used Version: rogue_36.29.52.182_v1.fw (linux-firmware 8a58f81)
-License: Imagination Technologies binary redistribution license (drivers/directx/powervr/fw/LICENSE.powervr)
-URL: https://gitlab.freedesktop.org/imagination/linux-firmware
-
 Title: Ralink RT2870 firmware
 Path: drivers/network/dd/rt2800usb/fw
 Used Version: rt2870.bin (linux-firmware 20260319)
@@ -115,28 +109,6 @@ Path: drivers/network/dd/rtw8852bs/fw
 Used Version: rtw89/rtw8852b_fw-2.bin (linux-firmware 20260319)
 License: Realtek binary redistribution license (drivers/network/dd/rtw8852bs/fw/LICENCE.rtlwifi_firmware.txt)
 URL: https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
-
-Title: Linux PowerVR DRM driver (drm/imagination)
-Path: drivers/directx/powervr/upstream
-Used Version: Linux mainline 6addb4f38
-License: GPL-2.0-only OR MIT (https://spdx.org/licenses/MIT.html)
-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-Modifications: none; built over the LiberNT Linux compatibility layer (sdk/lib/drivers/linux-compat)
-
-Title: Linux DRM GPU VA manager, execution context, sync objects and GPU scheduler
-Path: sdk/lib/drivers/drm
-Used Version: Linux mainline 6addb4f38
-License: MIT (https://spdx.org/licenses/MIT.html), drm_gpuvm/drm_exec: GPL-2.0-only OR MIT
-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-Modifications: imported drm_gpuvm.c, drm_exec.c, drm_syncobj.c, scheduler/*, the matching include/drm headers and include/uapi/drm/{drm,drm_mode,pvr_drm}.h; spsc_queue.h pointer casts use intptr_t; drm_core.c, drm_gem.c and drm_compat.h are LiberNT code
-
-Title: felix86
-Path: submodules/felix86 (feed)
-Path: dll/win32/amd64emu
-Used Version: 26.10 (git commit 24c158b)
-License: MIT (https://spdx.org/licenses/MIT.html)
-URL: https://github.com/OFFTKP/felix86
-Modifications: submodules/felix86-nt.patch; amd64emu.dll builds the recompiler core (src/felix86/v2, common, hle/cpuid.cpp) with the vendored biscuit (MIT), Zydis and Zycore (MIT), {fmt} (MIT), Berkeley SoftFloat 3e (BSD-3-Clause), Cephes (BSD) and the FEXCore SHMStats header (MIT); the Linux front end is replaced by LiberNT code in dll/win32/amd64emu
 
 Title: VirtIO Windows guest driver library
 Path: sdk/lib/drivers/virtio
@@ -254,36 +226,6 @@ Used Version: 2026.01.31
 License: GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later.html)
 URL: https://pci-ids.ucw.cz/
 URL: https://github.com/pciutils/pciids
-
-Title: SpacemiT K1 U-Boot (FSBL/SPL, U-Boot FIT, SD boot header)
-Path: media/boot/spacemit-k1/bootinfo_sd.bin
-Path: media/boot/spacemit-k1/FSBL.bin
-Path: media/boot/spacemit-k1/u-boot.itb
-Path: media/boot/spacemit-k1/dtb/x1_orangepi-rv2.dtb
-Used Version: branch k1-bl-v2.2.y, git commit 7f51f4453f9811eeaafbdd839b1bf1b0cc27a413 (k1_defconfig, with media/boot/spacemit-k1/patches)
-License: GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later.html), media/boot/spacemit-k1/LICENCE.u-boot
-URL: https://github.com/spacemit-com/uboot-2022.10
-
-Title: SpacemiT K1 OpenSBI
-Path: media/boot/spacemit-k1/fw_dynamic.itb
-Used Version: branch k1-bl-v2.2.y, git commit fc02b891b17b8bdc1273a39f80aa374cd99ba9a2 (PLATFORM=generic, k1_defconfig, unmodified)
-License: BSD-2-Clause (https://spdx.org/licenses/BSD-2-Clause.html), media/boot/spacemit-k1/LICENCE.opensbi
-URL: https://github.com/spacemit-com/opensbi
-
-Title: StarFive JH7110 U-Boot (SPL, U-Boot FIT with OpenSBI) for the Orange Pi RV
-Path: media/boot/starfive-jh7110/u-boot-spl.bin.normal.out
-Path: media/boot/starfive-jh7110/u-boot.itb
-Used Version: U-Boot git commit 0a55b098d6f5f6bafa84fc2f18b433dd167bf729, OpenSBI git commit 6ad246a1494807ee91e36ffcf60e4c30bb309d45 (PLATFORM=generic)
-License: GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later.html), media/boot/starfive-jh7110/LICENCE.u-boot; OpenSBI: BSD-2-Clause (https://spdx.org/licenses/BSD-2-Clause.html), media/boot/starfive-jh7110/LICENCE.opensbi
-URL: https://github.com/u-boot/u-boot
-URL: https://github.com/riscv-software-src/opensbi
-Modifications: none; built with starfive_visionfive2_defconfig plus media/boot/starfive-jh7110/u-boot.config and u-boot-sd.dtsi
-
-Title: Orange Pi RV device tree
-Path: media/boot/starfive-jh7110/jh7110-orangepi-rv.dtb
-Used Version: U-Boot git commit 0a55b098d6f5f6bafa84fc2f18b433dd167bf729, dts/upstream/src/riscv/starfive/jh7110-orangepi-rv.dts (unmodified)
-License: GPL-2.0 OR MIT (https://spdx.org/licenses/MIT.html)
-URL: https://github.com/u-boot/u-boot
 
 Title: DejaVu Fonts
 Path: media/fonts

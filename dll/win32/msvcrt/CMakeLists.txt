@@ -12,12 +12,12 @@ endif()
 
 # Replace the global CRT include directory with the msvcrt include directory
 get_property(INCLUDE_DIRS DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
-list(REMOVE_ITEM INCLUDE_DIRS "${REACTOS_SOURCE_DIR}/sdk/include/crt")
+list(REMOVE_ITEM INCLUDE_DIRS "${LIBRENT_SOURCE_DIR}/sdk/include/crt")
 set_property(DIRECTORY . PROPERTY INCLUDE_DIRECTORIES ${INCLUDE_DIRS})
 include_directories(include)
 
 # includes for wine code
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_definitions(
     -D_CRTIMP=
@@ -99,16 +99,6 @@ elseif(ARCH STREQUAL "arm64")
     list(APPEND SHARED_SOURCE
         except_arm64.c
     )
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND SHARED_SOURCE
-        except_riscv64.c
-        fpu_riscv64.c
-    )
-elseif(ARCH STREQUAL "ppc")
-    list(APPEND SHARED_SOURCE
-        except_ppc.c
-        fpu_ppc.c
-    )
 endif()
 
 # MSVC asm code
@@ -138,7 +128,7 @@ add_asm_files(msvcrt_shared_asm ${SHARED_ASM_SOURCE})
 add_library(msvcrt_shared
     ${SHARED_SOURCE}
     ${msvcrt_shared_asm}
-    reactos/ucrt_tls_sup.c
+    librent/ucrt_tls_sup.c
 )
 
 target_compile_definitions(msvcrt_shared PRIVATE _MSVCR_VER=0 __UCRTSUPPORT__)
@@ -155,8 +145,8 @@ add_dependencies(msvcrt_undname_ucrt psdk)
 list(APPEND MSVCRT_SOURCE
     ${SHARED_SOURCE}
     ${msvcrt_shared_asm}
-    reactos/misc.c
-    reactos/system.cpp
+    librent/misc.c
+    librent/system.cpp
     concurrency.c
     console.c
     ctype.c
@@ -184,23 +174,12 @@ list(APPEND MSVCRT_SOURCE
 
 if(ARCH STREQUAL "arm64" AND NOT ARM64EC_RUNTIME)
     list(APPEND MSVCRT_ASM_SOURCE
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strlen.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcpy.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strchr.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strrchr.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strlen.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcpy.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strchr.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strrchr.S
     )
     set(MSVCRT_ARCH_ROUTINES MSVCRT_ARCH_STRLEN MSVCRT_ARCH_STRCPY MSVCRT_ARCH_STRCHR MSVCRT_ARCH_STRRCHR)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND MSVCRT_SOURCE
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/riscv64/rvdispatch.c
-    )
-    list(APPEND MSVCRT_ASM_SOURCE
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/riscv64/rvscalar.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/riscv64/rvvector.S
-    )
-    set_source_files_properties(${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/riscv64/rvdispatch.c
-        PROPERTIES COMPILE_OPTIONS "-fno-builtin")
-    set(MSVCRT_ARCH_ROUTINES MSVCRT_ARCH_STRLEN MSVCRT_ARCH_STRCPY MSVCRT_ARCH_STRCMP MSVCRT_ARCH_MEMCPY MSVCRT_ARCH_MEMSET MSVCRT_ARCH_MEMCMP)
 endif()
 
 add_asm_files(msvcrt_asm ${MSVCRT_ASM_SOURCE})
@@ -212,17 +191,6 @@ add_library(msvcrt_static
 
 target_compile_definitions(msvcrt_static PRIVATE _MSVCR_VER=0 ${MSVCRT_ARCH_ROUTINES})
 add_dependencies(msvcrt_static psdk asm)
-if(ARCH STREQUAL "riscv64")
-    if(RISCV64_FAST_MISALIGNED_ACCESS)
-        target_compile_options(msvcrt_static PRIVATE -mno-scalar-strict-align)
-    endif()
-    if(RISCV64_VECTOR)
-        target_compile_definitions(msvcrt_static PRIVATE RV_CRT_RVA23)
-        if(RISCV64_FAST_MISALIGNED_ACCESS)
-            target_compile_definitions(msvcrt_static PRIVATE RV_CRT_FAST_UNALIGNED)
-        endif()
-    endif()
-endif()
 
 ###############################################################################
 # MSVCRT.DLL
@@ -253,7 +221,7 @@ if(MSVC)
     set_property(TARGET libmsvcrt APPEND PROPERTY STATIC_LIBRARY_OPTIONS "/ignore:4102")
 endif()
 
-add_cd_file(TARGET msvcrt DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msvcrt DESTINATION librent/system32 FOR all)
 
 ###############################################################################
 # Import library

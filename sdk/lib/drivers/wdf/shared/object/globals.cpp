@@ -678,7 +678,7 @@ FxLibraryGlobalsCommission(
     // Register for the global (library) bugcheck callbacks.
     //
     FxInitializeBugCheckDriverInfo();
-#ifdef EVENT_TRACING // __REACTOS__
+#ifdef EVENT_TRACING // __LIBRENT__
     //
     // Init driver usage tracker. This tracker is used by the debug dump
     // callback routines for finding the driver's dump log file to write
@@ -729,7 +729,7 @@ FxLibraryGlobalsCommission(
     ASSERT(FxLibraryGlobals.PerfTraceRoutines->Size >=
         sizeof(WMI_WDF_NOTIFY_ROUTINES));
 #else
-    status = STATUS_SUCCESS; // __REACTOS__
+    status = STATUS_SUCCESS; // __LIBRENT__
 #endif // EVENT_TRACING
 #else
     status = STATUS_SUCCESS;
@@ -900,7 +900,7 @@ Returns:
     //
     // Initialize IFR logging
     //
-    // FxIFRStart(FxDriverGlobals, RegistryPath, DriverObject); __REACTOS__
+    // FxIFRStart(FxDriverGlobals, RegistryPath, DriverObject); __LIBRENT__
 
     DoTraceLevelMessage(FxDriverGlobals, TRACE_LEVEL_VERBOSE, TRACINGDRIVER,
                         "Initialize globals for %!wZ!", RegistryPath);
@@ -914,7 +914,7 @@ Returns:
         // FxPoolPackageInitialize logs a message in case of failure so
         // we don't need to log failure here.
         //
-        // FxIFRStop(FxDriverGlobals); __REACTOS__
+        // FxIFRStop(FxDriverGlobals); __LIBRENT__
         return status;
     }
 
@@ -1143,7 +1143,7 @@ FxAllocateDriverGlobals(
 
 #if (FX_CORE_MODE==FX_CORE_KERNEL_MODE)
     // pFxDriverGlobals->FxTrackDriverForMiniDumpLog    = TRUE;
-    pFxDriverGlobals->FxTrackDriverForMiniDumpLog    = FALSE; // __REACTOS__
+    pFxDriverGlobals->FxTrackDriverForMiniDumpLog    = FALSE; // __LIBRENT__
     pFxDriverGlobals->IsUserModeDriver               = FALSE;
 #else
     pFxDriverGlobals->FxTrackDriverForMiniDumpLog    = FALSE;
@@ -1166,7 +1166,7 @@ FxAllocateDriverGlobals(
     // Allocate a telemetry context if a telemetry client is enabled, for any level/keyword.
     //
     pFxDriverGlobals->TelemetryContext = NULL;
-#ifdef EVENT_TRACING // __REACTOS__
+#ifdef EVENT_TRACING // __LIBRENT__
     if (TraceLoggingProviderEnabled(g_TelemetryProvider, 0 ,0)) {
         AllocAndInitializeTelemetryContext(&(pFxDriverGlobals->TelemetryContext));
     }

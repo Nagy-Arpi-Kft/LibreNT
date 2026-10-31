@@ -1350,7 +1350,7 @@ UINT WINAPI MsiEnumClientsA( const char *szComponent, DWORD index, char *szProdu
     return r;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD enum_clients_last_index = ~0u;
 
 #endif
@@ -1365,7 +1365,7 @@ UINT WINAPI MsiEnumClientsW( const WCHAR *szComponent, DWORD index, WCHAR *szPro
     if (!szComponent || !*szComponent || !szProduct)
         return ERROR_INVALID_PARAMETER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (index && index != enum_clients_last_index + 1)
     {
         enum_clients_last_index = ~0u;
@@ -1396,7 +1396,7 @@ UINT WINAPI MsiEnumClientsW( const WCHAR *szComponent, DWORD index, WCHAR *szPro
     {
         unsquash_guid(szValName, szProduct);
         TRACE("-> %s\n", debugstr_w(szProduct));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         enum_clients_last_index = index;
 #endif
     }

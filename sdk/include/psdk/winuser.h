@@ -879,7 +879,7 @@ extern "C" {
 #define GWL_USERDATA (-21)
 #define GWLP_USERDATA (-21)
 
-#ifndef __REACTOS__ // NEVER USE THESE!
+#ifndef __LIBRENT__ // NEVER USE THESE!
 #define DWL_MSGRESULT 0
 #define DWL_DLGPROC 4
 #define DWL_USER 8
@@ -1266,7 +1266,7 @@ extern "C" {
 #define SIF_RANGE 1
 #define SIF_DISABLENOSCROLL 8
 #define SIF_TRACKPOS   16
-#define SIF_THEMED 128      /* REACTOS Specific Only */
+#define SIF_THEMED 128      /* LIBRENT Specific Only */
 #define SWP_DRAWFRAME 32
 #define SWP_FRAMECHANGED 32
 #define SWP_HIDEWINDOW 128
@@ -1514,7 +1514,7 @@ extern "C" {
     #define SPI_GETSCREENSAVESECURE 0x0076
     #define SPI_SETSCREENSAVESECURE 0x0077
 #endif
-#if(_WIN32_WINNT >= 0x0601) || defined(__REACTOS__)
+#if(_WIN32_WINNT >= 0x0601) || defined(__LIBRENT__)
     #define SPI_GETWINARRANGING     0x0082
     #define SPI_SETWINARRANGING     0x0083
     #define SPI_GETDRAGFROMMAXIMIZE 0x008C
@@ -2900,7 +2900,7 @@ typedef struct {
 #define EVENT_CONSOLE_UPDATE_SCROLL     0x00004004
 #define EVENT_CONSOLE_LAYOUT            0x00004005
 #define EVENT_CONSOLE_START_APPLICATION 0x00004006
-#if defined(_WIN64) && !defined(__REACTOS__)
+#if defined(_WIN64) && !defined(__LIBRENT__)
 #define CONSOLE_APPLICATION_16BIT       0x00000000
 #else
 #define CONSOLE_APPLICATION_16BIT       0x00000001
@@ -6460,7 +6460,7 @@ WINUSERAPI void WINAPI UnregisterUserApiHook(void);
 #endif /* __WINESRC__ */
 
 #ifdef _WINE
-#include "reactos/undocuser.h"
+#include "librent/undocuser.h"
 #endif
 
 #ifdef _MSC_VER

@@ -11,7 +11,7 @@
 #include <shlwapi.h>
 #include <winnt.h>
 #include <userenv.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntndk.h>
 #else
 #include <winternl.h>

@@ -48,9 +48,9 @@ Revision History:
 #include "wdfglobals.h"
 #include <debug.h>
 
-// REACTOS
-#define ROSWDFNOTIMPLEMENTED (DbgPrint("(%s:%d) ReactOS KMDF: %s not implemented\n", __RELFILE__, __LINE__, __FUNCTION__))
-// REACTOS
+// LIBRENT
+#define ROSWDFNOTIMPLEMENTED (DbgPrint("(%s:%d) LibreNT KMDF: %s not implemented\n", __RELFILE__, __LINE__, __FUNCTION__))
+// LIBRENT
 
 #ifdef __cplusplus
 extern "C" {
@@ -852,14 +852,14 @@ struct FxLibraryGlobalsType {
     // tracing of WDF operations. The size member of this structure
     // allows versioning across multiple OS versions.
     //
-    //PWMI_WDF_NOTIFY_ROUTINES PerfTraceRoutines; __REACTOS__
+    //PWMI_WDF_NOTIFY_ROUTINES PerfTraceRoutines; __LIBRENT__
     PVOID PerfTraceRoutines;
 
     //
     //  PerfTraceRoutines points here if the SystemTraceProvider failed
     //  to provide trace routines.
     //
-    //WMI_WDF_NOTIFY_ROUTINES DummyPerfTraceRoutines; __REACTOS__
+    //WMI_WDF_NOTIFY_ROUTINES DummyPerfTraceRoutines; __LIBRENT__
     PVOID DummyPerfTraceRoutines;
 
 #endif

@@ -186,7 +186,7 @@ BSTR get_value_bstr( const struct table *table, UINT row, UINT column )
     case CIM_REFERENCE:
     case CIM_STRING:
         if (!val) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             const WCHAR *src = (const WCHAR *)(INT_PTR)val;
             UINT i, j;

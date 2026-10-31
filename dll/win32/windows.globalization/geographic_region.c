@@ -25,7 +25,7 @@ struct geographic_region
 {
     IGeographicRegion IGeographicRegion_iface;
     LONG ref;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR code[4];
 #endif
 };
@@ -96,7 +96,7 @@ static HRESULT WINAPI geographic_region_get_Code( IGeographicRegion *iface, HSTR
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT geographic_region_get_info( IGeographicRegion *iface, GEOTYPE type, HSTRING *value )
 {
     struct geographic_region *impl = impl_from_IGeographicRegion( iface );
@@ -111,7 +111,7 @@ static HRESULT geographic_region_get_info( IGeographicRegion *iface, GEOTYPE typ
 
 static HRESULT WINAPI geographic_region_get_CodeTwoLetter( IGeographicRegion *iface, HSTRING *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE( "iface %p, value %p.\n", iface, value );
 
     return geographic_region_get_info( iface, GEO_ISO2, value );
@@ -127,7 +127,7 @@ static HRESULT WINAPI geographic_region_get_CodeTwoLetter( IGeographicRegion *if
 
 static HRESULT WINAPI geographic_region_get_CodeThreeLetter( IGeographicRegion *iface, HSTRING *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE( "iface %p, value %p.\n", iface, value );
 
     return geographic_region_get_info( iface, GEO_ISO3, value );
@@ -139,7 +139,7 @@ static HRESULT WINAPI geographic_region_get_CodeThreeLetter( IGeographicRegion *
 
 static HRESULT WINAPI geographic_region_get_CodeThreeDigit( IGeographicRegion *iface, HSTRING *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE( "iface %p, value %p.\n", iface, value );
 
     return geographic_region_get_info( iface, GEO_ISO_UN_NUMBER, value );
@@ -258,7 +258,7 @@ static HRESULT WINAPI activation_factory_GetTrustLevel( IActivationFactory *ifac
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT geographic_region_create( const WCHAR *name, IGeographicRegion **out )
 {
     struct geographic_region *region;
@@ -278,7 +278,7 @@ static HRESULT geographic_region_create( const WCHAR *name, IGeographicRegion **
 
 static HRESULT WINAPI activation_factory_ActivateInstance( IActivationFactory *iface, IInspectable **out )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR name[16];
 
     TRACE( "iface %p, out %p.\n", iface, out );
@@ -317,7 +317,7 @@ DEFINE_IINSPECTABLE( geographic_region_factory, IGeographicRegionFactory, struct
 static HRESULT WINAPI geographic_region_factory_CreateGeographicRegion( IGeographicRegionFactory *iface, HSTRING code,
                                                                         IGeographicRegion **value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE( "iface %p, code %s, value %p.\n", iface, debugstr_hstring( code ), value );
 
     if (!value) return E_POINTER;

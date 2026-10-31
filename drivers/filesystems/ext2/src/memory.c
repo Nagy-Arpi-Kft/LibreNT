@@ -529,7 +529,7 @@ Ext2JointExtents(
     IN PEXT2_EXTENT Extent
 )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ULONG        count = 0;
 #endif
     PEXT2_EXTENT List = Chain;
@@ -1537,7 +1537,7 @@ errorout:
 VOID
 Ext2FreeMcb (IN PEXT2_VCB Vcb, IN PEXT2_MCB Mcb)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PEXT2_MCB   Parent = Mcb->Parent;
 #endif
 
@@ -1819,7 +1819,7 @@ Ext2CleanupAllMcbs(PEXT2_VCB Vcb)
             TRUE );
         LockAcquired = TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while ((Mcb = Ext2FirstUnusedMcb(Vcb, TRUE, Vcb->NumOfMcb)) != 0) {
 #else
         while (Mcb = Ext2FirstUnusedMcb(Vcb, TRUE, Vcb->NumOfMcb)) {
@@ -2076,7 +2076,7 @@ Ext2ParseRegistryVolumeParams(
 
     USHORT i, j, k;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RtlZeroMemory(Codepage, sizeof(WCHAR) * CODEPAGE_MAXLEN);
     RtlZeroMemory(Prefix, sizeof(WCHAR) * HIDINGPAT_LEN);
     RtlZeroMemory(Suffix, sizeof(WCHAR) * HIDINGPAT_LEN);
@@ -2117,7 +2117,7 @@ Ext2ParseRegistryVolumeParams(
                             k < ParamPattern[i].Length &&
                             Params->Buffer[j+k] != L';' &&
                             Params->Buffer[j+k] != L',' ) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         ParamPattern[i].uValue[k] = Params->Buffer[j + k];
                         k++;
 #else
@@ -2213,7 +2213,7 @@ Ext2PerformRegistryVolumeParams(IN PEXT2_VCB Vcb)
         memcpy(Vcb->Codepage.AnsiName, Ext2Global->Codepage.AnsiName, CODEPAGE_MAXLEN);
         Vcb->Codepage.PageTable = Ext2Global->Codepage.PageTable;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (Vcb->bHidingPrefix == Ext2Global->bHidingPrefix) {
 #else
         if (Vcb->bHidingPrefix = Ext2Global->bHidingPrefix) {
@@ -2226,7 +2226,7 @@ Ext2PerformRegistryVolumeParams(IN PEXT2_VCB Vcb)
                            HIDINGPAT_LEN);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (Vcb->bHidingSuffix == Ext2Global->bHidingSuffix) {
 #else
         if (Vcb->bHidingSuffix = Ext2Global->bHidingSuffix) {
@@ -3047,7 +3047,7 @@ Ext2FirstUnusedMcb(PEXT2_VCB Vcb, BOOLEAN Wait, ULONG Number)
 
 
 /* Reaper thread to release unused Mcb blocks */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -3231,7 +3231,7 @@ Ext2QueryUnusedBH(PEXT2_VCB Vcb, PLIST_ENTRY head)
 
 
 /* Reaper thread to release unused buffer heads */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -3383,7 +3383,7 @@ again:
 }
 
 /* Reaper thread to release Fcb */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -3538,7 +3538,7 @@ Ext2StartReaper(PEXT2_REAPER Reaper, EXT2_REAPER_RELEASE Free)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID

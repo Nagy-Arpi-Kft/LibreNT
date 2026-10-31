@@ -69,11 +69,11 @@ void format_size(uint64_t size, wstring& s, bool show_bytes) {
     float f;
     NUMBERFMTW fmt;
     WCHAR dec[2], thou[4], grouping[64], *c;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR buffer[64];
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     nb = to_wstring(size);
 #else
     swprintf(buffer, L"%I64d", size);
@@ -315,7 +315,7 @@ static void register_clsid(const GUID clsid, const WCHAR* description) {
     StringFromCLSID(clsid, &clsidstring);
 
     try {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         inproc = L"CLSID\\"s + clsidstring + L"\\InprocServer32"s;
         clsidkeyname = L"CLSID\\"s + clsidstring;
 #else
@@ -397,7 +397,7 @@ static void unregister_clsid(const GUID clsid) {
     StringFromCLSID(clsid, &clsidstring);
 
     try {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         reg_delete_tree(HKEY_CLASSES_ROOT, L"CLSID\\"s + clsidstring);
 #else
         wstring path = wstring(L"CLSID\\") + clsidstring;
@@ -417,7 +417,7 @@ static void reg_icon_overlay(const GUID clsid, const wstring& name) {
     StringFromCLSID(clsid, &clsidstring);
 
     try {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         wstring path = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers\\"s + name;
 #else
         wstring path = wstring(L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers\\") + name;
@@ -433,7 +433,7 @@ static void reg_icon_overlay(const GUID clsid, const wstring& name) {
 }
 
 static void unreg_icon_overlay(const wstring& name) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     reg_delete_tree(HKEY_LOCAL_MACHINE, L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers\\"s + name);
 #else
     wstring path = wstring(L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers\\") + name;
@@ -447,7 +447,7 @@ static void reg_context_menu_handler(const GUID clsid, const wstring& filetype, 
     StringFromCLSID(clsid, &clsidstring);
 
     try {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         wstring path = filetype + L"\\ShellEx\\ContextMenuHandlers\\"s + name;
 #else
         wstring path = filetype + wstring(L"\\ShellEx\\ContextMenuHandlers\\") + name;
@@ -461,7 +461,7 @@ static void reg_context_menu_handler(const GUID clsid, const wstring& filetype, 
 }
 
 static void unreg_context_menu_handler(const wstring& filetype, const wstring& name) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     reg_delete_tree(HKEY_CLASSES_ROOT, filetype + L"\\ShellEx\\ContextMenuHandlers\\"s + name);
 #else
     wstring path = filetype + wstring(L"\\ShellEx\\ContextMenuHandlers\\") + name;
@@ -475,7 +475,7 @@ static void reg_prop_sheet_handler(const GUID clsid, const wstring& filetype, co
     StringFromCLSID(clsid, &clsidstring);
 
     try {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         wstring path = filetype + L"\\ShellEx\\PropertySheetHandlers\\"s + name;
 #else
         wstring path = filetype + wstring(L"\\ShellEx\\PropertySheetHandlers\\") + name;
@@ -489,7 +489,7 @@ static void reg_prop_sheet_handler(const GUID clsid, const wstring& filetype, co
 }
 
 static void unreg_prop_sheet_handler(const wstring& filetype, const wstring& name) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     reg_delete_tree(HKEY_CLASSES_ROOT, filetype + L"\\ShellEx\\PropertySheetHandlers\\"s + name);
 #else
     wstring path = filetype + wstring(L"\\ShellEx\\PropertySheetHandlers\\") + name;

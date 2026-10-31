@@ -300,7 +300,7 @@ int WINAPI GetCalendarInfoA(LCID lcid, CALID Calendar, CALTYPE CalType,
                             LPSTR lpCalData, int cchData, LPDWORD lpValue)
 {
     WCHAR buffer[256];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD cp = CP_ACP;
     if (!(CalType & CAL_USE_CP_ACP))
     {
@@ -322,7 +322,7 @@ int WINAPI GetCalendarInfoA(LCID lcid, CALID Calendar, CALTYPE CalType,
 
     if (!GetCalendarInfoW(lcid, Calendar, CalType, buffer, ARRAY_SIZE(buffer), lpValue))
         return 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return WideCharToMultiByte(cp, 0, buffer, -1, lpCalData, cchData, NULL, NULL);
 #else
     return WideCharToMultiByte(CP_ACP, 0, buffer, -1, lpCalData, cchData, NULL, NULL);

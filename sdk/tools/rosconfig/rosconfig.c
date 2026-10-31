@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT build tools
+ * PROJECT:     LibreNT build tools
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Command-line entry point for rosconfig
  */
@@ -15,7 +15,7 @@
 static void usage(FILE *f)
 {
     static const char text[] =
-        "rosconfig " ROSCONFIG_VERSION " - menuconfig-style configurator for the ReactOS build\n"
+        "rosconfig " ROSCONFIG_VERSION " - menuconfig-style configurator for the LibreNT build\n"
         "\n"
         "Usage: rosconfig --def <file> --cache <file> [mode] [options]\n"
         "       rosconfig --self-test\n"

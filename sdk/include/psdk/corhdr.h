@@ -49,7 +49,7 @@ typedef enum CorTokenType
     mdtBaseType                 = 0x72000000,
 } CorTokenType;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef enum CorCallingConvention
 {
     IMAGE_CEE_CS_CALLCONV_DEFAULT       = 0x0,

@@ -148,7 +148,7 @@ typedef struct PresentationDataHeader
     DWORD dwSize;
 } PresentationDataHeader;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline void check_expected_method_fmt(const char *method_name, const FORMATETC *fmt)
 #else
 static void inline check_expected_method_fmt(const char *method_name, const FORMATETC *fmt)

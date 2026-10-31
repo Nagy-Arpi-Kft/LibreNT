@@ -5110,7 +5110,7 @@ static void test_queryreader(void)
         { FALSE, &data2, L"/ifd/{str=xmp}:{uint=4}", S_OK, VT_I4, 6, NULL },
         { FALSE, &data3, L"/xmp/{char=7}", 0xdeadbeef },
         { FALSE, &data3, L"/[1]xmp/{short=7}", S_OK, VT_UI4, 9, NULL },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         { FALSE, &data3, L"/[*]xmp/{short=7}", S_OK, VT_UI4, 9, NULL },
 #endif
         { FALSE, &data3, L"/[1]ifd/{str=dc}:{uint=7}", 0xdeadbeef },
@@ -6205,7 +6205,7 @@ static void test_metadata_App0(void)
 
     IWICMetadataReader *reader;
     IWICMetadataWriter *writer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PROPVARIANT id, value;
     IWICPersistStream *persist;
     IStream *stream;
@@ -6292,7 +6292,7 @@ static void test_metadata_App0(void)
     hr = IWICMetadataWriter_GetCount(writer, &count);
     ok(hr == S_OK, "Unexpected hr %#lx.\n", hr);
     ok(count == 7, "Unexpected count %u.\n", count);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
     load_stream((IWICMetadataReader *)writer, (const char *)expected, sizeof(expected), 0);
     hr = IWICMetadataWriter_QueryInterface(writer, &IID_IWICPersistStream, (void **)&persist);
@@ -6361,7 +6361,7 @@ static void test_metadata_App0(void)
 
     IWICMetadataWriter_Release(writer);
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static void test_app1_persistence(IWICMetadataWriter *ifd, DWORD options)
 {
@@ -8003,7 +8003,7 @@ START_TEST(metadata)
     test_metadata_query_writer();
     test_metadata_App1();
     test_metadata_App0();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_ifd_persistence();
     test_jpeg_metadata_persistence();
     test_wmp_metadata_persistence();

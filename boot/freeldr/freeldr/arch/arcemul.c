@@ -46,9 +46,9 @@ MachHwDetect(_In_opt_ PCSTR Options)
     return MachVtbl.HwDetect(Options);
 }
 
-VOID MachPrepareForReactOS(VOID)
+VOID MachPrepareForLibreNT(VOID)
 {
-    MachVtbl.PrepareForReactOS();
+    MachVtbl.PrepareForLibreNT();
 }
 
 VOID MachGetExtendedBIOSData(PULONG ExtendedBIOSDataArea, PULONG ExtendedBIOSDataSize)

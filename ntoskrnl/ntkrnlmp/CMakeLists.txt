@@ -1,7 +1,7 @@
 
 include(../ntos.cmake)
 
-include_directories(${REACTOS_SOURCE_DIR}/ntoskrnl)
+include_directories(${LIBRENT_SOURCE_DIR}/ntoskrnl)
 spec2def(ntkrnlmp.exe ../ntoskrnl.spec)
 
 if(MSVC_IDE)
@@ -12,31 +12,28 @@ add_asm_files(ntkrnlmp_asm ${NTKRNLMP_ASM_SOURCE})
 
 if(ARCH STREQUAL "i386")
     list(APPEND NTKRNLMP_SOURCE
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/i386/mproc.c)
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/ke/i386/mproc.c)
 elseif(ARCH STREQUAL "amd64")
     list(APPEND NTKRNLMP_SOURCE
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/amd64/mproc.c)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND NTKRNLMP_SOURCE
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/riscv64/mproc.c)
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/ke/amd64/mproc.c)
 elseif(ARCH STREQUAL "arm")
     #TBD
 endif()
 
 list(APPEND NTKRNLMP_PCH_SKIP_SOURCE
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/guid.c)
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/guid.c)
 
 # Win11 ABI export parity (see ../CMakeLists.txt). ntkrnlmp shares
 # ntoskrnl.spec, so it needs the same generated stubs + placeholder data exports.
 list(APPEND NTKRNLMP_PCH_SKIP_SOURCE
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/exports.c
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/ke/exports.c
     ${CMAKE_CURRENT_BINARY_DIR}/ntkrnlmp_stubs.c)
 
 add_executable(ntkrnlmp
     ${ntkrnlmp_asm}
     ${NTKRNLMP_SOURCE}
     ${NTKRNLMP_PCH_SKIP_SOURCE}
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/ntoskrnl.rc
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/ntoskrnl.rc
     ${CMAKE_CURRENT_BINARY_DIR}/ntkrnlmp.def)
 set_module_type(ntkrnlmp kernel)
 target_compile_definitions(ntkrnlmp PRIVATE CONFIG_SMP)
@@ -57,7 +54,7 @@ endif()
 target_link_libraries(ntkrnlmp rtl_vista ci)
 add_importlibs(ntkrnlmp hal kdcom bootvid)
 if(NOT (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND ARCH STREQUAL "i386"))
-    add_pch(ntkrnlmp ${REACTOS_SOURCE_DIR}/ntoskrnl/include/ntoskrnl.h "${NTKRNLMP_PCH_SKIP_SOURCE}")
+    add_pch(ntkrnlmp ${LIBRENT_SOURCE_DIR}/ntoskrnl/include/ntoskrnl.h "${NTKRNLMP_PCH_SKIP_SOURCE}")
 endif()
 add_dependencies(ntkrnlmp psdk asm)
-add_cd_file(TARGET ntkrnlmp DESTINATION reactos/system32 NO_CAB FOR all)
+add_cd_file(TARGET ntkrnlmp DESTINATION librent/system32 NO_CAB FOR all)

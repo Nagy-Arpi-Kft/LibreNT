@@ -26,7 +26,7 @@
 
 #include <ntstrsafe.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <pseh/pseh2.h>
 #endif
 
@@ -34,14 +34,14 @@
 #include "nfs41_np.h"
 #include "nfs41_debug.h"
 
-#if defined(__REACTOS__) && (NTDDI_VERSION < NTDDI_WIN7)
+#if defined(__LIBRENT__) && (NTDDI_VERSION < NTDDI_WIN7)
 NTSTATUS NTAPI RtlUnicodeToUTF8N(CHAR *utf8_dest, ULONG utf8_bytes_max,
                                  ULONG *utf8_bytes_written,
                                  const WCHAR *uni_src, ULONG uni_bytes);
 NTSTATUS NTAPI RtlUTF8ToUnicodeN(WCHAR *uni_dest, ULONG uni_bytes_max,
                                  ULONG *uni_bytes_written,
                                  const CHAR *utf8_src, ULONG utf8_bytes);
-#endif /* defined(__REACTOS__) && (NTDDI_VERSION < NTDDI_WIN7) */
+#endif /* defined(__LIBRENT__) && (NTDDI_VERSION < NTDDI_WIN7) */
 
 #define USE_MOUNT_SEC_CONTEXT
 
@@ -158,7 +158,7 @@ typedef enum _nfs41_updowncall_state {
     NFS41_NOT_WAITING
 } nfs41_updowncall_state;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef _errno
 #undef errno
 #endif
@@ -720,7 +720,7 @@ NTSTATUS marshal_nfs41_open(
         if (entry->u.Open.EaMdl) {
             entry->u.Open.EaBuffer =
                 MmMapLockedPagesSpecifyCache(entry->u.Open.EaMdl,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                     UserMode, MmNonCached, NULL, TRUE, NormalPagePriority);
 #else
                     UserMode, MmCached, NULL, TRUE, NormalPagePriority);
@@ -781,7 +781,7 @@ NTSTATUS marshal_nfs41_rw(
         entry->u.ReadWrite.MdlAddress->MdlFlags |= MDL_MAPPING_CAN_FAIL;
         entry->buf =
             MmMapLockedPagesSpecifyCache(entry->u.ReadWrite.MdlAddress,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 UserMode, MmNonCached, NULL, TRUE, NormalPagePriority);
 #else
                 UserMode, MmCached, NULL, TRUE, NormalPagePriority);
@@ -967,7 +967,7 @@ NTSTATUS marshal_nfs41_dirquery(
     _SEH2_TRY {
         entry->u.QueryFile.mdl_buf =
             MmMapLockedPagesSpecifyCache(entry->u.QueryFile.mdl,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 UserMode, MmNonCached, NULL, TRUE, NormalPagePriority);
 #else
                 UserMode, MmCached, NULL, TRUE, NormalPagePriority);
@@ -2042,7 +2042,7 @@ NTSTATUS SharedMemoryFree(
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Start(
 #else
 NTSTATUS nfs41_Start(
@@ -2070,7 +2070,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Stop(
 #else
 NTSTATUS nfs41_Stop(
@@ -2333,7 +2333,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_DevFcbXXXControlFile(
 #else
 NTSTATUS nfs41_DevFcbXXXControlFile(
@@ -2377,7 +2377,7 @@ NTSTATUS nfs41_DevFcbXXXControlFile(
             if (RxContext->RxDeviceObject->NumberOfActiveFcbs > 0) {
                 DbgP("device has open handles %d\n",
                     RxContext->RxDeviceObject->NumberOfActiveFcbs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (RxContext->RxDeviceObject->pRxNetNameTable != NULL)
                 {
 #define DUMP_FCB_TABLE_FROM_NETROOT(N)                                               \
@@ -2569,7 +2569,7 @@ NTSTATUS nfs41_DevFcbXXXControlFile(
     return status;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS _nfs41_CreateSrvCall(
     PMRX_SRVCALL_CALLBACK_CONTEXT pCallbackContext)
 {
@@ -2625,7 +2625,7 @@ NTSTATUS NTAPI _nfs41_CreateSrvCall(
         pServerEntry->Name.Length);
 
     pCallbackContext->RecommunicateContext = pServerEntry;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InterlockedExchangePointer((void * volatile *)&pServerEntry->pRdbssSrvCall, pSrvCall);
 #else
     InterlockedExchangePointer(&pServerEntry->pRdbssSrvCall, pSrvCall);
@@ -2641,7 +2641,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI _nfs41_CreateSrvCall_v(
     PVOID pCallbackContext)
 {
@@ -2649,7 +2649,7 @@ VOID NTAPI _nfs41_CreateSrvCall_v(
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_CreateSrvCall(
 #else
 NTSTATUS nfs41_CreateSrvCall(
@@ -2667,7 +2667,7 @@ NTSTATUS nfs41_CreateSrvCall(
         status = _nfs41_CreateSrvCall(pCallbackContext);
     } else {
         status = RxDispatchToWorkerThread(nfs41_dev, DelayedWorkQueue,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             _nfs41_CreateSrvCall_v, pCallbackContext);
 #else
             _nfs41_CreateSrvCall, pCallbackContext);
@@ -2687,7 +2687,7 @@ NTSTATUS nfs41_CreateSrvCall(
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_SrvCallWinnerNotify(
 #else
 NTSTATUS nfs41_SrvCallWinnerNotify(
@@ -3018,7 +3018,7 @@ NTSTATUS nfs41_get_sec_ctx(
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_CreateVNetRoot(
 #else
 NTSTATUS nfs41_CreateVNetRoot(
@@ -3261,7 +3261,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI nfs41_ExtractNetRootName(
 #else
 VOID nfs41_ExtractNetRootName(
@@ -3300,7 +3300,7 @@ VOID nfs41_ExtractNetRootName(
 
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_FinalizeSrvCall(
 #else
 NTSTATUS nfs41_FinalizeSrvCall(
@@ -3319,7 +3319,7 @@ NTSTATUS nfs41_FinalizeSrvCall(
     if (pSrvCall->Context == NULL)
         goto out;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     InterlockedCompareExchangePointer(&pServerEntry->pRdbssSrvCall,
         NULL, pSrvCall);
 #else
@@ -3336,7 +3336,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_FinalizeNetRoot(
 #else
 NTSTATUS nfs41_FinalizeNetRoot(
@@ -3442,7 +3442,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_FinalizeVNetRoot(
 #else
 NTSTATUS nfs41_FinalizeVNetRoot(
@@ -3682,7 +3682,7 @@ NTSTATUS check_nfs41_create_args(
 
     /* rdbss seems miss this sharing_violation check */
     if (Fcb->OpenCount && params->Disposition == FILE_SUPERSEDE) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((!RxContext->CurrentIrpSp->FileObject->SharedRead &&
                 (params->DesiredAccess & FILE_READ_DATA)) ||
             ((!RxContext->CurrentIrpSp->FileObject->SharedWrite &&
@@ -3739,7 +3739,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Create(
 #else
 NTSTATUS nfs41_Create(
@@ -4061,7 +4061,7 @@ retry_on_link:
         map_disposition_to_create_retval(params->Disposition, entry->errno);
 
     RxContext->pFobx->OffsetOfNextEaToReturn = 1;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     RxContext->CurrentIrp->IoStatus.Information =
         RxContext->Create.ReturnedCreateInformation;
 #endif
@@ -4098,7 +4098,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_CollapseOpen(
 #else
 NTSTATUS nfs41_CollapseOpen(
@@ -4111,7 +4111,7 @@ NTSTATUS nfs41_CollapseOpen(
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_ShouldTryToCollapseThisOpen(
 #else
 NTSTATUS nfs41_ShouldTryToCollapseThisOpen(
@@ -4123,7 +4123,7 @@ NTSTATUS nfs41_ShouldTryToCollapseThisOpen(
     else return STATUS_MORE_PROCESSING_REQUIRED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG NTAPI nfs41_ExtendForCache(
 #else
 ULONG nfs41_ExtendForCache(
@@ -4202,7 +4202,7 @@ NTSTATUS map_close_errors(
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_CloseSrvOpen(
 #else
 NTSTATUS nfs41_CloseSrvOpen(
@@ -4273,7 +4273,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Flush(
 #else
 NTSTATUS nfs41_Flush(
@@ -4283,7 +4283,7 @@ NTSTATUS nfs41_Flush(
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_DeallocateForFcb(
 #else
 NTSTATUS nfs41_DeallocateForFcb(
@@ -4293,7 +4293,7 @@ NTSTATUS nfs41_DeallocateForFcb(
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_DeallocateForFobx(
 #else
 NTSTATUS nfs41_DeallocateForFobx(
@@ -4355,7 +4355,7 @@ NTSTATUS check_nfs41_dirquery_args(
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_QueryDirectory(
 #else
 NTSTATUS nfs41_QueryDirectory(
@@ -4515,7 +4515,7 @@ static BOOLEAN is_root_directory(
     return RxContext->CurrentIrpSp->FileObject->FileName.Length <= RootPathLen;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_QueryVolumeInformation(
 #else
 NTSTATUS nfs41_QueryVolumeInformation(
@@ -4547,9 +4547,9 @@ NTSTATUS nfs41_QueryVolumeInformation(
     status = check_nfs41_dirquery_args(RxContext);
     if (status) goto out;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RtlZeroMemory(RxContext->Info.Buffer, RxContext->Info.LengthRemaining);
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     switch (InfoClass) {
     case FileFsVolumeInformation:
@@ -4580,7 +4580,7 @@ NTSTATUS nfs41_QueryVolumeInformation(
         status = STATUS_SUCCESS;
         goto out;
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     // FileAccessInformation isn't the correct enum type!
     // It has the value 8, which is FileFsObjectIdInformation
     case FileAccessInformation:
@@ -4814,7 +4814,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_SetEaInformation(
 #else
 NTSTATUS nfs41_SetEaInformation(
@@ -5083,7 +5083,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_QueryEaInformation(
 #else
 NTSTATUS nfs41_QueryEaInformation(
@@ -5211,7 +5211,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_QuerySecurityInformation(
 #else
 NTSTATUS nfs41_QuerySecurityInformation(
@@ -5357,7 +5357,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_SetSecurityInformation(
 #else
 NTSTATUS nfs41_SetSecurityInformation(
@@ -5462,7 +5462,7 @@ NTSTATUS map_queryfile_error(
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_QueryFileInformation(
 #else
 NTSTATUS nfs41_QueryFileInformation(
@@ -5721,7 +5721,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_SetFileInformation(
 #else
 NTSTATUS nfs41_SetFileInformation(
@@ -5867,7 +5867,7 @@ NTSTATUS nfs41_SetFileInformationAtCleanup(
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_IsValidDirectory (
 #else
 NTSTATUS nfs41_IsValidDirectory (
@@ -5878,7 +5878,7 @@ NTSTATUS nfs41_IsValidDirectory (
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_ComputeNewBufferingState(
 #else
 NTSTATUS nfs41_ComputeNewBufferingState(
@@ -6037,7 +6037,7 @@ NTSTATUS check_nfs41_read_args(
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Read(
 #else
 NTSTATUS nfs41_Read(
@@ -6158,7 +6158,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Write(
 #else
 NTSTATUS nfs41_Write(
@@ -6269,7 +6269,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_IsLockRealizable(
 #else
 NTSTATUS nfs41_IsLockRealizable(
@@ -6351,7 +6351,7 @@ void denied_lock_backoff(
         delay->QuadPart = MAX_LOCK_POLL_WAIT;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Lock(
 #else
 NTSTATUS nfs41_Lock(
@@ -6465,7 +6465,7 @@ static __inline ULONG unlock_list_count(
     return count;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Unlock(
 #else
 NTSTATUS nfs41_Unlock(
@@ -6801,7 +6801,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_FsCtl(
 #else
 NTSTATUS nfs41_FsCtl(
@@ -6833,7 +6833,7 @@ NTSTATUS nfs41_FsCtl(
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_CompleteBufferingStateChangeRequest(
 #else
 NTSTATUS nfs41_CompleteBufferingStateChangeRequest(
@@ -6845,7 +6845,7 @@ NTSTATUS nfs41_CompleteBufferingStateChangeRequest(
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_FsdDispatch (
 #else
 NTSTATUS nfs41_FsdDispatch (
@@ -6887,7 +6887,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_Unimplemented(
 #else
 NTSTATUS nfs41_Unimplemented(
@@ -6897,7 +6897,7 @@ NTSTATUS nfs41_Unimplemented(
     return STATUS_NOT_IMPLEMENTED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI nfs41_AreFilesAliased(
 #else
 NTSTATUS nfs41_AreFilesAliased(
@@ -7017,7 +7017,7 @@ NTSTATUS nfs41_init_ops()
 }
 
 KSTART_ROUTINE fcbopen_main;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI fcbopen_main(PVOID ctx)
 #else
 VOID fcbopen_main(PVOID ctx)
@@ -7116,7 +7116,7 @@ out:
     DbgEx();
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI DriverEntry(
 #else
 NTSTATUS DriverEntry(
@@ -7157,7 +7157,7 @@ NTSTATUS DriverEntry(
         print_error("RxRegisterMinirdr failed: %08lx\n", status);
         goto out;
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     nfs41_dev->Flags |= DO_BUFFERED_IO;
 #endif
 
@@ -7207,7 +7207,7 @@ out:
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI nfs41_driver_unload(IN PDRIVER_OBJECT drv)
 #else
 VOID nfs41_driver_unload(IN PDRIVER_OBJECT drv)

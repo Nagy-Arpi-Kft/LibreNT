@@ -1,5 +1,5 @@
 /*
- *  ReactOS Win32 Applications
+ *  LibreNT Win32 Applications
  *  Copyright (C) 2005 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS arp utility
+ * PROJECT:     LibreNT arp utility
  * FILE:        base/applications/network/arp/arp.c
  * PURPOSE:     view and manipulate the ARP cache
  * PROGRAMMERS: Ged Murphy (gedmurphy@gmail.com)

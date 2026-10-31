@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/core/mmharness.c
  * PURPOSE:     Memory manager host-test harness implementation
  *

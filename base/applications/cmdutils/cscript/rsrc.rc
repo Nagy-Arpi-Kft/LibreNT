@@ -1,4 +1,4 @@
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* @makedep: ihost.tlb */
 1 TYPELIB ihost.tlb
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Automatic Testing Utility
+ * PROJECT:     LibreNT Automatic Testing Utility
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Class implementing the curl interface to the "testman" Web Service
  * COPYRIGHT:   Copyright 2025 Mark Jansen <mark.jansen@reactos.org>

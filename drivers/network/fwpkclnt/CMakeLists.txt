@@ -10,4 +10,4 @@ add_library(fwpkclnt MODULE
 set_module_type(fwpkclnt kernelmodedriver)
 add_importlibs(fwpkclnt ntoskrnl hal)
 add_dependencies(fwpkclnt netio)
-add_cd_file(TARGET fwpkclnt DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET fwpkclnt DESTINATION librent/system32/drivers NO_CAB FOR all)

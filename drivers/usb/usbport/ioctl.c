@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS USB Port Driver
+ * PROJECT:     LibreNT USB Port Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     USBPort I/O control functions
  * COPYRIGHT:   Copyright 2017 Vadim Galyant <vgal@rambler.ru>
@@ -1070,13 +1070,13 @@ USBPORT_PdoInternalDeviceControl(IN PDEVICE_OBJECT PdoDevice,
     //       Irp,
     //       IoCtl);
 
-    if (IoCtl == IOCTL_INTERNAL_REACTOS_USB_GET_DUMP_INTERFACE)
+    if (IoCtl == IOCTL_INTERNAL_LIBRENT_USB_GET_DUMP_INTERFACE)
     {
         Status = USBPORT_GetDumpInterface(IoStack->Parameters.Others.Argument1);
         goto Exit;
     }
 
-    if (IoCtl == IOCTL_INTERNAL_REACTOS_USB_GET_KEYBOARD_INTERFACE)
+    if (IoCtl == IOCTL_INTERNAL_LIBRENT_USB_GET_KEYBOARD_INTERFACE)
     {
         Status = USBPORT_GetKeyboardInterface(IoStack->Parameters.Others.Argument1);
         goto Exit;

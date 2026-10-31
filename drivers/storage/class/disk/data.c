@@ -22,7 +22,7 @@ Revision History:
 
 #include "disk.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef ALLOC_DATA_PRAGMA
 #pragma data_seg("PAGE")
 #endif
@@ -36,7 +36,7 @@ Revision History:
 #define HackCauseNotReportableHack          (0x10)
 #define HackRequiresStartUnitCommand        (0x20)
 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DATA_SEG("PAGEDATA")
 #endif
 CLASSPNP_SCAN_FOR_SPECIAL_INFO DiskBadControllers[] = {
@@ -68,7 +68,7 @@ CLASSPNP_SCAN_FOR_SPECIAL_INFO DiskBadControllers[] = {
 // Added MediaTypes in their own brace nesting level
 // ======== ROS DIFF ========
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DATA_SEG("PAGECONS")
 #endif
 DISK_MEDIA_TYPES_LIST const DiskMediaTypesExclude[] = {
@@ -76,7 +76,7 @@ DISK_MEDIA_TYPES_LIST const DiskMediaTypesExclude[] = {
     { NULL      , NULL           , NULL,  0, 0, {0                 , 0      , 0      , 0 }}
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DATA_SEG("PAGECONS")
 #endif
 DISK_MEDIA_TYPES_LIST const DiskMediaTypes[] = {
@@ -93,7 +93,7 @@ DISK_MEDIA_TYPES_LIST const DiskMediaTypes[] = {
     { NULL      , NULL           , NULL,  0, 0, {0                 , 0      , 0      , 0 }}
 };
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef ALLOC_DATA_PRAGMA
 #pragma data_seg()
 #endif

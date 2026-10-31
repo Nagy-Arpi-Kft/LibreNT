@@ -67,7 +67,7 @@ NTSTATUS InstallSubdevice
 
     DOUT (DBG_PRINT, ("[InstallSubdevice]"));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     UNREFERENCED_PARAMETER(PortInterfaceId);
 #endif
 

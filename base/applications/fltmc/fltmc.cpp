@@ -1,5 +1,5 @@
 /*
-* PROJECT:     ReactOS fltmc utility
+* PROJECT:     LibreNT fltmc utility
 * LICENSE:     GPL - See COPYING in the top level directory
 * FILE:        base/applications/fltmc/fltmc.c
 * PURPOSE:     Control utility for file system filter drivers
@@ -8,7 +8,7 @@
 
 // Please leave this temporary hack in place
 // it's used to keep VS2015 happy for development.
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdarg.h>
 #include <windef.h>
 #include <winbase.h>

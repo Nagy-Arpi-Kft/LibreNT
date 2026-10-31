@@ -8,5 +8,5 @@ list(APPEND SOURCE
 add_library(resutils MODULE ${SOURCE})
 set_module_type(resutils win32dll)
 add_importlibs(resutils msvcrt kernel32 ntdll)
-add_cd_file(TARGET resutils DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET resutils DESTINATION librent/system32 FOR all)
 set_wine_module(resutils)

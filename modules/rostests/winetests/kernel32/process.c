@@ -37,7 +37,7 @@
 
 #include "wine/test.h"
 #include "wine/heap.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winehacks.h"
 #endif
 
@@ -323,7 +323,7 @@ static void WINAPIV __WINE_PRINTF_ATTR(2,3) childPrintf(HANDLE h, const char* fm
 }
 
 /* bits 0..1 contains FILE_TYPE_{UNKNOWN, CHAR, PIPE, DISK} */
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
 /* This appears to be what HATTR_NULL resolves to on Windows x64 for native (not WoW) processes.
  * It may be:
  * HATTR_NULL (x86) | HATTR_INVALID | 0x01 */
@@ -459,7 +459,7 @@ static void     doChild(const char* file, const char* option)
             if (!pProcess32Next(snapshot, &pe)) break;
     }
     CloseHandle(snapshot);
-#if !defined(__REACTOS__) || !defined(_WIN64) // This doesn't work on x86_64, all Windows versions.
+#if !defined(__LIBRENT__) || !defined(_WIN64) // This doesn't work on x86_64, all Windows versions.
     ok(pe.th32ProcessID == GetCurrentProcessId(), "failed to find current process in snapshot\n");
 #endif
     childPrintf(hFile,
@@ -1194,7 +1194,7 @@ static void test_Directory(void)
 
 static void test_Toolhelp(void)
 {
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     skip("test_Toolhelp() times out on x86_64.\n");
 #else
     char                buffer[2 * MAX_PATH + 27];
@@ -2752,7 +2752,7 @@ static void test_IsProcessInJob(void)
     ret = pIsProcessInJob(pi.hProcess, job, &out);
     ok(ret, "IsProcessInJob error %lu\n", GetLastError());
     ok(out, "IsProcessInJob returned out=%u\n", out);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_WIN8 && GetNTVersion() < _WIN32_WINNT_WIN10) {
         test_assigned_proc(job, 1);
         test_accounting(job, 1, 1, 0);
@@ -2760,7 +2760,7 @@ static void test_IsProcessInJob(void)
 #endif
     test_assigned_proc(job, 0);
     test_accounting(job, 1, 0, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -2935,7 +2935,7 @@ static void test_QueryInformationJobObject(void)
     ok(ret, "QueryInformationJobObject error %lu\n", GetLastError());
     ok(ret_len == sizeof(basic_accounting_info), "QueryInformationJobObject returned ret_len=%lu\n", ret_len);
     expect_eq_d(3, basic_accounting_info.TotalProcesses);
-#if defined(__REACTOS__)
+#if defined(__LIBRENT__)
     ok(basic_accounting_info.ActiveProcesses == 2 || broken(basic_accounting_info.ActiveProcesses == 3) /* Win8+ */, "Expected %lu == %d\n", basic_accounting_info.ActiveProcesses, 2);
 #else
     expect_eq_d(2, basic_accounting_info.ActiveProcesses);
@@ -3551,7 +3551,7 @@ static void test_StdHandleInheritance(void)
         for (i = 0; i < tests[j].count; i++)
         {
             STARTUPINFOA startup;
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
             HANDLE hstd[2] = {0};
 #else
             HANDLE hstd[2] = {};
@@ -3599,12 +3599,12 @@ static void test_StdHandleInheritance(void)
                 okChildHexInt("StartupInfoW", "hStdInputEncode", startup_expected, std_tests[i].is_broken);
                 okChildHexInt("StartupInfoW", "hStdOutputEncode", startup_expected, std_tests[i].is_broken);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
                 okChildHexInt("TEB", "hStdInputEncode", std_tests[i].expected, std_tests[i].is_broken);
                 okChildHexInt("TEB", "hStdOutputEncode", std_tests[i].expected, std_tests[i].is_broken);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 }
 #endif
             }
@@ -4235,7 +4235,7 @@ static void test_process_info(HANDLE hproc)
         case ProcessCycleTime:
         case ProcessPagePriority:
         case ProcessImageFileNameWin32:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(status == STATUS_SUCCESS || broken(status == STATUS_ACCESS_DENIED || status == STATUS_INVALID_PARAMETER) /* WS03 */, "for info %lu expected STATUS_SUCCESS, got %08lx (ret_len %lu)\n", i, status, ret_len);
 #else
             ok(status == STATUS_SUCCESS, "for info %lu expected STATUS_SUCCESS, got %08lx (ret_len %lu)\n", i, status, ret_len);
@@ -4268,7 +4268,7 @@ static void test_process_info(HANDLE hproc)
                     "for info %lu, got %08lx (ret_len %lu)\n", i, status, ret_len);
             else
                 todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ok(status == STATUS_ACCESS_DENIED || broken(status == STATUS_INVALID_PARAMETER) /* WS03 */,
 #else
                 ok(status == STATUS_ACCESS_DENIED,
@@ -4322,7 +4322,7 @@ static void test_GetLogicalProcessorInformationEx(void)
 
 static void test_GetSystemCpuSetInformation(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     skip("Cannot build test_GetSystemCpuSetInformation() until kernelbase is synced.\n");
 #else
     SYSTEM_CPU_SET_INFORMATION *info, *info_nt;
@@ -4731,7 +4731,7 @@ static void test_handle_list_attribute(BOOL child, HANDLE handle1, HANDLE handle
         ret = GetHandleInformation(handle1, &flags);
         ok(ret, "Failed to get handle info, error %ld.\n", GetLastError());
         ok(flags == HANDLE_FLAG_INHERIT, "Unexpected flags %#lx.\n", flags);
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
         ret = GetFileInformationByHandleEx(handle1, FileNameInfo, name1, sizeof(name1));
         ok(ret, "Failed to get pipe name, error %ld\n", GetLastError());
 #endif
@@ -4741,7 +4741,7 @@ static void test_handle_list_attribute(BOOL child, HANDLE handle1, HANDLE handle
         if (ret)
         {
             ok(!(flags & HANDLE_FLAG_INHERIT), "Parent's handle shouldn't have been inherited\n");
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
             ret = GetFileInformationByHandleEx(handle2, FileNameInfo, name2, sizeof(name2));
             ok(!ret || strcmp(name1, name2), "Parent's handle shouldn't have been inherited\n");
 #endif
@@ -4752,7 +4752,7 @@ static void test_handle_list_attribute(BOOL child, HANDLE handle1, HANDLE handle
         return;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("test_handle_list_attribute() crashes on WS03.\n");
         return;
@@ -4804,7 +4804,7 @@ static void test_dead_process(void)
     DWORD offset = 0;
     NTSTATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("test_dead_process() crashes on WS03.\n");
         return;
@@ -5592,7 +5592,7 @@ static void test_GetProcessInformation(void)
     ret = pGetProcessInformation(GetCurrentProcess(), ProcessMachineTypeInfo, &mi, sizeof(mi));
     ok(ret, "Unexpected return value %d.\n", ret);
 
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x601
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x601
     process = GetCurrentProcess();
     status = NtQuerySystemInformationEx( SystemSupportedProcessorArchitectures, &process, sizeof(process),
             machines, sizeof(machines), NULL );

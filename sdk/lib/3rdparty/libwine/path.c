@@ -58,7 +58,7 @@ WCHAR * CDECL wine_get_dos_file_name( LPCSTR str )
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ERR("Got absolute UNIX path name in function wine_get_dos_file_name. This is not UNIX. Please fix the caller!\n");
         ERR("File name: %s\n", str);
         /* Return empty path */

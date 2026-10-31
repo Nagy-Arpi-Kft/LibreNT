@@ -17,7 +17,7 @@
 #include <ide.h>
 #include <ata.h>
 #include <scsi.h>
-#include <reactos/drivers/ata/ata_shared.h>
+#include <librent/drivers/ata/ata_shared.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -614,7 +614,7 @@ ReleaseResources:
 
     if (ControllerInferface->Version != PCIIDEX_INTERFACE_VERSION)
     {
-        /* ReactOS-specific: Retrieve the interface for legacy device detection */
+        /* LibreNT-specific: Retrieve the interface for legacy device detection */
         Status = PciIdeXInitialize(DriverObject,
                                    NULL,
                                    (PVOID)ControllerInferface,

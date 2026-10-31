@@ -8,7 +8,7 @@
 
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 
@@ -21,7 +21,7 @@
 #include <wincon.h>
 #include <msiserver.h>
 #include <shlobj.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <shlwapi.h>
 #endif
 #include <sddl.h>

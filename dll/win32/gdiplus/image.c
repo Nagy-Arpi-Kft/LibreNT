@@ -1404,19 +1404,19 @@ GpStatus WINGDIPAPI GdipCloneImage(GpImage *image, GpImage **cloneImage)
     if (image->type == ImageTypeBitmap)
     {
         GpBitmap *bitmap = (GpBitmap *)image;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         GpBitmap *clone;
         GpStatus status;
         UINT size, count;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = GdipCloneBitmapAreaI(0, 0, bitmap->width, bitmap->height,
 #else
         return GdipCloneBitmapAreaI(0, 0, bitmap->width, bitmap->height,
 #endif
                                     bitmap->format, bitmap, (GpBitmap **)cloneImage);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (status == Ok && bitmap->prop_item)
         {
             clone = (GpBitmap *)*cloneImage;
@@ -4221,7 +4221,7 @@ static GpStatus decode_image_bmp(IStream* stream, GpImage **image)
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void jpeg_metadata_reader(GpBitmap *bitmap, IWICBitmapDecoder *decoder, UINT frame_index)
 {
     IWICBitmapFrameDecode *frame;
@@ -4268,7 +4268,7 @@ static void jpeg_metadata_reader(GpBitmap *bitmap, IWICBitmapDecoder *decoder, U
 #endif
 static GpStatus decode_image_jpeg(IStream* stream, GpImage **image)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return decode_image_wic(stream, &GUID_ContainerFormatJpeg, jpeg_metadata_reader, image);
 #else
     return decode_image_wic(stream, &GUID_ContainerFormatJpeg, NULL, image);
@@ -4328,7 +4328,7 @@ static GpStatus decode_image_png(IStream* stream, GpImage **image)
         if (hr == S_OK)
         {
             if (IsEqualGUID(&format, &GUID_WICPixelFormat8bppGray) ||
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 IsEqualGUID(&format, &GUID_WICPixelFormat48bppRGB) ||
 #endif
                 IsEqualGUID(&format, &GUID_WICPixelFormat64bppRGBA))
@@ -4829,7 +4829,7 @@ GpStatus terminate_encoder_wic(GpImage *image)
         return hresult_to_status(hr);
     }
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT write_halftone_pixels(IWICBitmapFrameEncode *frame, GpBitmap *bitmap, GpRect *rc)
 {
     ColorPalette *palette;
@@ -5000,7 +5000,7 @@ static GpStatus encode_frame_wic(IWICBitmapEncoder *encoder, GpImage *image)
         if (SUCCEEDED(hr) && IsIndexedPixelFormat(gdipformat) && image->palette)
             hr = set_palette(frameencode, image->palette);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (SUCCEEDED(hr) && gdipformat == PixelFormat8bppIndexed && !image->palette &&
             !IsIndexedPixelFormat(bitmap->format))
         {
@@ -5335,7 +5335,7 @@ static const BYTE gif_sig_pattern[12] = "GIF87aGIF89a";
 static const BYTE gif_sig_mask[] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
 static const WCHAR tiff_codecname[] = L"Built-in TIFF";
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR tiff_extension[] = L"*.TIF;*.TIFF";
 #else
 static const WCHAR tiff_extension[] = L"*.TIFF;*.TIF";
@@ -5711,7 +5711,7 @@ GpStatus WINGDIPAPI GdipCreateBitmapFromHBITMAP(HBITMAP hbm, HPALETTE hpal, GpBi
     GpStatus retval;
     PixelFormat format;
     BitmapData lockeddata;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char bmibuf[FIELD_OFFSET(BITMAPINFO, bmiColors) + 256 * sizeof(RGBQUAD)];
 #else
     char bmibuf[FIELD_OFFSET(BITMAPINFO, bmiColors[256])];

@@ -1,7 +1,7 @@
 #ifndef __CROSSNT_MISC__H__
 #define __CROSSNT_MISC__H__
 
-#ifdef USE_REACTOS_DDK
+#ifdef USE_LIBRENT_DDK
 
 /* The definitions look so crappy, because the code doesn't care
    whether the source is an array or an integer */
@@ -178,6 +178,6 @@ _XCHG_DD(
     );
 #define XCHG_DD(a,b) _XCHG_DD(&(a),&(b))
 
-#endif //USE_REACTOS_DDK
+#endif //USE_LIBRENT_DDK
 
 #endif // __CROSSNT_MISC__H__

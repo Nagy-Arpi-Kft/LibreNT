@@ -1,5 +1,5 @@
 /*
- * ReactOS User32 Library
+ * LibreNT User32 Library
  * - ScrollBar control
  *
  * Copyright 2001 Casper S. Hornstrup
@@ -799,7 +799,7 @@ IntScrollHandleScrollEvent(HWND Wnd, INT SBType, UINT Msg, POINT Pt)
   }
   if ((ScrollTrackHitTest == SCROLL_NOWHERE) && (Msg != WM_LBUTTONDOWN))
   {
-     //// ReactOS : Justin Case something goes wrong.
+     //// LibreNT : Justin Case something goes wrong.
      if (Wnd == GetCapture())
      {
         ReleaseCapture();
@@ -1236,7 +1236,7 @@ IntSetScrollInfo(HWND Wnd, LPCSCROLLINFO Info, BOOL bRedraw)
 LRESULT WINAPI
 ScrollBarWndProc_common(WNDPROC DefWindowProc, HWND Wnd, UINT Msg, WPARAM wParam, LPARAM lParam, BOOL unicode )
 {
-#ifdef __REACTOS__ // Do this now, remove after Server side is fixed.
+#ifdef __LIBRENT__ // Do this now, remove after Server side is fixed.
   PWND pWnd;
   PSBWND pSBWnd;
   SCROLLINFO ScrollInfo;

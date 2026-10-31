@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Build System
+# PROJECT:     LibreNT Build System
 # PURPOSE:     Define the shared compatibility runtime target manifest
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -355,7 +355,7 @@ set(COMPAT_RUNTIME_MODULES
     xolehlp
     zipfldr)
 
-if(NOT EXISTS "${REACTOS_SOURCE_DIR}/submodules/mesa/include/vulkan/vulkan.h")
+if(NOT EXISTS "${LIBRENT_SOURCE_DIR}/submodules/mesa/include/vulkan/vulkan.h")
     list(REMOVE_ITEM COMPAT_RUNTIME_MODULES vulkan-1)
 endif()
 

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            ntoskrnl/kd/kdio.c
  * PURPOSE:         NT Kernel Debugger Input/Output Functions
  *
@@ -10,7 +10,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/buildno.h>
+#include <librent/buildno.h>
 #include "kd.h"
 #include "kdterminal.h"
 #ifdef KDBG

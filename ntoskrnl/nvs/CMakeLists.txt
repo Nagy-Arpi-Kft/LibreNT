@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS NT Virtual Memory Subsystem
+# PROJECT:     LibreNT NT Virtual Memory Subsystem
 # FILE:        ntoskrnl/nvs/CMakeLists.txt
 # PURPOSE:     Virtual memory manager build configuration
 #
@@ -23,8 +23,8 @@ file(GLOB NVS_ARCH_SOURCES ${NVS_ARCH_DIR}/*.c)
 add_library(nvs_neutral STATIC ${NVS_CORE_SOURCES} ${NVS_NT_SOURCES} ${NVS_ARCH_SOURCES})
 
 target_include_directories(nvs_neutral PRIVATE
-    ${REACTOS_SOURCE_DIR}/sdk/lib/apisets
-    ${REACTOS_SOURCE_DIR}/ntoskrnl
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/apisets
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_dependencies(nvs_neutral bugcodes xdk)

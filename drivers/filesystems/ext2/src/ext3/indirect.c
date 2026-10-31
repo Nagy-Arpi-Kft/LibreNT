@@ -219,7 +219,7 @@ Ext2GetBlock(
                          BLOCK_SIZE,
                          PIN_WAIT,
                          &Bcb,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                          (void **)&pData )) {
 #else
                          &pData )) {
@@ -525,7 +525,7 @@ Ext2ExpandBlock(
                             BLOCK_SIZE,
                             PIN_WAIT,
                             &Bcb,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             (void **)&pData )) {
 #else
                             &pData )) {
@@ -734,7 +734,7 @@ Ext2TruncateBlock(
                                 BLOCK_SIZE,
                                 PIN_WAIT,
                                 &Bcb,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                 (void **)&pData )) {
 #else
                                 &pData )) {
@@ -918,7 +918,7 @@ Ext2MapIndirect(
                          Layer,
                          Index,
                          dwArray,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         (PULONG)&Mcb->Inode.i_block[Slot],
 #else
                         &Mcb->Inode.i_block[Slot],
@@ -1003,7 +1003,7 @@ Ext2ExpandIndirect(
                          Layer,
                          Start,
                          (Layer == 0) ? (Vcb->max_blocks_per_layer[Layer] - Start) : 1,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                          (PULONG)&Mcb->Inode.i_block[Slot],
 #else
                          &Mcb->Inode.i_block[Slot],
@@ -1138,7 +1138,7 @@ Ext2TruncateIndirect(
         Base -= Vcb->max_blocks_per_layer[Layer - 1];
 
         if (Layer - 1 == 0) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             BlockArray = (PULONG)&Mcb->Inode.i_block[0];
 #else
             BlockArray = &Mcb->Inode.i_block[0];
@@ -1146,7 +1146,7 @@ Ext2TruncateIndirect(
             SizeArray = End;
             ASSERT(End == EXT2_NDIR_BLOCKS && Base == 0);
         } else {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             BlockArray = (PULONG)&Mcb->Inode.i_block[EXT2_NDIR_BLOCKS - 1 + Layer - 1];
 #else
             BlockArray = &Mcb->Inode.i_block[EXT2_NDIR_BLOCKS - 1 + Layer - 1];

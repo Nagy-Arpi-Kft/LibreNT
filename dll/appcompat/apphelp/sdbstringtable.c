@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Application compatibility module
+ * PROJECT:     LibreNT Application compatibility module
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Shim database string table builder
  * COPYRIGHT:   Copyright 2016-2025 Mark Jansen <mark.jansen@reactos.org>

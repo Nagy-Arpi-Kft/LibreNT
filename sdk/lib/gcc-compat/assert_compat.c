@@ -5,7 +5,7 @@
  * COPYRIGHT:   Copyright 2026 LiberNT Team
  *
  * GCC 16's libmingwex _assert wrapper imports the internal UCRT function
- * __msvcrt_assert. ReactOS exports the compatible _assert entry point instead,
+ * __msvcrt_assert. LibreNT exports the compatible _assert entry point instead,
  * so redirect the import pointer to it.
  */
 

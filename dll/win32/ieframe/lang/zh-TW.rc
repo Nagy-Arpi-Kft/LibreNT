@@ -1,5 +1,5 @@
 /* 
- * PROJECT:     ReactOS ieframe.dll
+ * PROJECT:     LibreNT ieframe.dll
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Chinese (Traditional) resource file
  * TRANSLATORS: Copyright 2016 Henry Tang Ih <henrytang2@hotmail.com>
@@ -81,7 +81,7 @@ FONT 9, "新細明體"
 {
     LTEXT "指定您要在 Internet Explorer 中開啟的 URL",-1, 35,5,160,25
     LTEXT "開啟：", -1, 5, 32, 30, 15
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ICON IDC_PAGEICO, IDC_PAGEICO, 2, 5, 21, 20, SS_ICON
 #endif
     EDITTEXT IDC_BROWSE_OPEN_URL, 35, 30, 160, 13
@@ -89,7 +89,7 @@ FONT 9, "新細明體"
     PUSHBUTTON "取消", IDCANCEL, 145, 50, 50, 14
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 STRINGTABLE
 {
     IDS_INTSHCUT_OPEN           "&Open"

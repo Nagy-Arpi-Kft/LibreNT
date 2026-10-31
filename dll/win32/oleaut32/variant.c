@@ -671,19 +671,19 @@ HRESULT WINAPI DECLSPEC_HOTPATCH VariantClear(VARIANTARG* pVarg)
 static HRESULT VARIANT_CopyIRecordInfo(VARIANT *dest, const VARIANT *src)
 {
   IRecordInfo *src_info = V_RECORDINFO(src);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   void *src_record = V_RECORD(src), *record;
 #endif
   HRESULT hr = S_OK;
   ULONG size;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   V_RECORD(dest) = NULL;
   V_RECORDINFO(dest) = NULL;
 #endif
   if (!src_info)
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (src_record) return E_INVALIDARG;
 #else
     if (V_RECORD(src)) return E_INVALIDARG;
@@ -696,7 +696,7 @@ static HRESULT VARIANT_CopyIRecordInfo(VARIANT *dest, const VARIANT *src)
 
   /* Windows does not use RecordCreate() here, memory should be allocated in compatible way so RecordDestroy()
      could free it later. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   record = CoTaskMemAlloc(size);
   if (!record) return E_OUTOFMEMORY;
 #else
@@ -704,13 +704,13 @@ static HRESULT VARIANT_CopyIRecordInfo(VARIANT *dest, const VARIANT *src)
   if (!V_RECORD(dest)) return E_OUTOFMEMORY;
 #endif
   if (size)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       memset(record, 0, size);
 #else
       memset(V_RECORD(dest), 0, size);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   hr = IRecordInfo_RecordCopy(src_info, src_record, record);
   if (FAILED(hr))
   {
@@ -720,7 +720,7 @@ static HRESULT VARIANT_CopyIRecordInfo(VARIANT *dest, const VARIANT *src)
   V_RECORD(dest) = record;
 #endif
   IRecordInfo_AddRef(V_RECORDINFO(dest) = src_info);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return hr;
 #else
   return IRecordInfo_RecordCopy(src_info, V_RECORD(src), V_RECORD(dest));
@@ -908,7 +908,7 @@ HRESULT WINAPI VariantCopyInd(VARIANT* pvargDest, const VARIANTARG* pvargSrc)
   }
   else if (V_VT(pSrc) == (VT_RECORD|VT_BYREF))
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = VARIANT_CopyIRecordInfo(pvargDest, pSrc);
 #else
     hres = VARIANT_CopyIRecordInfo(pvargDest, pvargSrc);
@@ -1226,7 +1226,7 @@ static HRESULT VARIANT_RollUdate(UDATE *lpUd)
 INT WINAPI DosDateTimeToVariantTime(USHORT wDosDate, USHORT wDosTime,
                                     DOUBLE *pDateOut)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   UDATE ud = {0};
 #else
   UDATE ud;
@@ -1304,7 +1304,7 @@ INT WINAPI VariantTimeToDosDateTime(DOUBLE dateIn, USHORT *pwDosDate, USHORT *pw
  */
 INT WINAPI SystemTimeToVariantTime(LPSYSTEMTIME lpSt, DOUBLE *pDateOut)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   UDATE ud = {0};
 #else
   UDATE ud;

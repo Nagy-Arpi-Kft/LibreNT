@@ -4,7 +4,7 @@ add_definitions(
     -D_BLDR_
     -D_NTSYSTEM_)
 
-set(NTOS_RTL_SOURCE_DIR "${REACTOS_SOURCE_DIR}/sdk/lib/rtl")
+set(NTOS_RTL_SOURCE_DIR "${LIBRENT_SOURCE_DIR}/sdk/lib/rtl")
 include_directories(${NTOS_RTL_SOURCE_DIR})
 
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
@@ -55,14 +55,6 @@ elseif(ARCH STREQUAL "arm")
 elseif(ARCH STREQUAL "arm64")
     list(APPEND ASM_SOURCE
         ${NTOS_RTL_SOURCE_DIR}/arm64/debug_asm.S)
-    list(APPEND SOURCE
-        ${NTOS_RTL_SOURCE_DIR}/bitmap64.c
-        ${NTOS_RTL_SOURCE_DIR}/byteswap.c
-        ${NTOS_RTL_SOURCE_DIR}/mem.c)
-elseif(ARCH STREQUAL "ppc")
-    list(APPEND SOURCE
-        ${NTOS_RTL_SOURCE_DIR}/mem.c)
-elseif(ARCH STREQUAL "riscv64")
     list(APPEND SOURCE
         ${NTOS_RTL_SOURCE_DIR}/bitmap64.c
         ${NTOS_RTL_SOURCE_DIR}/byteswap.c

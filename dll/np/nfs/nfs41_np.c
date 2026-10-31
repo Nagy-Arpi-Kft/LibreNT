@@ -30,7 +30,7 @@
 
 #include <pseh/pseh2.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DbgP(_x_)
 #else
 #ifdef DBG
@@ -51,7 +51,7 @@ ULONG _cdecl NFS41DbgPrint( __in LPTSTR Format, ... )
     va_list marker;
     va_start( marker, Format );
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         //StringCchVPrintfW( szbuffer, 127, Format, marker );
         StringCchVPrintfW( szbuffer, 256, Format, marker );
         szbuffer[255] = (TCHAR)0;
@@ -61,7 +61,7 @@ ULONG _cdecl NFS41DbgPrint( __in LPTSTR Format, ... )
         OutputDebugString( TRACE_TAG );
         OutputDebugString( szbuffer );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     va_end(marker);
 #endif
 
@@ -207,7 +207,7 @@ static DWORD StoreConnectionInfo(
     INT Index;
     BOOLEAN FreeEntryFound = FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = OpenSharedMemory(&hMutex, &hMemory, (PVOID *)&pSharedMemory);
 #else
     status = OpenSharedMemory(&hMutex, &hMemory, &(PVOID)pSharedMemory);
@@ -265,7 +265,7 @@ static DWORD StoreConnectionInfo(
     // TODO: copy mount options -cbodley
 
 out_close:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CloseSharedMemory(&hMutex, &hMemory, (PVOID *)&pSharedMemory);
 #else
     CloseSharedMemory(&hMutex, &hMemory, &(PVOID)pSharedMemory);
@@ -341,7 +341,7 @@ NPGetCaps(
 {
    DWORD rc = 0;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DbgP(( L"[aglo] GetNetCaps %d\n", nIndex ));
 #endif
     switch ( nIndex )
@@ -415,7 +415,7 @@ NPPasswordChangeNotify (
     return WN_NOT_SUPPORTED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD APIENTRY
 NPAddConnection3(
     __in HWND           hwndOwner,
@@ -661,7 +661,7 @@ NPCancelConnection(
 
                 DbgP((TEXT("NPCancelConnection: Name %S EntryName %S\n"),
                             lpName,pNetResource->LocalName));
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 DbgP((TEXT("NPCancelConnection: Name Length %d Entry Name Length %d\n"),
                            pNetResource->LocalNameLength,pNetResource->LocalName));
 #else

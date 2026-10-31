@@ -750,13 +750,13 @@ static void test_xcvt(void)
         ok( decpt == test_cvt_testcases[i].expdecpt_e,
                 "%d) _ecvt() decimal point wrong, got %d expected %d\n", i, decpt,
                 test_cvt_testcases[i].expdecpt_e);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (((i == 10) || (i == 11) || (i == 12)) && (_winver < 0x600))
         {
             skip("broken on win 2003\n");
             continue;
         }
-#endif // __REACTOS__
+#endif // __LIBRENT__
         ok( sign == test_cvt_testcases[i].expsign,
                 "%d) _ecvt() sign wrong, got %d expected %d\n", i, sign,
                 test_cvt_testcases[i].expsign);
@@ -773,13 +773,13 @@ static void test_xcvt(void)
         ok( decpt == test_cvt_testcases[i].expdecpt_f,
                 "%d) _fcvt() decimal point wrong, got %d expected %d\n", i, decpt,
                 test_cvt_testcases[i].expdecpt_f);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (((i == 10) || (i == 11) || (i == 12)) && (_winver < 0x600))
         {
             skip("broken on win 2003\n");
             continue;
         }
-#endif // __REACTOS__
+#endif // __LIBRENT__
         ok( sign == test_cvt_testcases[i].expsign,
                 "%d) _fcvt() sign wrong, got %d expected %d\n", i, sign,
                 test_cvt_testcases[i].expsign);

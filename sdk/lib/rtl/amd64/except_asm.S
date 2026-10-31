@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Runtime Library (RTL)
+ * PROJECT:     LibreNT Runtime Library (RTL)
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Exception support for AMD64
  * COPYRIGHT:   Copyright 2010-2026 Timo Kreuzer <timo.kreuzer@reactos.org>

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            lib/ntdll/rtl/process.c
  * PURPOSE:         Process functions
  * PROGRAMMER:      Ariadne (ariadne@xs4all.nl)
@@ -32,7 +32,7 @@
 
 static signed char g_ReportProductType = 0;
 
-/* HACK: ReactOS specific changes, see bug-reports CORE-6611 and CORE-4620 (aka. #5003) */
+/* HACK: LibreNT specific changes, see bug-reports CORE-6611 and CORE-4620 (aka. #5003) */
 static VOID NTAPI
 SetRosSpecificInfo(IN OUT PRTL_OSVERSIONINFOEXW VersionInformation)
 {
@@ -42,7 +42,7 @@ SetRosSpecificInfo(IN OUT PRTL_OSVERSIONINFOEXW VersionInformation)
     HANDLE hKey;
     ULONG Length;
     NTSTATUS Status;
-    UNICODE_STRING KeyName = RTL_CONSTANT_STRING(L"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\ReactOS\\Settings\\Version");
+    UNICODE_STRING KeyName = RTL_CONSTANT_STRING(L"\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\LibreNT\\Settings\\Version");
     UNICODE_STRING ValName = RTL_CONSTANT_STRING(L"ReportAsWorkstation");
 
     InitializeObjectAttributes(&ObjectAttributes,
@@ -230,7 +230,7 @@ RtlGetVersion(IN OUT PRTL_OSVERSIONINFOW lpVersionInformation)
         InfoEx->wProductType = SharedUserData->NtProductType;
         InfoEx->wReserved = 0;
 
-        /* HACK: ReactOS specific changes, see bug-reports CORE-6611 and CORE-4620 (aka. #5003) */
+        /* HACK: LibreNT specific changes, see bug-reports CORE-6611 and CORE-4620 (aka. #5003) */
         SetRosSpecificInfo(InfoEx);
     }
 

@@ -179,7 +179,7 @@ HRSRC WINAPI FindResourceW( HINSTANCE hModule, LPCWSTR name, LPCWSTR type )
 }
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /**********************************************************************
  *	EnumResourceTypesA	(KERNEL32.@)
  */

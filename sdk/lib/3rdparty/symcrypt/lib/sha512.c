@@ -1349,7 +1349,7 @@ SymCryptSha512AppendBlocks_ull3(
 
 //
 // Working version of XMMIROUND:
-// __REACTOS__: Avoid backslash-newline splicing in C++-style comments under GCC.
+// __LIBRENT__: Avoid backslash-newline splicing in C++-style comments under GCC.
 //    Wt = XMMFROM_MSBF( &pbData[ 8*r ] );
 //    W[r] = Wt;
 //    Wt = XMMADD( XMMFROM_UINT64(SymCryptSha512K[r]), Wt );

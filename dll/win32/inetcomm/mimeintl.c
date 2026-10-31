@@ -220,7 +220,7 @@ static HRESULT mlang_getcsetinfo(const char *charset, MIMECSETINFO *mlang_info)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HCHARSET add_charset(struct list *list, MIMECSETINFO *mlang_info, HCHARSET handle, const char *name)
 #else
 static HCHARSET add_charset(struct list *list, MIMECSETINFO *mlang_info, HCHARSET handle)
@@ -228,7 +228,7 @@ static HCHARSET add_charset(struct list *list, MIMECSETINFO *mlang_info, HCHARSE
 {
     charset_entry *charset = HeapAlloc(GetProcessHeap(), 0, sizeof(*charset));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     lstrcpynA(charset->cs_info.szName, name, sizeof(charset->cs_info.szName));
 #else
     WideCharToMultiByte(CP_ACP, 0, mlang_info->wszCharset, -1,
@@ -275,7 +275,7 @@ static HRESULT WINAPI MimeInternat_FindCharset(IMimeInternational *iface, LPCSTR
         EnterCriticalSection(&This->cs);
 
         if(SUCCEEDED(hr))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *phCharset = add_charset(&This->charsets, &mlang_info,
                                      UlongToHandle(InterlockedIncrement(&This->next_charset_handle)), pszCharset);
 #else

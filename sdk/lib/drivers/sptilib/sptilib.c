@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Storage Stack
+ * PROJECT:     LibreNT Storage Stack
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     ATA and SCSI Pass Through Interface for storage drivers
  * COPYRIGHT:   Copyright 2025 Dmitry Borisov <di.sean@protonmail.com>

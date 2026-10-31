@@ -1,6 +1,6 @@
 #include "resource.h"
 
-/* ReactOS localization and module resources kept outside Wine-owned files. */
+/* LibreNT localization and module resources kept outside Wine-owned files. */
 #define IDS_DEFTITLE 0
 #define IDI_HHICON   100
 

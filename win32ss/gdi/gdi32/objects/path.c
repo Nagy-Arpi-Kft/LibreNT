@@ -1,5 +1,5 @@
 /*
- * reactos/lib/gdi32/objects/path.c
+ * librent/lib/gdi32/objects/path.c
  *
  * GDI32.DLL Path
  *

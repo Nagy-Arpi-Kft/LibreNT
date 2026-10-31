@@ -1,8 +1,8 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
  * LICENSE:     See LGPL.txt in the top level directory
- * PROJECT:     ReactOS system libraries
- * FILE:        reactos/lib/epsapi/enum/processes.c
+ * PROJECT:     LibreNT system libraries
+ * FILE:        librent/lib/epsapi/enum/processes.c
  * PURPOSE:     Enumerate processes and threads
  * PROGRAMMER:  KJK::Hyperion <noog@libero.it>
  * UPDATE HISTORY:

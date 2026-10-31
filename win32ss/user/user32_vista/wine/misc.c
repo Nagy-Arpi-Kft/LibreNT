@@ -23,7 +23,7 @@
 
 #include <stdarg.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #define _INC_WINDOWS
 #define COM_NO_WINDOWS_H
@@ -129,7 +129,7 @@ typedef struct tagPOINTER_INFO {
 
 WINE_DEFAULT_DEBUG_CHANNEL(win);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 
 BOOL WINAPI ImmSetActiveContext(HWND, HIMC, BOOL);
 
@@ -501,7 +501,7 @@ BOOL WINAPI UserHandleGrantAccess(HANDLE handle, HANDLE job, BOOL grant)
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /**********************************************************************
  * RegisterPowerSettingNotification [USER32.@]
  */
@@ -569,7 +569,7 @@ BOOL WINAPI GetPointerDevices(UINT32 *device_count, POINTER_DEVICE_INFO *devices
 
     if (devices)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError(ERROR_SYSTEM_DEVICE_NOT_FOUND);
 #endif
         return FALSE;
@@ -611,7 +611,7 @@ LRESULT WINAPI PackTouchHitTestingProximityEvaluation(const TOUCH_HIT_TESTING_IN
     return 0;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /**********************************************************************
  * GetPointerType [USER32.@]
  */
@@ -638,7 +638,7 @@ BOOL WINAPI GetPointerInfo(UINT32 id, POINTER_INFO *info)
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 LRESULT WINAPI ImeWndProcA( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
     if (!imm_ime_wnd_proc) return DefWindowProcA(hwnd, msg, wParam, lParam);
@@ -652,7 +652,7 @@ LRESULT WINAPI ImeWndProcW( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define HWNDPARAM_ROUTINE_ROS_CHANGEMESSAGEFILTER 0x1007
 DWORD NTAPI NtUserCallHwndParam(HWND hWnd, DWORD_PTR Param, DWORD Routine);
 

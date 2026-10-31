@@ -23,7 +23,7 @@
 #include "windef.h"
 #include "winbase.h"
 #include "objbase.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "ole2.h"
 #endif
 
@@ -354,7 +354,7 @@ static HRESULT metadata_block_reader_get_reader(struct metadata_block_reader *bl
         else if (block_reader->metadata_blocks[index].options & DECODER_BLOCK_OFFSET_IS_PTR)
         {
             BYTE *data = (BYTE *)(ULONG_PTR)block_reader->metadata_blocks[index].offset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ULONGLONG size = block_reader->metadata_blocks[index].length;
             IStream *copy;
             ULARGE_INTEGER offset, length;
@@ -363,7 +363,7 @@ static HRESULT metadata_block_reader_get_reader(struct metadata_block_reader *bl
             UINT size = block_reader->metadata_blocks[index].length;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hr = size > MAXDWORD ? E_INVALIDARG : CreateStreamOnHGlobal(NULL, TRUE, &copy);
             if (SUCCEEDED(hr))
             {

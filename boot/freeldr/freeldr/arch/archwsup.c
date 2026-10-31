@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Boot Loader (FreeLDR)
+ * PROJECT:         LibreNT Boot Loader (FreeLDR)
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            boot/freeldr/freeldr/arch/archwsup.c
  * PURPOSE:         Routines for ARC Hardware Tree and Configuration Data
@@ -68,13 +68,13 @@ const PCSTR ArcTypes[MaximumType + 1] = // CmTypeName
 PCONFIGURATION_COMPONENT_DATA FldrArcHwTreeRoot;
 
 // ARC Disk Information
-ULONG reactos_disk_count = 0;
-ARC_DISK_SIGNATURE_EX reactos_arc_disk_info[32];
+ULONG librent_disk_count = 0;
+ARC_DISK_SIGNATURE_EX librent_arc_disk_info[32];
 
 /* FUNCTIONS ******************************************************************/
 
 VOID
-AddReactOSArcDiskInfo(
+AddLibreNTArcDiskInfo(
     _In_ PCSTR ArcName,
     _In_opt_ PGUID GptDiskGuid,
     _In_ ULONG Signature,
@@ -84,12 +84,12 @@ AddReactOSArcDiskInfo(
     PARC_DISK_SIGNATURE ArcDiskSignature;
     C_ASSERT(sizeof(*GptDiskGuid) == sizeof(ArcDiskSignature->GptSignature));
 
-    ASSERT(reactos_disk_count < RTL_NUMBER_OF(reactos_arc_disk_info));
+    ASSERT(librent_disk_count < RTL_NUMBER_OF(librent_arc_disk_info));
 
     /* Fill out the ARC disk block */
-    RtlZeroMemory(&reactos_arc_disk_info[reactos_disk_count],
-                  sizeof(reactos_arc_disk_info[reactos_disk_count]));
-    ArcDiskSignature = &(reactos_arc_disk_info[reactos_disk_count].DiskSignature);
+    RtlZeroMemory(&librent_arc_disk_info[librent_disk_count],
+                  sizeof(librent_arc_disk_info[librent_disk_count]));
+    ArcDiskSignature = &(librent_arc_disk_info[librent_disk_count].DiskSignature);
 
     ArcDiskSignature->Signature = Signature;
     ArcDiskSignature->CheckSum = Checksum;
@@ -102,22 +102,22 @@ AddReactOSArcDiskInfo(
                       GptDiskGuid, sizeof(*GptDiskGuid));
     }
 
-    strcpy(reactos_arc_disk_info[reactos_disk_count].ArcName, ArcName);
-    ArcDiskSignature->ArcName = reactos_arc_disk_info[reactos_disk_count].ArcName;
+    strcpy(librent_arc_disk_info[librent_disk_count].ArcName, ArcName);
+    ArcDiskSignature->ArcName = librent_arc_disk_info[librent_disk_count].ArcName;
 
-    ++reactos_disk_count;
+    ++librent_disk_count;
 }
 
 ULONG ArcGetDiskCount(VOID)
 {
-    return reactos_disk_count;
+    return librent_disk_count;
 }
 
 PARC_DISK_SIGNATURE_EX ArcGetDiskInfo(ULONG Index)
 {
-    if (Index >= reactos_disk_count)
+    if (Index >= librent_disk_count)
         return NULL;
-    return &reactos_arc_disk_info[Index];
+    return &librent_arc_disk_info[Index];
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel-Mode Test Suite for Win11-parity Mm SECTION behavior
  *
@@ -7,7 +7,7 @@
  * a kernel-mode driver (handle validity, mapped-view identity, shared-memory
  * coherency, exported helper return values), so the SAME driver binary can be
  * run against the Win11 ARM64 reference kernel (ground truth) and against
- * ReactOS.  A mismatch reveals a ReactOS divergence - in particular the two
+ * LibreNT.  A mismatch reveals a LibreNT divergence - in particular the two
  * still-stubbed exports MmDoesFileHaveUserWritableReferences (returns 0) and
  * MmDisableModifiedWriteOfSection (returns FALSE).
  *
@@ -33,7 +33,7 @@
  * <ntifs.h> (pulled in through kmt_test.h) and is used as-is.
  *
  * MmEnableModifiedWriteOfSection is deliberately NOT used: it is not exported by
- * ReactOS, and the scratch section is torn down immediately after the call so it
+ * LibreNT, and the scratch section is torn down immediately after the call so it
  * never needs re-enabling.
  */
 NTKERNELAPI
@@ -599,7 +599,7 @@ TestSectionObjectType(VOID)
 /* ------------------------------------------------------------------------- */
 
 /*
- * MmDoesFileHaveUserWritableReferences (ReactOS: STUB -> always returns 0).
+ * MmDoesFileHaveUserWritableReferences (LibreNT: STUB -> always returns 0).
  *
  * Windows contract: while a writable user view of the file's data section is
  * mapped the count is > 0; after the view is unmapped and the section handle
@@ -702,7 +702,7 @@ TestDoesFileHaveUserWritableReferences(VOID)
         _SEH2_END;
 
         trace("MmDoesFileHaveUserWritableReferences (mapped) = %lu\n", WritableRefs);
-        /* Windows: > 0. ReactOS stub: 0 -> this assert fails and flags the stub. */
+        /* Windows: > 0. LibreNT stub: 0 -> this assert fails and flags the stub. */
         ok(WritableRefs > 0,
            "Expected > 0 writable references while a writable view is mapped, got %lu\n",
            WritableRefs);
@@ -740,14 +740,14 @@ TestDoesFileHaveUserWritableReferences(VOID)
 }
 
 /*
- * MmDisableModifiedWriteOfSection (ReactOS: STUB -> always returns FALSE).
+ * MmDisableModifiedWriteOfSection (LibreNT: STUB -> always returns FALSE).
  *
  * Windows contract: for a single-view writable data section it disables the
  * modified-page writer and returns TRUE.  Same safe acquisition as above (real
  * file-backed SECTION_OBJECT_POINTERS, never a guessed pointer); SKIP if the
  * scratch file cannot be set up.  The scratch file is DELETE_ON_CLOSE and torn
  * down immediately, so disabling its modified writes is harmless and there is no
- * need for MmEnableModifiedWriteOfSection (which ReactOS does not export).
+ * need for MmEnableModifiedWriteOfSection (which LibreNT does not export).
  */
 static
 VOID
@@ -842,7 +842,7 @@ TestDisableModifiedWriteOfSection(VOID)
     /*
      * Win11 returns FALSE here too -- it will not disable modified-write while a
      * writable view is mapped -- so this is not a clean divergence as written
-     * (both Win11 and the ReactOS stub return FALSE). Trace only; a real
+     * (both Win11 and the LibreNT stub return FALSE). Trace only; a real
      * Win11<->ROS divergence for MmDisableModifiedWriteOfSection needs a
      * codex-derived contract (a setup where Win11 actually returns TRUE).
      */

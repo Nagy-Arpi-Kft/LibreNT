@@ -68,7 +68,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef NOUNCRYPT
         #define NOUNCRYPT
 #endif
@@ -607,7 +607,7 @@ local unzFile unzOpenInternal (const void *path,
 
     us.z_filefunc.zseek32_file = NULL;
     us.z_filefunc.ztell32_file = NULL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (pzlib_filefunc64_32_def==NULL)
         fill_fopen64_filefunc(&us.z_filefunc.zfile_func64);
     else
@@ -765,7 +765,7 @@ local unzFile unzOpenInternal (const void *path,
     return (unzFile)s;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern unzFile ZEXPORT unzOpen2 (const char *path,
                                         zlib_filefunc_def* pzlib_filefunc32_def)
 {

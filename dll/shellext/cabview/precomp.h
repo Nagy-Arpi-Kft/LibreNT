@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CabView Shell Extension
+ * PROJECT:     LibreNT CabView Shell Extension
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Precompiled header file
  * COPYRIGHT:   Copyright 2024 Whindmar Saksit <whindsaks@proton.me>
@@ -17,7 +17,7 @@
 #include <shellapi.h>
 #include <shlguid_undoc.h>
 #define NTSTATUS LONG // for debug.h
-#include <reactos/debug.h>
+#include <librent/debug.h>
 #include <shellutils.h>
 #include <ntquery.h>
 #include <fdi.h>

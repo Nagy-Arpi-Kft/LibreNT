@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM 2.x Graphics Memory Manager and Scheduler
+ * PROJECT:     LibreNT WDDM 2.x Graphics Memory Manager and Scheduler
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Scheduler queue ownership core
  *
@@ -12,7 +12,7 @@
 #pragma once
 
 #include <ntddk.h>
-#include <reactos/drivers/directx/dxgmms2.h>
+#include <librent/drivers/directx/dxgmms2.h>
 
 #define DXGMMS2_SCHED_MAX_PACKETS   512
 /* Keep scheduling decisions in the kernel instead of filling a miniport

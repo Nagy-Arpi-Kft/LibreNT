@@ -493,13 +493,13 @@ out:
         res ? res->resarray_count : 0);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int nfs41_handle_callback(void *rpc_clnt, void *cb, void **reply)
 #else
 int nfs41_handle_callback(void *rpc_clnt, void *cb, struct cb_compound_res **reply)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct cb_compound_res **compound_reply = (struct cb_compound_res **)reply;
 #else
     struct cb_compound_res **compound_reply = reply;

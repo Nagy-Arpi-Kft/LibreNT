@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM display device registration for win32ss integration
  * COPYRIGHT:   Copyright 2024-2025 LiberNT WDDM Team
@@ -42,9 +42,9 @@
 #include <ntddvdeo.h>
 #include <ntstrsafe.h>
 /* IOCTL_VIDEO_DXGK_* present-path contract, shared with cdd/win32k. */
-#include <reactos/dwmframe.h>
-#include <reactos/rddm/rxgkpresent.h>
-#include <reactos/rddm/rxgkadvcolor.h>
+#include <librent/dwmframe.h>
+#include <librent/rddm/rxgkpresent.h>
+#include <librent/rddm/rxgkadvcolor.h>
 
 /* TAG_DXGK_DISPLAY is now in dxgkrnl_private.h */
 
@@ -84,7 +84,7 @@ DxgkpSelectDisplayDriver(
     _In_ PDXGKRNL_ADAPTER Adapter)
 {
     /*
-     * cdd.dll (ReactOS Canonical Display Driver, win32ss/drivers/displays/cdd)
+     * cdd.dll (LibreNT Canonical Display Driver, win32ss/drivers/displays/cdd)
      * is the WDDM GDI display driver for EVERY WDDM adapter, exactly as on
      * Windows — including display-only (DOD) miniports such as viogpudo. It
      * stands up the primary surface, lets the GDI engine draw into it, and
@@ -4968,7 +4968,7 @@ DxgkDisplayRegister(
             DXGKRNL_TRACE("DxgkDisplayRegister: already registered for this adapter\n");
             return STATUS_SUCCESS;
         }
-        DXGKRNL_ERR("DxgkDisplayRegister: the ReactOS display bridge already belongs to adapter %p\n", g_DisplayAdapter);
+        DXGKRNL_ERR("DxgkDisplayRegister: the LibreNT display bridge already belongs to adapter %p\n", g_DisplayAdapter);
         return STATUS_NOT_SUPPORTED;
     }
 

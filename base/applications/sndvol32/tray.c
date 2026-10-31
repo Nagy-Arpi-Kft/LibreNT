@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Sound Volume Control
+ * PROJECT:     LibreNT Sound Volume Control
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Tray pop-up for adjusting master volume and muting
  * COPYRIGHT:   Copyright 2018-2019 Eric Kohl <eric.kohl@reactos.org>

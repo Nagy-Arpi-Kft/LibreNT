@@ -727,7 +727,7 @@ static void test_EM_POSFROMCHAR(void)
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ros_skip_flaky
 #endif
       ok(HIWORD(result) == i * height, "EM_POSFROMCHAR reports y=%d, expected %d\n", HIWORD(result), i * height);

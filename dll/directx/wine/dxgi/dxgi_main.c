@@ -22,10 +22,10 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(dxgi);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Modern Chromium discovers DirectComposition with GetModuleHandleW() from
  * the GPU process after DXGI has been activated. Keep the compositor module
- * resident as part of the ReactOS DXGI composition transport. */
+ * resident as part of the LibreNT DXGI composition transport. */
 extern HRESULT WINAPI DCompositionCreateDevice3(IUnknown *, REFIID, void **);
 static HRESULT (WINAPI * volatile dcomp_create_device3_import)(IUnknown *, REFIID, void **)
         = DCompositionCreateDevice3;
@@ -76,7 +76,7 @@ HRESULT WINAPI CreateDXGIFactory1(REFIID iid, void **factory)
 {
     TRACE("iid %s, factory %p.\n", debugstr_guid(iid), factory);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     (void)dcomp_create_device3_import;
 #endif
     return dxgi_factory_create(iid, factory, TRUE);

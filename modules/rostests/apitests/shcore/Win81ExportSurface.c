@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-only (https://spdx.org/licenses/GPL-3.0-only)
  * PURPOSE:     Torture the whole Windows 8.1 export surface added for explorer
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
  *
  * Every entry below was measured against the Windows 8.1 x86 binaries: the
  * argument count comes from the stdcall `ret imm16` epilogue, so a mismatch
- * here means the ReactOS .spec disagrees with the real ABI.
+ * here means the LibreNT .spec disagrees with the real ABI.
  */
 
 #include <apitest.h>
@@ -93,10 +93,10 @@ Test_AllModulesLoad(void)
 
         if (!hMod)
         {
-            /* Windows drops some of these between releases; ReactOS must ship them all. */
-            ok(!IsReactOS(), "%ls failed to load, error %lu\n",
+            /* Windows drops some of these between releases; LibreNT must ship them all. */
+            ok(!IsLibreNT(), "%ls failed to load, error %lu\n",
                Modules[i].pszDll, GetLastError());
-            if (!IsReactOS())
+            if (!IsLibreNT())
                 trace("%ls is absent on this Windows build\n", Modules[i].pszDll);
             continue;
         }
@@ -111,7 +111,7 @@ Test_AllModulesLoad(void)
             else
                 fp = GetProcAddress(hMod, (LPCSTR)(ULONG_PTR)e->wOrdinal);
 
-            if (fp == NULL && !IsReactOS())
+            if (fp == NULL && !IsLibreNT())
             {
                 trace("%ls!%s is absent on this Windows build\n", Modules[i].pszDll,
                       e->pszName ? e->pszName : "(ordinal)");
@@ -212,7 +212,7 @@ Test_ForwardersMatchHost(void)
 
             ok(pF != NULL, "%ls!%s is missing\n", Fwd[i].pszForwarder, Fwd[i].pszName);
             ok(pH != NULL, "%ls!%s is missing\n", Fwd[i].pszHost, Fwd[i].pszName);
-            if (IsReactOS())
+            if (IsLibreNT())
             {
                 ok(pF == pH, "%ls!%s (%p) must forward to %ls (%p)\n",
                    Fwd[i].pszForwarder, Fwd[i].pszName, pF, Fwd[i].pszHost, pH);
@@ -221,7 +221,7 @@ Test_ForwardersMatchHost(void)
             {
                 trace("%ls!%s %p vs %ls %p (%s)\n",
                       Fwd[i].pszForwarder, Fwd[i].pszName, pF, Fwd[i].pszHost, pH,
-                      (pF == pH) ? "shared, as on ReactOS" : "separate copies");
+                      (pF == pH) ? "shared, as on LibreNT" : "separate copies");
             }
         }
         if (hF) FreeLibrary(hF);
@@ -267,11 +267,11 @@ Test_ShcoreForwardParity(void)
         FARPROC b = GetProcAddress(hShlwapi, (LPCSTR)(ULONG_PTR)Pair[i].wShlwapi);
 
         ok(a != NULL, "shcore.#%u (%s) is missing\n", Pair[i].wShcore, Pair[i].pszName);
-        if (!IsReactOS())
+        if (!IsLibreNT())
         {
             /* Windows shares most of these between shcore and shlwapi but keeps
              * private copies of the shared-memory group, and the ordinals drift
-             * between releases, so only the ReactOS contract is asserted. */
+             * between releases, so only the LibreNT contract is asserted. */
             trace("shcore.#%u=%p shlwapi.#%u=%p (%s)\n",
                   Pair[i].wShcore, a, Pair[i].wShlwapi, b, Pair[i].pszName);
             continue;
@@ -298,7 +298,7 @@ Test_LoadUnloadChurn(void)
 
             if (!hMod)
             {
-                ok(!IsReactOS(), "%ls failed to load on iteration %u, error %lu\n",
+                ok(!IsLibreNT(), "%ls failed to load on iteration %u, error %lu\n",
                    Modules[j].pszDll, i, GetLastError());
                 continue;
             }

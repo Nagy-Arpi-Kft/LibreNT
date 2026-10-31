@@ -6,14 +6,14 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 IDI_ICON ICON "res/icon_starfield.ico"
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION    "ReactOS Starfield ScreenSaver"
-#define REACTOS_STR_INTERNAL_NAME       "starfield"
-#define REACTOS_STR_ORIGINAL_FILENAME   "starfield.scr"
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION    "LibreNT Starfield ScreenSaver"
+#define LIBRENT_STR_INTERNAL_NAME       "starfield"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "starfield.scr"
 
-#include <reactos/version.rc>
+#include <librent/version.rc>
 
-#include <reactos/manifest_exe.rc>
+#include <librent/manifest_exe.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Management Console
+ * PROJECT:     LibreNT Management Console
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Chinese (Simplified) resource file
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -18,7 +18,7 @@ BEGIN
     END
     POPUP "帮助(&H)"
     BEGIN
-        MENUITEM "关于 ReactOS 管理控制台(&A)", IDM_HELP_ABOUT_MMC
+        MENUITEM "关于 LibreNT 管理控制台(&A)", IDM_HELP_ABOUT_MMC
     END
 END
 
@@ -71,7 +71,7 @@ BEGIN
     BEGIN
         MENUITEM "帮助主题(&H)", IDM_HELP_TOPICS
         MENUITEM SEPARATOR
-        MENUITEM "关于 ReactOS 管理控制台(&A)", IDM_HELP_ABOUT_MMC
+        MENUITEM "关于 LibreNT 管理控制台(&A)", IDM_HELP_ABOUT_MMC
     END
 END
 
@@ -194,7 +194,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APPTITLE "ReactOS 管理控制台"
+    IDS_APPTITLE "LibreNT 管理控制台"
     IDS_CONSOLETITLE "控制台%1!u!"
     IDS_MODULE "模块"
     IDS_VENDOR "供应商"

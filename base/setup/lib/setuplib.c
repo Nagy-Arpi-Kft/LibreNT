@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Setup Library
+ * PROJECT:         LibreNT Setup Library
  * FILE:            base/setup/lib/setuplib.c
  * PURPOSE:         Setup Library - Main initialization helpers
  * PROGRAMMERS:     Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -25,7 +25,7 @@
 
 HANDLE ProcessHeap;
 BOOLEAN IsUnattendedSetup = FALSE;
-static PCWSTR InfUnattendSignature = L"$ReactOS$";
+static PCWSTR InfUnattendSignature = L"$LibreNT$";
 
 /* FUNCTIONS ****************************************************************/
 
@@ -409,10 +409,10 @@ GetSourcePaths(
      * can reference other symlinks. This is what happens, for example when
      * booting the installation from a removable hard-disk. We can have:
      *
-     *          \SystemRoot ---> \Device\Harddisk1\Partition1\ReactOS
+     *          \SystemRoot ---> \Device\Harddisk1\Partition1\LibreNT
      * and:     \Device\Harddisk1\Partition1 ---> \Device\HarddiskVolume2
      * etc.
-     * and we wish to resolve \SystemRoot to: \Device\HarddiskVolume2\ReactOS
+     * and we wish to resolve \SystemRoot to: \Device\HarddiskVolume2\LibreNT
      *
      * We then verify whether it prefixes the image file path obtained
      * from the step above, which is a fully reparsed path.
@@ -426,7 +426,7 @@ GetSourcePaths(
      *
      * - A call to NtQueryInformationFile(FileNameInformation) alone on
      *   the obtained handle would only retrieve the FS directory name,
-     *   i.e. \ReactOS , but not the whole NT path.
+     *   i.e. \LibreNT , but not the whole NT path.
      *
      * - We therefore use NtQueryObject(), which allows retrieving the
      *   full resolved NT path (device name + FS directory name).
@@ -547,7 +547,7 @@ LoadSetupInf(
         return ERROR_CORRUPT_TXTSETUPSIF;
 
     /* Check 'Signature' string */
-    if (_wcsicmp(Value, L"$ReactOS$") != 0 &&
+    if (_wcsicmp(Value, L"$LibreNT$") != 0 &&
         _wcsicmp(Value, L"$Windows NT$") != 0)
     {
         INF_FreeData(Value);
@@ -729,7 +729,7 @@ InitSystemPartition(
 
 /**
  * @brief
- * Verify whether the given directory is suitable for ReactOS installation.
+ * Verify whether the given directory is suitable for LibreNT installation.
  * Each path component must be a valid 8.3 name.
  **/
 BOOLEAN
@@ -1194,7 +1194,7 @@ DoUpdate:
 
         Success = SpInfFindFirstLine(pSetupData->SetupInf, L"HiveInfs.Fresh", NULL, &InfContext);       // Windows-compatible
         if (!Success)
-            Success = SpInfFindFirstLine(pSetupData->SetupInf, L"HiveInfs.Install", NULL, &InfContext); // ReactOS-specific
+            Success = SpInfFindFirstLine(pSetupData->SetupInf, L"HiveInfs.Install", NULL, &InfContext); // LibreNT-specific
 
         if (!Success)
         {
@@ -1344,7 +1344,7 @@ DoUpdate:
         SetMountedDeviceValues(PartitionList, &pSetupData->DestinationRootPath);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SubstSettings)
     {
         /* HACK */

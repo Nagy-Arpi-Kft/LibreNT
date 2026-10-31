@@ -31,7 +31,7 @@ typedef struct _RTL_CONTEXT_EX
     RTL_CONTEXT_CHUNK XState;
 } RTL_CONTEXT_EX;
 
-#if defined(__REACTOS__) && (NTDDI_VERSION < NTDDI_WIN7)
+#if defined(__LIBRENT__) && (NTDDI_VERSION < NTDDI_WIN7)
 ULONG64 NTAPI RtlGetEnabledExtendedFeatures(ULONG64 FeatureMask);
 #endif
 
@@ -53,7 +53,7 @@ static const struct context_copy_range RtlpCopyRangesI386[] =
     {0x1ec, 0}, {0x2cc, 0}
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct context_copy_range RtlpCopyRangesArm64[] =
 {
     {0x4, 0x1}, {0x8, 0x2}, {0x98, 0x10}, {0xa0, 0x2}, {0xf0, 0x1}, {0x110, 0x4},
@@ -96,7 +96,7 @@ static const struct context_parameters
         FIELD_OFFSET(I386_CONTEXT, ContextFlags),
         RtlpCopyRangesI386
     },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         CONTEXT_ARM64,
         0xf8000000 | CONTEXT_ARM64_ALL | CONTEXT_ARM64_XSTATE,
@@ -111,7 +111,7 @@ static const struct context_parameters
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOLEAN
 RtlpIsArm64XStateRequest(const struct context_parameters *Parameters, ULONG ContextFlags)
 {
@@ -183,7 +183,7 @@ RtlpGetXStateSize(ULONG64 Mask)
            SharedUserData->XState.Features[Index].Size - sizeof(XSAVE_FORMAT);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 ULONG64
 NTAPI
 RtlGetEnabledExtendedFeatures(ULONG64 FeatureMask)
@@ -202,7 +202,7 @@ RtlGetExtendedContextLength2(ULONG ContextFlags, PULONG Length, ULONG64 Compacti
     Parameters = RtlpGetContextParameters(ContextFlags);
     if (!Parameters)
         return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (RtlpIsArm64XStateRequest(Parameters, ContextFlags))
         return STATUS_NOT_SUPPORTED;
 #endif
@@ -251,7 +251,7 @@ RtlInitializeExtendedContext2(PVOID Context,
     Parameters = RtlpGetContextParameters(ContextFlags);
     if (!Parameters)
         return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (RtlpIsArm64XStateRequest(Parameters, ContextFlags))
         return STATUS_NOT_SUPPORTED;
 #endif
@@ -293,7 +293,7 @@ RtlInitializeExtendedContext2(PVOID Context,
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ULONG ExtendedLength = (Parameters->arch_flag == CONTEXT_ARM64) ? Parameters->context_ex_size : 24;
 
         Extended->XState.Offset = ExtendedLength + 1;
@@ -382,7 +382,7 @@ RtlCopyExtendedContext(RTL_CONTEXT_EX *Destination,
     Parameters = RtlpGetContextParameters(ContextFlags);
     if (!Parameters)
         return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (RtlpIsArm64XStateRequest(Parameters, ContextFlags))
         return STATUS_NOT_SUPPORTED;
 #endif
@@ -444,7 +444,7 @@ RtlCopyContext(PCONTEXT Destination,
     PUCHAR SourceBytes = (PUCHAR)Source;
     ULONG ArchFlag, ContextSize, FlagsOffset, DestinationFlags, SourceFlags;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ContextFlags & CONTEXT_ARM64)
     {
         Parameters = RtlpGetContextParameters(ContextFlags);

@@ -17,7 +17,7 @@ set_module_type(wordpad win32gui)
 target_link_libraries(wordpad wine uuid)
 set_wine_module_FIXME(wordpad)
 add_importlibs(wordpad comdlg32 ole32 shell32 user32 gdi32 advapi32 comctl32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET wordpad DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wordpad DESTINATION librent/system32 FOR all)
 add_cd_file(TARGET wordpad DESTINATION "Program Files/Windows NT/Accessories" FOR all)
 
 if(MSVC)

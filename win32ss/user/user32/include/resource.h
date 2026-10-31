@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS user32.dll
+ * PROJECT:     LibreNT user32.dll
  * FILE:        win32ss/user/user32/include/resource.h
  * PURPOSE:     Definition of resource ids
  */

@@ -6675,7 +6675,7 @@ Return Value:
     return status;
 } // end RequestHandleReserveRelease()
 
-static // __REACTOS__
+static // __LIBRENT__
 BOOLEAN
 ValidPersistentReserveScope(
     UCHAR Scope)
@@ -6692,7 +6692,7 @@ ValidPersistentReserveScope(
     }
 }
 
-static // __REACTOS__
+static // __LIBRENT__
 BOOLEAN
 ValidPersistentReserveType(
     UCHAR Type)

@@ -17,7 +17,7 @@
  */
 
 #include <assert.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <malloc.h>
 #endif
 
@@ -31,7 +31,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(avifile);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* msvcrt.dll has no _recalloc; importing only that routine from ucrtbase.dll
  * would allocate and free these buffers from different CRT heaps. */
 void *avifile_recalloc(void *mem, SIZE_T count, SIZE_T size)

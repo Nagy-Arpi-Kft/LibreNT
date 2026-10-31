@@ -4,7 +4,7 @@
   The RP1 southbridge is a PCIe endpoint whose BAR window exposes the SoC
   peripherals; the Ethernet MAC sits at a fixed offset inside it. Register
   definitions follow the Cadence MACB/GEM programming model, matching the
-  ReactOS rp1gem NDIS miniport this driver shares its bring-up sequence with.
+  LibreNT rp1gem NDIS miniport this driver shares its bring-up sequence with.
 
   Copyright (c) 2026, LiberNT Project. All rights reserved.
   SPDX-License-Identifier: GPL-3.0-or-later

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Unit tests for the comctl32 tooltips
  * COPYRIGHT:   Copyright 2025 Dmitry Borisov <di.sean@protonmail.com>

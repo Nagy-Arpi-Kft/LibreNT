@@ -480,14 +480,14 @@ static BOOL test_modules(void)
     IMAGEHLP_MODULEW64 im;
     USHORT machine_wow, machine2;
     HANDLE dummy = (HANDLE)(ULONG_PTR)0xcafef00d;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char target_dll[MAX_PATH];
 #else
     const char* target_dll = "c:\\windows\\system32\\kernel32.dll";
 #endif
     unsigned count;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetSystemDirectoryA(target_dll, MAX_PATH);
     strcat(target_dll, "\\kernel32.dll");
 #endif
@@ -607,7 +607,7 @@ static void test_modules_overlap(void)
     DWORD64 base[2];
     const DWORD64 base1 = 0x00010000;
     HANDLE dummy = (HANDLE)(ULONG_PTR)0xcafef00d;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char target1_dll[MAX_PATH], target2_dll[MAX_PATH], target3_dll[MAX_PATH];
 #else
     const char* target1_dll = "c:\\windows\\system32\\kernel32.dll";
@@ -618,7 +618,7 @@ static void test_modules_overlap(void)
     IMAGEHLP_SYMBOL64* sym = (void*)buffer;
 
     int i, j;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct test_module target1_dflt;
     DWORD64 base0, imsize0;
 

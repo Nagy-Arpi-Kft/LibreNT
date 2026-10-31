@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/cc/host/t_ntlayout.c
  * PURPOSE:     NT cache manager layout regression tests
  *

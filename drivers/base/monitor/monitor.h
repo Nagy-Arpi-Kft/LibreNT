@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Monitor Class Function Driver
+ * PROJECT:     LibreNT Monitor Class Function Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shared definitions of the monitor function driver
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -10,7 +10,7 @@
 #include <ntddk.h>
 #include <wmistr.h>
 #include <wmilib.h>
-#include <reactos/rddm/rxgkmonitor.h>
+#include <librent/rddm/rxgkmonitor.h>
 
 #define MONITOR_TAG 'noMM'
 

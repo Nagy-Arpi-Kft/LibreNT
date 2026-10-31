@@ -1,0 +1,5 @@
+#define LIBRENT_STR_FILE_DESCRIPTION    "LibreNT first-boot setup"
+#define LIBRENT_STR_INTERNAL_NAME       "oobe"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "oobe.exe"
+
+#include "librent.rc"

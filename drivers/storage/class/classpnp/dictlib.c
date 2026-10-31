@@ -26,7 +26,7 @@ Revision History:
 #include <ntddk.h>
 #include <classpnp.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef MdlMappingNoExecute
 #define MdlMappingNoExecute 0
 #define NonPagedPoolNx NonPagedPool

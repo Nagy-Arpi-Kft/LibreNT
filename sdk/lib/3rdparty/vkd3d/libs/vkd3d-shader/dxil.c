@@ -1049,7 +1049,7 @@ static uint32_t sm6_parser_read_bits(struct sm6_parser *sm6, unsigned int length
     if (!length)
         return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (length > 32 || sm6->bitpos >= 32 || sm6_parser_is_end(sm6))
 #else
     VKD3D_ASSERT(length < 32);
@@ -1067,13 +1067,13 @@ static uint32_t sm6_parser_read_bits(struct sm6_parser *sm6, unsigned int length
     if (l <= length)
     {
         ++sm6->ptr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (l < length)
 #else
         if (sm6_parser_is_end(sm6) && l < length)
 #endif
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (sm6_parser_is_end(sm6))
             {
                 sm6->p.status = VKD3D_ERROR_INVALID_SHADER;
@@ -1086,14 +1086,14 @@ static uint32_t sm6_parser_read_bits(struct sm6_parser *sm6, unsigned int length
 #endif
         }
         sm6->bitpos = 0;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         bits |= *sm6->ptr << l;
 #endif
         prev_len = l;
     }
     sm6->bitpos += length - prev_len;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return length == 32 ? bits : bits & ((1u << length) - 1);
 #else
     return bits & ((1 << length) - 1);
@@ -1108,7 +1108,7 @@ static uint64_t sm6_parser_read_vbr(struct sm6_parser *sm6, unsigned int length)
     if (!length)
         return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (length > 32 || sm6_parser_is_end(sm6))
 #else
     if (sm6_parser_is_end(sm6))
@@ -1118,7 +1118,7 @@ static uint64_t sm6_parser_read_vbr(struct sm6_parser *sm6, unsigned int length)
         return 0;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     flag = 1u << (length - 1);
 #else
     flag = 1 << (length - 1);
@@ -1304,7 +1304,7 @@ static enum vkd3d_result dxil_abbrev_init(struct dxil_abbrev *abbrev, unsigned i
             case ABBREV_FIXED:
             case ABBREV_VBR:
                 abbrev->operands[i].context = sm6_parser_read_vbr(sm6, 5);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (abbrev->operands[i].context > 32)
                     return VKD3D_ERROR_INVALID_SHADER;
 #endif
@@ -5427,7 +5427,7 @@ static bool sm6_parser_emit_reg_composite_construct(struct sm6_parser *sm6,
     bool all_constant = true;
     unsigned int i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!component_count)
     {
         vkd3d_shader_parser_error(&sm6->p, VKD3D_SHADER_ERROR_DXIL_INVALID_OPERAND_COUNT,
@@ -5505,19 +5505,19 @@ static bool sm6_parser_emit_coordinate_construct(struct sm6_parser *sm6, const s
         struct function_emission_state *state, struct vsir_operand *reg)
 {
     struct vsir_operand operand_regs[VKD3D_VEC4_SIZE];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int i, component_count = max_operands;
 #else
     unsigned int component_count;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!z_operand)
 #else
     for (component_count = 0; component_count < max_operands; ++component_count)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (component_count > 1 && operands[component_count - 1]->value_type == VALUE_TYPE_UNDEFINED)
             --component_count;
 #else
@@ -5526,7 +5526,7 @@ static bool sm6_parser_emit_coordinate_construct(struct sm6_parser *sm6, const s
         vsir_operand_from_dxil_value(&operand_regs[component_count], operands[component_count], 0, sm6);
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < component_count; ++i)
         vsir_operand_from_dxil_value(&operand_regs[i], operands[i], 0, sm6);
 #endif
@@ -9176,7 +9176,7 @@ static const struct sm6_metadata_value *sm6_parser_metadata_get_value(const stru
         index -= sm6->metadata_tables[i].count;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return (i < ARRAY_SIZE(sm6->metadata_tables)) ? &sm6->metadata_tables[i].values[index] : NULL;
 #else
     return (index < sm6->metadata_tables[i].count) ? &sm6->metadata_tables[i].values[index] : NULL;

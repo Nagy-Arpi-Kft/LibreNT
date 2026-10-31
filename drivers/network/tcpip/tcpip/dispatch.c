@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS TCP/IP protocol driver
+ * PROJECT:     LibreNT TCP/IP protocol driver
  * FILE:        tcpip/dispatch.h
  * PURPOSE:     TDI dispatch routines
  * PROGRAMMERS: Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -1391,7 +1391,7 @@ VOID DispTdiQueryInformationExComplete(
  *
  * dev-nt6-1: this dispatch path uses kernel-pool buffers and copies
  * to/from user space via SEH at completion time, instead of relying on
- * MmProbeAndLockPages which is broken in ReactOS for valid user
+ * MmProbeAndLockPages which is broken in LibreNT for valid user
  * buffers. The dispatch saves user pointers in QueryContext->User*Buffer
  * and we copy back here.
  */
@@ -1568,7 +1568,7 @@ NTSTATUS DispTdiQueryInformationEx(
 
             /* Allocate kernel-pool buffers and SEH-copy the input from
              * user space. Bypass MmProbeAndLockPages entirely since
-             * ReactOS's implementation faults on valid user pointers. */
+             * LibreNT's implementation faults on valid user pointers. */
             QueryContext->KernelInputBuffer = ExAllocatePoolWithTag(
                 NonPagedPool,
                 sizeof(TCP_REQUEST_QUERY_INFORMATION_EX),

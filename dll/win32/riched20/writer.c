@@ -54,7 +54,7 @@ ME_StreamOutInit(ME_TextEditor *editor, EDITSTREAM *stream)
 {
   ME_OutStream *pStream = calloc(1, sizeof(*pStream));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!pStream)
   {
     stream->dwError = ERROR_NOT_ENOUGH_MEMORY;
@@ -882,7 +882,7 @@ ME_StreamOutRTFText(ME_OutStream *pStream, const WCHAR *text, LONG nChars)
       fit = min(nChars, STREAMOUT_BUFFER_SIZE / 6);
       nBytes = WideCharToMultiByte(CP_UTF8, 0, text, fit, buffer,
                                    STREAMOUT_BUFFER_SIZE, NULL, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!nBytes)
       {
         pStream->stream->dwError = GetLastError();
@@ -917,7 +917,7 @@ ME_StreamOutRTFText(ME_OutStream *pStream, const WCHAR *text, LONG nChars)
       nBytes = WideCharToMultiByte(pStream->nCodePage, 0, text, 1,
                                    letter, 3, NULL,
                                    (pStream->nCodePage == CP_SYMBOL) ? NULL : &unknown);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!nBytes)
       {
         pStream->stream->dwError = GetLastError();
@@ -1175,7 +1175,7 @@ static BOOL ME_StreamOutText(ME_TextEditor *editor, ME_OutStream *pStream,
 
         nSize = WideCharToMultiByte(nCodePage, 0, get_text( cursor.run, cursor.nOffset ),
                                     nLen, NULL, 0, NULL, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!nSize && nLen)
         {
           pStream->stream->dwError = GetLastError();
@@ -1184,7 +1184,7 @@ static BOOL ME_StreamOutText(ME_TextEditor *editor, ME_OutStream *pStream,
         }
 #endif
         if (nSize > nBufLen) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           char *new_buffer = realloc(buffer, nSize);
           if (!new_buffer)
           {
@@ -1198,7 +1198,7 @@ static BOOL ME_StreamOutText(ME_TextEditor *editor, ME_OutStream *pStream,
 #endif
           nBufLen = nSize;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (nSize && !WideCharToMultiByte(nCodePage, 0, get_text( cursor.run, cursor.nOffset ),
                                         nLen, buffer, nSize, NULL, NULL))
         {
@@ -1230,7 +1230,7 @@ LRESULT ME_StreamOutRange(ME_TextEditor *editor, DWORD dwFormat,
 {
   ME_OutStream *pStream = ME_StreamOutInit(editor, stream);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!pStream) return 0;
 #endif
   if (dwFormat & SF_RTF)

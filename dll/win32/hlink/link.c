@@ -25,7 +25,7 @@
 
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const IID IID_IHlinkHistory = {0x79eac9c8, 0xbaf9, 0x11ce, {0x8c, 0x82, 0x00, 0xaa, 0x00, 0x4b, 0xa9, 0x0b}};
 #endif
 
@@ -85,14 +85,14 @@ static HRESULT __GetMoniker(HlinkImpl* This, IMoniker** moniker,
 {
     HRESULT hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *moniker = NULL;
 
 #endif
     if (ref_type == HLINKGETREF_DEFAULT)
         ref_type = HLINKGETREF_RELATIVE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ref_type != HLINKGETREF_ABSOLUTE && ref_type != HLINKGETREF_RELATIVE)
     {
         DWORD mktype = MKSYS_NONE;
@@ -144,7 +144,7 @@ static HRESULT __GetMoniker(HlinkImpl* This, IMoniker** moniker,
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static IMoniker *get_first_moniker(IMoniker *moniker)
 {
     IEnumMoniker *enum_mk = NULL;
@@ -266,7 +266,7 @@ static HRESULT WINAPI IHlink_fnSetHlinkSite( IHlink* iface,
 
     TRACE("(%p)->(%p %li)\n", This, pihlSite, dwSiteData);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pihlSite)
         IHlinkSite_AddRef(pihlSite);
 
@@ -275,7 +275,7 @@ static HRESULT WINAPI IHlink_fnSetHlinkSite( IHlink* iface,
         IHlinkSite_Release(This->Site);
 
     This->Site = pihlSite;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (This->Site)
         IHlinkSite_AddRef(This->Site);
 #endif
@@ -316,7 +316,7 @@ static HRESULT WINAPI IHlink_fnSetMonikerReference( IHlink* iface,
         return rfHLSETF;
 
     if(rfHLSETF & HLINKSETF_TARGET){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pmkTarget)
             IMoniker_AddRef(pmkTarget);
 
@@ -325,16 +325,16 @@ static HRESULT WINAPI IHlink_fnSetMonikerReference( IHlink* iface,
             IMoniker_Release(This->Moniker);
 
         This->Moniker = pmkTarget;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         This->absolute = FALSE;
 #endif
         if (This->Moniker)
         {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             IBindCtx *pbc;
 #endif
             LPOLESTR display_name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             HRESULT hres;
 
             check_moniker_reference(This->Moniker);
@@ -356,7 +356,7 @@ static HRESULT WINAPI IHlink_fnSetMonikerReference( IHlink* iface,
     }
 
     if(rfHLSETF & HLINKSETF_LOCATION){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return set_hlink_string(&This->Location, pwzLocation);
 #else
         free(This->Location);
@@ -381,7 +381,7 @@ static HRESULT WINAPI IHlink_fnSetStringReference(IHlink* iface,
 
     if (grfHLSETF & HLINKSETF_TARGET)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         This->absolute = FALSE;
 #endif
         if (This->Moniker)
@@ -398,7 +398,7 @@ static HRESULT WINAPI IHlink_fnSetStringReference(IHlink* iface,
 
             r = CreateBindCtx(0, &pbc);
             if (FAILED(r))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 return r;
 #else
                 return E_OUTOFMEMORY;
@@ -422,13 +422,13 @@ static HRESULT WINAPI IHlink_fnSetStringReference(IHlink* iface,
                 }
             }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             r = IHlink_SetMonikerReference(iface, HLINKSETF_TARGET, pMon, NULL);
 #else
             IHlink_SetMonikerReference(iface, HLINKSETF_TARGET, pMon, NULL);
 #endif
             IMoniker_Release(pMon);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(r)) return r;
 #endif
         }
@@ -436,7 +436,7 @@ static HRESULT WINAPI IHlink_fnSetStringReference(IHlink* iface,
 
     if (grfHLSETF & HLINKSETF_LOCATION)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return set_hlink_string(&This->Location, pwzLocation && *pwzLocation ? pwzLocation : NULL);
 #else
         free(This->Location);
@@ -469,7 +469,7 @@ static HRESULT WINAPI IHlink_fnGetMonikerReference(IHlink* iface,
     }
 
     if (ppwzLocation)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         HRESULT hres = IHlink_GetStringReference(iface, dwWhichRef, NULL, ppwzLocation);
         if (FAILED(hres))
@@ -496,7 +496,7 @@ static HRESULT WINAPI IHlink_fnGetStringReference (IHlink* iface,
 
     TRACE("(%p) -> (%li %p %p)\n", This, dwWhichRef, ppwzTarget, ppwzLocation);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ppwzTarget) *ppwzTarget = NULL;
     if (ppwzLocation) *ppwzLocation = NULL;
 
@@ -522,7 +522,7 @@ static HRESULT WINAPI IHlink_fnGetStringReference (IHlink* iface,
         }
         if (mon)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             IMoniker *first;
 
             hres = get_moniker_display_name(mon, ppwzTarget);
@@ -536,7 +536,7 @@ static HRESULT WINAPI IHlink_fnGetStringReference (IHlink* iface,
             IBindCtx_Release(pbc);
 #endif
             IMoniker_Release(mon);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(hres)) return hres;
 #endif
         }
@@ -544,11 +544,11 @@ static HRESULT WINAPI IHlink_fnGetStringReference (IHlink* iface,
             *ppwzTarget = NULL;
     }
     if (ppwzLocation)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
 #endif
         *ppwzLocation = hlink_co_strdupW( This->Location );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->Location && !*ppwzLocation)
         {
             if (ppwzTarget)
@@ -575,7 +575,7 @@ static HRESULT WINAPI IHlink_fnSetFriendlyName (IHlink *iface,
 
     TRACE("(%p) -> (%s)\n", This, debugstr_w(pwzFriendlyName));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return set_hlink_string(&This->FriendlyName, pwzFriendlyName);
 #else
     free(This->FriendlyName);
@@ -595,11 +595,11 @@ static HRESULT WINAPI IHlink_fnGetFriendlyName (IHlink* iface,
     /* FIXME: Only using explicitly set and cached friendly names */
 
     if (This->FriendlyName)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
 #endif
         *ppwzFriendlyName = hlink_co_strdupW( This->FriendlyName );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!*ppwzFriendlyName) return E_OUTOFMEMORY;
     }
 #endif
@@ -614,7 +614,7 @@ static HRESULT WINAPI IHlink_fnGetFriendlyName (IHlink* iface,
         }
         if (moniker)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hres = get_moniker_display_name(moniker, ppwzFriendlyName);
 #else
             IBindCtx *bcxt;
@@ -624,7 +624,7 @@ static HRESULT WINAPI IHlink_fnGetFriendlyName (IHlink* iface,
             IBindCtx_Release(bcxt);
 #endif
             IMoniker_Release(moniker);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(hres)) return hres;
 #endif
         }
@@ -641,7 +641,7 @@ static HRESULT WINAPI IHlink_fnSetTargetFrameName(IHlink* iface,
     HlinkImpl  *This = impl_from_IHlink(iface);
     TRACE("(%p)->(%s)\n", This, debugstr_w(pwzTargetFramename));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return set_hlink_string(&This->TargetFrameName, pwzTargetFramename);
 #else
     free(This->TargetFrameName);
@@ -676,7 +676,7 @@ static HRESULT WINAPI IHlink_fnGetMiscStatus(IHlink* iface, DWORD* pdwStatus)
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT navigate_target(HlinkImpl *This, IHlinkTarget *target, IHlinkBrowseContext *browse_ctx, DWORD flags, BOOL bound)
 {
     IHlinkBrowseContext *current = NULL;
@@ -1433,7 +1433,7 @@ static HRESULT WINAPI bind_callback_OnObjectAvailable(IBindStatusCallback *iface
         if (FAILED(hr))
             return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = navigate_target(hlink, target, hlink->async_browse_ctx, hlink->async_flags, TRUE);
 #else
         IHlinkTarget_SetBrowseContext(target, hlink->async_browse_ctx);

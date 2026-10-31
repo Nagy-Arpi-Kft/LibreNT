@@ -879,7 +879,7 @@ static void test_cursel(void)
     tcItem.mask = TCIF_STATE;
     tcItem.dwStateMask = TCIS_BUTTONPRESSED;
     SendMessageA(hTab, TCM_GETITEMA, selectionIndex, (LPARAM)&tcItem);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(tcItem.dwState == 0, "got state %lu\n", tcItem.dwState);
 #else
     ok(tcItem.dwState == 0, "got state %d\n", tcItem.dwState);
@@ -1028,7 +1028,7 @@ static void test_getset_item(void)
     tcItem.dwState = TCIS_BUTTONPRESSED;
     ret = SendMessageA(hTab, TCM_GETITEMA, 5, (LPARAM)&tcItem);
     expect(FALSE, ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(tcItem.dwState == 0, "Expected zero dwState, got %lu\n", tcItem.dwState);
 #else
     ok(tcItem.dwState == 0, "Expected zero dwState, got %u\n", tcItem.dwState);

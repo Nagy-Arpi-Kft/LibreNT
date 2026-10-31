@@ -54,7 +54,7 @@ struct services;
 
 static HRESULT EnumVARIANT_create( struct services *, IEnumWbemClassObject *, IEnumVARIANT ** );
 static HRESULT ISWbemSecurity_create( ISWbemSecurity ** );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ISWbemSecurity_create_locator( ISWbemSecurity ** );
 #endif
 static HRESULT SWbemObject_create( struct services *, IWbemClassObject *, ISWbemObject ** );
@@ -2800,7 +2800,7 @@ static HRESULT WINAPI locator_get_Security_(
     if (!objWbemSecurity)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ISWbemSecurity_create_locator( objWbemSecurity );
 #else
     return ISWbemSecurity_create( objWbemSecurity );
@@ -2842,7 +2842,7 @@ struct security
     LONG refs;
     WbemImpersonationLevelEnum  implevel;
     WbemAuthenticationLevelEnum authlevel;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL authlevel_set;
 #endif
 };
@@ -3006,7 +3006,7 @@ static HRESULT WINAPI security_get_AuthenticationLevel(
     if (!authentication_level)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!security->authlevel_set)
         return WBEM_E_FAILED;
 #endif
@@ -3022,7 +3022,7 @@ static HRESULT WINAPI security_put_AuthenticationLevel(
     FIXME( "%p, %d: stub\n", security, authentication_level );
 
     security->authlevel = authentication_level;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     security->authlevel_set = TRUE;
 #endif
     return S_OK;
@@ -3068,7 +3068,7 @@ static HRESULT ISWbemSecurity_create( ISWbemSecurity **obj )
     security->refs = 1;
     security->implevel = wbemImpersonationLevelImpersonate;
     security->authlevel = wbemAuthenticationLevelPktPrivacy;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     security->authlevel_set = TRUE;
 #endif
 
@@ -3077,7 +3077,7 @@ static HRESULT ISWbemSecurity_create( ISWbemSecurity **obj )
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ISWbemSecurity_create_locator( ISWbemSecurity **obj )
 {
     HRESULT hr = ISWbemSecurity_create( obj );
@@ -3092,7 +3092,7 @@ struct namedvalue
 {
     ISWbemNamedValue ISWbemNamedValue_iface;
     LONG refs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IWbemContext *context;
     BSTR name;
 #endif
@@ -3147,7 +3147,7 @@ static ULONG WINAPI namedvalue_Release(
     if (!refs)
     {
         TRACE( "destroying %p\n", value );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IWbemContext_Release( value->context );
         SysFreeString( value->name );
 #endif
@@ -3237,7 +3237,7 @@ static HRESULT WINAPI namedvalue_get_Value(
     ISWbemNamedValue *iface,
     VARIANT *var )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct namedvalue *value = impl_from_ISWbemNamedValue( iface );
 
     TRACE( "%p, %p\n", value, var );
@@ -3254,7 +3254,7 @@ static HRESULT WINAPI namedvalue_put_Value(
     ISWbemNamedValue *iface,
     VARIANT *var )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct namedvalue *value = impl_from_ISWbemNamedValue( iface );
 
     TRACE( "%p, %s\n", value, debugstr_variant(var) );
@@ -3271,7 +3271,7 @@ static HRESULT WINAPI namedvalue_get_Name(
     ISWbemNamedValue *iface,
     BSTR *name )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct namedvalue *value = impl_from_ISWbemNamedValue( iface );
 
     TRACE( "%p, %p\n", value, name );
@@ -3300,7 +3300,7 @@ static const ISWbemNamedValueVtbl namedvaluevtbl =
     namedvalue_get_Name
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT namedvalue_create( IWbemContext *context, const WCHAR *name, ISWbemNamedValue **value )
 #else
 static HRESULT namedvalue_create( ISWbemNamedValue **value )
@@ -3312,7 +3312,7 @@ static HRESULT namedvalue_create( ISWbemNamedValue **value )
 
     object->ISWbemNamedValue_iface.lpVtbl = &namedvaluevtbl;
     object->refs = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(object->name = SysAllocString( name )))
     {
         free( object );
@@ -3474,7 +3474,7 @@ static HRESULT WINAPI namedvalueset_Item(
     if (SUCCEEDED(hr = IWbemContext_GetValue( set->context, name, flags, &var )))
     {
         VariantClear( &var );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = namedvalue_create( set->context, name, value );
 #else
         hr = namedvalue_create( value );
@@ -3488,7 +3488,7 @@ static HRESULT WINAPI namedvalueset_get_Count(
     ISWbemNamedValueSet *iface,
     LONG *count )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct namedvalueset *set = impl_from_ISWbemNamedValueSet( iface );
     HRESULT hr;
     LONG found = 0;
@@ -3527,7 +3527,7 @@ static HRESULT WINAPI namedvalueset_Add(
 
     if (SUCCEEDED(hr = IWbemContext_SetValue( set->context, name, flags, var )))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = namedvalue_create( set->context, name, value );
 #else
         hr = namedvalue_create( value );

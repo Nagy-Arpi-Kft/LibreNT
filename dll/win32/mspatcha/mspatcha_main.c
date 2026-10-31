@@ -30,7 +30,7 @@
  */
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #include <stdio.h>
 #endif
@@ -39,7 +39,7 @@
 #include "winbase.h"
 #include "winnls.h"
 #include "patchapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winternl.h"
 #endif
 #include "wine/debug.h"
@@ -219,7 +219,7 @@ BOOL WINAPI GetFilePatchSignatureA(LPCSTR filename, ULONG flags, PVOID data, ULO
     PPATCH_IGNORE_RANGE ignore_range, ULONG retain_range_count,
     PPATCH_RETAIN_RANGE retain_range, ULONG bufsize, LPSTR buffer)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE handle;
     BOOL ret;
 
@@ -245,7 +245,7 @@ BOOL WINAPI GetFilePatchSignatureW(LPCWSTR filename, ULONG flags, PVOID data, UL
     PPATCH_IGNORE_RANGE ignore_range, ULONG retain_range_count,
     PPATCH_RETAIN_RANGE retain_range, ULONG bufsize, LPWSTR buffer)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char signature[64];
     HANDLE handle;
     BOOL ret;
@@ -282,7 +282,7 @@ BOOL WINAPI GetFilePatchSignatureByHandle(HANDLE handle, ULONG flags, PVOID opti
     PPATCH_IGNORE_RANGE ignore_range, ULONG retain_range_count,
     PPATCH_RETAIN_RANGE retain_range, ULONG bufsize, LPSTR buffer)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static BYTE empty;
     LARGE_INTEGER size;
     HANDLE mapping;
@@ -327,7 +327,7 @@ BOOL WINAPI GetFilePatchSignatureByBuffer(PBYTE file_buf, ULONG file_size, ULONG
     ULONG retain_range_count, PPATCH_RETAIN_RANGE retain_range,
     ULONG bufsize, LPSTR buffer)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG i, offset, length;
 
     for (i = 0; i < ignore_range_count; ++i)

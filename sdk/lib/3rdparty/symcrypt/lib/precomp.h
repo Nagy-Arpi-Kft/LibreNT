@@ -22,7 +22,7 @@
 #include <wmmintrin.h>
 #include <immintrin.h>
 
-    #if SYMCRYPT_GNUC && !defined(__REACTOS__)
+    #if SYMCRYPT_GNUC && !defined(__LIBRENT__)
         #include <x86intrin.h>  // required for definition of _rdseed64_step for GCC 8 and earlier
         #include <xsaveintrin.h>
     #endif

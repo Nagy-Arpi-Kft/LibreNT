@@ -1,5 +1,5 @@
 /*
- * ReactOS Hid User Library
+ * LibreNT Hid User Library
  * Copyright (C) 2004-2005 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 /*
- * PROJECT:         ReactOS Hid User Library
+ * PROJECT:         LibreNT Hid User Library
  * FILE:            lib/hid/hid.c
- * PURPOSE:         ReactOS Hid User Library
+ * PURPOSE:         LibreNT Hid User Library
  * PROGRAMMER:      Thomas Weidenmueller <w3seek@reactos.com>
  *
  * UPDATE HISTORY:

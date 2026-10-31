@@ -285,7 +285,7 @@ struct tlibredirect_data
     WORD   minor_version;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG query_typelib_path_value( HKEY hkey, const WCHAR *subkey, WCHAR *path, DWORD count )
 {
     WCHAR value[MAX_PATH];
@@ -371,13 +371,13 @@ static HRESULT query_typelib_path( REFGUID guid, WORD wMaj, WORD wMin,
 
     while (hr != S_OK)
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         LONG dwPathLen = sizeof(Path);
 #endif
 
         get_lcid_subkey( myLCID, syskind, buffer );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (query_typelib_path_value(hkey, buffer, Path, ARRAY_SIZE(Path)))
 #else
         if (RegQueryValueW(hkey, buffer, Path, &dwPathLen))
@@ -1111,7 +1111,7 @@ typedef struct tagITypeLibImpl
     LCID lcid;
     SYSKIND syskind;
     int ptr_size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int vft_unit;
 #endif
     WORD ver_major;
@@ -1125,7 +1125,7 @@ typedef struct tagITypeLibImpl
     struct list string_list;
     struct list name_list;
     struct list guid_list;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list type_allocations;
 #endif
 
@@ -1177,7 +1177,7 @@ static inline ITypeLibImpl *impl_from_ICreateTypeLib2( ICreateTypeLib2 *iface )
 }
 
 /* ITypeLib methods */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength, int vft_unit, HRESULT *result);
 static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength, HRESULT *result);
 #else
@@ -1260,7 +1260,7 @@ typedef struct tagITypeInfoImpl
     LONG ref;
     BOOL not_attached_to_typelib;
     BOOL needs_layout;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct tagITypeInfoImpl *dual_view;
     struct tagITypeInfoImpl *dual_parent;
 #endif
@@ -1338,13 +1338,13 @@ static inline BSTR TLB_get_bstr(const TLBString *str)
     return str != NULL ? str->str : NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline int TLB_str_memcmp(void *left, const TLBString *str, SIZE_T len)
 #else
 static inline int TLB_str_memcmp(void *left, const TLBString *str, DWORD len)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!str || len < sizeof(WCHAR) || len - sizeof(WCHAR) > SysStringByteLen(str->str))
 #else
     if(!str)
@@ -1380,7 +1380,7 @@ static int get_ptr_size(SYSKIND syskind)
 /*
  debug
 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void dump_TypeDesc(const TYPEDESC *pTD, char *szVarType, SIZE_T size)
 {
     static const struct
@@ -1441,7 +1441,7 @@ static void dump_TypeDesc(const TYPEDESC *pTD,char *szVarType) {
       break;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (size)
     {
         if (!pTD)
@@ -1515,7 +1515,7 @@ static void dump_TypeDesc(const TYPEDESC *pTD,char *szVarType) {
 static void dump_ELEMDESC(const ELEMDESC *edesc) {
   char buf[200];
   USHORT flags = edesc->paramdesc.wParamFlags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   dump_TypeDesc(&edesc->tdesc, buf, sizeof(buf));
 #else
   dump_TypeDesc(&edesc->tdesc,buf);
@@ -1666,7 +1666,7 @@ static void dump_DispParms(const DISPPARAMS * pdp)
 {
     unsigned int index;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!TRACE_ON(ole))
         return;
 
@@ -1732,7 +1732,7 @@ static inline void TLB_abort(void)
     DebugBreak();
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const TYPEDESC *TLB_NextTypeDesc(const TYPEDESC *tdesc)
 {
     if (!tdesc) return NULL;
@@ -1747,11 +1747,11 @@ static const TYPEDESC *TLB_NextTypeDesc(const TYPEDESC *tdesc)
 static SIZE_T TLB_SizeTypeDesc( const TYPEDESC *tdesc, BOOL alloc_initial_space )
 {
     SIZE_T size = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const TYPEDESC *slow = tdesc, *fast = tdesc;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!tdesc) return SIZE_MAX;
     do
     {
@@ -1764,13 +1764,13 @@ static SIZE_T TLB_SizeTypeDesc( const TYPEDESC *tdesc, BOOL alloc_initial_space 
         size += sizeof(TYPEDESC);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (tdesc)
 #else
     switch (tdesc->vt)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SIZE_T part = alloc_initial_space ? sizeof(TYPEDESC) : 0;
 
         switch (tdesc->vt)
@@ -1811,13 +1811,13 @@ static SIZE_T TLB_SizeTypeDesc( const TYPEDESC *tdesc, BOOL alloc_initial_space 
 /* deep copy a typedesc into a flat buffer */
 static void *TLB_CopyTypeDesc( TYPEDESC *dest, const TYPEDESC *src, void *buffer )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (;;)
 #else
     if (!dest)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!dest)
         {
             dest = buffer;
@@ -1829,13 +1829,13 @@ static void *TLB_CopyTypeDesc( TYPEDESC *dest, const TYPEDESC *src, void *buffer
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *dest = *src;
 #else
     *dest = *src;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         switch (src->vt)
         {
         case VT_PTR:
@@ -1870,7 +1870,7 @@ static void *TLB_CopyTypeDesc( TYPEDESC *dest, const TYPEDESC *src, void *buffer
         break;
 #endif
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     return buffer;
 #endif
 }
@@ -1893,12 +1893,12 @@ static BSTR TLB_MultiByteToBSTR(const char *ptr)
     BSTR ret;
 
     len = MultiByteToWideChar(CP_ACP, 0, ptr, -1, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!len) return NULL;
 #endif
     ret = SysAllocStringLen(NULL, len - 1);
     if (!ret) return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (MultiByteToWideChar(CP_ACP, 0, ptr, -1, ret, len) != len)
     {
         SysFreeString(ret);
@@ -2088,7 +2088,7 @@ static TLBGuid *TLB_append_guid(struct list *guid_list,
 static HRESULT TLB_set_custdata(struct list *custdata_list, TLBGuid *tlbguid, VARIANT *var)
 {
     TLBCustData *cust_data;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     VARIANT copy;
     HRESULT hres;
 
@@ -2108,7 +2108,7 @@ static HRESULT TLB_set_custdata(struct list *custdata_list, TLBGuid *tlbguid, VA
         return DISP_E_BADVARTYPE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     VariantInit(&copy);
     hres = VariantCopy(&copy, var);
     if (FAILED(hres))
@@ -2122,17 +2122,17 @@ static HRESULT TLB_set_custdata(struct list *custdata_list, TLBGuid *tlbguid, VA
     if (!cust_data) {
         cust_data = malloc(sizeof(TLBCustData));
         if (!cust_data)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             VariantClear(&copy);
 #endif
             return E_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
         cust_data->guid = tlbguid;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         VariantInit(&cust_data->data);
 
 #endif
@@ -2140,7 +2140,7 @@ static HRESULT TLB_set_custdata(struct list *custdata_list, TLBGuid *tlbguid, VA
     }else
         VariantClear(&cust_data->data);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     cust_data->data = copy;
     return S_OK;
 #else
@@ -2149,13 +2149,13 @@ static HRESULT TLB_set_custdata(struct list *custdata_list, TLBGuid *tlbguid, VA
 }
 
 /* Used to update list pointers after list itself was moved. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void TLB_relink_custdata(struct list *custdata_list, ULONG_PTR old_head)
 #else
 static void TLB_relink_custdata(struct list *custdata_list)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((ULONG_PTR)custdata_list->next == old_head)
 #else
     if (custdata_list->prev == custdata_list->next)
@@ -2226,17 +2226,17 @@ static HRESULT TLB_get_size_from_hreftype(ITypeInfoImpl *info, HREFTYPE href,
 static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
         TYPEDESC *tdesc, ULONG *size, WORD *align)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TYPEDESC *array = tdesc;
 #endif
     ULONG i, sub, ptr_size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WORD alignment = 0;
     BOOL empty = FALSE;
 #endif
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (TLB_SizeTypeDesc(tdesc, FALSE) == SIZE_MAX) return E_INVALIDARG;
     while (tdesc->vt == VT_CARRAY)
     {
@@ -2250,7 +2250,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
 
     switch(tdesc->vt){
     case VT_VOID:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = 0;
 #else
         *size = 0;
@@ -2258,7 +2258,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
         break;
     case VT_I1:
     case VT_UI1:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = 1;
 #else
         *size = 1;
@@ -2267,7 +2267,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
     case VT_I2:
     case VT_BOOL:
     case VT_UI2:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = 2;
 #else
         *size = 2;
@@ -2280,7 +2280,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
     case VT_INT:
     case VT_UINT:
     case VT_HRESULT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = 4;
 #else
         *size = 4;
@@ -2289,7 +2289,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
     case VT_R8:
     case VT_I8:
     case VT_UI8:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = 8;
 #else
         *size = 8;
@@ -2302,47 +2302,47 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
     case VT_SAFEARRAY:
     case VT_LPSTR:
     case VT_LPWSTR:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = ptr_size;
 #else
         *size = ptr_size;
 #endif
         break;
     case VT_DATE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = sizeof(DATE);
 #else
         *size = sizeof(DATE);
 #endif
         break;
     case VT_VARIANT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = sizeof(VARIANT);
 #else
         *size = sizeof(VARIANT);
 #endif
         if(get_ptr_size(sys) != sizeof(void*))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             sub = is_win64 ? sub - 8 : sub + 8;
 #else
             *size += is_win64 ? -8 : 8; /* 32-bit VARIANT is 8 bytes smaller than 64-bit VARIANT */
 #endif
         break;
     case VT_DECIMAL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = sizeof(DECIMAL);
 #else
         *size = sizeof(DECIMAL);
 #endif
         break;
     case VT_CY:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sub = sizeof(CY);
 #else
         *size = sizeof(CY);
 #endif
         break;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case VT_CARRAY:
         *size = 0;
         for(i = 0; i < tdesc->lpadesc->cDims; ++i)
@@ -2354,7 +2354,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
         return S_OK;
 #endif
     case VT_USERDEFINED:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = TLB_get_size_from_hreftype(info, tdesc->hreftype, &sub, &alignment);
         if (FAILED(hr)) return hr;
         break;
@@ -2366,7 +2366,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
         return E_FAIL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (tdesc->vt != VT_USERDEFINED) alignment = sub < 4 ? sub : 4;
     if (empty)
         sub = 0;
@@ -2391,7 +2391,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *size = sub;
     if (align) *align = alignment;
 #endif
@@ -2403,7 +2403,7 @@ static HRESULT TLB_size_instance(ITypeInfoImpl *info, SYSKIND sys,
  *  Functions for reading MSFT typelibs (those created by CreateTypeLib2)
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline BOOL MSFT_Seek(TLBContext *pcx, LONGLONG where)
 #else
 static inline void MSFT_Seek(TLBContext *pcx, LONG where)
@@ -2411,7 +2411,7 @@ static inline void MSFT_Seek(TLBContext *pcx, LONG where)
 {
     if (where != DO_NOT_SEEK)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (where < 0 || pcx->oStart > pcx->length || where > pcx->length - pcx->oStart)
 #else
         where += pcx->oStart;
@@ -2419,7 +2419,7 @@ static inline void MSFT_Seek(TLBContext *pcx, LONG where)
 #endif
         {
             /* FIXME */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ERR("seek beyond end (%lld/%d)\n", (long long)where, pcx->length );
             return FALSE;
 #else
@@ -2427,25 +2427,25 @@ static inline void MSFT_Seek(TLBContext *pcx, LONG where)
             TLB_abort();
 #endif
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pcx->pos = where + pcx->oStart;
 #else
         pcx->pos = where;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return pcx->pos <= pcx->length;
 #endif
 }
 
 /* read function */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD MSFT_Read(void *buffer,  DWORD count, TLBContext *pcx, LONGLONG where )
 #else
 static DWORD MSFT_Read(void *buffer,  DWORD count, TLBContext *pcx, LONG where )
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE_(typelib)("pos=0x%08x len %#lx, %u, %u, %#llx\n",
        pcx->pos, count, pcx->oStart, pcx->length, (unsigned long long)where);
 #else
@@ -2453,7 +2453,7 @@ static DWORD MSFT_Read(void *buffer,  DWORD count, TLBContext *pcx, LONG where )
        pcx->pos, count, pcx->oStart, pcx->length, where);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_Seek(pcx, where)) return 0;
     if (count > pcx->length - pcx->pos) count = pcx->length - pcx->pos;
     if (!count) return 0;
@@ -2467,7 +2467,7 @@ static DWORD MSFT_Read(void *buffer,  DWORD count, TLBContext *pcx, LONG where )
 }
 
 static DWORD MSFT_ReadLEDWords(void *buffer,  DWORD count, TLBContext *pcx,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                LONGLONG where )
 #else
                                LONG where )
@@ -2482,7 +2482,7 @@ static DWORD MSFT_ReadLEDWords(void *buffer,  DWORD count, TLBContext *pcx,
 }
 
 static DWORD MSFT_ReadLEWords(void *buffer,  DWORD count, TLBContext *pcx,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                               LONGLONG where )
 #else
                               LONG where )
@@ -2496,7 +2496,7 @@ static DWORD MSFT_ReadLEWords(void *buffer,  DWORD count, TLBContext *pcx,
   return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL MSFT_ValidateSegment(const TLBContext *pcx, const MSFT_pSeg *segment)
 {
     if (!segment->length) return TRUE;
@@ -2521,7 +2521,7 @@ static HRESULT MSFT_ReadAllGuids(TLBContext *pcx)
     MSFT_GuidEntry entry;
     int offs = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(pcx, &pcx->pTblDir->pGuidTab) ||
         pcx->pTblDir->pGuidTab.length % sizeof(entry))
         return TYPE_E_CANTLOADLIBRARY;
@@ -2532,7 +2532,7 @@ static HRESULT MSFT_ReadAllGuids(TLBContext *pcx)
         if (offs >= pcx->pTblDir->pGuidTab.length)
             return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (MSFT_ReadLEWords(&entry, sizeof(entry), pcx, DO_NOT_SEEK) != sizeof(entry))
             return TYPE_E_CANTLOADLIBRARY;
 #else
@@ -2540,7 +2540,7 @@ static HRESULT MSFT_ReadAllGuids(TLBContext *pcx)
 #endif
 
         guid = malloc(sizeof(TLBGuid));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!guid) return E_OUTOFMEMORY;
 #endif
 
@@ -2568,7 +2568,7 @@ static TLBGuid *MSFT_ReadGuid( int offset, TLBContext *pcx)
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT MSFT_ReadHreftype( TLBContext *pcx, int offset, HREFTYPE *href )
 #else
 static HREFTYPE MSFT_ReadHreftype( TLBContext *pcx, int offset )
@@ -2579,7 +2579,7 @@ static HREFTYPE MSFT_ReadHreftype( TLBContext *pcx, int offset )
     if (offset < 0)
     {
         ERR_(typelib)("bad offset %d\n", offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *href = -1;
         return S_OK;
 #else
@@ -2587,7 +2587,7 @@ static HREFTYPE MSFT_ReadHreftype( TLBContext *pcx, int offset )
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_SeekSegment(pcx, &pcx->pTblDir->pNametab, offset, sizeof(niName)) ||
         MSFT_ReadLEDWords(&niName, sizeof(niName), pcx, DO_NOT_SEEK) != sizeof(niName))
         return TYPE_E_CANTLOADLIBRARY;
@@ -2596,7 +2596,7 @@ static HREFTYPE MSFT_ReadHreftype( TLBContext *pcx, int offset )
 		      pcx->pTblDir->pNametab.offset+offset);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *href = niName.hreftype;
     return S_OK;
 #else
@@ -2608,14 +2608,14 @@ static HRESULT MSFT_ReadAllNames(TLBContext *pcx)
 {
     char *string;
     MSFT_NameIntro intro;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT len_piece;
 #else
     INT16 len_piece;
 #endif
     int offs = 0, lengthInChars;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(pcx, &pcx->pTblDir->pNametab))
         return TYPE_E_CANTLOADLIBRARY;
     if (!pcx->pTblDir->pNametab.length) return S_OK;
@@ -2627,7 +2627,7 @@ static HRESULT MSFT_ReadAllNames(TLBContext *pcx)
         if (offs >= pcx->pTblDir->pNametab.length)
             return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pcx->pTblDir->pNametab.length - offs < sizeof(intro) ||
             MSFT_ReadLEWords(&intro, sizeof(intro), pcx, DO_NOT_SEEK) != sizeof(intro))
             return TYPE_E_CANTLOADLIBRARY;
@@ -2640,13 +2640,13 @@ static HRESULT MSFT_ReadAllNames(TLBContext *pcx)
             len_piece = (len_piece + 4) & ~0x3;
         if(len_piece < 8)
             len_piece = 8;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (len_piece > pcx->pTblDir->pNametab.length - offs)
             return TYPE_E_CANTLOADLIBRARY;
 #endif
 
         string = malloc(len_piece + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!string) return E_OUTOFMEMORY;
         if (MSFT_Read(string, len_piece - sizeof(intro), pcx, DO_NOT_SEEK) != len_piece - sizeof(intro))
         {
@@ -2666,7 +2666,7 @@ static HRESULT MSFT_ReadAllNames(TLBContext *pcx)
         }
 
         tlbstr = malloc(sizeof(TLBString));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!tlbstr)
         {
             free(string);
@@ -2676,7 +2676,7 @@ static HRESULT MSFT_ReadAllNames(TLBContext *pcx)
 
         tlbstr->offset = offs;
         tlbstr->str = SysAllocStringByteLen(NULL, lengthInChars * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!tlbstr->str)
         {
             free(tlbstr);
@@ -2733,32 +2733,32 @@ static TLBString *MSFT_ReadString( TLBContext *pcx, int offset)
 /*
  * read a value and fill a VARIANT structure
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
 #else
 static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
 #endif
 {
     int size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT remaining;
 #endif
 
     TRACE_(typelib)("\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(pVar, 0, sizeof(*pVar));
 #endif
     if(offset <0) { /* data are packed in here */
         V_VT(pVar) = (offset & 0x7c000000 )>> 26;
         V_I4(pVar) = offset & 0x3ffffff;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return S_OK;
 #else
         return;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_SeekSegment(pcx, &pcx->pTblDir->pCustData, offset, sizeof(VARTYPE)) ||
         MSFT_ReadLEWords(&V_VT(pVar), sizeof(VARTYPE), pcx, DO_NOT_SEEK) != sizeof(VARTYPE))
         return TYPE_E_CANTLOADLIBRARY;
@@ -2796,7 +2796,7 @@ static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
             /* pointer types with known behaviour */
         case VT_BSTR    :{
             char * ptr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (remaining < sizeof(size) ||
                 MSFT_ReadLEDWords(&size, sizeof(size), pcx, DO_NOT_SEEK) != sizeof(size))
                 return TYPE_E_CANTLOADLIBRARY;
@@ -2808,7 +2808,7 @@ static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
                 V_BSTR(pVar) = NULL;
             }else{
                 int len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (size < 0 || size > remaining) return TYPE_E_CANTLOADLIBRARY;
                 if (!size)
                 {
@@ -2827,7 +2827,7 @@ static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
                 MSFT_Read(ptr, size, pcx, DO_NOT_SEEK);
 #endif
                 len = MultiByteToWideChar(CP_ACP, 0, ptr, size, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!len)
                 {
                     free(ptr);
@@ -2835,7 +2835,7 @@ static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
                 }
 #endif
                 V_BSTR(pVar)=SysAllocStringLen(NULL,len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!V_BSTR(pVar))
                 {
                     free(ptr);
@@ -2876,14 +2876,14 @@ static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
             size=0;
             FIXME("VARTYPE %d is not supported, setting pointer to NULL\n",
                 V_VT(pVar));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             V_VT(pVar) = VT_EMPTY;
             return TYPE_E_CANTLOADLIBRARY;
 #endif
     }
 
     if(size>0) /* (big|small) endian correct? */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if (size > remaining || MSFT_Read(&V_I2(pVar), size, pcx, DO_NOT_SEEK) != size)
             return TYPE_E_CANTLOADLIBRARY;
@@ -2897,7 +2897,7 @@ static void MSFT_ReadValue( VARIANT * pVar, int offset, TLBContext *pcx )
 /*
  * create a linked list with custom data
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_list)
 #else
 static int MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_list)
@@ -2905,7 +2905,7 @@ static int MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_lis
 {
     MSFT_CDGuid entry;
     TLBCustData* pNew;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT remaining;
     HRESULT hr;
 #else
@@ -2914,7 +2914,7 @@ static int MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_lis
 
     TRACE_(typelib)("\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (offset < 0) return S_OK;
     if (!MSFT_ValidateSegment(pcx, &pcx->pTblDir->pCDGuids))
         return TYPE_E_CANTLOADLIBRARY;
@@ -2924,7 +2924,7 @@ static int MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_lis
 #endif
 
     while(offset >=0){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!remaining-- ||
             !MSFT_SeekSegment(pcx, &pcx->pTblDir->pCDGuids, offset, sizeof(entry)) ||
             MSFT_ReadLEDWords(&entry, sizeof(entry), pcx, DO_NOT_SEEK) != sizeof(entry))
@@ -2933,13 +2933,13 @@ static int MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_lis
         count++;
 #endif
         pNew = calloc(1, sizeof(TLBCustData));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!pNew) return E_OUTOFMEMORY;
 #else
         MSFT_ReadLEDWords(&entry, sizeof(entry), pcx, pcx->pTblDir->pCDGuids.offset+offset);
 #endif
         pNew->guid = MSFT_ReadGuid(entry.GuidOffset, pcx);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = MSFT_ReadValue(&pNew->data, entry.DataOffset, pcx);
         if (FAILED(hr))
         {
@@ -2953,46 +2953,46 @@ static int MSFT_CustData( TLBContext *pcx, int offset, struct list *custdata_lis
         list_add_head(custdata_list, &pNew->entry);
         offset = entry.next;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #else
     return count;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT MSFT_GetTdesc(TLBContext *pcx, INT type, TYPEDESC *pTd)
 #else
 static void MSFT_GetTdesc(TLBContext *pcx, INT type, TYPEDESC *pTd)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(pTd, 0, sizeof(*pTd));
 #endif
     if(type <0)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
 #endif
         pTd->vt=type & VT_TYPEMASK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pTd->vt >= ARRAY_SIZE(std_typedesc) || pTd->vt == VT_PTR ||
             pTd->vt == VT_SAFEARRAY || pTd->vt == VT_CARRAY || pTd->vt == VT_USERDEFINED)
             return TYPE_E_CANTLOADLIBRARY;
     }
 #endif
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if (type % (2 * sizeof(INT)) || type / (2 * sizeof(INT)) >= pcx->pLibInfo->ctTypeDesc)
             return TYPE_E_CANTLOADLIBRARY;
 #endif
         *pTd=pcx->pLibInfo->pTypeDesc[type/(2*sizeof(INT))];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
     TRACE_(typelib)("vt type = %X\n", pTd->vt);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
@@ -3004,7 +3004,7 @@ static BOOL TLB_is_propgetput(INVOKEKIND invkind)
         invkind == INVOKE_PROPERTYPUTREF);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT
 #else
 static void
@@ -3042,7 +3042,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
      */
 
     int infolen, nameoffset, reclength, i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONGLONG recoffset = (LONGLONG)offset + sizeof(INT), record_end;
     HRESULT hr;
 #else
@@ -3055,7 +3055,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
 
     TRACE_(typelib)("\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!recbuf) return E_OUTOFMEMORY;
     if (offset < 0 || MSFT_ReadLEDWords(&infolen, sizeof(INT), pcx, offset) != sizeof(INT) ||
         infolen < 0)
@@ -3068,7 +3068,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
 #endif
 
     *pptfd = TLBFuncDesc_Alloc(cFuncs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*pptfd)
     {
         hr = E_OUTOFMEMORY;
@@ -3081,7 +3081,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
         int optional;
 
         /* name, eventually add to a hash table */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (MSFT_ReadLEDWords(&nameoffset, sizeof(INT), pcx,
                 record_end + (cFuncs + cVars + i) * sizeof(INT)) != sizeof(INT))
             goto invalid;
@@ -3091,7 +3091,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
 #endif
 
         /* read the function information record */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (recoffset > record_end || record_end - recoffset < sizeof(pFuncRec->Info) ||
             MSFT_ReadLEDWords(&reclength, sizeof(pFuncRec->Info), pcx, recoffset) != sizeof(pFuncRec->Info))
             goto invalid;
@@ -3100,7 +3100,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
 #endif
 
         reclength &= 0xffff;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (reclength < FIELD_OFFSET(MSFT_FuncRecord, HelpContext) ||
             reclength % sizeof(INT) || reclength > record_end - recoffset)
             goto invalid;
@@ -3146,7 +3146,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
             ptfd->HelpStringContext = pFuncRec->HelpStringContext;
 
         if (optional > FIELD_OFFSET(MSFT_FuncRecord, oCustData) && pFuncRec->FKCCIC & 0x80)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             hr = MSFT_CustData(pcx, pFuncRec->oCustData, &ptfd->custdata_list);
             if (FAILED(hr)) goto failed;
@@ -3156,7 +3156,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
 #endif
 
         /* fill the FuncDesc Structure */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (MSFT_ReadLEDWords(&ptfd->funcdesc.memid, sizeof(INT), pcx,
                 record_end + i * sizeof(INT)) != sizeof(INT))
             goto invalid;
@@ -3173,7 +3173,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
         if (ptfd->funcdesc.funckind == FUNC_DISPATCH)
             ptfd->funcdesc.oVft   =   0;
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ptfd->funcdesc.oVft   =   (unsigned short)(pFuncRec->VtableOffset & ~1) * pTI->pTypeLib->vft_unit / pTI->pTypeLib->ptr_size;
 #else
             ptfd->funcdesc.oVft   =   (unsigned short)(pFuncRec->VtableOffset & ~1) * sizeof(void *) / pTI->pTypeLib->ptr_size;
@@ -3189,14 +3189,14 @@ MSFT_DoFuncs(TLBContext*     pcx,
         else
             ptfd->Name = MSFT_ReadName(pcx, nameoffset);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = MSFT_GetTdesc(pcx,
 #else
         MSFT_GetTdesc(pcx,
 #endif
 		      pFuncRec->DataType,
 		      &ptfd->funcdesc.elemdescFunc.tdesc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(hr)) goto failed;
 #endif
 
@@ -3210,7 +3210,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
                 calloc(pFuncRec->nrargs, sizeof(ELEMDESC) + sizeof(PARAMDESCEX));
 
             ptfd->pParamDesc = TLBParDesc_Constructor(pFuncRec->nrargs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!ptfd->funcdesc.lprgelemdescParam || !ptfd->pParamDesc)
             {
                 hr = E_OUTOFMEMORY;
@@ -3218,7 +3218,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
             }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (MSFT_ReadLEDWords(&paraminfo, sizeof(paraminfo), pcx,
                     recoffset + reclength - pFuncRec->nrargs * sizeof(MSFT_ParameterInfo)) != sizeof(paraminfo))
                 goto invalid;
@@ -3231,19 +3231,19 @@ MSFT_DoFuncs(TLBContext*     pcx,
             {
                 ELEMDESC *elemdesc = &ptfd->funcdesc.lprgelemdescParam[j];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 hr = MSFT_GetTdesc(pcx,
 #else
                 MSFT_GetTdesc(pcx,
 #endif
 			      paraminfo.DataType,
 			      &elemdesc->tdesc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (FAILED(hr)) goto failed;
 #endif
 
                 elemdesc->paramdesc.wParamFlags = paraminfo.Flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if ((paraminfo.Flags & PARAMFLAG_FHASDEFAULT) && !(pFuncRec->FKCCIC & 0x1000))
                     goto invalid;
 #endif
@@ -3267,13 +3267,13 @@ MSFT_DoFuncs(TLBContext*     pcx,
                     pParamDesc->pparamdescex = (PARAMDESCEX*)(ptfd->funcdesc.lprgelemdescParam+pFuncRec->nrargs)+j;
                     pParamDesc->pparamdescex->cBytes = sizeof(PARAMDESCEX);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     hr = MSFT_ReadValue(&(pParamDesc->pparamdescex->varDefaultValue),
 #else
 		    MSFT_ReadValue(&(pParamDesc->pparamdescex->varDefaultValue),
 #endif
                         pInt[j], pcx);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (FAILED(hr)) goto failed;
 #endif
                 }
@@ -3285,14 +3285,14 @@ MSFT_DoFuncs(TLBContext*     pcx,
                                 j*sizeof(pFuncRec->oArgCustData[0])) &&
                     pFuncRec->FKCCIC & 0x80 )
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     hr = MSFT_CustData(pcx,
 #else
                     MSFT_CustData(pcx,
 #endif
 				  pFuncRec->oArgCustData[j],
 				  &ptfd->pParamDesc[j].custdata_list);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (FAILED(hr)) goto failed;
 #endif
                 }
@@ -3301,14 +3301,14 @@ MSFT_DoFuncs(TLBContext*     pcx,
                  * from there jump to the end of record,
                  * go back by (j-1) arguments
                  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (j + 1 < pFuncRec->nrargs && MSFT_ReadLEDWords( &paraminfo ,
 #else
                 MSFT_ReadLEDWords( &paraminfo ,
 #endif
 			   sizeof(MSFT_ParameterInfo), pcx,
 			   recoffset + reclength - ((pFuncRec->nrargs - j - 1)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 					       * sizeof(MSFT_ParameterInfo))) != sizeof(paraminfo))
                     goto invalid;
 #else
@@ -3326,7 +3326,7 @@ MSFT_DoFuncs(TLBContext*     pcx,
         recoffset += reclength;
     }
     free(recbuf);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 
 invalid:
@@ -3337,7 +3337,7 @@ failed:
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
 #else
 static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
@@ -3349,7 +3349,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
     MSFT_VarRecord *pVarRec = (MSFT_VarRecord*)recbuf;
     TLBVarDesc *ptvd;
     int i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int record_offset;
     LONGLONG recoffset, record_end;
     HRESULT hr;
@@ -3360,7 +3360,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
     TRACE_(typelib)("\n");
 
     ptvd = *pptvd = TLBVarDesc_Alloc(cVars);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ptvd) return E_OUTOFMEMORY;
     if (offset < 0 || MSFT_ReadLEDWords(&infolen, sizeof(INT), pcx, offset) != sizeof(INT) ||
         infolen < 0)
@@ -3380,7 +3380,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
 #endif
     for(i=0;i<cVars;i++, ++ptvd){
     /* name, eventually add to a hash table */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (MSFT_ReadLEDWords(&nameoffset, sizeof(INT), pcx,
                 record_end + (2 * cFuncs + cVars + i) * sizeof(INT)) != sizeof(INT))
             return TYPE_E_CANTLOADLIBRARY;
@@ -3390,7 +3390,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
 #endif
         ptvd->Name=MSFT_ReadName(pcx, nameoffset);
     /* read the variable information record */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (recoffset > record_end || record_end - recoffset < sizeof(pVarRec->Info) ||
             MSFT_ReadLEDWords(&reclength, sizeof(pVarRec->Info), pcx, recoffset) != sizeof(pVarRec->Info))
             return TYPE_E_CANTLOADLIBRARY;
@@ -3398,7 +3398,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
         MSFT_ReadLEDWords(&reclength, sizeof(pVarRec->Info), pcx, recoffset);
 #endif
         reclength &= 0xff;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (reclength < FIELD_OFFSET(MSFT_VarRecord, HelpContext) || reclength % sizeof(INT) ||
             reclength > record_end - recoffset ||
             MSFT_ReadLEDWords(&pVarRec->DataType, reclength - FIELD_OFFSET(MSFT_VarRecord, DataType),
@@ -3416,7 +3416,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
             ptvd->HelpString = MSFT_ReadString(pcx, pVarRec->HelpString);
 
         if (reclength > FIELD_OFFSET(MSFT_VarRecord, oCustData))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             hr = MSFT_CustData(pcx, pVarRec->oCustData, &ptvd->custdata_list);
             if (FAILED(hr)) return hr;
@@ -3429,7 +3429,7 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
             ptvd->HelpStringContext = pVarRec->HelpStringContext;
 
     /* fill the VarDesc Structure */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (MSFT_ReadLEDWords(&ptvd->vardesc.memid, sizeof(INT), pcx,
                 record_end + (cFuncs + i) * sizeof(INT)) != sizeof(INT))
             return TYPE_E_CANTLOADLIBRARY;
@@ -3439,39 +3439,39 @@ static void MSFT_DoVars(TLBContext *pcx, ITypeInfoImpl *pTI, int cFuncs,
 #endif
         ptvd->vardesc.varkind = pVarRec->VarKind;
         ptvd->vardesc.wVarFlags = pVarRec->Flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = MSFT_GetTdesc(pcx, pVarRec->DataType,
 #else
         MSFT_GetTdesc(pcx, pVarRec->DataType,
 #endif
             &ptvd->vardesc.elemdescVar.tdesc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(hr)) return hr;
 #endif
 /*   ptvd->vardesc.lpstrSchema; is reserved (SDK) FIXME?? */
         if(pVarRec->VarKind == VAR_CONST ){
             ptvd->vardesc.lpvarValue = calloc(1, sizeof(VARIANT));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!ptvd->vardesc.lpvarValue) return E_OUTOFMEMORY;
             hr = MSFT_ReadValue(ptvd->vardesc.lpvarValue,
 #else
             MSFT_ReadValue(ptvd->vardesc.lpvarValue,
 #endif
                 pVarRec->OffsValue, pcx);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(hr)) return hr;
 #endif
         } else
             ptvd->vardesc.oInst=pVarRec->OffsValue;
         recoffset += reclength;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
 /* process Implemented Interfaces of a com class */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT MSFT_DoImplTypes(TLBContext *pcx, ITypeInfoImpl *pTI, int count,
 #else
 static void MSFT_DoImplTypes(TLBContext *pcx, ITypeInfoImpl *pTI, int count,
@@ -3481,19 +3481,19 @@ static void MSFT_DoImplTypes(TLBContext *pcx, ITypeInfoImpl *pTI, int count,
     int i;
     MSFT_RefRecord refrec;
     TLBImplType *pImpl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
     TRACE_(typelib)("\n");
 
     pTI->impltypes = TLBImplType_Alloc(count);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pTI->impltypes) return E_OUTOFMEMORY;
 #endif
     pImpl = pTI->impltypes;
     for(i=0;i<count;i++){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(offset<0) return TYPE_E_CANTLOADLIBRARY; /* paranoia */
         if (!MSFT_SeekSegment(pcx, &pcx->pTblDir->pRefTab, offset, sizeof(refrec)) ||
             MSFT_ReadLEDWords(&refrec, sizeof(refrec), pcx, DO_NOT_SEEK) != sizeof(refrec))
@@ -3504,7 +3504,7 @@ static void MSFT_DoImplTypes(TLBContext *pcx, ITypeInfoImpl *pTI, int count,
 #endif
         pImpl->hRef = refrec.reftype;
         pImpl->implflags=refrec.flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = MSFT_CustData(pcx, refrec.oCustData, &pImpl->custdata_list);
         if (FAILED(hr)) return hr;
 #else
@@ -3513,14 +3513,14 @@ static void MSFT_DoImplTypes(TLBContext *pcx, ITypeInfoImpl *pTI, int count,
         offset=refrec.onext;
         ++pImpl;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
 /* when a typelib is loaded in a different 32/64-bit mode, we need to resize pointers
  * and some structures, and fix the alignment */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT TLB_fix_typeinfo_ptr_size(ITypeInfoImpl *info)
 {
     const ULONG unit = info->pTypeLib->vft_unit;
@@ -3614,7 +3614,7 @@ static void TLB_fix_typeinfo_ptr_size(ITypeInfoImpl *info)
 static ITypeInfoImpl * MSFT_DoTypeInfo(
     TLBContext *pcx,
     int count,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ITypeLibImpl * pLibInfo,
     HRESULT *result)
 #else
@@ -3626,11 +3626,11 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
 
     TRACE_(typelib)("count=%u\n", count);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = E_OUTOFMEMORY;
 #endif
     ptiRet = ITypeInfoImpl_Constructor();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ptiRet) return NULL;
     *result = TYPE_E_CANTLOADLIBRARY;
     if (!MSFT_ValidateSegment(pcx, &pcx->pTblDir->pTypeInfoTab) || count < 0 ||
@@ -3652,7 +3652,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
     ptiRet->typeattr.lpstrSchema = NULL;              /* reserved */
     ptiRet->typeattr.cbSizeInstance = tiBase.size;
     ptiRet->typeattr.typekind = tiBase.typekind & 0xF;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ptiRet->typeattr.typekind >= TKIND_MAX) goto failed;
 #endif
     ptiRet->typeattr.cFuncs = LOWORD(tiBase.cElement);
@@ -3662,25 +3662,25 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
     ptiRet->typeattr.wMajorVerNum = LOWORD(tiBase.version);
     ptiRet->typeattr.wMinorVerNum = HIWORD(tiBase.version);
     ptiRet->typeattr.cImplTypes = tiBase.cImplTypes;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ptiRet->typeattr.typekind != TKIND_COCLASS && ptiRet->typeattr.cImplTypes > 1)
         goto failed;
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ptiRet->typeattr.cbSizeVft = tiBase.cbSizeVft * pLibInfo->vft_unit / pLibInfo->ptr_size;
 #else
     ptiRet->typeattr.cbSizeVft = tiBase.cbSizeVft;
 #endif
     if (ptiRet->typeattr.typekind == TKIND_ALIAS) {
         TYPEDESC tmp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *result = MSFT_GetTdesc(pcx, tiBase.datatype1, &tmp);
         if (FAILED(*result)) goto failed;
 #else
         MSFT_GetTdesc(pcx, tiBase.datatype1, &tmp);
 #endif
         ptiRet->tdescAlias = malloc(TLB_SizeTypeDesc(&tmp, TRUE));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ptiRet->tdescAlias)
         {
             *result = E_OUTOFMEMORY;
@@ -3695,7 +3695,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
 
 /* name, eventually add to a hash table */
     ptiRet->Name=MSFT_ReadName(pcx, tiBase.NameOffset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = MSFT_ReadHreftype(pcx, tiBase.NameOffset, &ptiRet->hreftype);
     if (FAILED(*result)) goto failed;
 #else
@@ -3715,7 +3715,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
  */
     /* functions */
     if(ptiRet->typeattr.cFuncs >0 )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         *result = MSFT_DoFuncs(pcx, ptiRet, ptiRet->typeattr.cFuncs,
 #else
@@ -3723,13 +3723,13 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
 #endif
 		    ptiRet->typeattr.cVars,
 		    tiBase.memoffset, &ptiRet->funcdescs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(*result)) goto failed;
     }
 #endif
     /* variables */
     if(ptiRet->typeattr.cVars >0 )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         *result = MSFT_DoVars(pcx, ptiRet, ptiRet->typeattr.cFuncs,
 #else
@@ -3737,7 +3737,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
 #endif
 		   ptiRet->typeattr.cVars,
 		   tiBase.memoffset, &ptiRet->vardescs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(*result)) goto failed;
     }
 #endif
@@ -3745,13 +3745,13 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
         switch(ptiRet->typeattr.typekind)
         {
         case TKIND_COCLASS:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *result = MSFT_DoImplTypes(pcx, ptiRet, ptiRet->typeattr.cImplTypes,
 #else
             MSFT_DoImplTypes(pcx, ptiRet, ptiRet->typeattr.cImplTypes,
 #endif
                 tiBase.datatype1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(*result)) goto failed;
 #endif
             break;
@@ -3765,7 +3765,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
             if (tiBase.datatype1 != -1)
             {
                 ptiRet->impltypes = TLBImplType_Alloc(1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!ptiRet->impltypes)
                 {
                     *result = E_OUTOFMEMORY;
@@ -3777,7 +3777,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
             break;
         default:
             ptiRet->impltypes = TLBImplType_Alloc(1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!ptiRet->impltypes)
             {
                 *result = E_OUTOFMEMORY;
@@ -3788,7 +3788,7 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
             break;
        }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = MSFT_CustData(pcx, tiBase.oCustData, ptiRet->pcustdata_list);
     if (FAILED(*result)) goto failed;
 #else
@@ -3802,11 +3802,11 @@ static ITypeInfoImpl * MSFT_DoTypeInfo(
     if (TRACE_ON(typelib))
       dump_TypeInfo(ptiRet);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = S_OK;
 #endif
     return ptiRet;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 failed:
     free(ptiRet->tdescAlias);
@@ -3818,7 +3818,7 @@ failed:
 static HRESULT MSFT_ReadAllStrings(TLBContext *pcx)
 {
     char *string;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT16 len_str;
     UINT len_piece;
 #else
@@ -3826,7 +3826,7 @@ static HRESULT MSFT_ReadAllStrings(TLBContext *pcx)
 #endif
     int offs = 0, lengthInChars;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(pcx, &pcx->pTblDir->pStringtab))
         return TYPE_E_CANTLOADLIBRARY;
     if (!pcx->pTblDir->pStringtab.length) return S_OK;
@@ -3838,7 +3838,7 @@ static HRESULT MSFT_ReadAllStrings(TLBContext *pcx)
         if (offs >= pcx->pTblDir->pStringtab.length)
             return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pcx->pTblDir->pStringtab.length - offs < sizeof(len_str) ||
             MSFT_ReadLEWords(&len_str, sizeof(len_str), pcx, DO_NOT_SEEK) != sizeof(len_str))
             return TYPE_E_CANTLOADLIBRARY;
@@ -3850,13 +3850,13 @@ static HRESULT MSFT_ReadAllStrings(TLBContext *pcx)
             len_piece = (len_piece + 4) & ~0x3;
         if(len_piece < 8)
             len_piece = 8;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (len_piece > pcx->pTblDir->pStringtab.length - offs)
             return TYPE_E_CANTLOADLIBRARY;
 #endif
 
         string = malloc(len_piece + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!string) return E_OUTOFMEMORY;
         if (MSFT_Read(string, len_piece - sizeof(len_str), pcx, DO_NOT_SEEK) != len_piece - sizeof(len_str))
         {
@@ -3876,7 +3876,7 @@ static HRESULT MSFT_ReadAllStrings(TLBContext *pcx)
         }
 
         tlbstr = malloc(sizeof(TLBString));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!tlbstr)
         {
             free(string);
@@ -3886,7 +3886,7 @@ static HRESULT MSFT_ReadAllStrings(TLBContext *pcx)
 
         tlbstr->offset = offs;
         tlbstr->str = SysAllocStringByteLen(NULL, lengthInChars * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!tlbstr->str)
         {
             free(tlbstr);
@@ -3917,7 +3917,7 @@ static HRESULT MSFT_ReadAllRefs(TLBContext *pcx)
     TLBRefType *ref;
     int offs = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(pcx, &pcx->pTblDir->pImpInfo) ||
         pcx->pTblDir->pImpInfo.length % sizeof(MSFT_ImpInfo))
         return TYPE_E_CANTLOADLIBRARY;
@@ -3928,7 +3928,7 @@ static HRESULT MSFT_ReadAllRefs(TLBContext *pcx)
         MSFT_ImpInfo impinfo;
         TLBImpLib *pImpLib;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (MSFT_ReadLEDWords(&impinfo, sizeof(impinfo), pcx, DO_NOT_SEEK) != sizeof(impinfo))
             return TYPE_E_CANTLOADLIBRARY;
 #else
@@ -3936,7 +3936,7 @@ static HRESULT MSFT_ReadAllRefs(TLBContext *pcx)
 #endif
 
         ref = calloc(1, sizeof(TLBRefType));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ref) return E_OUTOFMEMORY;
 #endif
         list_add_tail(&pcx->pLibInfo->ref_list, &ref->entry);
@@ -4141,7 +4141,7 @@ static int read_xx_header( HFILE lzfd )
     IMAGE_DOS_HEADER mzh;
     char magic[3];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (LZSeek(lzfd, 0, SEEK_SET) != 0) return 0;
 #else
     LZSeek( lzfd, 0, SEEK_SET );
@@ -4151,7 +4151,7 @@ static int read_xx_header( HFILE lzfd )
     if ( mzh.e_magic != IMAGE_DOS_SIGNATURE )
         return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mzh.e_lfanew < 0 || LZSeek(lzfd, mzh.e_lfanew, SEEK_SET) != mzh.e_lfanew)
         return 0;
 #else
@@ -4160,7 +4160,7 @@ static int read_xx_header( HFILE lzfd )
     if ( 2 != LZRead( lzfd, magic, 2 ) )
         return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (LZSeek(lzfd, mzh.e_lfanew, SEEK_SET) != mzh.e_lfanew) return 0;
 #else
     LZSeek( lzfd, mzh.e_lfanew, SEEK_SET );
@@ -4184,7 +4184,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
                                 DWORD *resLen, DWORD *resOff )
 {
     IMAGE_OS2_HEADER nehd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NE_TYPEINFO typeData, *typeInfo = &typeData;
     NE_NAMEINFO nameData, *nameInfo = &nameData;
     LONG nehdoffset;
@@ -4196,19 +4196,19 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
     LPBYTE resTab;
 #endif
     DWORD resTabSize;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WORD shift;
 #endif
     int count;
 
     /* Read in NE header */
     nehdoffset = LZSeek( lzfd, 0, SEEK_CUR );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (nehdoffset < 0) return FALSE;
 #endif
     if ( sizeof(nehd) != LZRead( lzfd, (LPSTR)&nehd, sizeof(nehd) ) ) return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (nehd.ne_restab <= nehd.ne_rsrctab)
 #else
     resTabSize = nehd.ne_restab - nehd.ne_rsrctab;
@@ -4218,7 +4218,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
         TRACE("No resources in NE dll\n" );
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     resTabSize = nehd.ne_restab - nehd.ne_rsrctab;
     if (resTabSize < 2 * sizeof(WORD) || nehd.ne_rsrctab > MAXLONG - nehdoffset)
         return FALSE;
@@ -4228,7 +4228,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
     resTab = malloc( resTabSize );
     if ( !resTab ) return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (LZSeek(lzfd, nehd.ne_rsrctab + nehdoffset, SEEK_SET) != nehd.ne_rsrctab + nehdoffset ||
         resTabSize != LZRead(lzfd, (char*)resTab, resTabSize))
 #else
@@ -4241,7 +4241,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
     }
 
     /* Find resource */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     typePtr = resTab + sizeof(WORD);
 #else
     typeInfo = (NE_TYPEINFO *)(resTab + 2);
@@ -4249,7 +4249,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
 
     if (!IS_INTRESOURCE(typeid))  /* named type */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SIZE_T len = strlen( typeid );
         while (typePtr < resTab + resTabSize)
 #else
@@ -4257,7 +4257,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
         while (typeInfo->type_id)
 #endif
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SIZE_T remaining = resTab + resTabSize - typePtr;
             if (remaining < sizeof(WORD)) goto failed;
             memcpy(&typeInfo->type_id, typePtr, sizeof(WORD));
@@ -4269,7 +4269,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
 #endif
             if (!(typeInfo->type_id & 0x8000))
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 BYTE *p;
                 if (typeInfo->type_id >= resTabSize) goto failed;
                 p = resTab + typeInfo->type_id;
@@ -4279,7 +4279,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
 #endif
                 if ((*p == len) && !_strnicmp( (char*)p+1, typeid, len )) goto found_type;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             typePtr += sizeof(*typeInfo) + typeInfo->count * sizeof(*nameInfo);
 #else
             typeInfo = (NE_TYPEINFO *)((char *)(typeInfo + 1) +
@@ -4290,13 +4290,13 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
     else  /* numeric type id */
     {
         WORD id = LOWORD(typeid) | 0x8000;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while (typePtr < resTab + resTabSize)
 #else
         while (typeInfo->type_id)
 #endif
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SIZE_T remaining = resTab + resTabSize - typePtr;
             if (remaining < sizeof(WORD)) goto failed;
             memcpy(&typeInfo->type_id, typePtr, sizeof(WORD));
@@ -4307,7 +4307,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
                 goto failed;
 #endif
             if (typeInfo->type_id == id) goto found_type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             typePtr += sizeof(*typeInfo) + typeInfo->count * sizeof(*nameInfo);
 #else
             typeInfo = (NE_TYPEINFO *)((char *)(typeInfo + 1) +
@@ -4320,7 +4320,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
     return FALSE;
 
  found_type:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     namePtr = typePtr + sizeof(*typeInfo);
 #else
     nameInfo = (NE_NAMEINFO *)(typeInfo + 1);
@@ -4328,7 +4328,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
 
     if (!IS_INTRESOURCE(resid))  /* named resource */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SIZE_T len = strlen( resid );
         for (count = typeInfo->count; count > 0; count--, namePtr += sizeof(*nameInfo))
 #else
@@ -4336,14 +4336,14 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
         for (count = typeInfo->count; count > 0; count--, nameInfo++)
 #endif
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             BYTE *p;
             memcpy(nameInfo, namePtr, sizeof(*nameInfo));
 #else
             BYTE *p = resTab + nameInfo->id;
 #endif
             if (nameInfo->id & 0x8000) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (nameInfo->id >= resTabSize) goto failed;
             p = resTab + nameInfo->id;
             if (*p > resTabSize - nameInfo->id - 1) goto failed;
@@ -4354,7 +4354,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
     else  /* numeric resource id */
     {
         WORD id = LOWORD(resid) | 0x8000;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         for (count = typeInfo->count; count > 0; count--, namePtr += sizeof(*nameInfo))
         {
             memcpy(nameInfo, namePtr, sizeof(*nameInfo));
@@ -4362,7 +4362,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
         for (count = typeInfo->count; count > 0; count--, nameInfo++)
 #endif
             if (nameInfo->id == id) goto found_name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
@@ -4372,7 +4372,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
 
  found_name:
     /* Return resource data */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&shift, resTab, sizeof(shift));
     if (shift >= sizeof(DWORD) * 8 || nameInfo->length > (MAXDWORD >> shift) ||
         nameInfo->offset > (MAXDWORD >> shift))
@@ -4386,7 +4386,7 @@ static BOOL find_ne_resource( HFILE lzfd, LPCSTR typeid, LPCSTR resid,
 
     free( resTab );
     return TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 failed:
     free(resTab);
@@ -4412,7 +4412,7 @@ static HRESULT TLB_NEFile_Open(LPCWSTR path, INT index, LPVOID *ppBase, DWORD *p
     if ( lzfd >= 0 && read_xx_header( lzfd ) == IMAGE_OS2_SIGNATURE )
     {
         DWORD reslen, offset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (find_ne_resource(lzfd, "TYPELIB", MAKEINTRESOURCEA(index), &reslen, &offset) &&
             reslen && reslen <= INT_MAX && offset <= MAXLONG)
 #else
@@ -4422,14 +4422,14 @@ static HRESULT TLB_NEFile_Open(LPCWSTR path, INT index, LPVOID *ppBase, DWORD *p
             This->typelib_base = malloc(reslen);
             if( !This->typelib_base )
                 hr = E_OUTOFMEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (LZSeek(lzfd, offset, SEEK_SET) == offset &&
                      LZRead(lzfd, This->typelib_base, reslen) == reslen)
 #else
             else
 #endif
             {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 LZSeek( lzfd, offset, SEEK_SET );
                 reslen = LZRead( lzfd, This->typelib_base, reslen );
 #endif
@@ -4506,7 +4506,7 @@ static const IUnknownVtbl TLB_Mapping_Vtable =
 static HRESULT TLB_Mapping_Open(LPCWSTR path, LPVOID *ppBase, DWORD *pdwTLBLength, IUnknown **ppFile)
 {
     TLB_Mapping *This;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LARGE_INTEGER file_size;
 #endif
 
@@ -4521,7 +4521,7 @@ static HRESULT TLB_Mapping_Open(LPCWSTR path, LPVOID *ppBase, DWORD *pdwTLBLengt
     This->typelib_base = NULL;
 
     This->file = CreateFileW(path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (INVALID_HANDLE_VALUE != This->file && GetFileSizeEx(This->file, &file_size) &&
         file_size.QuadPart > 0 && file_size.QuadPart <= MAXDWORD)
 #else
@@ -4535,7 +4535,7 @@ static HRESULT TLB_Mapping_Open(LPCWSTR path, LPVOID *ppBase, DWORD *pdwTLBLengt
             if(This->typelib_base)
             {
                 /* retrieve file size */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 *pdwTLBLength = file_size.QuadPart;
 #else
                 *pdwTLBLength = GetFileSize(This->file, NULL);
@@ -4559,7 +4559,7 @@ static HRESULT TLB_Mapping_Open(LPCWSTR path, LPVOID *ppBase, DWORD *pdwTLBLengt
  */
 
 #define SLTG_SIGNATURE 0x47544c53 /* "SLTG" */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT TLB_ReadTypeLibUnit(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath, int vft_unit, ITypeLib2 **ppTypeLib);
 
 static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath, ITypeLib2 **ppTypeLib)
@@ -4578,7 +4578,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
     LPWSTR index_str, file = (LPWSTR)pszFileName;
     LPVOID pBase = NULL;
     DWORD dwTLBLength = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD path_len;
 #endif
     IUnknown *pFile = NULL;
@@ -4593,14 +4593,14 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         LONG idx = wcstol(index_str, &end_ptr, 10);
         if(*end_ptr == '\0')
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SIZE_T str_len = index_str - pszFileName - 1;
 #else
             int str_len = index_str - pszFileName - 1;
 #endif
             index = idx;
             file = malloc((str_len + 1) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!file) return E_OUTOFMEMORY;
 #endif
             memcpy(file, pszFileName, str_len * sizeof(WCHAR));
@@ -4608,7 +4608,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     path_len = SearchPathW(NULL, file, NULL, cchPath, pszPath, NULL);
     if (path_len >= cchPath) goto failed_path;
     if (!path_len)
@@ -4616,20 +4616,20 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
     if(!SearchPathW(NULL, file, NULL, cchPath, pszPath, NULL))
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SIZE_T file_len = wcslen(file);
 
 #endif
         if(wcschr(file, '\\'))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (file_len >= cchPath) goto failed_path;
 #endif
             lstrcpyW(pszPath, file);
         }
         else
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             UINT len = GetSystemDirectoryW(pszPath, cchPath);
             if (!len || len >= cchPath || file_len >= cchPath - len - 1)
                 goto failed_path;
@@ -4637,7 +4637,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
             int len = GetSystemDirectoryW(pszPath, cchPath);
 #endif
             pszPath[len] = '\\';
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             memcpy(pszPath + len + 1, file, (file_len + 1) * sizeof(WCHAR));
 #else
             memcpy(pszPath + len + 1, file, (lstrlenW(file) + 1) * sizeof(WCHAR));
@@ -4649,7 +4649,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
 
     h = CreateFileW(pszPath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if(h != INVALID_HANDLE_VALUE){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WCHAR final_path[MAX_PATH + 1];
 
         path_len = GetFinalPathNameByHandleW(h, final_path, ARRAY_SIZE(final_path),
@@ -4658,7 +4658,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         GetFinalPathNameByHandleW(h, pszPath, cchPath, FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
 #endif
         CloseHandle(h);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (path_len && path_len < ARRAY_SIZE(final_path) && path_len < cchPath)
             memcpy(pszPath, final_path, (path_len + 1) * sizeof(WCHAR));
 #endif
@@ -4667,7 +4667,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
     TRACE_(typelib)("File %s index %d\n", debugstr_w(pszPath), index);
 
     /* We look the path up in the typelib cache. If found, we just addref it, and return the pointer. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (vft_unit == sizeof(void *))
     {
 #endif
@@ -4684,7 +4684,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         }
     }
     LeaveCriticalSection(&cache_section);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -4701,13 +4701,13 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         {
             DWORD dwSignature = FromLEDWord(*((DWORD*) pBase));
             if (dwSignature == MSFT_SIGNATURE)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 *ppTypeLib = ITypeLib2_Constructor_MSFT(pBase, dwTLBLength, vft_unit, &ret);
 #else
                 *ppTypeLib = ITypeLib2_Constructor_MSFT(pBase, dwTLBLength);
 #endif
             else if (dwSignature == SLTG_SIGNATURE)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 *ppTypeLib = ITypeLib2_Constructor_SLTG(pBase, dwTLBLength, &ret);
 #else
                 *ppTypeLib = ITypeLib2_Constructor_SLTG(pBase, dwTLBLength);
@@ -4728,7 +4728,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
 
 	TRACE("adding to cache\n");
 	impl->path = wcsdup(pszPath);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!impl->path)
         {
             ITypeLib2_Release(*ppTypeLib);
@@ -4740,7 +4740,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         impl->index = index;
 
         /* FIXME: check if it has added already in the meantime */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (vft_unit == sizeof(void *))
         {
             EnterCriticalSection(&cache_section);
@@ -4759,7 +4759,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
         if(ret != E_FAIL)
             ERR("Loading of typelib %s failed with error %ld\n", debugstr_w(pszFileName), GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ret != E_OUTOFMEMORY) ret = TYPE_E_CANTLOADLIBRARY;
 #else
         ret = TYPE_E_CANTLOADLIBRARY;
@@ -4768,7 +4768,7 @@ static HRESULT TLB_ReadTypeLib(LPCWSTR pszFileName, LPWSTR pszPath, UINT cchPath
 
 
     return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 failed_path:
     if (file != pszFileName) free(file);
@@ -4795,7 +4795,7 @@ static ITypeLibImpl* TypeLibImpl_Constructor(void)
     list_init(&pTypeLibImpl->name_list);
     list_init(&pTypeLibImpl->string_list);
     list_init(&pTypeLibImpl->guid_list);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     list_init(&pTypeLibImpl->type_allocations);
     pTypeLibImpl->vft_unit = sizeof(void *);
 #endif
@@ -4810,7 +4810,7 @@ static ITypeLibImpl* TypeLibImpl_Constructor(void)
  *
  * loading an MSFT typelib from an in-memory image
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength, int vft_unit, HRESULT *result)
 #else
 static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
@@ -4821,7 +4821,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     MSFT_Header tlbHeader;
     MSFT_SegDir tlbSegDir;
     ITypeLibImpl * pTypeLibImpl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     INT *type_refs = NULL;
     BYTE *type_states = NULL;
 #endif
@@ -4829,12 +4829,12 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 
     TRACE("%p, TLB length = %ld\n", pLib, dwTLBLength);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = E_OUTOFMEMORY;
 #endif
     pTypeLibImpl = TypeLibImpl_Constructor();
     if (!pTypeLibImpl) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = TYPE_E_CANTLOADLIBRARY;
 #endif
 
@@ -4846,7 +4846,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     cx.length = dwTLBLength;
 
     /* read header */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (MSFT_ReadLEDWords(&tlbHeader, sizeof(tlbHeader), &cx, 0) != sizeof(tlbHeader))
         goto failed;
 #else
@@ -4856,7 +4856,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     TRACE_(typelib)("\tmagic1=0x%08x ,magic2=0x%08x\n",tlbHeader.magic1,tlbHeader.magic2 );
     if (tlbHeader.magic1 != MSFT_SIGNATURE) {
 	FIXME("Header type magic 0x%08x not supported.\n",tlbHeader.magic1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto failed;
 #else
 	return NULL;
@@ -4867,20 +4867,20 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     /* there is a small amount of information here until the next important
      * part:
      * the segment directory . Try to calculate the amount of data */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (tlbHeader.nrtypeinfos < 0 ||
         tlbHeader.nrtypeinfos > (MAXLONG - sizeof(tlbHeader) - sizeof(INT)) / sizeof(INT))
         goto failed;
 #endif
     lPSegDir = sizeof(tlbHeader) + (tlbHeader.nrtypeinfos)*4 + ((tlbHeader.varflags & HELPDLLFLAG)? 4 :0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lPSegDir > dwTLBLength || sizeof(tlbSegDir) > dwTLBLength - lPSegDir)
         goto failed;
 #endif
 
     /* now read the segment directory */
     TRACE("read segment directory (at %ld)\n",lPSegDir);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (MSFT_ReadLEDWords(&tlbSegDir, sizeof(tlbSegDir), &cx, lPSegDir) != sizeof(tlbSegDir))
         goto failed;
 #else
@@ -4892,7 +4892,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     if ( tlbSegDir.pTypeInfoTab.res0c != 0x0F || tlbSegDir.pImpInfo.res0c != 0x0F)
     {
         ERR("cannot find the table directory, ptr %#lx\n",lPSegDir);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto failed;
 #else
 	free(pTypeLibImpl);
@@ -4900,7 +4900,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = MSFT_ReadAllNames(&cx);
     if (FAILED(*result)) goto failed;
     *result = MSFT_ReadAllStrings(&cx);
@@ -4919,7 +4919,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 
     pTypeLibImpl->syskind = tlbHeader.varflags & 0x0f; /* check the mask */
     pTypeLibImpl->ptr_size = get_ptr_size(pTypeLibImpl->syskind);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pTypeLibImpl->vft_unit = vft_unit;
 #endif
     pTypeLibImpl->ver_major = LOWORD(tlbHeader.version);
@@ -4939,7 +4939,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     if( tlbHeader.varflags & HELPDLLFLAG)
     {
             int offset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (MSFT_ReadLEDWords(&offset, sizeof(offset), &cx, sizeof(tlbHeader)) != sizeof(offset))
                 goto invalid;
 #else
@@ -4953,7 +4953,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     /* custom data */
     if(tlbHeader.CustomDataOffset >= 0)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *result = MSFT_CustData(&cx, tlbHeader.CustomDataOffset, &pTypeLibImpl->custdata_list);
         if (FAILED(*result)) goto failed;
 #else
@@ -4962,7 +4962,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     }
 
     /* fill in type descriptions */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(&cx, &tlbSegDir.pTypdescTab) ||
         tlbSegDir.pTypdescTab.length % (2 * sizeof(INT)))
         goto invalid;
@@ -4970,14 +4970,14 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     if(tlbSegDir.pTypdescTab.length > 0)
     {
         int i, j, cTD = tlbSegDir.pTypdescTab.length / (2*sizeof(INT));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         INT td[2];
 #else
         INT16 td[4];
         pTypeLibImpl->ctTypeDesc = cTD;
 #endif
         pTypeLibImpl->pTypeDesc = calloc(cTD, sizeof(TYPEDESC));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!pTypeLibImpl->pTypeDesc)
         {
             *result = E_OUTOFMEMORY;
@@ -5000,7 +5000,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 	{
             /* FIXME: add several sanity checks here */
             pTypeLibImpl->pTypeDesc[i].vt = td[0] & VT_TYPEMASK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             type_refs[i] = -1;
             if(pTypeLibImpl->pTypeDesc[i].vt == VT_PTR || pTypeLibImpl->pTypeDesc[i].vt == VT_SAFEARRAY)
 #else
@@ -5008,7 +5008,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
 	    {
 	        /* FIXME: check safearray */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 type_refs[i] = td[1];
                 if(td[1] < 0)
                 {
@@ -5022,7 +5022,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
                     pTypeLibImpl->pTypeDesc[i].lptdesc = &std_typedesc[td[2]];
 #endif
                 else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 {
                     if (td[1] % sizeof(td) || td[1] / sizeof(td) >= cTD)
                         goto invalid;
@@ -5032,32 +5032,32 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
                     pTypeLibImpl->pTypeDesc[i].lptdesc = &pTypeLibImpl->pTypeDesc[td[2]/8];
 #endif
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    else if(pTypeLibImpl->pTypeDesc[i].vt == VT_CARRAY)
 #else
 	    else if(td[0] == VT_CARRAY)
 #endif
             {
 	        /* array descr table here */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	        type_refs[i] = td[1];  /* temp store offset in*/
 #else
 	        pTypeLibImpl->pTypeDesc[i].lpadesc = (void *)(INT_PTR)td[2];  /* temp store offset in*/
 #endif
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if(pTypeLibImpl->pTypeDesc[i].vt == VT_USERDEFINED)
 #else
             else if(td[0] == VT_USERDEFINED)
 #endif
 	    {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 pTypeLibImpl->pTypeDesc[i].hreftype = td[1];
 #else
                 pTypeLibImpl->pTypeDesc[i].hreftype = MAKELONG(td[2],td[3]);
 #endif
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if(++i<cTD && MSFT_ReadLEDWords(td, sizeof(td), &cx, DO_NOT_SEEK) != sizeof(td))
                 goto invalid;
 #else
@@ -5069,13 +5069,13 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
         for(i=0;i<cTD;i++)
 	{
             if(pTypeLibImpl->pTypeDesc[i].vt != VT_CARRAY) continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(tlbSegDir.pArrayDescriptions.offset>=0)
 #else
             if(tlbSegDir.pArrayDescriptions.offset>0)
 #endif
 	    {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 UINT dims;
                 if (!MSFT_SeekSegment(&cx, &tlbSegDir.pArrayDescriptions, type_refs[i], sizeof(td)) ||
                     MSFT_ReadLEDWords(td, sizeof(td), &cx, DO_NOT_SEEK) != sizeof(td))
@@ -5109,7 +5109,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
                                       sizeof(INT), &cx, DO_NOT_SEEK);
 #endif
                 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 pTypeLibImpl->pTypeDesc[i].lpadesc->cDims = dims;
                 if (MSFT_ReadLEDWords(pTypeLibImpl->pTypeDesc[i].lpadesc->rgbounds,
                         dims * sizeof(SAFEARRAYBOUND), &cx, DO_NOT_SEEK) != dims * sizeof(SAFEARRAYBOUND))
@@ -5121,12 +5121,12 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 	    {
                 pTypeLibImpl->pTypeDesc[i].lpadesc = NULL;
                 ERR("didn't find array description data\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 goto invalid;
 #endif
             }
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         for (i = 0; i < cTD; ++i)
         {
             if (pTypeLibImpl->pTypeDesc[i].vt != VT_CARRAY) continue;
@@ -5157,7 +5157,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     }
 
     /* imported type libs */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(&cx, &tlbSegDir.pImpFiles)) goto invalid;
     if(tlbSegDir.pImpFiles.length>0)
 #else
@@ -5165,7 +5165,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
     {
         TLBImpLib *pImpLib;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int oGuid;
         UINT offset = 0;
 #else
@@ -5173,24 +5173,24 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
         UINT16 size;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         while(offset < tlbSegDir.pImpFiles.length)
 #else
         while(offset < tlbSegDir.pImpFiles.offset +tlbSegDir.pImpFiles.length)
 #endif
 	{
             char *name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             UINT header_size = sizeof(INT) + sizeof(LCID) + 2 * sizeof(WORD) + sizeof(size);
             UINT record_size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!MSFT_SeekSegment(&cx, &tlbSegDir.pImpFiles, offset, header_size))
                 goto invalid;
 #endif
             pImpLib = calloc(1, sizeof(TLBImpLib));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!pImpLib)
             {
                 *result = E_OUTOFMEMORY;
@@ -5215,7 +5215,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
 
             size >>= 2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             record_size = (header_size + size + 3) & ~3u;
             if (record_size > tlbSegDir.pImpFiles.length - offset) goto invalid;
             name = malloc(size + 1);
@@ -5236,7 +5236,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
             pImpLib->name = TLB_MultiByteToBSTR(name);
             free(name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!pImpLib->name)
             {
                 *result = E_OUTOFMEMORY;
@@ -5245,7 +5245,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 #endif
 
             pImpLib->guid = MSFT_ReadGuid(oGuid, &cx);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             offset += record_size;
 #else
             offset = (offset + sizeof(INT) + sizeof(DWORD) + sizeof(LCID) + sizeof(UINT16) + size + 3) & ~3;
@@ -5255,7 +5255,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = MSFT_ReadAllRefs(&cx);
     if (FAILED(*result)) goto failed;
 #else
@@ -5265,7 +5265,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     pTypeLibImpl->dispatch_href = tlbHeader.dispatchpos;
 
     /* type infos */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSFT_ValidateSegment(&cx, &tlbSegDir.pTypeInfoTab) ||
         tlbHeader.nrtypeinfos > tlbSegDir.pTypeInfoTab.length / sizeof(MSFT_TypeInfoBase))
         goto invalid;
@@ -5277,7 +5277,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
         ITypeInfoImpl **ppTI;
 
         ppTI = pTypeLibImpl->typeinfos = calloc(tlbHeader.nrtypeinfos, sizeof(ITypeInfoImpl*));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ppTI)
         {
             *result = E_OUTOFMEMORY;
@@ -5287,7 +5287,7 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
 
         for(i = 0; i < tlbHeader.nrtypeinfos; i++)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *ppTI = MSFT_DoTypeInfo(&cx, i, pTypeLibImpl, result);
             if (!*ppTI) goto failed;
 #else
@@ -5299,14 +5299,14 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pTypeLibImpl->ptr_size != pTypeLibImpl->vft_unit)
 #else
     if (pTypeLibImpl->ptr_size != sizeof(void *))
 #endif
     {
         for(i = 0; i < pTypeLibImpl->TypeInfoCount; ++i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             *result = TLB_fix_typeinfo_ptr_size(pTypeLibImpl->typeinfos[i]);
             if (FAILED(*result))
@@ -5321,11 +5321,11 @@ static ITypeLib2* ITypeLib2_Constructor_MSFT(LPVOID pLib, DWORD dwTLBLength)
     }
 
     TRACE("(%p)\n", pTypeLibImpl);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = S_OK;
 #endif
     return &pTypeLibImpl->ITypeLib2_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 invalid:
     *result = TYPE_E_CANTLOADLIBRARY;
@@ -5342,13 +5342,13 @@ static BOOL TLB_GUIDFromString(const char *str, GUID *guid)
 {
   char b[3];
   int i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   unsigned short s;
 #else
   short s;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (memchr(str, 0, 36)) return FALSE;
   for (i = 0; i < 36; ++i)
   {
@@ -5363,7 +5363,7 @@ static BOOL TLB_GUIDFromString(const char *str, GUID *guid)
   }
 #endif
   if(sscanf(str, "%lx-%hx-%hx-%hx", &guid->Data1, &guid->Data2, &guid->Data3, &s) != 4) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     FIXME("Can't parse guid %s\n", debugstr_an(str, 36));
 #else
     FIXME("Can't parse guid %s\n", debugstr_guid(guid));
@@ -5382,7 +5382,7 @@ static BOOL TLB_GUIDFromString(const char *str, GUID *guid)
   return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     DWORD typeinfo_size;
@@ -5433,19 +5433,19 @@ struct bitstream
 
 static const char *lookup_code(const BYTE *table, DWORD table_size, struct bitstream *bits)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD offset = 0;
 #else
     const BYTE *p = table;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (offset < table_size && table[offset] == 0x80)
 #else
     while (p < table + table_size && *p == 0x80)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (table_size - offset < 3) return NULL;
 #else
         if (p + 2 >= table + table_size) return NULL;
@@ -5461,7 +5461,7 @@ static const char *lookup_code(const BYTE *table, DWORD table_size, struct bitst
 
         if (bits->current & 0x8000)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             offset += 3;
 #else
             p += 3;
@@ -5469,7 +5469,7 @@ static const char *lookup_code(const BYTE *table, DWORD table_size, struct bitst
         }
         else
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             offset = table[offset + 2] | (table[offset + 1] << 8);
 #else
             p = table + (*(p + 2) | (*(p + 1) << 8));
@@ -5479,20 +5479,20 @@ static const char *lookup_code(const BYTE *table, DWORD table_size, struct bitst
         bits->current <<= 1;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (offset < table_size && table_size - offset > 1 && table[offset + 1])
 #else
     if (p + 1 < table + table_size && *(p + 1))
 #endif
     {
         /* FIXME: Whats the meaning of *p? */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         const BYTE *q = table + offset + 1;
 #else
         const BYTE *q = p + 1;
 #endif
         while (q < table + table_size && *q) q++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return (q < table + table_size) ? (const char *)(table + offset + 1) : NULL;
 #else
         return (q < table + table_size) ? (const char *)(p + 1) : NULL;
@@ -5502,14 +5502,14 @@ static const char *lookup_code(const BYTE *table, DWORD table_size, struct bitst
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const TLBString *decode_string(const BYTE *table, const char *stream, DWORD stream_length,
         ITypeLibImpl *lib, HRESULT *result)
 #else
 static const TLBString *decode_string(const BYTE *table, const char *stream, DWORD stream_length, ITypeLibImpl *lib)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WORD buf_size;
     DWORD table_size, used = 0;
 #else
@@ -5520,7 +5520,7 @@ static const TLBString *decode_string(const BYTE *table, const char *stream, DWO
     BSTR buf;
     TLBString *tlbstr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(*result) || !stream_length) return NULL;
 #else
     if (!stream_length) return NULL;
@@ -5530,13 +5530,13 @@ static const TLBString *decode_string(const BYTE *table, const char *stream, DWO
     bits.length = stream_length;
     bits.current = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&buf_size, table, sizeof(buf_size));
 #else
     buf_size = *(const WORD *)table;
 #endif
     table += sizeof(WORD);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&table_size, table, sizeof(table_size));
 #else
     table_size = *(const DWORD *)table;
@@ -5544,7 +5544,7 @@ static const TLBString *decode_string(const BYTE *table, const char *stream, DWO
     table += sizeof(DWORD);
 
     buf = SysAllocStringLen(NULL, buf_size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!buf)
     {
         *result = E_OUTOFMEMORY;
@@ -5556,7 +5556,7 @@ static const TLBString *decode_string(const BYTE *table, const char *stream, DWO
     while ((p = lookup_code(table, table_size, &bits)))
     {
         int len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         len = MultiByteToWideChar(CP_ACP, 0, p, -1, NULL, 0);
         if (len <= 1 || len - 1 + !!used > buf_size - used)
         {
@@ -5581,14 +5581,14 @@ static const TLBString *decode_string(const BYTE *table, const char *stream, DWO
 
     tlbstr = TLB_append_str(&lib->string_list, buf);
     SysFreeString(buf);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!tlbstr) *result = E_OUTOFMEMORY;
 #endif
 
     return tlbstr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD SLTG_ReadString(const char *ptr, DWORD size, const TLBString **pStr,
         ITypeLibImpl *lib, HRESULT *result)
 #else
@@ -5600,19 +5600,19 @@ static WORD SLTG_ReadString(const char *ptr, const TLBString **pStr, ITypeLibImp
     BSTR tmp_str;
 
     *pStr = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bytelen = SLTG_ReadWord(ptr, size, 0, result);
     if (FAILED(*result)) return 0;
 #else
     bytelen = *(const WORD*)ptr;
 #endif
     if(bytelen == 0xffff) return 2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!SLTG_GetData(ptr, size, sizeof(WORD), bytelen, result)) return 0;
 #endif
 
     len = MultiByteToWideChar(CP_ACP, 0, ptr + 2, bytelen, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (bytelen && !len)
     {
         *result = TYPE_E_CANTLOADLIBRARY;
@@ -5621,7 +5621,7 @@ static WORD SLTG_ReadString(const char *ptr, const TLBString **pStr, ITypeLibImp
 #endif
     tmp_str = SysAllocStringLen(NULL, len);
     if (tmp_str) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (bytelen && !MultiByteToWideChar(CP_ACP, 0, ptr + 2, bytelen, tmp_str, len))
         {
             SysFreeString(tmp_str);
@@ -5634,13 +5634,13 @@ static WORD SLTG_ReadString(const char *ptr, const TLBString **pStr, ITypeLibImp
         *pStr = TLB_append_str(&lib->string_list, tmp_str);
         SysFreeString(tmp_str);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*pStr) *result = E_OUTOFMEMORY;
 #endif
     return bytelen + 2;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD SLTG_ReadStringA(const char *ptr, DWORD size, char **str, HRESULT *result)
 #else
 static WORD SLTG_ReadStringA(const char *ptr, char **str)
@@ -5649,18 +5649,18 @@ static WORD SLTG_ReadStringA(const char *ptr, char **str)
     WORD bytelen;
 
     *str = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bytelen = SLTG_ReadWord(ptr, size, 0, result);
     if (FAILED(*result)) return 0;
 #else
     bytelen = *(const WORD*)ptr;
 #endif
     if(bytelen == 0xffff) return 2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!SLTG_GetData(ptr, size, sizeof(WORD), bytelen, result)) return 0;
 #endif
     *str = malloc(bytelen + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!*str)
     {
         *result = E_OUTOFMEMORY;
@@ -5672,7 +5672,7 @@ static WORD SLTG_ReadStringA(const char *ptr, char **str)
     return bytelen + 2;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static TLBString *SLTG_ReadName(const char *pNameTable, DWORD size, DWORD offset,
         ITypeLibImpl *lib, HRESULT *result)
 #else
@@ -5681,11 +5681,11 @@ static TLBString *SLTG_ReadName(const char *pNameTable, int offset, ITypeLibImpl
 {
     BSTR tmp_str;
     TLBString *tlbstr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const char *name = SLTG_GetName(pNameTable, size, offset, result);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!name) return NULL;
 #endif
     LIST_FOR_EACH_ENTRY(tlbstr, &lib->name_list, TLBString, entry) {
@@ -5693,14 +5693,14 @@ static TLBString *SLTG_ReadName(const char *pNameTable, int offset, ITypeLibImpl
             return tlbstr;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_str = TLB_MultiByteToBSTR(name);
 #else
     tmp_str = TLB_MultiByteToBSTR(pNameTable + offset);
 #endif
     tlbstr = TLB_append_str(&lib->name_list, tmp_str);
     SysFreeString(tmp_str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (tlbstr) tlbstr->offset = offset;
     else *result = E_OUTOFMEMORY;
 #endif
@@ -5708,14 +5708,14 @@ static TLBString *SLTG_ReadName(const char *pNameTable, int offset, ITypeLibImpl
     return tlbstr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, DWORD size, ITypeLibImpl *pTypeLibImpl, HRESULT *result)
 #else
 static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
 #endif
 {
     char *ptr = pLibBlk;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const char *end = ptr + size;
     WORD w, syskind;
     GUID guid;
@@ -5723,7 +5723,7 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
     WORD w;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (size < 8) goto invalid;
     memcpy(&w, ptr, sizeof(w));
     if(w != SLTG_LIBBLK_MAGIC) {
@@ -5731,7 +5731,7 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
     if((w = *(WORD*)ptr) != SLTG_LIBBLK_MAGIC) {
 #endif
         FIXME("libblk magic = %04x\n", w);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto invalid;
 #else
 	return 0;
@@ -5739,21 +5739,21 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
     }
 
     ptr += 6;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&w, ptr, sizeof(w));
     if(w != 0xffff) {
 #else
     if((w = *(WORD*)ptr) != 0xffff) {
 #endif
         FIXME("LibBlk.res06 = %04x. Assuming string and skipping\n", w);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (w > end - ptr - sizeof(WORD)) goto invalid;
 #endif
         ptr += w;
     }
     ptr += 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end - ptr < sizeof(WORD)) goto invalid;
     memcpy(&w, ptr, sizeof(w));
     if (w != 0xffff && w > end - ptr - sizeof(WORD)) goto invalid;
@@ -5763,7 +5763,7 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
     ptr += SLTG_ReadString(ptr, &pTypeLibImpl->DocString, pTypeLibImpl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end - ptr < sizeof(WORD)) goto invalid;
     memcpy(&w, ptr, sizeof(w));
     if (w != 0xffff && w > end - ptr - sizeof(WORD)) goto invalid;
@@ -5773,7 +5773,7 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
     ptr += SLTG_ReadString(ptr, &pTypeLibImpl->HelpFile, pTypeLibImpl);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end - ptr < sizeof(SLTG_LibBlk) - FIELD_OFFSET(SLTG_LibBlk, helpcontext)) goto invalid;
     memcpy(&pTypeLibImpl->dwHelpContext, ptr, sizeof(DWORD));
 #else
@@ -5781,19 +5781,19 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
 #endif
     ptr += 4;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&syskind, ptr, sizeof(syskind));
     pTypeLibImpl->syskind = syskind;
 #else
     pTypeLibImpl->syskind = *(WORD*)ptr;
 #endif
     pTypeLibImpl->ptr_size = get_ptr_size(pTypeLibImpl->syskind);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pTypeLibImpl->vft_unit = pTypeLibImpl->ptr_size;
 #endif
     ptr += 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&w, ptr, sizeof(w));
     if(SUBLANGID(w) == SUBLANG_NEUTRAL)
         pTypeLibImpl->lcid = pTypeLibImpl->set_lcid = MAKELCID(MAKELANGID(PRIMARYLANGID(w),0),0);
@@ -5807,28 +5807,28 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
 
     ptr += 4; /* skip res12 */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&pTypeLibImpl->libflags, ptr, sizeof(WORD));
 #else
     pTypeLibImpl->libflags = *(WORD*)ptr;
 #endif
     ptr += 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&pTypeLibImpl->ver_major, ptr, sizeof(WORD));
 #else
     pTypeLibImpl->ver_major = *(WORD*)ptr;
 #endif
     ptr += 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&pTypeLibImpl->ver_minor, ptr, sizeof(WORD));
 #else
     pTypeLibImpl->ver_minor = *(WORD*)ptr;
 #endif
     ptr += 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&guid, ptr, sizeof(guid));
     pTypeLibImpl->guid = TLB_append_guid(&pTypeLibImpl->guid_list, &guid, -2);
     if (!pTypeLibImpl->guid)
@@ -5842,7 +5842,7 @@ static DWORD SLTG_ReadLibBlk(LPVOID pLibBlk, ITypeLibImpl *pTypeLibImpl)
     ptr += sizeof(GUID);
 
     return ptr - (char*)pLibBlk;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 invalid:
     *result = TYPE_E_CANTLOADLIBRARY;
@@ -5871,7 +5871,7 @@ static HRESULT sltg_get_typelib_ref(const sltg_ref_lookup_t *table, DWORD typein
     return E_FAIL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void *SLTG_AllocType(ITypeLibImpl *lib, SIZE_T size, HRESULT *result)
 {
     struct list *allocation;
@@ -5899,11 +5899,11 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 {
     BOOL done = FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(*result)) return 0;
 #endif
     while(!done) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WORD type = SLTG_ReadWord(pBlk, size, offset, result);
         if (FAILED(*result)) return 0;
         offset += sizeof(WORD);
@@ -5912,7 +5912,7 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
         if((*pType & 0xe00) == 0xe00) {
 #endif
 	    pTD->vt = VT_PTR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    pTD->lptdesc = SLTG_AllocType(lib, sizeof(TYPEDESC), result);
 	    if (!pTD->lptdesc) return 0;
 #else
@@ -5920,14 +5920,14 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 #endif
 	    pTD = pTD->lptdesc;
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	switch(type & 0x3f) {
 #else
 	switch(*pType & 0x3f) {
 #endif
 	case VT_PTR:
 	    pTD->vt = VT_PTR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    pTD->lptdesc = SLTG_AllocType(lib, sizeof(TYPEDESC), result);
 	    if (!pTD->lptdesc) return 0;
 #else
@@ -5938,7 +5938,7 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 
 	case VT_USERDEFINED:
 	    pTD->vt = VT_USERDEFINED;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             type = SLTG_ReadWord(pBlk, size, offset, result);
             if (FAILED(*result)) return 0;
             offset += sizeof(WORD);
@@ -5963,7 +5963,7 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 	        int cLocks;
 	        int pvData;
 	        SAFEARRAYBOUND rgsabound[1];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    };
             const char *pSA;
             short dimensions;
@@ -5988,7 +5988,7 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 
 #endif
 	    pTD->vt = VT_CARRAY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    pTD->lpadesc = SLTG_AllocType(lib,
 	            sizeof(ARRAYDESC) + (dimensions - 1) * sizeof(SAFEARRAYBOUND), result);
 	    if (!pTD->lpadesc) return 0;
@@ -6011,14 +6011,14 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 	    /* FIXME: *(pType+1) gives an offset to SAFEARRAY, is this
 	       useful? */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!SLTG_GetData(pBlk, size, offset, sizeof(WORD), result)) return 0;
             offset += sizeof(WORD);
 #else
 	    pType++;
 #endif
 	    pTD->vt = VT_SAFEARRAY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    pTD->lptdesc = SLTG_AllocType(lib, sizeof(TYPEDESC), result);
 	    if (!pTD->lptdesc) return 0;
 #else
@@ -6028,7 +6028,7 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 	    break;
 	  }
 	default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    pTD->vt = type & 0x3f;
 #else
 	    pTD->vt = *pType & 0x3f;
@@ -6036,18 +6036,18 @@ static WORD *SLTG_DoType(WORD *pType, char *pBlk, TYPEDESC *pTD, const sltg_ref_
 	    done = TRUE;
 	    break;
 	}
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	pType++;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return offset;
 #else
     return pType;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD SLTG_DoElem(DWORD offset, const char *pBlk, DWORD size,
 			 ELEMDESC *pElem, const sltg_ref_lookup_t *ref_lookup,
                          ITypeLibImpl *lib, HRESULT *result)
@@ -6056,25 +6056,25 @@ static WORD *SLTG_DoElem(WORD *pType, char *pBlk,
 			 ELEMDESC *pElem, const sltg_ref_lookup_t *ref_lookup)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WORD type = SLTG_ReadWord(pBlk, size, offset, result);
 
     if (FAILED(*result)) return 0;
 #endif
     /* Handle [in/out] first */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if((type & 0xc000) == 0xc000)
 #else
     if((*pType & 0xc000) == 0xc000)
 #endif
         pElem->paramdesc.wParamFlags = PARAMFLAG_NONE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if(type & 0x8000)
 #else
     else if(*pType & 0x8000)
 #endif
         pElem->paramdesc.wParamFlags = PARAMFLAG_FIN | PARAMFLAG_FOUT;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if(type & 0x4000)
 #else
     else if(*pType & 0x4000)
@@ -6083,21 +6083,21 @@ static WORD *SLTG_DoElem(WORD *pType, char *pBlk,
     else
         pElem->paramdesc.wParamFlags = PARAMFLAG_FIN;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(type & 0x2000)
 #else
     if(*pType & 0x2000)
 #endif
         pElem->paramdesc.wParamFlags |= PARAMFLAG_FLCID;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(type & 0x80)
 #else
     if(*pType & 0x80)
 #endif
         pElem->paramdesc.wParamFlags |= PARAMFLAG_FRETVAL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return SLTG_DoType(offset, pBlk, size, &pElem->tdesc, ref_lookup, lib, result);
 #else
     return SLTG_DoType(pType, pBlk, &pElem->tdesc, ref_lookup);
@@ -6105,7 +6105,7 @@ static WORD *SLTG_DoElem(WORD *pType, char *pBlk,
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static sltg_ref_lookup_t *SLTG_DoRefs(const SLTG_TypeInfoHeader *header, ITypeLibImpl *pTL,
         const char *pNameTable, const SLTGContext *cx, HRESULT *result)
 #else
@@ -6113,7 +6113,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 			char *pNameTable)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int ref, count, existing;
     const SLTG_RefInfo *pRef;
     const char *name, *end;
@@ -6128,11 +6128,11 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
     sltg_ref_lookup_t *table;
 #endif
     HREFTYPE typelib_ref;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(*result)) return NULL;
     pRef = (const SLTG_RefInfo *)SLTG_GetData((const char *)header, cx->typeinfo_size,
             header->href_table, FIELD_OFFSET(SLTG_RefInfo, names), result);
@@ -6142,13 +6142,13 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 #endif
     if(pRef->magic != SLTG_REF_MAGIC) {
         FIXME("Ref magic = %x\n", pRef->magic);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto invalid;
 #else
 	return NULL;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pRef->number & 7) goto invalid;
     if (pRef->number > size - FIELD_OFFSET(SLTG_RefInfo, names)) goto invalid;
     count = pRef->number >> 3;
@@ -6161,7 +6161,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
     name = ( (char*)pRef->names + pRef->number);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     table = malloc(FIELD_OFFSET(sltg_ref_lookup_t, refs) + count * sizeof(table->refs[0]));
     if (!table) goto nomem;
     table->num = count;
@@ -6173,29 +6173,29 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
     /* FIXME should scan the existing list and reuse matching refs added by previous typeinfos */
 
     /* We don't want the first href to be 0 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     typelib_ref = (existing + 1) << 2;
 #else
     typelib_ref = (list_count(&pTL->ref_list) + 1) << 2;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for(ref = 0; ref < count; ref++) {
 #else
     for(ref = 0; ref < pRef->number >> 3; ref++) {
         char *refname;
 #endif
 	unsigned int lib_offs, type_num;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int consumed = 0;
 #endif
 
 	ref_type = calloc(1, sizeof(TLBRefType));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ref_type) goto nomem;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	name += SLTG_ReadStringA(name, end - name, &refname, result);
         if (FAILED(*result)) goto failed;
 	if(!refname || sscanf(refname, "*\\R%4x*#%8x%n", &lib_offs, &type_num, &consumed) != 2 ||
@@ -6206,7 +6206,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 	if(sscanf(refname, "*\\R%x*#%x", &lib_offs, &type_num) != 2)
 #endif
 	    FIXME_(typelib)("Can't sscanf ref\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             goto invalid;
         }
 #endif
@@ -6219,7 +6219,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 
             if(&import->entry == &pTL->implib_list) {
 	        char fname[MAX_PATH+1];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 const char *path, *import_name;
                 SIZE_T len;
                 unsigned int major, minor;
@@ -6228,14 +6228,14 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 #endif
                 GUID tmpguid;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		candidate = import = calloc(1, sizeof(*import));
                 if (!import) goto nomem;
 #else
 		import = calloc(1, sizeof(*import));
 #endif
 		import->offset = lib_offs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 import_name = SLTG_GetName(pNameTable, cx->name_size, lib_offs, result);
                 if (!import_name) goto failed;
                 if (strlen(import_name) < 40 || memcmp(import_name, "*\\G{", 4) ||
@@ -6245,7 +6245,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 		TLB_GUIDFromString( pNameTable + lib_offs + 4, &tmpguid);
 #endif
                 import->guid = TLB_append_guid(&pTL->guid_list, &tmpguid, 2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!import->guid) goto nomem;
                 consumed = 0;
 		if(sscanf(import_name + 40, "}#%5u.%5u#%8lx#%n",
@@ -6257,7 +6257,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 			  &import->wVersionMinor,
 			  &import->lcid, fname) != 4) {
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		  FIXME_(typelib)("can't sscanf ref %s\n",
 			import_name + 40);
                   goto invalid;
@@ -6266,7 +6266,7 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 			pNameTable + lib_offs + 40);
 #endif
 		}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 import->wVersionMajor = major;
                 import->wVersionMinor = minor;
                 path = import_name + 40 + consumed;
@@ -6284,11 +6284,11 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 #endif
 		fname[len-1] = '\0';
 		import->name = TLB_MultiByteToBSTR(fname);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!import->name) goto nomem;
 #endif
 		list_add_tail(&pTL->implib_list, &import->entry);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 candidate = NULL;
 #endif
 	    }
@@ -6305,32 +6305,32 @@ static sltg_ref_lookup_t *SLTG_DoRefs(SLTG_RefInfo *pRef, ITypeLibImpl *pTL,
 	ref_type->index = type_num;
 
         free(refname);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         refname = NULL;
 #endif
         list_add_tail(&pTL->ref_list, &ref_type->entry);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ref_type = NULL;
 #endif
 
         table->refs[ref] = typelib_ref;
         typelib_ref += 4;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (name == end) goto invalid;
 #endif
     if((BYTE)*name != SLTG_REF_MAGIC)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
 #endif
       FIXME_(typelib)("End of ref block magic = %x\n", *name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       goto invalid;
     }
 #endif
     dump_TLBRefType(pTL);
     return table;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 nomem:
     *result = E_OUTOFMEMORY;
@@ -6350,7 +6350,7 @@ failed:
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void SLTG_DoImpls(const char *pBlk, DWORD offset, ITypeInfoImpl *pTI,
         BOOL OneOnly, const sltg_ref_lookup_t *ref_lookup, const SLTGContext *cx, HRESULT *result)
 #else
@@ -6358,7 +6358,7 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
 			  BOOL OneOnly, const sltg_ref_lookup_t *ref_lookup)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const SLTG_ImplInfo *info;
     const char *base;
     DWORD size;
@@ -6366,7 +6366,7 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
     SLTG_ImplInfo *info;
 #endif
     TLBImplType *pImplType;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int count = 0, i;
 #endif
     /* I don't really get this structure, usually it's 0x16 bytes
@@ -6376,7 +6376,7 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
        at offs 0x8 might be the clue.  For now I'm just assuming that
        the last one is the regular 0x16 bytes. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(*result)) return;
     base = SLTG_GetData(pBlk, cx->member_size, offset, sizeof(*info), result);
     if (!base) return;
@@ -6386,7 +6386,7 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
     info = (SLTG_ImplInfo*)pBlk;
 #endif
     while(1){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         info = (const SLTG_ImplInfo *)SLTG_GetData(base, size, offset, sizeof(*info), result);
         if (!info) return;
         if (count == USHRT_MAX)
@@ -6400,14 +6400,14 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
 #endif
         if(info->next == 0xffff)
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         offset = info->next;
 #else
         info = (SLTG_ImplInfo*)(pBlk + info->next);
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     offset = 0;
     pTI->impltypes = TLBImplType_Alloc(count);
     if (!pTI->impltypes)
@@ -6421,7 +6421,7 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
     pTI->impltypes = TLBImplType_Alloc(pTI->typeattr.cImplTypes);
 #endif
     pImplType = pTI->impltypes;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < count; ++i) {
         info = (const SLTG_ImplInfo *)SLTG_GetData(base, size, offset, sizeof(*info), result);
         if (!info) return;
@@ -6435,12 +6435,12 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
 	++pImplType;
 
 	if(info->next == 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             if (i + 1 != count) *result = TYPE_E_CANTLOADLIBRARY;
 #endif
 	    break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
         if (i + 1 == count)
         {
@@ -6450,19 +6450,19 @@ static char *SLTG_DoImpls(char *pBlk, ITypeInfoImpl *pTI,
 #endif
 	if(OneOnly)
 	    FIXME_(typelib)("Interface inheriting more than one interface\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	offset = info->next;
 #else
 	info = (SLTG_ImplInfo*)(pBlk + info->next);
 #endif
     }
     info++; /* see comment at top of function */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     return (char*)info;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void SLTG_DoVars(const char *pBlk, DWORD offset, ITypeInfoImpl *pTI, unsigned short cVars,
 			const char *pNameTable, const sltg_ref_lookup_t *ref_lookup, const BYTE *hlp_strings,
                         const SLTGContext *cx, HRESULT *result)
@@ -6473,23 +6473,23 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
 {
   TLBVarDesc *pVarDesc;
   const TLBString *prevName = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   const SLTG_Variable *pItem;
 #else
   SLTG_Variable *pItem;
 #endif
   unsigned short i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DWORD type_offset;
 #else
   WORD *pType;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (FAILED(*result) || !cVars) return;
 #endif
   pVarDesc = pTI->vardescs = TLBVarDesc_Alloc(cVars);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!pVarDesc)
   {
       *result = E_OUTOFMEMORY;
@@ -6498,7 +6498,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
   pTI->typeattr.cVars = cVars;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   for(i = 0; i < cVars;
       i++, ++pVarDesc) {
 #else
@@ -6506,7 +6506,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       pItem = (SLTG_Variable *)(pBlk + pItem->next), i++, ++pVarDesc) {
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       pItem = (const SLTG_Variable *)SLTG_GetData(pBlk, cx->member_size, offset,
               FIELD_OFFSET(SLTG_Variable, varflags), result);
       if (!pItem) return;
@@ -6516,12 +6516,12 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       if (pItem->magic != SLTG_VAR_MAGIC &&
           pItem->magic != SLTG_VAR_WITH_FLAGS_MAGIC) {
 	  FIXME_(typelib)("var magic = %02x\n", pItem->magic);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  *result = TYPE_E_CANTLOADLIBRARY;
 #endif
 	  return;
       }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (pItem->magic == SLTG_VAR_WITH_FLAGS_MAGIC &&
           !SLTG_GetData(pBlk, cx->member_size, offset, sizeof(*pItem), result))
           return;
@@ -6530,7 +6530,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       if (pItem->name == 0xfffe)
         pVarDesc->Name = prevName;
       else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pVarDesc->Name = SLTG_ReadName(pNameTable, cx->name_size, pItem->name, pTI->pTypeLib, result);
       if (FAILED(*result)) return;
 #else
@@ -6543,7 +6543,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
 
       if (pItem->helpstring != 0xffff)
       {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           const char *help = SLTG_GetData(pBlk, cx->member_size, pItem->helpstring, 1, result);
           if (!help) return;
           pVarDesc->HelpString = decode_string(hlp_strings, help,
@@ -6557,13 +6557,13 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       }
 
       if(pItem->flags & 0x02)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  type_offset = offset + FIELD_OFFSET(SLTG_Variable, type);
 #else
 	  pType = &pItem->type;
 #endif
       else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	  type_offset = pItem->type;
 #else
 	  pType = (WORD*)(pBlk + pItem->type);
@@ -6572,7 +6572,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       if (pItem->flags & ~0xda)
         FIXME_(typelib)("unhandled flags = %02x\n", pItem->flags & ~0xda);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       SLTG_DoElem(type_offset, pBlk, cx->member_size,
 		  &pVarDesc->vardesc.elemdescVar, ref_lookup, pTI->pTypeLib, result);
       if (FAILED(*result)) return;
@@ -6583,7 +6583,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
 
       if (TRACE_ON(typelib)) {
           char buf[300];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           dump_TypeDesc(&pVarDesc->vardesc.elemdescVar.tdesc, buf, sizeof(buf));
 #else
           dump_TypeDesc(&pVarDesc->vardesc.elemdescVar.tdesc, buf);
@@ -6598,7 +6598,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       else if (pItem->flags & 0x10) {
         TRACE_(typelib)("VAR_CONST\n");
         pVarDesc->vardesc.varkind = VAR_CONST;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pVarDesc->vardesc.lpvarValue = calloc(1, sizeof(VARIANT));
         if (!pVarDesc->vardesc.lpvarValue)
         {
@@ -6618,20 +6618,20 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
             case VT_LPWSTR:
             case VT_BSTR:
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               WORD len = SLTG_ReadWord(pBlk, cx->member_size, pItem->byte_offs, result);
 #else
               WORD len = *(WORD *)(pBlk + pItem->byte_offs);
 #endif
               BSTR str;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               if (FAILED(*result)) return;
 #endif
               TRACE_(typelib)("len = %u\n", len);
               if (len == 0xffff) {
                 str = NULL;
               } else {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 const char *str_data = SLTG_GetData(pBlk, cx->member_size,
                         pItem->byte_offs + sizeof(WORD), len, result);
                 INT alloc_len;
@@ -6646,7 +6646,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
                 INT alloc_len = MultiByteToWideChar(CP_ACP, 0, pBlk + pItem->byte_offs + 2, len, NULL, 0);
 #endif
                 str = SysAllocStringLen(NULL, alloc_len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!str)
                 {
                     *result = E_OUTOFMEMORY;
@@ -6672,7 +6672,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
             case VT_UI4:
             case VT_INT:
             case VT_UINT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
               const char *value = SLTG_GetData(pBlk, cx->member_size, pItem->byte_offs, sizeof(INT), result);
               if (!value) return;
@@ -6682,12 +6682,12 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
                 *(INT*)(pBlk + pItem->byte_offs);
 #endif
               break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
             default:
               FIXME_(typelib)("VAR_CONST unimplemented for type %d\n", pVarDesc->vardesc.elemdescVar.tdesc.vt);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               *result = TYPE_E_CANTLOADLIBRARY;
               return;
 #endif
@@ -6707,7 +6707,7 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
         pVarDesc->vardesc.wVarFlags |= VARFLAG_FREADONLY;
 
       prevName = pVarDesc->Name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (i + 1 < cVars)
       {
           if (pItem->next == 0xffff)
@@ -6719,24 +6719,24 @@ static void SLTG_DoVars(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI, unsign
       }
 #endif
   }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   pTI->typeattr.cVars = cVars;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void SLTG_DoFuncs(const char *pBlk, DWORD offset, ITypeInfoImpl *pTI,
 #else
 static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 #endif
 			 unsigned short cFuncs, char *pNameTable, const sltg_ref_lookup_t *ref_lookup,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			 const BYTE *hlp_strings, const SLTGContext *cx, HRESULT *result)
 #else
 			 const BYTE *hlp_strings)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const SLTG_Function *pFunc;
 #else
     SLTG_Function *pFunc;
@@ -6744,11 +6744,11 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
     unsigned short i;
     TLBFuncDesc *pFuncDesc;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(*result) || !cFuncs) return;
 #endif
     pTI->funcdescs = TLBFuncDesc_Alloc(cFuncs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pTI->funcdescs)
     {
         *result = E_OUTOFMEMORY;
@@ -6758,7 +6758,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 #endif
 
     pFuncDesc = pTI->funcdescs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for(i = 0; i < cFuncs;
 	i++, ++pFuncDesc) {
 #else
@@ -6767,13 +6767,13 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 #endif
 
         int param;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD type_offset, arg_offset;
 #else
 	WORD *pType, *pArg;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pFunc = (const SLTG_Function *)SLTG_GetData(pBlk, cx->member_size, offset,
                 FIELD_OFFSET(SLTG_Function, funcflags), result);
         if (!pFunc) return;
@@ -6793,14 +6793,14 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
             break;
         default:
 	    FIXME("unimplemented func magic = %02x\n", pFunc->magic & ~SLTG_FUNCTION_FLAGS_PRESENT);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    *result = TYPE_E_CANTLOADLIBRARY;
 	    return;
 #else
 	    continue;
 #endif
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	pFuncDesc->Name = SLTG_ReadName(pNameTable, cx->name_size, pFunc->name, pTI->pTypeLib, result);
         if (FAILED(*result)) return;
 #else
@@ -6818,7 +6818,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 	    pFuncDesc->funcdesc.oVft = (unsigned short)(pFunc->vtblpos & ~1) * sizeof(void *) / pTI->pTypeLib->ptr_size;
 
 	if (pFunc->helpstring != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             const char *help = SLTG_GetData(pBlk, cx->member_size, pFunc->helpstring, 1, result);
             if (!help) return;
@@ -6834,19 +6834,19 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 	    pFuncDesc->funcdesc.wFuncFlags = pFunc->funcflags;
 
 	if(pFunc->retnextopt & 0x80)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    type_offset = offset + FIELD_OFFSET(SLTG_Function, rettype);
 #else
 	    pType = &pFunc->rettype;
 #endif
 	else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    type_offset = pFunc->rettype;
 #else
 	    pType = (WORD*)(pBlk + pFunc->rettype);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	SLTG_DoElem(type_offset, pBlk, cx->member_size,
                 &pFuncDesc->funcdesc.elemdescFunc, ref_lookup, pTI->pTypeLib, result);
         if (FAILED(*result)) return;
@@ -6857,7 +6857,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 	pFuncDesc->funcdesc.lprgelemdescParam =
 	  calloc(pFuncDesc->funcdesc.cParams, sizeof(ELEMDESC));
 	pFuncDesc->pParamDesc = TLBParDesc_Constructor(pFuncDesc->funcdesc.cParams);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pFuncDesc->funcdesc.cParams &&
             (!pFuncDesc->funcdesc.lprgelemdescParam || !pFuncDesc->pParamDesc))
         {
@@ -6866,14 +6866,14 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
         }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	arg_offset = pFunc->arg_off;
 #else
 	pArg = (WORD*)(pBlk + pFunc->arg_off);
 #endif
 
 	for(param = 0; param < pFuncDesc->funcdesc.cParams; param++) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             WORD name = SLTG_ReadWord(pBlk, cx->member_size, arg_offset, result), type;
 	    WORD name_offset = name & ~1;
 	    BOOL HaveOffs = !(name & 1);
@@ -6895,7 +6895,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 	    pArg++;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             TRACE_(typelib)("param %d: paramName %s, *pArg %#x\n",
                 param, debugstr_a(param_name), type);
 #else
@@ -6904,7 +6904,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 #endif
 
 	    if(HaveOffs) { /* the next word is an offset to type */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		SLTG_DoElem(type, pBlk, cx->member_size,
 			    &pFuncDesc->funcdesc.lprgelemdescParam[param], ref_lookup, pTI->pTypeLib, result);
 		arg_offset += sizeof(WORD);
@@ -6915,7 +6915,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 		pArg++;
 #endif
 	    } else {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		arg_offset = SLTG_DoElem(arg_offset, pBlk, cx->member_size,
                                    &pFuncDesc->funcdesc.lprgelemdescParam[param], ref_lookup, pTI->pTypeLib, result);
 #else
@@ -6923,7 +6923,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
                                    &pFuncDesc->funcdesc.lprgelemdescParam[param], ref_lookup);
 #endif
 	    }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(*result)) return;
 #endif
 
@@ -6932,13 +6932,13 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 	       pFuncDesc->funcdesc.cParamsOpt)
 	      pFuncDesc->funcdesc.lprgelemdescParam[param].paramdesc.wParamFlags |= PARAMFLAG_FOPT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if(name_offset != 0xfffe) {
 #else
 	    if(paramName) {
 #endif
 	        pFuncDesc->pParamDesc[param].Name = SLTG_ReadName(pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	                cx->name_size, name_offset, pTI->pTypeLib, result);
                 if (FAILED(*result)) return;
 #else
@@ -6948,7 +6948,7 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
 	        pFuncDesc->pParamDesc[param].Name = pFuncDesc->Name;
 	    }
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (i + 1 < cFuncs)
         {
             if (pFunc->next == 0xffff)
@@ -6960,20 +6960,20 @@ static void SLTG_DoFuncs(char *pBlk, char *pFirstItem, ITypeInfoImpl *pTI,
         }
 #endif
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     pTI->typeattr.cFuncs = cFuncs;
 #endif
 }
 
 static void SLTG_ProcessCoClass(char *pBlk, ITypeInfoImpl *pTI,
 				char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				SLTG_TypeInfoTail *pTITail, const SLTGContext *cx, HRESULT *result)
 #else
 				SLTG_TypeInfoTail *pTITail)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WORD magic;
 #else
     char *pFirstItem;
@@ -6981,7 +6981,7 @@ static void SLTG_ProcessCoClass(char *pBlk, ITypeInfoImpl *pTI,
     sltg_ref_lookup_t *ref_lookup = NULL;
 
     if(pTIHeader->href_table != 0xffffffff) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
         if (FAILED(*result)) return;
 #else
@@ -6990,13 +6990,13 @@ static void SLTG_ProcessCoClass(char *pBlk, ITypeInfoImpl *pTI,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     magic = SLTG_ReadWord(pBlk, cx->member_size, 0, result);
 #else
     pFirstItem = pBlk;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(magic == SLTG_IMPL_MAGIC) {
         SLTG_DoImpls(pBlk, 0, pTI, FALSE, ref_lookup, cx, result);
 #else
@@ -7010,14 +7010,14 @@ static void SLTG_ProcessCoClass(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessInterface(char *pBlk, ITypeInfoImpl *pTI,
 				  char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				  const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings,
                                   const SLTGContext *cx, HRESULT *result)
 #else
 				  const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WORD magic;
 #else
     char *pFirstItem;
@@ -7025,7 +7025,7 @@ static void SLTG_ProcessInterface(char *pBlk, ITypeInfoImpl *pTI,
     sltg_ref_lookup_t *ref_lookup = NULL;
 
     if(pTIHeader->href_table != 0xffffffff) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
         if (FAILED(*result)) return;
 #else
@@ -7034,13 +7034,13 @@ static void SLTG_ProcessInterface(char *pBlk, ITypeInfoImpl *pTI,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     magic = SLTG_ReadWord(pBlk, cx->member_size, 0, result);
 #else
     pFirstItem = pBlk;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(magic == SLTG_IMPL_MAGIC) {
         SLTG_DoImpls(pBlk, 0, pTI, TRUE, ref_lookup, cx, result);
 #else
@@ -7050,7 +7050,7 @@ static void SLTG_ProcessInterface(char *pBlk, ITypeInfoImpl *pTI,
     }
 
     if (pTITail->funcs_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SLTG_DoFuncs(pBlk, pTITail->funcs_off, pTI, pTITail->cFuncs, pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
         SLTG_DoFuncs(pBlk, pBlk + pTITail->funcs_off, pTI, pTITail->cFuncs, pNameTable, ref_lookup, hlp_strings);
@@ -7058,7 +7058,7 @@ static void SLTG_ProcessInterface(char *pBlk, ITypeInfoImpl *pTI,
 
     free(ref_lookup);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(*result) && TRACE_ON(typelib))
 #else
     if (TRACE_ON(typelib))
@@ -7068,7 +7068,7 @@ static void SLTG_ProcessInterface(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessRecord(char *pBlk, ITypeInfoImpl *pTI,
 			       const char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			       const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings,
                                const SLTGContext *cx, HRESULT *result)
 #else
@@ -7078,7 +7078,7 @@ static void SLTG_ProcessRecord(char *pBlk, ITypeInfoImpl *pTI,
   sltg_ref_lookup_t *ref_lookup = NULL;
 
   if (pTIHeader->href_table != 0xffffffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
 #else
       ref_lookup = SLTG_DoRefs((SLTG_RefInfo*)((char *)pTIHeader + pTIHeader->href_table),
@@ -7086,7 +7086,7 @@ static void SLTG_ProcessRecord(char *pBlk, ITypeInfoImpl *pTI,
 #endif
 
   if (pTITail->vars_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoVars(pBlk, pTITail->vars_off, pTI, pTITail->cVars,
                 pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
@@ -7099,7 +7099,7 @@ static void SLTG_ProcessRecord(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessUnion(char *pBlk, ITypeInfoImpl *pTI,
 			       const char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			       const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings,
                                const SLTGContext *cx, HRESULT *result)
 #else
@@ -7109,7 +7109,7 @@ static void SLTG_ProcessUnion(char *pBlk, ITypeInfoImpl *pTI,
   sltg_ref_lookup_t *ref_lookup = NULL;
 
   if (pTIHeader->href_table != 0xffffffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
 #else
       ref_lookup = SLTG_DoRefs((SLTG_RefInfo*)((char *)pTIHeader + pTIHeader->href_table),
@@ -7117,7 +7117,7 @@ static void SLTG_ProcessUnion(char *pBlk, ITypeInfoImpl *pTI,
 #endif
 
   if (pTITail->vars_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoVars(pBlk, pTITail->vars_off, pTI, pTITail->cVars,
                 pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
@@ -7130,13 +7130,13 @@ static void SLTG_ProcessUnion(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessAlias(char *pBlk, ITypeInfoImpl *pTI,
 			      char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			      const SLTG_TypeInfoTail *pTITail, const SLTGContext *cx, HRESULT *result)
 #else
 			      const SLTG_TypeInfoTail *pTITail)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DWORD type_offset;
 #else
   WORD *pType;
@@ -7146,7 +7146,7 @@ static void SLTG_ProcessAlias(char *pBlk, ITypeInfoImpl *pTI,
   if (pTITail->simple_alias) {
       /* if simple alias, no more processing required */
       pTI->tdescAlias = calloc(1, sizeof(TYPEDESC));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!pTI->tdescAlias)
       {
           *result = E_OUTOFMEMORY;
@@ -7158,7 +7158,7 @@ static void SLTG_ProcessAlias(char *pBlk, ITypeInfoImpl *pTI,
   }
 
   if(pTIHeader->href_table != 0xffffffff) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
       if (FAILED(*result)) return;
 #else
@@ -7168,13 +7168,13 @@ static void SLTG_ProcessAlias(char *pBlk, ITypeInfoImpl *pTI,
   }
 
   /* otherwise it is an offset to a type */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   type_offset = pTITail->tdescalias_vt;
 #else
   pType = (WORD *)(pBlk + pTITail->tdescalias_vt);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   pTI->tdescAlias = calloc(1, sizeof(TYPEDESC));
   if (!pTI->tdescAlias)
       *result = E_OUTOFMEMORY;
@@ -7190,7 +7190,7 @@ static void SLTG_ProcessAlias(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessDispatch(char *pBlk, ITypeInfoImpl *pTI,
 				 char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				 const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings,
                                  const SLTGContext *cx, HRESULT *result)
 #else
@@ -7199,7 +7199,7 @@ static void SLTG_ProcessDispatch(char *pBlk, ITypeInfoImpl *pTI,
 {
   sltg_ref_lookup_t *ref_lookup = NULL;
   if (pTIHeader->href_table != 0xffffffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
 #else
       ref_lookup = SLTG_DoRefs((SLTG_RefInfo*)((char *)pTIHeader + pTIHeader->href_table), pTI->pTypeLib,
@@ -7207,21 +7207,21 @@ static void SLTG_ProcessDispatch(char *pBlk, ITypeInfoImpl *pTI,
 #endif
 
   if (pTITail->vars_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoVars(pBlk, pTITail->vars_off, pTI, pTITail->cVars, pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
     SLTG_DoVars(pBlk, pBlk + pTITail->vars_off, pTI, pTITail->cVars, pNameTable, ref_lookup, hlp_strings);
 #endif
 
   if (pTITail->funcs_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoFuncs(pBlk, pTITail->funcs_off, pTI, pTITail->cFuncs, pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
     SLTG_DoFuncs(pBlk, pBlk + pTITail->funcs_off, pTI, pTITail->cFuncs, pNameTable, ref_lookup, hlp_strings);
 #endif
 
   if (pTITail->impls_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoImpls(pBlk, pTITail->impls_off, pTI, FALSE, ref_lookup, cx, result);
 #else
     SLTG_DoImpls(pBlk + pTITail->impls_off, pTI, FALSE, ref_lookup);
@@ -7233,7 +7233,7 @@ static void SLTG_ProcessDispatch(char *pBlk, ITypeInfoImpl *pTI,
   pTI->typeattr.cbSizeVft = pTI->typeattr.cFuncs * pTI->pTypeLib->ptr_size;
 
   free(ref_lookup);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (SUCCEEDED(*result) && TRACE_ON(typelib))
 #else
   if (TRACE_ON(typelib))
@@ -7243,14 +7243,14 @@ static void SLTG_ProcessDispatch(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessEnum(char *pBlk, ITypeInfoImpl *pTI,
 			     const char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			     const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings,
                              const SLTGContext *cx, HRESULT *result)
 #else
 			     const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   SLTG_DoVars(pBlk, pTITail->vars_off, pTI, pTITail->cVars, pNameTable, NULL, hlp_strings, cx, result);
 #else
   SLTG_DoVars(pBlk, pBlk + pTITail->vars_off, pTI, pTITail->cVars, pNameTable, NULL, hlp_strings);
@@ -7259,7 +7259,7 @@ static void SLTG_ProcessEnum(char *pBlk, ITypeInfoImpl *pTI,
 
 static void SLTG_ProcessModule(char *pBlk, ITypeInfoImpl *pTI,
 			       char *pNameTable, SLTG_TypeInfoHeader *pTIHeader,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			       const SLTG_TypeInfoTail *pTITail, const BYTE *hlp_strings,
                                const SLTGContext *cx, HRESULT *result)
 #else
@@ -7268,7 +7268,7 @@ static void SLTG_ProcessModule(char *pBlk, ITypeInfoImpl *pTI,
 {
   sltg_ref_lookup_t *ref_lookup = NULL;
   if (pTIHeader->href_table != 0xffffffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ref_lookup = SLTG_DoRefs(pTIHeader, pTI->pTypeLib, pNameTable, cx, result);
 #else
       ref_lookup = SLTG_DoRefs((SLTG_RefInfo*)((char *)pTIHeader + pTIHeader->href_table), pTI->pTypeLib,
@@ -7276,20 +7276,20 @@ static void SLTG_ProcessModule(char *pBlk, ITypeInfoImpl *pTI,
 #endif
 
   if (pTITail->vars_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoVars(pBlk, pTITail->vars_off, pTI, pTITail->cVars, pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
     SLTG_DoVars(pBlk, pBlk + pTITail->vars_off, pTI, pTITail->cVars, pNameTable, ref_lookup, hlp_strings);
 #endif
 
   if (pTITail->funcs_off != 0xffff)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_DoFuncs(pBlk, pTITail->funcs_off, pTI, pTITail->cFuncs, pNameTable, ref_lookup, hlp_strings, cx, result);
 #else
     SLTG_DoFuncs(pBlk, pBlk + pTITail->funcs_off, pTI, pTITail->cFuncs, pNameTable, ref_lookup, hlp_strings);
 #endif
   free(ref_lookup);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (SUCCEEDED(*result) && TRACE_ON(typelib))
 #else
   if (TRACE_ON(typelib))
@@ -7318,13 +7318,13 @@ typedef struct {
  *
  * loading a SLTG typelib from an in-memory image
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength, HRESULT *result)
 #else
 static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTGContext cx;
 #endif
     ITypeLibImpl *pTypeLibImpl;
@@ -7335,17 +7335,17 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     SLTG_Pad9 *pPad9;
     LPVOID pBlk, pFirstBlk;
     SLTG_LibBlk *pLibBlk;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SLTG_InternalOtherTypeInfo *pOtherTypeInfoBlks = NULL;
 #else
     SLTG_InternalOtherTypeInfo *pOtherTypeInfoBlks;
 #endif
     char *pNameTable, *ptr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const char *end = (const char *)pLib + dwTLBLength;
 #endif
     const BYTE *hlp_strings;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int i, type_count = 0, type_blocks;
     DWORD len, order, lib_size, table_size;
     WORD w;
@@ -7358,16 +7358,16 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     TRACE_(typelib)("%p, TLB length = %ld\n", pLib, dwTLBLength);
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = E_OUTOFMEMORY;
 #endif
     pTypeLibImpl = TypeLibImpl_Constructor();
     if (!pTypeLibImpl) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *result = S_OK;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (dwTLBLength < sizeof(*pHeader)) goto invalid;
 #endif
     pHeader = pLib;
@@ -7378,13 +7378,13 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     if (pHeader->SLTG_magic != SLTG_SIGNATURE)
     {
         FIXME_(typelib)("Header type magic %#lx not supported.\n", pHeader->SLTG_magic);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto invalid;
 #else
 	return NULL;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pHeader->nrOfFileBlks < 2 || !pHeader->first_blk ||
         pHeader->first_blk >= pHeader->nrOfFileBlks)
         goto invalid;
@@ -7402,7 +7402,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     /* Let's see if we're still in sync */
     if(memcmp(pMagic->CompObj_magic, SLTG_COMPOBJ_MAGIC,
 	      sizeof(SLTG_COMPOBJ_MAGIC))) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME_(typelib)("CompObj magic = %s\n", debugstr_an(pMagic->CompObj_magic, sizeof(pMagic->CompObj_magic)));
         goto invalid;
 #else
@@ -7412,7 +7412,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     }
     if(memcmp(pMagic->dir_magic, SLTG_DIR_MAGIC,
 	      sizeof(SLTG_DIR_MAGIC))) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME_(typelib)("dir magic = %s\n", debugstr_an(pMagic->dir_magic, sizeof(pMagic->dir_magic)));
         goto invalid;
 #else
@@ -7429,7 +7429,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
     /* We'll set up a ptr to the main library block, which is the last one. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for(pBlk = pFirstBlk, order = pHeader->first_blk - 1, i = 0;;
 	  order = pBlkEntry[order].next - 1, ++i) {
        if (i >= pHeader->nrOfFileBlks - 1 || order >= pHeader->nrOfFileBlks - 1 ||
@@ -7443,15 +7443,15 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 #endif
        pBlk = (char*)pBlk + pBlkEntry[order].len;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     type_blocks = i;
 #endif
     pLibBlk = pBlk;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     lib_size = end - (char *)pLibBlk;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = SLTG_ReadLibBlk(pLibBlk, pBlkEntry[order].len, pTypeLibImpl, result);
     if (FAILED(*result)) goto failed;
 #else
@@ -7461,13 +7461,13 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     /* Now there are 0x40 bytes of 0xffff with the numbers 0 to TypeInfoCount
        interspersed */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lib_size - len < 0x40 + sizeof(WORD)) goto invalid;
 #endif
     len += 0x40;
 
     /* And now TypeInfoCount of SLTG_OtherTypeInfo */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&w, (char *)pLibBlk + len, sizeof(w));
     type_count = w;
     if (type_count != type_blocks) goto invalid;
@@ -7476,7 +7476,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 #endif
     len += sizeof(WORD);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (type_count)
     {
         pOtherTypeInfoBlks = calloc(type_count, sizeof(*pOtherTypeInfoBlks));
@@ -7488,7 +7488,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
     ptr = (char*)pLibBlk + len;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for(i = 0; i < type_count; i++) {
         WORD extra;
         SLTG_InternalOtherTypeInfo *other = &pOtherTypeInfoBlks[i];
@@ -7567,7 +7567,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
     }
 
     /* Get the next DWORD */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end - ptr < 2 * sizeof(DWORD) + sizeof(WORD)) goto invalid;
     memcpy(&len, ptr, sizeof(len));
 #else
@@ -7575,12 +7575,12 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 #endif
 
     hlp_strings = (const BYTE *)ptr + sizeof(DWORD);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(&w, hlp_strings, sizeof(w));
     memcpy(&table_size, hlp_strings + sizeof(WORD), sizeof(table_size));
     if (table_size > end - (char *)hlp_strings - sizeof(WORD) - sizeof(DWORD)) goto invalid;
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("max help string length %#x, help strings length %#lx\n",
         w, table_size);
 #else
@@ -7593,12 +7593,12 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
        dust and we should be pointing at the beginning of the name
        table */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (len > lib_size || lib_size - len < sizeof(WORD)) goto invalid;
 #endif
     pNameTable = (char*)pLibBlk + len;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    memcpy(&w, pNameTable, sizeof(w));
    switch(w) {
 #else
@@ -7607,13 +7607,13 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
    case 0xffff:
        break;
    case 0x0200:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        if (end - pNameTable < 0x20) goto invalid;
 #endif
        pNameTable += 0x20;
        break;
    default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        FIXME_(typelib)("pNameTable jump = %x\n", w);
 #else
        FIXME_(typelib)("pNameTable jump = %x\n", *(WORD*)pNameTable);
@@ -7621,24 +7621,24 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
        break;
    }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end - pNameTable < 0x218) goto invalid;
 #endif
     pNameTable += 0x216;
 
     pNameTable += 2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     cx.name_size = end - pNameTable;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pLibBlk->name >= end - pNameTable ||
         !memchr(pNameTable + pLibBlk->name, 0, end - pNameTable - pLibBlk->name))
         goto invalid;
 #endif
     TRACE_(typelib)("Library name is %s\n", pNameTable + pLibBlk->name);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pTypeLibImpl->Name = SLTG_ReadName(pNameTable, cx.name_size, pLibBlk->name, pTypeLibImpl, result);
     if (FAILED(*result)) goto failed;
 #else
@@ -7651,7 +7651,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
        I'll just follow the links along the BlkEntry chain and read
        them in the order in which they are in the file */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (type_count)
     {
         pTypeLibImpl->typeinfos = calloc(type_count, sizeof(ITypeInfoImpl*));
@@ -7669,7 +7669,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
       SLTG_TypeInfoHeader *pTIHeader;
       SLTG_TypeInfoTail *pTITail;
       SLTG_MemberHeader *pMemHeader;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       DWORD block_size = pBlkEntry[order].len, member_size;
       const char *index_name;
 
@@ -7684,7 +7684,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
       if(strcmp(pBlkEntry[order].index_string + (char*)pMagic, pOtherTypeInfoBlks[i].index_name)) {
 #endif
         FIXME_(typelib)("Index strings don't match\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto invalid;
 #else
         free(pOtherTypeInfoBlks);
@@ -7692,20 +7692,20 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 #endif
       }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (block_size < sizeof(*pTIHeader)) goto invalid;
 #endif
       pTIHeader = pBlk;
       if(pTIHeader->magic != SLTG_TIHEADER_MAGIC) {
 	FIXME_(typelib)("TypeInfoHeader magic = %04x\n", pTIHeader->magic);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         goto invalid;
 #else
        free(pOtherTypeInfoBlks);
 	return NULL;
 #endif
       }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (pTIHeader->typekind >= TKIND_MAX) goto invalid;
 #endif
       TRACE_(typelib)("pTIHeader->res06 = %lx, pTIHeader->res0e = %lx, "
@@ -7713,13 +7713,13 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
         pTIHeader->res06, pTIHeader->res0e, pTIHeader->res16, pTIHeader->res1e);
 
       *ppTypeInfoImpl = ITypeInfoImpl_Constructor();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!*ppTypeInfoImpl) goto nomem;
       ++pTypeLibImpl->TypeInfoCount;
 #endif
       (*ppTypeInfoImpl)->pTypeLib = pTypeLibImpl;
       (*ppTypeInfoImpl)->index = i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (pOtherTypeInfoBlks[i].name_offs >= end - pNameTable ||
           !memchr(pNameTable + pOtherTypeInfoBlks[i].name_offs, 0,
                   end - pNameTable - pOtherTypeInfoBlks[i].name_offs))
@@ -7731,7 +7731,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
       (*ppTypeInfoImpl)->Name = SLTG_ReadName(pNameTable, pOtherTypeInfoBlks[i].name_offs, pTypeLibImpl);
 #endif
       (*ppTypeInfoImpl)->dwHelpContext = pOtherTypeInfoBlks[i].helpcontext;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       (*ppTypeInfoImpl)->DocString = decode_string(hlp_strings, pOtherTypeInfoBlks[i].extra,
               pOtherTypeInfoBlks[i].hlpstr_len, pTypeLibImpl, result);
       if (FAILED(*result)) goto failed;
@@ -7739,7 +7739,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
       (*ppTypeInfoImpl)->DocString = decode_string(hlp_strings, pOtherTypeInfoBlks[i].extra, pOtherTypeInfoBlks[i].hlpstr_len, pTypeLibImpl);
 #endif
       (*ppTypeInfoImpl)->guid = TLB_append_guid(&pTypeLibImpl->guid_list, &pOtherTypeInfoBlks[i].uuid, 2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!(*ppTypeInfoImpl)->guid) goto nomem;
 #endif
       (*ppTypeInfoImpl)->typeattr.typekind = pTIHeader->typekind;
@@ -7762,20 +7762,20 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 	    debugstr_guid(TLB_get_guidref((*ppTypeInfoImpl)->guid)),
 	    (*ppTypeInfoImpl)->typeattr.wTypeFlags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (pTIHeader->elem_table > block_size ||
           sizeof(*pMemHeader) > block_size - pTIHeader->elem_table)
           goto invalid;
 #endif
       pMemHeader = (SLTG_MemberHeader*)((char *)pBlk + pTIHeader->elem_table);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       member_size = block_size - pTIHeader->elem_table - sizeof(*pMemHeader);
       if (pMemHeader->cbExtra > member_size || sizeof(*pTITail) > member_size - pMemHeader->cbExtra)
           goto invalid;
 #endif
 
       pTITail = (SLTG_TypeInfoTail*)((char *)(pMemHeader + 1) + pMemHeader->cbExtra);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       cx.typeinfo_size = block_size;
       cx.member_size = member_size;
 #endif
@@ -7787,7 +7787,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
       switch(pTIHeader->typekind) {
       case TKIND_ENUM:
 	SLTG_ProcessEnum((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                          pTIHeader, pTITail, hlp_strings, &cx, result);
 #else
                          pTIHeader, pTITail, hlp_strings);
@@ -7796,7 +7796,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_RECORD:
 	SLTG_ProcessRecord((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                            pTIHeader, pTITail, hlp_strings, &cx, result);
 #else
                            pTIHeader, pTITail, hlp_strings);
@@ -7805,7 +7805,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_INTERFACE:
 	SLTG_ProcessInterface((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                               pTIHeader, pTITail, hlp_strings, &cx, result);
 #else
                               pTIHeader, pTITail, hlp_strings);
@@ -7814,7 +7814,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_COCLASS:
 	SLTG_ProcessCoClass((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             pTIHeader, pTITail, &cx, result);
 #else
                             pTIHeader, pTITail);
@@ -7823,7 +7823,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_ALIAS:
 	SLTG_ProcessAlias((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                           pTIHeader, pTITail, &cx, result);
 #else
                           pTIHeader, pTITail);
@@ -7832,7 +7832,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_DISPATCH:
 	SLTG_ProcessDispatch((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                              pTIHeader, pTITail, hlp_strings, &cx, result);
 #else
                              pTIHeader, pTITail, hlp_strings);
@@ -7841,7 +7841,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_MODULE:
 	SLTG_ProcessModule((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                            pTIHeader, pTITail, hlp_strings, &cx, result);
 #else
                            pTIHeader, pTITail, hlp_strings);
@@ -7850,7 +7850,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 
       case TKIND_UNION:
 	SLTG_ProcessUnion((char *)(pMemHeader + 1), *ppTypeInfoImpl, pNameTable,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                            pTIHeader, pTITail, hlp_strings, &cx, result);
 #else
                            pTIHeader, pTITail, hlp_strings);
@@ -7862,7 +7862,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 	break;
 
       }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (FAILED(*result)) goto failed;
 #endif
 
@@ -7887,13 +7887,13 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
       pBlk = (char*)pBlk + pBlkEntry[order].len;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(i != type_count) {
 #else
     if(i != pTypeLibImpl->TypeInfoCount) {
 #endif
       FIXME("Somehow processed %d TypeInfos\n", i);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       goto invalid;
 #else
       free(pOtherTypeInfoBlks);
@@ -7901,7 +7901,7 @@ static ITypeLib2* ITypeLib2_Constructor_SLTG(LPVOID pLib, DWORD dwTLBLength)
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     goto done;
 
 nomem:
@@ -7921,7 +7921,7 @@ done:
     }
 #endif
     free(pOtherTypeInfoBlks);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return pTypeLibImpl ? &pTypeLibImpl->ITypeLib2_iface : NULL;
 #else
     return &pTypeLibImpl->ITypeLib2_iface;
@@ -7982,7 +7982,7 @@ static ULONG WINAPI ITypeLib2_fnRelease( ITypeLib2 *iface)
       TLBRefType *ref_type, *ref_type_next;
       TLBString *tlbstr, *tlbstr_next;
       TLBGuid *tlbguid, *tlbguid_next;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       struct list *allocation;
 #endif
       int i;
@@ -8043,7 +8043,7 @@ static ULONG WINAPI ITypeLib2_fnRelease( ITypeLib2 *iface)
           ITypeInfoImpl_Destroy(This->typeinfos[i]);
       }
       free(This->typeinfos);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       while ((allocation = list_head(&This->type_allocations)))
       {
           list_remove(allocation);
@@ -8296,7 +8296,7 @@ static HRESULT WINAPI ITypeLib2_fnIsName(
 {
     ITypeLibImpl *This = impl_from_ITypeLib2(iface);
     int tic;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SIZE_T nNameBufLen;
     UINT fdc, vrc;
 #else
@@ -8305,7 +8305,7 @@ static HRESULT WINAPI ITypeLib2_fnIsName(
 
     TRACE("%p, %s, %#lx, %p.\n", iface, debugstr_w(szNameBuf), lHashVal, pfName);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!szNameBuf || !pfName) return E_INVALIDARG;
     nNameBufLen = (wcslen(szNameBuf) + 1) * sizeof(WCHAR);
 #endif
@@ -8343,7 +8343,7 @@ ITypeLib2_fnIsName_exit:
  * to quickly verify that a name exists in a type library.
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL TLB_name_matches(OLECHAR *name, const TLBString *str)
 {
     const WCHAR *stored = TLB_get_bstr(str);
@@ -8365,20 +8365,20 @@ static HRESULT WINAPI ITypeLib2_fnFindName(
     ITypeLibImpl *This = impl_from_ITypeLib2(iface);
     int tic;
     UINT count = 0;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     UINT len;
 #endif
 
     TRACE("%p, %s %#lx, %p, %p, %p.\n", iface, debugstr_w(name), hash, ppTInfo, memid, found);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!name || !ppTInfo || !memid || !found)
 #else
     if ((!name && hash == 0) || !ppTInfo || !memid || !found)
 #endif
         return E_INVALIDARG;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     len = (lstrlenW(name) + 1)*sizeof(WCHAR);
 #endif
     for(tic = 0; count < *found && tic < This->TypeInfoCount; ++tic) {
@@ -8386,7 +8386,7 @@ static HRESULT WINAPI ITypeLib2_fnFindName(
         TLBVarDesc *var;
         UINT fdc;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (TLB_name_matches(name, pTInfo->Name)) {
 #else
         if(!TLB_str_memcmp(name, pTInfo->Name, len)) {
@@ -8398,7 +8398,7 @@ static HRESULT WINAPI ITypeLib2_fnFindName(
         for(fdc = 0; fdc < pTInfo->typeattr.cFuncs; ++fdc) {
             TLBFuncDesc *func = &pTInfo->funcdescs[fdc];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (TLB_name_matches(name, func->Name)) {
 #else
             if(!TLB_str_memcmp(name, func->Name, len)) {
@@ -8800,7 +8800,7 @@ static HRESULT WINAPI ITypeLibComp_fnBindType(
 
     *ppTInfo = (ITypeInfo *)&info->ITypeInfo2_iface;
     ITypeInfo_AddRef(*ppTInfo);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *ppTComp = NULL;
 #else
     *ppTComp = &info->ITypeComp_iface;
@@ -8877,7 +8877,7 @@ static HRESULT WINAPI ITypeInfo_fnQueryInterface(
 static ULONG WINAPI ITypeInfo_fnAddRef( ITypeInfo2 *iface)
 {
     ITypeInfoImpl *This = impl_from_ITypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG ref;
 
     if (This->dual_parent)
@@ -8899,13 +8899,13 @@ static void typeinfo_release_funcdesc(TLBFuncDesc *func)
 {
     unsigned int i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; func->funcdesc.cParams > 0 && i < func->funcdesc.cParams; ++i)
 #else
     for (i = 0; i < func->funcdesc.cParams; ++i)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (func->funcdesc.lprgelemdescParam)
         {
             ELEMDESC *elemdesc = &func->funcdesc.lprgelemdescParam[i];
@@ -8933,7 +8933,7 @@ static void ITypeInfoImpl_Destroy(ITypeInfoImpl *This)
 
     TRACE("destroying ITypeInfo(%p)\n",This);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; This->funcdescs && i < This->typeattr.cFuncs; ++i)
 #else
     for (i = 0; i < This->typeattr.cFuncs; ++i)
@@ -8943,7 +8943,7 @@ static void ITypeInfoImpl_Destroy(ITypeInfoImpl *This)
     }
     free(This->funcdescs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for(i = 0; This->vardescs && i < This->typeattr.cVars; ++i)
 #else
     for(i = 0; i < This->typeattr.cVars; ++i)
@@ -8953,7 +8953,7 @@ static void ITypeInfoImpl_Destroy(ITypeInfoImpl *This)
         if (pVInfo->vardesc_create) {
             TLB_FreeVarDesc(pVInfo->vardesc_create);
         } else if (pVInfo->vardesc.varkind == VAR_CONST) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (pVInfo->vardesc.lpvarValue) VariantClear(pVInfo->vardesc.lpvarValue);
 #else
             VariantClear(pVInfo->vardesc.lpvarValue);
@@ -8974,7 +8974,7 @@ static void ITypeInfoImpl_Destroy(ITypeInfoImpl *This)
 
     TLB_FreeCustData(&This->custdata_list);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(This->dual_view);
 #endif
     free(This);
@@ -8983,7 +8983,7 @@ static void ITypeInfoImpl_Destroy(ITypeInfoImpl *This)
 static ULONG WINAPI ITypeInfo_fnRelease(ITypeInfo2 *iface)
 {
     ITypeInfoImpl *This = impl_from_ITypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG ref;
 
     if (This->dual_parent)
@@ -8999,7 +8999,7 @@ static ULONG WINAPI ITypeInfo_fnRelease(ITypeInfo2 *iface)
     {
         BOOL not_attached_to_typelib = This->not_attached_to_typelib;
         ITypeLib2_Release(&This->pTypeLib->ITypeLib2_iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (not_attached_to_typelib)
         {
             free(This->dual_view);
@@ -9023,13 +9023,13 @@ static HRESULT WINAPI ITypeInfo_fnGetTypeAttr( ITypeInfo2 *iface,
 
     TRACE("(%p)\n",This);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ppTypeAttr) return E_INVALIDARG;
     *ppTypeAttr = NULL;
 #endif
     size = sizeof(**ppTypeAttr);
     if (This->typeattr.typekind == TKIND_ALIAS && This->tdescAlias)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         SIZE_T extra = TLB_SizeTypeDesc(This->tdescAlias, FALSE);
         if (extra > SIZE_MAX - size) return E_OUTOFMEMORY;
@@ -9051,7 +9051,7 @@ static HRESULT WINAPI ITypeInfo_fnGetTypeAttr( ITypeInfo2 *iface,
 
     if((*ppTypeAttr)->typekind == TKIND_DISPATCH) {
         /* This should include all the inherited funcs */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         (*ppTypeAttr)->cFuncs = (*ppTypeAttr)->cbSizeVft / This->pTypeLib->vft_unit;
 #else
         (*ppTypeAttr)->cFuncs = (*ppTypeAttr)->cbSizeVft / This->pTypeLib->ptr_size;
@@ -9085,14 +9085,14 @@ static SIZE_T TLB_SizeElemDesc( const ELEMDESC *elemdesc )
 {
     SIZE_T size = TLB_SizeTypeDesc(&elemdesc->tdesc, FALSE);
     if (elemdesc->paramdesc.wParamFlags & PARAMFLAG_FHASDEFAULT)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if (!elemdesc->paramdesc.pparamdescex ||
             size > SIZE_MAX - sizeof(*elemdesc->paramdesc.pparamdescex))
             return SIZE_MAX;
 #endif
         size += sizeof(*elemdesc->paramdesc.pparamdescex);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     return size;
@@ -9142,14 +9142,14 @@ static HRESULT TLB_AllocAndInitFuncDesc( const FUNCDESC *src, FUNCDESC **dest_pt
     SHORT i;
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *dest_ptr = NULL;
     if (src->cParams < 0 || src->cScodes < 0 ||
         (src->cParams && !src->lprgelemdescParam) || (src->cScodes && !src->lprgscode))
         return E_INVALIDARG;
 #endif
     size += sizeof(*src->lprgscode) * src->cScodes;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         SIZE_T extra = TLB_SizeElemDesc(&src->elemdescFunc);
         if (extra > UINT_MAX - size) return E_OUTOFMEMORY;
@@ -9160,14 +9160,14 @@ static HRESULT TLB_AllocAndInitFuncDesc( const FUNCDESC *src, FUNCDESC **dest_pt
 #endif
     for (i = 0; i < src->cParams; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SIZE_T extra = TLB_SizeElemDesc(&src->lprgelemdescParam[i]);
         if (size > UINT_MAX - sizeof(ELEMDESC) ||
             extra > UINT_MAX - size - sizeof(ELEMDESC))
             return E_OUTOFMEMORY;
 #endif
         size += sizeof(ELEMDESC);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         size += extra;
 #else
         size += TLB_SizeElemDesc(&src->lprgelemdescParam[i]);
@@ -9235,7 +9235,7 @@ static HRESULT TLB_AllocAndInitFuncDesc( const FUNCDESC *src, FUNCDESC **dest_pt
                 ERR("elemdesc should have started with VT_PTR instead of:\n");
                 if (ERR_ON(ole))
                     dump_ELEMDESC(elemdesc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 for (i = 0; i < dest->cParams; ++i)
                     TLB_FreeElemDesc(&dest->lprgelemdescParam[i]);
                 TLB_FreeElemDesc(&dest->elemdescFunc);
@@ -9250,7 +9250,7 @@ static HRESULT TLB_AllocAndInitFuncDesc( const FUNCDESC *src, FUNCDESC **dest_pt
             dest->elemdescFunc.tdesc = *elemdesc->tdesc.lptdesc;
 
             /* remove the last parameter */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             TLB_FreeElemDesc(elemdesc);
 #endif
             dest->cParams--;
@@ -9263,12 +9263,12 @@ static HRESULT TLB_AllocAndInitFuncDesc( const FUNCDESC *src, FUNCDESC **dest_pt
         /* The now-last (except [retval], removed above) parameter might be labeled [lcid].
          * If so it will be supplied from Invoke(lcid), so also not via DISPPARAMS::rgvarg */
         if (dest->cParams && (dest->lprgelemdescParam[dest->cParams - 1].paramdesc.wParamFlags & PARAMFLAG_FLCID))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             TLB_FreeElemDesc(&dest->lprgelemdescParam[dest->cParams - 1]);
 #endif
             dest->cParams--;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
@@ -9415,7 +9415,7 @@ static HRESULT WINAPI ITypeInfo_fnGetFuncDesc( ITypeInfo2 *iface, UINT index,
         ppFuncDesc,
         This->typeattr.typekind == TKIND_DISPATCH);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && (This->typeattr.typekind == TKIND_DISPATCH) && hrefoffset)
 #else
     if ((This->typeattr.typekind == TKIND_DISPATCH) && hrefoffset)
@@ -9430,14 +9430,14 @@ static HRESULT TLB_AllocAndInitVarDesc( const VARDESC *src, VARDESC **dest_ptr )
 {
     VARDESC *dest;
     char *buffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SIZE_T size = sizeof(*src), schema_size = 0, extra;
 #else
     SIZE_T size = sizeof(*src);
 #endif
     HRESULT hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *dest_ptr = NULL;
     if (src->lpstrSchema)
     {
@@ -9450,12 +9450,12 @@ static HRESULT TLB_AllocAndInitVarDesc( const VARDESC *src, VARDESC **dest_ptr )
     if (src->lpstrSchema) size += (lstrlenW(src->lpstrSchema) + 1) * sizeof(WCHAR);
 #endif
     if (src->varkind == VAR_CONST)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if (!src->lpvarValue) return E_INVALIDARG;
 #endif
         size += sizeof(VARIANT);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
     extra = TLB_SizeElemDesc(&src->elemdescVar);
     if (extra > UINT_MAX - size) return E_OUTOFMEMORY;
@@ -9471,11 +9471,11 @@ static HRESULT TLB_AllocAndInitVarDesc( const VARDESC *src, VARDESC **dest_ptr )
     buffer = (char *)(dest + 1);
     if (src->lpstrSchema)
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         int len;
 #endif
         dest->lpstrSchema = (LPOLESTR)buffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         memcpy(dest->lpstrSchema, src->lpstrSchema, schema_size);
         buffer += schema_size;
 #else
@@ -10559,7 +10559,7 @@ static HRESULT WINAPI ITypeInfo_fnInvoke(
 	switch (func_desc->funckind) {
 	case FUNC_PUREVIRTUAL:
 	case FUNC_VIRTUAL: {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             void *buffer;
 
             if (func_desc->cParams < 0) return E_INVALIDARG;
@@ -10738,7 +10738,7 @@ static HRESULT WINAPI ITypeInfo_fnInvoke(
                             V_BYREF(&rgvarg[i]) = V_BYREF(src_arg);
                             V_VT(&rgvarg[i]) = rgvt[i];
                         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         else if ((rgvt[i] == (VT_UNKNOWN | VT_BYREF) || rgvt[i] == (VT_DISPATCH | VT_BYREF)) &&
                                  (V_VT(src_arg) == (VT_UNKNOWN | VT_BYREF) || V_VT(src_arg) == (VT_DISPATCH | VT_BYREF)))
                         {
@@ -10829,7 +10829,7 @@ static HRESULT WINAPI ITypeInfo_fnInvoke(
                             V_VT(arg) = VT_VARIANT | VT_BYREF;
                             V_VARIANTREF(arg) = &missing_arg[i];
                         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         else if (rgvt[i] != VT_VARIANT)
                         {
                             memset(arg, 0, sizeof(*arg));
@@ -10889,7 +10889,7 @@ static HRESULT WINAPI ITypeInfo_fnInvoke(
                 {
                     TRACE("[retval] value: %s\n", debugstr_variant(prgpvarg[i]));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (pVarResult && !(V_VT(&varresult) == VT_ERROR && FAILED(V_ERROR(&varresult))))
 #else
                     if (pVarResult)
@@ -10907,7 +10907,7 @@ static HRESULT WINAPI ITypeInfo_fnInvoke(
                     VARIANTARG *arg = &pDispParams->rgvarg[pDispParams->cArgs - 1 - vargs_converted];
                     if (wParamFlags & PARAMFLAG_FOUT)
                     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (V_ISBYREF(arg) && V_VT(&missing_arg[i]) == VT_UNKNOWN &&
                             V_BYREF(&rgvarg[i]) == &V_UNKNOWN(&missing_arg[i]))
                         {
@@ -11281,7 +11281,7 @@ static HRESULT WINAPI ITypeInfo_fnGetRefTypeInfo(
                     This->typeattr.typekind == TKIND_DISPATCH))
             return TYPE_E_ELEMENTNOTFOUND;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->dual_parent)
         {
             *ppTInfo = (ITypeInfo *)&This->dual_parent->ITypeInfo2_iface;
@@ -11389,7 +11389,7 @@ static HRESULT WINAPI ITypeInfo_fnGetRefTypeInfo(
             } else {
                 /* Search in cached typelibs */
                 ITypeLibImpl *entry;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 BSTR regnam;
 
                 result = query_typelib_path(TLB_get_guid_null(ref_type->pImpTLInfo->guid),
@@ -11437,7 +11437,7 @@ static HRESULT WINAPI ITypeInfo_fnGetRefTypeInfo(
                     }
                 }
                 LeaveCriticalSection(&cache_section);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 }
 
                 if (!pTLib)
@@ -12162,7 +12162,7 @@ HRESULT WINAPI CreateDispTypeInfo(
     pTypeLibImpl = TypeLibImpl_Constructor();
     if (!pTypeLibImpl) return E_FAIL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pTypeLibImpl->typeinfos = calloc(2, sizeof(ITypeInfoImpl*));
     if (!pTypeLibImpl->typeinfos) goto out_of_memory;
 #else
@@ -12171,7 +12171,7 @@ HRESULT WINAPI CreateDispTypeInfo(
 #endif
 
     pTIIface = pTypeLibImpl->typeinfos[0] = ITypeInfoImpl_Constructor();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pTIIface) goto out_of_memory;
     pTypeLibImpl->TypeInfoCount = 1;
 #endif
@@ -12194,14 +12194,14 @@ HRESULT WINAPI CreateDispTypeInfo(
     pTIIface->hreftype = 0;
 
     pTIIface->funcdescs = TLBFuncDesc_Alloc(pidata->cMembers);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pidata->cMembers && !pTIIface->funcdescs) goto out_of_memory;
 #endif
     pFuncDesc = pTIIface->funcdescs;
     for(func = 0; func < pidata->cMembers; func++) {
         METHODDATA *md = pidata->pmethdata + func;
         pFuncDesc->Name = TLB_append_str(&pTypeLibImpl->name_list, md->szName);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (md->szName && !pFuncDesc->Name) goto out_of_memory;
 #endif
         pFuncDesc->funcdesc.memid = md->dispid;
@@ -12219,7 +12219,7 @@ HRESULT WINAPI CreateDispTypeInfo(
         pFuncDesc->funcdesc.elemdescFunc.paramdesc.pparamdescex = NULL;
         pFuncDesc->funcdesc.lprgelemdescParam = calloc(md->cArgs, sizeof(ELEMDESC));
         pFuncDesc->pParamDesc = TLBParDesc_Constructor(md->cArgs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (md->cArgs && (!pFuncDesc->funcdesc.lprgelemdescParam || !pFuncDesc->pParamDesc)) {
             free(pFuncDesc->funcdesc.lprgelemdescParam);
             free(pFuncDesc->pParamDesc);
@@ -12230,7 +12230,7 @@ HRESULT WINAPI CreateDispTypeInfo(
         for(param = 0; param < md->cArgs; param++) {
             pFuncDesc->funcdesc.lprgelemdescParam[param].tdesc.vt = md->ppdata[param].vt;
             pFuncDesc->pParamDesc[param].Name = TLB_append_str(&pTypeLibImpl->name_list, md->ppdata[param].szName);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (md->ppdata[param].szName && !pFuncDesc->pParamDesc[param].Name) goto out_of_memory;
 #endif
         }
@@ -12239,7 +12239,7 @@ HRESULT WINAPI CreateDispTypeInfo(
         pFuncDesc->HelpString = NULL;
         pFuncDesc->Entry = NULL;
         list_init(&pFuncDesc->custdata_list);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         pTIIface->typeattr.cFuncs++;
 #endif
         ++pFuncDesc;
@@ -12248,7 +12248,7 @@ HRESULT WINAPI CreateDispTypeInfo(
     dump_TypeInfo(pTIIface);
 
     pTIClass = pTypeLibImpl->typeinfos[1] = ITypeInfoImpl_Constructor();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pTIClass) goto out_of_memory;
     pTypeLibImpl->TypeInfoCount = 2;
 #endif
@@ -12271,12 +12271,12 @@ HRESULT WINAPI CreateDispTypeInfo(
     pTIClass->hreftype = sizeof(MSFT_TypeInfoBase);
 
     pTIClass->impltypes = TLBImplType_Alloc(1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pTIClass->impltypes) goto out_of_memory;
 #endif
 
     ref = calloc(1, sizeof(*ref));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ref) goto out_of_memory;
 #endif
     ref->pImpTLInfo = TLB_REF_INTERNAL;
@@ -12291,7 +12291,7 @@ HRESULT WINAPI CreateDispTypeInfo(
 
     return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 out_of_memory:
     ITypeLib2_Release(&pTypeLibImpl->ITypeLib2_iface);
     return E_OUTOFMEMORY;
@@ -12457,7 +12457,7 @@ HRESULT WINAPI CreateTypeLib2(SYSKIND syskind, LPCOLESTR szFile,
     This->lcid = GetSystemDefaultLCID();
     This->syskind = syskind;
     This->ptr_size = get_ptr_size(syskind);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->vft_unit = This->ptr_size;
 #endif
 
@@ -12498,7 +12498,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnCreateTypeInfo(ICreateTypeLib2 *iface,
         LPOLESTR name, TYPEKIND kind, ICreateTypeInfo **ctinfo)
 {
     ITypeLibImpl *This = impl_from_ICreateTypeLib2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ITypeInfoImpl *info, **new_infos;
 #else
     ITypeInfoImpl *info;
@@ -12514,7 +12514,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnCreateTypeInfo(ICreateTypeLib2 *iface,
     if (info)
         return TYPE_E_NAMECONFLICT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->TypeInfoCount == INT_MAX ||
         (size_t)This->TypeInfoCount >= ~(size_t)0 / sizeof(*new_infos))
         return E_OUTOFMEMORY;
@@ -12525,7 +12525,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnCreateTypeInfo(ICreateTypeLib2 *iface,
     This->typeinfos = realloc(This->typeinfos, sizeof(ITypeInfoImpl*) * (This->TypeInfoCount + 1));
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info = ITypeInfoImpl_Constructor();
     if (!info) return E_OUTOFMEMORY;
 #else
@@ -12534,7 +12534,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnCreateTypeInfo(ICreateTypeLib2 *iface,
 
     info->pTypeLib = This;
     info->Name = TLB_append_str(&This->name_list, name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!info->Name) {
         free(info);
         return E_OUTOFMEMORY;
@@ -12586,7 +12586,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetName(ICreateTypeLib2 *iface,
         LPOLESTR name)
 {
     ITypeLibImpl *This = impl_from_ICreateTypeLib2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBString *str;
 #endif
 
@@ -12595,7 +12595,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetName(ICreateTypeLib2 *iface,
     if (!name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     str = TLB_append_str(&This->name_list, name);
     if (!str) return E_OUTOFMEMORY;
     This->Name = str;
@@ -12623,13 +12623,13 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetGuid(ICreateTypeLib2 *iface,
         REFGUID guid)
 {
     ITypeLibImpl *This = impl_from_ICreateTypeLib2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBGuid *tlbguid;
 #endif
 
     TRACE("%p %s\n", This, debugstr_guid(guid));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!guid) return E_INVALIDARG;
     tlbguid = TLB_append_guid(&This->guid_list, guid, -2);
     if (!tlbguid) return E_OUTOFMEMORY;
@@ -12645,7 +12645,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetDocString(ICreateTypeLib2 *iface,
         LPOLESTR doc)
 {
     ITypeLibImpl *This = impl_from_ICreateTypeLib2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBString *str;
 #endif
 
@@ -12654,7 +12654,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetDocString(ICreateTypeLib2 *iface,
     if (!doc)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     str = TLB_append_str(&This->string_list, doc);
     if (!str) return E_OUTOFMEMORY;
     This->DocString = str;
@@ -12669,7 +12669,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetHelpFileName(ICreateTypeLib2 *iface,
         LPOLESTR helpFileName)
 {
     ITypeLibImpl *This = impl_from_ICreateTypeLib2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBString *str;
 #endif
 
@@ -12678,7 +12678,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetHelpFileName(ICreateTypeLib2 *iface,
     if (!helpFileName)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     str = TLB_append_str(&This->string_list, helpFileName);
     if (!str) return E_OUTOFMEMORY;
     This->HelpFile = str;
@@ -12747,12 +12747,12 @@ typedef struct tagWMSFT_TLBFile {
     WMSFT_SegContents cdguids_seg;
     MSFT_SegDir segdir;
     WMSFT_SegContents aux_seg;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hres;
 #endif
 } WMSFT_TLBFile;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 enum
 {
     WMSFT_FUNCDESC_SIZE = 52,
@@ -12797,13 +12797,13 @@ static HRESULT WMSFT_compile_strings(ITypeLibImpl *This,
 
     file->string_seg.len = 0;
     LIST_FOR_EACH_ENTRY(str, &This->string_list, TLBString, entry) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int length = lstrlenW(str->str), size = 0;
 #else
         int size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (length && !(size = WideCharToMultiByte(CP_ACP, 0, str->str,
                 length, NULL, 0, NULL, NULL)))
 #else
@@ -12812,7 +12812,7 @@ static HRESULT WMSFT_compile_strings(ITypeLibImpl *This,
 #endif
             return E_UNEXPECTED;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (size > USHRT_MAX) return TYPE_E_INVALIDSTATE;
 #endif
         size += sizeof(INT16);
@@ -12821,7 +12821,7 @@ static HRESULT WMSFT_compile_strings(ITypeLibImpl *This,
         if (size < 8)
             size = 8;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((DWORD)size > INT_MAX - file->string_seg.len) return E_OUTOFMEMORY;
 #endif
         file->string_seg.len += size;
@@ -12831,23 +12831,23 @@ static HRESULT WMSFT_compile_strings(ITypeLibImpl *This,
         str->offset = size;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!file->string_seg.len) return S_OK;
 #endif
     file->string_seg.data = data = malloc(file->string_seg.len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!data) return E_OUTOFMEMORY;
 #endif
 
     last_offs = 0;
     LIST_FOR_EACH_ENTRY(str, &This->string_list, TLBString, entry) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int length = lstrlenW(str->str), size = 0;
 #else
         int size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (length && !(size = WideCharToMultiByte(CP_ACP, 0, str->str,
                 length, data + sizeof(INT16), str->offset - sizeof(INT16), NULL, NULL))) {
 #else
@@ -12860,7 +12860,7 @@ static HRESULT WMSFT_compile_strings(ITypeLibImpl *This,
             return E_UNEXPECTED;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (size > USHRT_MAX) return TYPE_E_INVALIDSTATE;
         *((USHORT*)data) = size;
 #else
@@ -12894,7 +12894,7 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
         int size;
 
         size = lstrlenW(str->str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (size > INT_MAX - file->header.nametablechars ||
             file->header.nametablecount == INT_MAX) return E_OUTOFMEMORY;
 #endif
@@ -12905,7 +12905,7 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
         if (size == 0)
             return E_UNEXPECTED;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (size > UCHAR_MAX) return TYPE_E_INVALIDSTATE;
 #endif
         size += sizeof(MSFT_NameIntro);
@@ -12914,7 +12914,7 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
         if (size < 8)
             size = 8;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((DWORD)size > INT_MAX - file->name_seg.len) return E_OUTOFMEMORY;
 #endif
         file->name_seg.len += size;
@@ -12925,7 +12925,7 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
     }
 
     /* Allocate bigger buffer so we can temporarily NULL terminate the name */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (file->name_seg.len == MAXDWORD) return E_OUTOFMEMORY;
     file->name_seg.data = data = malloc((size_t)file->name_seg.len + 1);
     if (!data) return E_OUTOFMEMORY;
@@ -12935,7 +12935,7 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
 
     last_offs = 0;
     LIST_FOR_EACH_ENTRY(str, &This->name_list, TLBString, entry) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int size;
         DWORD hash;
 #else
@@ -12945,18 +12945,18 @@ static HRESULT WMSFT_compile_names(ITypeLibImpl *This,
 
         size = WideCharToMultiByte(CP_ACP, 0, str->str, lstrlenW(str->str),
                 data + sizeof(MSFT_NameIntro),
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 str->offset - sizeof(MSFT_NameIntro), NULL, NULL);
 #else
                 file->name_seg.len - last_offs - sizeof(MSFT_NameIntro), NULL, NULL);
 #endif
         if (size == 0) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             free(file->name_seg.data);
 #endif
             return E_UNEXPECTED;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (size > UCHAR_MAX) return TYPE_E_INVALIDSTATE;
 #endif
         data[sizeof(MSFT_NameIntro) + size] = '\0';
@@ -13005,7 +13005,7 @@ static HRESULT WMSFT_compile_guids(ITypeLibImpl *This, WMSFT_TLBFile *file)
     DWORD offs;
     int hash_key, *guidhashtab;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (list_empty(&This->guid_list)) return S_OK;
     entry = WMSFT_append_segment(file, &file->guid_seg,
             list_count(&This->guid_list), sizeof(*entry));
@@ -13036,7 +13036,7 @@ static HRESULT WMSFT_compile_guids(ITypeLibImpl *This, WMSFT_TLBFile *file)
 
 static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     VARIANT v;
     VARTYPE arg_type;
 #else
@@ -13047,7 +13047,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
     HRESULT hres;
     DWORD ret = file->custdata_seg.len;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return -1;
     if (!value)
     {
@@ -13066,7 +13066,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
         hres = VariantChangeType(&v, value, 0, arg_type);
         if(FAILED(hres)){
             ERR("VariantChangeType failed: %#lx.\n", hres);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             file->hres = hres;
 #endif
             return -1;
@@ -13091,7 +13091,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
     case VT_UI2:
         if(!mask)
             mask = 0xffff;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ((0x80u + 0x4u * V_VT(value)) << 24) | (V_UI4(&v) & mask);
 #else
         return ((0x80 + 0x4 * V_VT(value)) << 24) | (V_UI4(&v) & mask);
@@ -13110,7 +13110,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
         /* Construct the data to be allocated */
         int *data;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         data = WMSFT_append_segment(file, &file->custdata_seg, 2, sizeof(*data));
         if (!data) return -1;
 #else
@@ -13133,7 +13133,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
     }
 
     case VT_BSTR: {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         UINT wide_len = SysStringLen(V_BSTR(&v));
         int mb_len;
         unsigned int i, len;
@@ -13143,7 +13143,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
 #endif
         char *data;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (wide_len > INT_MAX || (wide_len && !(mb_len = WideCharToMultiByte(CP_ACP,
                 0, V_BSTR(&v), wide_len, NULL, 0, NULL, NULL))))
         {
@@ -13159,7 +13159,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
             data = file->custdata_seg.data = malloc(file->custdata_seg.len);
 #endif
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!wide_len) mb_len = 0;
         len = (6u + mb_len + 3u) & ~0x3u;
         data = WMSFT_append_segment(file, &file->custdata_seg, 1, len);
@@ -13167,7 +13167,7 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
 #endif
 
         *((unsigned short *)data) = V_VT(value);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         memcpy(data + 2, &mb_len, sizeof(mb_len));
         if (wide_len && WideCharToMultiByte(CP_ACP, 0, V_BSTR(&v), wide_len,
                 &data[6], mb_len, NULL, NULL) != mb_len)
@@ -13189,14 +13189,14 @@ static DWORD WMSFT_encode_variant(VARIANT *value, WMSFT_TLBFile *file)
     }
     default:
         FIXME("Argument type not yet handled\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         file->hres = TYPE_E_INVALIDSTATE;
 #endif
         return -1;
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const TYPEDESC *WMSFT_next_typedesc(const TYPEDESC *desc)
 {
     if (!desc) return NULL;
@@ -13215,7 +13215,7 @@ static const TYPEDESC *WMSFT_next_typedesc(const TYPEDESC *desc)
 static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *out_mix, INT16 *out_size);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD WMSFT_append_arraydesc(const ARRAYDESC *desc, WMSFT_TLBFile *file, DWORD element)
 #else
 static DWORD WMSFT_append_arraydesc(ARRAYDESC *desc, WMSFT_TLBFile *file)
@@ -13225,7 +13225,7 @@ static DWORD WMSFT_append_arraydesc(ARRAYDESC *desc, WMSFT_TLBFile *file)
     DWORD *encoded;
     USHORT i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return -1;
     if (!desc || !desc->cDims || desc->cDims > USHRT_MAX / (2 * sizeof(DWORD)))
     {
@@ -13238,7 +13238,7 @@ static DWORD WMSFT_append_arraydesc(ARRAYDESC *desc, WMSFT_TLBFile *file)
      * chunk is variable length (really we should store TYPEDESC and ARRAYDESC
      * at the library-level) */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!WMSFT_append_segment(file, &file->arraydesc_seg,
             2 + desc->cDims * 2, sizeof(DWORD))) return -1;
 #else
@@ -13247,7 +13247,7 @@ static DWORD WMSFT_append_arraydesc(ARRAYDESC *desc, WMSFT_TLBFile *file)
     encoded = (DWORD*)((char *)file->arraydesc_seg.data + offs);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     encoded = (DWORD*)((char *)file->arraydesc_seg.data + offs);
     encoded[0] = element;
     encoded[1] = desc->cDims | ((DWORD)(desc->cDims * 2 * sizeof(DWORD)) << 16);
@@ -13263,26 +13263,26 @@ static DWORD WMSFT_append_arraydesc(ARRAYDESC *desc, WMSFT_TLBFile *file)
     return offs;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD WMSFT_encode_typedesc(const TYPEDESC *desc, WMSFT_TLBFile *file,
         DWORD element, DWORD *out_mix, DWORD *out_size)
 #else
 static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *out_mix, INT16 *out_size)
 #endif
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DWORD junk;
     INT16 junk2;
 #endif
     DWORD offs = 0;
     DWORD encoded[2];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD added_size = 0;
 #endif
     VARTYPE vt, subtype;
     char *data;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return -1;
     if (!desc)
     {
@@ -13291,11 +13291,11 @@ static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *o
     if(!desc)
 #endif
         return -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (out_size && *out_size > USHRT_MAX)
     {
         file->hres = TYPE_E_INVALIDSTATE;
@@ -13311,7 +13311,7 @@ static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *o
     vt = desc->vt & VT_TYPEMASK;
 
     if(vt == VT_PTR || vt == VT_SAFEARRAY){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         encoded[1] = element;
         encoded[0] = desc->vt | ((*out_mix | VT_BYREF) << 16);
 #else
@@ -13320,21 +13320,21 @@ static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *o
         encoded[0] = desc->vt | ((mix | VT_BYREF) << 16);
 #endif
         *out_mix = 0x7FFF;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         added_size = WMSFT_TYPEDESC_SIZE;
 #else
         *out_size += 2 * sizeof(DWORD);
 #endif
     }else if(vt == VT_CARRAY){
         encoded[0] = desc->vt | (0x7FFE << 16);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         encoded[1] = WMSFT_append_arraydesc(desc->lpadesc, file, element);
         if (FAILED(file->hres)) return -1;
 #else
         encoded[1] = WMSFT_append_arraydesc(desc->lpadesc, file);
 #endif
         *out_mix = 0x7FFE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         added_size = WMSFT_ARRAYDESC_SIZE + (desc->lpadesc->cDims - 1) * sizeof(SAFEARRAYBOUND);
 #endif
     }else if(vt == VT_USERDEFINED){
@@ -13363,7 +13363,7 @@ static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *o
         return 0x80000000 | (subtype << 16) | desc->vt;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (out_size)
     {
         if (added_size > USHRT_MAX - *out_size)
@@ -13381,7 +13381,7 @@ static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *o
         offs += sizeof(encoded);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     data = WMSFT_append_segment(file, &file->typdesc_seg, 1, sizeof(encoded));
     if (!data) return -1;
     memcpy(data, encoded, sizeof(encoded));
@@ -13395,7 +13395,7 @@ static DWORD WMSFT_append_typedesc(TYPEDESC *desc, WMSFT_TLBFile *file, DWORD *o
     return offs;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD WMSFT_append_typedesc(const TYPEDESC *desc, WMSFT_TLBFile *file,
         DWORD *out_mix, DWORD *out_size)
 {
@@ -13459,14 +13459,14 @@ static DWORD WMSFT_compile_custdata(struct list *custdata_list, WMSFT_TLBFile *f
     MSFT_CDGuid *cdguid;
     TLBCustData *cd;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres) || list_empty(custdata_list))
 #else
     if(list_empty(custdata_list))
 #endif
         return -1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     cdguid = WMSFT_append_segment(file, cdguids_seg, list_count(custdata_list), sizeof(*cdguid));
     if (!cdguid) return -1;
 #else
@@ -13477,7 +13477,7 @@ static DWORD WMSFT_compile_custdata(struct list *custdata_list, WMSFT_TLBFile *f
 
     offs = ret + sizeof(MSFT_CDGuid);
     LIST_FOR_EACH_ENTRY(cd, custdata_list, TLBCustData, entry){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!cd->guid)
         {
             file->hres = TYPE_E_INVALIDSTATE;
@@ -13486,7 +13486,7 @@ static DWORD WMSFT_compile_custdata(struct list *custdata_list, WMSFT_TLBFile *f
 #endif
         cdguid->GuidOffset = cd->guid->offset;
         cdguid->DataOffset = WMSFT_encode_variant(&cd->data, file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(file->hres)) return -1;
 #endif
         cdguid->next = offs;
@@ -13504,7 +13504,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
         WMSFT_TLBFile *file)
 {
     WMSFT_SegContents *aux_seg = &file->aux_seg;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD ret = aux_seg->len, i, j, extra_size = 0;
     ULONGLONG recorded_size = 0;
 #else
@@ -13515,7 +13515,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
     MEMBERID *memid;
     DWORD *name, *offsets, offs;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return -1;
     if ((info->typeattr.cFuncs && !info->funcdescs) ||
         (info->typeattr.cVars && !info->vardescs))
@@ -13527,7 +13527,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
 #endif
     for(i = 0; i < info->typeattr.cFuncs; ++i){
         TLBFuncDesc *desc = &info->funcdescs[i];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         BOOL has_defaults = FALSE;
         ULONGLONG record_start = recorded_size;
 
@@ -13559,7 +13559,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
 
         for(j = 0; j < desc->funcdesc.cParams; ++j){
             if(desc->funcdesc.lprgelemdescParam[j].paramdesc.wParamFlags & PARAMFLAG_FHASDEFAULT){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!desc->funcdesc.lprgelemdescParam[j].paramdesc.pparamdescex)
                 {
                     file->hres = TYPE_E_INVALIDSTATE;
@@ -13572,7 +13572,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
 #endif
             }
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (has_defaults) recorded_size += desc->funcdesc.cParams * sizeof(INT);
         if (recorded_size - record_start > USHRT_MAX)
         {
@@ -13608,7 +13608,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
 
     extra_size += sizeof(INT); /* total aux size for this typeinfo */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (recorded_size + extra_size +
         sizeof(INT) * (info->typeattr.cVars + info->typeattr.cFuncs) > INT_MAX)
     {
@@ -13634,11 +13634,11 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
     for(i = 0; i < info->typeattr.cFuncs; ++i){
         TLBFuncDesc *desc = &info->funcdescs[i];
         DWORD size = 6 * sizeof(INT), paramdefault_size = 0, *paramdefault;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD desc_size = WMSFT_FUNCDESC_SIZE + desc->funcdesc.cParams * WMSFT_ELEMDESC_SIZE;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         funcrecord->DataType = WMSFT_append_typedesc(&desc->funcdesc.elemdescFunc.tdesc, file, NULL, &desc_size);
         if (FAILED(file->hres)) return -1;
 #else
@@ -13659,13 +13659,13 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
          */
         funcrecord->FKCCIC =
             desc->funcdesc.funckind |
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ((DWORD)desc->funcdesc.invkind << 3) |
 #else
             (desc->funcdesc.invkind << 3) |
 #endif
             (list_empty(&desc->custdata_list) ? 0 : 0x80) |
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ((DWORD)desc->funcdesc.callconv << 8);
 #else
             (desc->funcdesc.callconv << 8);
@@ -13677,7 +13677,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
         for(j = 0; j < desc->funcdesc.cParams; ++j){
             if(desc->funcdesc.lprgelemdescParam[j].paramdesc.wParamFlags & PARAMFLAG_FHASDEFAULT){
                 paramdefault_size = sizeof(INT) * desc->funcdesc.cParams;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 desc_size += WMSFT_PARAMDESCEX_SIZE;
 #else
                 funcrecord->funcdescsize += sizeof(PARAMDESCEX);
@@ -13699,7 +13699,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
                 funcrecord->oHelpString = desc->HelpString->offset;
             else
                 funcrecord->oHelpString = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(!desc->Entry || desc->Entry == (TLBString*)-1)
 #else
             if(!desc->Entry)
@@ -13720,7 +13720,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
                 funcrecord->oHelpString = desc->HelpString->offset;
             else
                 funcrecord->oHelpString = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(!desc->Entry || desc->Entry == (TLBString*)-1)
 #else
             if(!desc->Entry)
@@ -13740,7 +13740,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
                 funcrecord->oHelpString = desc->HelpString->offset;
             else
                 funcrecord->oHelpString = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if(!desc->Entry || desc->Entry == (TLBString*)-1)
 #else
             if(!desc->Entry)
@@ -13765,7 +13765,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
         for(j = 0; j < desc->funcdesc.cParams; ++j){
             MSFT_ParameterInfo *info = (MSFT_ParameterInfo*)(((char *)funcrecord) + size);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             info->DataType = WMSFT_append_typedesc(&desc->funcdesc.lprgelemdescParam[j].tdesc, file, NULL, &desc_size);
             if (FAILED(file->hres)) return -1;
 #else
@@ -13780,13 +13780,13 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
             if(paramdefault_size){
                 if(desc->funcdesc.lprgelemdescParam[j].paramdesc.wParamFlags & PARAMFLAG_FHASDEFAULT)
                     *paramdefault = WMSFT_encode_variant(&desc->funcdesc.lprgelemdescParam[j].paramdesc.pparamdescex->varDefaultValue, file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 else
 #else
                 else if(paramdefault_size)
 #endif
                     *paramdefault = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (FAILED(file->hres)) return -1;
 #endif
                 ++paramdefault;
@@ -13795,7 +13795,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
             size += sizeof(MSFT_ParameterInfo);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (desc_size > USHRT_MAX)
         {
             file->hres = TYPE_E_INVALIDSTATE;
@@ -13816,11 +13816,11 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
     for(i = 0; i < info->typeattr.cVars; ++i){
         TLBVarDesc *desc = &info->vardescs[i];
         DWORD size = 5 * sizeof(INT);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD desc_size = WMSFT_VARDESC_SIZE;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         varrecord->DataType = WMSFT_append_typedesc(&desc->vardesc.elemdescVar.tdesc, file, NULL, &desc_size);
         if (FAILED(file->hres)) return -1;
 #else
@@ -13831,13 +13831,13 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
         varrecord->VarKind = desc->vardesc.varkind;
 
         if(desc->vardesc.varkind == VAR_CONST){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             desc_size += WMSFT_VARIANT_SIZE;
 #else
             varrecord->vardescsize += sizeof(VARIANT);
 #endif
             varrecord->OffsValue = WMSFT_encode_variant(desc->vardesc.lpvarValue, file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(file->hres)) return -1;
 #endif
         }else
@@ -13875,7 +13875,7 @@ static DWORD WMSFT_compile_typeinfo_aux(ITypeInfoImpl *info,
             varrecord->HelpContext = desc->HelpContext;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (desc_size > USHRT_MAX)
         {
             file->hres = TYPE_E_INVALIDSTATE;
@@ -13937,7 +13937,7 @@ static DWORD WMSFT_compile_typeinfo_ref(ITypeInfoImpl *info, WMSFT_TLBFile *file
     DWORD offs = file->ref_seg.len, i;
     WMSFT_RefChunk *chunk;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return -1;
     if (!info->typeattr.cImplTypes) return offs;
     chunk = WMSFT_append_segment(file, &file->ref_seg, info->typeattr.cImplTypes, sizeof(*chunk));
@@ -13963,7 +13963,7 @@ static DWORD WMSFT_compile_typeinfo_ref(ITypeInfoImpl *info, WMSFT_TLBFile *file
     return offs;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD WMSFT_compile_typeinfo(ITypeInfoImpl *info, UINT index, WMSFT_TLBFile *file, char *data)
 #else
 static DWORD WMSFT_compile_typeinfo(ITypeInfoImpl *info, INT16 index, WMSFT_TLBFile *file, char *data)
@@ -13975,7 +13975,7 @@ static DWORD WMSFT_compile_typeinfo(ITypeInfoImpl *info, INT16 index, WMSFT_TLBF
 
     if(data){
         MSFT_TypeInfoBase *base = (MSFT_TypeInfoBase*)data;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(file->hres)) return size;
         if (info->typeattr.cImplTypes && !info->impltypes)
         {
@@ -13990,14 +13990,14 @@ static DWORD WMSFT_compile_typeinfo(ITypeInfoImpl *info, INT16 index, WMSFT_TLBF
         base->typekind |= index << 16; /* TODO: There are some other flags here */
         base->typekind |= (info->typeattr.cbAlignment << 11) | (info->typeattr.cbAlignment << 6);
         base->memoffset = WMSFT_compile_typeinfo_aux(info, file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(file->hres)) return size;
 #endif
         base->res2 = 0;
         base->res3 = 0;
         base->res4 = 3;
         base->res5 = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         base->cElement = ((DWORD)info->typeattr.cVars << 16) | info->typeattr.cFuncs;
 #else
         base->cElement = (info->typeattr.cVars << 16) | info->typeattr.cFuncs;
@@ -14019,7 +14019,7 @@ static DWORD WMSFT_compile_typeinfo(ITypeInfoImpl *info, INT16 index, WMSFT_TLBF
         }else {
             base->NameOffset = -1;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         base->version = ((DWORD)info->typeattr.wMinorVerNum << 16) | info->typeattr.wMajorVerNum;
 #else
         base->version = (info->typeattr.wMinorVerNum << 16) | info->typeattr.wMajorVerNum;
@@ -14060,7 +14060,7 @@ static DWORD WMSFT_compile_typeinfo(ITypeInfoImpl *info, INT16 index, WMSFT_TLBF
 static void WMSFT_compile_typeinfo_seg(ITypeLibImpl *This, WMSFT_TLBFile *file, DWORD *junk)
 {
     UINT i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD size;
 
     if (FAILED(file->hres) || !This->TypeInfoCount) return;
@@ -14074,7 +14074,7 @@ static void WMSFT_compile_typeinfo_seg(ITypeLibImpl *This, WMSFT_TLBFile *file, 
         file->typeinfo_seg.len += WMSFT_compile_typeinfo(info, i, NULL, NULL);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size = file->typeinfo_seg.len;
     file->typeinfo_seg.len = 0;
     if (!WMSFT_append_segment(file, &file->typeinfo_seg, 1, size)) return;
@@ -14091,7 +14091,7 @@ static void WMSFT_compile_typeinfo_seg(ITypeLibImpl *This, WMSFT_TLBFile *file, 
         ITypeInfoImpl *info = This->typeinfos[i];
         file->typeinfo_seg.len += WMSFT_compile_typeinfo(info, i, file,
                 ((char *)file->typeinfo_seg.data) + file->typeinfo_seg.len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(file->hres)) return;
 #endif
     }
@@ -14110,14 +14110,14 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
     char *data;
     DWORD last_offs = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return;
 #endif
     file->impfile_seg.len = 0;
     LIST_FOR_EACH_ENTRY(implib, &This->implib_list, TLBImpLib, entry){
         int size = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!implib->guid)
         {
             file->hres = TYPE_E_INVALIDSTATE;
@@ -14130,7 +14130,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
                 ++path;
             else
                 path = implib->name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (*path && !(size = WideCharToMultiByte(CP_ACP, 0, path, lstrlenW(path),
                     NULL, 0, NULL, NULL)))
             {
@@ -14144,7 +14144,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
 #endif
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (size > (USHRT_MAX >> 2))
         {
             file->hres = TYPE_E_INVALIDSTATE;
@@ -14157,7 +14157,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
         if (size < 8)
             size = 8;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (sizeof(WMSFT_ImpFile) + size > INT_MAX - file->impfile_seg.len)
         {
             file->hres = E_OUTOFMEMORY;
@@ -14170,11 +14170,11 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!file->impfile_seg.len) return;
 #endif
     data = file->impfile_seg.data = malloc(file->impfile_seg.len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!data)
     {
         file->hres = E_OUTOFMEMORY;
@@ -14183,7 +14183,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
 #endif
 
     LIST_FOR_EACH_ENTRY(implib, &This->implib_list, TLBImpLib, entry){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int strlen = 0, size = implib->offset - sizeof(WMSFT_ImpFile);
 #else
         int strlen = 0, size;
@@ -14192,7 +14192,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
         impfile = (WMSFT_ImpFile*)data;
         impfile->guid_offs = implib->guid->offset;
         impfile->lcid = implib->lcid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         impfile->version = ((DWORD)implib->wVersionMinor << 16) | implib->wVersionMajor;
 #else
         impfile->version = (implib->wVersionMinor << 16) | implib->wVersionMajor;
@@ -14206,7 +14206,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
                 ++path;
             else
                 path = implib->name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (*path && !(strlen = WideCharToMultiByte(CP_ACP, 0, path, lstrlenW(path),
                     data + sizeof(INT16), size - sizeof(INT16), NULL, NULL)))
             {
@@ -14221,7 +14221,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
 #endif
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (strlen > (USHRT_MAX >> 2))
         {
             file->hres = TYPE_E_INVALIDSTATE;
@@ -14230,7 +14230,7 @@ static void WMSFT_compile_impfile(ITypeLibImpl *This, WMSFT_TLBFile *file)
 #endif
         *((INT16*)data) = (strlen << 2) | 1; /* FIXME: is that a flag, or what? */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         size = strlen + sizeof(INT16);
         if (size % 4)
             size = (size + 4) & ~0x3;
@@ -14253,7 +14253,7 @@ static void WMSFT_compile_impinfo(ITypeLibImpl *This, WMSFT_TLBFile *file)
 
     WMSFT_compile_impfile(This, file);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres) || list_empty(&This->ref_list)) return;
     info = WMSFT_append_segment(file, &file->impinfo_seg, list_count(&This->ref_list), sizeof(*info));
     if (!info) return;
@@ -14263,7 +14263,7 @@ static void WMSFT_compile_impinfo(ITypeLibImpl *This, WMSFT_TLBFile *file)
 #endif
 
     LIST_FOR_EACH_ENTRY(ref_type, &This->ref_list, TLBRefType, entry){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ref_type->pImpTLInfo || ref_type->pImpTLInfo == TLB_REF_INTERNAL ||
             ref_type->pImpTLInfo == TLB_REF_NOT_FOUND ||
             (ref_type->index == TLB_REF_USE_GUID && !ref_type->guid) || i > USHRT_MAX)
@@ -14288,7 +14288,7 @@ static void WMSFT_compile_impinfo(ITypeLibImpl *This, WMSFT_TLBFile *file)
 
 static void WMSFT_compile_guidhash(ITypeLibImpl *This, WMSFT_TLBFile *file)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!WMSFT_append_segment(file, &file->guidhash_seg, 1, 0x80)) return;
 #else
     file->guidhash_seg.len = 0x80;
@@ -14299,7 +14299,7 @@ static void WMSFT_compile_guidhash(ITypeLibImpl *This, WMSFT_TLBFile *file)
 
 static void WMSFT_compile_namehash(ITypeLibImpl *This, WMSFT_TLBFile *file)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!WMSFT_append_segment(file, &file->namehash_seg, 1, 0x200)) return;
 #else
     file->namehash_seg.len = 0x200;
@@ -14308,18 +14308,18 @@ static void WMSFT_compile_namehash(ITypeLibImpl *This, WMSFT_TLBFile *file)
     memset(file->namehash_seg.data, 0xFF, file->namehash_seg.len);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void tmp_fill_segdir_seg(WMSFT_TLBFile *file, MSFT_pSeg *segdir,
         WMSFT_SegContents *contents, DWORD *running_offset)
 #else
 static void tmp_fill_segdir_seg(MSFT_pSeg *segdir, WMSFT_SegContents *contents, DWORD *running_offset)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file->hres)) return;
 #endif
     if(contents && contents->len){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (contents->len > INT_MAX - *running_offset)
         {
             file->hres = E_OUTOFMEMORY;
@@ -14339,14 +14339,14 @@ static void tmp_fill_segdir_seg(MSFT_pSeg *segdir, WMSFT_SegContents *contents, 
     segdir->res0c = 0xf;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL WMSFT_write_segment(HANDLE outfile, WMSFT_SegContents *segment)
 #else
 static void WMSFT_write_segment(HANDLE outfile, WMSFT_SegContents *segment)
 #endif
 {
     DWORD written;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!segment || !segment->len) return TRUE;
     return WriteFile(outfile, segment->data, segment->len, &written, NULL) && written == segment->len;
 #else
@@ -14361,7 +14361,7 @@ static HRESULT WMSFT_fixup_typeinfos(ITypeLibImpl *This, WMSFT_TLBFile *file,
     DWORD i;
     MSFT_TypeInfoBase *base = (MSFT_TypeInfoBase *)file->typeinfo_seg.data;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (file->aux_seg.len > INT_MAX - file_len) return E_OUTOFMEMORY;
 #endif
     for(i = 0; i < This->TypeInfoCount; ++i){
@@ -14403,12 +14403,12 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
 
     TRACE("%p\n", This);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((UINT)This->TypeInfoCount > USHRT_MAX + 1u ||
         (This->TypeInfoCount && !This->typeinfos)) return TYPE_E_INVALIDSTATE;
 #endif
     for(i = 0; i < This->TypeInfoCount; ++i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if (!This->typeinfos[i]) return TYPE_E_INVALIDSTATE;
         if(This->typeinfos[i]->needs_layout) {
@@ -14432,7 +14432,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
         file.header.varflags |= 0x10;
     if (This->HelpStringDll)
         file.header.varflags |= HELPDLLFLAG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     file.header.version = ((DWORD)This->ver_minor << 16) | This->ver_major;
 #else
     file.header.version = (This->ver_minor << 16) | This->ver_major;
@@ -14446,7 +14446,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
 
     WMSFT_compile_namehash(This, &file);
     /* do name and string compilation to get offsets for other compilations */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = file.hres;
     if (SUCCEEDED(hres)) hres = WMSFT_compile_names(This, &file);
 #else
@@ -14464,7 +14464,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
     }
 
     WMSFT_compile_guidhash(This, &file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = file.hres;
     if (SUCCEEDED(hres)) hres = WMSFT_compile_guids(This, &file);
 #else
@@ -14495,7 +14495,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
         file.header.NameOffset = -1;
 
     file.header.CustomDataOffset = WMSFT_compile_custdata(&This->custdata_list, &file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file.hres)) {
         WMSFT_free_file(&file);
         return file.hres;
@@ -14512,7 +14512,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
         junk_size += sizeof(DWORD);
     if(junk_size){
         junk = calloc(1, junk_size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!junk) {
             WMSFT_free_file(&file);
             return E_OUTOFMEMORY;
@@ -14528,13 +14528,13 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
         junk_offs = 0;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WMSFT_compile_typeinfo_seg(This, &file, junk ? junk + junk_offs : NULL);
 #else
     WMSFT_compile_typeinfo_seg(This, &file, junk + junk_offs);
 #endif
     WMSFT_compile_impinfo(This, &file);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(file.hres)) {
         free(junk);
         WMSFT_free_file(&file);
@@ -14554,105 +14554,105 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
     running_offset += sizeof(file.segdir);
 
     TRACE("typeinfo at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pTypeInfoTab, &file.typeinfo_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pTypeInfoTab, &file.typeinfo_seg, &running_offset);
 #endif
 
     TRACE("guidhashtab at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pGuidHashTab, &file.guidhash_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pGuidHashTab, &file.guidhash_seg, &running_offset);
 #endif
 
     TRACE("guidtab at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pGuidTab, &file.guid_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pGuidTab, &file.guid_seg, &running_offset);
 #endif
 
     TRACE("reftab at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pRefTab, &file.ref_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pRefTab, &file.ref_seg, &running_offset);
 #endif
 
     TRACE("impinfo at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pImpInfo, &file.impinfo_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pImpInfo, &file.impinfo_seg, &running_offset);
 #endif
 
     TRACE("impfiles at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pImpFiles, &file.impfile_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pImpFiles, &file.impfile_seg, &running_offset);
 #endif
 
     TRACE("namehashtab at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pNameHashTab, &file.namehash_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pNameHashTab, &file.namehash_seg, &running_offset);
 #endif
 
     TRACE("nametab at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pNametab, &file.name_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pNametab, &file.name_seg, &running_offset);
 #endif
 
     TRACE("stringtab at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pStringtab, &file.string_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pStringtab, &file.string_seg, &running_offset);
 #endif
 
     TRACE("typdesc at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pTypdescTab, &file.typdesc_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pTypdescTab, &file.typdesc_seg, &running_offset);
 #endif
 
     TRACE("arraydescriptions at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pArrayDescriptions, &file.arraydesc_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pArrayDescriptions, &file.arraydesc_seg, &running_offset);
 #endif
 
     TRACE("custdata at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pCustData, &file.custdata_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pCustData, &file.custdata_seg, &running_offset);
 #endif
 
     TRACE("cdguids at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.pCDGuids, &file.cdguids_seg, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.pCDGuids, &file.cdguids_seg, &running_offset);
 #endif
 
     TRACE("res0e at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.res0e, NULL, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.res0e, NULL, &running_offset);
 #endif
 
     TRACE("res0f at: 0x%lx\n", running_offset);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_fill_segdir_seg(&file, &file.segdir.res0f, NULL, &running_offset);
 #else
     tmp_fill_segdir_seg(&file.segdir.res0f, NULL, &running_offset);
@@ -14660,7 +14660,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
 
     TRACE("aux_seg at: 0x%lx\n", running_offset);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = file.hres;
     if (SUCCEEDED(hres)) hres = WMSFT_fixup_typeinfos(This, &file, running_offset);
     if (FAILED(hres))
@@ -14682,7 +14682,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
     }
 
     br = WriteFile(outfile, &file.header, sizeof(file.header), &written, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!br || written != sizeof(file.header)) {
 #else
     if (!br) {
@@ -14693,13 +14693,13 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
         return TYPE_E_IOERROR;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     br = !junk_size || WriteFile(outfile, junk, junk_size, &written, NULL);
 #else
     br = WriteFile(outfile, junk, junk_size, &written, NULL);
 #endif
     free(junk);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!br || (junk_size && written != junk_size)) {
 #else
     if (!br) {
@@ -14710,7 +14710,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
     }
 
     br = WriteFile(outfile, &file.segdir, sizeof(file.segdir), &written, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!br || written != sizeof(file.segdir)) {
 #else
     if (!br) {
@@ -14720,7 +14720,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
         return TYPE_E_IOERROR;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!WMSFT_write_segment(outfile, &file.typeinfo_seg) ||
         !WMSFT_write_segment(outfile, &file.guidhash_seg) ||
         !WMSFT_write_segment(outfile, &file.guid_seg) ||
@@ -14757,7 +14757,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSaveAllChanges(ICreateTypeLib2 *iface)
 
     CloseHandle(outfile);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return hres;
 #else
     return S_OK;
@@ -14799,7 +14799,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetHelpStringDll(ICreateTypeLib2 *iface,
         LPOLESTR filename)
 {
     ITypeLibImpl *This = impl_from_ICreateTypeLib2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBString *str;
 #endif
     TRACE("%p %s\n", This, wine_dbgstr_w(filename));
@@ -14807,7 +14807,7 @@ static HRESULT WINAPI ICreateTypeLib2_fnSetHelpStringDll(ICreateTypeLib2 *iface,
     if (!filename)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     str = TLB_append_str(&This->string_list, filename);
     if (!str) return E_OUTOFMEMORY;
     This->HelpStringDll = str;
@@ -14959,11 +14959,11 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
     UINT index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SIZE_T ref_index;
 #endif
     ITypeLib *container;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBRefType *ref_type, *new_ref = NULL;
     TLBImpLib *implib, *new_implib = NULL;
     TYPEATTR *typeattr = NULL;
@@ -14996,7 +14996,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
     }
 
     hres = ITypeLib_GetLibAttr(container, &libattr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hres)) goto done;
 
     hres = ITypeInfo_GetTypeAttr(typeInfo, &typeattr);
@@ -15009,7 +15009,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
 #endif
 
     LIST_FOR_EACH_ENTRY(implib, &This->pTypeLib->implib_list, TLBImpLib, entry){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(IsEqualGUID(TLB_get_guid_null(implib->guid), &libattr->guid) &&
 #else
         if(IsEqualGUID(&implib->guid->guid, &libattr->guid) &&
@@ -15021,7 +15021,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
     }
 
     if(&implib->entry == &This->pTypeLib->implib_list){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         implib = new_implib = calloc(1, sizeof(TLBImpLib));
         if (!implib)
         {
@@ -15035,7 +15035,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         if((ITypeLib2Vtbl*)container->lpVtbl == &tlbvt){
             const ITypeLibImpl *our_container = impl_from_ITypeLib2((ITypeLib2*)container);
             implib->name = SysAllocString(our_container->path);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (our_container->path && !implib->name)
             {
                 hres = E_OUTOFMEMORY;
@@ -15045,11 +15045,11 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         }else{
             hres = QueryPathOfRegTypeLib(&libattr->guid, libattr->wMajorVerNum,
                     libattr->wMinorVerNum, libattr->lcid, &implib->name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (hres == E_OUTOFMEMORY) goto done;
 #endif
             if(FAILED(hres)){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 SysFreeString(implib->name);
 #endif
                 implib->name = NULL;
@@ -15058,7 +15058,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         }
 
         implib->guid = TLB_append_guid(&This->pTypeLib->guid_list, &libattr->guid, 2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!implib->guid)
         {
             hres = E_OUTOFMEMORY;
@@ -15069,12 +15069,12 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         implib->wVersionMajor = libattr->wMajorVerNum;
         implib->wVersionMinor = libattr->wMinorVerNum;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         list_add_tail(&This->pTypeLib->implib_list, &implib->entry);
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ref_index = 0;
 #else
     ITypeLib_ReleaseTLibAttr(container, libattr);
@@ -15088,7 +15088,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
 #endif
     LIST_FOR_EACH_ENTRY(ref_type, &This->pTypeLib->ref_list, TLBRefType, entry){
         if(ref_type->index == TLB_REF_USE_GUID &&
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ref_type->pImpTLInfo == implib &&
                 IsEqualGUID(TLB_get_guid_null(ref_type->guid), &typeattr->guid) &&
 #else
@@ -15096,7 +15096,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
 #endif
                 ref_type->tkind == typeattr->typekind)
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ++ref_index;
 #else
         ++index;
@@ -15104,7 +15104,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
     }
 
     if(&ref_type->entry == &This->pTypeLib->ref_list){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ref_index > (MAXLONG - 1) / sizeof(MSFT_ImpInfo))
         {
             hres = E_OUTOFMEMORY;
@@ -15122,7 +15122,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
 
         ref_type->tkind = typeattr->typekind;
         ref_type->pImpTLInfo = implib;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ref_type->reference = ref_index * sizeof(MSFT_ImpInfo);
 #else
         ref_type->reference = index * sizeof(MSFT_ImpInfo);
@@ -15131,7 +15131,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         ref_type->index = TLB_REF_USE_GUID;
 
         ref_type->guid = TLB_append_guid(&This->pTypeLib->guid_list, &typeattr->guid, ref_type->reference+1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ref_type->guid)
         {
             hres = E_OUTOFMEMORY;
@@ -15139,7 +15139,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (new_implib)
         {
             list_add_tail(&This->pTypeLib->implib_list, &new_implib->entry);
@@ -15147,25 +15147,25 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddRefTypeInfo(ICreateTypeInfo2 *iface,
         }
 #endif
         list_add_tail(&This->pTypeLib->ref_list, &ref_type->entry);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         new_ref = NULL;
 #endif
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ITypeInfo_ReleaseTypeAttr(typeInfo, typeattr);
 
 #endif
     *refType = ref_type->reference | 0x1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(IsEqualGUID(TLB_get_guid_null(ref_type->guid), &IID_IDispatch))
 #else
     if(IsEqualGUID(&ref_type->guid->guid, &IID_IDispatch))
 #endif
         This->pTypeLib->dispatch_href = *refType;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = S_OK;
 done:
     free(new_ref);
@@ -15187,7 +15187,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
         UINT index, FUNCDESC *funcDesc)
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBFuncDesc tmp_func_desc, *func_desc, *new_funcs;
     SIZE_T buf_size, extra;
     ULONG_PTR old_funcs;
@@ -15202,7 +15202,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
 
     TRACE("%p %u %p\n", This, index, funcDesc);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!funcDesc || funcDesc->oVft & 3 || funcDesc->cParams < 0 || funcDesc->cScodes < 0 ||
         (funcDesc->cParams && !funcDesc->lprgelemdescParam))
 #else
@@ -15226,7 +15226,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
 
     if (index > This->typeattr.cFuncs)
         return TYPE_E_ELEMENTNOTFOUND;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->typeattr.cFuncs == USHRT_MAX) return E_OUTOFMEMORY;
 #endif
 
@@ -15242,7 +15242,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
     TLBFuncDesc_Constructor(&tmp_func_desc);
 
     tmp_func_desc.funcdesc = *funcDesc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     tmp_func_desc.funcdesc.lprgelemdescParam = NULL;
 #endif
 
@@ -15251,7 +15251,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
 
     if (funcDesc->cScodes && funcDesc->lprgscode) {
         tmp_func_desc.funcdesc.lprgscode = malloc(sizeof(SCODE) * funcDesc->cScodes);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!tmp_func_desc.funcdesc.lprgscode)
             return E_OUTOFMEMORY;
 #endif
@@ -15262,7 +15262,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
     }
 
     buf_size = TLB_SizeElemDesc(&funcDesc->elemdescFunc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (buf_size == SIZE_MAX)
     {
         hres = E_OUTOFMEMORY;
@@ -15270,7 +15270,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
     }
 #endif
     for (i = 0; i < funcDesc->cParams; ++i) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         extra = TLB_SizeElemDesc(funcDesc->lprgelemdescParam + i);
         if (buf_size > SIZE_MAX - sizeof(ELEMDESC) ||
             extra > SIZE_MAX - buf_size - sizeof(ELEMDESC))
@@ -15280,7 +15280,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
         }
 #endif
         buf_size += sizeof(ELEMDESC);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         buf_size += extra;
     }
     tmp_func_desc.funcdesc.lprgelemdescParam = malloc(buf_size ? buf_size : 1);
@@ -15291,13 +15291,13 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
         buf_size += TLB_SizeElemDesc(funcDesc->lprgelemdescParam + i);
 #endif
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     tmp_func_desc.funcdesc.lprgelemdescParam = malloc(buf_size);
 #endif
     buffer = (char*)(tmp_func_desc.funcdesc.lprgelemdescParam + funcDesc->cParams);
 
     hres = TLB_CopyElemDesc(&funcDesc->elemdescFunc, &tmp_func_desc.funcdesc.elemdescFunc, &buffer);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hres)) goto failed;
     return_initialized = TRUE;
 #else
@@ -15311,7 +15311,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
     for (i = 0; i < funcDesc->cParams; ++i) {
         hres = TLB_CopyElemDesc(funcDesc->lprgelemdescParam + i,
                 tmp_func_desc.funcdesc.lprgelemdescParam + i, &buffer);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (FAILED(hres)) goto failed;
         ++initialized;
         if (tmp_func_desc.funcdesc.lprgelemdescParam[i].paramdesc.pparamdescex &&
@@ -15326,7 +15326,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
                 tmp_func_desc.funcdesc.lprgelemdescParam[i].tdesc.vt != VT_VARIANT &&
                 tmp_func_desc.funcdesc.lprgelemdescParam[i].tdesc.vt != VT_USERDEFINED){
             hres = TLB_SanitizeVariant(&tmp_func_desc.funcdesc.lprgelemdescParam[i].paramdesc.pparamdescex->varDefaultValue);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (FAILED(hres)) goto failed;
 #else
             if (FAILED(hres)) {
@@ -15339,7 +15339,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
     }
 
     tmp_func_desc.pParamDesc = TLBParDesc_Constructor(funcDesc->cParams);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (funcDesc->cParams && !tmp_func_desc.pParamDesc)
     {
         hres = E_OUTOFMEMORY;
@@ -15348,7 +15348,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
 #endif
 
     if (This->funcdescs) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         old_funcs = (ULONG_PTR)This->funcdescs;
         new_funcs = realloc(This->funcdescs, sizeof(TLBFuncDesc) * (This->typeattr.cFuncs + 1));
         if (!new_funcs)
@@ -15371,7 +15371,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
         /* move custdata lists to the new memory location */
         for(i = 0; i < This->typeattr.cFuncs + 1; ++i){
             if(index != i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 TLB_relink_custdata(&This->funcdescs[i].custdata_list,
                         old_funcs + (i < index ? i : i - 1) * sizeof(*This->funcdescs) +
                         FIELD_OFFSET(TLBFuncDesc, custdata_list));
@@ -15381,7 +15381,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
         }
     } else
         func_desc = This->funcdescs = malloc(sizeof(TLBFuncDesc));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!func_desc)
     {
         hres = E_OUTOFMEMORY;
@@ -15397,7 +15397,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddFuncDesc(ICreateTypeInfo2 *iface,
     This->needs_layout = TRUE;
 
     return S_OK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 failed:
     if (return_initialized) TLB_FreeElemDesc(&tmp_func_desc.funcdesc.elemdescFunc);
@@ -15414,7 +15414,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddImplType(ICreateTypeInfo2 *iface,
         UINT index, HREFTYPE refType)
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBImplType *impl_type, *new_impltypes;
     ULONG_PTR old_impltypes;
 #else
@@ -15446,14 +15446,14 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddImplType(ICreateTypeInfo2 *iface,
             return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->typeattr.cImplTypes == USHRT_MAX) return E_OUTOFMEMORY;
 
 #endif
     if (This->impltypes){
         UINT i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         old_impltypes = (ULONG_PTR)This->impltypes;
         new_impltypes = realloc(This->impltypes, sizeof(TLBImplType) * (This->typeattr.cImplTypes + 1));
         if (!new_impltypes) return E_OUTOFMEMORY;
@@ -15472,7 +15472,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddImplType(ICreateTypeInfo2 *iface,
         /* move custdata lists to the new memory location */
         for(i = 0; i < This->typeattr.cImplTypes + 1; ++i){
             if(index != i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 TLB_relink_custdata(&This->impltypes[i].custdata_list,
                         old_impltypes + (i < index ? i : i - 1) * sizeof(*This->impltypes) +
                         FIELD_OFFSET(TLBImplType, custdata_list));
@@ -15482,7 +15482,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddImplType(ICreateTypeInfo2 *iface,
         }
     } else
         impl_type = This->impltypes = malloc(sizeof(TLBImplType));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!impl_type) return E_OUTOFMEMORY;
 #endif
 
@@ -15506,7 +15506,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetImplTypeFlags(ICreateTypeInfo2 *ifac
         UINT index, INT implTypeFlags)
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBImplType *impl_type;
 #else
     TLBImplType *impl_type = &This->impltypes[index];
@@ -15520,7 +15520,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetImplTypeFlags(ICreateTypeInfo2 *ifac
     if (index >= This->typeattr.cImplTypes)
         return TYPE_E_ELEMENTNOTFOUND;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     impl_type = &This->impltypes[index];
 #endif
     impl_type->implflags = implTypeFlags;
@@ -15561,7 +15561,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
         UINT index, VARDESC *varDesc)
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBVarDesc *var_desc, *new_vardescs;
     VARDESC source, *vardesc_create;
     ULONG_PTR old_vardescs;
@@ -15572,7 +15572,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
 
     TRACE("%p %u %p\n", This, index, varDesc);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!varDesc || index > This->typeattr.cVars) return E_INVALIDARG;
     if (This->typeattr.cVars == USHRT_MAX) return E_OUTOFMEMORY;
 
@@ -15585,7 +15585,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
     if (This->vardescs){
         UINT i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         old_vardescs = (ULONG_PTR)This->vardescs;
         new_vardescs = realloc(This->vardescs, sizeof(TLBVarDesc) * (This->typeattr.cVars + 1));
         if (!new_vardescs)
@@ -15602,13 +15602,13 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
             memmove(This->vardescs + index + 1, This->vardescs + index,
                     (This->typeattr.cVars - index) * sizeof(TLBVarDesc));
             var_desc = This->vardescs + index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         } else
 #else
         } else {
 #endif
             var_desc = This->vardescs + This->typeattr.cVars;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             memset(var_desc, 0, sizeof(TLBVarDesc));
         }
 #endif
@@ -15616,7 +15616,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
         /* move custdata lists to the new memory location */
         for(i = 0; i < This->typeattr.cVars + 1; ++i){
             if(index != i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 TLB_relink_custdata(&This->vardescs[i].custdata_list,
                         old_vardescs + (i < index ? i : i - 1) * sizeof(*This->vardescs) +
                         FIELD_OFFSET(TLBVarDesc, custdata_list));
@@ -15626,7 +15626,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
         }
     } else
         var_desc = This->vardescs = calloc(1, sizeof(TLBVarDesc));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!var_desc)
     {
         TLB_FreeVarDesc(vardesc_create);
@@ -15634,11 +15634,11 @@ static HRESULT WINAPI ICreateTypeInfo2_fnAddVarDesc(ICreateTypeInfo2 *iface,
     }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(var_desc, 0, sizeof(*var_desc));
 #endif
     TLBVarDesc_Constructor(var_desc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     var_desc->vardesc_create = vardesc_create;
 #else
     hr = TLB_AllocAndInitVarDesc(varDesc, &var_desc->vardesc_create);
@@ -15658,7 +15658,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetFuncAndParamNames(ICreateTypeInfo2 *
         UINT index, LPOLESTR *names, UINT numNames)
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TLBFuncDesc *func_desc;
 #else
     TLBFuncDesc *func_desc = &This->funcdescs[index];
@@ -15673,7 +15673,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetFuncAndParamNames(ICreateTypeInfo2 *
     if (index >= This->typeattr.cFuncs || numNames == 0)
         return TYPE_E_ELEMENTNOTFOUND;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     func_desc = &This->funcdescs[index];
 #endif
     if (func_desc->funcdesc.invkind & (INVOKE_PROPERTYPUT | INVOKE_PROPERTYPUTREF)){
@@ -15726,7 +15726,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetTypeDescAlias(ICreateTypeInfo2 *ifac
 {
     ITypeInfoImpl *This = info_impl_from_ICreateTypeInfo2(iface);
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TYPEDESC *alias;
     SIZE_T size;
     ULONG instance_size;
@@ -15741,7 +15741,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetTypeDescAlias(ICreateTypeInfo2 *ifac
     if(This->typeattr.typekind != TKIND_ALIAS)
         return TYPE_E_BADMODULEKIND;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size = TLB_SizeTypeDesc(tdescAlias, TRUE);
     if (size == SIZE_MAX) return E_INVALIDARG;
     hr = TLB_size_instance(This, This->pTypeLib->syskind, tdescAlias, &instance_size, &alignment);
@@ -15751,13 +15751,13 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetTypeDescAlias(ICreateTypeInfo2 *ifac
     if(FAILED(hr))
         return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     alias = malloc(size);
     if (!alias) return E_OUTOFMEMORY;
     TLB_CopyTypeDesc(NULL, tdescAlias, alias);
 #endif
     free(This->tdescAlias);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->tdescAlias = alias;
     This->typeattr.cbSizeInstance = instance_size;
     This->typeattr.cbAlignment = alignment;
@@ -15871,7 +15871,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnSetTypeIdldesc(ICreateTypeInfo2 *iface,
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static UINT TLB_typeinfo_vft_unit(ITypeInfo *info)
 {
     UINT index, unit = sizeof(void *);
@@ -15915,7 +15915,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnLayOut(ICreateTypeInfo2 *iface)
                     ITypeInfo_Release(inh);
                     return hres;
                 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 This->typeattr.cbSizeVft = attr->cbSizeVft / TLB_typeinfo_vft_unit(inh) *
                                            This->pTypeLib->ptr_size;
 #else
@@ -16044,7 +16044,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnDeleteFuncDesc(ICreateTypeInfo2 *iface,
         memmove(This->funcdescs + index, This->funcdescs + index + 1,
                 sizeof(*This->funcdescs) * (This->typeattr.cFuncs - index));
         for (i = index; i < This->typeattr.cFuncs; ++i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             TLB_relink_custdata(&This->funcdescs[i].custdata_list,
                     (ULONG_PTR)&This->funcdescs[i + 1].custdata_list);
 #else
@@ -16097,7 +16097,7 @@ static HRESULT WINAPI ICreateTypeInfo2_fnDeleteImplType(ICreateTypeInfo2 *iface,
         memmove(This->impltypes + index, This->impltypes + index + 1, (This->typeattr.cImplTypes - index) *
                 sizeof(*This->impltypes));
         for (i = index; i < This->typeattr.cImplTypes; ++i)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             TLB_relink_custdata(&This->impltypes[i].custdata_list,
                     (ULONG_PTR)&This->impltypes[i + 1].custdata_list);
 #else

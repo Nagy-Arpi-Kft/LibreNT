@@ -34,7 +34,7 @@
 #include "initguid.h"
 #include "knownfolders.h"
 #include "shlobj.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <shlwapi.h>
 #endif
 
@@ -44,7 +44,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(cryptnet);
 
 #define IS_INTOID(x)    (((ULONG_PTR)(x) >> 16) == 0)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* We don't have SHGetKnownFolderPath yet */
 #define SHGetKnownFolderPath(a,b,c,out) CryptnetSHGetKnownFolderPath(out)
 static HRESULT CryptnetSHGetKnownFolderPath(WCHAR **out)
@@ -57,7 +57,7 @@ static HRESULT CryptnetSHGetKnownFolderPath(WCHAR **out)
     }
     return hr;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /***********************************************************************
  *    DllRegisterServer (CRYPTNET.@)
@@ -1020,7 +1020,7 @@ static BOOL WINAPI File_RetrieveEncodedObjectW(LPCWSTR pszURL,
              components.dwUrlPathLength + 1);
             hFile = CreateFileW(path, GENERIC_READ, FILE_SHARE_READ,
              NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if ((hFile == INVALID_HANDLE_VALUE) && (lstrlenW(components.lpszUrlPath) > 1) && (components.lpszUrlPath[1] != ':'))
 #else
             if (hFile == INVALID_HANDLE_VALUE)
@@ -2385,7 +2385,7 @@ BOOL WINAPI CertDllVerifyRevocation(DWORD dwEncodingType, DWORD dwRevType,
     }
     if (!cContext)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         memset(&pRevStatus->dwIndex, 0, pRevStatus->cbSize - sizeof(DWORD));
         pRevStatus->dwError = E_INVALIDARG;
 #endif
@@ -2401,7 +2401,7 @@ BOOL WINAPI CertDllVerifyRevocation(DWORD dwEncodingType, DWORD dwRevType,
         pTime = &now;
     }
     memset(&pRevStatus->dwIndex, 0, pRevStatus->cbSize - sizeof(DWORD));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (dwRevType != CERT_CONTEXT_REVOCATION_TYPE ||
         GET_CERT_ENCODING_TYPE(dwEncodingType) != X509_ASN_ENCODING)
 #else

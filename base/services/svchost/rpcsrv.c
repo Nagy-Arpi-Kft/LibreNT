@@ -1,9 +1,9 @@
 /*
- * PROJECT:     ReactOS Service Host
+ * PROJECT:     LibreNT Service Host
  * LICENSE:     BSD - See COPYING.ARM in the top level directory
  * FILE:        base/services/svchost/rpcsrv.c
  * PURPOSE:     RPC Service Support
- * PROGRAMMERS: ReactOS Portable Systems Group
+ * PROGRAMMERS: LibreNT Portable Systems Group
  */
 
 /* INCLUDES ******************************************************************/

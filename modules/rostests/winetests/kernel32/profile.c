@@ -1211,7 +1211,7 @@ static void test_registry_mapping(void)
     HKEY mapping_key, mapped_key, mapping_subkey;
     char buffer[30];
     LSTATUS ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char path[MAX_PATH];
 
     /* Get the real system root, use forward slashes, and lowercase everything other than "C:\" */
@@ -1258,7 +1258,7 @@ static void test_registry_mapping(void)
 
     check_profile_string("section1", "name2", "winetest_map.ini", "value2");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetFileAttributesA(path);
 #else
     ret = GetFileAttributesA("C:/windows/winetest_map.ini");
@@ -1354,7 +1354,7 @@ static void test_registry_mapping(void)
     ok(ret == 22, "got %lu\n", ret);
     ok(!memcmp(buffer, "section1\0file_section\0", 23), "got %s\n", debugstr_an(buffer, ret));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DeleteFileA(path);
 #else
     ret = DeleteFileA("C:/windows/winetest_map.ini");
@@ -1384,7 +1384,7 @@ static void test_registry_mapping(void)
 
     check_profile_string("section2", "name2", "winetest_map.ini", "value2");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetFileAttributesA(path);
 #else
     ret = GetFileAttributesA("C:/windows/winetest_map.ini");
@@ -1430,7 +1430,7 @@ static void test_registry_mapping(void)
 
     check_profile_string("section3", "name1", "winetest_map.ini", "value1");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DeleteFileA(path);
 #else
     ret = DeleteFileA("C:/windows/winetest_map.ini");
@@ -1444,7 +1444,7 @@ static void test_registry_mapping(void)
 
     check_profile_string("section4", "name1", "winetest_map.ini", "value1");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DeleteFileA(path);
 #else
     ret = DeleteFileA("C:/windows/winetest_map.ini");
@@ -1473,7 +1473,7 @@ static void test_registry_mapping(void)
 
     check_profile_string("section5", "name2", "winetest_map.ini", "value2");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetFileAttributesA(path);
 #else
     ret = GetFileAttributesA("C:/windows/winetest_map.ini");
@@ -1532,7 +1532,7 @@ static void test_registry_mapping(void)
     ret = WritePrivateProfileStringA("section6", "name3", "value3", "winetest_map.ini");
     ok(ret, "got error %lu\n", GetLastError());
     check_profile_string("section6", "name3", "winetest_map.ini", "value3");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DeleteFileA(path);
 #else
     ret = DeleteFileA("C:/windows/winetest_map.ini");
@@ -1579,7 +1579,7 @@ static void test_registry_mapping(void)
     ok(!ret, "got error %lu\n", ret);
     ret = RegDeleteKeyA(HKEY_LOCAL_MACHINE, "Software\\winetest_name2");
     ok(!ret, "got error %lu\n", ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DeleteFileA(path);
 #else
     ret = DeleteFileA("C:/windows/winetest_map.ini");
@@ -1637,7 +1637,7 @@ static void test_registry_mapping(void)
     ok(!ret, "got error %lu\n", ret);
     RegCloseKey(mapping_key);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DeleteFileA(path);
 #else
     ret = DeleteFileA("C:/windows/winetest_map.ini");

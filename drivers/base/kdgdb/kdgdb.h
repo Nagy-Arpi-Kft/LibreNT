@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       GPL, see COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            drivers/base/kddll/kddll.h
  * PURPOSE:         Base definitions for the kernel debugger.
  */
@@ -19,7 +19,7 @@
 
 #include <pstypes.h>
 #if defined(_M_ARM64)
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 #endif
 
 // #define KDDEBUG /* uncomment to enable debugging this dll */

@@ -4184,7 +4184,7 @@ void /* PRIVATE */
 png_read_IDAT_data(png_structrp png_ptr, png_bytep output,
     png_alloc_size_t avail_out)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    if (output != NULL && (png_ptr->flags & PNG_FLAG_ZSTREAM_ENDED) != 0)
    {
       memset(output, 0, avail_out);
@@ -4286,7 +4286,7 @@ png_read_IDAT_data(png_structrp png_ptr, png_bytep output,
 
       if (ret == Z_STREAM_END)
       {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
          if (output != NULL && avail_out > 0)
          {
             memset(png_ptr->zstream.next_out, 0, avail_out);

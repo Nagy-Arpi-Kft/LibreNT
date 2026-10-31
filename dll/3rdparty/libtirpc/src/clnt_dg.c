@@ -339,7 +339,7 @@ clnt_dg_call(cl, proc, xargs, argsp, xresults, resultsp, utimeout)
 	ssize_t recvlen = 0;
 	int rpc_lock_value;
 	u_int32_t xid, inval, outval;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	fd_set infd;
 #endif
 
@@ -441,13 +441,13 @@ get_reply:
         fd.revents = 0;
 	while (total_time > 0) {
 		tv = total_time < nextsend_time ? total_time : nextsend_time;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 switch (poll(&fd, 1, tv)) {
 #else
 #ifdef IP_RECVERR
 #error Not supported!
 #endif
-                /* ReactOS: use select instead of poll */
+                /* LibreNT: use select instead of poll */
                 FD_ZERO(&infd);
                 FD_SET(cu->cu_fd, &infd);
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Tests for _mbsnbcat
  * COPYRIGHT:   Copyright 2025 Stanislav Motylkov <x86corez@gmail.com>

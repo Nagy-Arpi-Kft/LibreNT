@@ -1,7 +1,7 @@
 /*
- * reactos/subsys/system/lsass/lsass.c
+ * librent/subsys/system/lsass/lsass.c
  *
- * ReactOS Operating System
+ * LibreNT Operating System
  *
  * --------------------------------------------------------------------
  *

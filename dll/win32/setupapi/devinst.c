@@ -83,7 +83,7 @@ static SP_ALTPLATFORM_INFO CurrentPlatform;
 static BYTE CurrentProductType;
 static WORD CurrentSuiteMask;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 bool array_reserve(void **elements, size_t *capacity, size_t count, size_t size)
 {
     unsigned int new_capacity, max_capacity;
@@ -2701,7 +2701,7 @@ HDEVINFO WINAPI SetupDiGetClassDevsExW(
         return INVALID_HANDLE_VALUE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((flags & DIGCF_DEVICEINTERFACE) && enumstr && *enumstr)
     {
         PCWSTR Separator = wcschr(enumstr, L'\\');
@@ -3688,7 +3688,7 @@ static struct PropertyMapEntry PropertyMap[] = {
     { REG_SZ, "ContainerId", L"ContainerId", DEVPROP_TYPE_GUID }, /* SPDRP_BASE_CONTAINERID */
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_valid_property_type(DEVPROPTYPE prop_type)
 {
     DWORD type = prop_type & DEVPROP_MASK_TYPE;
@@ -4346,7 +4346,7 @@ static DWORD get_device_property(struct DeviceInfo *device, HDEVINFO devinfo,
             *req_size = size;
         return error;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(&prop_key->fmtid, &DEVPKEY_Device_DriverDate.fmtid) &&
         prop_key->pid >= DEVPKEY_Device_DriverDate.pid && prop_key->pid <= DEVPKEY_Device_DriverCoInstallers.pid)
     {
@@ -4475,7 +4475,7 @@ BOOL WINAPI SetupDiGetDevicePropertyW(HDEVINFO devinfo, PSP_DEVINFO_DATA device_
     return !error;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD SETUPDI_GetReadOnlyRegistryPropertyError(IN DWORD Property);
 
 #endif
@@ -4508,7 +4508,7 @@ BOOL WINAPI SetupDiSetDevicePropertyW(HDEVINFO devinfo, PSP_DEVINFO_DATA device_
         return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualDevPropKey(*key, DEVPKEY_Device_InstanceId) ||
         IsEqualDevPropKey(*key, DEVPKEY_Device_Parent) ||
         IsEqualDevPropKey(*key, DEVPKEY_Device_Siblings) ||
@@ -4850,7 +4850,7 @@ BOOL WINAPI SetupDiGetDeviceRegistryPropertyW(
 /***********************************************************************
  *		Internal for SetupDiSetDeviceRegistryPropertyA/W
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD
 SETUPDI_GetReadOnlyRegistryPropertyError(
     IN DWORD Property)
@@ -4905,7 +4905,7 @@ BOOL WINAPI IntSetupDiSetDeviceRegistryPropertyAW(
 
     deviceInfo = (struct DeviceInfo *)DeviceInfoData->Reserved;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SETUPDI_GetReadOnlyRegistryPropertyError(Property) != ERROR_SUCCESS)
     {
         SetLastError(ERROR_INVALID_REG_PROPERTY);

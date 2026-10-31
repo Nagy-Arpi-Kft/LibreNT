@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS 'Layers' Shim library
+ * PROJECT:     LibreNT 'Layers' Shim library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     IgnoreLoadLibrary shim
  * COPYRIGHT:   Copyright 2019 Mark Jansen <mark.jansen@reactos.org>

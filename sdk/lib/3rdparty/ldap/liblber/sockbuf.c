@@ -824,7 +824,7 @@ static ber_slen_t
 sb_debug_read( Sockbuf_IO_Desc *sbiod, void *buf, ber_len_t len )
 {
 	ber_slen_t		ret;
-#if !defined(__REACTOS__) || defined(HAVE_NONPOSIX_STRERROR_R) || defined(HAVE_STRERROR_R)
+#if !defined(__LIBRENT__) || defined(HAVE_NONPOSIX_STRERROR_R) || defined(HAVE_STRERROR_R)
 	char ebuf[128];
 #endif
 
@@ -851,7 +851,7 @@ static ber_slen_t
 sb_debug_write( Sockbuf_IO_Desc *sbiod, void *buf, ber_len_t len )
 {
 	ber_slen_t		ret;
-#if !defined(__REACTOS__) || defined(HAVE_NONPOSIX_STRERROR_R) || defined(HAVE_STRERROR_R)
+#if !defined(__LIBRENT__) || defined(HAVE_NONPOSIX_STRERROR_R) || defined(HAVE_STRERROR_R)
 	char ebuf[128];
 #endif
 

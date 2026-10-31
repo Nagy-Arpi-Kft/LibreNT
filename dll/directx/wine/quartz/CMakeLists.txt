@@ -52,5 +52,5 @@ target_link_libraries(quartz strmbase strmiids dxguid uuid wine wine_dll_registe
 add_importlibs(quartz dsound msacm32 msvfw32 ole32 oleaut32 rpcrt4 user32 gdi32 advapi32 winmm msvcrt kernel32_vista kernel32 ntdll)
 add_delay_importlibs(quartz ddraw)
 add_dependencies(quartz dxsdk stdole2 wineheaders)
-add_cd_file(TARGET quartz DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET quartz DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(quartz) # CORE-5743: No CONST_VTABLE

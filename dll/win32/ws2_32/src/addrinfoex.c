@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS WinSock 2 API
+ * PROJECT:     LibreNT WinSock 2 API
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Extended Protocol-Independent Address Resolution
  * COPYRIGHT:   Adapted from Wine dlls/ws2_32/protocol.c

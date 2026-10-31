@@ -182,7 +182,7 @@ extern HRESULT CreatePropertyBag2(const PROPBAG2 *options, UINT count,
                                   IPropertyBag2 **property);
 
 extern HRESULT CreateComponentInfo(REFCLSID clsid, IWICComponentInfo **ppIInfo);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HRESULT GetCachedComponentInfo(REFCLSID clsid, IWICComponentInfo **ppIInfo);
 #endif
 extern void ReleaseComponentInfos(void);
@@ -236,7 +236,7 @@ typedef struct _MetadataHandlerVtbl
     HRESULT (*fnLoad)(MetadataHandler *handler, IStream *stream, const GUID *preferred_vendor,
         DWORD persist_options);
     HRESULT (*fnCreate)(MetadataHandler *handler);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT empty_value_error;
     HRESULT invalid_index_error;
 #endif
@@ -281,7 +281,7 @@ extern HRESULT App0MetadataReader_CreateInstance(REFIID iid, void **ppv);
 extern HRESULT App1MetadataReader_CreateInstance(REFIID iid, void **ppv);
 extern HRESULT App0MetadataWriter_CreateInstance(REFIID iid, void **ppv);
 extern HRESULT App1MetadataWriter_CreateInstance(REFIID iid, void **ppv);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern HRESULT JpegLuminanceReader_CreateInstance(REFIID iid, void **ppv);
 extern HRESULT JpegChrominanceReader_CreateInstance(REFIID iid, void **ppv);
 #endif

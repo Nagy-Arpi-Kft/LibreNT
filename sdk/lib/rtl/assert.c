@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS Run-Time Library
+ * PROJECT:           LibreNT Run-Time Library
  * PURPOSE:           Implements RtlAssert used by the ASSERT
  *                    and ASSERTMSG debugging macros
  * FILE:              lib/rtl/assert.c
@@ -42,7 +42,7 @@ RtlAssert(IN PVOID FailedAssertion,
                  (PSTR)FileName,
                  LineNumber);
 
-        /* Check for reactos specific flag (set by rosautotest) */
+        /* Check for LibreNT specific flag (set by rosautotest) */
         if (RtlGetNtGlobalFlags() & FLG_DISABLE_DEBUG_PROMPTS)
         {
             RtlRaiseStatus(STATUS_ASSERTION_FAILURE);

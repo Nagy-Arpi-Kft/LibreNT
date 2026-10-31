@@ -1,11 +1,11 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_definitions(-D__WINESRC__)
 spec2def(samlib.dll samlib.spec ADD_IMPORTLIB)
-add_rpc_files(client ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/sam.idl)
+add_rpc_files(client ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/sam.idl)
 
 list(APPEND SOURCE
     dllmain.c
@@ -23,4 +23,4 @@ set_module_type(samlib win32dll UNICODE)
 target_link_libraries(samlib wine ${PSEH_LIB})
 add_importlibs(samlib rpcrt4 advapi32 msvcrt kernel32 ntdll)
 add_pch(samlib precomp.h SOURCE)
-add_cd_file(TARGET samlib DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET samlib DESTINATION librent/system32 FOR all)

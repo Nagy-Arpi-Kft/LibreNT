@@ -83,7 +83,7 @@ extern "C" {
 
 #include "fxlibrarycommon.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define  KMDF_DEFAULT_NAME   "Wdf"  \
                              LITERAL(__WDF_MAJOR_VERSION_STRING)    \
                             "000" //minor version
@@ -341,7 +341,7 @@ DriverEntry(
     // Initialize global to make NonPagedPool be treated as NxPool on Win8
     // and NonPagedPool on down-level
     //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ExInitializeDriverRuntime(DrvRtPoolNxOptIn);
 #endif
     RtlInitUnicodeString(&string, WDF_REGISTRY_DBGPRINT_ON);

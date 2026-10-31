@@ -111,7 +111,7 @@ extern "C" {
 #define PT_IESPECIAL2	0xb1
 #define PT_SHARE	0xc3
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define PT_FOLDERTYPEMASK       0x70
 #define PT_DESKTOP_REGITEM      0x1F // => SHDID_ROOT_REGITEM
 #define PT_COMPUTER_REGITEM     0x2E // => SHDID_COMPUTER_?
@@ -143,7 +143,7 @@ extern "C" {
 #define REGITEMORDER_INTERNET                0x68
 #define REGITEMORDER_DESKTOP_CONTROLS        0x70 // NT6
 #define REGITEMORDER_MYCOMPUTER_CONTROLS     0x1E // NT5
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static inline BYTE _ILGetType(LPCITEMIDLIST pidl)
 {
@@ -166,7 +166,7 @@ typedef struct tagPIDLCPanelStruct
 #define ILGDN_NORMAL      1
 #define ILGDN_INFOLDER    2
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 typedef struct tagPIDLFontStruct
 {
@@ -183,7 +183,7 @@ typedef struct tagPIDLPrinterStruct
     WCHAR szName[1];
 } PIDLPrinterStruct;
 
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 typedef struct tagGUIDStruct
 {
@@ -246,7 +246,7 @@ typedef struct tagPIDLDATA
 	  } htmlhelp;
 	  struct tagPIDLCPanelStruct cpanel;
           struct tagValueW valueW;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           struct tagPIDLFontStruct cfont;
           struct tagPIDLPrinterStruct cprinter;
 #endif
@@ -279,7 +279,7 @@ DWORD   _ILGetDrive         (LPCITEMIDLIST, LPWSTR, UINT) DECLSPEC_HIDDEN;
 BOOL	_ILIsUnicode		(LPCITEMIDLIST pidl) DECLSPEC_HIDDEN;
 BOOL	_ILIsDesktop		(LPCITEMIDLIST pidl) DECLSPEC_HIDDEN;
 BOOL	_ILIsMyComputer		(LPCITEMIDLIST pidl) DECLSPEC_HIDDEN;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL	_ILIsMyDocuments	(LPCITEMIDLIST pidl);
 BOOL	_ILIsBitBucket		(LPCITEMIDLIST pidl);
 #define _ILIsFolderOrFile   _ILGetFSType
@@ -302,7 +302,7 @@ UINT _ILGetDepth(LPCITEMIDLIST pidl);
  */
 LPITEMIDLIST	_ILCreateGuid(PIDLTYPE type, REFIID guid, BYTE SortOrder);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* Like _ILCreateGuid, but using the string szGUID. */
 LPITEMIDLIST	_ILCreateGuidFromStrA(LPCSTR szGUID) DECLSPEC_HIDDEN;
 LPITEMIDLIST	_ILCreateGuidFromStrW(LPCWSTR szGUID) DECLSPEC_HIDDEN;
@@ -322,7 +322,7 @@ LPITEMIDLIST	_ILCreateControlPanel	(void) DECLSPEC_HIDDEN;
 LPITEMIDLIST	_ILCreatePrinters	(void) DECLSPEC_HIDDEN;
 LPITEMIDLIST	_ILCreateNetwork	(void) DECLSPEC_HIDDEN;
 LPITEMIDLIST	_ILCreateNetHood	(void) DECLSPEC_HIDDEN;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 LPITEMIDLIST	_ILCreateAdminTools	(void);
 #endif
 LPITEMIDLIST	_ILCreateBitBucket	(void) DECLSPEC_HIDDEN;

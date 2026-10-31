@@ -3,9 +3,9 @@
  *
  * Windows Filtering Platform — kernel-mode callout driver API.
  * Header skeleton sufficient to let Win7-level callout drivers compile and
- * link against the stub BFE service in ReactOS.
+ * link against the stub BFE service in LibreNT.
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created for the dev-nt6-1 branch as part of the NT 5.2 -> NT 6.1 upgrade.

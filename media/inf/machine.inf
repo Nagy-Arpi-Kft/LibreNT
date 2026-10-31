@@ -4,11 +4,11 @@
 
 [Version]
 Signature  = "$Windows NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class      = System
 ClassGUID  = {4D36E97D-E325-11CE-BFC1-08002BE10318}
-Provider   = %ReactOS%
+Provider   = %LibreNT%
 DriverVer  = 08/07/2006,1.02
 
 [DestinationDirs]
@@ -34,7 +34,7 @@ HKR, , Icon,           0, "-27"
 %*PNP0103.DeviceDesc% = NO_DRV,*PNP0103
 %*PNP0200.DeviceDesc% = NO_DRV,*PNP0200
 %*PNP0800.DeviceDesc% = NO_DRV,*PNP0800
-%*PNP0A00.DeviceDesc% = PCI_ISA_Inst,*PNP0A00
+%*PNP0A00.DeviceDesc% = NO_DRV,*PNP0A00
 %*PNP0A03.DeviceDesc% = PCI_Inst,*PNP0A03
 %*PNP0A05.DeviceDesc% = NO_DRV,*PNP0A05
 %*PNP0A06.DeviceDesc% = NO_DRV,*PNP0A06
@@ -55,10 +55,9 @@ HKR, , Icon,           0, "-27"
 %ACPI\PNP0C33.DeviceDesc% = NO_DRV,ACPI\PNP0C33
 %ACPI\ARMH0011.DeviceDesc% = NO_DRV,ACPI\ARMH0011
 %ACPI\FixedButton.DeviceDesc% = NO_DRV,ACPI\FixedButton
-%ISAPNP\ReadDataPort.DeviceDesc% = NO_DRV,ISAPNP\ReadDataPort
 %PCI\CC_0500.DeviceDesc% = NO_DRV,PCI\CC_0500
 %PCI\CC_0600.DeviceDesc% = NO_DRV,PCI\CC_0600
-%PCI\CC_0601.DeviceDesc% = PCI_ISA_Inst,PCI\CC_0601
+%PCI\CC_0601.DeviceDesc% = NO_DRV,PCI\CC_0601
 %PCI\CC_0604.DeviceDesc% = PCI_Inst,PCI\CC_0604
 %ROOT\uefifb.DeviceDesc% = NO_DRV,ROOT\uefifb
 %*ThermalZone.DeviceDesc% = NO_DRV,*ThermalZone
@@ -68,23 +67,23 @@ HKR, , Icon,           0, "-27"
 %*INT0800.DeviceDesc% = NO_DRV,*INT0800
 %PCI\VEN_8086&DEV_1237.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_1237
 %PCI\VEN_8086&DEV_2413.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_2413
-%PCI\VEN_8086&DEV_7000.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_8086&DEV_7000
-%PCI\VEN_8086&DEV_7110.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_8086&DEV_7110
+%PCI\VEN_8086&DEV_7000.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_7000
+%PCI\VEN_8086&DEV_7110.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_7110
 %PCI\VEN_8086&DEV_7113.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_7113
 %PCI\VEN_8086&DEV_7180.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_7180
 %PCI\VEN_8086&DEV_7190.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_7190
 %PCI\VEN_8086&DEV_7192.DeviceDesc% = NO_DRV,PCI\VEN_8086&DEV_7192
 
 [NecMfg]
-%NecCb.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_1033&DEV_0001
+%NecCb.DeviceDesc% = NO_DRV,PCI\VEN_1033&DEV_0001
 %NecVl.DeviceDesc% = NO_DRV,PCI\VEN_1033&DEV_0002
 %NecVl.DeviceDesc% = NO_DRV,PCI\VEN_1033&DEV_0016
-%NecCb.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_1033&DEV_002C
-%NecCb.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_1033&DEV_002D
-%NecCb.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_1033&DEV_003B
+%NecCb.DeviceDesc% = NO_DRV,PCI\VEN_1033&DEV_002C
+%NecCb.DeviceDesc% = NO_DRV,PCI\VEN_1033&DEV_002D
+%NecCb.DeviceDesc% = NO_DRV,PCI\VEN_1033&DEV_003B
 
 [nVidiaMfg]
-%PCI\VEN_10DE&DEV_01B2.DeviceDesc% = PCI_ISA_Inst,PCI\VEN_10DE&DEV_01B2
+%PCI\VEN_10DE&DEV_01B2.DeviceDesc% = NO_DRV,PCI\VEN_10DE&DEV_01B2
 %PCI\VEN_10DE&DEV_01B4.DeviceDesc% = NO_DRV,PCI\VEN_10DE&DEV_01B4
 %PCI\VEN_10DE&DEV_01B7.DeviceDesc% = NO_DRV,PCI\VEN_10DE&DEV_01B7
 %PCI\VEN_10DE&DEV_01B8.DeviceDesc% = NO_DRV,PCI\VEN_10DE&DEV_01B8
@@ -128,24 +127,6 @@ ErrorControl   = 3
 ServiceBinary  = %12%\swenum.sys
 LoadOrderGroup = Boot Bus Extender
 
-;-------------------------- PCI-ISA BUS DRIVER --------------------------
-
-[PCI_ISA_Inst.NT]
-CopyFiles = PCI_ISA_CopyFiles.NT
-
-[PCI_ISA_CopyFiles.NT]
-isapnp.sys
-
-[PCI_ISA_Inst.NT.Services]
-AddService = isapnp, 0x00000002, isapnp_Service_Inst
-
-[isapnp_Service_Inst]
-ServiceType   = 1
-StartType     = 0
-ErrorControl  = 3
-ServiceBinary = %12%\isapnp.sys
-LoadOrderGroup = Boot Bus Extender
-
 ;---------------------------- PCI BUS DRIVER ----------------------------
 
 [PCI_Inst.NT]
@@ -168,7 +149,7 @@ LoadOrderGroup = Boot Bus Extender
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 IntelMfg = "Intel"
 NecMfg = "NEC"
@@ -207,7 +188,6 @@ ACPI\ACPI0013.DeviceDesc = "ACPI Devices driver"
 ACPI\PNP0C33.DeviceDesc = "Microsoft Hardware Error Device"
 ACPI\ARMH0011.DeviceDesc = "ARM PL011 UART Device Driver"
 ACPI\FixedButton.DeviceDesc = "ACPI fixed feature button"
-ISAPNP\ReadDataPort.DeviceDesc = "ISAPNP read data port"
 PCI\CC_0500.DeviceDesc = "Standard PCI RAM controller"
 PCI\CC_0600.DeviceDesc = "Standard CPU to PCI bridge"
 PCI\CC_0601.DeviceDesc = "Standard PCI to ISA bridge"
@@ -262,7 +242,6 @@ GenericMfg = "(標準系統裝置)"
 
 SWENUM.DeviceDesc  = "隨插即用軟體匯流排枚舉器"
 ACPI\FixedButton.DeviceDesc = "ACPI 固定功能按鈕"
-ISAPNP\ReadDataPort.DeviceDesc = "ISAPNP 讀取數據埠"
 PCI\CC_0500.DeviceDesc = "標準 PCI 隨機存取記憶體控制器"
 PCI\CC_0600.DeviceDesc = "標準 CPU - PCI 橋接器"
 PCI\CC_0601.DeviceDesc = "標準 PCI - ISA 橋接器"
@@ -424,7 +403,6 @@ GenericMfg = "(Dispositivos del sistema estándar)"
 
 SWENUM.DeviceDesc  = "Software enumerador de Buses Plug & Play"
 ACPI\FixedButton.DeviceDesc = "Botón de funcionalidad fija ACPI"
-ISAPNP\ReadDataPort.DeviceDesc = "Puerto de lectura de datos ISAPNP"
 PCI\CC_0500.DeviceDesc = "Controlador PCI RAM estándar"
 PCI\CC_0600.DeviceDesc = "Puente CPU-PCI estándar"
 PCI\CC_0601.DeviceDesc = "Puente PCI-ISA estándar"
@@ -677,7 +655,6 @@ GenericMfg = "(Стандартные системные устройства)"
 
 SWENUM.DeviceDesc  = "Перечислитель программных устройств Plug & Play"
 ACPI\FixedButton.DeviceDesc = "Кнопка фиксированной возможности ACPI"
-ISAPNP\ReadDataPort.DeviceDesc = "Порт чтения данных ISAPNP"
 PCI\CC_0500.DeviceDesc = "Стандартный контроллер PCI RAM"
 PCI\CC_0600.DeviceDesc = "Стандартный мост CPU - PCI"
 PCI\CC_0601.DeviceDesc = "Стандартный мост PCI - ISA"
@@ -982,7 +959,6 @@ GenericMfg = "(標準系統裝置)"
 
 SWENUM.DeviceDesc  = "隨插即用軟體匯流排枚舉器"
 ACPI\FixedButton.DeviceDesc = "ACPI 固定功能按鈕"
-ISAPNP\ReadDataPort.DeviceDesc = "ISAPNP 讀取數據埠"
 PCI\CC_0500.DeviceDesc = "標準 PCI 隨機存取記憶體控制器"
 PCI\CC_0600.DeviceDesc = "標準 CPU - PCI 橋接器"
 PCI\CC_0601.DeviceDesc = "標準 PCI - ISA 橋接器"

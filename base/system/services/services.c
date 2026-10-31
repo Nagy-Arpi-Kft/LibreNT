@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Service Control Manager
+ * PROJECT:     LibreNT Service Control Manager
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        base/system/services/services.c
  * PURPOSE:     Main SCM controller
@@ -21,7 +21,7 @@ int WINAPI RegisterServicesProcess(DWORD ServicesProcessId);
 
 /* GLOBALS ******************************************************************/
 
-/* Defined in include/reactos/services/services.h */
+/* Defined in include/librent/services/services.h */
 // #define SCM_START_EVENT             L"SvcctrlStartEvent_A3752DX"
 #define SCM_AUTOSTARTCOMPLETE_EVENT L"SC_AutoStartComplete"
 
@@ -127,7 +127,7 @@ CheckForLiveCD(VOID)
 
     if (dwSetupInProgress == 1)
     {
-        DPRINT("LiberNT Setup currently in progress!\n");
+        DPRINT("LibreNT Setup currently in progress!\n");
         ScmSetupInProgress = TRUE;
     }
 
@@ -328,7 +328,7 @@ wWinMain(HINSTANCE hInstance,
     /* Update the services database */
     ScmGetBootAndSystemDriverState();
 
-    /* Register the Service Control Manager process with the ReactOS Subsystem */
+    /* Register the Service Control Manager process with the LibreNT Subsystem */
     if (!RegisterServicesProcess(GetCurrentProcessId()))
     {
         DPRINT1("SERVICES: Could not register SCM process\n");

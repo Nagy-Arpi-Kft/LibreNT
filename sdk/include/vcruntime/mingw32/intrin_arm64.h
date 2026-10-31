@@ -29,8 +29,8 @@ __INTRIN_INLINE void _ReadWriteBarrier(void)
 #define _ReadBarrier _ReadWriteBarrier
 #define _WriteBarrier _ReadWriteBarrier
 
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__REACTOS_GNU_ARM64_SEH_MACROS)
-#define __REACTOS_GNU_ARM64_SEH_MACROS
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__LIBRENT_GNU_ARM64_SEH_MACROS)
+#define __LIBRENT_GNU_ARM64_SEH_MACROS
 /* GNU as does not implement the ARM64-specific Windows unwind directives.
  * Accept them as no-ops so GCC inline assembly remains buildable; .seh_proc,
  * .seh_stackalloc, .seh_endprologue and .seh_endproc are still emitted. */

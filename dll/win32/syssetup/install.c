@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS system libraries
+ * PROJECT:           LibreNT system libraries
  * PURPOSE:           System setup
  * FILE:              dll/win32/syssetup/install.c
  * PROGRAMER:         Eric Kohl
@@ -58,7 +58,7 @@ FatalError(char *pszFmt,...)
     strcat(szBuffer, "\nRebooting now!");
     MessageBoxA(NULL,
                 szBuffer,
-                "LiberNT Setup",
+                "LibreNT Setup",
                 MB_OK);
 }
 
@@ -1326,7 +1326,7 @@ error:
     MessageBoxW(
         NULL,
         L"Failed to load LiveCD! You can shutdown your computer, or press ENTER to reboot.",
-        L"LiberNT LiveCD",
+        L"LibreNT LiveCD",
         MB_OK);
     if (!pSetupEnablePrivilege(SE_SHUTDOWN_NAME, TRUE))
         DPRINT1("pSetupEnablePrivilege(SE_SHUTDOWN_NAME) failed (Error %lu)\n", GetLastError());

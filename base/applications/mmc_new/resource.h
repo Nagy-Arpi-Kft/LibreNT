@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Management Console
+ * PROJECT:     LibreNT Management Console
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Resource header
  * COPYRIGHT:   Copyright 2006-2007 Thomas Weidenmueller

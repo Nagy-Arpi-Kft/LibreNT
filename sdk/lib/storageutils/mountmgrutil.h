@@ -1,11 +1,11 @@
 /*
- * PROJECT:     LiberNT Storage Utilities
+ * PROJECT:     LibreNT Storage Utilities
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shared Mount Manager helpers for drive-letter assignment/removal.
  */
 
-#ifndef REACTOS_STORAGEUTILS_MOUNTMGRUTIL_H
-#define REACTOS_STORAGEUTILS_MOUNTMGRUTIL_H
+#ifndef LIBRENT_STORAGEUTILS_MOUNTMGRUTIL_H
+#define LIBRENT_STORAGEUTILS_MOUNTMGRUTIL_H
 
 #include <windef.h>
 
@@ -36,4 +36,4 @@ StorageUtilDeleteDriveLetter(
 }
 #endif
 
-#endif /* REACTOS_STORAGEUTILS_MOUNTMGRUTIL_H */
+#endif /* LIBRENT_STORAGEUTILS_MOUNTMGRUTIL_H */

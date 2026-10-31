@@ -1,13 +1,13 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS uxtheme.dll
+ * PROJECT:         LibreNT uxtheme.dll
  * FILE:            dll/win32/uxtheme/themehooks.c
  * PURPOSE:         uxtheme user api hook functions
  * PROGRAMMER:      Giannis Adamopoulos
  */
 
 #include "uxthemep.h"
-#include <reactos/colorscheme.h>
+#include <librent/colorscheme.h>
 
 USERAPIHOOK g_user32ApiHook;
 BYTE gabDWPmessages[UAHOWP_MAX_SIZE];
@@ -1081,7 +1081,7 @@ ThemeHooksInstall()
     USERAPIHOOKINFO uah;
     BOOL ret;
 
-    /* ReactOS exports the Server 2003-style ABI for every version persona. */
+    /* LibreNT exports the Server 2003-style ABI for every version persona. */
     register_hook = (PREGISTER_UAH)GetProcAddress(GetModuleHandleW(L"user32.dll"), "RegisterUserApiHook");
     if (!register_hook)
         return FALSE;

@@ -1,16 +1,16 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
 
 spec2def(netapi32.dll netapi32.spec ADD_IMPORTLIB)
 add_rpc_files(client
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/atsvc.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/browser.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/dssetup.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/netdfs.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/netlogon.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/srvsvc.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/wkssvc.idl)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/atsvc.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/browser.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/dssetup.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/netdfs.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/netlogon.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/srvsvc.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/wkssvc.idl)
 
 add_definitions(-DWIN32_LEAN_AND_MEAN=)
 
@@ -57,7 +57,7 @@ target_link_libraries(netapi32 wine ${PSEH_LIB})
 add_delay_importlibs(netapi32 samlib secur32)
 add_importlibs(netapi32 iphlpapi ws2_32 advapi32 rpcrt4 msvcrt kernel32 ntdll)
 add_pch(netapi32 netapi32.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET netapi32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET netapi32 DESTINATION librent/system32 FOR all)
 
 if(MSVC)
     # Disable warning C4267: '=': conversion from 'size_t' to 'USHORT', possible loss of data

@@ -283,7 +283,7 @@ static void HEADER_GetHotDividerRect(const HEADER_INFO *infoPtr, RECT *r)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if __WINE_COMCTL32_VERSION == 6
 static int
 HEADER_GetThemeItemState(HTHEME theme, const HEADER_ITEM *item, BOOL hottrack)
@@ -332,7 +332,7 @@ HEADER_FillItemFrame(HEADER_INFO *infoPtr, HDC hdc, RECT *r, const HEADER_ITEM *
     HTHEME theme = GetWindowTheme (infoPtr->hwndSelf);
 
     if (theme) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int state = HEADER_GetThemeItemState(theme, item, hottrack);
 #else
         int state = (item->bDown) ? HIS_PRESSED : (hottrack ? HIS_HOT : HIS_NORMAL);
@@ -415,7 +415,7 @@ static void HEADER_GetItemTextRect(const HEADER_ITEM *item, HWND hwnd, HDC hdc, 
 
     if (theme)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int state = HEADER_GetThemeItemState(theme, item, hot_track);
 #else
         int state = item->bDown ? HIS_PRESSED : (hot_track ? HIS_HOT : HIS_NORMAL);
@@ -436,7 +436,7 @@ static void HEADER_DrawItemText(const HEADER_ITEM *item, HWND hwnd, HDC hdc, BOO
 
     if (theme)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int state = HEADER_GetThemeItemState(theme, item, hot_track);
 #else
         int state = item->bDown ? HIS_PRESSED : (hot_track ? HIS_HOT : HIS_NORMAL);
@@ -621,7 +621,7 @@ HEADER_DrawItem (HEADER_INFO *infoPtr, HDC hdc, INT iItem, BOOL bHotTrack, LRESU
 	    SelectClipRgn(hClipDC, hClipRgn);
 	    
             if (sort_w) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!HEADER_DrawThemeSortArrow(infoPtr, hClipDC, &r, phdi))
 #endif
                 {
@@ -2028,7 +2028,7 @@ HEADER_MouseMove (HEADER_INFO *infoPtr, LPARAM lParam)
                     
                     if (nWidth < 0) nWidth = 0;
                     infoPtr->items[infoPtr->iMoveItem].cxy = nWidth;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     InvalidateRect(infoPtr->hwndSelf, &lpItem->rect, FALSE);
 #endif
                     HEADER_SetItemBounds(infoPtr);
@@ -2036,7 +2036,7 @@ HEADER_MouseMove (HEADER_INFO *infoPtr, LPARAM lParam)
                     GetClientRect(infoPtr->hwndSelf, &rcClient);
                     rcScroll = rcClient;
                     rcScroll.left = lpItem->rect.left + nOldWidth;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     ScrollWindowEx(infoPtr->hwndSelf, nWidth - nOldWidth, 0, &rcScroll, &rcClient,
                                    NULL, NULL, SW_INVALIDATE);
 #else

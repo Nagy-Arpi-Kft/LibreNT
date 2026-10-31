@@ -273,7 +273,7 @@ static HRESULT WINAPI namespacemanager_declarePrefix(IMXNamespaceManager *iface,
 
     TRACE("(%p)->(%s %s)\n", This, debugstr_w(prefix), debugstr_w(namespaceURI));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (prefix && *prefix && (!wcscmp(prefix, L"xml") || !wcscmp(prefix, L"xmlns") || !namespaceURI))
 #else
     if (prefix && (!wcscmp(prefix, L"xml") || !wcscmp(prefix, L"xmlns") || !namespaceURI))
@@ -293,7 +293,7 @@ static HRESULT WINAPI namespacemanager_getDeclaredPrefix(IMXNamespaceManager *if
 
     TRACE("%p, %ld, %p, %p.\n", This, index, prefix, prefix_len);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ctxt = LIST_ENTRY(list_head(&This->ctxts), struct nscontext, entry);
     hr = get_declared_prefix_idx(ctxt, index, &prfx);
     if (hr != S_OK) return hr;

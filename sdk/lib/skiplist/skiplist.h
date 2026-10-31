@@ -1,12 +1,12 @@
 /*
- * PROJECT:     Skiplist implementation for the ReactOS Project
+ * PROJECT:     Skiplist implementation for the LibreNT Project
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Interfaces for the Skiplist
  * COPYRIGHT:   Copyright 2015 Colin Finck (colin@reactos.org)
  */
 
-#ifndef _REACTOS_SKIPLIST_H
-#define _REACTOS_SKIPLIST_H
+#ifndef _LIBRENT_SKIPLIST_H
+#define _LIBRENT_SKIPLIST_H
 
 // Define SKIPLIST_LEVELS to a value between 1 and 31 before including this header.
 // This specifies the maximum number of levels you want your Skiplist to have.

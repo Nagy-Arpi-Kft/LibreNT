@@ -86,7 +86,7 @@ ULONG_PTR get_exception_pc( DISPATCHER_CONTEXT *dispatch )
 }
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*******************************************************************
  *		longjmp (MSVCRT.@)
  */
@@ -109,7 +109,7 @@ void __cdecl longjmp( _JUMP_BUFFER *jmp, int retval )
     __wine_longjmp( (__wine_jmp_buf *)jmp, retval );
 }
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*******************************************************************
  *		_local_unwind (MSVCRT.@)

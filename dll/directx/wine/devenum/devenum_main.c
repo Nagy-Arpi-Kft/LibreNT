@@ -126,7 +126,7 @@ HRESULT WINAPI DllRegisterServer(void)
     if (FAILED(res))
         return res;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WCHAR KeyName[48] = L"CLSID\\";
         HKEY hKey;

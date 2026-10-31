@@ -335,7 +335,7 @@ static unsigned char* interface_user_marshal(ULONG *pFlags, unsigned char *Buffe
   }
   else
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       *(DWORD*)Buffer = (DWORD)(DWORD_PTR)punk + 1;
 #else
       *(DWORD*)Buffer = (DWORD_PTR)punk;
@@ -360,7 +360,7 @@ static unsigned char *interface_user_unmarshal(ULONG *pFlags, unsigned char *Buf
 
   if(!ptr)
   {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (*ppunk)
       {
           IUnknown_Release(*ppunk);
@@ -819,7 +819,7 @@ ULONG WINAPI LPSAFEARRAY_UserSize(ULONG *pFlags, ULONG StartingSize, LPSAFEARRAY
             {
                 BSTR* lpBstr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 size += ulCellCount * sizeof(ULONG);
 #endif
                 for (lpBstr = psa->pvData; ulCellCount; ulCellCount--, lpBstr++)
@@ -850,7 +850,7 @@ ULONG WINAPI LPSAFEARRAY_UserSize(ULONG *pFlags, ULONG StartingSize, LPSAFEARRAY
             {
                 VARIANT* lpVariant;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 size += ulCellCount * sizeof(ULONG);
 #endif
                 for (lpVariant = psa->pvData; ulCellCount; ulCellCount--, lpVariant++)
@@ -960,7 +960,7 @@ unsigned char * WINAPI LPSAFEARRAY_UserMarshal(ULONG *pFlags, unsigned char *Buf
                 {
                     BSTR* lpBstr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     for (i = 0; i < ulCellCount; i++)
                     {
                         *(ULONG *)Buffer = i + 1;
@@ -995,7 +995,7 @@ unsigned char * WINAPI LPSAFEARRAY_UserMarshal(ULONG *pFlags, unsigned char *Buf
                 {
                     VARIANT* lpVariant;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     for (i = 0; i < ulCellCount; i++)
                     {
                         *(ULONG *)Buffer = i + 1;
@@ -1164,7 +1164,7 @@ unsigned char * WINAPI LPSAFEARRAY_UserUnmarshal(ULONG *pFlags, unsigned char *B
             case SF_BSTR:
             {
                 BSTR* lpBstr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 const ULONG *ids = (const ULONG *)Buffer;
 
                 Buffer += cell_count * sizeof(ULONG);
@@ -1201,7 +1201,7 @@ unsigned char * WINAPI LPSAFEARRAY_UserUnmarshal(ULONG *pFlags, unsigned char *B
             case SF_VARIANT:
             {
                 VARIANT* lpVariant;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 const ULONG *ids = (const ULONG *)Buffer;
 
                 Buffer += cell_count * sizeof(ULONG);

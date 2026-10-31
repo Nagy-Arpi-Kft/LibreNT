@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * PURPOSE:          Window hooks
  * PROGRAMER:        Casper S. Hornstrup <chorns@users.sourceforge.net>
  *                   James Tabor <james.tabor@reactos.org>
@@ -102,7 +102,7 @@ IntHookModuleUnloaded(PDESKTOP pdesk, int iHookID, HHOOK hHook)
 
         /* FIXME: Do some more security checks here */
 
-        /* FIXME: HACK: The first check is a reactos specific hack for system threads */
+        /* FIXME: HACK: The first check is a LibreNT specific hack for system threads */
         if(!PsIsSystemProcess(ptiCurrent->ppi->peProcess) &&
            ptiCurrent->ppi != ppiCsr)
         {
@@ -178,7 +178,7 @@ UserRegisterUserApiHook(
             }
             ptiCurrent = pwndCurrent->head.pti;
 
-           /* FIXME: The first check is a reactos specific hack for system threads */
+           /* FIXME: The first check is a LibreNT specific hack for system threads */
             if(PsIsSystemProcess(ptiCurrent->ppi->peProcess) ||
                 ptiCurrent->ppi == ppiCsr)
             {

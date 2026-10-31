@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Private dxgkrnl IOCTL user-mode isolation tests
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -7,7 +7,7 @@
 
 #include "precomp.h"
 #include <winioctl.h>
-#include <reactos/rddm/rxgkioctl.h>
+#include <librent/rddm/rxgkioctl.h>
 
 #define IOCTL_DXGKRNL_GET_LEGACY_FULL_INIT_ENTRY 0x23003F
 #define IOCTL_DXGKRNL_GET_DOD_INIT_ENTRY 0x230043

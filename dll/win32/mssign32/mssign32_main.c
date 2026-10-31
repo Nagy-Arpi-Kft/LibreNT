@@ -19,14 +19,14 @@
  */
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #endif
 
 #include "windef.h"
 #include "winbase.h"
 #include "wincrypt.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wintrust.h"
 #include "wininet.h"
 #endif
@@ -65,7 +65,7 @@ void WINAPI PvkFreeCryptProv(HCRYPTPROV hProv, LPCWSTR pwszCapiProvider, DWORD d
                     debugstr_w(pwszTmpContainer));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SIGNER_SUBJECT_FILE     1
 #define PVK_TYPE_KEYCONTAINER   2
 
@@ -751,7 +751,7 @@ done:
 HRESULT WINAPI SignerSign(SIGNER_SUBJECT_INFO *subject, SIGNER_CERT *cert, SIGNER_SIGNATURE_INFO *signature,
         SIGNER_PROVIDER_INFO *provider, const WCHAR *timestamp, CRYPT_ATTRIBUTES *attrs, void *sip_data)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p %p %p %p %s %p %p\n", subject, cert, signature, provider, debugstr_w(timestamp), attrs, sip_data);
     return signer_sign(0, subject, cert, signature, provider, timestamp, attrs, sip_data, NULL);
 #else
@@ -765,7 +765,7 @@ HRESULT WINAPI SignerSignEx(DWORD flags, SIGNER_SUBJECT_INFO *subject_info, SIGN
                             const WCHAR *http_time_stamp, CRYPT_ATTRIBUTES *request, void *sip_data,
                             SIGNER_CONTEXT **signer_context)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%lx %p %p %p %p %s %p %p %p\n", flags, subject_info, signer_cert, signature_info, provider_info,
           debugstr_w(http_time_stamp), request, sip_data, signer_context);
     return signer_sign(flags, subject_info, signer_cert, signature_info, provider_info, http_time_stamp, request,
@@ -777,7 +777,7 @@ HRESULT WINAPI SignerSignEx(DWORD flags, SIGNER_SUBJECT_INFO *subject_info, SIGN
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI SignerTimeStamp(SIGNER_SUBJECT_INFO *subject, const WCHAR *http_time_stamp,
                                CRYPT_ATTRIBUTES *request, void *sip_data)
 {
@@ -795,7 +795,7 @@ HRESULT WINAPI SignerTimeStampEx(DWORD flags, SIGNER_SUBJECT_INFO *subject, cons
 #endif
 HRESULT WINAPI SignerFreeSignerContext(SIGNER_CONTEXT *signer_context)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(signer_context);
 #endif
     return S_OK;

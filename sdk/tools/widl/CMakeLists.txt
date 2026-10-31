@@ -38,7 +38,7 @@ list(APPEND SOURCE
     ../port/mkstemps.c)
 
 add_definitions(-DINT16=SHORT -DLANG_SCOTTISH_GAELIC=0x91 -DINCLUDEDIR="unused" -DLIBDIR="unused")
-include_directories(${REACTOS_SOURCE_DIR}/sdk/tools/wpp/ ${REACTOS_SOURCE_DIR}/sdk/include/host/widl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/tools/wpp/ ${LIBRENT_SOURCE_DIR}/sdk/include/host/widl)
 add_host_tool(widl ${SOURCE})
 target_link_libraries(widl PRIVATE host_includes wpphost)
 

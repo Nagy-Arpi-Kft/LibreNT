@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            ntoskrnl/kd/i386/kdbg.c
  * PURPOSE:         Serial i/o functions for the kernel debugger.
  * PROGRAMMER:      Alex Ionescu
@@ -23,7 +23,7 @@
 /* The COM port must only be initialized once! */
 // static BOOLEAN PortInitialized = FALSE;
 
-/* REACTOS FUNCTIONS **********************************************************/
+/* LIBRENT FUNCTIONS **********************************************************/
 
 BOOLEAN
 NTAPI

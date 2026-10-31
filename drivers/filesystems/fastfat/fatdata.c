@@ -58,7 +58,7 @@ FAT_DATA FatData;
 PDEVICE_OBJECT FatDiskFileSystemDeviceObject;
 PDEVICE_OBJECT FatCdromFileSystemDeviceObject;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 LARGE_INTEGER FatLargeZero = {0,0};
 LARGE_INTEGER FatMaxLarge = {MAXULONG,MAXLONG};
 #else
@@ -66,7 +66,7 @@ LARGE_INTEGER FatLargeZero = {{0,0}};
 LARGE_INTEGER FatMaxLarge = {{MAXULONG,MAXLONG}};
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 LARGE_INTEGER Fat30Milliseconds = {(ULONG)(-30 * 1000 * 10), -1};
 LARGE_INTEGER Fat100Milliseconds = {(ULONG)(-30 * 1000 * 10), -1};
 LARGE_INTEGER FatOneDay = {0x2a69c000, 0xc9};
@@ -82,7 +82,7 @@ LARGE_INTEGER FatDecThirtyOne1979 = {{0xb76bc000,0x01a8e6d6}};
 
 FAT_TIME_STAMP FatTimeJanOne1980 = {{0,0,0},{1,1,0}};
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 LARGE_INTEGER FatMagic10000    = {0xe219652c, 0xd1b71758};
 LARGE_INTEGER FatMagic86400000 = {0xfa67b90e, 0xc6d750eb};
 #else
@@ -115,7 +115,7 @@ FAST_MUTEX FatCloseQueueMutex;
 //  Reserve MDL for paging file operations.
 //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 PMDL FatReserveMdl = NULL;
 #else
 volatile PMDL FatReserveMdl = NULL;
@@ -1583,7 +1583,7 @@ Return Value:
 
     } else {
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
        Thread = IrpContext->OriginatingIrp->Tail.Overlay.Thread;
 #else
        Thread = (PKTHREAD)IrpContext->OriginatingIrp->Tail.Overlay.Thread;

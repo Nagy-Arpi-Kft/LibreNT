@@ -119,7 +119,7 @@ GpStatus WINGDIPAPI GdipCreateCustomLineCap(GpPath* fillPath, GpPath* strokePath
     if(!customCap || !(fillPath || strokePath))
         return InvalidParameter;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!strokePath)
     {
         const GpPathData *fill = &fillPath->pathdata;

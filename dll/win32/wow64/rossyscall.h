@@ -1,17 +1,17 @@
 /*
- * PROJECT:     LiberNT WoW64 layer
+ * PROJECT:     LibreNT WoW64 layer
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
- * PURPOSE:     Thunks for ReactOS syscalls that have no Wine counterpart
+ * PURPOSE:     Thunks for LibreNT syscalls that have no Wine counterpart
  * COPYRIGHT:   Copyright 2026 LiberNT Team
  */
 
 #ifndef __WOW64_ROSSYSCALL_H
 #define __WOW64_ROSSYSCALL_H
 
-/* Syscalls present in the ReactOS syscall table (sysfuncs.h) but absent from
+/* Syscalls present in the LibreNT syscall table (sysfuncs.h) but absent from
  * Wine's ALL_SYSCALLS32 list.  Each entry has a wow64_* thunk implemented in
  * rossyscall.c (or sync.c for the LPC ones). */
-#define ALL_REACTOS_SYSCALLS \
+#define ALL_LIBRENT_SYSCALLS \
     ROS_SYSCALL_ENTRY( NtAccessCheckByType ) \
     ROS_SYSCALL_ENTRY( NtAccessCheckByTypeResultList ) \
     ROS_SYSCALL_ENTRY( NtAccessCheckByTypeResultListAndAuditAlarm ) \
@@ -160,7 +160,7 @@
     ROS_SYSCALL_ENTRY( NtWaitLowEventPair )
 
 #define ROS_SYSCALL_ENTRY(name) extern NTSTATUS WINAPI wow64_ ## name( UINT *args );
-ALL_REACTOS_SYSCALLS
+ALL_LIBRENT_SYSCALLS
 #undef ROS_SYSCALL_ENTRY
 
 #endif /* __WOW64_ROSSYSCALL_H */

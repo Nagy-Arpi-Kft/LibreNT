@@ -4,7 +4,7 @@
  * PURPOSE:     strnlen/wcsnlen shims for GCC 15 libmingwex
  * COPYRIGHT:   Copyright 2026 LiberNT Team
  *
- * GCC 15's libmingwex references strnlen and wcsnlen, which ReactOS msvcrt
+ * GCC 15's libmingwex references strnlen and wcsnlen, which LibreNT msvcrt
  * only exports for DLL_EXPORT_VERSION >= 0x600.
  */
 

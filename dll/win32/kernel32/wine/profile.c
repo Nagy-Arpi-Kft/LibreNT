@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 #include <k32.h>
 
@@ -32,7 +32,7 @@ DEBUG_CHANNEL(profile);
 #define EnterCriticalSection RtlEnterCriticalSection
 #define LeaveCriticalSection RtlLeaveCriticalSection
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 #include <string.h>
 #include <stdarg.h>
@@ -48,7 +48,7 @@ DEBUG_CHANNEL(profile);
 
 WINE_DEFAULT_DEBUG_CHANNEL(profile);
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 static const char bom_utf8[] = {0xEF,0xBB,0xBF};
 
@@ -97,7 +97,7 @@ static PROFILE *MRUProfile[N_CACHED_PROFILES]={NULL};
 /* Check for comments in profile */
 #define IS_ENTRY_COMMENT(str)  ((str)[0] == ';')
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static RTL_CRITICAL_SECTION PROFILE_CritSect;
 static RTL_CRITICAL_SECTION_DEBUG critsect_debug =
@@ -108,7 +108,7 @@ static RTL_CRITICAL_SECTION_DEBUG critsect_debug =
 };
 static RTL_CRITICAL_SECTION PROFILE_CritSect = { &critsect_debug, -1, 0, 0, 0, 0 };
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 static CRITICAL_SECTION PROFILE_CritSect;
 static CRITICAL_SECTION_DEBUG critsect_debug =
@@ -119,7 +119,7 @@ static CRITICAL_SECTION_DEBUG critsect_debug =
 };
 static CRITICAL_SECTION PROFILE_CritSect = { &critsect_debug, -1, 0, 0, 0, 0 };
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 static const char hex[16] = "0123456789ABCDEF";
 
@@ -524,7 +524,7 @@ static PROFILESECTION *PROFILE_Load(HANDLE hFile, ENCODING * pEncoding)
            next_key   = &key->next;
            prev_key   = key;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
            TRACE("New key: name=%s, value=%s\n",
                debugstr_w(key->name), key->value ? debugstr_w(key->value) : L"(none)");
 #else
@@ -749,7 +749,7 @@ static BOOL is_not_current(FILETIME *ft)
 
     NtQuerySystemTime( &now );
     ftll = ((LONGLONG)ft->dwHighDateTime << 32) + ft->dwLowDateTime;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%I64x; %I64x\n", ftll, now.QuadPart);
 #else
     TRACE("%s; %s\n", wine_dbgstr_longlong(ftll), wine_dbgstr_longlong(now.QuadPart));
@@ -1091,7 +1091,7 @@ static BOOL PROFILE_SetString( LPCWSTR section_name, LPCWSTR key_name,
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LSTATUS profile_open_key( HKEY root, const WCHAR *name, ACCESS_MASK access, BOOL create, HKEY *ret )
 {
     OBJECT_ATTRIBUTES attr;
@@ -1268,13 +1268,13 @@ static const WCHAR *profile_find_file_name( const WCHAR *path )
 #define RegCloseKey(k) NtClose((HANDLE)(k))
 #define PathFindFileNameW(p) profile_find_file_name(p)
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 static HKEY open_file_mapping_key( const WCHAR *filename )
 {
     static HKEY mapping_key;
     HKEY key;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!filename) filename = L"win.ini";
 #endif
     EnterCriticalSection( &PROFILE_CritSect );
@@ -1603,7 +1603,7 @@ UINT WINAPI GetProfileIntW( LPCWSTR section, LPCWSTR entry, INT def_val )
 /***********************************************************************
  *           GetPrivateProfileStringW   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetPrivateProfileStringW( LPCWSTR section, LPCWSTR entry,
 				     LPCWSTR def_val, LPWSTR buffer,
 				     DWORD len, LPCWSTR filename )
@@ -1703,7 +1703,7 @@ INT WINAPI GetPrivateProfileStringW( LPCWSTR section, LPCWSTR entry,
 /***********************************************************************
  *           GetPrivateProfileStringA   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetPrivateProfileStringA( LPCSTR section, LPCSTR entry,
 				     LPCSTR def_val, LPSTR buffer,
 				     DWORD len, LPCSTR filename )
@@ -1739,7 +1739,7 @@ INT WINAPI GetPrivateProfileStringA( LPCSTR section, LPCSTR entry,
                 ret = len - 1;
         }
         buffer[ret] = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((!section || !entry) && ret + 1 < len)
             buffer[ret + 1] = 0;
 #endif
@@ -1756,7 +1756,7 @@ INT WINAPI GetPrivateProfileStringA( LPCSTR section, LPCSTR entry,
 /***********************************************************************
  *           GetProfileStringA   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetProfileStringA( LPCSTR section, LPCSTR entry, LPCSTR def_val,
 			      LPSTR buffer, DWORD len )
 #else
@@ -1771,7 +1771,7 @@ INT WINAPI GetProfileStringA( LPCSTR section, LPCSTR entry, LPCSTR def_val,
 /***********************************************************************
  *           GetProfileStringW   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetProfileStringW( LPCWSTR section, LPCWSTR entry,
 			      LPCWSTR def_val, LPWSTR buffer, DWORD len )
 #else
@@ -1852,7 +1852,7 @@ UINT WINAPI GetPrivateProfileIntA( LPCSTR section, LPCSTR entry,
 /***********************************************************************
  *           GetPrivateProfileSectionW   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetPrivateProfileSectionW( LPCWSTR section, LPWSTR buffer,
 #else
 INT WINAPI GetPrivateProfileSectionW( LPCWSTR section, LPWSTR buffer,
@@ -1873,7 +1873,7 @@ INT WINAPI GetPrivateProfileSectionW( LPCWSTR section, LPWSTR buffer,
 /***********************************************************************
  *           GetPrivateProfileSectionA   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetPrivateProfileSectionA( LPCSTR section, LPSTR buffer,
 #else
 INT WINAPI GetPrivateProfileSectionA( LPCSTR section, LPSTR buffer,
@@ -1923,7 +1923,7 @@ INT WINAPI GetPrivateProfileSectionA( LPCSTR section, LPSTR buffer,
 /***********************************************************************
  *           GetProfileSectionA   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetProfileSectionA( LPCSTR section, LPSTR buffer, DWORD len )
 #else
 INT WINAPI GetProfileSectionA( LPCSTR section, LPSTR buffer, DWORD len )
@@ -1935,7 +1935,7 @@ INT WINAPI GetProfileSectionA( LPCSTR section, LPSTR buffer, DWORD len )
 /***********************************************************************
  *           GetProfileSectionW   (KERNEL32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetProfileSectionW( LPCWSTR section, LPWSTR buffer, DWORD len )
 #else
 INT WINAPI GetProfileSectionW( LPCWSTR section, LPWSTR buffer, DWORD len )
@@ -1958,7 +1958,7 @@ BOOL WINAPI WritePrivateProfileStringW( LPCWSTR section, LPCWSTR entry,
 
     if (!section && !entry && !string) /* documented "file flush" case */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         HKEY mapping = filename ? open_file_mapping_key( filename ) : NULL;
 #endif
         EnterCriticalSection( &PROFILE_CritSect );
@@ -1967,7 +1967,7 @@ BOOL WINAPI WritePrivateProfileStringW( LPCWSTR section, LPCWSTR entry,
             if (CurProfile) PROFILE_ReleaseFile();
         }
         LeaveCriticalSection( &PROFILE_CritSect );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (mapping)
         {
             RegCloseKey( mapping );
@@ -2273,7 +2273,7 @@ DWORD WINAPI GetPrivateProfileSectionNamesA( LPSTR buffer, DWORD size,
         }
         else
           ret = ret-1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         buffer[ret + 1] = 0;
 #endif
     }
@@ -2325,7 +2325,7 @@ BOOL WINAPI GetPrivateProfileStructW (LPCWSTR section, LPCWSTR key,
 
     if (GetPrivateProfileStringW( section, key, NULL, buffer, 2 * len + 4, filename ) != 2 * len + 2)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError( ERROR_BAD_LENGTH );
 #endif
         goto done;
@@ -2333,7 +2333,7 @@ BOOL WINAPI GetPrivateProfileStructW (LPCWSTR section, LPCWSTR key,
 
     for (p = buffer; len; p += 2, len--)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((val = get_hex_byte( p )) == -1)
         {
             SetLastError( ERROR_INVALID_DATA );
@@ -2346,7 +2346,7 @@ BOOL WINAPI GetPrivateProfileStructW (LPCWSTR section, LPCWSTR key,
         chksum += val;
     }
     /* retrieve stored checksum value */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((val = get_hex_byte( p )) == -1 || (BYTE)val != chksum)
     {
         SetLastError( ERROR_INVALID_DATA );

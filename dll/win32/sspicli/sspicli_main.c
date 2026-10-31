@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS sspicli.dll
+ * PROJECT:     LibreNT sspicli.dll
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     SSPI client forwarders to secur32
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>

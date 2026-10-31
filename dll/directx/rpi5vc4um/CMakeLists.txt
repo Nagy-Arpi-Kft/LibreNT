@@ -19,4 +19,4 @@ add_library(rpi5vc4um MODULE
 set_module_type(rpi5vc4um win32dll ENTRYPOINT DllMain 12)
 add_importlibs(rpi5vc4um msvcrt kernel32 ntdll)
 add_dependencies(rpi5vc4um psdk)
-add_cd_file(TARGET rpi5vc4um DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rpi5vc4um DESTINATION librent/system32 FOR all)

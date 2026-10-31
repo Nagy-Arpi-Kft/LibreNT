@@ -10,8 +10,8 @@ spec2def(dxgkrnl.sys dxgkrnl.spec ADD_IMPORTLIB)
 # components uses the Power Framework (PoFxRegisterDevice and friends), which
 # <potypes.h> declares only from NTDDI_WIN8 upwards, and which ntoskrnl
 # exports at the same level.
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT})
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT})
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x0602 -DWINVER=0x0602)
 add_definitions(-DNTDDI_VERSION=0x06020000)    # NTDDI_WIN8
 
@@ -70,7 +70,7 @@ list(APPEND SOURCE
     display.c
     debug.c)
 
-if(REACTOS_WDDM_TARGET_LEVEL GREATER_EQUAL 3200)
+if(LIBRENT_WDDM_TARGET_LEVEL GREATER_EQUAL 3200)
     list(APPEND SOURCE feature_query_core.c)
 endif()
 
@@ -81,7 +81,7 @@ add_library(dxgkrnl MODULE
     ${CMAKE_CURRENT_BINARY_DIR}/dxgkrnl.def)
 
 target_compile_definitions(dxgkrnl PRIVATE
-    REACTOS_WDDM_TARGET_LEVEL=${REACTOS_WDDM_TARGET_LEVEL})
+    LIBRENT_WDDM_TARGET_LEVEL=${LIBRENT_WDDM_TARGET_LEVEL})
 
 set_module_type(dxgkrnl kernelmodedriver)
 target_link_libraries(dxgkrnl ${PSEH_LIB} wdmguid)
@@ -90,7 +90,7 @@ if(MSVC)
 endif()
 add_importlibs(dxgkrnl dxgmms2 ntoskrnl hal)
 add_pch(dxgkrnl dxgkrnl_private.h "${SOURCE}")
-add_cd_file(TARGET dxgkrnl DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET dxgkrnl DESTINATION librent/system32/drivers FOR all)
 
 # Preregister the WDDM kernel display stack (dxgmms2/dxgkrnl/softgpu) into the
 # livecd SYSTEM hive so it loads at boot and replaces the legacy XPDM path.

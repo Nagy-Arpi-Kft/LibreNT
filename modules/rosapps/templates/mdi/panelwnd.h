@@ -1,5 +1,5 @@
 /*
- *  ReactOS Application MDI Child Panel Window
+ *  LibreNT Application MDI Child Panel Window
  *
  *  panelwnd.h
  *

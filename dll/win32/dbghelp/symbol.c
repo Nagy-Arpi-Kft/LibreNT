@@ -25,11 +25,11 @@
 #include <sys/types.h>
 #include <assert.h>
 
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "wine/debug.h"
 #endif
 #include "dbghelp_private.h"
-#if !defined(__REACTOS__) || !defined(DBGHELP_STATIC_LIB)
+#if !defined(__LIBRENT__) || !defined(DBGHELP_STATIC_LIB)
 #include "winnls.h"
 #endif
 
@@ -89,7 +89,7 @@ DWORD             symt_symref_to_index(struct module* module, symref_t symref)
     }
     else
     {
-#if defined(_WIN64) || (defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB) && defined(DBGHELP_HOST_64BIT))
+#if defined(_WIN64) || (defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB) && defined(DBGHELP_HOST_64BIT))
         vector = &module->vsymt;
         offset = 1;
 #else
@@ -119,7 +119,7 @@ symref_t      symt_index_to_symref(struct module* module, DWORD id)
     }
     else
     {
-#if defined(_WIN64) || (defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB) && defined(DBGHELP_HOST_64BIT))
+#if defined(_WIN64) || (defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB) && defined(DBGHELP_HOST_64BIT))
         if (!id--) return 0;
         vector = &module->vsymt;
 #else
@@ -2093,7 +2093,7 @@ static BOOL get_line_from_function(struct module_pair* pair, struct symt_functio
             }
             else
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 const char *source = source_get(pair->effective, dli->u.source_file);
                 DWORD len = MultiByteToWideChar(CP_ACP, 0, source, -1, NULL, 0);
                 WCHAR *dospath = HeapAlloc(GetProcessHeap(), 0, len * sizeof(WCHAR));

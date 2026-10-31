@@ -486,7 +486,7 @@ static void test_create_persisted_key(void)
     {
     key = 0;
     ret = NCryptCreatePersistedKey(prov, &key, BCRYPT_AES_ALGORITHM, NULL, 0, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_SUCCESS, "got %#lx\n", ret);
 #else
     ok(ret == ERROR_SUCCESS || broken(ret == NTE_NOT_SUPPORTED) /* win 7 */, "got %#lx\n", ret);

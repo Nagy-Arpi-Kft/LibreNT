@@ -1090,7 +1090,7 @@ Return Value:
                                               Vcb->EaFcb->DirentOffsetWithinDirectory,
                                               sizeof(DIRENT),
                                               EaBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                               EaDirent,
 #else
                                               (PVOID *)EaDirent,

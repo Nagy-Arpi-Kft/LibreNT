@@ -785,8 +785,8 @@ typedef struct _KPRCB
     ULONG PackageProcessorSet;
     ULONG CoreProcessorSet;
 #endif
-#ifdef __REACTOS__
-    /* ReactOS stores the upper half separately on i386. */
+#ifdef __LIBRENT__
+    /* LibreNT stores the upper half separately on i386. */
     ULONG FeatureBitsHigh;
 #endif
 } KPRCB, *PKPRCB;

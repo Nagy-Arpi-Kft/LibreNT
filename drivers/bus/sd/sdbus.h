@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT SD/SDIO/eMMC Bus Driver
+ * PROJECT:     LibreNT SD/SDIO/eMMC Bus Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Internal header for the SD bus driver
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -16,8 +16,8 @@
 #include <ntddsd.h>
 
 /* Pull in internal SD and SDHCI definitions */
-#include <reactos/drivers/sd/sddef.h>
-#include <reactos/drivers/sd/sdhci.h>
+#include <librent/drivers/sd/sddef.h>
+#include <librent/drivers/sd/sdhci.h>
 
 /* Pool tag: 'SDBu' */
 #define TAG_SDBUS 'uBDS'

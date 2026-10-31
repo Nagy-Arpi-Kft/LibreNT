@@ -793,12 +793,12 @@ DWORD WINAPI GetFileVersionInfoSizeExW( DWORD flags, LPCWSTR filename, LPDWORD r
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD error = GetLastError();
 #endif
         HANDLE handle = CreateFileW( filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE,
                                      NULL, OPEN_EXISTING, 0, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (handle == INVALID_HANDLE_VALUE)
         {
             SetLastError( error );
@@ -867,7 +867,7 @@ DWORD WINAPI GetFileVersionInfoSizeExA( DWORD flags, LPCSTR filename, LPDWORD ha
     return retval;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void apply_file_version_lie( LPCWSTR filename, VS_VERSION_INFO_STRUCT32 *vvis, DWORD datasize )
 {
     RTL_OSVERSIONINFOEXW real;
@@ -969,7 +969,7 @@ BOOL WINAPI GetFileVersionInfoExW( DWORD flags, LPCWSTR filename, DWORD ignored,
         return TRUE;
 
     case IMAGE_NT_SIGNATURE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         apply_file_version_lie( filename, vvis, min( len, datasize ) );
 #endif
         /* We have a 32bit resource.

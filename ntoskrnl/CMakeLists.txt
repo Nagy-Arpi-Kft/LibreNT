@@ -4,9 +4,9 @@ PROJECT(NTOS)
 if(KDBG AND (ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64") AND NOT TARGET kdb_zydis)
     # KDB must decode the instruction set emitted by current compilers. Build
     # the pinned Zydis copy carried by the vendored ARM64EC runtime source in
-    # its allocation-free kernel configuration. Define native ReactOS targets here
+    # its allocation-free kernel configuration. Define native LibreNT targets here
     # because the upstream CMake aliases conflict with our clean-target wrapper.
-    set(KDB_ZYDIS_ROOT ${REACTOS_SOURCE_DIR}/submodules/fex-arm64ec/External/zydis)
+    set(KDB_ZYDIS_ROOT ${LIBRENT_SOURCE_DIR}/submodules/fex-arm64ec/External/zydis)
     set(KDB_ZYCORE_ROOT ${KDB_ZYDIS_ROOT}/dependencies/zycore)
 
     if(NOT EXISTS ${KDB_ZYDIS_ROOT}/src/MetaInfo.c OR NOT EXISTS ${KDB_ZYCORE_ROOT}/src/API/Memory.c)
@@ -39,27 +39,27 @@ endif()
 
 if(NVS)
     file(GLOB NVS_SOURCE
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/core/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/vad/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/fault/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/section/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/ws/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/pagefile/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/vm/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/sys/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/proc/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/nt/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/pool/backing/mmbacking.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/arch/${ARCH}/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/cc/engine/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/cc/api/*.c
-        ${REACTOS_SOURCE_DIR}/ntoskrnl/cc/backing/*.c)
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/core/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/vad/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/fault/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/section/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/ws/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/pagefile/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/vm/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/sys/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/proc/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/nt/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/pool/backing/mmbacking.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/arch/${ARCH}/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/cc/engine/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/cc/api/*.c
+        ${LIBRENT_SOURCE_DIR}/ntoskrnl/cc/backing/*.c)
 
     list(APPEND SOURCE ${NVS_SOURCE})
     include(nvs/check-standalone.cmake)
     nvs_assert_standalone(${SOURCE} ${ASM_SOURCE})
     add_compile_definitions(NVS)
-    include_directories(${REACTOS_SOURCE_DIR}/ntoskrnl/nvs/arch/${ARCH})
+    include_directories(${LIBRENT_SOURCE_DIR}/ntoskrnl/nvs/arch/${ARCH})
 endif()
 
 set(NTOSKRNL_SOURCE ${SOURCE})
@@ -111,7 +111,7 @@ if(ARCH STREQUAL "arm64")
     target_link_libraries(ntoskrnl rtl_kernel_context)
 endif()
 
-source_group(TREE ${REACTOS_SOURCE_DIR}/ntoskrnl PREFIX "Source Files" FILES ${NTOSKRNL_SOURCE})
+source_group(TREE ${LIBRENT_SOURCE_DIR}/ntoskrnl PREFIX "Source Files" FILES ${NTOSKRNL_SOURCE})
 
 target_link_libraries(ntoskrnl ntoskrnl_vista cportlib csq ${PSEH_LIB} apisets arblib cmlib ntlsalib rtl cryptlib symz libcntpr setjmp wdmguid poguid ioevent)
 
@@ -127,10 +127,10 @@ endif()
 
 add_importlibs(ntoskrnl hal kdcom bootvid)
 if(NOT (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND ARCH STREQUAL "i386"))
-    add_pch(ntoskrnl ${REACTOS_SOURCE_DIR}/ntoskrnl/include/ntoskrnl.h "${PCH_SKIP_SOURCE}")
+    add_pch(ntoskrnl ${LIBRENT_SOURCE_DIR}/ntoskrnl/include/ntoskrnl.h "${PCH_SKIP_SOURCE}")
 endif()
 add_dependencies(ntoskrnl psdk asm)
-add_cd_file(TARGET ntoskrnl DESTINATION reactos/system32 NO_CAB FOR all)
+add_cd_file(TARGET ntoskrnl DESTINATION librent/system32 NO_CAB FOR all)
 
 add_subdirectory(nvs)
 add_subdirectory(cc)

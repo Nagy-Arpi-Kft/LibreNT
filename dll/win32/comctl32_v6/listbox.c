@@ -683,7 +683,7 @@ static void LISTBOX_PaintItem( LB_DESCR *descr, HDC hdc, const RECT *rect,
             oldBk = SetBkColor( hdc, GetSysColor( COLOR_HIGHLIGHT ) );
             oldText = SetTextColor( hdc, GetSysColor(COLOR_HIGHLIGHTTEXT));
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else
         {   
             HBRUSH br = GetCurrentObject(hdc, OBJ_BRUSH);
@@ -698,7 +698,7 @@ static void LISTBOX_PaintItem( LB_DESCR *descr, HDC hdc, const RECT *rect,
             ExtTextOutW( hdc, rect->left + 1, rect->top,
                            ETO_OPAQUE | ETO_CLIPPED, rect, NULL, 0, NULL );
         else if (!(descr->style & LBS_USETABSTOPS))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             RECT rc = *rect;
             if (!selected)
@@ -1158,7 +1158,7 @@ static LRESULT LISTBOX_Paint( LB_DESCR *descr, HDC hdc )
         /* keep the focus rect, to paint the focus item after */
         if (i == descr->focus_item)
             focusRect = rect;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         rect.bottom = min(rect.bottom, descr->height);
 #endif
         LISTBOX_PaintItem( descr, hdc, &rect, i, ODA_DRAWENTIRE, TRUE );
@@ -1202,7 +1202,7 @@ static LRESULT LISTBOX_Paint( LB_DESCR *descr, HDC hdc )
         if (rect.top < descr->height)
         {
             rect.bottom = descr->height;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             HBRUSH br = GetCurrentObject(hdc, OBJ_BRUSH);
             FillRect(hdc, &rect, br);
 #else
@@ -1216,7 +1216,7 @@ static LRESULT LISTBOX_Paint( LB_DESCR *descr, HDC hdc )
             rect.right  = descr->width;
             rect.top    = 0;
             rect.bottom = descr->height;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             HBRUSH br = GetCurrentObject(hdc, OBJ_BRUSH);
             FillRect(hdc, &rect, br);
 #else

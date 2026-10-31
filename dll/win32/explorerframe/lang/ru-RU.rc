@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Explorer
+ * PROJECT:     LibreNT Explorer
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Russian resource file
  * COPYRIGHT:   Copyright 2014-2015 Petr Akhlamov <petr-akhlamov@yandex.ru>
@@ -81,7 +81,7 @@ BEGIN
     END
     POPUP "&Справка", FCIDM_MENU_HELP
     BEGIN
-        MENUITEM "&О LiberNT", IDM_HELP_ABOUT
+        MENUITEM "&О LibreNT", IDM_HELP_ABOUT
     END
 END
 
@@ -335,8 +335,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PARSE_ADDR_ERR_TITLE "Проводник LiberNT"
-    IDS_PARSE_ADDR_ERR_TEXT "Проводник LiberNT не может найти '%1'. Проверьте правильность написания и попробуйте снова."
+    IDS_PARSE_ADDR_ERR_TITLE "Проводник LibreNT"
+    IDS_PARSE_ADDR_ERR_TEXT "Проводник LibreNT не может найти '%1'. Проверьте правильность написания и попробуйте снова."
 END
 
 STRINGTABLE

@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL (ARM64)
+ * PROJECT:         LibreNT HAL (ARM64)
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            hal/halarm64/gic/gic_internal.h
  * PURPOSE:         ARM GIC (Generic Interrupt Controller) Internal Definitions
@@ -28,7 +28,7 @@
 #include <ioaccess.h>
 #include <halfuncs.h>
 #include <halacpi_arm64.h>
-#include <reactos/arm64/sysreg.h>
+#include <librent/arm64/sysreg.h>
 #include <debug.h>
 
 /*

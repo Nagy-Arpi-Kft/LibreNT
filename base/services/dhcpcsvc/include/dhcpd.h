@@ -155,7 +155,7 @@ struct client_lease {
 	time_t			 expiry, renewal, rebind;
 	struct iaddr		 address;
 	char			*server_name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	u_int32_t		 lease;
 	time_t			 obtained;
 	struct iaddr		 serveraddress;

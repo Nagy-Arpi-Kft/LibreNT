@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Windows-Compatible Session Manager
+ * PROJECT:         LibreNT Windows-Compatible Session Manager
  * LICENSE:         BSD 2-Clause License
  * FILE:            base/system/smss/pagefile.c
  * PURPOSE:         Main SMSS Code
@@ -725,7 +725,7 @@ SmpCreatePagingFileOnSystemDrive(IN PSMP_PAGEFILE_DESCRIPTOR Descriptor,
     NTSTATUS Status;
     ASSERT(Descriptor->Name.Buffer[STANDARD_DRIVE_LETTER_OFFSET] == L'?');
 
-    /* Automatic and emergency pagefiles stay on the ReactOS volume. */
+    /* Automatic and emergency pagefiles stay on the LibreNT volume. */
     Descriptor->Name.Buffer[STANDARD_DRIVE_LETTER_OFFSET] = RtlUpcaseUnicodeChar(SharedUserData->NtSystemRoot[0]);
     Status = SmpCreatePagingFileOnFixedDrive(Descriptor, FuzzFactor, MinimumSize);
     if (!NT_SUCCESS(Status))
@@ -1166,7 +1166,7 @@ SmpCreatePagingFiles(VOID)
                     &Descriptor->Name);
             if (Descriptor->Name.Buffer[STANDARD_DRIVE_LETTER_OFFSET] == L'?')
             {
-                /* Resolve an automatic drive to the ReactOS volume. */
+                /* Resolve an automatic drive to the LibreNT volume. */
                 Size = Descriptor->MinSize;
                 Status = SmpCreatePagingFileOnSystemDrive(Descriptor, &FuzzFactor, &Size);
                 if (!NT_SUCCESS(Status))

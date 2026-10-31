@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Canonical Display Driver (cdd.dll)
+ * PROJECT:     LibreNT Canonical Display Driver (cdd.dll)
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM compositor and display-miniport control channel.
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -16,8 +16,8 @@
 
 #include "cdd.h"
 #define DPT_KERNEL
-#include <reactos/dwmpresenttrace.h>
-#include <reactos/rpi5vc4_xpdm.h>
+#include <librent/dwmpresenttrace.h>
+#include <librent/rpi5vc4_xpdm.h>
 
 #define CDD_OPENGL_ICD_VERSION 1
 #define CDD_OPENGL_ICD_DRIVER_VERSION 1

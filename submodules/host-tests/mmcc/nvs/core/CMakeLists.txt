@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/mmcc/nvs/core/CMakeLists.txt
 # PURPOSE:     Shared memory manager host-test build configuration
 #
@@ -51,7 +51,7 @@ list(APPEND MM_TESTS ${NVS_ROOT}/nt/ntprotect.c)
 list(APPEND MM_TESTS ${NVS_ROOT}/nt/ntmapping.c ${NVS_ROOT}/nt/nttruncate.c)
 list(APPEND MM_TESTS t_highmem.c)
 
-set(LXCORE_SOURCE ${REACTOS_HOST_SOURCE_ROOT}/subsystems/linux/lxcore)
+set(LXCORE_SOURCE ${LIBRENT_HOST_SOURCE_ROOT}/subsystems/linux/lxcore)
 set(LXCORE_HOST ${CMAKE_CURRENT_SOURCE_DIR}/../../../lxcore)
 set(LXCORE_COPY ${CMAKE_CURRENT_BINARY_DIR}/lxcore)
 add_custom_command(OUTPUT ${LXCORE_COPY}/mm.c ${LXCORE_COPY}/lxcore.h
@@ -61,9 +61,9 @@ add_custom_command(OUTPUT ${LXCORE_COPY}/mm.c ${LXCORE_COPY}/lxcore.h
 set(LXCORE_TESTS ${LXCORE_HOST}/t_lxmm.c ${LXCORE_HOST}/lxshim.c ${LXCORE_COPY}/mm.c)
 set_source_files_properties(${LXCORE_TESTS} PROPERTIES
     INCLUDE_DIRECTORIES "${LXCORE_HOST};${CMAKE_CURRENT_SOURCE_DIR};${LXCORE_SOURCE};${LXCORE_SOURCE}/arm64")
-set_source_files_properties(${REACTOS_HOST_SOURCE_ROOT}/ntoskrnl/rtl/rbtree.c PROPERTIES
+set_source_files_properties(${LIBRENT_HOST_SOURCE_ROOT}/ntoskrnl/rtl/rbtree.c PROPERTIES
     INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/../../../rtl/include")
-list(APPEND MM_TESTS ${LXCORE_TESTS} ${REACTOS_HOST_SOURCE_ROOT}/ntoskrnl/rtl/rbtree.c)
+list(APPEND MM_TESTS ${LXCORE_TESTS} ${LIBRENT_HOST_SOURCE_ROOT}/ntoskrnl/rtl/rbtree.c)
 
 set(MM_AREAS pfn pagetable vad vm large awe clone session fault fault_smp paging section image stress ccmm ntfile writeback ntpaging async sys process highmem lxmm)
 

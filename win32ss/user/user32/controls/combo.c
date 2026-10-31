@@ -443,7 +443,7 @@ static LRESULT COMBO_Create( HWND hwnd, LPHEADCOMBO lphc, HWND hwndParent, LONG 
    */
   lphc->wState |= CBF_MEASUREITEM;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   /* M$ IE 3.01 actually creates (and rapidly destroys) an ownerless combobox */
 
   if( lphc->owner || !(style & WS_VISIBLE) )
@@ -587,7 +587,7 @@ static LRESULT COMBO_Create( HWND hwnd, LPHEADCOMBO lphc, HWND hwndParent, LONG 
 	  ERR("edit control failure.\n");
       } else ERR("listbox failure.\n");
   }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   else ERR("no owner for visible combo.\n");
 #endif
 

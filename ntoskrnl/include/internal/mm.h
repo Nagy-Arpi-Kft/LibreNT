@@ -1873,7 +1873,7 @@ NTAPI
 MmFreeDriverInitialization(
     IN PLDR_DATA_TABLE_ENTRY LdrEntry);
 
-/* ReactOS-only, used by psmgr.c PspLookupSystemDllEntryPoint() as well */
+/* LibreNT-only, used by psmgr.c PspLookupSystemDllEntryPoint() as well */
 NTSTATUS
 NTAPI
 RtlpFindExportedRoutineByName(

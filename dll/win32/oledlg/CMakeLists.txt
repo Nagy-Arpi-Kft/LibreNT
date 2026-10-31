@@ -1,7 +1,7 @@
 
 spec2def(oledlg.dll oledlg.spec ADD_IMPORTLIB)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/ucrt)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/ucrt)
 
 list(APPEND SOURCE
     insobjdlg.c
@@ -19,5 +19,5 @@ set_module_type(oledlg win32dll ENTRYPOINT DllMain 12)
 target_link_libraries(oledlg wine)
 add_importlibs(oledlg ole32 comdlg32 user32 advapi32 ucrtbase kernel32 ntdll)
 add_pch(oledlg precomp.h SOURCE)
-add_cd_file(TARGET oledlg DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET oledlg DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(oledlg) # CORE-5743: No ARRAY_SIZE macro

@@ -108,7 +108,7 @@ CompositeMonikerImpl_QueryInterface(IMoniker* iface,REFIID riid,void** ppvObject
 
     /* Compare the riid with the interface IDs implemented by this object.*/
     if (IsEqualIID(&IID_IUnknown, riid) ||
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         IsEqualIID(&IID_IPersist, riid) ||
 #endif
         IsEqualIID(&IID_IPersistStream, riid) ||
@@ -119,7 +119,7 @@ CompositeMonikerImpl_QueryInterface(IMoniker* iface,REFIID riid,void** ppvObject
         *ppvObject = &This->IROTData_iface;
     else if (IsEqualIID(&IID_IMarshal, riid))
         *ppvObject = &This->IMarshal_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (IsEqualGUID(&CLSID_CompositeMoniker, riid))
     {
         *ppvObject = iface;
@@ -305,7 +305,7 @@ CompositeMonikerImpl_GetSizeMax(IMoniker* iface,ULARGE_INTEGER* pcbSize)
     if (!pcbSize)
         return E_POINTER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pcbSize->QuadPart = sizeof(DWORD) + sizeof(CLSID);
 #else
     pcbSize->QuadPart = sizeof(DWORD);
@@ -1038,7 +1038,7 @@ static HRESULT composite_get_moniker_comparison_data(IMoniker *moniker,
     if (FAILED(hr = IMoniker_QueryInterface(moniker, &IID_IROTData, (void **)&rot_data)))
     {
         WARN("Failed to get IROTData for component moniker, hr %#lx.\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return E_NOTIMPL;
 #else
         return hr;
@@ -1051,7 +1051,7 @@ static HRESULT composite_get_moniker_comparison_data(IMoniker *moniker,
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT composite_get_right_comparison_data(IMoniker *moniker,
         BYTE *data, ULONG max_len, ULONG *ret_len)
 {
@@ -1090,14 +1090,14 @@ static HRESULT WINAPI CompositeMonikerROTDataImpl_GetComparisonData(IROTData *if
     else
     {
         WARN("Failed to get comparison data length for left component, hr %#lx.\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *ret_len = 0;
 #endif
         return hr;
     }
 
     len = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = composite_get_right_comparison_data(moniker->right, NULL, 0, &len);
 #else
     hr = composite_get_moniker_comparison_data(moniker->right, NULL, 0, &len);
@@ -1107,7 +1107,7 @@ static HRESULT WINAPI CompositeMonikerROTDataImpl_GetComparisonData(IROTData *if
     else
     {
         WARN("Failed to get comparison data length for right component, hr %#lx.\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *ret_len = 0;
 #endif
         return hr;
@@ -1126,7 +1126,7 @@ static HRESULT WINAPI CompositeMonikerROTDataImpl_GetComparisonData(IROTData *if
     }
     data += len;
     max_len -= len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = composite_get_right_comparison_data(moniker->right, data, max_len, &len)))
 #else
     if (FAILED(hr = composite_get_moniker_comparison_data(moniker->right, data, max_len, &len)))
@@ -1867,7 +1867,7 @@ HRESULT WINAPI CreateGenericComposite(IMoniker *left, IMoniker *right, IMoniker 
 HRESULT WINAPI
 MonikerCommonPrefixWith(IMoniker* pmkThis,IMoniker* pmkOther,IMoniker** ppmkCommon)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IMoniker **this_components, **other_components, *prefix = NULL, *c;
     unsigned int this_count, other_count, count, i;
     BOOL this_composite, other_composite;

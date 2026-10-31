@@ -7,4 +7,4 @@ add_rc_deps(msinfo32.rc
 add_executable(msinfo32 msinfo32.c msinfo32.rc)
 set_module_type(msinfo32 win32gui UNICODE)
 add_importlibs(msinfo32 comctl32 shell32 shlwapi advapi32 user32 msvcrt kernel32)
-add_cd_file(TARGET msinfo32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msinfo32 DESTINATION librent/system32 FOR all)

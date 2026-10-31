@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Bootsector
+ * PROJECT:         LibreNT Bootsector
  * FILE:            boot/freeldr/bootsect/fat32.S
  * PURPOSE:
  * PROGRAMMERS:     Brian Palmer

@@ -40,7 +40,7 @@ VfdReinitialize(
 //
 //	operating system version
 //
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern ULONG OsMajorVersion = 0;
 extern ULONG OsMinorVersion = 0;
 extern ULONG OsBuildNumber	= 0;
@@ -54,7 +54,7 @@ ULONG OsBuildNumber	= 0;
 //	Trace level flag
 //
 #if DBG
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern ULONG TraceFlags	= (ULONG)-1;
 #else
 ULONG TraceFlags	= (ULONG)-1;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Task Manager
+ * PROJECT:     LibreNT Task Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Data engine: system/process sampling, services, users,
  *              startup items, app history, process actions
@@ -109,7 +109,7 @@ struct AppHistDiskRow
 };
 
 static const WCHAR* APP_HISTORY_KEY =
-    L"Software\\ReactOS\\TaskMgr11\\AppHistory";
+    L"Software\\LibreNT\\TaskMgr11\\AppHistory";
 static const DWORD APP_HISTORY_VERSION = 1;
 static const DWORD APP_HISTORY_MAX_ROWS = 256;
 
@@ -1950,7 +1950,7 @@ static void DetectCpuTopology(void)
     BOOL haveTopology = FALSE;
 
     /* Prefer the variable-size API so processor groups and all cache records
-       are represented. Fall back for older ReactOS installations. */
+       are represented. Fall back for older LibreNT installations. */
     typedef BOOL (WINAPI *PFN_GLPIEX)(
         LOGICAL_PROCESSOR_RELATIONSHIP,
         PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX,
@@ -3369,7 +3369,7 @@ void Tick(void)
     g.memPagedPool = (ULONGLONG)perf.PagedPoolPages * g.pageSize;
     g.memNonPagedPool = (ULONGLONG)perf.NonPagedPoolPages * g.pageSize;
 
-    /* IOCTL_DISK_PERFORMANCE is preferred; ReactOS installations without
+    /* IOCTL_DISK_PERFORMANCE is preferred; LibreNT installations without
        diskperf support retain the system-wide transfer-rate fallback. */
     PollDiskPerformance(dt, &perf);
     if (g.diskReadBps < 0) g.diskReadBps = 0;
@@ -3950,7 +3950,7 @@ void RefreshUsers(void)
     }
 
     /* wtsapi32 session enumeration is authoritative (implemented for the
-       console session on ReactOS); resolve missing user names from the
+       console session on LibreNT); resolve missing user names from the
        session's processes */
     for (int u = 0; u < s_users.n; u++)
     {
@@ -4402,7 +4402,7 @@ void GetAppHistorySince(FILETIME* since)
 
 BOOL AppHistoryNetworkAvailable(void)
 {
-    /* ReactOS does not yet expose historical network bytes by process/app. */
+    /* LibreNT does not yet expose historical network bytes by process/app. */
     return FALSE;
 }
 

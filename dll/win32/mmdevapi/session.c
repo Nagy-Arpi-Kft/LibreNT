@@ -26,7 +26,7 @@
 #include <winternl.h>
 
 #include <wine/debug.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <wine/unixlib.h>
 #endif
 
@@ -52,7 +52,7 @@ static struct list sessions = LIST_INIT(sessions);
 
 static void session_init_vols(struct audio_session *session, UINT channels);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL shared_session_id_equal(const struct reactos_audio_session_id *left,
                                     const struct reactos_audio_session_id *right)
 {
@@ -271,7 +271,7 @@ static const IAudioMeterInformationVtbl SessionMeterInformation_Vtbl =
     sessionmeter_QueryHardwareSupport
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void release_proxy_session(struct audio_session *session)
 {
     if (!session->shared_proxy || --session->proxy_wrapper_count)
@@ -337,7 +337,7 @@ static ULONG WINAPI control_Release(IAudioSessionControl2 *iface)
             sessions_unlock();
             IAudioClient3_Release(&This->client->IAudioClient3_iface);
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (This->session->shared_proxy)
         {
             sessions_lock();
@@ -365,7 +365,7 @@ static HRESULT WINAPI control_GetState(IAudioSessionControl2 *iface, AudioSessio
 
     sessions_lock();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->session->shared_proxy)
     {
         sync_audio_session(This->session);
@@ -559,7 +559,7 @@ static HRESULT WINAPI control_GetSessionIdentifier(IAudioSessionControl2 *iface,
         return E_POINTER;
     *id = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(This->session);
     lstrcpynW(exe_path, This->session->process_path ?
@@ -597,7 +597,7 @@ static HRESULT WINAPI control_GetSessionInstanceIdentifier(IAudioSessionControl2
     if (FAILED(hr = control_GetSessionIdentifier(iface, &session_id)))
         return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(This->session);
     swprintf(pid, ARRAY_SIZE(pid), L"%lu", This->session->process_id);
@@ -624,7 +624,7 @@ static HRESULT WINAPI control_GetProcessId(IAudioSessionControl2 *iface, DWORD *
     if (!pid)
         return E_POINTER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(This->session);
     *pid = This->session->process_id;
@@ -714,12 +714,12 @@ static HRESULT WINAPI channelvolume_GetChannelCount(IChannelAudioVolume *iface, 
     if (!out)
         return NULL_PTR_ERR;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(session);
 #endif
     *out = session->channel_count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_unlock();
 #endif
 
@@ -732,7 +732,7 @@ static HRESULT WINAPI channelvolume_SetChannelVolume(IChannelAudioVolume *iface,
     struct audio_session_wrapper *This = impl_from_IChannelAudioVolume(iface);
     struct audio_session *session = This->session;
     struct audio_client *client;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
@@ -746,7 +746,7 @@ static HRESULT WINAPI channelvolume_SetChannelVolume(IChannelAudioVolume *iface,
 
     sessions_lock();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sync_audio_session(session);
 #endif
     if (index >= session->channel_count)
@@ -754,7 +754,7 @@ static HRESULT WINAPI channelvolume_SetChannelVolume(IChannelAudioVolume *iface,
         sessions_unlock();
         return E_INVALIDARG;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (session->shared_valid)
     {
         hr = reactos_audio_session_set_channel(&session->shared_id, index,
@@ -789,20 +789,20 @@ static HRESULT WINAPI channelvolume_GetChannelVolume(IChannelAudioVolume *iface,
     if (!level)
         return NULL_PTR_ERR;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(session);
 #endif
     if (index >= session->channel_count)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sessions_unlock();
 #endif
         return E_INVALIDARG;
     }
 
     *level = session->channel_vols[index];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_unlock();
 #endif
 
@@ -816,7 +816,7 @@ static HRESULT WINAPI channelvolume_SetAllVolumes(IChannelAudioVolume *iface, UI
     struct audio_session *session = This->session;
     struct audio_client *client;
     unsigned int i;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
@@ -830,7 +830,7 @@ static HRESULT WINAPI channelvolume_SetAllVolumes(IChannelAudioVolume *iface, UI
 
     sessions_lock();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sync_audio_session(session);
 #endif
     if (count != session->channel_count)
@@ -838,7 +838,7 @@ static HRESULT WINAPI channelvolume_SetAllVolumes(IChannelAudioVolume *iface, UI
         sessions_unlock();
         return E_INVALIDARG;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (session->shared_valid)
     {
         hr = reactos_audio_session_set_channels(&session->shared_id, count,
@@ -875,13 +875,13 @@ static HRESULT WINAPI channelvolume_GetAllVolumes(IChannelAudioVolume *iface, UI
     if (!levels)
         return NULL_PTR_ERR;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(session);
 #endif
     if (count != session->channel_count)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sessions_unlock();
 #endif
         return E_INVALIDARG;
@@ -889,7 +889,7 @@ static HRESULT WINAPI channelvolume_GetAllVolumes(IChannelAudioVolume *iface, UI
 
     for (i = 0; i < count; ++i)
         levels[i] = session->channel_vols[i];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_unlock();
 #endif
 
@@ -947,7 +947,7 @@ static HRESULT WINAPI simplevolume_SetMasterVolume(ISimpleAudioVolume *iface, fl
     struct audio_session_wrapper *This = impl_from_ISimpleAudioVolume(iface);
     struct audio_session *session = This->session;
     struct audio_client *client;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
@@ -961,7 +961,7 @@ static HRESULT WINAPI simplevolume_SetMasterVolume(ISimpleAudioVolume *iface, fl
 
     sessions_lock();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (session->shared_valid)
     {
         hr = reactos_audio_session_set_master(&session->shared_id, level);
@@ -994,12 +994,12 @@ static HRESULT WINAPI simplevolume_GetMasterVolume(ISimpleAudioVolume *iface, fl
     if (!level)
         return NULL_PTR_ERR;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(session);
 #endif
     *level = session->master_vol;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_unlock();
 #endif
 
@@ -1012,7 +1012,7 @@ static HRESULT WINAPI simplevolume_SetMute(ISimpleAudioVolume *iface, BOOL mute,
     struct audio_session_wrapper *This = impl_from_ISimpleAudioVolume(iface);
     struct audio_session *session = This->session;
     struct audio_client *client;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr;
 #endif
 
@@ -1023,7 +1023,7 @@ static HRESULT WINAPI simplevolume_SetMute(ISimpleAudioVolume *iface, BOOL mute,
 
     sessions_lock();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (session->shared_valid)
     {
         hr = reactos_audio_session_set_mute(&session->shared_id, mute);
@@ -1056,12 +1056,12 @@ static HRESULT WINAPI simplevolume_GetMute(ISimpleAudioVolume *iface, BOOL *mute
     if (!mute)
         return NULL_PTR_ERR;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_lock();
     sync_audio_session(session);
 #endif
     *mute = session->mute;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sessions_unlock();
 #endif
 
@@ -1095,7 +1095,7 @@ static void session_init_vols(struct audio_session *session, UINT channels)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void register_shared_session(struct audio_session *session,
                                     IMMDevice *device, const GUID *guid,
                                     UINT channels)
@@ -1169,7 +1169,7 @@ static struct audio_session *session_create(const GUID *guid, IMMDevice *device,
 
     CoCreateGuid(&ret->grouping_param);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret->process_id = GetCurrentProcessId();
     register_shared_session(ret, device, guid, channels);
 #endif
@@ -1216,14 +1216,14 @@ HRESULT get_audio_session(const GUID *guid, IMMDevice *device, UINT channels,
 
     *out = NULL;
     LIST_FOR_EACH_ENTRY(session, &sessions, struct audio_session, entry) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (session->shared_proxy)
             continue;
 #endif
         if (session->device == device && ((!guid && IsEqualGUID(&session->guid, &GUID_NULL)) ||
                                           (guid && IsEqualGUID(guid, &session->guid)))) {
             session_init_vols(session, channels);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             register_shared_session(session, device, guid, channels);
 #endif
             *out = session;
@@ -1262,7 +1262,7 @@ HRESULT get_audio_session_wrapper(const GUID *guid, IMMDevice *device,
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT get_audio_session_wrapper_by_id(
     const struct reactos_audio_session_id *id, IMMDevice *device,
     struct audio_session_wrapper **out)

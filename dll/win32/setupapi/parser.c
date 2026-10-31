@@ -1024,7 +1024,7 @@ static DWORD parse_buffer( struct inf_file *file, const WCHAR *buffer, const WCH
                                     file->nb_fields * sizeof(file->fields[0]) );
         file->alloc_fields = file->nb_fields;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         WCHAR *strings = HeapReAlloc( GetProcessHeap(), HEAP_REALLOC_IN_PLACE_ONLY, file->strings,
                                       (file->string_pos - file->strings) * sizeof(WCHAR) );
@@ -1044,7 +1044,7 @@ static DWORD parse_buffer( struct inf_file *file, const WCHAR *buffer, const WCH
     /* find the [strings] section */
     file->strings_section = find_section( file, Strings );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     file->broken_line = parser.broken_line;
 #else
     if (file->strings_section == -1 && parser.broken_line)
@@ -1085,7 +1085,7 @@ static struct inf_file *parse_file( HANDLE handle, UINT *error_line, DWORD style
     struct inf_file *file;
 
     DWORD size = GetFileSize( handle, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE mapping;
 
     if (!size)
@@ -1150,7 +1150,7 @@ static struct inf_file *parse_file( HANDLE handle, UINT *error_line, DWORD style
         err = parse_buffer( file, new_buff, (WCHAR *)((char *)buffer + size), error_line );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (err != ERROR_NOT_ENOUGH_MEMORY)
     {
         BOOL win4 = FALSE;
@@ -1407,7 +1407,7 @@ HINF WINAPI SetupOpenInfFileW( PCWSTR name, PCWSTR class, DWORD style, UINT *err
 
     TRACE("%s %s %lx %p\n", debugstr_w(name), debugstr_w(class), style, error);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (style & ~(INF_STYLE_OLDNT | INF_STYLE_WIN4))
     {
         SetLastError(ERROR_INVALID_PARAMETER);
@@ -1418,7 +1418,7 @@ HINF WINAPI SetupOpenInfFileW( PCWSTR name, PCWSTR class, DWORD style, UINT *err
         SetLastError(ERROR_INVALID_PARAMETER);
         return (HINF)INVALID_HANDLE_VALUE;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     if (strchrW( name, '\\' ) || strchrW( name, '/' ))
     {
@@ -1582,7 +1582,7 @@ void WINAPI SetupCloseInfFile( HINF hinf )
 /***********************************************************************
  *            SetupEnumInfSectionsA   (SETUPAPI.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI SetupEnumInfSectionsA( HINF hinf, UINT index, PSTR buffer, UINT size, UINT *need )
 #else
 BOOL WINAPI SetupEnumInfSectionsA( HINF hinf, UINT index, PSTR buffer, DWORD size, DWORD *need )
@@ -1621,7 +1621,7 @@ BOOL WINAPI SetupEnumInfSectionsA( HINF hinf, UINT index, PSTR buffer, DWORD siz
 /***********************************************************************
  *            SetupEnumInfSectionsW   (SETUPAPI.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI SetupEnumInfSectionsW( HINF hinf, UINT index, PWSTR buffer, UINT size, UINT *need )
 #else
 BOOL WINAPI SetupEnumInfSectionsW( HINF hinf, UINT index, PWSTR buffer, DWORD size, DWORD *need )

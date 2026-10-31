@@ -460,7 +460,7 @@ static BOOL PRINTDLG_CreateDevNames(HGLOBAL *hmem, const char* DeviceDriverName,
 
     p = strrchr( DeviceDriverName, '\\' );
     if (p) DeviceDriverName = p + 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DeviceDriverName = "winspool";
 #endif
 
@@ -510,7 +510,7 @@ static BOOL PRINTDLG_CreateDevNamesW(HGLOBAL *hmem, LPCWSTR DeviceDriverName,
 
     p = wcsrchr( DeviceDriverName, '\\' );
     if (p) DeviceDriverName = p + 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DeviceDriverName = L"winspool";
 #endif
 

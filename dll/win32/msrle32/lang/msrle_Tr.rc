@@ -22,7 +22,7 @@ LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 
 STRINGTABLE
 {
-	IDS_NAME	"LiberNT MS-RLE"
-	IDS_DESCRIPTION	"LiberNT MS-RLE Video Kodeki"
-	IDS_ABOUT       "LiberNT MS-RLE Video Kodeki\nTelif Hakkı: 2002 - Michael Günnewig"
+	IDS_NAME	"LibreNT MS-RLE"
+	IDS_DESCRIPTION	"LibreNT MS-RLE Video Kodeki"
+	IDS_ABOUT       "LibreNT MS-RLE Video Kodeki\nTelif Hakkı: 2002 - Michael Günnewig"
 }

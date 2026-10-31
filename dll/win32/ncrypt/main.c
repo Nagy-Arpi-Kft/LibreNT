@@ -22,7 +22,7 @@
 #include <stdlib.h>
 
 #include "ntstatus.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include "windef.h"
@@ -30,7 +30,7 @@
 #include "ncrypt.h"
 #include "bcrypt.h"
 #include "ncrypt_internal.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "keystore.h"
 #endif
 #include "wine/debug.h"
@@ -59,7 +59,7 @@ static struct object *allocate_object(enum object_type type)
 {
     struct object *ret;
     if (!(ret = calloc(1, sizeof(*ret)))) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret->magic = NCRYPT_OBJECT_MAGIC;
 #endif
     ret->type = type;
@@ -141,7 +141,7 @@ static SECURITY_STATUS set_object_property(struct object *object, const WCHAR *n
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct symmetric_algorithm
 {
     enum algid algid;
@@ -211,7 +211,7 @@ static struct object *create_key_object(enum algid algid, NCRYPT_PROV_HANDLE pro
         object->key.algid = ECDSA_P256;
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case AES:
     case RC2:
     case TDES:
@@ -258,7 +258,7 @@ static struct object *create_key_object(enum algid algid, NCRYPT_PROV_HANDLE pro
     return object;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SECURITY_STATUS keystore_set_identity(struct object *object, const WCHAR *name, DWORD flags)
 {
     WCHAR unique[128];
@@ -377,7 +377,7 @@ SECURITY_STATUS WINAPI NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE provider, NCR
 
     if (!provider) return NTE_INVALID_HANDLE;
     if (!algid) return HRESULT_FROM_WIN32(RPC_X_NULL_REF_POINTER);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (name && !(flags & NCRYPT_OVERWRITE_KEY_FLAG) &&
         keystore_exists(name, !!(flags & NCRYPT_MACHINE_KEY_FLAG)) == ERROR_SUCCESS)
         return NTE_EXISTS;
@@ -425,7 +425,7 @@ SECURITY_STATUS WINAPI NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE provider, NCR
         set_object_property(object, NCRYPT_LENGTH_PROPERTY, (BYTE *)&bitlen, sizeof(bitlen));
         set_object_property(object, BCRYPT_PUBLIC_KEY_LENGTH, (BYTE *)&bitlen, sizeof(bitlen));
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (symmetric_from_name(algid))
     {
         if (!(object = create_key_object(symmetric_from_name(algid)->algid, provider))) return NTE_NO_MEMORY;
@@ -437,7 +437,7 @@ SECURITY_STATUS WINAPI NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE provider, NCR
         return NTE_NOT_SUPPORTED;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (name && keystore_set_identity(object, name, flags))
     {
         NCryptFreeObject((NCRYPT_HANDLE)object);
@@ -451,7 +451,7 @@ SECURITY_STATUS WINAPI NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE provider, NCR
 SECURITY_STATUS WINAPI NCryptDecrypt(NCRYPT_KEY_HANDLE key, BYTE *input, DWORD insize, void *padding,
                                      BYTE *output, DWORD outsize, DWORD *result, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct object *key_object = (struct object *)key;
 
     TRACE("(%#Ix, %p, %lu, %p, %p, %lu, %p, %#lx)\n", key, input, insize, padding,
@@ -474,7 +474,7 @@ SECURITY_STATUS WINAPI NCryptDecrypt(NCRYPT_KEY_HANDLE key, BYTE *input, DWORD i
 
 SECURITY_STATUS WINAPI NCryptDeleteKey(NCRYPT_KEY_HANDLE key, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct object *object = (struct object *)key;
     SECURITY_STATUS ret = ERROR_SUCCESS;
 
@@ -499,7 +499,7 @@ SECURITY_STATUS WINAPI NCryptEncrypt(NCRYPT_KEY_HANDLE key, BYTE *input, DWORD i
     TRACE("(%#Ix, %p, %lu, %p, %p, %lu, %p, %#lx)\n", key, input, insize, padding,
           output, outsize, result, flags);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (key_object && key_object->type == KEY && symmetric_from_algid(key_object->key.algid))
         return crypt_symmetric_key(key_object, TRUE, input, insize, padding, output, outsize, result, flags);
 #endif
@@ -510,7 +510,7 @@ SECURITY_STATUS WINAPI NCryptEncrypt(NCRYPT_KEY_HANDLE key, BYTE *input, DWORD i
         return NTE_BAD_FLAGS;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (flags & NCRYPT_PAD_OAEP_FLAG)
     {
         FIXME("oaep padding not supported\n");
@@ -536,7 +536,7 @@ SECURITY_STATUS WINAPI NCryptEncrypt(NCRYPT_KEY_HANDLE key, BYTE *input, DWORD i
 SECURITY_STATUS WINAPI NCryptEnumAlgorithms(NCRYPT_PROV_HANDLE provider, DWORD alg_ops,
                                             DWORD *alg_count, NCryptAlgorithmName **alg_list, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const struct
     {
         const WCHAR *name;
@@ -596,7 +596,7 @@ SECURITY_STATUS WINAPI NCryptEnumAlgorithms(NCRYPT_PROV_HANDLE provider, DWORD a
 SECURITY_STATUS WINAPI NCryptEnumKeys(NCRYPT_PROV_HANDLE provider, const WCHAR *scope,
                                       NCryptKeyName **key_name, PVOID *enum_state, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%#Ix, %p, %p, %p, %#lx)\n", provider, scope, key_name, enum_state, flags);
 
     if (!provider) return NTE_INVALID_HANDLE;
@@ -614,7 +614,7 @@ SECURITY_STATUS WINAPI NCryptFinalizeKey(NCRYPT_KEY_HANDLE handle, DWORD flags)
     DWORD key_length;
     struct object_property *prop;
     NTSTATUS status;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SECURITY_STATUS ret;
 #endif
 
@@ -622,7 +622,7 @@ SECURITY_STATUS WINAPI NCryptFinalizeKey(NCRYPT_KEY_HANDLE handle, DWORD flags)
 
     if (!object || object->type != KEY) return NTE_INVALID_HANDLE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (symmetric_from_algid(object->key.algid))
     {
         if ((ret = finalize_symmetric_key(object))) return ret;
@@ -652,7 +652,7 @@ SECURITY_STATUS WINAPI NCryptFinalizeKey(NCRYPT_KEY_HANDLE handle, DWORD flags)
         return map_ntstatus(status);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (object->key.name && (ret = keystore_save(object))) return ret;
     object->key.finalized = TRUE;
 #endif
@@ -661,7 +661,7 @@ SECURITY_STATUS WINAPI NCryptFinalizeKey(NCRYPT_KEY_HANDLE handle, DWORD flags)
 
 SECURITY_STATUS WINAPI NCryptFreeBuffer(PVOID buf)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)\n", buf);
     free(buf);
     return ERROR_SUCCESS;
@@ -673,7 +673,7 @@ SECURITY_STATUS WINAPI NCryptFreeBuffer(PVOID buf)
 
 static SECURITY_STATUS free_key_object(struct key *key)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!key->bcrypt_key) return ERROR_SUCCESS;
 #endif
     return map_ntstatus( BCryptDestroyKey(key->bcrypt_key) );
@@ -692,7 +692,7 @@ SECURITY_STATUS WINAPI NCryptFreeObject(NCRYPT_HANDLE handle)
         WARN("invalid handle %#Ix\n", handle);
         return NTE_INVALID_HANDLE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (object->magic != NCRYPT_OBJECT_MAGIC)
     {
         WARN("invalid handle %#Ix\n", handle);
@@ -705,7 +705,7 @@ SECURITY_STATUS WINAPI NCryptFreeObject(NCRYPT_HANDLE handle)
     case KEY:
     {
         if ((ret = free_key_object(&object->key))) return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(object->key.name);
 #endif
         break;
@@ -729,7 +729,7 @@ SECURITY_STATUS WINAPI NCryptFreeObject(NCRYPT_HANDLE handle)
         free(object->properties[i].value);
     }
     free(object->properties);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     object->magic = 0;
 #endif
     free(object);
@@ -746,7 +746,7 @@ SECURITY_STATUS WINAPI NCryptGetProperty(NCRYPT_HANDLE handle, const WCHAR *name
     if (flags) FIXME("flags %#lx not supported\n", flags);
 
     if (!object) return NTE_INVALID_HANDLE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(property = get_object_property(object, name)))
     {
         static const WCHAR *const unset_properties[] =
@@ -843,7 +843,7 @@ SECURITY_STATUS WINAPI NCryptImportKey(NCRYPT_PROV_HANDLE provider, NCRYPT_KEY_H
 
         set_object_property(object, NCRYPT_LENGTH_PROPERTY, (BYTE *)&rsablob->BitLength, sizeof(rsablob->BitLength));
         set_object_property(object, BCRYPT_PUBLIC_KEY_LENGTH, (BYTE *)&rsablob->BitLength, sizeof(rsablob->BitLength));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         object->key.finalized = TRUE;
 #endif
         break;
@@ -881,7 +881,7 @@ SECURITY_STATUS WINAPI NCryptExportKey(NCRYPT_KEY_HANDLE key, NCRYPT_KEY_HANDLE 
         FIXME("Silent flag not implemented\n");
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!object || object->type != KEY) return NTE_INVALID_HANDLE;
     if (is_private_blob(type) &&
         !(dword_property(object, NCRYPT_EXPORT_POLICY_PROPERTY, 0) & NCRYPT_ALLOW_PLAINTEXT_EXPORT_FLAG))
@@ -938,7 +938,7 @@ SECURITY_STATUS WINAPI NCryptIsAlgSupported(NCRYPT_PROV_HANDLE provider, const W
 
 BOOL WINAPI NCryptIsKeyHandle(NCRYPT_KEY_HANDLE hKey)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct object *object = (struct object *)hKey;
 
     TRACE("(%#Ix)\n", hKey);
@@ -952,7 +952,7 @@ BOOL WINAPI NCryptIsKeyHandle(NCRYPT_KEY_HANDLE hKey)
 SECURITY_STATUS WINAPI NCryptOpenKey(NCRYPT_PROV_HANDLE provider, NCRYPT_KEY_HANDLE *key,
                                      const WCHAR *name, DWORD keyspec, DWORD flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct keystore_record record;
     struct object *object;
     SECURITY_STATUS ret;
@@ -1016,7 +1016,7 @@ SECURITY_STATUS WINAPI NCryptOpenKey(NCRYPT_PROV_HANDLE provider, NCRYPT_KEY_HAN
 SECURITY_STATUS WINAPI NCryptOpenStorageProvider(NCRYPT_PROV_HANDLE *provider, const WCHAR *name, DWORD flags)
 {
     struct object *object;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *provider_name = MS_KEY_STORAGE_PROVIDER;
     DWORD impl = NCRYPT_IMPL_SOFTWARE_FLAG | 0x20;
 
@@ -1043,7 +1043,7 @@ SECURITY_STATUS WINAPI NCryptOpenStorageProvider(NCRYPT_PROV_HANDLE *provider, c
         ERR("Error allocating memory.\n");
         return NTE_NO_MEMORY;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     set_object_property(object, NCRYPT_NAME_PROPERTY, (BYTE *)provider_name,
                         (lstrlenW(provider_name) + 1) * sizeof(WCHAR));
     set_object_property(object, NCRYPT_IMPL_TYPE_PROPERTY, (BYTE *)&impl, sizeof(impl));
@@ -1060,7 +1060,7 @@ SECURITY_STATUS WINAPI NCryptSetProperty(NCRYPT_HANDLE handle, const WCHAR *name
     if (flags) FIXME("flags %#lx not supported\n", flags);
 
     if (!object) return NTE_INVALID_HANDLE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (object->type == KEY)
     {
         static const WCHAR *const writable_properties[] =
@@ -1121,7 +1121,7 @@ SECURITY_STATUS WINAPI NCryptVerifySignature(NCRYPT_KEY_HANDLE handle, void *pad
         return NTE_NOT_SUPPORTED;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((flags & NCRYPT_PAD_PKCS1_FLAG) && padding && ((BCRYPT_PKCS1_PADDING_INFO *)padding)->pszAlgId)
     {
         BCRYPT_ALG_HANDLE alg;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Operating System
+ * PROJECT:         LibreNT Operating System
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         ARM64 hypervisor vendor identification
  * COPYRIGHT:       Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -8,7 +8,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/drivers/acpi/acpi.h>
 
 #define NDEBUG
 #include <debug.h>

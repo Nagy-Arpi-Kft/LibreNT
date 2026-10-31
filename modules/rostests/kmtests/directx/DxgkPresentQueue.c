@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     dxgkrnl stable circular present-queue removal tests
  */
@@ -161,7 +161,7 @@ Cleanup:
     }
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 static VOID
 DxgkPresentQueueTestRefreshTargets(VOID)
 {
@@ -564,7 +564,7 @@ START_TEST(DxgkPresentQueue)
     DXGK_PRESENT_QUEUE_TEST_ENTRY Entry;
     ULONG Index;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     DxgkPresentQueueTestRefreshTargets();
 #endif
     DxgkPresentQueueTestExecutionOrder();

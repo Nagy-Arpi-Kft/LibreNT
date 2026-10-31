@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS PCI Bus driver
+ * PROJECT:         LibreNT PCI Bus driver
  * FILE:            pci.c
  * PURPOSE:         Driver entry
  * PROGRAMMERS:     Casper S. Hornstrup (chorns@users.sourceforge.net)

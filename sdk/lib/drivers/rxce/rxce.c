@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2017 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * FILE:             sdk/lib/drivers/rxce/rxce.c
  * PURPOSE:          RXCE library
  * PROGRAMMER:       Pierre Schweitzer (pierre@reactos.org)
@@ -7609,7 +7609,7 @@ RxRemoveNameNetFcb(
     ASSERT(RxIsFcbTableLockExclusive(&NetRoot->FcbTable));
     ASSERT(RxIsFcbAcquiredExclusive(ThisFcb));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!BooleanFlagOn(ThisFcb->FcbState, FCB_STATE_NAME_ALREADY_REMOVED))
     {
 #endif
@@ -7617,7 +7617,7 @@ RxRemoveNameNetFcb(
         DPRINT("FCB (%p) %wZ removed\n", ThisFcb, &ThisFcb->FcbTableEntry.Path);
         /* Mark, so that we don't try to do it twice */
         SetFlag(ThisFcb->FcbState, FCB_STATE_NAME_ALREADY_REMOVED);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 }

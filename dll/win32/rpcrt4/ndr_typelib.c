@@ -21,7 +21,7 @@
 #include <assert.h>
 
 #define COBJMACROS
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "objbase.h"
 #endif
 #include "oaidl.h"
@@ -184,7 +184,7 @@ static unsigned int type_memsize(ITypeInfo *typeinfo, TYPEDESC *desc, unsigned i
     case VT_PTR:
     case VT_UNKNOWN:
     case VT_DISPATCH:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_LPSTR:
     case VT_LPWSTR:
 #endif
@@ -781,7 +781,7 @@ static size_t write_pointer_tfs(ITypeInfo *typeinfo, unsigned char *str,
         ref = write_type_tfs(typeinfo, str, len, desc, FALSE, FALSE);
 
         if (onstack) flags |= FC_ALLOCED_ON_STACK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (desc->vt == VT_PTR || desc->vt == VT_UNKNOWN || desc->vt == VT_DISPATCH ||
             desc->vt == VT_LPSTR || desc->vt == VT_LPWSTR)
 #else
@@ -818,7 +818,7 @@ static size_t write_type_tfs(ITypeInfo *typeinfo, unsigned char *str,
         return write_pointer_tfs(typeinfo, str, len, desc->lptdesc, toplevel, onstack);
     case VT_CARRAY:
         return write_array_tfs(typeinfo, str, len, desc->lpadesc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_LPSTR:
     case VT_LPWSTR:
         off = *len;
@@ -961,7 +961,7 @@ static HRESULT get_param_pointer_info(ITypeInfo *typeinfo, TYPEDESC *tdesc, int 
         *server_size = type_memsize(typeinfo, tdesc, NULL);
         *tfs_tdesc = tdesc;
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_LPSTR:
     case VT_LPWSTR:
         *flags |= MustFree;
@@ -1045,7 +1045,7 @@ static HRESULT get_param_info(ITypeInfo *typeinfo, TYPEDESC *tdesc, int is_in,
     case VT_UNKNOWN:
     case VT_DISPATCH:
     case VT_CARRAY:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_LPSTR:
     case VT_LPWSTR:
 #endif
@@ -1440,13 +1440,13 @@ static HRESULT get_iface_info(ITypeInfo *typeinfo, WORD *funcs, WORD *parentfunc
 {
     ITypeInfo *parentinfo;
     TYPEATTR *typeattr;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ITypeLib *typelib;
     TLIBATTR *libattr;
 #endif
     TYPEKIND typekind;
     HREFTYPE reftype;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     SYSKIND syskind;
 #endif
     HRESULT hr;
@@ -1472,7 +1472,7 @@ static HRESULT get_iface_info(ITypeInfo *typeinfo, WORD *funcs, WORD *parentfunc
     else
         ITypeInfo_AddRef(*real_typeinfo = typeinfo);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     hr = ITypeInfo_GetContainingTypeLib(*real_typeinfo, &typelib, NULL);
     if (FAILED(hr))
         goto err;
@@ -1492,7 +1492,7 @@ static HRESULT get_iface_info(ITypeInfo *typeinfo, WORD *funcs, WORD *parentfunc
     if (FAILED(hr))
         goto err;
     *funcs = typeattr->cFuncs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *parentfuncs = typeattr->cbSizeVft / sizeof(void *) - *funcs;
 #else
     *parentfuncs = typeattr->cbSizeVft / (syskind == SYS_WIN64 ? 8 : 4) - *funcs;
@@ -1573,7 +1573,7 @@ static const IRpcProxyBufferVtbl typelib_proxy_vtbl =
     StdProxy_Disconnect,
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI CreateProxyFromTypeInfo(ITypeInfo *typeinfo, IUnknown *outer,
         REFIID iid, IRpcProxyBuffer **proxy_buffer, void **out);
 HRESULT WINAPI CreateStubFromTypeInfo(ITypeInfo *typeinfo, REFIID iid,
@@ -1666,7 +1666,7 @@ static HRESULT typelib_proxy_init(struct typelib_proxy *proxy, IUnknown *outer,
 
     if (!IsEqualGUID(parentiid, &IID_IUnknown))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         HRESULT hr = create_parent_proxy(typeinfo, parentiid, &proxy->proxy.base_proxy,
                 (void **)&proxy->proxy.base_object);
 #else
@@ -1735,7 +1735,7 @@ HRESULT WINAPI CreateProxyFromTypeInfo(ITypeInfo *typeinfo, IUnknown *outer,
     }
     proxy->proxy_info.FormatStringOffset = &proxy->offset_table[-3];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = typelib_proxy_init(proxy, outer, typeinfo, funcs + parentfuncs, &parentiid, proxy_buffer, out);
 #else
     hr = typelib_proxy_init(proxy, outer, funcs + parentfuncs, &parentiid, proxy_buffer, out);
@@ -1791,7 +1791,7 @@ static ULONG WINAPI typelib_stub_Release(IRpcStubBuffer *iface)
     return refcount;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT typelib_stub_init(struct typelib_stub *stub, IUnknown *server,
         ITypeInfo *typeinfo, const GUID *parentiid, IRpcStubBuffer **stub_buffer)
 #else
@@ -1814,7 +1814,7 @@ static HRESULT typelib_stub_init(struct typelib_stub *stub, IUnknown *server,
     if (!IsEqualGUID(parentiid, &IID_IUnknown))
     {
         stub->stub.base_obj.lpVtbl = get_delegating_vtbl(stub->stub_vtbl.header.DispatchTableCount);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = create_parent_stub(typeinfo, parentiid, (IUnknown *)&stub->stub.base_obj, &stub->stub.base_stub);
 #else
         hr = create_stub(parentiid, &stub->stub.base_obj, &stub->stub.base_stub);
@@ -1888,7 +1888,7 @@ HRESULT WINAPI CreateStubFromTypeInfo(ITypeInfo *typeinfo, REFIID iid,
         stub->stub_vtbl.Vtbl = CStdStubBuffer_Vtbl;
     stub->stub_vtbl.Vtbl.Release = typelib_stub_Release;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = typelib_stub_init(stub, server, typeinfo, &parentiid, stub_buffer);
 #else
     hr = typelib_stub_init(stub, server, &parentiid, stub_buffer);

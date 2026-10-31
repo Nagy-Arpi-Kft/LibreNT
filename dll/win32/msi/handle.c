@@ -31,7 +31,7 @@
 #include "msiquery.h"
 
 #include "msipriv.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -350,7 +350,7 @@ UINT WINAPI MsiCloseAllHandles(void)
 
 UINT __cdecl s_remote_CloseHandle(MSIHANDLE handle)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     custom_release_remote_handle(handle);
 #endif
     return MsiCloseHandle(handle);

@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS PCI Bus Driver
+ * PROJECT:         LibreNT PCI Bus Driver
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            drivers/bus/pci/intrconn.c
  * PURPOSE:         MSI/MSI-X interrupt programming and connection
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

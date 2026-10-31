@@ -1,5 +1,5 @@
 /*
- * iyuv Video "Decoder" (ReactOS native backend)
+ * iyuv Video "Decoder" (LibreNT native backend)
  * Copyright 2026 Brendan McGrath for CodeWeavers
  * Copyright 2026 ReactOS Team
  *

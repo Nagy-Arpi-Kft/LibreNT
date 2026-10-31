@@ -1,7 +1,6 @@
 
 # Include ARM64 hardware boot media configuration.
 include(${CMAKE_SOURCE_DIR}/media/boot/arm64_boot_media.cmake)
-include(${CMAKE_SOURCE_DIR}/media/boot/riscv64_boot_media.cmake)
 
 option(LATTEPANDAMU_SUPPORT "Enable the LattePanda Mu board profile" OFF)
 if(LATTEPANDAMU_SUPPORT AND NOT ARCH STREQUAL "amd64")
@@ -34,7 +33,7 @@ function(freeldr_ini_add_http_boot SOURCE OUTPUT URL STATIC_IP DEFAULT_OS OPTION
     endif()
 
     string(REPLACE "${_os_marker}"
-                   "HttpBoot=\"ReactOS HTTP Boot - Debug\""
+                   "HttpBoot=\"LibreNT HTTP Boot - Debug\""
                    _contents "${_contents}")
     set(_http_boot_entry "[HttpBoot]\nBootType=Windows2003\nSystemPath=ramdisk(0)\\Windows\nOptions=/KERNEL=ntkrnlmp.exe /DEBUG /DEBUGPORT=COM1 /BAUDRATE=115200 /SOS /FASTDETECT /MININT /LOADSYMBOLS")
     if(OPTIONS)
@@ -50,8 +49,8 @@ function(freeldr_ini_add_http_boot SOURCE OUTPUT URL STATIC_IP DEFAULT_OS OPTION
     file(WRITE "${OUTPUT}" "${_contents}")
 endfunction()
 
-set(FREELDR_BOOTCD_INI "${REACTOS_SOURCE_DIR}/boot/bootdata/bootcd.ini")
-set(FREELDR_PREINSTALL_INI "${REACTOS_SOURCE_DIR}/boot/bootdata/preinstall.ini")
+set(FREELDR_BOOTCD_INI "${LIBRENT_SOURCE_DIR}/boot/bootdata/bootcd.ini")
+set(FREELDR_PREINSTALL_INI "${LIBRENT_SOURCE_DIR}/boot/bootdata/preinstall.ini")
 if(FREELDR_HTTP_BOOT)
     # The downloaded image is architecture-specific, so each board profile
     # points at its own copy on the build host.
@@ -70,7 +69,7 @@ if(FREELDR_HTTP_BOOT)
         "Additional UEFI drivers (.efi paths) copied to EFI/BOOT/drivers, such as a vendor UNDI driver")
 
     set(FREELDR_BOOTCD_INI "${CMAKE_CURRENT_BINARY_DIR}/bootdata/bootcd_httpboot.ini")
-    freeldr_ini_add_http_boot("${REACTOS_SOURCE_DIR}/boot/bootdata/bootcd.ini"
+    freeldr_ini_add_http_boot("${LIBRENT_SOURCE_DIR}/boot/bootdata/bootcd.ini"
                               "${FREELDR_BOOTCD_INI}"
                               "${FREELDR_HTTP_BOOT_URL}"
                               "${FREELDR_HTTP_BOOT_IP}"
@@ -78,7 +77,7 @@ if(FREELDR_HTTP_BOOT)
                               "${FREELDR_HTTP_BOOT_OPTIONS}")
 
     set(FREELDR_PREINSTALL_INI "${CMAKE_CURRENT_BINARY_DIR}/bootdata/preinstall_httpboot.ini")
-    freeldr_ini_add_http_boot("${REACTOS_SOURCE_DIR}/boot/bootdata/preinstall.ini"
+    freeldr_ini_add_http_boot("${LIBRENT_SOURCE_DIR}/boot/bootdata/preinstall.ini"
                               "${FREELDR_PREINSTALL_INI}"
                               "${FREELDR_HTTP_BOOT_URL}"
                               "${FREELDR_HTTP_BOOT_IP}"
@@ -133,17 +132,6 @@ if(SPACEMIT_K1_SUPPORT)
     file(CONFIGURE OUTPUT "${FREELDR_PREINSTALL_INI}" CONTENT "${_contents}" @ONLY)
 endif()
 
-# The supported Open Firmware machines have too little memory to expand the
-# live image into RAM, so their boot media start the entry that runs from it.
-if(FREELDR_HAS_OFW_BOOT)
-    set(_source "${FREELDR_BOOTCD_INI}")
-    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_source}")
-    file(READ "${_source}" _contents)
-    string(REGEX REPLACE "DefaultOS=[^\r\n]*" "DefaultOS=LiveImg_Debug" _contents "${_contents}")
-    set(FREELDR_BOOTCD_INI "${CMAKE_CURRENT_BINARY_DIR}/bootdata/bootcd_ofw.ini")
-    file(CONFIGURE OUTPUT "${FREELDR_BOOTCD_INI}" CONTENT "${_contents}" @ONLY)
-endif()
-
 # EFI platform ID - Used for naming the EFI boot image on supported platforms.
 if(ARCH STREQUAL "i386")
     if(NOT (SARCH STREQUAL "pc98" OR SARCH STREQUAL "xbox"))
@@ -157,16 +145,11 @@ elseif(ARCH STREQUAL "arm")
     set(EFI_PLATFORM_ID "arm")
 elseif(ARCH STREQUAL "arm64")
     set(EFI_PLATFORM_ID "aa64")
-elseif(ARCH STREQUAL "riscv64")
-    set(EFI_PLATFORM_ID "riscv64")
-elseif(ARCH STREQUAL "ppc")
-    # Windows NT PowerPC machines boot through ARC firmware; there is no UEFI
-    # boot image for this architecture.
 else()
     message(FATAL_ERROR "Unknown ARCH '" ${ARCH} "', cannot generate a valid UEFI boot image filename.")
 endif()
 
-if(DEFINED EFI_PLATFORM_ID AND EXISTS "${REACTOS_SOURCE_DIR}/bootloader/arch/${ARCH}")
+if(DEFINED EFI_PLATFORM_ID AND EXISTS "${LIBRENT_SOURCE_DIR}/bootloader/arch/${ARCH}")
     set(BOOTLOADER_UEFI TRUE)
     set(_uefi_loader bootmgfw)
     if(FREELDR_WIM_RAMDISK)
@@ -175,10 +158,10 @@ if(DEFINED EFI_PLATFORM_ID AND EXISTS "${REACTOS_SOURCE_DIR}/bootloader/arch/${A
         set(_uefi_media_store media)
     endif()
     set(_uefi_loader_files
-        -mkdir EFI/LiberNT
-        -mkdir EFI/LiberNT/Boot
-        -add $<TARGET_FILE:winload> EFI/LiberNT/Boot/winload.efi
-        -add ${REACTOS_BINARY_DIR}/bootloader/image/${_uefi_media_store}/BCD EFI/LiberNT/Boot/BCD)
+        -mkdir EFI/LibreNT
+        -mkdir EFI/LibreNT/Boot
+        -add $<TARGET_FILE:winload> EFI/LibreNT/Boot/winload.efi
+        -add ${LIBRENT_BINARY_DIR}/bootloader/image/${_uefi_media_store}/BCD EFI/LibreNT/Boot/BCD)
     set(_uefi_loader_deps bootmgfw winload bootloader${_uefi_media_store}bcd)
     set(_efisys_sectors 16384)
     set_property(GLOBAL PROPERTY BOOTLOADER_UEFI TRUE)
@@ -202,7 +185,7 @@ if(DEFINED EFI_PLATFORM_ID)
     endif()
 
     if(FREELDR_HTTP_BOOT)
-        set(_uefi_driver_dir "${REACTOS_SOURCE_DIR}/media/boot/uefi_drivers/${ARCH}")
+        set(_uefi_driver_dir "${LIBRENT_SOURCE_DIR}/media/boot/uefi_drivers/${ARCH}")
         file(GLOB _uefi_driver_files CONFIGURE_DEPENDS "${_uefi_driver_dir}/*.efi")
         foreach(_driver ${FREELDR_HTTP_BOOT_EXTRA_DRIVERS})
             if(NOT EXISTS "${_driver}")
@@ -278,8 +261,8 @@ endif()
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/bootfiles.sort ${ISO_SORT_FILE_DATA})
 
 # ISO image identifier names
-set(ISO_MANUFACTURER "LiberNT Project") # For both the publisher and the preparer
-set(ISO_VOLNAME      "ReactOS")         # For both the Volume ID and the Volume set ID
+set(ISO_MANUFACTURER "LibreNT Project") # For both the publisher and the preparer
+set(ISO_VOLNAME      "LibreNT")         # For both the Volume ID and the Volume set ID
 
 # ISO image options
 # Preserve Windows DLL names such as avformat-62.dll in the primary ISO directory.
@@ -316,7 +299,7 @@ set(ISOHYBRID_BOOTCD_COMMAND)
 if(FREELDR_HAS_BIOS_BOOT)
     set(ISOHYBRID_DEPENDS isombr native-isohybrid)
     set(ISOHYBRID_BOOTCD_COMMAND
-        COMMAND native-isohybrid -b ${_isombr_file} -t 0x96 ${REACTOS_BINARY_DIR}/bootcd.iso)
+        COMMAND native-isohybrid -b ${_isombr_file} -t 0x96 ${LIBRENT_BINARY_DIR}/bootcd.iso)
 endif()
 
 
@@ -367,7 +350,7 @@ function(add_system_dirs _image_filelist)
             system32/wbem/Performance system32/wbem/Repository/FS
             system32/wbem/mof/bad system32/wbem/mof/good
             system32/wbem/snmp system32/wbem/xml)
-        file(APPEND ${_image_filelist} "reactos/${_dir}=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+        file(APPEND ${_image_filelist} "librent/${_dir}=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
     endforeach()
 endfunction()
 
@@ -386,40 +369,40 @@ function(image_list_command _image _var)
         -DOPTIONAL=${CMAKE_CURRENT_BINARY_DIR}/${_image}.optional.$<CONFIG>.lst
         -DOUTPUT=${CMAKE_CURRENT_BINARY_DIR}/${_image}.effective.lst
         -DSYSTEM_DIR=Windows
-        -P ${REACTOS_SOURCE_DIR}/sdk/cmake/optional_files.cmake PARENT_SCOPE)
+        -P ${LIBRENT_SOURCE_DIR}/sdk/cmake/optional_files.cmake PARENT_SCOPE)
 endfunction()
 
 ## LiveImage -- Constitutes a small RAMDISK ISO, and is also merged with the BootCD
 # Create the file list
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "${CMAKE_CURRENT_BINARY_DIR}/empty\n")
 # Create TEMP directory
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "reactos/TEMP=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "reactos/SystemTemp=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "librent/TEMP=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "librent/SystemTemp=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
 add_system_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst)
 add_program_files_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst)
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "reactos/system32/Tasks=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "librent/system32/Tasks=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
 
 # Create user profile directories
 add_allusers_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "Users")
 add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "Users" "Default")
 # Mini setup runs the shell as LocalSystem, whose profile is resolved by token.
-add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "reactos/system32/config" "systemprofile")
+add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "librent/system32/config" "systemprofile")
 if(ENABLE_WOW64)
-    add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "reactos/SysWOW64/config" "systemprofile")
+    add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/livecd.cmake.lst "librent/SysWOW64/config" "systemprofile")
 endif()
 
 # Optional build-local payload for LiveCD images. Each non-comment line uses
 # the same "image/path=host/path" format as livecd.cmake.lst. This keeps
 # externally supplied diagnostic and hardware payloads outside the source tree
 # while making their contents part of the generated image build graph.
-set(LIVECD_EXTRA_FILE_LIST "" CACHE FILEPATH "Additional file manifest(s) for ReactOS LiveCD images (semicolon separated)")
-set(LIVECD_EXTRA_REGISTRY_INF "" CACHE FILEPATH "Additional registry INF(s) for ReactOS LiveCD hives (semicolon separated)")
+set(LIVECD_EXTRA_FILE_LIST "" CACHE FILEPATH "Additional file manifest(s) for LibreNT LiveCD images (semicolon separated)")
+set(LIVECD_EXTRA_REGISTRY_INF "" CACHE FILEPATH "Additional registry INF(s) for LibreNT LiveCD hives (semicolon separated)")
 set(_livecd_overlay_deps)
 foreach(_livecd_extra_file_list IN LISTS LIVECD_EXTRA_FILE_LIST)
     if(_livecd_extra_file_list STREQUAL "")
         continue()
     endif()
-    get_filename_component(_livecd_extra_file_list "${_livecd_extra_file_list}" ABSOLUTE BASE_DIR "${REACTOS_BINARY_DIR}")
+    get_filename_component(_livecd_extra_file_list "${_livecd_extra_file_list}" ABSOLUTE BASE_DIR "${LIBRENT_BINARY_DIR}")
     if(NOT EXISTS "${_livecd_extra_file_list}")
         message(FATAL_ERROR "LIVECD_EXTRA_FILE_LIST does not exist: ${_livecd_extra_file_list}")
     endif()
@@ -455,7 +438,7 @@ foreach(_livecd_extra_registry_inf IN LISTS LIVECD_EXTRA_REGISTRY_INF)
     if(_livecd_extra_registry_inf STREQUAL "")
         continue()
     endif()
-    get_filename_component(_livecd_extra_registry_inf "${_livecd_extra_registry_inf}" ABSOLUTE BASE_DIR "${REACTOS_BINARY_DIR}")
+    get_filename_component(_livecd_extra_registry_inf "${_livecd_extra_registry_inf}" ABSOLUTE BASE_DIR "${LIBRENT_BINARY_DIR}")
     if(NOT EXISTS "${_livecd_extra_registry_inf}")
         message(FATAL_ERROR "LIVECD_EXTRA_REGISTRY_INF does not exist: ${_livecd_extra_registry_inf}")
     endif()
@@ -469,7 +452,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/bootcd.cmake.lst "${CMAKE_CURRENT_BINARY_
 image_list_command(bootcd _bootcd_list_command)
 add_custom_target(bootcd
     COMMAND ${_bootcd_list_command}
-    COMMAND native-mkisofs -quiet -o ${REACTOS_BINARY_DIR}/bootcd.iso
+    COMMAND native-mkisofs -quiet -o ${LIBRENT_BINARY_DIR}/bootcd.iso
         ${ISO_COMMON_OPTIONS} ${ISO_BOOT_OPTIONS} ${ISO_BOOT_FILES_OPTIONS} ${ISO_LAYOUT_OPTIONS}
         -path-list ${CMAKE_CURRENT_BINARY_DIR}/bootcd.effective.lst
     ${ISOHYBRID_BOOTCD_COMMAND}
@@ -485,24 +468,24 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "")
 set(_preinstall_boot_partition_file ${CMAKE_CURRENT_BINARY_DIR}/partition.boot.fat)
 set(_preinstall_system_partition_file ${CMAKE_CURRENT_BINARY_DIR}/partition.ntfs)
 set(_preinstall_vhd_partition_file ${CMAKE_CURRENT_BINARY_DIR}/partition.vhd.ntfs)
-set(_preinstall_image_file ${REACTOS_BINARY_DIR}/LiberNT.img)
-set(_preinstall_vhd_file ${REACTOS_BINARY_DIR}/LiberNT.vhd)
-set(_preinstall_vhdx_file ${REACTOS_BINARY_DIR}/LiberNT.vhdx)
+set(_preinstall_image_file ${LIBRENT_BINARY_DIR}/LibreNT.img)
+set(_preinstall_vhd_file ${LIBRENT_BINARY_DIR}/LibreNT.vhd)
+set(_preinstall_vhdx_file ${LIBRENT_BINARY_DIR}/LibreNT.vhdx)
 # Keep ROSBOOT as an active MBR ESP. UEFI discovers it by type, while the BIOS
 # MBR follows the active flag and loads its FAT32 boot sector. The Raspberry Pi
 # 1-3 boot ROM only scans for FAT MBR ids and skips 0xEF, so the Raspberry Pi
 # images mark the same volume as FAT32 LBA instead; UEFI mounts it by content.
-if(RPI_SUPPORT OR ARCH STREQUAL "arm" OR FREELDR_HAS_OFW_BOOT)
+if(RPI_SUPPORT OR ARCH STREQUAL "arm")
     set(_preinstall_boot_partition_type 0c)
 else()
     set(_preinstall_boot_partition_type ef)
 endif()
 
 # Create TEMP dir
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "reactos/TEMP=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "reactos/SystemTemp=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "librent/TEMP=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "librent/SystemTemp=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
 add_system_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst)
-file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "reactos/system32/Tasks=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "librent/system32/Tasks=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
 
 # Create installed-system directories that second-stage setup normally creates.
 file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "Program Files=${CMAKE_CURRENT_BINARY_DIR}/empty\n")
@@ -512,9 +495,9 @@ file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "Program Files/Comm
 add_allusers_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "Users")
 add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "Users" "Default")
 # Mini setup does not run CopySystemProfile from a full installation.
-add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "reactos/system32/config" "systemprofile")
+add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "librent/system32/config" "systemprofile")
 if(ENABLE_WOW64)
-    add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "reactos/SysWOW64/config" "systemprofile")
+    add_user_profile_dirs(${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst "librent/SysWOW64/config" "systemprofile")
 endif()
 
 # Optional build-local payload for preinstalled disk images. Each non-comment
@@ -522,11 +505,11 @@ endif()
 # Keep external payloads outside the source tree while still making their
 # contents and dependencies part of the generated image build graph.
 set(PREINSTALL_EXTRA_FILE_LIST "" CACHE FILEPATH
-    "Additional file manifest for preinstalled ReactOS disk images")
+    "Additional file manifest for preinstalled LibreNT disk images")
 set(_preinstall_overlay_deps)
 if(PREINSTALL_EXTRA_FILE_LIST)
     get_filename_component(_preinstall_extra_file_list
-        "${PREINSTALL_EXTRA_FILE_LIST}" ABSOLUTE BASE_DIR "${REACTOS_BINARY_DIR}")
+        "${PREINSTALL_EXTRA_FILE_LIST}" ABSOLUTE BASE_DIR "${LIBRENT_BINARY_DIR}")
     if(NOT EXISTS "${_preinstall_extra_file_list}")
         message(FATAL_ERROR "PREINSTALL_EXTRA_FILE_LIST does not exist: ${_preinstall_extra_file_list}")
     endif()
@@ -568,16 +551,16 @@ if(PREINSTALL_WINE_GECKO)
     set(_wine_gecko_packages)
     if(ARCH STREQUAL "amd64")
         list(APPEND _wine_gecko_packages
-            x86_64 reactos/system32 fd88fc7e537d058d7a8abf0c1ebc90c574892a466de86706a26d254710a82814)
+            x86_64 librent/system32 fd88fc7e537d058d7a8abf0c1ebc90c574892a466de86706a26d254710a82814)
     endif()
     if(ARCH STREQUAL "i386")
         list(APPEND _wine_gecko_packages
-            x86 reactos/system32 2cfc8d5c948602e21eff8a78613e1826f2d033df9672cace87fed56e8310afb6)
+            x86 librent/system32 2cfc8d5c948602e21eff8a78613e1826f2d033df9672cace87fed56e8310afb6)
     elseif(ENABLE_WOW64)
         list(APPEND _wine_gecko_packages
-            x86 reactos/SysWOW64 2cfc8d5c948602e21eff8a78613e1826f2d033df9672cace87fed56e8310afb6)
+            x86 librent/SysWOW64 2cfc8d5c948602e21eff8a78613e1826f2d033df9672cace87fed56e8310afb6)
     endif()
-    set(_wine_gecko_dir "${REACTOS_BINARY_DIR}/wine-gecko")
+    set(_wine_gecko_dir "${LIBRENT_BINARY_DIR}/wine-gecko")
     while(_wine_gecko_packages)
         list(POP_FRONT _wine_gecko_packages _wine_gecko_arch _wine_gecko_destination _wine_gecko_sha256)
         set(_wine_gecko_name "wine-gecko-${_wine_gecko_version}-${_wine_gecko_arch}")
@@ -625,7 +608,7 @@ if(PREINSTALL_WINE_MONO)
         set(_wine_mono_package x86)
         set(_wine_mono_sha256 54a1b0111c3fe4b785eae688af94d27e64995707ad648b6fee8000381b80d298)
     endif()
-    set(_wine_mono_dir "${REACTOS_BINARY_DIR}/wine-mono")
+    set(_wine_mono_dir "${LIBRENT_BINARY_DIR}/wine-mono")
     set(_wine_mono_name "wine-mono-${_wine_mono_version}")
     set(_wine_mono_archive "${_wine_mono_dir}/${_wine_mono_name}-${_wine_mono_package}.tar.xz")
     set(_wine_mono_stamp "${_wine_mono_dir}/${_wine_mono_name}.extracted")
@@ -654,7 +637,7 @@ if(PREINSTALL_WINE_MONO)
     foreach(_wine_mono_file IN LISTS _wine_mono_files)
         set(_wine_mono_source "${_wine_mono_dir}/${_wine_mono_name}/${_wine_mono_file}")
         set_property(GLOBAL APPEND PROPERTY PREINSTALL_OVERLAY_FILE_LIST
-            "reactos/mono/mono-2.0/${_wine_mono_file}=${_wine_mono_source}")
+            "librent/mono/mono-2.0/${_wine_mono_file}=${_wine_mono_source}")
         list(APPEND _preinstall_overlay_deps "${_wine_mono_source}")
     endforeach()
 
@@ -687,7 +670,7 @@ if(PREINSTALL_WINE_MONO)
         string(FIND "${_wine_mono_entry}" "=" _wine_mono_separator)
         math(EXPR _wine_mono_start "${_wine_mono_separator} + 1")
         string(SUBSTRING "${_wine_mono_entry}" ${_wine_mono_start} -1 _wine_mono_source)
-        set_property(GLOBAL APPEND PROPERTY PREINSTALL_OVERLAY_FILE_LIST "reactos/${_wine_mono_entry}")
+        set_property(GLOBAL APPEND PROPERTY PREINSTALL_OVERLAY_FILE_LIST "librent/${_wine_mono_entry}")
         list(APPEND _preinstall_overlay_deps "${_wine_mono_source}")
     endforeach()
     set_property(GLOBAL APPEND PROPERTY PREINSTALL_REGISTRY_INF_LIST "${_wine_mono_support_dir}/monosupport.inf")
@@ -714,13 +697,13 @@ set(ROSPROFILER_IMAGE_FS_OVERHEAD_MB 4 CACHE STRING
 set(_rosprofiler_image_symbol_dir
     ${CMAKE_CURRENT_BINARY_DIR}/rosprofiler-image-symbols)
 if(MSVC)
-    set(_rosprofiler_pdb_dir ${REACTOS_BINARY_DIR}/msvc_pdb)
+    set(_rosprofiler_pdb_dir ${LIBRENT_BINARY_DIR}/msvc_pdb)
 else()
-    set(_rosprofiler_pdb_dir ${REACTOS_BINARY_DIR}/symbols)
+    set(_rosprofiler_pdb_dir ${LIBRENT_BINARY_DIR}/symbols)
 endif()
 file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/preinstall.cmake.lst
-     "reactos/symbols=${_rosprofiler_image_symbol_dir}\n")
-# Keep a small FAT volume for BIOS/UEFI boot files and use NTFS for ReactOS.
+     "librent/symbols=${_rosprofiler_image_symbol_dir}\n")
+# Keep a small FAT volume for BIOS/UEFI boot files and use NTFS for LibreNT.
 # Both partitions start on 1-MB boundaries.
 set(_preinstall_boot_partition_size_mb 64)
 set(_preinstall_boot_partition_start_mb 1)
@@ -749,9 +732,9 @@ set(_preinstall_boot_partition_files
     -add ${FREELDR_PREINSTALL_INI} freeldr.ini)
 set(_preinstall_rpi_firmware)
 set(_preinstall_rpi_overlays)
-if(NOT SPACEMIT_K1_SUPPORT AND NOT STARFIVE_JH7110_SUPPORT AND NOT FREELDR_HAS_OFW_BOOT)
-    file(GLOB _preinstall_rpi_firmware ${REACTOS_SOURCE_DIR}/media/boot/rpi/*)
-    file(GLOB _preinstall_rpi_overlays ${REACTOS_SOURCE_DIR}/media/boot/rpi/overlays/*)
+if(NOT SPACEMIT_K1_SUPPORT AND NOT STARFIVE_JH7110_SUPPORT)
+    file(GLOB _preinstall_rpi_firmware ${LIBRENT_SOURCE_DIR}/media/boot/rpi/*)
+    file(GLOB _preinstall_rpi_overlays ${LIBRENT_SOURCE_DIR}/media/boot/rpi/overlays/*)
 endif()
 foreach(_rpi_firmware_file ${_preinstall_rpi_firmware})
     if(NOT IS_DIRECTORY ${_rpi_firmware_file})
@@ -773,14 +756,14 @@ if(_preinstall_rpi_overlays)
 endif()
 set(_preinstall_partition_deps native-fatten native-ntfsimg
     ${_preinstall_overlay_deps} ${ARM64_BOOT_FILE_DEPS})
-set(_liberntimg_mbr_args)
-set(_liberntimg_deps native-mkdiskimg)
-set(_liberntimg_leading_args)
-set(_liberntimg_boot_partition_args)
-set(_liberntimg_system_partition_args)
+set(_librentimg_mbr_args)
+set(_librentimg_deps native-mkdiskimg)
+set(_librentimg_leading_args)
+set(_librentimg_boot_partition_args)
+set(_librentimg_system_partition_args)
 if(SPACEMIT_K1_SUPPORT)
-    list(APPEND _liberntimg_mbr_args -gpt -mbr ${SPACEMIT_K1_BOOTINFO})
-    list(APPEND _liberntimg_leading_args
+    list(APPEND _librentimg_mbr_args -gpt -mbr ${SPACEMIT_K1_BOOTINFO})
+    list(APPEND _librentimg_leading_args
         -data ${SPACEMIT_K1_OPENSBI}
         -start ${SPACEMIT_K1_OPENSBI_START}
         -type da
@@ -796,8 +779,8 @@ if(SPACEMIT_K1_SUPPORT)
         -raw ${SPACEMIT_K1_FSBL}
         -at ${SPACEMIT_K1_FSBL_BACKUP_SECTOR})
     set(_preinstall_boot_partition_fs fat32)
-    list(APPEND _liberntimg_boot_partition_args -name bootfs)
-    list(APPEND _liberntimg_system_partition_args -name ReactOS)
+    list(APPEND _librentimg_boot_partition_args -name bootfs)
+    list(APPEND _librentimg_system_partition_args -name LibreNT)
     list(APPEND _preinstall_boot_partition_files
         -add ${SPACEMIT_K1_UBOOT_ENV} env_k1-x.txt
         -add ${SPACEMIT_K1_BOOT_SCRIPT} boot.scr
@@ -805,7 +788,7 @@ if(SPACEMIT_K1_SUPPORT)
         -add ${SPACEMIT_K1_RV2_DTB} dtb/x1_orangepi-rv2.dtb)
     list(APPEND _preinstall_partition_deps
         ${SPACEMIT_K1_UBOOT_ENV} ${SPACEMIT_K1_BOOT_SCRIPT} ${SPACEMIT_K1_RV2_DTB})
-    list(APPEND _liberntimg_deps
+    list(APPEND _librentimg_deps
         ${SPACEMIT_K1_BOOTINFO} ${SPACEMIT_K1_FSBL} ${SPACEMIT_K1_OPENSBI} ${SPACEMIT_K1_UBOOT})
 endif()
 if(STARFIVE_JH7110_SUPPORT)
@@ -817,39 +800,23 @@ if(STARFIVE_JH7110_SUPPORT)
         -add ${STARFIVE_JH7110_UENV} vf2_uEnv.txt)
     list(APPEND _preinstall_partition_deps ${STARFIVE_JH7110_DTB} ${STARFIVE_JH7110_UENV})
 endif()
-macro(libernt_standard_disk_ids)
-    string(UUID _standard_disk NAMESPACE 354fa6e5-5e45-49af-91bf-1fd2754e470a NAME "LiberNT standard disk" TYPE SHA1)
-    libernt_standard_disk_signature(_standard_signature)
-    string(UUID _standard_system NAMESPACE 354fa6e5-5e45-49af-91bf-1fd2754e470a NAME "LiberNT standard system partition" TYPE SHA1)
-    if(";${_liberntimg_mbr_args};" MATCHES ";-gpt;")
-        list(APPEND _liberntimg_mbr_args -diskid ${_standard_disk})
-        list(APPEND _liberntimg_system_partition_args -id ${_standard_system})
-        set_property(GLOBAL PROPERTY LIBERNT_STANDARD_GPT_DISK ${_standard_disk})
-        set_property(GLOBAL PROPERTY LIBERNT_STANDARD_GPT_SYSTEM ${_standard_system})
+macro(librent_standard_disk_ids)
+    string(UUID _standard_disk NAMESPACE 354fa6e5-5e45-49af-91bf-1fd2754e470a NAME "LibreNT standard disk" TYPE SHA1)
+    librent_standard_disk_signature(_standard_signature)
+    string(UUID _standard_system NAMESPACE 354fa6e5-5e45-49af-91bf-1fd2754e470a NAME "LibreNT standard system partition" TYPE SHA1)
+    if(";${_librentimg_mbr_args};" MATCHES ";-gpt;")
+        list(APPEND _librentimg_mbr_args -diskid ${_standard_disk})
+        list(APPEND _librentimg_system_partition_args -id ${_standard_system})
+        set_property(GLOBAL PROPERTY LIBRENT_STANDARD_GPT_DISK ${_standard_disk})
+        set_property(GLOBAL PROPERTY LIBRENT_STANDARD_GPT_SYSTEM ${_standard_system})
     else()
-        list(APPEND _liberntimg_mbr_args -signature ${_standard_signature})
+        list(APPEND _librentimg_mbr_args -signature ${_standard_signature})
     endif()
-    set_property(GLOBAL PROPERTY LIBERNT_STANDARD_SIGNATURE ${_standard_signature})
-    set_property(GLOBAL PROPERTY LIBERNT_STANDARD_SYSTEM_START ${_preinstall_system_partition_start})
-    set_property(GLOBAL PROPERTY LIBERNT_STANDARD_OPTIONS "${FREELDR_PREINSTALL_OPTIONS}")
+    set_property(GLOBAL PROPERTY LIBRENT_STANDARD_SIGNATURE ${_standard_signature})
+    set_property(GLOBAL PROPERTY LIBRENT_STANDARD_SYSTEM_START ${_preinstall_system_partition_start})
+    set_property(GLOBAL PROPERTY LIBRENT_STANDARD_OPTIONS "${FREELDR_PREINSTALL_OPTIONS}")
 endmacro()
 
-if(FREELDR_HAS_OFW_BOOT)
-    # The firmware boot partition is advertised as FAT32 LBA (0x0c).
-    set(_preinstall_boot_partition_fs fat32)
-    set(_ofw_boot_file ${CMAKE_CURRENT_BINARY_DIR}/freeldr/freeldr/ppcboot.bin)
-    list(APPEND _preinstall_boot_partition_files -add ${_ofw_boot_file} ppcboot.bin)
-    list(APPEND _preinstall_partition_deps ppcboot)
-    add_dependencies(bootcd ppcboot)
-    if(EXISTS "${REACTOS_SOURCE_DIR}/bootloader/arch/${ARCH}")
-        list(APPEND _preinstall_boot_partition_files
-            -mkdir Boot
-            -add ${REACTOS_BINARY_DIR}/bootloader/bootmgr.bin bootmgr.bin
-            -add ${REACTOS_BINARY_DIR}/bootloader/image/standard/BCD Boot/BCD)
-        list(APPEND _preinstall_partition_deps bootmgrppc bootloaderstandardbcd)
-        libernt_standard_disk_ids()
-    endif()
-endif()
 if(FREELDR_HAS_BIOS_BOOT)
     set(_dosmbr_file ${CMAKE_CURRENT_BINARY_DIR}/freeldr/bootsect/dosmbr.bin)
     set(_fat32_file ${CMAKE_CURRENT_BINARY_DIR}/freeldr/bootsect/fat32.bin)
@@ -860,8 +827,8 @@ if(FREELDR_HAS_BIOS_BOOT)
         -add ${_freeldr_file} freeldr.sys
         -add $<TARGET_FILE:rosload> rosload.exe)
     list(APPEND _preinstall_partition_deps fat32 freeldr rosload)
-    list(APPEND _liberntimg_mbr_args -mbr ${_dosmbr_file})
-    list(APPEND _liberntimg_deps dosmbr)
+    list(APPEND _librentimg_mbr_args -mbr ${_dosmbr_file})
+    list(APPEND _librentimg_deps dosmbr)
 endif()
 if(DEFINED EFI_PLATFORM_ID)
     list(APPEND _preinstall_boot_partition_files
@@ -871,17 +838,17 @@ if(DEFINED EFI_PLATFORM_ID)
     list(APPEND _preinstall_partition_deps ${_uefi_loader})
     if(BOOTLOADER_UEFI)
         list(APPEND _preinstall_boot_partition_files
-            -mkdir EFI/LiberNT
-            -mkdir EFI/LiberNT/Boot
-            -add $<TARGET_FILE:bootmgfw> EFI/LiberNT/Boot/bootmgfw.efi
-            -add ${REACTOS_BINARY_DIR}/bootloader/image/standard/BCD EFI/LiberNT/Boot/BCD)
+            -mkdir EFI/LibreNT
+            -mkdir EFI/LibreNT/Boot
+            -add $<TARGET_FILE:bootmgfw> EFI/LibreNT/Boot/bootmgfw.efi
+            -add ${LIBRENT_BINARY_DIR}/bootloader/image/standard/BCD EFI/LibreNT/Boot/BCD)
         list(APPEND _preinstall_partition_deps bootloaderstandardbcd)
         if(BOOTLOADER_HTTP_BOOT_URL)
             list(APPEND _preinstall_boot_partition_files
-                -add $<TARGET_FILE:winload> EFI/LiberNT/Boot/winload.efi)
+                -add $<TARGET_FILE:winload> EFI/LibreNT/Boot/winload.efi)
             list(APPEND _preinstall_partition_deps winload)
         endif()
-        libernt_standard_disk_ids()
+        librent_standard_disk_ids()
     endif()
     if(_uefi_driver_files)
         list(APPEND _preinstall_boot_partition_files -mkdir EFI/BOOT/drivers)
@@ -908,9 +875,9 @@ add_custom_target(preinstall_partition
         -DMAX_SYMBOL_MB=${ROSPROFILER_IMAGE_PDB_BUDGET_MB}
         -DPDB_DIR=${_rosprofiler_pdb_dir}
         -DPACKAGE_PDBS=${ROSPROFILER_PACKAGE_IMAGE_PDBS}
-        -P ${REACTOS_SOURCE_DIR}/boot/pack_rosprofiler_symbols.cmake
+        -P ${LIBRENT_SOURCE_DIR}/boot/pack_rosprofiler_symbols.cmake
     COMMAND native-fatten ${_preinstall_boot_partition_file}
-        -format ${_preinstall_boot_partition_sectors} ${_preinstall_boot_partition_fs} LIBERNTBOOT
+        -format ${_preinstall_boot_partition_sectors} ${_preinstall_boot_partition_fs} LIBRENTBOOT
         ${_preinstall_boot_partition_options}
         ${_preinstall_boot_partition_files}
     COMMAND native-ntfsimg
@@ -919,7 +886,7 @@ add_custom_target(preinstall_partition
         ${_preinstall_system_partition_sectors}
         ${_preinstall_system_partition_start}
         ${_preinstall_ntfs_sectors_per_cluster}
-        LiberNT
+        LibreNT
     COMMAND native-ntfsimg
         --addfiles
         ${_preinstall_system_partition_file}
@@ -927,35 +894,35 @@ add_custom_target(preinstall_partition
     COMMAND native-ntfsimg
         --apply-security
         ${_preinstall_system_partition_file}
-        ${REACTOS_SOURCE_DIR}/boot/bootdata/filesecurity.txt
+        ${LIBRENT_SOURCE_DIR}/boot/bootdata/filesecurity.txt
     DEPENDS ${_preinstall_partition_deps}
     VERBATIM)
 
-add_custom_target(liberntimg
+add_custom_target(librentimg
     COMMAND ${CMAKE_COMMAND} -E rm -f ${_preinstall_image_file}
     COMMAND native-mkdiskimg
         -o ${_preinstall_image_file}
-        ${_liberntimg_mbr_args}
-        ${_liberntimg_leading_args}
+        ${_librentimg_mbr_args}
+        ${_librentimg_leading_args}
         -partition ${_preinstall_boot_partition_file}
         -start ${_preinstall_boot_partition_start}
         -type ${_preinstall_boot_partition_type}
-        ${_liberntimg_boot_partition_args}
+        ${_librentimg_boot_partition_args}
         -partition ${_preinstall_system_partition_file}
         -start ${_preinstall_system_partition_start}
         -type 07
-        ${_liberntimg_system_partition_args}
-    DEPENDS ${_liberntimg_deps}
+        ${_librentimg_system_partition_args}
+    DEPENDS ${_librentimg_deps}
     VERBATIM)
-add_dependencies(liberntimg preinstall_partition)
+add_dependencies(librentimg preinstall_partition)
 
 if(STARFIVE_JH7110_SUPPORT)
     set(_jh7110_boot_partition_file ${CMAKE_CURRENT_BINARY_DIR}/jh7110-bootfs.img)
-    set(_jh7110_sd_image_file ${REACTOS_BINARY_DIR}/JH7110-SD.img)
+    set(_jh7110_sd_image_file ${LIBRENT_BINARY_DIR}/JH7110-SD.img)
     add_custom_target(jh7110sdimg
         COMMAND ${CMAKE_COMMAND} -E rm -f ${_jh7110_boot_partition_file} ${_jh7110_sd_image_file}
         COMMAND native-fatten ${_jh7110_boot_partition_file}
-            -format ${STARFIVE_JH7110_BOOT_SECTORS} fat32 LIBERNTSD
+            -format ${STARFIVE_JH7110_BOOT_SECTORS} fat32 LIBRENTSD
             -add ${STARFIVE_JH7110_BOOT_SCRIPT} boot.scr
             -add ${STARFIVE_JH7110_BOOT_SCRIPT_SOURCE} boot.cmd
         COMMAND native-mkdiskimg
@@ -980,21 +947,21 @@ if(STARFIVE_JH7110_SUPPORT)
             ${STARFIVE_JH7110_SPL} ${STARFIVE_JH7110_UBOOT}
             ${STARFIVE_JH7110_BOOT_SCRIPT} ${STARFIVE_JH7110_BOOT_SCRIPT_SOURCE}
         VERBATIM)
-    add_dependencies(liberntimg jh7110sdimg)
+    add_dependencies(librentimg jh7110sdimg)
 endif()
 
-set(_liberntvhd_layout_args
-    ${_liberntimg_mbr_args}
-    ${_liberntimg_leading_args}
+set(_librentvhd_layout_args
+    ${_librentimg_mbr_args}
+    ${_librentimg_leading_args}
     -partition ${_preinstall_boot_partition_file}
     -start ${_preinstall_boot_partition_start}
     -type ${_preinstall_boot_partition_type}
-    ${_liberntimg_boot_partition_args}
+    ${_librentimg_boot_partition_args}
     -partition ${_preinstall_vhd_partition_file}
     -start ${_preinstall_system_partition_start}
     -type 07
-    ${_liberntimg_system_partition_args})
-add_custom_target(liberntvhd
+    ${_librentimg_system_partition_args})
+add_custom_target(librentvhd
     COMMAND ${CMAKE_COMMAND} -E rm -f ${_preinstall_vhd_file} ${_preinstall_vhdx_file} ${_preinstall_vhd_partition_file}
     COMMAND native-ntfsimg
         --format
@@ -1002,7 +969,7 @@ add_custom_target(liberntvhd
         ${_preinstall_vhd_partition_sectors}
         ${_preinstall_system_partition_start}
         ${_preinstall_ntfs_sectors_per_cluster}
-        LiberNT
+        LibreNT
     COMMAND native-ntfsimg
         --addfiles
         ${_preinstall_vhd_partition_file}
@@ -1010,13 +977,13 @@ add_custom_target(liberntvhd
     COMMAND native-ntfsimg
         --apply-security
         ${_preinstall_vhd_partition_file}
-        ${REACTOS_SOURCE_DIR}/boot/bootdata/filesecurity.txt
-    COMMAND native-mkdiskimg -o ${_preinstall_vhd_file} ${_liberntvhd_layout_args} -vhd
-    COMMAND native-mkdiskimg -o ${_preinstall_vhdx_file} ${_liberntvhd_layout_args} -vhdx
+        ${LIBRENT_SOURCE_DIR}/boot/bootdata/filesecurity.txt
+    COMMAND native-mkdiskimg -o ${_preinstall_vhd_file} ${_librentvhd_layout_args} -vhd
+    COMMAND native-mkdiskimg -o ${_preinstall_vhdx_file} ${_librentvhd_layout_args} -vhdx
     COMMAND ${CMAKE_COMMAND} -E rm -f ${_preinstall_vhd_partition_file}
-    DEPENDS ${_liberntimg_deps} native-ntfsimg
+    DEPENDS ${_librentimg_deps} native-ntfsimg
     VERBATIM)
-add_dependencies(liberntvhd preinstall_partition)
+add_dependencies(librentvhd preinstall_partition)
 
 
 if(DEFINED EFI_PLATFORM_ID)

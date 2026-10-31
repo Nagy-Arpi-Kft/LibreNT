@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Disk Checking Utility
+ * PROJECT:     LibreNT Disk Checking Utility
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Portuguese (Portugal) resource file
  * TRANSLATOR:  Copyright 2019-2026 Jose Carlos Jesus <zecarlos1957@hotmail.com>
@@ -24,7 +24,7 @@ Uso: %s [unidade:] [-F] [-V] [-R] [-C]\n\n\
     IDS_ABOUT "\n\
 Chkdskx v1.0.1 by Mark Russinovich\n\
 Systems Internals - http://www.sysinternals.com\n\
-ReactOS adaptation 1999 by Emanuele Aliberti\n\n"
+LibreNT adaptation 1999 by Emanuele Aliberti\n\n"
 END
 
 STRINGTABLE

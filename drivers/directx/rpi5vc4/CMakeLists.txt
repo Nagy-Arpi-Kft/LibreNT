@@ -1,4 +1,4 @@
-# PROJECT:  ReactOS Raspberry Pi 5 WDDM display-only miniport
+# PROJECT:  LibreNT Raspberry Pi 5 WDDM display-only miniport
 # LICENSE:  GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:  Build file for rpi5vc4.sys — WDDM2 KMDOD for the BCM2712
 #           HVS/PixelValve display pipeline (firmware GOP framebuffer).
@@ -7,8 +7,8 @@
 # KMDDOD_INITIALIZATION_DATA, DXGK_INTERFACE and every DXGKARG_* structure
 # have byte-identical layouts between the port driver and this miniport.
 # Mirror dxgkrnl/softgpu CMakeLists exactly.
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT})
-remove_definitions(-DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT})
+remove_definitions(-DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x0601 -DWINVER=0x0601)
 add_definitions(-DNTDDI_VERSION=0x06010000)    # NTDDI_WIN7
 
@@ -20,7 +20,7 @@ add_definitions(-DDXGKDDI_INTERFACE_VERSION=0xF003)
 
 # rpi5vc4_v3d_exec.c reuses the offline-compiled terrain shader blobs from
 # the XPDM miniport tree (local quote-includes shadow same-named headers).
-include_directories(${REACTOS_SOURCE_DIR}/win32ss/drivers/miniport/rpi5vc4)
+include_directories(${LIBRENT_SOURCE_DIR}/win32ss/drivers/miniport/rpi5vc4)
 
 list(APPEND SOURCE
     rpi5vc4.c
@@ -46,7 +46,7 @@ target_link_libraries(rpi5vc4 displib libcntpr)
 # make this binary less Win11-portable, not more.
 add_importlibs(rpi5vc4 ntoskrnl hal)
 add_pch(rpi5vc4 rpi5vc4.h "${SOURCE}")
-add_cd_file(TARGET rpi5vc4 DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET rpi5vc4 DESTINATION librent/system32/drivers FOR all)
 set(RPI5VC4_OPENGL_ICD rpi5vc4ogl.dll)
 if(TARGET mesa_gallium AND NOT RPI5VC4_MESA_V3D_ICD)
     set(RPI5VC4_OPENGL_ICD mesa_gallium.dll)

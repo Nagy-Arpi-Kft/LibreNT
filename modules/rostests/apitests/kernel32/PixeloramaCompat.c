@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Pixelorama loader and compatibility API coverage
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -101,7 +101,7 @@ TestPowerRequests(
 
     Context.Version = POWER_REQUEST_CONTEXT_VERSION;
     Context.Flags = POWER_REQUEST_CONTEXT_SIMPLE_STRING;
-    Context.Reason.SimpleReasonString = L"ReactOS Pixelorama compatibility test";
+    Context.Reason.SimpleReasonString = L"LibreNT Pixelorama compatibility test";
 
     SetLastError(0xdeadbeef);
     Request = pPowerCreateRequest(&Context);

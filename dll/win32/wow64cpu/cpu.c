@@ -29,7 +29,7 @@
 #include "wine/asm.h"
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "compat.h"
 #endif
 
@@ -60,7 +60,7 @@ static USHORT cs64_sel;
 static USHORT ds64_sel;
 static USHORT fs32_sel;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void **__wine_unix_call_dispatcher = NULL;
 #endif
 
@@ -245,7 +245,7 @@ __ASM_GLOBAL_FUNC( syscall_32to64,
  * Execute a 64-bit Unix call from 32-bit code, then return to 32-bit.
  */
 extern void WINAPI unix_call_32to64(void);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __ASM_GLOBAL_FUNC( unix_call_32to64,
                    /* cf. BTCpuSimulate prolog */
                    ".seh_pushreg %rbp\n\t"
@@ -319,7 +319,7 @@ NTSTATUS WINAPI BTCpuProcessInit(void)
     I386_CONTEXT context_i386;
     HMODULE module;
     UNICODE_STRING str = RTL_CONSTANT_STRING( L"ntdll.dll" );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     void **p__wine_unix_call_dispatcher;
 #endif
     WOW64INFO *wow64info = NtCurrentTeb()->TlsSlots[WOW64_TLS_WOW64INFO];
@@ -333,7 +333,7 @@ NTSTATUS WINAPI BTCpuProcessInit(void)
     wow64info->CpuFlags |= WOW64_CPUFLAGS_MSFT64;
 
     LdrGetDllHandle( NULL, 0, &str, &module );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     p__wine_unix_call_dispatcher = RtlFindExportedRoutineByName( module, "__wine_unix_call_dispatcher" );
     __wine_unix_call_dispatcher = *p__wine_unix_call_dispatcher;
 #endif
@@ -354,7 +354,7 @@ NTSTATUS WINAPI BTCpuProcessInit(void)
     thunk->syscall_thunk.addr  = PtrToUlong( syscall_32to64 );
     thunk->syscall_thunk.cs    = cs64_sel;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     thunk->unix_thunk.ljmp  = 0xff;
     thunk->unix_thunk.modrm = 0x2d;
     thunk->unix_thunk.op    = PtrToUlong( &thunk->unix_thunk.addr );
@@ -383,7 +383,7 @@ void * WINAPI BTCpuGetBopCode(void)
  */
 void * WINAPI __wine_get_unix_opcode(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return NULL;
 #else
     struct thunk_opcodes *thunk = (struct thunk_opcodes *)code_buffer;

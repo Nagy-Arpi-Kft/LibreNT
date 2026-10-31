@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ATA Bus Driver
+ * PROJECT:     LibreNT ATA Bus Driver
  * LICENSE:     BSD-2-Clause (https://spdx.org/licenses/BSD-2-Clause)
  * PURPOSE:     Toshiba PCI IDE controller minidriver
  * COPYRIGHT:   Copyright 2026 Dmitry Borisov <di.sean@protonmail.com>

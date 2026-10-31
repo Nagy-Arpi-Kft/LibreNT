@@ -1,4 +1,4 @@
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_executable(schtasks_winetest
     schtasks.c

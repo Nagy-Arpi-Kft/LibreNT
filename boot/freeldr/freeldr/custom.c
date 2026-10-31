@@ -83,13 +83,13 @@ static const PCSTR ARCPathPrompt =
     "multi(0)disk(0)rdisk(0)partition(1)\n"
     "multi(0)disk(0)fdisk(0)";
 
-static const PCSTR ReactOSSystemPathPrompt =
-    "Enter the path to your ReactOS system directory.\n"
+static const PCSTR LibreNTSystemPathPrompt =
+    "Enter the path to your LibreNT system directory.\n"
     "\n"
     "Examples:\n"
-    "\\REACTOS\n"
+    "\\LIBRENT\n"
     "\\ROS";
-static const PCSTR ReactOSOptionsPrompt =
+static const PCSTR LibreNTOptionsPrompt =
     "Enter the load options you want passed to the kernel.\n"
     "\n"
     "Examples:\n"
@@ -97,8 +97,8 @@ static const PCSTR ReactOSOptionsPrompt =
     "/FASTDETECT /NOGUIBOOT\n"
     "/BASEVIDEO /MAXMEM=64\n"
     "/KERNEL=NTKRNLMP.EXE /HAL=HALMPS.DLL";
-static const PCSTR ReactOSSetupOptionsPrompt =
-    "Enter additional load options you want passed to the ReactOS Setup.\n"
+static const PCSTR LibreNTSetupOptionsPrompt =
+    "Enter additional load options you want passed to the LibreNT Setup.\n"
     "These options will supplement those obtained from the TXTSETUP.SIF\n"
     "file, unless you also specify the /SIFOPTIONSOVERRIDE option switch.\n"
     "\n"
@@ -119,8 +119,8 @@ VOID OptionMenuCustomBoot(VOID)
         "Boot Sector (Disk/Partition/File)",
         "Linux",
 #endif
-        "ReactOS",
-        "ReactOS Setup"
+        "LibreNT",
+        "LibreNT Setup"
     };
     static ULONG MenuActionsMap[RTL_NUMBER_OF(CustomBootMenuList)] = {
 #if defined(_M_IX86) || defined(_M_AMD64)
@@ -156,11 +156,11 @@ VOID OptionMenuCustomBoot(VOID)
             EditCustomBootLinux(&OperatingSystem);
             break;
 #endif /* _M_IX86 || _M_AMD64 */
-        case 2: // ReactOS
-            EditCustomBootReactOS(&OperatingSystem, FALSE);
+        case 2: // LibreNT
+            EditCustomBootLibreNT(&OperatingSystem, FALSE);
             break;
-        case 3: // ReactOS Setup
-            EditCustomBootReactOS(&OperatingSystem, TRUE);
+        case 3: // LibreNT Setup
+            EditCustomBootLibreNT(&OperatingSystem, TRUE);
             break;
     }
 
@@ -482,7 +482,7 @@ EditCustomBootLinux(
 #endif /* _M_IX86 || _M_AMD64 */
 
 VOID
-EditCustomBootReactOS(
+EditCustomBootLibreNT(
     IN OUT OperatingSystemItem* OperatingSystem,
     IN BOOLEAN IsSetup)
 {
@@ -491,22 +491,22 @@ EditCustomBootReactOS(
     CHAR SectionName[100];
     CHAR BootDriveString[20];
     CHAR BootPartitionString[20];
-    CHAR ReactOSSystemPath[200];
-    CHAR ReactOSARCPath[200];
-    CHAR ReactOSOptions[200];
+    CHAR LibreNTSystemPath[200];
+    CHAR LibreNTARCPath[200];
+    CHAR LibreNTOptions[200];
 
     RtlZeroMemory(SectionName, sizeof(SectionName));
     RtlZeroMemory(BootDriveString, sizeof(BootDriveString));
     RtlZeroMemory(BootPartitionString, sizeof(BootPartitionString));
-    RtlZeroMemory(ReactOSSystemPath, sizeof(ReactOSSystemPath));
-    RtlZeroMemory(ReactOSARCPath, sizeof(ReactOSARCPath));
-    RtlZeroMemory(ReactOSOptions, sizeof(ReactOSOptions));
+    RtlZeroMemory(LibreNTSystemPath, sizeof(LibreNTSystemPath));
+    RtlZeroMemory(LibreNTARCPath, sizeof(LibreNTARCPath));
+    RtlZeroMemory(LibreNTOptions, sizeof(LibreNTOptions));
 
     if (SectionId != 0)
     {
         /* Load the settings */
-        IniReadSettingByName(SectionId, "SystemPath", ReactOSARCPath, sizeof(ReactOSARCPath));
-        IniReadSettingByName(SectionId, "Options", ReactOSOptions, sizeof(ReactOSOptions));
+        IniReadSettingByName(SectionId, "SystemPath", LibreNTARCPath, sizeof(LibreNTARCPath));
+        IniReadSettingByName(SectionId, "Options", LibreNTOptions, sizeof(LibreNTOptions));
     }
 
     if (SectionId == 0)
@@ -517,30 +517,30 @@ EditCustomBootReactOS(
         if (!UiEditBox(BootPartitionPrompt, BootPartitionString, sizeof(BootPartitionString)))
             return;
 
-        if (!UiEditBox(ReactOSSystemPathPrompt, ReactOSSystemPath, sizeof(ReactOSSystemPath)))
+        if (!UiEditBox(LibreNTSystemPathPrompt, LibreNTSystemPath, sizeof(LibreNTSystemPath)))
             return;
     }
     else
     {
-        if (!UiEditBox(ReactOSSystemPathPrompt, ReactOSARCPath, sizeof(ReactOSARCPath)))
+        if (!UiEditBox(LibreNTSystemPathPrompt, LibreNTARCPath, sizeof(LibreNTARCPath)))
             return;
     }
 
-    if (!UiEditBox(IsSetup ? ReactOSSetupOptionsPrompt : ReactOSOptionsPrompt, ReactOSOptions, sizeof(ReactOSOptions)))
+    if (!UiEditBox(IsSetup ? LibreNTSetupOptionsPrompt : LibreNTOptionsPrompt, LibreNTOptions, sizeof(LibreNTOptions)))
         return;
 
     /* Modify the settings values and return if we were in edit mode */
     if (SectionId != 0)
     {
-        IniModifySettingValue(SectionId, "SystemPath", ReactOSARCPath);
-        IniModifySettingValue(SectionId, "Options", ReactOSOptions);
+        IniModifySettingValue(SectionId, "SystemPath", LibreNTARCPath);
+        IniModifySettingValue(SectionId, "Options", LibreNTOptions);
         return;
     }
 
     /* Generate a unique section name */
     TimeInfo = ArcGetTime();
     RtlStringCbPrintfA(SectionName, sizeof(SectionName),
-                       "CustomReactOS%u%u%u%u%u%u",
+                       "CustomLibreNT%u%u%u%u%u%u",
                        TimeInfo->Year, TimeInfo->Day, TimeInfo->Month,
                        TimeInfo->Hour, TimeInfo->Minute, TimeInfo->Second);
 
@@ -552,17 +552,17 @@ EditCustomBootReactOS(
     if (!IniAddSettingValueToSection(SectionId, "BootType", IsSetup ? "ReactOSSetup" : "Windows2003"))
         return;
 
-    /* Construct the ReactOS ARC system path */
-    ConstructArcPath(ReactOSARCPath, ReactOSSystemPath,
+    /* Construct the LibreNT ARC system path */
+    ConstructArcPath(LibreNTARCPath, LibreNTSystemPath,
                      DriveMapGetBiosDriveNumber(BootDriveString),
                      atoi(BootPartitionString));
 
     /* Add the system path */
-    if (!IniAddSettingValueToSection(SectionId, "SystemPath", ReactOSARCPath))
+    if (!IniAddSettingValueToSection(SectionId, "SystemPath", LibreNTARCPath))
         return;
 
     /* Add the CommandLine */
-    if (!IniAddSettingValueToSection(SectionId, "Options", ReactOSOptions))
+    if (!IniAddSettingValueToSection(SectionId, "Options", LibreNTOptions))
         return;
 
     OperatingSystem->SectionId = SectionId;

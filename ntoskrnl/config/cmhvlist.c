@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Configuration Manager - Hives file list management
  * COPYRIGHT:   Copyright 2012-2026 Hermès Bélusca-Maïto <hermes.belusca-maito@reactos.org>
@@ -162,7 +162,7 @@ CmpAddToHiveFileList(
 
     /* Retrieve the hive path.
      * NOTE: On Vista+, the hive path is constructed in CmpLinkHiveToMaster().
-     * In ReactOS, its construction is instead deferred to this point, when
+     * In LibreNT, its construction is instead deferred to this point, when
      * the hive is added to the hive file list. */
     if (!CmpGetHiveName(Hive, &HivePath))
     {

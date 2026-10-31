@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS System Libraries
+ * PROJECT:     LibreNT System Libraries
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     RtlIsNameInExpression implementation
  * COPYRIGHT:   Copyright 2026 Carl Bialorucki <carl.bialorucki@reactos.org>

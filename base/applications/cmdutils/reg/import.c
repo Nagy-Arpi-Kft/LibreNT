@@ -276,7 +276,7 @@ static BOOL parse_data_type(struct parser *parser, WCHAR **line)
 
             /* "hex(xx):" is special */
             val = wcstoul(*line, &end, 16);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (*end != ')' || *(end + 1) != ':' || (val == ~0u && errno == ERANGE) || end - *line > 8)
 #else
             if (*end != ')' || *(end + 1) != ':' || (val == ~0u && errno == ERANGE))
@@ -767,7 +767,7 @@ invalid:
 static WCHAR *hex_data_state(struct parser *parser, WCHAR *pos)
 {
     WCHAR *line = pos;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR buffer[10] = {0};
     BOOL unicode_in_ascii = FALSE;
 #endif
@@ -775,7 +775,7 @@ static WCHAR *hex_data_state(struct parser *parser, WCHAR *pos)
     if (!*line)
         goto set_value;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!parser->is_unicode && parser->data_type == REG_EXPAND_SZ && parser->parse_type == REG_BINARY)
     {
         memcpy(buffer, pos, 18);
@@ -784,7 +784,7 @@ static WCHAR *hex_data_state(struct parser *parser, WCHAR *pos)
         if (unicode_in_ascii) parser->is_unicode = TRUE;
     }
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!convert_hex_csv_to_hex(parser, &line))
     {
         if (unicode_in_ascii) parser->is_unicode = FALSE;
@@ -794,7 +794,7 @@ static WCHAR *hex_data_state(struct parser *parser, WCHAR *pos)
     if (!convert_hex_csv_to_hex(parser, &line))
         goto invalid;
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (unicode_in_ascii) parser->is_unicode = FALSE;
 #endif
 
@@ -804,11 +804,11 @@ static WCHAR *hex_data_state(struct parser *parser, WCHAR *pos)
         return line;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (unicode_in_ascii) parser->is_unicode = TRUE;
 #endif
     prepare_hex_string_data(parser);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (unicode_in_ascii) parser->is_unicode = FALSE;
 #endif
 

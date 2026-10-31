@@ -53,8 +53,8 @@
 
 #include "wine/asm.h"
 #include "wine/debug.h"
-#if defined(__REACTOS__) && defined(__aarch64__)
-#include <reactos/arm64/sysreg.h>
+#if defined(__LIBRENT__) && defined(__aarch64__)
+#include <librent/arm64/sysreg.h>
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(msvcrt);
@@ -162,7 +162,7 @@ double math_error(int type, const char *name, double arg1, double arg2, double r
     return exception.retval;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 double CDECL __acrt_report_math_error(int type, const char *name, double arg1, double arg2, double retval, int error)
 {
     if (type) return math_error(type, name, arg1, arg2, retval);
@@ -614,7 +614,7 @@ __ASM_GLOBAL_FUNC(_ftol,
 
 #endif /* __i386__ */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*********************************************************************
  *		_fpclass (MSVCRT.@)
  */
@@ -636,7 +636,7 @@ int CDECL _fpclass(double num)
         return s ? _FPCLASS_NN : _FPCLASS_PN;
     }
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*********************************************************************
  *		_rotl (MSVCRT.@)
@@ -767,7 +767,7 @@ static void set_mxcsr( unsigned int val )
 }
 #endif
 
-#if defined(__REACTOS__) && !defined(__arm64ec__)
+#if defined(__LIBRENT__) && !defined(__arm64ec__)
 __ATTRIBUTE_SSE__
 #endif
 static void _setfp_sse( unsigned int *cw, unsigned int cw_mask,
@@ -1218,7 +1218,7 @@ static void _setfp( unsigned int *cw, unsigned int cw_mask,
     if (old_fpscr != fpscr)
         __asm__ __volatile__( "vmsr fpscr, %0" :: "r" (fpscr) );
 #else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     msvcrt_arch_setfp( cw, cw_mask, sw, sw_mask );
 #else
     FIXME("not implemented\n");
@@ -1290,7 +1290,7 @@ int * CDECL __fpecode(void)
     return &msvcrt_get_thread_data()->fpecode;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*********************************************************************
  *		ldexp (MSVCRT.@)
  */
@@ -1304,7 +1304,7 @@ double CDECL ldexp(double num, int exp)
     return math_error(_UNDERFLOW, "ldexp", num, exp, z);
   return z;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*********************************************************************
  *		_cabs (MSVCRT.@)
@@ -1833,7 +1833,7 @@ char * CDECL _ecvt( double number, int ndigits, int *decpt, int *sign )
                                       * terminating '\0' */
     if (!data->efcvt_buffer)
         data->efcvt_buffer = malloc( 80 ); /* ought to be enough */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!data->efcvt_buffer)
         return NULL;
 #endif
@@ -1881,7 +1881,7 @@ int CDECL _ecvt_s( char *buffer, size_t length, double number, int ndigits, int 
     if (!MSVCRT_CHECK_PMT(decpt != NULL)) return EINVAL;
     if (!MSVCRT_CHECK_PMT(sign != NULL)) return EINVAL;
     if (!MSVCRT_CHECK_PMT_ERR( length > 2, ERANGE )) return ERANGE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MSVCRT_CHECK_PMT_ERR(ndigits < 0 || (size_t)ndigits < length - 1, ERANGE )) return ERANGE;
 #else
     if (!MSVCRT_CHECK_PMT_ERR(ndigits < (int)length - 1, ERANGE )) return ERANGE;
@@ -1890,7 +1890,7 @@ int CDECL _ecvt_s( char *buffer, size_t length, double number, int ndigits, int 
     /* handle cases with zero ndigits or less */
     prec = ndigits;
     if( prec < 1) prec = 2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     result = malloc((size_t)prec + 8);
     if (!result)
     {
@@ -1902,7 +1902,7 @@ int CDECL _ecvt_s( char *buffer, size_t length, double number, int ndigits, int 
     result = malloc(prec + 8);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = _snprintf(result, (size_t)prec + 8, "%.*le", prec - 1, number);
     if (len < 0)
     {
@@ -1954,7 +1954,7 @@ char * CDECL _fcvt( double number, int ndigits, int *decpt, int *sign )
 
     if (!data->efcvt_buffer)
         data->efcvt_buffer = malloc( 80 ); /* ought to be enough */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!data->efcvt_buffer)
         return NULL;
 #endif
@@ -2165,7 +2165,7 @@ int CDECL _gcvt_s(char *buff, size_t size, double number, int digits)
 
 #include "include/stdlib.h" /* div_t, ldiv_t */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*********************************************************************
  *		div (MSVCRT.@)
  * VERSION
@@ -2228,7 +2228,7 @@ ldiv_t CDECL ldiv(__msvcrt_long num, __msvcrt_long denom)
     return ret;
 }
 #endif /* ifdef __i386__ */
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 #if _MSVCR_VER>=100
 /*********************************************************************
@@ -2490,7 +2490,7 @@ void _safe_fprem1(void)
   TRACE("(): stub\n");
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *		__libm_sse2_acos   (MSVCRT.@)
  */
@@ -2746,7 +2746,7 @@ void __cdecl __libm_sse2_sqrt_precise(void)
     }
     __asm__ __volatile__( "sqrtsd %xmm0, %xmm0" );
 }
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 #endif  /* __i386__ */
 
 #if _MSVCR_VER>=120
@@ -2994,7 +2994,7 @@ float CDECL MSVCRT_atanhf(float x)
  */
 double CDECL _scalb(double num, __msvcrt_long power)
 {
-#if defined(__REACTOS__) && _MSVCR_VER == 0
+#if defined(__LIBRENT__) && _MSVCR_VER == 0
   if (isnan(num)) *_errno() = EDOM;
 #endif
   return ldexp(num, power);

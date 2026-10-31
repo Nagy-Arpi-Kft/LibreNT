@@ -29,7 +29,7 @@
 
 #include "activation.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIDL_using_Windows_Devices_Input
 #endif
 #define WIDL_using_Windows_Foundation
@@ -43,7 +43,7 @@
 
 #define WIDL_using_Windows_UI_Shell
 #include "windows.ui.shell.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "windows.devices.input.h"
 #endif
 
@@ -53,7 +53,7 @@ extern IActivationFactory *uisettings_factory;
 extern IActivationFactory *uiviewsettings_factory;
 extern IActivationFactory *inputpane_factory;
 extern IActivationFactory *corewindow_factory;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern IActivationFactory *pendevice_factory;
 #endif
 

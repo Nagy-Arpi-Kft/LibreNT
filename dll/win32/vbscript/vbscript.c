@@ -93,7 +93,7 @@ static inline BOOL is_started(VBScript *This)
         || This->state == SCRIPTSTATE_DISCONNECTED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void query_context_name(script_ctx_t *ctx, named_item_t *item, const WCHAR *name)
 {
     IDispatch *disp;
@@ -167,7 +167,7 @@ HRESULT exec_global_code(script_ctx_t *ctx, vbscode_t *code, VARIANT *res, BOOL 
         if (existing && existing->type == SCRIPTDISP_VAR && !existing->u.var->is_const)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (code->named_item && !existing)
             query_context_name(ctx, code->named_item, code->main_code.vars[i].name);
 #endif
@@ -197,7 +197,7 @@ HRESULT exec_global_code(script_ctx_t *ctx, vbscode_t *code, VARIANT *res, BOOL 
         else
             /* a new function, or one re-declaring a variable of the same name */
             func_iter->index = obj->global_funcs_cnt++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (code->named_item && !existing)
             query_context_name(ctx, code->named_item, func_iter->name);
 #endif
@@ -339,7 +339,7 @@ named_item_t *lookup_named_item(script_ctx_t *ctx, const WCHAR *name, unsigned f
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 IDispatch *get_named_item_context_disp(script_ctx_t *ctx, named_item_t *item)
 {
     IUnknown *unk;
@@ -438,7 +438,7 @@ static void release_script(script_ctx_t *ctx)
             IDispatch_Release(item->disp);
             item->disp = NULL;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(item->context_disp)
         {
             IDispatch_Release(item->context_disp);
@@ -883,7 +883,7 @@ static HRESULT WINAPI VBScript_SetScriptSite(IActiveScript *iface, IActiveScript
             hres = retrieve_named_item_disp(pass, item);
             if(FAILED(hres)) return hres;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!item->context_disp && item->disp)
         {
             item->context_disp = item->disp;
@@ -1036,7 +1036,7 @@ static HRESULT WINAPI VBScript_AddNamedItem(IActiveScript *iface, LPCOLESTR pstr
 
     item->ref = 1;
     item->disp = disp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     item->context_disp = NULL;
 #endif
     item->flags = dwFlags;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM 2.x Graphics Memory Manager and Scheduler
+ * PROJECT:     LibreNT WDDM 2.x Graphics Memory Manager and Scheduler
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Video memory segment ownership core
  *
@@ -12,7 +12,7 @@
 #pragma once
 
 #include <ntddk.h>
-#include <reactos/drivers/directx/dxgmms2.h>
+#include <librent/drivers/directx/dxgmms2.h>
 
 /* Records pre-allocated with the adapter.  Beyond this the core allocates on
  * demand: a placement must never fail because the ledger ran out of records

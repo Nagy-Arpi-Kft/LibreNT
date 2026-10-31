@@ -216,7 +216,7 @@ static HRESULT hresult_from_http_response(DWORD code)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void set_remote_file_error(BackgroundCopyJobImpl *job, BackgroundCopyFileImpl *file, HRESULT code)
 {
     EnterCriticalSection(&job->cs);
@@ -336,7 +336,7 @@ static void CALLBACK progress_callback_http(HINTERNET handle, DWORD_PTR context,
     case WINHTTP_CALLBACK_STATUS_REQUEST_ERROR:
     {
         WINHTTP_ASYNC_RESULT *result = (WINHTTP_ASYNC_RESULT *)buf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         set_remote_file_error(job, file, HRESULT_FROM_WIN32(result->dwError));
 #else
         job->error.code = HRESULT_FROM_WIN32(result->dwError);
@@ -470,7 +470,7 @@ static BOOL transfer_file_http(BackgroundCopyFileImpl *file, URL_COMPONENTSW *uc
         EnterCriticalSection(&job->cs);
         file->fileProgress.BytesTransferred += file->read_size;
         job->jobProgress.BytesTransferred += file->read_size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         job->transient_since = 0;
 #endif
         LeaveCriticalSection(&job->cs);
@@ -479,7 +479,7 @@ static BOOL transfer_file_http(BackgroundCopyFileImpl *file, URL_COMPONENTSW *uc
     CloseHandle(handle);
 
 done:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret && !FAILED(job->error.code))
     {
         DWORD error = GetLastError();
@@ -489,7 +489,7 @@ done:
     WinHttpCloseHandle(req);
     WinHttpCloseHandle(con);
     WinHttpCloseHandle(ses);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret)
         fail_transfer(job);
 #else
@@ -571,7 +571,7 @@ BOOL processFile(BackgroundCopyFileImpl *file, BackgroundCopyJobImpl *job)
     }
 
     EnterCriticalSection(&job->cs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     job->jobProgress.BytesTransferred -= file->fileProgress.BytesTransferred;
 #endif
     file->fileProgress.BytesTotal = BG_SIZE_UNKNOWN;

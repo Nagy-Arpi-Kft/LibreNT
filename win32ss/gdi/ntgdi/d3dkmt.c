@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Display Driver Model
+ * PROJECT:     LibreNT Display Driver Model
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     D3DKMT dxgkrnl callbacks
  * COPYRIGHT:   Copyright 2023 Justin Miller <justin.miller@reactos.org>
@@ -7,9 +7,9 @@
 
 #include <win32k.h>
 #include "drivers/wddm/wddm_bridge.h"
-#include <reactos/rddm/rxgkinterface.h>
-#include <reactos/rddm/rxgkioctl.h>
-#include <reactos/rddm/rxgkntgdi.h>
+#include <librent/rddm/rxgkinterface.h>
+#include <librent/rddm/rxgkioctl.h>
+#include <librent/rddm/rxgkntgdi.h>
 #include <debug.h>
 
 #define IOCTL_RXGK_OPENADAPTERFROMDEVICENAME CTL_CODE(DXGKRNL_DEVICE_TYPE, 0x112, METHOD_BUFFERED, FILE_ANY_ACCESS)
@@ -67,7 +67,7 @@ C_ASSERT(FIELD_OFFSET(struct _D3DKMT_LOCK2, pData) == 12);
 C_ASSERT(sizeof(struct _D3DKMT_UNLOCK2) == 8);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 C_ASSERT(sizeof(RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET) ==
          RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET_V1_SIZE);
 C_ASSERT(FIELD_OFFSET(RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET, Size) == 0);
@@ -218,7 +218,7 @@ APIENTRY
 D3DKMTEnumAdapters2(
     _Inout_ CONST D3DKMT_ENUMADAPTERS2 *pData);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 NTSTATUS
 APIENTRY
 D3DKMTGetSharedResourceAdapterLuid(
@@ -235,7 +235,7 @@ NTSTATUS APIENTRY D3DKMTQueryClockCalibration(_Inout_ struct _D3DKMT_QUERYCLOCKC
 NTSTATUS APIENTRY D3DKMTChangeVideoMemoryReservation(_In_ CONST struct _D3DKMT_CHANGEVIDEOMMEMORYRESERVATION *pData);
 NTSTATUS APIENTRY D3DKMTSetProcessSchedulingPriorityClass(_In_ HANDLE hProcess, _In_ D3DKMT_SCHEDULINGPRIORITYCLASS Class);
 NTSTATUS APIENTRY D3DKMTGetProcessSchedulingPriorityClass(_In_ HANDLE hProcess, _Out_ D3DKMT_SCHEDULINGPRIORITYCLASS *pClass);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 NTSTATUS APIENTRY D3DKMTSetContextInProcessSchedulingPriority(_In_ CONST D3DKMT_SETCONTEXTINPROCESSSCHEDULINGPRIORITY *pData);
 NTSTATUS APIENTRY D3DKMTGetContextInProcessSchedulingPriority(_Inout_ D3DKMT_GETCONTEXTINPROCESSSCHEDULINGPRIORITY *pData);
 #endif
@@ -329,7 +329,7 @@ APIENTRY
 D3DKMTUnlock2(
     _In_ CONST struct _D3DKMT_UNLOCK2 *pData);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 NTSTATUS
 APIENTRY
 D3DKMTGetResourcePresentPrivateDriverData(
@@ -346,7 +346,7 @@ D3DKMTReclaimAllocations2(
     _Inout_ struct _D3DKMT_RECLAIMALLOCATIONS2 *pData);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 NTSTATUS
 APIENTRY
 D3DKMTUpdateAllocationProperty(
@@ -360,14 +360,14 @@ D3DKMTSetVidPnSourceOwner2(
 
 VOID
 WddmBridgeInitCallbacks(
-    _Out_ PREACTOS_WIN32K_DXGKRNL_INTERFACE Interface);
+    _Out_ PLIBRENT_WIN32K_DXGKRNL_INTERFACE Interface);
 
 /*
  * It looks like Windows saves all the function pointers globally inside win32k.
  * Instead, we're going to keep it static to this file and keep it organized in struct
  * we obtained with the IOCTL.
  */
-static REACTOS_WIN32K_DXGKRNL_INTERFACE DxgAdapterCallbacks = {0};
+static LIBRENT_WIN32K_DXGKRNL_INTERFACE DxgAdapterCallbacks = {0};
 
 static NTSTATUS
 D3dkmtValidateWddmThunk(
@@ -465,7 +465,7 @@ DxStartupDxgkInt(VOID)
 
     DPRINT("DxStartupDxgkInt: Entry\n");
 
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_XPDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_XPDM)
     RtlZeroMemory(&DxgAdapterCallbacks, sizeof(DxgAdapterCallbacks));
     DPRINT("DxStartupDxgkInt: XPDM build, dxgkrnl bridge disabled\n");
     return;
@@ -1422,7 +1422,7 @@ NtGdiDdDDIReclaimAllocations2(
     _Inout_ struct _D3DKMT_RECLAIMALLOCATIONS2* unnamedParam1)
 {
     RETURN_STATUS_IF_NULL(unnamedParam1);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     {
         NTSTATUS Status = WddmBridgeRequireReady();
 
@@ -1524,7 +1524,7 @@ NtGdiDdDDIGetResourcePresentPrivateDriverData(
     _Inout_ struct _D3DDDI_GETRESOURCEPRESENTPRIVATEDRIVERDATA* unnamedParam1)
 {
     RETURN_STATUS_IF_NULL(unnamedParam1);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     {
         NTSTATUS Status = WddmBridgeRequireReady();
 
@@ -1691,7 +1691,7 @@ APIENTRY
 NtGdiDdDDIUpdateAllocationProperty(_Inout_ struct D3DDDI_UPDATEALLOCPROPERTY* unnamedParam1)
 {
     RETURN_STATUS_IF_NULL(unnamedParam1);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
     {
         NTSTATUS Status = WddmBridgeRequireReady();
 
@@ -1739,7 +1739,7 @@ NTSTATUS
 APIENTRY
 NtGdiDdDDISetContextInProcessSchedulingPriority(_In_ const struct _D3DKMT_SETCONTEXTINPROCESSSCHEDULINGPRIORITY* unnamedParam1)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     NTSTATUS Status = D3dkmtValidateWddmThunk(unnamedParam1);
     if (!NT_SUCCESS(Status))
         return Status;
@@ -1755,7 +1755,7 @@ NTSTATUS
 APIENTRY
 NtGdiDdDDIGetContextInProcessSchedulingPriority(_Inout_ struct _D3DKMT_GETCONTEXTINPROCESSSCHEDULINGPRIORITY* unnamedParam1)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     NTSTATUS Status = D3dkmtValidateWddmThunk(unnamedParam1);
     if (!NT_SUCCESS(Status))
         return Status;
@@ -1810,7 +1810,7 @@ APIENTRY
 NtGdiDdDDIInvalidateCache(_In_ const struct _D3DKMT_INVALIDATECACHE* unnamedParam1)
 {
     RETURN_STATUS_IF_NULL(unnamedParam1);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     {
         NTSTATUS Status = WddmBridgeRequireReady();
 
@@ -1827,7 +1827,7 @@ NTSTATUS
 APIENTRY
 NtGdiDdDDIGetSharedResourceAdapterLuid(_Inout_ struct _D3DKMT_GETSHAREDRESOURCEADAPTERLUID* unnamedParam1)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     NTSTATUS Status = D3dkmtValidateWddmThunk(unnamedParam1);
     if (!NT_SUCCESS(Status))
         return Status;
@@ -2356,7 +2356,7 @@ NTSTATUS
 APIENTRY
 NtGdiDdDDICheckMultiPlaneOverlaySupport(_Inout_ struct _D3DKMT_CHECKMULTIPLANEOVERLAYSUPPORT* unnamedParam1)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     D3DKMT_CHECKMULTIPLANEOVERLAYSUPPORT Captured;
     D3DKMT_CHECK_MULTIPLANE_OVERLAY_PLANE Plane;
     RXGK_CHECKMPO_PACKET *Packet;
@@ -2483,7 +2483,7 @@ NTSTATUS
 APIENTRY
 NtGdiDdDDIGetMultiPlaneOverlayCaps(_Inout_ struct _D3DKMT_GET_MULTIPLANE_OVERLAY_CAPS* unnamedParam1)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     D3DKMT_GET_MULTIPLANE_OVERLAY_CAPS Captured;
     RXGK_GETMULTIPLANEOVERLAYCAPS_PACKET Packet;
     ULONG_PTR Information = 0;
@@ -2522,7 +2522,7 @@ NTSTATUS
 APIENTRY
 NtGdiDdDDIQueryVidPnExclusiveOwnership(_Inout_ struct _D3DKMT_QUERYVIDPNEXCLUSIVEOWNERSHIP* unnamedParam1)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     D3DKMT_QUERYVIDPNEXCLUSIVEOWNERSHIP Captured;
     RXGK_QUERYVIDPNEXCLUSIVEOWNERSHIP_PACKET Packet;
     D3DKMT_HANDLE AdapterHandle = 0;
@@ -2627,7 +2627,7 @@ NtGdiDdDDIQueryVidPnExclusiveOwnership(_Inout_ struct _D3DKMT_QUERYVIDPNEXCLUSIV
         Packet.ProcessId =
             (ULONGLONG)(ULONG_PTR)PsGetProcessId(Process);
         /*
-         * ReactOS currently maps each GDI PDEV to source zero, the same
+         * LibreNT currently maps each GDI PDEV to source zero, the same
          * mapping used by OpenAdapterFromHdc/GdiDisplayName.  The packet keeps
          * this field explicit so a later multi-source PDEV mapping extends the
          * selector without changing the kernel ABI.
@@ -2739,7 +2739,7 @@ NtGdiDdDDISignalSynchronizationObjectFromGpu2(_In_ const struct _D3DKMT_SIGNALSY
     D3DKMT_CALL_CALLBACK(RxgkIntPfnSignalSynchronizationObjectFromGpu2, unnamedParam1);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static BOOLEAN
 D3dkmtMpoFromAttributes2(
     _In_ const D3DKMT_MULTIPLANE_OVERLAY_ATTRIBUTES2 *Attributes,
@@ -2876,7 +2876,7 @@ NtGdiDdDDIPresentMultiPlaneOverlay2(_In_ const struct _D3DKMT_PRESENT_MULTIPLANE
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 /* Dirty rectangles are a hint the overlay path does not need. */
 static BOOLEAN
 D3dkmtMpoFromAttributes3(
@@ -2900,7 +2900,7 @@ D3dkmtMpoFromAttributes3(
     Overlay->AlphaBlend = Attributes->Blend == D3DKMT_MULTIPLANE_OVERLAY_BLEND_ALPHABLEND;
     Overlay->ColorSpace = Attributes->ColorSpace;
     Overlay->StretchQuality = Attributes->StretchQuality;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
     Overlay->SdrWhiteLevel = Attributes->SDRWhiteLevel;
 #endif
     return TRUE;

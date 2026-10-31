@@ -16,7 +16,7 @@ if /I "%1" == "/?" (
     echo Available script-options: Codeblocks, Eclipse, Makefiles, clang, VSSolution,
     echo                           /gcc ^(default, RosBE GCC^), /clang ^(RosBE LLVM^),
     echo                           /r or /release ^(Release build^), /d or /debug ^(default^),
-    echo                           /arch=^<amd64^|i386^|arm64^|riscv64^|ppc^> ^(default amd64^),
+    echo                           /arch=^<amd64^|i386^|arm64^> ^(default amd64^),
     echo                           menuconfig ^(interactive configuration UI; selections
     echo                           persist in the selected output tree^)
     echo Cmake-options: -DVARIABLE:TYPE=VALUE
@@ -24,11 +24,11 @@ if /I "%1" == "/?" (
 )
 
 REM Get the source root directory
-set REACTOS_SOURCE_DIR=%~dp0
-set REACTOS_SOURCE_DIR=%REACTOS_SOURCE_DIR:\=/%
+set LIBRENT_SOURCE_DIR=%~dp0
+set LIBRENT_SOURCE_DIR=%LIBRENT_SOURCE_DIR:\=/%
 
 REM Ensure there's no spaces in the source path
-echo %REACTOS_SOURCE_DIR%| find " " > NUL
+echo %LIBRENT_SOURCE_DIR%| find " " > NUL
 if %ERRORLEVEL% == 0 (
     echo. & echo   Your source path contains at least one space.
     echo   This will cause problems with building.
@@ -164,14 +164,10 @@ if not defined ROS_ARCH if not defined VCINSTALLDIR (
     if /I "!_ARCH!" == "amd64" set "_ROSBE_TRIPLET=x86_64-w64-mingw32"
     if /I "!_ARCH!" == "i386"  set "_ROSBE_TRIPLET=i686-w64-mingw32"
     if /I "!_ARCH!" == "arm64" set "_ROSBE_TRIPLET=aarch64-w64-mingw32"
-    if "!_USE_LLVM_MINGW!" == "1" (
-        if /I "!_ARCH!" == "riscv64" set "_ROSBE_TRIPLET=riscv64-w64-mingw32"
-        if /I "!_ARCH!" == "ppc" set "_ROSBE_TRIPLET=powerpcle-w64-mingw32"
-    )
 
     if not defined _ROSBE_TRIPLET (
         echo. & echo Error: Unsupported architecture for RosBE: !_ARCH!
-        echo Supported: amd64 ^(default^), i386, arm64; riscv64 and ppc with /clang.
+        echo Supported: amd64 ^(default^), i386, arm64.
         goto quit
     )
 
@@ -211,7 +207,7 @@ if not defined ROS_ARCH if not defined VCINSTALLDIR (
             goto quit
         )
         set "PATH=!_ROSBE_LLVM_BIN!;!_ROSBE_CMAKE_BIN!;!_ROSBE_NINJA_DIR!;!_ROSBE_WFB_DIR!;!PATH!"
-        set "ROSBE_CMAKE_EXTRA=!ROSBE_CMAKE_EXTRA! -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=!ROSBE_ROOT!\llvm"
+        set "ROSBE_CMAKE_EXTRA=!ROSBE_CMAKE_EXTRA! -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=!ROSBE_ROOT!\llvm"
         echo Auto-detected RosBE at !ROSBE_ROOT! ^(/clang: LLVM, !_ARCH!^)
     ) else (
         set "PATH=!_ROSBE_GCC_BIN!;!_ROSBE_CMAKE_BIN!;!_ROSBE_NINJA_DIR!;!_ROSBE_WFB_DIR!;!_ROSBE_LLVM_BIN!;!PATH!"
@@ -390,35 +386,35 @@ if "!CMAKE_GENERATOR!" == "Ninja" (
 )
 
 REM Display information
-echo Configuring a new ReactOS build on:
+echo Configuring a new LibreNT build on:
 (for /f "delims=" %%x in ('ver') do @echo %%x) & echo.
 
 REM Create directories
 if defined OUTPUT_LABEL (
-    set REACTOS_OUTPUT_PATH=output-%OUTPUT_LABEL%-%ARCH%-%_BUILD_TYPE_SUFFIX%
+    set LIBRENT_OUTPUT_PATH=output-%OUTPUT_LABEL%-%ARCH%-%_BUILD_TYPE_SUFFIX%
 ) else (
-    set REACTOS_OUTPUT_PATH=output-%BUILD_ENVIRONMENT%-%ARCH%-%_BUILD_TYPE_SUFFIX%
+    set LIBRENT_OUTPUT_PATH=output-%BUILD_ENVIRONMENT%-%ARCH%-%_BUILD_TYPE_SUFFIX%
 )
 
 if "%VS_SOLUTION%" == "1" (
-    set REACTOS_OUTPUT_PATH=%REACTOS_OUTPUT_PATH%-sln
+    set LIBRENT_OUTPUT_PATH=%LIBRENT_OUTPUT_PATH%-sln
 )
 
 set "_CONFIGURE_FROM_SOURCE=0"
-if "%REACTOS_SOURCE_DIR%" == "%CD:\=/%/" (
+if "%LIBRENT_SOURCE_DIR%" == "%CD:\=/%/" (
     set "_CONFIGURE_FROM_SOURCE=1"
     set CD_SAME_AS_SOURCE=1
-    echo Creating directories in %REACTOS_OUTPUT_PATH%
+    echo Creating directories in %LIBRENT_OUTPUT_PATH%
 
-    if not exist %REACTOS_OUTPUT_PATH% (
-        mkdir %REACTOS_OUTPUT_PATH%
+    if not exist %LIBRENT_OUTPUT_PATH% (
+        mkdir %LIBRENT_OUTPUT_PATH%
     )
-    cd %REACTOS_OUTPUT_PATH%
+    cd %LIBRENT_OUTPUT_PATH%
 )
 
 REM Refuse to repurpose an existing output directory for another target. This
 REM check runs before deleting CMakeCache.txt.
-for %%I in ("%REACTOS_SOURCE_DIR%%REACTOS_OUTPUT_PATH%") do set "_EXPECTED_OUTPUT_DIR=%%~fI"
+for %%I in ("%LIBRENT_SOURCE_DIR%%LIBRENT_OUTPUT_PATH%") do set "_EXPECTED_OUTPUT_DIR=%%~fI"
 for %%I in ("%CD%") do set "_CURRENT_OUTPUT_DIR=%%~fI"
 if "!_CONFIGURE_FROM_SOURCE!" == "0" if /I not "!_CURRENT_OUTPUT_DIR!" == "!_EXPECTED_OUTPUT_DIR!" (
     echo Error: refusing to configure "!_CURRENT_OUTPUT_DIR!" as %BUILD_ENVIRONMENT%/%ARCH%/%_BUILD_TYPE%.
@@ -488,31 +484,31 @@ if "%VS_SOLUTION%" == "1" (
         echo Use an empty folder or delete the contents of this folder, then try again.
         goto quit
     )
-) else if exist REACTOS.sln (
+) else if exist LIBRENT.sln (
     echo. & echo Error: This directory has already been configured for Visual Studio.
     echo An output folder configured for VSSolution can't be reconfigured for ninja.
     echo Use an empty folder or delete the contents of this folder, then try again. & echo.
     goto quit
 )
 
-if not exist "%REACTOS_SOURCE_DIR%base/applications/cmdutils/glmark2/src/benchmark-collection.cpp" (
+if not exist "%LIBRENT_SOURCE_DIR%base/applications/cmdutils/glmark2/src/benchmark-collection.cpp" (
     where git > NUL 2>&1
     if not !ERRORLEVEL! == 0 (
         echo Error: git is required to initialize the glmark2 submodule.
         goto quit
     )
-    git -C "%REACTOS_SOURCE_DIR%" rev-parse --is-inside-work-tree > NUL 2>&1
+    git -C "%LIBRENT_SOURCE_DIR%" rev-parse --is-inside-work-tree > NUL 2>&1
     if not !ERRORLEVEL! == 0 (
         echo Error: glmark2 sources are missing; configure from a recursive Git checkout.
         goto quit
     )
     echo Syncing glmark2 submodule...
-    git -C "%REACTOS_SOURCE_DIR%" submodule sync -- base/applications/cmdutils/glmark2
+    git -C "%LIBRENT_SOURCE_DIR%" submodule sync -- base/applications/cmdutils/glmark2
     if not !ERRORLEVEL! == 0 goto quit
-    git -C "%REACTOS_SOURCE_DIR%" submodule update --init --depth 1 -- base/applications/cmdutils/glmark2
+    git -C "%LIBRENT_SOURCE_DIR%" submodule update --init --depth 1 -- base/applications/cmdutils/glmark2
     if not !ERRORLEVEL! == 0 goto quit
 )
-if not exist "%REACTOS_SOURCE_DIR%base/applications/cmdutils/glmark2/src/zlib/adler32.c" (
+if not exist "%LIBRENT_SOURCE_DIR%base/applications/cmdutils/glmark2/src/zlib/adler32.c" (
     echo Error: glmark2 submodule is incomplete after synchronization.
     goto quit
 )
@@ -523,11 +519,11 @@ if EXIST CMakeCache.txt (
 )
 
 if "%BUILD_ENVIRONMENT%" == "MinGW" (
-    cmake -G %CMAKE_GENERATOR% %_ROSCONFIG_CCACHE% -DCMAKE_TOOLCHAIN_FILE:FILEPATH=%MINGW_TOOCHAIN_FILE% -DARCH:STRING=%ARCH% %ROSBE_CMAKE_EXTRA% %BUILD_TOOLS_FLAG% %CMAKE_PARAMS% "%REACTOS_SOURCE_DIR%"
+    cmake -G %CMAKE_GENERATOR% %_ROSCONFIG_CCACHE% -DCMAKE_TOOLCHAIN_FILE:FILEPATH=%MINGW_TOOCHAIN_FILE% -DARCH:STRING=%ARCH% %ROSBE_CMAKE_EXTRA% %BUILD_TOOLS_FLAG% %CMAKE_PARAMS% "%LIBRENT_SOURCE_DIR%"
 ) else if %USE_CLANG_CL% == 1 (
-    cmake -G %CMAKE_GENERATOR% -DCMAKE_TOOLCHAIN_FILE:FILEPATH=toolchain-msvc.cmake -DARCH:STRING=%ARCH% %BUILD_TOOLS_FLAG% -DUSE_CLANG_CL:BOOL=1 %CMAKE_PARAMS% "%REACTOS_SOURCE_DIR%"
+    cmake -G %CMAKE_GENERATOR% -DCMAKE_TOOLCHAIN_FILE:FILEPATH=toolchain-msvc.cmake -DARCH:STRING=%ARCH% %BUILD_TOOLS_FLAG% -DUSE_CLANG_CL:BOOL=1 %CMAKE_PARAMS% "%LIBRENT_SOURCE_DIR%"
 ) else (
-    cmake -G %CMAKE_GENERATOR% %CMAKE_ARCH% -DCMAKE_TOOLCHAIN_FILE:FILEPATH=toolchain-msvc.cmake -DARCH:STRING=%ARCH% %BUILD_TOOLS_FLAG% %CMAKE_PARAMS% "%REACTOS_SOURCE_DIR%"
+    cmake -G %CMAKE_GENERATOR% %CMAKE_ARCH% -DCMAKE_TOOLCHAIN_FILE:FILEPATH=toolchain-msvc.cmake -DARCH:STRING=%ARCH% %BUILD_TOOLS_FLAG% %CMAKE_PARAMS% "%LIBRENT_SOURCE_DIR%"
 )
 
 if %ERRORLEVEL% NEQ 0 (
@@ -535,7 +531,7 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 if "%BUILD_ENVIRONMENT%" == "MinGW" if "%_USE_LLVM_MINGW%" == "1" (
-    python "%REACTOS_SOURCE_DIR%\sdk\tools\cxx-runtime\build-cxx-runtime.py" --reactos-build "%CD%"
+    python "%LIBRENT_SOURCE_DIR%\sdk\tools\cxx-runtime\build-cxx-runtime.py" --librent-build "%CD%"
     if errorlevel 1 (
         echo. & echo Error: building the LLVM runtimes failed.
         goto quit
@@ -543,11 +539,11 @@ if "%BUILD_ENVIRONMENT%" == "MinGW" if "%_USE_LLVM_MINGW%" == "1" (
 )
 
 if "%CD_SAME_AS_SOURCE%" == "1" (
-    set ENDV= from %REACTOS_OUTPUT_PATH%
+    set ENDV= from %LIBRENT_OUTPUT_PATH%
 )
 
 if "%VS_SOLUTION%" == "1" (
-    set ENDV= You can now use msbuild or open REACTOS.sln%ENDV%
+    set ENDV= You can now use msbuild or open LIBRENT.sln%ENDV%
 ) else (
     set ENDV= Execute appropriate build commands ^(e.g. ninja, make, nmake, etc.^)%ENDV%
 )

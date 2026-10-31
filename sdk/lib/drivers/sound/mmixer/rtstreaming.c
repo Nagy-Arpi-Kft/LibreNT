@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel Streaming
+ * PROJECT:         LibreNT Kernel Streaming
  * LICENSE:         GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:         WaveRT streaming initialization and cleanup
  * COPYRIGHT:       Copyright 2025-2026 Johannes Anderwald <johannes.anderwald@reactos.org>

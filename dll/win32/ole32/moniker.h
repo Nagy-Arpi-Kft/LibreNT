@@ -38,7 +38,7 @@ HRESULT WINAPI CompositeMoniker_CreateInstance(IClassFactory *iface, IUnknown *p
 HRESULT WINAPI ClassMoniker_CreateInstance(IClassFactory *iface, IUnknown *pUnk, REFIID riid, void **ppv);
 HRESULT WINAPI ObjrefMoniker_CreateInstance(IClassFactory *iface, IUnknown *pUnk, REFIID riid, void **ppv);
 HRESULT WINAPI PointerMoniker_CreateInstance(IClassFactory *iface, IUnknown *pUnk, REFIID riid, void **ppv);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 HRESULT WINAPI ComCat_CreateInstance(IClassFactory *iface, IUnknown *pUnk, REFIID riid, void **ppv);
 #endif
 

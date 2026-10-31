@@ -2,7 +2,7 @@
 add_definitions(-DWINETEST_USE_DBGSTR_LONGLONG)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib
 )
 
 list(APPEND SOURCE

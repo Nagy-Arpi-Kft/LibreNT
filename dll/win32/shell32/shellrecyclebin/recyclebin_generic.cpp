@@ -101,7 +101,7 @@ STDMETHODIMP RecycleBinGeneric::DeleteFile(LPCWSTR szFileName)
 
     /* Get associated volume path */
     WCHAR szVolume[MAX_PATH];
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (!GetVolumePathNameW(szFullName, szVolume, _countof(szVolume)))
     {
         CoTaskMemFree(szFullName);

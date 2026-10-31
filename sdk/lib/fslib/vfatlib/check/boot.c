@@ -26,9 +26,9 @@
  * by Roman Hodek <Roman.Hodek@informatik.uni-erlangen.de> */
 
 #include "vfatlib.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntstrsafe.h>
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #define NDEBUG
 #include <debug.h>
@@ -173,11 +173,11 @@ static void check_backup_boot(DOS_FS * fs, struct boot_sector *b, unsigned int l
 	for (p = (uint8_t *) b, q = (uint8_t *) & b2, i = 0; i < sizeof(b2);
 	     ++p, ++q, ++i) {
 	    if (*p != *q) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		sprintf(buf, "%s%u:%02x/%02x", first ? "" : ", ",
 #else
 		RtlStringCbPrintfA(buf, sizeof(buf), "%s%u:%02x/%02x", first ? "" : ", ",
-#endif // __REACTOS__
+#endif // __LIBRENT__
 			(unsigned)(p - (uint8_t *) b), *p, *q);
 		if (pos + strlen(buf) > 78)
 		    printf("\n  "), pos = 2;
@@ -293,14 +293,14 @@ static char print_fat_dirty_state(void)
     if (interactive) {
 	printf("1) Remove dirty bit\n" "2) No action\n");
 	return get_key("12", "?");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     } else
 #else
     } else if (rw) {
 #endif
 	printf(" Automatically removing dirty bit.\n");
     return '1';
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
     return '2';
 #endif
@@ -447,24 +447,24 @@ void read_boot(DOS_FS * fs)
 	if (b16->extended_sig == 0x29)
 	    memmove(fs->label, b16->label, 11);
 	else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	{
 	    free(fs->label);
 #endif
 	    fs->label = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	}
 #endif
     } else if (fs->fat_bits == 32) {
 	if (b.extended_sig == 0x29)
 	    memmove(fs->label, &b.label, 11);
 	else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	{
 	    free(fs->label);
 #endif
 	    fs->label = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	}
 #endif
     }
@@ -490,7 +490,7 @@ void read_boot(DOS_FS * fs)
 	dump_boot(fs, &b, logical_sector_size);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void write_boot_label(DOS_FS * fs, char *label)
 {
     if (fs->fat_bits == 12 || fs->fat_bits == 16) {

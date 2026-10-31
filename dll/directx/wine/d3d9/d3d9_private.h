@@ -36,8 +36,8 @@
 #include "d3d9.h"
 #include "d3d9on12.h"
 #include "wine/wined3d.h"
-#ifdef __REACTOS__
-#include <reactos/dxva_surface_fence.h>
+#ifdef __LIBRENT__
+#include <librent/dxva_surface_fence.h>
 #endif
 
 #define D3D9_MAX_VERTEX_SHADER_CONSTANTF 256
@@ -124,9 +124,9 @@ struct d3d9_device
     struct wined3d_stateblock *recording, *state, *update_state;
     const struct wined3d_stateblock_state *stateblock_state;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SRWLOCK dxva_overlay_lock;
-    IReactOSDxvaSurfaceFence *dxva_overlay_binding;
+    ILibreNTDxvaSurfaceFence *dxva_overlay_binding;
 #endif
 };
 
@@ -185,7 +185,7 @@ struct d3d9_surface
     IUnknown *container;
     struct d3d9_texture *texture;
     struct wined3d_swapchain *swapchain;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG dxva_shared_generation;
     BOOL dxva_shared_memory_bound;
 #endif
@@ -195,9 +195,9 @@ struct wined3d_rendertarget_view *d3d9_surface_acquire_rendertarget_view(struct 
 struct d3d9_surface *d3d9_surface_create(struct wined3d_texture *wined3d_texture,
         unsigned int sub_resource_idx, IUnknown *container);
 struct d3d9_device *d3d9_surface_get_device(const struct d3d9_surface *surface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT d3d9_surface_get_dxva_binding(struct d3d9_surface *surface,
-        IReactOSDxvaSurfaceFence **binding);
+        ILibreNTDxvaSurfaceFence **binding);
 HRESULT d3d9_surface_prepare_dxva_composition(struct d3d9_surface *surface,
         DWORD flags);
 HRESULT d3d9_surface_prepare_dxva_fallback(struct d3d9_surface *surface,

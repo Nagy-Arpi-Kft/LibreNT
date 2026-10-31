@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # sync_linux_bundle.sh
-# Copy prebuilt ROSV Linux bundle assets into a specific ReactOS output tree.
+# Copy prebuilt ROSV Linux bundle assets into a specific LibreNT output tree.
 #
 # Usage:
 #   scripts/rosv/sync_linux_bundle.sh --build-dir /path/to/output-*

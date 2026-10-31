@@ -162,7 +162,7 @@ ldif_parse_line2(
 	*d = '\0';
 
 	if ( b64 ) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		char *byte = s;
 #endif
 		if ( *s == '\0' ) {

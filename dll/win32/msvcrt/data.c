@@ -120,7 +120,7 @@ static WCHAR **cmdline_to_argv( const WCHAR *src, int *ret_argc )
                 dst -= bcount / 2;
                 src++;
                 if (in_quotes && *src == '"') *dst++ = *src++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 in_quotes = !in_quotes;
 #else
                 else in_quotes = !in_quotes;
@@ -149,7 +149,7 @@ static WCHAR **cmdline_to_argv( const WCHAR *src, int *ret_argc )
     return argv;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static CHAR **cmdline_to_argvA( const CHAR *src, int *ret_argc )
 {
     CHAR **argv, *arg, *dst;
@@ -188,7 +188,7 @@ static CHAR **cmdline_to_argvA( const CHAR *src, int *ret_argc )
                 dst -= bcount / 2;
                 src++;
                 if (in_quotes && *src == '"') *dst++ = *src++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 in_quotes = !in_quotes;
 #else
                 else in_quotes = !in_quotes;
@@ -433,7 +433,7 @@ void msvcrt_init_args(void)
   MSVCRT__HUGE = HUGE_VAL;
   MSVCRT___setlc_active = 0;
   MSVCRT___unguarded_readlc_active = 0;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   MSVCRT__fmode = _O_TEXT;
 #endif
 
@@ -448,7 +448,7 @@ void msvcrt_init_args(void)
       MSVCRT__pgmptr[MAX_PATH - 1] = '\0';
   }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   MSVCRT__wpgmptr = HeapAlloc(GetProcessHeap(), 0, MAX_PATH * sizeof(WCHAR));
   if (MSVCRT__wpgmptr)
   {
@@ -460,7 +460,7 @@ void msvcrt_init_args(void)
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void init_wpgmptr(void)
 {
   WCHAR *path;
@@ -556,7 +556,7 @@ int CDECL __wgetmainargs(int *argc, wchar_t** *wargv, wchar_t** *wenvp,
 {
     TRACE("(%p,%p,%p,%d,%p).\n", argc, wargv, wenvp, expand_wildcards, new_mode);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     init_wpgmptr();
 
 #endif
@@ -574,7 +574,7 @@ int CDECL __wgetmainargs(int *argc, wchar_t** *wargv, wchar_t** *wenvp,
         }
     }
     if (!expand_wildcards) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((MSVCRT___wargv == NULL) || (MSVCRT___argc == 0))
         {
             MSVCRT___wargv = cmdline_to_argv(MSVCRT__wcmdln, &MSVCRT___argc);
@@ -617,7 +617,7 @@ int CDECL __getmainargs(int *argc, char** *argv, char** *envp,
         }
     }
     if (!expand_wildcards) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((MSVCRT___argv == NULL) || (MSVCRT___argc == 0))
         {
             MSVCRT___argv = cmdline_to_argvA(MSVCRT__acmdln, &MSVCRT___argc);
@@ -737,7 +737,7 @@ char** CDECL _get_initial_narrow_environment(void)
 int CDECL _configure_wide_argv(int mode)
 {
   WARN("(%d) stub\n", mode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   init_wpgmptr();
 #endif
   return 0;

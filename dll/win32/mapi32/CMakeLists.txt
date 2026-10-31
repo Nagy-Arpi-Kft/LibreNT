@@ -1,6 +1,6 @@
 
 add_definitions(-D__WINESRC__)
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 spec2def(mapi32.dll mapi32.spec)
 
 list(APPEND SOURCE
@@ -24,4 +24,4 @@ set_module_type(mapi32 win32dll)
 target_link_libraries(mapi32 uuid wine)
 add_importlibs(mapi32 shlwapi shell32 user32 advapi32 msvcrt kernel32 ntdll)
 add_pch(mapi32 precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET mapi32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mapi32 DESTINATION librent/system32 FOR all)

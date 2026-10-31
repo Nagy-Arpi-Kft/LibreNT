@@ -1072,7 +1072,7 @@ type_t *type_dispinterface_define(type_t *iface, attr_list_t *attrs,
     iface->details.iface->disp_inherit = NULL;
     iface->details.iface->async_iface = NULL;
     iface->details.iface->requires = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     iface->details.iface->runtime_class = NULL;
 #endif
     define_type(iface, where);
@@ -1093,7 +1093,7 @@ type_t *type_dispinterface_define_from_iface(type_t *dispiface,
     dispiface->details.iface->disp_inherit = iface;
     dispiface->details.iface->async_iface = NULL;
     dispiface->details.iface->requires = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dispiface->details.iface->runtime_class = NULL;
 #endif
     define_type(dispiface, where);
@@ -1258,7 +1258,7 @@ type_t *type_delegate_define(type_t *delegate, attr_list_t *attrs,
     iface->details.iface->disp_inherit = NULL;
     iface->details.iface->async_iface = NULL;
     iface->details.iface->requires = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     iface->details.iface->runtime_class = NULL;
 #endif
     define_type(iface, where);
@@ -1304,7 +1304,7 @@ type_t *type_parameterized_interface_define(type_t *type, attr_list_t *attrs, ty
     iface->details.iface->disp_inherit = NULL;
     iface->details.iface->async_iface = NULL;
     iface->details.iface->requires = requires;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     iface->details.iface->runtime_class = NULL;
 #endif
 
@@ -1346,7 +1346,7 @@ type_t *type_parameterized_delegate_define(type_t *type, attr_list_t *attrs,
     iface->details.iface->disp_inherit = NULL;
     iface->details.iface->async_iface = NULL;
     iface->details.iface->requires = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     iface->details.iface->runtime_class = NULL;
 #endif
 
@@ -1540,7 +1540,7 @@ static void type_parameterized_interface_specialize(type_t *tmpl, type_t *iface,
     iface->details.iface->disp_inherit = NULL;
     iface->details.iface->async_iface = NULL;
     iface->details.iface->requires = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     iface->details.iface->runtime_class = NULL;
 #endif
 }

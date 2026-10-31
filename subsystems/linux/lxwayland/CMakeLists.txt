@@ -2,15 +2,12 @@
 if(ARCH STREQUAL "arm64")
     set(_lxwayland_target aarch64-linux-gnu)
     set(_lxwayland_flags "")
-elseif(ARCH STREQUAL "riscv64")
-    set(_lxwayland_target riscv64-linux-gnu)
-    set(_lxwayland_flags -mcmodel=medany)
 endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang" AND CMAKE_C_COMPILER_FRONTEND_VARIANT STREQUAL "GNU")
     set(_lxwayland_cc ${CMAKE_C_COMPILER})
 else()
-    find_program(LXWAYLAND_CLANG NAMES clang HINTS "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin" REQUIRED)
+    find_program(LXWAYLAND_CLANG NAMES clang HINTS "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin" REQUIRED)
     set(_lxwayland_cc ${LXWAYLAND_CLANG})
 endif()
 
@@ -30,9 +27,9 @@ add_custom_command(
             ${CMAKE_CURRENT_SOURCE_DIR}/../include/lxwin.h
     VERBATIM)
 add_custom_target(lxwayland_agent ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/lxwayland)
-add_cd_file(TARGET lxwayland_agent FILE ${CMAKE_CURRENT_BINARY_DIR}/lxwayland DESTINATION reactos/system32/lxwayland NO_CAB FOR all)
+add_cd_file(TARGET lxwayland_agent FILE ${CMAKE_CURRENT_BINARY_DIR}/lxwayland DESTINATION librent/system32/lxwayland NO_CAB FOR all)
 
 set(LX_GNU_TRIPLET ${_lxwayland_target})
 configure_file(lx-gui-setup.service.in ${CMAKE_CURRENT_BINARY_DIR}/lx-gui-setup.service @ONLY NEWLINE_STYLE UNIX)
-add_cd_file(FILE ${CMAKE_CURRENT_BINARY_DIR}/lx-gui-setup.service DESTINATION reactos/system32/lxwayland NO_CAB FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/lxwayland.service DESTINATION reactos/system32/lxwayland NO_CAB FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_BINARY_DIR}/lx-gui-setup.service DESTINATION librent/system32/lxwayland NO_CAB FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/lxwayland.service DESTINATION librent/system32/lxwayland NO_CAB FOR all)

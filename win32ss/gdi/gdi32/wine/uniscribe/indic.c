@@ -29,7 +29,7 @@
 #include "wingdi.h"
 #include "winnls.h"
 #include "usp10.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 

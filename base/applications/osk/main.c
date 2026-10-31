@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS On-Screen Keyboard
+ * PROJECT:         LibreNT On-Screen Keyboard
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         On-screen keyboard.
  * COPYRIGHT:       Denis ROBERT
@@ -281,8 +281,8 @@ LRESULT OSK_SetKeys(int reason)
             OSK_SetImage(SCAN_CODE_43, IDI_RETURN);
             OSK_SetImage(SCAN_CODE_44, IDI_SHIFT);
             OSK_SetImage(SCAN_CODE_57, IDI_SHIFT);
-            OSK_SetImage(SCAN_CODE_127, IDI_REACTOS);
-            OSK_SetImage(SCAN_CODE_128, IDI_REACTOS);
+            OSK_SetImage(SCAN_CODE_127, IDI_LIBRENT);
+            OSK_SetImage(SCAN_CODE_128, IDI_LIBRENT);
             OSK_SetImage(SCAN_CODE_129, IDI_MENU);
             OSK_SetImage(SCAN_CODE_80, IDI_HOME);
             OSK_SetImage(SCAN_CODE_85, IDI_PG_UP);

@@ -23,7 +23,7 @@
 #include <process.h>
 #include <tchar.h>
 #include <stdio.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <strsafe.h>
 #endif
 
@@ -41,7 +41,7 @@
 #define MAX_NUM_THREADS 128
 DWORD NFS41D_VERSION = 0;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const char FILE_NETCONFIG[] = "C:\\Windows\\System32\\drivers\\etc\\netconfig";
 #endif
 
@@ -168,7 +168,7 @@ typedef struct _nfsd_args {
 static bool_t check_for_files()
 {
     FILE *fd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char config_path[MAX_PATH];
 
     if (GetSystemDirectoryA(config_path, ARRAYSIZE(config_path)))
@@ -187,7 +187,7 @@ static bool_t check_for_files()
     fd = fopen(FILE_NETCONFIG, "r");
 #endif
     if (fd == NULL) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         fprintf(stderr,"nfsd() failed to open file '%s'\n", config_path);
 #else
         fprintf(stderr,"nfsd() failed to open file '%s'\n", FILE_NETCONFIG);
@@ -396,7 +396,7 @@ VOID ServiceStart(DWORD argc, LPTSTR *argv)
     set_debug_level(cmd_args.debug_level);
     open_log_files();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Start the kernel part */
     {
         HANDLE hSvcMan = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);

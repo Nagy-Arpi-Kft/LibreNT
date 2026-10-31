@@ -21,7 +21,7 @@
 #include "vkd3d_private.h"
 #include <math.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <float.h>
 #endif
 
@@ -7369,13 +7369,13 @@ static void STDMETHODCALLTYPE d3d12_command_list_OMSetDepthBounds(ID3D12Graphics
 
     TRACE("iface %p, min %.8e, max %.8e.\n", iface, min, max);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (_isnan(max))
 #else
     if (isnan(max))
 #endif
         max = 0.0f;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (_isnan(min))
 #else
     if (isnan(min))

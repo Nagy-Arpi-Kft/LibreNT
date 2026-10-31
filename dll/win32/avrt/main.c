@@ -18,7 +18,7 @@
  */
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #endif
 

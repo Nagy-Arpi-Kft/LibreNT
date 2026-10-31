@@ -1503,7 +1503,7 @@ retry:
 		}
 
 		FILE_DISPOSITION_INFORMATION disp_info =
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			{ .DeleteFile = TRUE };
 #else
 			{ .DoDeleteFile = TRUE };

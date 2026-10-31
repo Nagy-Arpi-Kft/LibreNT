@@ -1881,7 +1881,7 @@ Return Value:
     return ntStatus;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 void* __cdecl operator new
 (
     size_t          iSize,

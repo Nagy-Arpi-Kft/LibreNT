@@ -1,5 +1,5 @@
 add_library(uefi MODULE uefi.c uefi.rc)
 set_module_type(uefi kernelmodedriver)
 add_importlibs(uefi ntoskrnl hal)
-add_cd_file(TARGET uefi DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET uefi DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(uefi uefi.inf)

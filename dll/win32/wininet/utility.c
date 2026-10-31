@@ -49,7 +49,7 @@ server_addr_t *GetAddress(const WCHAR *name, INTERNET_PORT port)
 
     TRACE("%s\n", debugstr_w(name));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     init_winsock();
 #endif
     memset( &hints, 0, sizeof(hints) );
@@ -257,7 +257,7 @@ void INTERNET_SendCallback(object_header_t *hdr, DWORD_PTR context, DWORD status
     case INTERNET_STATUS_CONNECTING_TO_SERVER:
     case INTERNET_STATUS_CONNECTED_TO_SERVER:
         new_info = malloc(info_len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!new_info) return;
         memcpy(new_info, info, info_len);
 #else
@@ -269,13 +269,13 @@ void INTERNET_SendCallback(object_header_t *hdr, DWORD_PTR context, DWORD status
     case INTERNET_STATUS_REDIRECT:
         if(hdr->dwInternalFlags & INET_CALLBACKW) {
             new_info = wcsdup(info);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!new_info) return;
 #endif
             break;
         }else {
             new_info = strdupWtoA(info);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!new_info) return;
 #endif
             info_len = strlen(new_info)+1;

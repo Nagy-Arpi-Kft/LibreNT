@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Boot Theme & Animation - Resource File
  * COPYRIGHT:   Copyright 2007-2010 Alex Ionescu (alex.ionescu@reactos.org)
@@ -14,6 +14,6 @@
 IDB_SHUTDOWN_MSG    BITMAP "inbv/resources/shutdown.bmp"
 IDB_LOGO_DEFAULT    BITMAP "inbv/resources/logo.bmp"
 
-/* ReactOS additions */
+/* LibreNT additions */
 IDB_COPYRIGHT       BITMAP "inbv/resources/copyright.bmp"
-IDB_REACTOS_GOP_LOGO BITMAP "inbv/resources/reactos_logo.bmp"
+IDB_LIBRENT_GOP_LOGO BITMAP "inbv/resources/librent_gop_logo.bmp"

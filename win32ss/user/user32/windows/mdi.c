@@ -123,7 +123,7 @@ typedef struct
     UINT      nTotalCreated;
     UINT      mdiFlags;
     UINT      sbRecalc;   /* SB_xxx flags for scrollbar fixup */
-    HBITMAP   hBmpClose; /* ReactOS modification */
+    HBITMAP   hBmpClose; /* LibreNT modification */
 } MDICLIENTINFO;
 
 //static HBITMAP hBmpClose   = 0;
@@ -145,7 +145,7 @@ HWND* WIN_ListChildren (HWND hWndparent)
   HANDLE hHeap;
   NTSTATUS Status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   HWND hWndFirst = GetWindow(hWndparent, GW_CHILD);
 
   if (!hWndFirst)
@@ -170,7 +170,7 @@ HWND* WIN_ListChildren (HWND hWndparent)
     }
 
   /* now call kernel again to fill the buffer this time */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   Status = NtUserBuildHwndList(NULL, hWndFirst, FALSE, TRUE, 0, dwCount, pHwnd, &dwCount);
 #else
   Status = NtUserBuildHwndList(NULL, hWndparent, FALSE, 0, dwCount, pHwnd, &dwCount);
@@ -183,7 +183,7 @@ HWND* WIN_ListChildren (HWND hWndparent)
       return 0;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (dwCount && pHwnd[dwCount - 1] == HWND_BOTTOM)
     pHwnd[dwCount - 1] = NULL;
   else
@@ -195,7 +195,7 @@ HWND* WIN_ListChildren (HWND hWndparent)
   return pHwnd;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void WINAPI ScrollChildren(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void WINAPI CalcChildScroll(HWND hwnd, INT scroll);
 #endif
@@ -244,7 +244,7 @@ const struct builtin_class_descr MDICLIENT_builtin_class =
 
 static MDICLIENTINFO *get_client_info( HWND client )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return (MDICLIENTINFO *)GetWindowLongPtr(client, GWLP_MDIWND);
 #else
     MDICLIENTINFO *ret = NULL;
@@ -957,7 +957,7 @@ static BOOL MDI_AugmentFrameMenu( HWND frame, HWND hChild )
     TRACE("frame %p,child %p\n",frame,hChild);
 
     if( !menu ) return FALSE;
-//// ReactOS start
+//// LibreNT start
     /* if the system buttons already exist do not add them again */
     nItems = GetMenuItemCount(menu) - 1;
     iId = GetMenuItemID(menu,nItems) ;
@@ -1176,7 +1176,7 @@ LRESULT WINAPI MDIClientWndProc_common( HWND hwnd, UINT message, WPARAM wParam, 
 
     TRACE("%p %04x (%s) %08lx %08lx\n", hwnd, message, SPY_GetMsgName(message, hwnd), wParam, lParam);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef WOW64_I386_RUNTIME
     if (message == WM_NCCREATE)
         NtUserSetWindowFNID(hwnd, FNID_MDICLIENT);
@@ -1192,7 +1192,7 @@ LRESULT WINAPI MDIClientWndProc_common( HWND hwnd, UINT message, WPARAM wParam, 
 
     if (!(ci = get_client_info( hwnd )))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (message == WM_NCCREATE)
         {
           if (!(ci = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*ci))))
@@ -1244,14 +1244,14 @@ LRESULT WINAPI MDIClientWndProc_common( HWND hwnd, UINT message, WPARAM wParam, 
 
           HeapFree( GetProcessHeap(), 0, ci->child );
           HeapFree( GetProcessHeap(), 0, ci->frameTitle );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           HeapFree( GetProcessHeap(), 0, ci );
           SetWindowLongPtrW( hwnd, GWLP_MDIWND, 0 );
 #endif
           return 0;
       }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       case WM_NCDESTROY:
       {
           NtUserSetWindowFNID(hwnd, FNID_DESTROY);
@@ -1307,8 +1307,8 @@ LRESULT WINAPI MDIClientWndProc_common( HWND hwnd, UINT message, WPARAM wParam, 
 	ci->mdiFlags |= MDIF_NEEDUPDATE;
         ArrangeIconicWindows( hwnd );
 	ci->sbRecalc = SB_BOTH+1;
-#ifdef __REACTOS__
-	PostMessageA( hwnd, WM_MDICALCCHILDSCROLL, 0, 0 ); //// ReactOS: Post not send!
+#ifdef __LIBRENT__
+	PostMessageA( hwnd, WM_MDICALCCHILDSCROLL, 0, 0 ); //// LibreNT: Post not send!
 #else
         SendMessageW( hwnd, WM_MDICALCCHILDSCROLL, 0, 0 );
 #endif
@@ -1368,7 +1368,7 @@ LRESULT WINAPI MDIClientWndProc_common( HWND hwnd, UINT message, WPARAM wParam, 
         case WM_CREATE:
             if (GetWindowLongPtrW((HWND)lParam, GWL_EXSTYLE) & WS_EX_MDICHILD)
             {
-                // ReactOS See rev 33503
+                // LibreNT See rev 33503
                 if (!ci->child)
                     ci->child = HeapAlloc(GetProcessHeap(), 0, sizeof(HWND));
                 else
@@ -1929,7 +1929,7 @@ void WINAPI CalcChildScroll( HWND hwnd, INT scroll )
     * because it is in client coordinates. The rectangles returned by
     * GetWindowRect are in screen coordinates to make this complicated.
     *
-    * Apparently (in ReactOS at least) the rcClient returned by GetWindowInfo
+    * Apparently (in LibreNT at least) the rcClient returned by GetWindowInfo
     * is in screen coordinates too.
     */
     WindowInfo.cbSize = sizeof(WindowInfo);

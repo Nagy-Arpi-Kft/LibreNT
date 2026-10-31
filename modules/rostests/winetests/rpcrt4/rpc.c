@@ -40,7 +40,7 @@
 #include "rpcdce.h"
 #include "secext.h"
 
-#ifdef __REACTOS__ // I_RpcExceptionFilter is Vista+
+#ifdef __LIBRENT__ // I_RpcExceptionFilter is Vista+
 #define RpcExceptionFilter I_RpcExceptionFilter
 #endif
 
@@ -860,7 +860,7 @@ static void test_RpcBindingFree(void)
        status);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_RpcStringFree(void)
 {
     RPC_WSTR string = NULL;
@@ -1277,7 +1277,7 @@ START_TEST( rpc )
     test_towers();
     test_RpcStringBindingFromBinding();
     test_RpcBindingFree();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_RpcStringFree();
 #endif
     test_RpcIfInqId();

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Win32 Base API
+ * PROJECT:     LibreNT Win32 Base API
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     NT10+ Thread Description helpers
  * COPYRIGHT:   Copyright 2025-2026 Hermès Bélusca-Maïto <hermes.belusca-maito@reactos.org>

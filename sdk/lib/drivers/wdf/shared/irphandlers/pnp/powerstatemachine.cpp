@@ -2285,7 +2285,7 @@ Return Value:
             (WDF_POWER_DEVICE_STATE)This->m_DevicePowerState);
 
         if (!NT_SUCCESS(status)) {
-            // return WdfDevStatePowerInitialSelfManagedIoFailed; __REACTOS__ : allow to fail
+            // return WdfDevStatePowerInitialSelfManagedIoFailed; __LIBRENT__ : allow to fail
         }
     }
 

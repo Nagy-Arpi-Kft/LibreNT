@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     LGPL-2.1-or-later
  * PURPOSE:     Tests for Shell_NotifyIconGetRect
  */

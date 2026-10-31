@@ -1,7 +1,7 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/udmihelp
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libpng)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/udmihelp
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libpng)
 
 list(APPEND SOURCE
     system.c
@@ -26,4 +26,4 @@ set_module_type(dxdiag win32gui UNICODE)
 target_link_libraries(dxdiag dxguid udmihelp ${PSEH_LIB})
 add_importlibs(dxdiag user32 advapi32 comctl32 dinput8 setupapi dsound ddraw version gdi32 winmm d3d8 d3d9 libpng msvcrt kernel32 ntdll)
 add_pch(dxdiag precomp.h SOURCE)
-add_cd_file(TARGET dxdiag DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dxdiag DESTINATION librent/system32 FOR all)

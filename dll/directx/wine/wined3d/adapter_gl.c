@@ -352,7 +352,7 @@ static BOOL wined3d_caps_gl_ctx_create(struct wined3d_adapter_gl *adapter_gl, st
     }
     if (!DescribePixelFormat(ctx->dc, iPixelFormat, sizeof(pfd), &pfd))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ERR("Failed to describe pixel format %d for window %p, dc %p, last error %#lx.\n",
                 iPixelFormat, ctx->wnd, ctx->dc, GetLastError());
 #endif
@@ -360,7 +360,7 @@ static BOOL wined3d_caps_gl_ctx_create(struct wined3d_adapter_gl *adapter_gl, st
     }
     if (!SetPixelFormat(ctx->dc, iPixelFormat, &pfd))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ERR("Failed to set pixel format %d for window %p, dc %p, last error %#lx.\n",
                 iPixelFormat, ctx->wnd, ctx->dc, GetLastError());
 #endif
@@ -370,7 +370,7 @@ static BOOL wined3d_caps_gl_ctx_create(struct wined3d_adapter_gl *adapter_gl, st
     /* Create a GL context. */
     if (!(ctx->gl_ctx = wglCreateContext(ctx->dc)))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ERR("Failed to create default context for window %p, dc %p, pixel format %d, last error %#lx.\n",
                 ctx->wnd, ctx->dc, iPixelFormat, GetLastError());
 #endif
@@ -3212,7 +3212,7 @@ static void wined3d_adapter_init_limits(struct wined3d_gl_info *gl_info)
         gl_info->gl_ops.gl.p_glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE_EXT, &gl_max);
         gl_info->limits.texture3d_size = gl_max;
         TRACE("Max texture3D size: %d.\n", gl_info->limits.texture3d_size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (gl_max <= 0)
         {
             gl_info->supported[EXT_TEXTURE3D] = FALSE;
@@ -5164,7 +5164,7 @@ static void wined3d_adapter_gl_init_d3d_info(struct wined3d_adapter_gl *adapter_
     d3d_info->srgb_write_control = !!gl_info->supported[ARB_FRAMEBUFFER_SRGB];
     d3d_info->clip_control = !!gl_info->supported[ARB_CLIP_CONTROL];
     d3d_info->full_ffp_varyings = !!(shader_caps.wined3d_caps & WINED3D_SHADER_CAP_FULL_FFP_VARYINGS);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The full-varyings path also sources every fixed-function texture
      * coordinate from a distinct generic vertex attribute. */
     if (gl_info->limits.vertex_attribs < WINED3D_FFP_ATTRIBS_COUNT)
@@ -5281,7 +5281,7 @@ static BOOL wined3d_adapter_gl_init(struct wined3d_adapter_gl *adapter_gl,
         return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         BOOL (WINAPI *get_adapter_luid)(HDC, LUID *);
 

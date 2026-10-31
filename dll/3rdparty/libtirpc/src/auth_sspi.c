@@ -658,7 +658,7 @@ authsspi_unwrap(AUTH *auth, XDR *xdrs, xdrproc_t xdr_func, caddr_t xdr_ptr, u_in
 				 gd->sec->svc, seq));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 uint32_t sspi_get_mic(void *dummy, u_int qop, u_int seq, 
                         sspi_buffer_desc *bufin, sspi_buffer_desc *bufout)
 {
@@ -703,7 +703,7 @@ uint32_t sspi_get_mic(PCtxtHandle ctx, u_int qop, u_int seq,
     return maj_stat;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 uint32_t sspi_verify_mic(PCtxtHandle ctx, u_int seq, sspi_buffer_desc *bufin, 
                             sspi_buffer_desc *bufout, u_int *qop_state)
 {
@@ -754,7 +754,7 @@ uint32_t sspi_import_name(sspi_buffer_desc *name_in, sspi_name_t *name_out)
     return SEC_E_OK;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 uint32_t sspi_wrap(PCtxtHandle ctx, u_int seq, sspi_buffer_desc *bufin, 
                    sspi_buffer_desc *bufout, u_int *conf_state)
 {
@@ -814,7 +814,7 @@ out:
     return maj_stat;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 uint32_t sspi_unwrap(PCtxtHandle ctx, u_int seq, sspi_buffer_desc *bufin, 
                      sspi_buffer_desc *bufout, u_int *conf_state, 
                      u_int *qop_state)

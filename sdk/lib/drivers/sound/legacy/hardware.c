@@ -1,5 +1,5 @@
 /*
-    ReactOS Sound System
+    LibreNT Sound System
     Hardware interaction helper
 
     Author:

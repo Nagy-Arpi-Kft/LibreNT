@@ -1,5 +1,5 @@
 #
-# PROJECT:     LiberNT MTP device driver
+# PROJECT:     LibreNT MTP device driver
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     MTP device driver build rules
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -21,4 +21,4 @@ add_library(wpdmtp MODULE ${SOURCE} wpdmtp.rc)
 set_module_type(wpdmtp kmdfdriver)
 target_link_libraries(wpdmtp ntoskrnl_vista libcntpr ${PSEH_LIB})
 add_importlibs(wpdmtp ntoskrnl hal usbd)
-add_cd_file(TARGET wpdmtp DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET wpdmtp DESTINATION librent/system32/drivers NO_CAB FOR all)

@@ -20,19 +20,19 @@
 #include <stdarg.h>
 #include "ntstatus.h"
 #include "windef.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winbase.h"
 #endif
 #include "winternl.h"
 #include "wine/debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <csprng.h>
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(crypt);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI DllMain( HINSTANCE instance, DWORD reason, void *reserved )
 {
     if (reason == DLL_PROCESS_ATTACH)
@@ -44,7 +44,7 @@ BOOL WINAPI DllMain( HINSTANCE instance, DWORD reason, void *reserved )
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static CRITICAL_SECTION random_cs;
 static CRITICAL_SECTION_DEBUG random_debug =
 {
@@ -79,7 +79,7 @@ static BOOL fill_random_buffer(void)
 /******************************************************************************
  *     SystemFunction036   (cryptbase.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN WINAPI SystemFunction036( void *buffer, ULONG len )
 {
     if (!RosCsprngFill( buffer, len ))

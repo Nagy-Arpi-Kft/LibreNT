@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS IP Helper API
+ * PROJECT:         LibreNT IP Helper API
  * LICENSE:         LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:         ICMP functions
  * COPYRIGHT:       2016 Tim Crawford (crawfxrd@gmail.com)
@@ -563,7 +563,7 @@ IcmpSendEcho2(
     return nReplies;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI IcmpSendEcho2Ex(HANDLE IcmpHandle, HANDLE Event, PIO_APC_ROUTINE ApcRoutine, PVOID ApcContext, IPAddr SourceAddress, IPAddr DestinationAddress, LPVOID RequestData, WORD RequestSize, PIP_OPTION_INFORMATION RequestOptions, LPVOID ReplyBuffer, DWORD ReplySize, DWORD Timeout)
 {
     if (SourceAddress != INADDR_ANY)

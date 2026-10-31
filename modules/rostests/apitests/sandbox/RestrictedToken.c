@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Restricted SID enforcement in the access check
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -10,7 +10,7 @@
 #define TORTURE_ITERATIONS 300
 
 /* These token-claim definitions are missing from the older public SDK surface
- * used by the ReactOS build, but are the ABI consumed by current Chromium. */
+ * used by the LibreNT build, but are the ABI consumed by current Chromium. */
 #ifndef TOKEN_SECURITY_ATTRIBUTE_TYPE_UINT64
 #define TOKEN_SECURITY_ATTRIBUTE_TYPE_INVALID 0x00
 #define TOKEN_SECURITY_ATTRIBUTE_TYPE_INT64   0x01

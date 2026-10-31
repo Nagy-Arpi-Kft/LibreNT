@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Win32 BrowseUI
+ * PROJECT:     LibreNT Win32 BrowseUI
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Turkish resource file
  * TRANSLATORS: Copyright 2012 Arda Tanrıkulu <ardatanrikulu@gmail.com>
@@ -82,7 +82,7 @@ BEGIN
     END
     POPUP "Ya&rdım", FCIDM_MENU_HELP
     BEGIN
-        MENUITEM "&LiberNT Hakkında", IDM_HELP_ABOUT
+        MENUITEM "&LibreNT Hakkında", IDM_HELP_ABOUT
     END
 END
 
@@ -336,8 +336,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PARSE_ADDR_ERR_TITLE "LiberNT Gezgini"
-    IDS_PARSE_ADDR_ERR_TEXT "LiberNT Gezgini '%1' ögesini bulamadı. Girdiğiniz değeri kontrol edin ve yeniden arayın."
+    IDS_PARSE_ADDR_ERR_TITLE "LibreNT Gezgini"
+    IDS_PARSE_ADDR_ERR_TEXT "LibreNT Gezgini '%1' ögesini bulamadı. Girdiğiniz değeri kontrol edin ve yeniden arayın."
 END
 
 STRINGTABLE

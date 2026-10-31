@@ -28,14 +28,14 @@
 #define NO_SHLWAPI_REG
 #define NO_SHLWAPI_PATH
 #include "shlwapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "shlobj.h"
 #endif
 #include "wine/debug.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  *
  * Call IStream_Read() on a stream.
@@ -108,7 +108,7 @@ BOOL WINAPI SHIsEmptyStream(IStream *lpStream)
   return bRet;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  *
  * Call IStream_Write() on a stream.
@@ -139,7 +139,7 @@ HRESULT WINAPI SHIStream_Write(IStream *lpStream, LPCVOID lpvSrc, ULONG ulSize)
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*************************************************************************
  * IStream_ReadPidl [SHLWAPI.512]
  *
@@ -210,4 +210,4 @@ IStream_WritePidl(_In_ IStream *pstm, _In_ LPCITEMIDLIST pidlWrite)
         return hr;
     return SHIStream_Write(pstm, pidlWrite, cbSize);
 }
-#endif /* def __REACTOS__ */
+#endif /* def __LIBRENT__ */

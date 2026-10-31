@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Virtual Native 802.11 (dot11) Miniport
+ * PROJECT:     LibreNT Virtual Native 802.11 (dot11) Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Simulated scan/connect engine and dot11 status indications
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -43,13 +43,13 @@ VWifiInitFakeBssList(
 
     Adapter->BssCount = 0;
 
-    /* "ReactOS-Open": an open infrastructure AP on channel 1. */
+    /* "LibreNT-Open": an open infrastructure AP on channel 1. */
     Bss = &Adapter->Bss[Adapter->BssCount++];
     Bss->Bssid[0] = 0x02; Bss->Bssid[1] = 0x11; Bss->Bssid[2] = 0x22;
     Bss->Bssid[3] = 0x33; Bss->Bssid[4] = 0x44; Bss->Bssid[5] = 0x55;
     Bss->BssType = dot11_BSS_type_infrastructure;
-    RtlCopyMemory(Bss->Ssid, "ReactOS-Open", sizeof("ReactOS-Open") - 1);
-    Bss->SsidLength = sizeof("ReactOS-Open") - 1;
+    RtlCopyMemory(Bss->Ssid, "LibreNT-Open", sizeof("LibreNT-Open") - 1);
+    Bss->SsidLength = sizeof("LibreNT-Open") - 1;
     Bss->ChannelNumber = 1;
     Bss->ChCenterFrequency = VWifiChannelToFrequency(1);    /* 2412 MHz */
     Bss->Rssi = -40;
@@ -57,14 +57,14 @@ VWifiInitFakeBssList(
     Bss->CapabilityInformation = VWIFI_CAP_ESS | VWIFI_CAP_SHORT_PREAMBLE;
     Bss->AuthAlgorithm = DOT11_AUTH_ALGO_80211_OPEN;
 
-    /* "ReactOS-WPA2": a secured AP shown in scans; the connect engine
+    /* "LibreNT-WPA2": a secured AP shown in scans; the connect engine
      * rejects association to it (no WPA2 support). */
     Bss = &Adapter->Bss[Adapter->BssCount++];
     Bss->Bssid[0] = 0x02; Bss->Bssid[1] = 0x11; Bss->Bssid[2] = 0x22;
     Bss->Bssid[3] = 0x33; Bss->Bssid[4] = 0x44; Bss->Bssid[5] = 0x66;
     Bss->BssType = dot11_BSS_type_infrastructure;
-    RtlCopyMemory(Bss->Ssid, "ReactOS-WPA2", sizeof("ReactOS-WPA2") - 1);
-    Bss->SsidLength = sizeof("ReactOS-WPA2") - 1;
+    RtlCopyMemory(Bss->Ssid, "LibreNT-WPA2", sizeof("LibreNT-WPA2") - 1);
+    Bss->SsidLength = sizeof("LibreNT-WPA2") - 1;
     Bss->ChannelNumber = 6;
     Bss->ChCenterFrequency = VWifiChannelToFrequency(6);    /* 2437 MHz */
     Bss->Rssi = -55;

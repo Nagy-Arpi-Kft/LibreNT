@@ -1671,7 +1671,7 @@ static void wined3d_texture_gl_upload_data(struct wined3d_context *context,
             return;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* A decoder may align the luma allocation height independently of the
      * visible image. Upload each plane into WineD3D's packed NV12 texture so
      * the existing shader coordinates never expose that storage padding. */

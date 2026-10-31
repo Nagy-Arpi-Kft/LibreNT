@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT build tools
+ * PROJECT:     LibreNT build tools
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Cross-platform terminal UI for rosconfig
  */
@@ -561,7 +561,7 @@ static void draw_main(SB *sb, int rows, int cols)
     if (g_off < 0)
         g_off = 0;
 
-    draw_line(sb, 1, cols, A_TITLE, " ReactOS Build Configuration  -  rosconfig v" ROSCONFIG_VERSION, 0);
+    draw_line(sb, 1, cols, A_TITLE, " LibreNT Build Configuration  -  rosconfig v" ROSCONFIG_VERSION, 0);
     current_path(buf, sizeof(buf));
     draw_line(sb, 2, cols, A_HDR, buf, 0);
     draw_line(sb, 3, cols, A_DIM, " Arrows move | Enter select | Esc back | / search | ? help | S save | Q quit", 0);

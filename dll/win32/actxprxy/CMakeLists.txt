@@ -67,4 +67,4 @@ add_idl_reg_scripts(actxprxy registry
 target_link_libraries(actxprxy uuid wine ${PSEH_LIB})
 add_importlibs(actxprxy rpcrt4 ole32 oleaut32 user32 gdi32 msvcrt kernel32 ntdll)
 add_pch(actxprxy precomp.h SOURCE)
-add_cd_file(TARGET actxprxy DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET actxprxy DESTINATION librent/system32 FOR all)

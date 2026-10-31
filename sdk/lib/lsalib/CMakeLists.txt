@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys)
 
 add_library(lsalib lsa.c)
 add_dependencies(lsalib xdk)

@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            ntoskrnl/ke/arm64/early_uart.c
  * PURPOSE:         ARM64 early UART runtime state for kernel
@@ -8,7 +8,7 @@
 
 #include <ntoskrnl.h>
 
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 
 /* Global UART state - set from loader block during kernel init */
 volatile UINT64 EarlyUartBaseAddress = 0;

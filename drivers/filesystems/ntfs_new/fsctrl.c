@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Source file for the filesystem controls
  * COPYRIGHT:   Copyright 2024 Carl J. Bialorucki <carl.bialorucki@reactos.org>

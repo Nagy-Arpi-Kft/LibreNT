@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            ntoskrnl/kd/arm64/kdserial.c
  * PURPOSE:         Serial kernel debugger stubs for ARM64
@@ -8,7 +8,7 @@
 #include <ntoskrnl.h>
 #define NDEBUG
 #include <debug.h>
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 #include <cportlib/uartinfo.h>
 
 /*

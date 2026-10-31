@@ -35,7 +35,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(dmo);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef __out
 #endif
 

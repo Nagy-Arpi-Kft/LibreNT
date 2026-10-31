@@ -32,7 +32,7 @@
 #include "shcore.h"
 #define WINSHLWAPI
 #include "shlwapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "ntsecapi.h"
 #endif
 
@@ -2558,7 +2558,7 @@ LONG WINAPI SHQueryInfoKeyW(HKEY hkey, DWORD *subkeys, DWORD *subkey_max, DWORD 
 /*************************************************************************
  * IsOS        [SHCORE.@]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_domain_member(void)
 {
     LSA_OBJECT_ATTRIBUTES attributes = { sizeof(attributes) };
@@ -2581,7 +2581,7 @@ static BOOL is_domain_member(void)
 BOOL WINAPI IsOS(DWORD feature)
 {
     DWORD platform, majorv, minorv;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     OSVERSIONINFOEXA osvi;
 
     osvi.dwOSVersionInfoSize = sizeof(osvi);
@@ -2653,11 +2653,11 @@ BOOL WINAPI IsOS(DWORD feature)
     case OS_MEORGREATER:
         ISOS_RETURN(platform == VER_PLATFORM_WIN32_WINDOWS && minorv >= 90);
     case OS_XPORGREATER:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ISOS_RETURN(platform == VER_PLATFORM_WIN32_NT && ((majorv >= 5 && minorv >= 1) || majorv >= 6));
 #else
         ISOS_RETURN(platform == VER_PLATFORM_WIN32_NT && majorv >= 5 && minorv >= 1);
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
     case OS_HOME:
         ISOS_RETURN(platform == VER_PLATFORM_WIN32_NT && majorv >= 5 && minorv >= 1);
     case OS_PROFESSIONAL:
@@ -2679,14 +2679,14 @@ BOOL WINAPI IsOS(DWORD feature)
         FIXME("(OS_WELCOMELOGONUI) What should we return here?\n");
         return FALSE;
     case OS_DOMAINMEMBER:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ISOS_RETURN(is_domain_member());
 #else
         FIXME("(OS_DOMAINMEMBER) What should we return here?\n");
         return TRUE;
 #endif
     case OS_ANYSERVER:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ISOS_RETURN(osvi.wProductType > VER_NT_WORKSTATION);
 #else
         ISOS_RETURN(platform == VER_PLATFORM_WIN32_NT);
@@ -2705,7 +2705,7 @@ BOOL WINAPI IsOS(DWORD feature)
         FIXME("(OS_TABLETPC) What should we return here?\n");
         return FALSE;
     case OS_SERVERADMINUI:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             DWORD value = FALSE, size = sizeof(value);
             HKEY hKey = NULL;
@@ -2765,7 +2765,7 @@ FEATURE_ENABLED_STATE WINAPI GetFeatureEnabledState(UINT32 feature, FEATURE_CHAN
     return FEATURE_ENABLED_STATE_DEFAULT;
 }
 
-/* Feature staging has no overrides in ReactOS. Leave feature selection to
+/* Feature staging has no overrides in LibreNT. Leave feature selection to
  * each caller's compiled defaults, and never report a pending notification. */
 UINT32 WINAPI GetFeatureVariant(UINT32 feature, FEATURE_CHANGE_TIME change_time,
                                UINT32 *payload, BOOL *notification)

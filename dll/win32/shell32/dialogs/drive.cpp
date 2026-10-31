@@ -154,7 +154,7 @@ GetDefaultClusterSize(LPWSTR szFs, PDWORD pClusterSize, PULARGE_INTEGER TotalNum
     DWORD ClusterSize;
 
     if (!_wcsicmp(szFs, L"FAT16") ||
-        !_wcsicmp(szFs, L"FAT")) // REACTOS HACK
+        !_wcsicmp(szFs, L"FAT")) // LIBRENT HACK
     {
         if (TotalNumberOfBytes->QuadPart <= (16 * 1024 * 1024))
             ClusterSize = 2048;
@@ -267,7 +267,7 @@ InsertDefaultClusterSizeForFs(HWND hwndDlg, PFORMAT_DRIVE_CONTEXT pContext)
         return;
 
     if (!_wcsicmp(wszBuf, L"FAT16") ||
-        !_wcsicmp(wszBuf, L"FAT")) // REACTOS HACK
+        !_wcsicmp(wszBuf, L"FAT")) // LIBRENT HACK
     {
         pwszFsSizeLimit = L"4GB";
     }
@@ -293,7 +293,7 @@ InsertDefaultClusterSizeForFs(HWND hwndDlg, PFORMAT_DRIVE_CONTEXT pContext)
     }
 
     if (!_wcsicmp(wszBuf, L"FAT16") ||
-        !_wcsicmp(wszBuf, L"FAT") || // REACTOS HACK
+        !_wcsicmp(wszBuf, L"FAT") || // LIBRENT HACK
         !_wcsicmp(wszBuf, L"FAT32") ||
         !_wcsicmp(wszBuf, L"FATX") ||
         !_wcsicmp(wszBuf, L"NTFS") ||

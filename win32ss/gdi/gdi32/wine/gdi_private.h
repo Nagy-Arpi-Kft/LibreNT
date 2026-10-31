@@ -222,7 +222,7 @@ static inline int get_dib_info_size( const BITMAPINFO *info, UINT coloruse )
 #define GdiWorldSpaceToDeviceSpace  0x204
 BOOL APIENTRY NtGdiGetTransform( _In_ HDC hdc, _In_ DWORD iXform, _Out_ LPXFORM pxf);
 
-/* Special sauce for reactos */
+/* Special sauce for LibreNT */
 #define GDIRealizePalette RealizePalette
 #define GDISelectPalette SelectPalette
 
@@ -235,7 +235,7 @@ BOOL WINAPI SetWorldTransformForMetafile(HDC hdc, const XFORM *pxform);
 #endif
 #ifdef _M_ARM
 #define DbgRaiseAssertionFailure() __emit(0xdefc)
-#elif REACTOS_TARGET_ARM64_CODEGEN
+#elif LIBRENT_TARGET_ARM64_CODEGEN
 #define DbgRaiseAssertionFailure() __break(0xf001)
 #elif defined(_M_IX86) || defined(_M_AMD64) || defined(__i386__) || defined(__x86_64__)
 #define DbgRaiseAssertionFailure() __int2c()

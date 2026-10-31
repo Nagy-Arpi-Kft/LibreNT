@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Test for pipe (CORE-17376)
  * COPYRIGHT:   Copyright 2024 Simone Mario Lombardo <me@simonelombardo.com>

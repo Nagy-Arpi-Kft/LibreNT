@@ -148,7 +148,7 @@ typedef struct
     BOOL text; /* last node was text node, so we shouldn't indent next node */
     BOOL newline; /* newline was already added as a part of previous call */
     UINT indent; /* indentation level for next node */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL root_started;
     BOOL encoding_set;
 #endif
@@ -163,7 +163,7 @@ typedef struct
     BSTR element;
 
     IStream *dest;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IUnknown *dest_unk;
 #endif
 
@@ -581,7 +581,7 @@ static void write_prolog_buffer(mxwriter *writer)
     write_output_buffer_quoted(writer, writer->version, -1);
 
     /* encoding */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (writer->dest || writer->class_version < MSXML4 || !writer->encoding_set)
     {
 #endif
@@ -591,7 +591,7 @@ static void write_prolog_buffer(mxwriter *writer)
         write_output_buffer_quoted(writer, writer->encoding, -1);
     else
         write_output_buffer_quoted(writer, L"UTF-16", 6);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -661,7 +661,7 @@ static void write_node_indent(mxwriter *writer)
     writer->text = FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void write_node_end_newline(mxwriter *writer)
 {
     if (writer->props[MXWriter_Indent] || writer->root_started)
@@ -864,7 +864,7 @@ static ULONG WINAPI mxwriter_Release(IMXWriter *iface)
         free_output_buffer(&This->buffer);
 
         if (This->dest) IStream_Release(This->dest);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->dest_unk) IUnknown_Release(This->dest_unk);
 #endif
         SysFreeString(This->version);
@@ -931,7 +931,7 @@ static HRESULT WINAPI mxwriter_put_output(IMXWriter *iface, VARIANT dest)
     {
         if (This->dest) IStream_Release(This->dest);
         This->dest = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->dest_unk) IUnknown_Release(This->dest_unk);
         This->dest_unk = NULL;
 #endif
@@ -950,7 +950,7 @@ static HRESULT WINAPI mxwriter_put_output(IMXWriter *iface, VARIANT dest)
 
             if (This->dest) IStream_Release(This->dest);
             This->dest = stream;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             IUnknown_AddRef(V_UNKNOWN(&dest));
             if (This->dest_unk) IUnknown_Release(This->dest_unk);
             This->dest_unk = V_UNKNOWN(&dest);
@@ -966,7 +966,7 @@ static HRESULT WINAPI mxwriter_put_output(IMXWriter *iface, VARIANT dest)
         return E_NOTIMPL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->newline = TRUE;
     This->text = FALSE;
     This->root_started = FALSE;
@@ -1031,7 +1031,7 @@ static HRESULT WINAPI mxwriter_put_encoding(IMXWriter *iface, BSTR encoding)
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(encoding));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->class_version >= MSXML4 && encoding && !*encoding)
         return S_OK;
 #endif
@@ -1048,7 +1048,7 @@ static HRESULT WINAPI mxwriter_put_encoding(IMXWriter *iface, BSTR encoding)
 
     SysReAllocString(&This->encoding, encoding);
     This->xml_enc = enc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->encoding_set = TRUE;
 #endif
 
@@ -1141,7 +1141,7 @@ static HRESULT WINAPI mxwriter_put_version(IMXWriter *iface, BSTR version)
 
     TRACE("(%p)->(%s)\n", This, debugstr_w(version));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->class_version >= MSXML4 && (!version || !*version))
         return S_OK;
 #endif
@@ -1355,7 +1355,7 @@ static HRESULT WINAPI SAXContentHandler_startElement(
         return E_INVALIDARG;
 
     mxwriter_write_starttag(This, QName, nQName);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->root_started = TRUE;
 #endif
 
@@ -1431,7 +1431,7 @@ static HRESULT WINAPI SAXContentHandler_characters(ISAXContentHandler *iface, co
 
     TRACE("%p, %s, %d.\n", iface, debugstr_wn(chars, nchars), nchars);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!chars && (writer->class_version != MSXML6 || nchars)) return E_INVALIDARG;
 #else
     if (!chars) return E_INVALIDARG;
@@ -1465,7 +1465,7 @@ static HRESULT WINAPI SAXContentHandler_ignorableWhitespace(
 
     TRACE("(%p)->(%s)\n", This, debugstr_wn(chars, nchars));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!chars && (This->class_version != MSXML6 || nchars)) return E_INVALIDARG;
     if (!chars) return S_OK;
 #else
@@ -1488,20 +1488,20 @@ static HRESULT WINAPI SAXContentHandler_processingInstruction(
 
     TRACE("%p, %s, %s.\n", iface, debugstr_wn(target, ntarget), debugstr_wn(data, ndata));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!target && (writer->class_version != MSXML6 || ntarget)) return E_INVALIDARG;
 #else
     if (!target) return E_INVALIDARG;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     close_element_starttag(writer);
     set_element_name(writer, NULL, 0);
 #endif
     write_node_indent(writer);
     write_output_buffer(writer, L"<?", 2);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (target && *target)
 #else
     if (*target)
@@ -1514,7 +1514,7 @@ static HRESULT WINAPI SAXContentHandler_processingInstruction(
         write_output_buffer(writer, data, ndata);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     write_output_buffer(writer, L"?>", 2);
     write_node_end_newline(writer);
 #else
@@ -1582,7 +1582,7 @@ static HRESULT WINAPI SAXLexicalHandler_startDTD(ISAXLexicalHandler *iface,
     TRACE("%p, %s. %s. %s.\n", iface, debugstr_wn(name, name_len), debugstr_wn(publicId, publicId_len),
         debugstr_wn(systemId, systemId_len));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!name && (writer->class_version != MSXML6 || name_len)) return E_INVALIDARG;
 #else
     if (!name) return E_INVALIDARG;
@@ -1590,7 +1590,7 @@ static HRESULT WINAPI SAXLexicalHandler_startDTD(ISAXLexicalHandler *iface,
 
     write_output_buffer(writer, L"<!DOCTYPE ", 10);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (writer->class_version == MSXML6)
     {
         if (name)
@@ -1689,14 +1689,14 @@ static HRESULT WINAPI SAXLexicalHandler_comment(ISAXLexicalHandler *iface, const
 
     TRACE("%p, %s:%d.\n", iface, debugstr_wn(chars, nchars), nchars);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!chars && (writer->class_version != MSXML6 || nchars)) return E_INVALIDARG;
 #else
     if (!chars) return E_INVALIDARG;
 #endif
 
     close_element_starttag(writer);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     set_element_name(writer, NULL, 0);
 #endif
     write_node_indent(writer);
@@ -1704,7 +1704,7 @@ static HRESULT WINAPI SAXLexicalHandler_comment(ISAXLexicalHandler *iface, const
     write_output_buffer(writer, L"<!--", 4);
     if (nchars)
         write_output_buffer(writer, chars, nchars);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     write_output_buffer(writer, L"-->", 3);
     write_node_end_newline(writer);
 #else
@@ -1756,7 +1756,7 @@ static HRESULT WINAPI SAXDeclHandler_elementDecl(ISAXDeclHandler *iface,
     TRACE("(%p)->(%s:%d %s:%d)\n", This, debugstr_wn(name, n_name), n_name,
         debugstr_wn(model, n_model), n_model);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->class_version == MSXML6)
     {
         if ((!name && n_name) || (!model && n_model)) return E_INVALIDARG;
@@ -1811,7 +1811,7 @@ static HRESULT WINAPI SAXDeclHandler_attributeDecl(ISAXDeclHandler *iface,
         write_output_buffer(This, L" ", 1);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->class_version >= MSXML4 && n_default &&
         ((n_default == 9 && !wcsncmp(Default, L"#REQUIRED", 9)) ||
          (n_default == 8 && !wcsncmp(Default, L"#IMPLIED", 8))))
@@ -1842,7 +1842,7 @@ static HRESULT WINAPI SAXDeclHandler_internalEntityDecl(ISAXDeclHandler *iface,
     TRACE("%p, %s:%d, %s:%d.\n", iface, debugstr_wn(name, n_name), n_name,
         debugstr_wn(value, n_value), n_value);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (writer->class_version == MSXML6)
     {
         if (n_name < 0 || n_value < 0 || (!name && n_name) || (!value && n_value)) return E_INVALIDARG;
@@ -1880,7 +1880,7 @@ static HRESULT WINAPI SAXDeclHandler_externalEntityDecl(ISAXDeclHandler *iface,
     TRACE("%p, %s:%d, %s:%d, %s:%d.\n", iface, debugstr_wn(name, n_name), n_name,
         debugstr_wn(publicId, n_publicId), n_publicId, debugstr_wn(systemId, n_systemId), n_systemId);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (writer->class_version == MSXML6)
     {
         if (n_name < 0) return E_INVALIDARG;
@@ -2280,7 +2280,7 @@ static HRESULT WINAPI VBSAXContentHandler_startElement(IVBSAXContentHandler *ifa
 
     TRACE("(%p)->(%p %p %p %p)\n", This, namespaceURI, localName, QName, attrs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!namespaceURI || (!*namespaceURI && This->class_version != MSXML6) || !localName || !QName)
 #else
     if (!namespaceURI || !*namespaceURI || !localName || !QName)
@@ -2290,7 +2290,7 @@ static HRESULT WINAPI VBSAXContentHandler_startElement(IVBSAXContentHandler *ifa
     TRACE("(%s %s %s)\n", debugstr_w(*namespaceURI), debugstr_w(*localName), debugstr_w(*QName));
 
     mxwriter_write_starttag(This, *QName, SysStringLen(*QName));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->root_started = TRUE;
 #endif
 
@@ -2442,14 +2442,14 @@ static HRESULT WINAPI SAXDTDHandler_notationDecl(ISAXDTDHandler *iface,
     TRACE("(%p)->(%s:%d, %s:%d, %s:%d)\n", This, debugstr_wn(name, n_name), n_name,
         debugstr_wn(publicid, n_publicid), n_publicid, debugstr_wn(systemid, n_systemid), n_systemid);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->class_version == MSXML6)
         write_output_buffer(This, L"<!NOTATION ", 11);
 #endif
     if (!name || !n_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->class_version != MSXML6)
 #endif
     write_output_buffer(This, L"<!NOTATION ", 11);
@@ -2766,13 +2766,13 @@ HRESULT MXWriter_create(MSXML_VERSION version, void **ppObj)
     This->indent = 0;
     This->text = FALSE;
     This->newline = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->root_started = FALSE;
     This->encoding_set = FALSE;
 #endif
 
     This->dest = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->dest_unk = NULL;
 #endif
 

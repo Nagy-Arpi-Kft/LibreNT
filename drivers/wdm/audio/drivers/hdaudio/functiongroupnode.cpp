@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HDAudio Driver
+ * PROJECT:         LibreNT HDAudio Driver
  * LICENSE:         GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:         Function group nodes
  * COPYRIGHT:       Copyright 2025 Johannes Anderwald <johannes.anderwald@reactos.org>

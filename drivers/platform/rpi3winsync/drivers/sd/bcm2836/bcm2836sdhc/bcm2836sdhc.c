@@ -18,7 +18,7 @@ Environment:
 
 --*/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntddk.h>
 #else
 #include <Ntddk.h>

@@ -5,8 +5,8 @@ function(add_bootvid _target _configfile)
     spec2def(${_target}.dll bootvid.spec ADD_IMPORTLIB)
 
     # Set default values for the version resource file
-    set(REACTOS_STR_INTERNAL_NAME "$<TARGET_NAME:${_target}>")
-    set(REACTOS_STR_ORIGINAL_FILENAME "$<TARGET_FILE_NAME:${_target}>")
+    set(LIBRENT_STR_INTERNAL_NAME "$<TARGET_NAME:${_target}>")
+    set(LIBRENT_STR_ORIGINAL_FILENAME "$<TARGET_FILE_NAME:${_target}>")
 
     # Include the per-target definitions (COMPILE_DEFINITIONS, MODULE_HEADER, and SOURCE)
     include(${_configfile})
@@ -49,7 +49,7 @@ function(add_bootvid _target _configfile)
     if(NOT _bviddata_NAME_ON_CD)
         set(_bviddata_NAME_ON_CD "$<TARGET_FILE_NAME:${_target}>")
     endif()
-    add_cd_file(TARGET ${_target} DESTINATION reactos/system32 NO_CAB NAME_ON_CD ${_bviddata_NAME_ON_CD} FOR all)
+    add_cd_file(TARGET ${_target} DESTINATION librent/system32 NO_CAB NAME_ON_CD ${_bviddata_NAME_ON_CD} FOR all)
 endfunction()
 
 if(ARCH STREQUAL "i386")

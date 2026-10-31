@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NT User-Mode DLL
+ * PROJECT:     LibreNT NT User-Mode DLL
  * PURPOSE:     Compatibility entry points for native diagnostic telemetry
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -9,7 +9,7 @@
 
 /*
  * Windows consumes a three-ULONG codepath descriptor and may submit a
- * diagnostic event. ReactOS has no corresponding telemetry provider, but it
+ * diagnostic event. LibreNT has no corresponding telemetry provider, but it
  * still validates the descriptor and treats the report as consumed.
  */
 NTSTATUS

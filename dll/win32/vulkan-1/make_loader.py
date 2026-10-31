@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# PROJECT:     ReactOS Vulkan loader
+# PROJECT:     LibreNT Vulkan loader
 # LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
 # PURPOSE:     Generate the vulkan-1 export spec and dispatch trampolines
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>

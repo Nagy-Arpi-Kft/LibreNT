@@ -1,6 +1,6 @@
 
 add_definitions(-D__WINESRC__)
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 spec2def(mcicda.dll mcicda.spec)
 
 list(APPEND SOURCE
@@ -11,4 +11,4 @@ add_library(mcicda MODULE ${SOURCE})
 set_module_type(mcicda win32dll)
 target_link_libraries(mcicda wine)
 add_importlibs(mcicda winmm user32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET mcicda DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mcicda DESTINATION librent/system32 FOR all)

@@ -7,7 +7,7 @@
 // Always intended to be included as part of sc_lib.h
 //
 
-#if defined(__REACTOS__) && SYMCRYPT_GNUC
+#if defined(__LIBRENT__) && SYMCRYPT_GNUC
 #define SYMCRYPT_MLDSA_FORCEINLINE_DECL
 #define SYMCRYPT_MLDSA_FORCEINLINE_DEF inline __attribute__((always_inline))
 #else

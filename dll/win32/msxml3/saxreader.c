@@ -805,7 +805,7 @@ struct input_buffer
     struct encoded_buffer raw;
     enum xmlencoding encoding;
     bool switched_encoding;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bool bom;
     bool attvalue;
 #endif
@@ -1538,7 +1538,7 @@ static const struct IVBSAXAttributesVtbl ivbsaxattributes_vtbl =
 static HRESULT WINAPI isaxattributes_QueryInterface(ISAXAttributes *iface, REFIID riid, void **obj)
 {
     struct saxlocator *locator = impl_from_ISAXAttributes(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MSXML_VERSION version = locator->saxreader->version;
 
     if (IsEqualGUID(riid, &IID_ISAXLocator) && version < MSXML4)
@@ -1745,7 +1745,7 @@ static HRESULT WINAPI isaxattributes_getValueFromQName(ISAXAttributes *iface,
     TRACE("%p, %s, %d, %p, %p.\n", iface, debugstr_w(name), name_length, value, length);
 
     if (!name)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return locator->saxreader->version == MSXML4 ? E_INVALIDARG : E_POINTER;
 #else
         return E_POINTER;
@@ -2315,7 +2315,7 @@ static void saxreader_update_position(struct saxlocator *locator, WCHAR ch)
 {
     struct input_buffer *input = &locator->buffer;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (input->attvalue)
     {
         if (ch == '\n')
@@ -3208,7 +3208,7 @@ static void saxlocator_enddtd(struct saxlocator *locator)
     locator->status = saxlocator_callback_result(locator, hr);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void saxlocator_extension_endtag(struct saxlocator *locator)
 {
     struct saxextensionhandler_iface *handler = saxreader_get_extensionhandler(locator->saxreader);
@@ -3387,7 +3387,7 @@ static void saxreader_parse_encdecl(struct saxlocator *locator, const struct par
 
     /* Switch encoding only in UTF-8 -> mbtowc-able direction. */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (locator->buffer.encoding == XML_ENCODING_UTF8 && locator->buffer.bom &&
             locator->saxreader->version < MSXML4 && !wcsicmp(value, L"UTF-16"))
         return saxreader_set_error(locator, E_SAX_INVALIDSWITCH);
@@ -4132,7 +4132,7 @@ static BSTR saxreader_parse_attvalue(struct saxlocator *locator)
 
     /* All references are resolved */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     locator->buffer.attvalue = locator->saxreader->version < MSXML4;
 #endif
     while (locator->status == S_OK)
@@ -4200,7 +4200,7 @@ static BSTR saxreader_parse_attvalue(struct saxlocator *locator)
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     locator->buffer.attvalue = false;
 #endif
     if (locator->status != S_OK) return NULL;
@@ -4430,7 +4430,7 @@ static void saxreader_parse_endtag(struct saxlocator *locator)
     {
         element = LIST_ENTRY(list_head(&locator->elements), struct element, entry);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!wcscmp(element->name.qname, name.qname))
         {
             saxlocator_extension_endtag(locator);
@@ -4542,7 +4542,7 @@ static void saxreader_parse_comment(struct saxlocator *locator)
         }
         else
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (locator->saxreader->features & NormalizeLineBreaks && saxreader_has_handler(locator, SAXExtensionHandler)
                     && (saxreader_cmp(locator, L"\r\n") || saxreader_cmp(locator, L"\r")))
             {
@@ -4754,7 +4754,7 @@ static void saxreader_parse_characters_newparser(struct saxlocator *locator, str
     if (ctxt->ch == '\r')
     {
         bool move_position = false;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         struct text_position block_position = locator->buffer.position;
 #endif
 
@@ -4767,7 +4767,7 @@ static void saxreader_parse_characters_newparser(struct saxlocator *locator, str
 
         /* Flush current block first, then new line separately */
         chars = saxreader_string_to_bstr(locator, &ctxt->buffer);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         saxlocator_characters(locator, &block_position, chars);
 #else
         saxlocator_characters(locator, &ctxt->position, chars);
@@ -6047,7 +6047,7 @@ static void saxreader_detect_encoding(struct saxlocator *locator, bool force_utf
     locator->buffer.encoding = encoding;
     locator->buffer.converter = convert_get_converter(encoding);
     locator->buffer.code_page = convert_get_codepage(encoding);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     locator->buffer.bom = bom != 0;
 #endif
 
@@ -6521,7 +6521,7 @@ static HRESULT saxreader_get_property(const struct saxreader *reader, const WCHA
     if (!wcscmp(prop, L"xmldecl-standalone"))
     {
         V_VT(value) = VT_BSTR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return return_bstr(reader->xmldecl_standalone, &V_BSTR(value));
 #else
         return return_bstr(reader->xmldecl_encoding, &V_BSTR(value));
@@ -6542,7 +6542,7 @@ static HRESULT saxreader_get_property(const struct saxreader *reader, const WCHA
         return S_OK;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!wcscmp(prop, L"charset"))
     {
         V_VT(value) = VT_BSTR;
@@ -6858,13 +6858,13 @@ static HRESULT WINAPI isaxxmlreader_putFeature(ISAXXMLReader *iface, const WCHAR
 
     if (feature == NormalizeLineBreaks && reader->version >= MSXML4)
         return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (feature == ExhaustiveErrors && reader->version < MSXML4)
         return E_INVALIDARG;
 #endif
 
     /* accepted cases */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((feature == ExhaustiveErrors && (value == VARIANT_FALSE || reader->version >= MSXML4)) ||
 #else
     if ((feature == ExhaustiveErrors && value == VARIANT_FALSE) ||

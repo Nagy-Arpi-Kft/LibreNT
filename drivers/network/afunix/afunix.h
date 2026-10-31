@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT AF_UNIX local stream transport
+ * PROJECT:     LibreNT AF_UNIX local stream transport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Internal definitions
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -11,7 +11,7 @@
 #include <ntifs.h>
 #include <ndk/obtypes.h>
 #include <tdikrnl.h>
-#include <reactos/tdiunix.h>
+#include <librent/tdiunix.h>
 
 #define TAG_AFUNIX_ENDPOINT 'eufA'
 #define TAG_AFUNIX_CONN     'cufA'

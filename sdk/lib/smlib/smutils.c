@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS SM Helper Library
+ * PROJECT:     LibreNT SM Helper Library
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Utility functions built around the client SM API
  * COPYRIGHT:   Copyright 2005 Emanuele Aliberti <ea@reactos.com>
@@ -362,7 +362,7 @@ SmLookupSubsystem(
  * status code.
  *
  * @remark
- * This API is ReactOS-specific and not in NT.
+ * This API is LibreNT-specific and not in NT.
  */
 NTSTATUS
 NTAPI
@@ -373,7 +373,7 @@ SmQueryInformation(
     _In_ ULONG DataLength,
     _Inout_opt_ PULONG ReturnedDataLength)
 {
-#if defined(__REACTOS__) && DBG
+#if defined(__LIBRENT__) && DBG
     NTSTATUS Status;
     SM_API_MSG SmApiMsg = {0};
     PSM_QUERYINFO_MSG QueryInfo = &SmApiMsg.u.QueryInfo;
@@ -455,7 +455,7 @@ SmQueryInformation(
     return SmApiMsg.ReturnValue;
 #else
     return STATUS_NOT_IMPLEMENTED;
-#endif /* defined(__REACTOS__) && DBG */
+#endif /* defined(__LIBRENT__) && DBG */
 }
 
 /* EOF */

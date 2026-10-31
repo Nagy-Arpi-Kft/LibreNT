@@ -1,7 +1,7 @@
 ;
-; ReactOS Operating System
+; LibreNT Operating System
 ;
-; This file contains all win32k native api functions from ReactOS
+; This file contains all win32k native api functions from LibreNT
 ; Unsupported functions are commented out
 ;
 

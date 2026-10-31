@@ -56,7 +56,7 @@ static struct cp_extra_info_t g_cpextrainfo[] =
     {0, {1, 255, 0, 0}}       /* match all with FIXME */
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BYTE johab_lead_bytes[MAX_LEADBYTES] = {0x81, 0xd3, 0xd8, 0xde, 0xe0, 0xf9, 0, 0};
 
 #endif
@@ -291,7 +291,7 @@ threadmbcinfo* create_mbcinfo(int cp, LCID lcid, threadmbcinfo *old_mbcinfo)
   memset(mbcinfo->mbcasemap, 0, sizeof(unsigned char[256]));
 
   bytes = cpi.LeadByte;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (newcp == 1361)
     bytes = johab_lead_bytes;
 #endif
@@ -2522,7 +2522,7 @@ unsigned char* CDECL _mbsnbcat_l(unsigned char *dst, const unsigned char *src, s
 {
     pthreadmbcinfo mbcinfo;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!len)
         return dst;
 #endif

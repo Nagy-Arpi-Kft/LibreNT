@@ -31,7 +31,7 @@
 #include "winuser.h"
 #include "excpt.h"
 #include "wine/test.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "psapi.h"
 #endif
 
@@ -2612,18 +2612,18 @@ static DWORD execute_fault_seh_handler( EXCEPTION_RECORD *rec, EXCEPTION_REGISTR
         BOOL success;
 
         err = (flags & MEM_EXECUTE_OPTION_DISABLE) ? EXCEPTION_EXECUTE_FAULT : EXCEPTION_READ_FAULT;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
         ok( rec->ExceptionInformation[0] == err, "ExceptionInformation[0] is %ld instead of %ld\n",
             (DWORD)rec->ExceptionInformation[0], err );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
         success = VirtualProtect( (void *)rec->ExceptionInformation[1], 16, PAGE_EXECUTE_READWRITE, &old_prot );
         ok( success, "VirtualProtect failed %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( old_prot == PAGE_READWRITE || broken(old_prot == PAGE_NOACCESS) /* WS03 */, "wrong old prot %lx\n", old_prot );
 #else
         ok( old_prot == PAGE_READWRITE, "wrong old prot %lx\n", old_prot );
@@ -2843,7 +2843,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     else if (dep_flags & MEM_EXECUTE_OPTION_DISABLE)
     {
         trace( "DEP hardware support is available\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -2862,7 +2862,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 42, "call returned wrong result, expected 42, got %ld\n", ret );
     ok( num_guard_page_calls == 1, "expected one STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if (dep_flags & MEM_EXECUTE_OPTION_DISABLE)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -2895,7 +2895,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -2914,7 +2914,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 1, "expected one STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -2947,7 +2947,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
             pRtlRemoveVectoredExceptionHandler( vectored_handler );
 
             ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 2) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
             ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -2970,7 +2970,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -2989,7 +2989,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -3008,7 +3008,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -3030,7 +3030,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 44, "call returned wrong result, expected 44, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -3118,7 +3118,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 42, "call returned wrong result, expected 42, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if (dep_flags & MEM_EXECUTE_OPTION_DISABLE)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -3146,7 +3146,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 42, "call returned wrong result, expected 42, got %ld\n", ret );
     ok( num_guard_page_calls == 1, "expected one STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if (dep_flags & MEM_EXECUTE_OPTION_DISABLE)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -3190,7 +3190,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 0, "expected no STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0), "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -3219,7 +3219,7 @@ static void test_atl_thunk_emulation( ULONG dep_flags )
     ok( ret == 43, "call returned wrong result, expected 43, got %ld\n", ret );
     ok( num_guard_page_calls == 1, "expected one STATUS_GUARD_PAGE_VIOLATION exception, got %ld exceptions\n", num_guard_page_calls );
     if ((dep_flags & MEM_EXECUTE_OPTION_DISABLE) && (dep_flags & MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( num_execute_fault_calls == 1 || broken(num_execute_fault_calls == 0) /* WS03 */, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
 #else
         ok( num_execute_fault_calls == 1, "expected one STATUS_ACCESS_VIOLATION exception, got %ld exceptions\n", num_execute_fault_calls );
@@ -4250,7 +4250,7 @@ static void test_mapping( HANDLE hfile, DWORD sec_flags, BOOL readonly )
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void check_image_views(BYTE *views[2], DWORD protection, BOOL written, const DWORD neighbor_protection[2],
         BOOL (WINAPI *query_working_set)(HANDLE, void *, DWORD))
 {
@@ -4403,7 +4403,7 @@ static void test_mappings(void)
     char file_name[MAX_PATH];
     DWORD data, num_bytes;
     HANDLE hfile;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD length;
 #endif
 
@@ -4435,7 +4435,7 @@ static void test_mappings(void)
     DeleteFileA( file_name );
 
     /* SEC_IMAGE mapping */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     length = GetModuleFileNameA(NULL, file_name, ARRAY_SIZE(file_name));
     ok(length && length < ARRAY_SIZE(file_name), "Get test image path returned %lu.\n", length);
     if (!length || length >= ARRAY_SIZE(file_name)) return;
@@ -4634,9 +4634,9 @@ START_TEST(virtual)
     char **argv;
     argc = winetest_get_mainargs( &argv );
 
-#if defined(__REACTOS__) && defined(SKIPBADHEAP_K32_WINETEST)
+#if defined(__LIBRENT__) && defined(SKIPBADHEAP_K32_WINETEST)
     if (is_reactos()) {
-        ok(FALSE, "FIXME: These tests are too rough on ReactOS heap manager on x64. It will eventually finish but it takes over an hour to complete the test suite with it which isn't acceptable.\n");
+        ok(FALSE, "FIXME: These tests are too rough on LibreNT heap manager on x64. It will eventually finish but it takes over an hour to complete the test suite with it which isn't acceptable.\n");
         return;
     }
 #endif
@@ -4702,7 +4702,7 @@ START_TEST(virtual)
     test_shared_memory_ro(FALSE, FILE_MAP_COPY);
     test_shared_memory_ro(FALSE, FILE_MAP_COPY|FILE_MAP_WRITE);
     test_mappings();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_image_protection_state();
 #endif
     test_CreateFileMapping_protection();

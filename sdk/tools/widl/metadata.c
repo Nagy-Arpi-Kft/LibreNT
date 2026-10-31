@@ -520,7 +520,7 @@ static void serialize_table_idx( UINT idx, enum table target )
     add_bytes( &tables_disk, (const BYTE *)&idx, size );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void serialize_coded_idx( UINT idx, UINT tag_bits, const enum table *targets, UINT count )
 {
     UINT i, max_rows = 0, size;
@@ -698,7 +698,7 @@ static void serialize_typeref_table( void )
 
     for (i = 0; i < tables[TABLE_TYPEREF].count; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->scope, 2, resolution_scope_tables );
 #else
         serialize_table_idx( row->scope, resolution_scope_to_table(row->scope) );
@@ -739,7 +739,7 @@ static void serialize_typedef_table( void )
         serialize_uint( row->flags );
         serialize_string_idx( row->name );
         serialize_string_idx( row->namespace );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->extends, 2, typedef_or_ref_tables );
 #else
         serialize_table_idx( row->extends, typedef_or_ref_to_table(row->extends) );
@@ -873,7 +873,7 @@ static void serialize_interfaceimpl_table( void )
     for (i = 0; i < tables_idx[TABLE_INTERFACEIMPL].count; i++)
     {
         serialize_table_idx( row->class, TABLE_TYPEDEF );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->interface, 2, typedef_or_ref_tables );
 #else
         serialize_table_idx( row->interface, typedef_or_ref_to_table(row->interface) );
@@ -902,7 +902,7 @@ static void serialize_memberref_table( void )
 
     for (i = 0; i < tables[TABLE_MEMBERREF].count; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->class, 3, memberref_parent_tables );
 #else
         serialize_table_idx( row->class, memberref_parent_to_table(row->class) );
@@ -947,7 +947,7 @@ static void serialize_constant_table( void )
     {
         serialize_byte( row->type );
         serialize_byte( row->padding );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->parent, 2, has_constant_tables );
 #else
         serialize_table_idx( row->parent, has_constant_to_table(row->parent) );
@@ -989,12 +989,12 @@ static void serialize_customattribute_table( void )
 
     for (i = 0; i < tables_idx[TABLE_CUSTOMATTRIBUTE].count; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->parent, 5, has_customattribute_tables );
 #else
         serialize_table_idx( row->parent, has_customattribute_to_table(row->parent) );
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->type, 3, customattribute_type_tables );
 #else
         serialize_table_idx( row->type, customattribute_type_to_table(row->type) );
@@ -1176,7 +1176,7 @@ static void serialize_event_table( void )
     {
         serialize_ushort( row->flags );
         serialize_string_idx( row->name );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->type, 2, typedef_or_ref_tables );
 #else
         serialize_table_idx( row->type, typedef_or_ref_to_table(row->type) );
@@ -1219,7 +1219,7 @@ static void serialize_methodsemantics_table( void )
     {
         serialize_ushort( row->semantics );
         serialize_table_idx( row->method, TABLE_METHODDEF );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->association, 1, has_semantics_tables );
 #else
         serialize_table_idx( row->association, has_semantics_to_table(row->association) );
@@ -1248,17 +1248,17 @@ static void serialize_methodimpl_table( void )
 
     for (i = 0; i < tables[TABLE_METHODIMPL].count; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         serialize_table_idx( row->class, TABLE_TYPEDEF );
 #else
         serialize_table_idx( row->class, row->class );
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->body, 1, methoddef_or_ref_tables );
 #else
         serialize_table_idx( row->body, methoddef_or_ref_to_table(row->body) );
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SERIALIZE_CODED_IDX( row->declaration, 1, methoddef_or_ref_tables );
 #else
         serialize_table_idx( row->declaration, methoddef_or_ref_to_table(row->declaration) );
@@ -1864,7 +1864,7 @@ static UINT make_property_sig( const var_t *method, BYTE *buf, BOOL is_static )
     return len;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static UINT make_setter_property_sig( const var_t *method, BYTE *buf, BOOL is_static )
 {
     const var_list_t *arg_list = type_function_get_args( method->declspec.type );
@@ -2032,7 +2032,7 @@ static void add_version_attr_step1( const type_t *type )
     attr_t *attr;
 
     if (!(attr = get_attr( type->attrs, ATTR_VERSION )) && is_attr( type->attrs, ATTR_CONTRACT )) return;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!attr) return;
 #endif
 
@@ -2051,7 +2051,7 @@ static void add_version_attr_step2( const type_t *type )
     const attr_t *attr;
 
     if (!(attr = get_attr( type->attrs, ATTR_VERSION )) && is_attr( type->attrs, ATTR_CONTRACT )) return;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!attr) return;
 #endif
 
@@ -2588,7 +2588,7 @@ static void add_propput_method( const type_t *class, const type_t *iface, const 
     free( name );
 
     /* add propget method first if not already added */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!propget)
         property = class ? type->md.class_property : type->md.iface_property;
     else
@@ -2687,7 +2687,7 @@ static void add_property( type_t *class, type_t *iface, const var_t *method )
     type_t *type = method->declspec.type;
     BYTE sig[256];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_attr( method->attrs, ATTR_PROPPUT ) && !find_propget_method( iface, method->name ))
         sig_size = make_setter_property_sig( method, sig, is_static_iface(class, iface) );
     else if (is_attr( method->attrs, ATTR_PROPGET ))
@@ -2931,7 +2931,7 @@ static void add_method_contract_attrs( const type_t *class, const type_t *iface,
     BYTE value[MAX_NAME + sizeof(UINT) + 5];
     const attr_t *attr = get_attr( iface->attrs, ATTR_CONTRACT );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!attr || !get_attr( class->attrs, ATTR_CONTRACT )) return;
 
 #endif
@@ -3678,7 +3678,7 @@ static void build_tables( const statement_list_t *stmt_list )
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct imported_statements
 {
     char *name;
@@ -3830,7 +3830,7 @@ static void build_table_stream( const statement_list_t *stmts )
     add_module_row( add_string(metadata_name), add_guid(&guid) );
     add_assemblyref_row( 0, add_blob(token, sizeof(token)), add_string("mscorlib") );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     build_tables( num_winmd_namespaces ? merge_imported_statements( stmts ) : stmts );
 #else
     build_tables( stmts );

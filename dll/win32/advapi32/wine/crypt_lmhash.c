@@ -20,7 +20,7 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <advapi32.h>
 #else
 #include <stdarg.h>
@@ -57,7 +57,7 @@ NTSTATUS WINAPI SystemFunction006( LPCSTR password, LPSTR hash )
     return STATUS_SUCCESS;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /******************************************************************************
  * SystemFunction008  [ADVAPI32.@]
  *
@@ -407,4 +407,4 @@ NTSTATUS WINAPI SystemFunction025(const BYTE *in, const BYTE *key, LPBYTE out)
 
     return STATUS_SUCCESS;
 }
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */

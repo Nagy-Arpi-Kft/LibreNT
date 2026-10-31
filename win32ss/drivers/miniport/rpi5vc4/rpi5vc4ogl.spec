@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Raspberry Pi 5 XPDM graphics stack
+# PROJECT:     LibreNT Raspberry Pi 5 XPDM graphics stack
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Raspberry Pi 5 OpenGL ICD exports
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>

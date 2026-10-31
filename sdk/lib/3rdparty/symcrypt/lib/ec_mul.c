@@ -130,7 +130,7 @@ SymCryptEcpointScalarMulFixedWindow(
     PUINT32                 sigofKIs = NULL;
     // ===================================================
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PSYMCRYPT_MODELEMENT    peQX = NULL;
     PSYMCRYPT_MODELEMENT    peQY = NULL;
     PSYMCRYPT_MODELEMENT    peQZ = NULL;
@@ -250,7 +250,7 @@ SymCryptEcpointScalarMulFixedWindow(
 
 
     // Get the pointers to Q
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     peQX = SYMCRYPT_INTERNAL_ECPOINT_COORDINATE( 0, pCurve, poQ );
     peQY = SYMCRYPT_INTERNAL_ECPOINT_COORDINATE( 1, pCurve, poQ );
     peQZ = SYMCRYPT_INTERNAL_ECPOINT_COORDINATE( 2, pCurve, poQ );

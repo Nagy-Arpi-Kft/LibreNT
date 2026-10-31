@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS api tests
+ * PROJECT:         LibreNT api tests
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * PURPOSE:         Tests pixel formats exposed by the software implementation
  * PROGRAMMERS:     Jérôme Gardou

@@ -12,7 +12,7 @@
    History:
     24 October 2004 - added localization features
 	09 April 2003 - v0.1, fixed bugs, added features, ported to mingw
-   	20 March 2003 - v0.03, works good under ReactOS, and allows process
+   	20 March 2003 - v0.03, works good under LibreNT, and allows process
 			killing
 	18 March 2003 - Initial version 0.01, doesn't work under RectOS
 

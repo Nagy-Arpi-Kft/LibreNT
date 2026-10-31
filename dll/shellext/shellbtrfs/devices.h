@@ -17,7 +17,7 @@
 
 #pragma once
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #include <winternl.h>
 #else
@@ -28,7 +28,7 @@
 #include <ndk/iotypes.h>
 #endif
 #include <shlobj.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"

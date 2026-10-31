@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS win32 kernel mode subsystem
+ * PROJECT:     LibreNT win32 kernel mode subsystem
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Font
  * COPYRIGHT:   Copyright (C) James Tabor <james.tabor@reactos.org>
@@ -118,7 +118,7 @@ GreGetKerningPairs(
   value.
 
   MS must use a preset "compiled in" support for each language based releases.
-  ReactOS uses FreeType, this will need to be supported. ATM this is hard coded
+  LibreNT uses FreeType, this will need to be supported. ATM this is hard coded
   for GCPCLASS_LATIN!
  */
 #if 0

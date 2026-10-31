@@ -83,7 +83,7 @@ static WCHAR *get_string( struct parser *parser, const struct string *str )
     const WCHAR *p = str->data;
     int len = str->len;
     WCHAR *ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL quoted = FALSE;
     int i, j;
 #endif
@@ -93,14 +93,14 @@ static WCHAR *get_string( struct parser *parser, const struct string *str )
     if ((p[0] == '\"' && p[len - 1] == '\"') ||
         (p[0] == '\'' && p[len - 1] == '\''))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         quoted = TRUE;
 #endif
         p++;
         len -= 2;
     }
     if (!(ret = alloc_mem( parser, (len + 1) * sizeof(WCHAR) ))) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (quoted)
     {
         for (i = j = 0; i < len; i++)
@@ -816,7 +816,7 @@ static int get_token( const WCHAR *s, int *token )
     case '\'':
         for (i = 1; s[i]; i++)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (s[i] == '\\' && s[i + 1])
             {
                 i++;

@@ -27,13 +27,13 @@
 extern "C" {
 #endif	// __cplusplus
 
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning(push,3)
 #endif
 #include <ntddk.h>
 #include <ntdddisk.h>
 #include <ntverp.h>
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #pragma warning(pop)
 
 // disable unwanted (and trivial) warnings :
@@ -177,7 +177,7 @@ typedef struct _MOUNTMGR_MOUNT_POINTS {
 
 #endif	// (VER_PRODUCTBUILD < 2195)
 
-// __REACTOS__: NTAPI added on some functions in this file, vfddrv.h and some *.c.
+// __LIBRENT__: NTAPI added on some functions in this file, vfddrv.h and some *.c.
 
 #if (VER_PRODUCTBUILD < 2600)
 //

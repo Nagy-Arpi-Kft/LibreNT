@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS package manager
+ * PROJECT:     LibreNT package manager
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Package detail parser self-tests
  * COPYRIGHT:   Copyright 2026 Ahmed Arif

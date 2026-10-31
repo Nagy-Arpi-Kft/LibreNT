@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS system libraries
+ * PROJECT:     LibreNT system libraries
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        dll/shellext/stobject/power.cpp
  * PURPOSE:     Power notification icon handler

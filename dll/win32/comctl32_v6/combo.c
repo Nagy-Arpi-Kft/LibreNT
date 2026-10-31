@@ -75,7 +75,7 @@ static UINT	CBitHeight, CBitWidth;
 #define ID_CB_LISTBOX           1000
 #define ID_CB_EDIT              1001
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define CBF_COMBOHOT            0x00010000
 #endif
 
@@ -423,7 +423,7 @@ static LRESULT COMBO_Create( HWND hwnd, LPHEADCOMBO lphc, HWND hwndParent, LONG 
 
   /* M$ IE 3.01 actually creates (and rapidly destroys) an ownerless combobox */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (TRUE)
 #else
   if( lphc->owner || !(style & WS_VISIBLE) )
@@ -661,7 +661,7 @@ static void CBPaintText(HEADCOMBO *lphc, HDC hdc_paint)
      UINT itemState = ODS_COMBOBOXEDIT;
      HFONT hPrevFont = (lphc->hFont) ? SelectObject(hdc, lphc->hFont) : 0;
      HBRUSH hPrevBrush, hBkgBrush;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
      HTHEME theme = GetWindowTheme(lphc->self);
      BOOL themedFace = theme && !CB_OWNERDRAWN(lphc) &&
                        IsThemePartDefined(theme, CP_READONLY, 0);
@@ -674,7 +674,7 @@ static void CBPaintText(HEADCOMBO *lphc, HDC hdc_paint)
 
      hBkgBrush = COMBO_PrepareColors( lphc, hdc );
      hPrevBrush = SelectObject( hdc, hBkgBrush );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
      if (!themedFace)
 #endif
      FillRect( hdc, &rectEdit, hBkgBrush );
@@ -714,7 +714,7 @@ static void CBPaintText(HEADCOMBO *lphc, HDC hdc_paint)
      }
      else
      {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        if (themedFace)
        {
 	   COLORREF color;
@@ -753,7 +753,7 @@ static void CBPaintText(HEADCOMBO *lphc, HDC hdc_paint)
 		    ETO_OPAQUE | ETO_CLIPPED,
 		    &rectEdit,
 		    pText ? pText : L"" , size, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        }
 #endif
 
@@ -800,7 +800,7 @@ static LRESULT COMBO_ThemedPaint(HTHEME theme, HEADCOMBO *lphc, HDC hdc)
 {
     int button_state;
     RECT frame;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL readonly = !(lphc->wState & CBF_EDIT);
     BOOL hot = (lphc->wState & (CBF_HOT | CBF_COMBOHOT)) != 0;
     BOOL pressed = (lphc->wState & CBF_BUTTONDOWN) ||
@@ -819,7 +819,7 @@ static LRESULT COMBO_ThemedPaint(HTHEME theme, HEADCOMBO *lphc, HDC hdc)
         InflateRect(&frame, COMBO_XBORDERSIZE(), COMBO_YBORDERSIZE());
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (readonly && IsThemePartDefined(theme, CP_READONLY, 0))
     {
         if (!IsWindowEnabled(lphc->self))
@@ -862,7 +862,7 @@ static LRESULT COMBO_ThemedPaint(HTHEME theme, HEADCOMBO *lphc, HDC hdc)
     {
         if (!IsWindowEnabled(lphc->self))
             button_state = CBXS_DISABLED;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (pressed)
             button_state = CBXS_PRESSED;
         else if ((lphc->wState & CBF_HOT) || (readonly && hot))
@@ -1185,7 +1185,7 @@ BOOL COMBO_FlipListbox( LPHEADCOMBO lphc, BOOL ok, BOOL bRedrawButton )
  */
 static void CBRepaintButton( LPHEADCOMBO lphc )
    {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (GetWindowTheme(lphc->self) && !(lphc->wState & CBF_EDIT))
     InvalidateRect(lphc->self, NULL, TRUE);
   else
@@ -1210,7 +1210,7 @@ static void COMBO_SetFocus( LPHEADCOMBO lphc )
 
        if( !(lphc->wState & CBF_EDIT) )
 	 InvalidateRect(lphc->self, &lphc->textRect, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        else if (GetWindowTheme(lphc->self))
 	 InvalidateRect(lphc->self, NULL, TRUE);
 #endif
@@ -1240,7 +1240,7 @@ static void COMBO_KillFocus( LPHEADCOMBO lphc )
            /* redraw text */
 	   if( !(lphc->wState & CBF_EDIT) )
 	     InvalidateRect(lphc->self, &lphc->textRect, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	   else if (GetWindowTheme(lphc->self))
 	     InvalidateRect(lphc->self, NULL, TRUE);
 #endif
@@ -1747,7 +1747,7 @@ static void COMBO_MouseMove( LPHEADCOMBO lphc, WPARAM wParam, LPARAM lParam )
 
 static LRESULT COMBO_MouseLeave(LPHEADCOMBO lphc)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lphc->wState & CBF_COMBOHOT)
     {
         lphc->wState &= ~CBF_COMBOHOT;
@@ -1996,7 +1996,7 @@ static LRESULT CALLBACK COMBO_WindowProc( HWND hwnd, UINT message, WPARAM wParam
         return  TRUE;
 
     case WM_MOUSEMOVE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetWindowTheme(hwnd))
         {
             TRACKMOUSEEVENT event;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:   ReactOS Shell
+ * PROJECT:   LibreNT Shell
  * LICENSE:   GPL - See COPYING in the top level directory
  * PURPOSE:   Misc shell helper functions
  * COPYRIGHT: Copyright 2015 Giannis Adamopoulos

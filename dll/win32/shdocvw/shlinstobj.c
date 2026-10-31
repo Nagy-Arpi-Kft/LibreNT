@@ -160,7 +160,7 @@ static HRESULT WINAPI RegistryPropertyBag_IPropertyBag_Write(IPropertyBag *iface
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static IPropertyBagVtbl RegistryPropertyBag_IPropertyBagVtbl = {
 #else
 static const IPropertyBagVtbl RegistryPropertyBag_IPropertyBagVtbl = {
@@ -309,7 +309,7 @@ static HRESULT WINAPI InstanceObjectFactory_IClassFactory_LockServer(IClassFacto
     return S_OK;        
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static IClassFactoryVtbl InstanceObjectFactory_IClassFactoryVtbl = {
 #else
 static const IClassFactoryVtbl InstanceObjectFactory_IClassFactoryVtbl = {

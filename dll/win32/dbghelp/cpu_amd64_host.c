@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host dbghelp
+ * PROJECT:     LibreNT host dbghelp
  * LICENSE:     LGPL-2.1-or-later
  * PURPOSE:     Minimal AMD64 CPU description for host symbol conversion
  */

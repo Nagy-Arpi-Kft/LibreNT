@@ -31,7 +31,7 @@
 #include "ddk/wdm.h"
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 #endif
@@ -108,19 +108,19 @@ struct arm64ec_shared_info
     ULONGLONG unknown;
 };
 
-#if !defined(__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#if !defined(__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
 static BOOL is_machine_32bit( USHORT machine )
 {
     return machine == IMAGE_FILE_MACHINE_I386 || machine == IMAGE_FILE_MACHINE_ARMNT;
 }
-#endif // !defined(__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#endif // !defined(__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
 
 static BOOL get_windows_path(char path[MAX_PATH], const char *suffix)
 {
     SIZE_T root_len, suffix_len;
 
-#ifdef __REACTOS__
-    /* ReactOS: the configured Windows directory is not necessarily on C:. */
+#ifdef __LIBRENT__
+    /* LibreNT: the configured Windows directory is not necessarily on C:. */
     root_len = GetWindowsDirectoryA(path, MAX_PATH);
     if (!root_len || root_len >= MAX_PATH)
         return FALSE;
@@ -233,7 +233,7 @@ static void init(void)
 #endif
 }
 
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
 static BOOL create_process_machine( char *cmdline, DWORD flags, USHORT machine, PROCESS_INFORMATION *pi )
 {
     struct _PROC_THREAD_ATTRIBUTE_LIST *list;
@@ -500,7 +500,7 @@ static void test_query_architectures(SYSTEM_INFORMATION_CLASS class)
         }
     }
 }
-#endif // !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#endif // !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
 
 static void push_onto_free_list( CROSS_PROCESS_WORK_HDR *list, CROSS_PROCESS_WORK_ENTRY *entry )
 {
@@ -932,7 +932,7 @@ static void test_wow64_shared_info( HANDLE process )
         trace( "no WOW64INFO section handle\n" );
 }
 
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
 static void test_amd64_shared_info( HANDLE process )
 {
     ULONG i, peb_data[0x200], buffer[16];
@@ -970,7 +970,7 @@ static void test_amd64_shared_info( HANDLE process )
     else
         trace( "no shared info section handle\n" );
 }
-#endif // !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#endif // !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
 
 static void test_peb_teb(void)
 {
@@ -1107,7 +1107,7 @@ static void test_peb_teb(void)
         CloseHandle( pi.hThread );
     }
 
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
     if (is_win64 && native_machine == IMAGE_FILE_MACHINE_ARM64 &&
         create_process_machine( (char *)"C:\\windows\\system32\\regsvr32.exe /?", CREATE_SUSPENDED,
                                 IMAGE_FILE_MACHINE_AMD64, &pi ))
@@ -3513,7 +3513,7 @@ static void test_arm64ec(void)
 START_TEST(wow64)
 {
     init();
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x600)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x600)
     test_query_architectures(SystemSupportedProcessorArchitectures);
     test_query_architectures(SystemSupportedProcessorArchitectures2);
 #endif

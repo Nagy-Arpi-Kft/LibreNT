@@ -1807,7 +1807,7 @@ static void test_widen(void)
     GdipDeletePath(path);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_widen_round_join(void)
 {
     const GpPointF right_turn[] = {{10.0, 40.0}, {40.0, 40.0}, {40.0, 70.0}};
@@ -2536,7 +2536,7 @@ START_TEST(graphicspath)
     test_flatten();
     test_warp_path();
     test_widen();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_widen_round_join();
 #endif
     test_widen_cap();

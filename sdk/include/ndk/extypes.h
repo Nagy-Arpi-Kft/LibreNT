@@ -301,7 +301,7 @@ typedef enum _SYSTEM_INFORMATION_CLASS
     SystemRegisterFirmwareTableInformationHandler         = 75, // 0x4B
     SystemFirmwareTableInformation                        = 76, // 0x4C
 
-#if (NTDDI_VERSION >= NTDDI_VISTA) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_VISTA) || defined(__LIBRENT__)
     SystemModuleInformationEx                             = 77, // 0x4D
     SystemVerifierTriageInformation                       = 78, // 0x4E
     SystemSuperfetchInformation                           = 79, // 0x4F
@@ -334,7 +334,7 @@ typedef enum _SYSTEM_INFORMATION_CLASS
     SystemVirtualAddressInformation                       = 106, // 0x6A
 #endif // (NTDDI_VERSION >= NTDDI_VISTA)
 
-#if (NTDDI_VERSION >= NTDDI_WIN7) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN7) || defined(__LIBRENT__)
     SystemLogicalProcessorAndGroupInformation             = 107, // 0x6B
     SystemProcessorCycleTimeInformation                   = 108, // 0x6C
     SystemStoreInformation                                = 109, // 0x6D
@@ -395,7 +395,7 @@ typedef enum _SYSTEM_INFORMATION_CLASS
     SystemEdidInformation                                 = 156, // 0x9C
 #endif // (NTDDI_VERSION >= NTDDI_WINBLUE)
 
-#if (NTDDI_VERSION >= NTDDI_WIN10) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10) || defined(__LIBRENT__)
     SystemManufacturingInformation                        = 157, // 0x9D
     SystemEnergyEstimationConfigInformation               = 158, // 0x9E
     SystemHypervisorDetailInformation                     = 159, // 0x9F
@@ -469,7 +469,7 @@ typedef enum _SYSTEM_INFORMATION_CLASS
     SystemPoolZeroingInformation                          = 227, // 0xE3
 #endif // (NTDDI_VERSION >= NTDDI_WIN10)
 
-#if (NTDDI_VERSION >= NTDDI_WIN11) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN11) || defined(__LIBRENT__)
     SystemDpcWatchdogInformation                          = 228, // 0xE4
     SystemDpcWatchdogInformation2                         = 229, // 0xE5
     SystemSupportedProcessorArchitectures2                = 230, // 0xE6

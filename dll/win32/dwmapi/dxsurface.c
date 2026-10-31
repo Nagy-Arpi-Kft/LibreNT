@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Desktop Window Manager API
+ * PROJECT:     LibreNT Desktop Window Manager API
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     D3DKMT shared redirection-surface management
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -25,7 +25,7 @@
 #include <d3d11.h>
 #include <d3dkmthk.h>
 #include <ndk/rtlfuncs.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 #include <wine/debug.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(dwmapi);
@@ -845,7 +845,7 @@ DwmpDxUpdateWindowSharedSurface(HWND Window,
 }
 
 /*
- * ReactOS extension: publishes a producer-owned client buffer, retained.
+ * LibreNT extension: publishes a producer-owned client buffer, retained.
  * DWM samples it in place and sets ReleaseEvent once no frame reads it.
  * The buffer's GPU writes must be complete. Flags may add
  * DWM_DX_PUBLISH_SCANOUT for a buffer the display can scan out.

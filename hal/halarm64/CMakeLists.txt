@@ -1,15 +1,15 @@
 
 get_filename_component(HAL_ARM64_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
-set(HAL_COMMON_DIR "${REACTOS_SOURCE_DIR}/hal/arch/common")
+set(HAL_COMMON_DIR "${LIBRENT_SOURCE_DIR}/hal/arch/common")
 
 spec2def(hal.dll ../hal.spec ADD_IMPORTLIB)
 
-function(reactos_hal_setup TARGET ENTRYPOINT)
+function(librent_hal_setup TARGET ENTRYPOINT)
     set_module_type(${TARGET} kerneldll ENTRYPOINT ${ENTRYPOINT})
     target_link_libraries(${TARGET} halcommon libcntpr)
     add_importlibs(${TARGET} ntoskrnl)
     add_dependencies(${TARGET} psdk asm)
-    add_cd_file(TARGET ${TARGET} DESTINATION reactos/system32 NO_CAB FOR all)
+    add_cd_file(TARGET ${TARGET} DESTINATION librent/system32 NO_CAB FOR all)
     if(NOT MSVC)
         if(TARGET libgcc)
             target_link_libraries(${TARGET} libgcc)
@@ -26,9 +26,9 @@ add_definitions(
 include_directories(
     ${HAL_ARM64_SOURCE_DIR}/include
     ${HAL_COMMON_DIR}/include
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/include
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/include/internal
-    ${REACTOS_SOURCE_DIR}/sdk/include
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/include
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/include/internal
+    ${LIBRENT_SOURCE_DIR}/sdk/include
     ${HAL_ARM64_SOURCE_DIR}/gic
     ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -73,19 +73,19 @@ endif()
 add_library(hal MODULE
     ${SOURCES}
     ${CMAKE_CURRENT_BINARY_DIR}/hal.def)
-reactos_hal_setup(hal 0)
+librent_hal_setup(hal 0)
 
 # Ship the explicit HAL name used by the UP-kernel boot entries.
 add_library(halup MODULE
     ${SOURCES}
     ${CMAKE_CURRENT_BINARY_DIR}/hal.def)
-reactos_hal_setup(halup 0)
+librent_hal_setup(halup 0)
 
 # Ship halmacpi.dll on ARM64 to match the livecd_wim.ini LiveCD_Wim_Macpi boot option
 add_library(halmacpi MODULE
     ${SOURCES}
     ${CMAKE_CURRENT_BINARY_DIR}/hal.def)
-reactos_hal_setup(halmacpi 0)
+librent_hal_setup(halmacpi 0)
 
 if(MSVC)
     set_property(GLOBAL APPEND PROPERTY _SPEC2DEF_FORWARD_USERS_hal halup halmacpi)
@@ -93,4 +93,4 @@ endif()
 
 # halacpi.c names PCI devices from the shared tables
 set_source_files_properties(${HAL_ARM64_SOURCE_DIR}/acpi/halacpi.c PROPERTIES
-    OBJECT_DEPENDS "${REACTOS_BINARY_DIR}/hal/arch/common/pci_classes.h;${REACTOS_BINARY_DIR}/hal/arch/common/pci_vendors.h")
+    OBJECT_DEPENDS "${LIBRENT_BINARY_DIR}/hal/arch/common/pci_classes.h;${LIBRENT_BINARY_DIR}/hal/arch/common/pci_vendors.h")

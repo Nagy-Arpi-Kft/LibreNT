@@ -1690,7 +1690,7 @@ static const IWebBrowserPriv2IE9Vtbl WebBrowserPriv2IE9Vtbl = {
     WebBrowserPriv2IE9_NavigateWithBindCtx2
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline HlinkFrame *impl_from_IWebBrowserPriv(IWebBrowserPriv *iface)
 {
     return CONTAINING_RECORD(iface, HlinkFrame, IWebBrowserPriv_iface);
@@ -1809,7 +1809,7 @@ BOOL HlinkFrame_QI(HlinkFrame *This, REFIID riid, void **ppv)
     }else if(IsEqualGUID(&IID_IWebBrowserPriv2IE9, riid)) {
         TRACE("(%p)->(IID_IWebBrowserPriv2IE9 %p)\n", This, ppv);
         *ppv = &This->IWebBrowserPriv2IE9_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }else if(IsEqualGUID(&IID_IWebBrowserPriv, riid)) {
         TRACE("(%p)->(IID_IWebBrowserPriv %p)\n", This, ppv);
         *ppv = &This->IWebBrowserPriv_iface;
@@ -1832,7 +1832,7 @@ void HlinkFrame_Init(HlinkFrame *This, IUnknown *outer, DocHost *doc_host)
     This->ITargetFrame2_iface.lpVtbl = &TargetFrame2Vtbl;
     This->ITargetFramePriv2_iface.lpVtbl = &TargetFramePriv2Vtbl;
     This->IWebBrowserPriv2IE9_iface.lpVtbl = &WebBrowserPriv2IE9Vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->IWebBrowserPriv_iface.lpVtbl = &WebBrowserPrivVtbl;
     This->ISecMgrCacheSeedTarget_iface.lpVtbl = &SecMgrCacheSeedTargetVtbl;
 #endif

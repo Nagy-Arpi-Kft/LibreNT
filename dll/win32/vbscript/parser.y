@@ -609,21 +609,21 @@ ClassBody
 PropertyDecl
     : Storage_opt tPROPERTY tGET Identifier ArgumentsDecl_opt StSep BodyStatements tEND tPROPERTY
                                     { $$ = new_function_decl(ctx, @2, @4, $4, FUNC_PROPGET, $1, $5, $7); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @6;
 #endif
                                     }
     | Storage_opt tPROPERTY tLET Identifier '(' ArgumentDeclList ')' StSep BodyStatements tEND tPROPERTY
                                     { if($1 & STORAGE_IS_DEFAULT) { ctx->error_loc = @3; ctx->hres = MAKE_VBSERROR(VBSE_DEFAULT_ONLY_ON_PROPERTY_GET); YYABORT; }
                                       $$ = new_function_decl(ctx, @2, @4, $4, FUNC_PROPLET, $1, $6, $9); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @8;
 #endif
                                     }
     | Storage_opt tPROPERTY tSET Identifier '(' ArgumentDeclList ')' StSep BodyStatements tEND tPROPERTY
                                     { if($1 & STORAGE_IS_DEFAULT) { ctx->error_loc = @3; ctx->hres = MAKE_VBSERROR(VBSE_DEFAULT_ONLY_ON_PROPERTY_GET); YYABORT; }
                                       $$ = new_function_decl(ctx, @2, @4, $4, FUNC_PROPSET, $1, $6, $9); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @8;
 #endif
                                     }
@@ -642,13 +642,13 @@ PropertyDecl
 FunctionDecl
     : Storage_opt tSUB Identifier StSep BodyStatements tEND tSUB
                                     { $$ = new_function_decl(ctx, @2, @3, $3, FUNC_SUB, $1, NULL, $5); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @4;
 #endif
                                     }
     | Storage_opt tSUB Identifier ArgumentsDecl Nl_opt BodyStatements tEND tSUB
                                     { $$ = new_function_decl(ctx, @2, @3, $3, FUNC_SUB, $1, $4, $6); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @5;
 #endif
                                     }
@@ -658,13 +658,13 @@ FunctionDecl
                                     { ctx->hres = MAKE_VBSERROR(VBSE_EXPECTED_SUB); YYABORT; }
     | Storage_opt tFUNCTION Identifier StSep BodyStatements tEND tFUNCTION
                                     { $$ = new_function_decl(ctx, @2, @3, $3, FUNC_FUNCTION, $1, NULL, $5); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @4;
 #endif
                                     }
     | Storage_opt tFUNCTION Identifier ArgumentsDecl Nl_opt BodyStatements tEND tFUNCTION
                                     { $$ = new_function_decl(ctx, @2, @3, $3, FUNC_FUNCTION, $1, $4, $6); CHECK_ERROR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       $$->decl_end_loc = @5;
 #endif
                                     }
@@ -1313,7 +1313,7 @@ static function_decl_t *new_function_decl(parser_ctx_t *ctx, unsigned loc, unsig
     decl->body = body;
     decl->loc = loc;
     decl->name_loc = name_loc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     decl->decl_end_loc = loc;
 #endif
     decl->next = NULL;
@@ -1401,7 +1401,7 @@ static class_decl_t *add_class_function(parser_ctx_t *ctx, class_decl_t *class_d
             }
 
             if(!check_property_args(iter, decl)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ctx->error_loc = iter->loc > decl->loc ? iter->decl_end_loc : decl->decl_end_loc;
 #else
                 ctx->error_loc = decl->loc;
@@ -1517,7 +1517,7 @@ void *parser_alloc(parser_ctx_t *ctx, size_t size)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static statement_t *find_nested_function(statement_t *stat, BOOL nested)
 {
     statement_t *found;
@@ -1597,7 +1597,7 @@ HRESULT parse_script(parser_ctx_t *ctx, const WCHAR *code, const WCHAR *delimite
 
     parser_parse(ctx);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(ctx->hres == S_OK) {
         statement_t *nested = find_nested_function(ctx->stats, FALSE);
         class_decl_t *class_decl;

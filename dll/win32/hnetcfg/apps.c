@@ -114,7 +114,7 @@ static REFIID tid_id[] =
     &IID_INetFwPolicy,
     &IID_INetFwPolicy2,
     &IID_INetFwProfile,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     &IID_INetFwRule,
     &IID_INetFwRules,
 #endif

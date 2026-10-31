@@ -28,7 +28,7 @@
 #include "shdocvw.h"
 
 #include "winreg.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <rpcproxy.h> /* for __wine_register_resources / __wine_unregister_resources */
 #include "objects.h"
 #endif
@@ -43,7 +43,7 @@ LONG SHDOCVW_refCount = 0;
 
 static HMODULE SHDOCVW_hshell32 = 0;
 static HINSTANCE ieframe_instance;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HINSTANCE instance;
 #endif
 
@@ -88,7 +88,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
        || IsEqualGUID(&CLSID_TaskbarList, rclsid))
         return get_ieframe_object(rclsid, riid, ppv);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         HRESULT hr = SHDOCVW_DllGetClassObject(rclsid, riid, ppv);
         if (SUCCEEDED(hr))
@@ -100,7 +100,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
     return SHDOCVW_GetShellInstanceObjectClassObject(rclsid, riid, ppv);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /***********************************************************************
  *          DllRegisterServer (shdocvw.@)
  */
@@ -160,7 +160,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD fdwReason, LPVOID fImpLoad)
     switch (fdwReason)
     {
     case DLL_PROCESS_ATTACH:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         instance = hinst;
         SHDOCVW_Init(hinst);
 #endif
@@ -180,14 +180,14 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD fdwReason, LPVOID fImpLoad)
  */
 HRESULT WINAPI DllCanUnloadNow(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SHDOCVW_DllCanUnloadNow() != S_OK)
         return S_FALSE;
 #endif
     return SHDOCVW_refCount ? S_FALSE : S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /***********************************************************************
  *              DllGetVersion (SHDOCVW.@)
  */
@@ -227,7 +227,7 @@ static BOOL SHDOCVW_LoadShell32(void)
      return ((SHDOCVW_hshell32 = LoadLibraryA("shell32.dll")) != NULL);
 }
 
-#ifndef __REACTOS__ /* See winlist.cpp */
+#ifndef __LIBRENT__ /* See winlist.cpp */
 /***********************************************************************
  *		@ (SHDOCVW.110)
  *
@@ -239,7 +239,7 @@ DWORD WINAPI WinList_Init(void)
     FIXME("(), stub!\n");
     return 0x0deadfeed;
 }
-#endif /* ndef __REACTOS__ */
+#endif /* ndef __LIBRENT__ */
 
 /***********************************************************************
  *		@ (SHDOCVW.118)

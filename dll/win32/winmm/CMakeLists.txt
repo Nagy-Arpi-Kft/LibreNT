@@ -1,6 +1,6 @@
 
 add_definitions(-D_WINE -D_WINMM_)
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 spec2def(winmm.dll winmm.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -35,7 +35,7 @@ target_link_libraries(winmm wine uuid ${PSEH_LIB} oldnames)
 add_importlibs(winmm userenv advapi32 user32 ole32 msacm32 msvcrt kernel32 ntdll)
 add_delay_importlibs(winmm dinput8)
 add_pch(winmm winemm.h SOURCE)
-add_cd_file(TARGET winmm DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winmm DESTINATION librent/system32 FOR all)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     target_compile_options(winmm PRIVATE -Wno-unused-but-set-variable)

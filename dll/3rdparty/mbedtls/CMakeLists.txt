@@ -1,6 +1,6 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs
-                    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/zlib)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs
+                    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/zlib)
 
 spec2def(mbedtls.dll mbedtls.spec ADD_IMPORTLIB)
 
@@ -143,7 +143,7 @@ endif()
 # and explicitly export it from msvcrt for it to work... what on earth?!
 add_definitions(-DMINGW_HAS_SECURE_API -DCRTDLL)
 
-add_cd_file(TARGET mbedtls DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mbedtls DESTINATION librent/system32 FOR all)
 
 if(NOT MSVC)
     target_compile_options(mbedtls PRIVATE -Wno-pointer-sign -Wno-unused-function)

@@ -43,7 +43,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(winhttp);
 #define DEFAULT_CONNECT_TIMEOUT             20000
 #define DEFAULT_SEND_TIMEOUT                30000
 #define DEFAULT_RECEIVE_TIMEOUT             30000
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DEFAULT_RECEIVE_RESPONSE_TIMEOUT    90000
 #else
 #define DEFAULT_RECEIVE_RESPONSE_TIMEOUT    ~0u
@@ -249,7 +249,7 @@ static BOOL session_set_option( struct object_header *hdr, DWORD option, void *b
             return FALSE;
         }
         session->receive_timeout = *(DWORD *)buffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((DWORD)session->receive_response_timeout < (DWORD)session->receive_timeout)
             session->receive_response_timeout = session->receive_timeout;
 #endif
@@ -262,7 +262,7 @@ static BOOL session_set_option( struct object_header *hdr, DWORD option, void *b
             SetLastError( ERROR_INSUFFICIENT_BUFFER );
             return FALSE;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         session->receive_response_timeout = max( *(DWORD *)buffer, (DWORD)session->receive_timeout );
 #else
         session->receive_response_timeout = *(DWORD *)buffer;
@@ -394,7 +394,7 @@ HINTERNET WINAPI WinHttpOpen( LPCWSTR agent, DWORD access, LPCWSTR proxy, LPCWST
     if (flags & ~WINHTTP_FLAG_ASYNC) FIXME( "flags %#lx not supported\n", flags );
 
     if (!(session = calloc( 1, sizeof(*session) ))) return NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     winsock_init();
 #endif
 
@@ -514,7 +514,7 @@ static BOOL connect_query_option( struct object_header *hdr, DWORD option, void 
         *buflen = sizeof(DWORD);
         return TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WINHTTP_OPTION_WEB_SOCKET_RECEIVE_BUFFER_SIZE:
     case WINHTTP_OPTION_WEB_SOCKET_SEND_BUFFER_SIZE:
     case WINHTTP_OPTION_WEB_SOCKET_KEEPALIVE_INTERVAL:
@@ -529,7 +529,7 @@ static BOOL connect_query_option( struct object_header *hdr, DWORD option, void 
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL connect_set_option( struct object_header *hdr, DWORD option, void *buffer, DWORD buflen )
 {
     if (option == WINHTTP_OPTION_CALLBACK)
@@ -555,7 +555,7 @@ static const struct object_vtbl connect_vtbl =
     NULL,
     connect_destroy,
     connect_query_option,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     connect_set_option
 #else
     NULL
@@ -789,7 +789,7 @@ static void request_destroy( struct object_header *hdr )
     free( request->version );
     free( request->raw_headers );
     free( request->status_text );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free( request->username );
     free( request->password );
 #endif
@@ -882,7 +882,7 @@ static WCHAR *build_url( struct request *request )
     uc.lpszHostName = request->connect->hostname;
     uc.dwHostNameLength = wcslen( uc.lpszHostName );
     uc.nPort = request->connect->hostport;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uc.lpszUserName = request->username;
     uc.dwUserNameLength = request->username ? wcslen( request->username ) : 0;
     uc.lpszPassword = request->password;
@@ -1078,7 +1078,7 @@ static BOOL request_query_option( struct object_header *hdr, DWORD option, void 
         *buflen = sizeof(DWORD);
         return TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WINHTTP_OPTION_USERNAME:
         return return_string_option( buffer, request->username, buflen );
 
@@ -1270,7 +1270,7 @@ static BOOL request_set_option( struct object_header *hdr, DWORD option, void *b
             return FALSE;
         }
         request->receive_timeout = *(DWORD *)buffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((DWORD)request->receive_response_timeout < (DWORD)request->receive_timeout)
             request->receive_response_timeout = request->receive_timeout;
 #endif
@@ -1283,7 +1283,7 @@ static BOOL request_set_option( struct object_header *hdr, DWORD option, void *b
             SetLastError( ERROR_INSUFFICIENT_BUFFER );
             return FALSE;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         request->receive_response_timeout = max( *(DWORD *)buffer, (DWORD)request->receive_timeout );
 #else
         request->receive_response_timeout = *(DWORD *)buffer;
@@ -1291,7 +1291,7 @@ static BOOL request_set_option( struct object_header *hdr, DWORD option, void *b
         TRACE( "receive_response_timeout %u\n", request->receive_response_timeout );
         return TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WINHTTP_OPTION_USERNAME:
         free( request->username );
         if (!(request->username = buffer_to_str( buffer, buflen ))) return FALSE;
@@ -1437,7 +1437,7 @@ static BOOL request_set_option( struct object_header *hdr, DWORD option, void *b
         FIXME( "WINHTTP_OPTION_ENABLE_HTTP_PROTOCOL %#lx\n", *(DWORD *)buffer );
         return TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WINHTTP_OPTION_WEB_SOCKET_KEEPALIVE_INTERVAL:
         SetLastError( ERROR_WINHTTP_INCORRECT_HANDLE_TYPE );
         return FALSE;
@@ -2807,7 +2807,7 @@ BOOL WINAPI WinHttpSetTimeouts( HINTERNET handle, int resolve, int connect, int 
         if (send < 0) send = 0;
         request->send_timeout = send;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((DWORD)request->receive_response_timeout < (DWORD)receive)
             request->receive_response_timeout = receive;
 #endif
@@ -2832,7 +2832,7 @@ BOOL WINAPI WinHttpSetTimeouts( HINTERNET handle, int resolve, int connect, int 
         if (send < 0) send = 0;
         session->send_timeout = send;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((DWORD)session->receive_response_timeout < (DWORD)receive)
             session->receive_response_timeout = receive;
 #endif

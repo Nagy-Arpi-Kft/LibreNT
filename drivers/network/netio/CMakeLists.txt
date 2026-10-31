@@ -8,7 +8,7 @@ include_directories(
     BEFORE include
     ../afd/include
     ../tdihelpers/include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 list(APPEND SOURCE
     netio.c
@@ -30,5 +30,5 @@ target_link_libraries(netio wdmsec ${PSEH_LIB})
 target_compile_definitions(netio PRIVATE NDIS620)
 set_module_type(netio kernelmodedriver)
 add_importlibs(netio ndis ntoskrnl hal)
-add_cd_file(TARGET netio DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET netio DESTINATION librent/system32/drivers FOR all)
 add_registry_inf(netio_reg.inf)

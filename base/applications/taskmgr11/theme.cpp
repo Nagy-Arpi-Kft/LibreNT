@@ -1,12 +1,12 @@
 /*
- * PROJECT:     ReactOS Task Manager
+ * PROJECT:     LibreNT Task Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Theme engine: Win11 light/dark palettes, fonts, DPI
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
  */
 
 #include "app.h"
-#include <reactos/dwmsettings.h>
+#include <librent/dwmsettings.h>
 
 Theme g_t;
 
@@ -39,7 +39,7 @@ static HFONT MakeFont(int size, int weight, const WCHAR* face)
 static const WCHAR* PickFace(void)
 {
     /* Try the Win11 face first, then Segoe UI, then whatever the
-       system substitutes (ReactOS maps these in FontSubstitutes). */
+       system substitutes (LibreNT maps these in FontSubstitutes). */
     static WCHAR s_face[LF_FACESIZE];
     static BOOL s_done = FALSE;
     if (s_done) return s_face;

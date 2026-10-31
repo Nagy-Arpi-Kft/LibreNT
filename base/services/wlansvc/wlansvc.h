@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WLAN Service
+ * PROJECT:     LibreNT WLAN Service
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Internal state model for the WLAN AutoConfig service
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -53,14 +53,14 @@
 #endif
 
 /*
- * <reactos/nwifi_ioctl.h> pulls in <windot11.h>, whose dot11 types the MIDL
+ * <librent/nwifi_ioctl.h> pulls in <windot11.h>, whose dot11 types the MIDL
  * stub has already defined; predefining its include guard suppresses the
  * duplicate body.  The dot11 macros lost this way are restated above.
  */
 #ifndef __WINDOT11_H__
 #define __WINDOT11_H__
 #endif
-#include <reactos/nwifi_ioctl.h>
+#include <librent/nwifi_ioctl.h>
 
 /*
  * Service-local working limits.  The wire structs are variable-length (IEs

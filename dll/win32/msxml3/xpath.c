@@ -3355,7 +3355,7 @@ static struct domnode * xpath_next_attribute(struct xpath_parser_context *ctxt, 
     return xpath_get_next_attribute(cur);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static struct domnode * xslpattern_next_attribute(struct xpath_parser_context *ctxt, struct domnode *cur)
 {
     if (!ctxt || !ctxt->context) return NULL;
@@ -3816,7 +3816,7 @@ static int xpath_node_collect_and_test(struct xpath_parser_context *ctxt,
         case AXIS_ATTRIBUTE:
             first = NULL;
             last = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             next = !ctxt->context->xpath && test == NODE_TEST_ALL ? xslpattern_next_attribute : xpath_next_attribute;
 #else
             next = xpath_next_attribute;
@@ -4073,7 +4073,7 @@ static int xpath_node_collect_and_test(struct xpath_parser_context *ctxt,
                     {
                         if (cur->type == NODE_ATTRIBUTE)
                         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             if (!ctxt->context->xpath && prefix && !uri)
                             {
                                 if (xslpattern_is_same_prefix(cur, prefix))
@@ -4100,7 +4100,7 @@ static int xpath_node_collect_and_test(struct xpath_parser_context *ctxt,
                     {
                         if (cur->type == NODE_ELEMENT)
                         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             if (!ctxt->context->xpath && prefix && !uri)
                             {
                                 if (xslpattern_is_same_prefix(cur, prefix))
@@ -5066,7 +5066,7 @@ static int xpath_icompare_values(struct xpath_parser_context *ctxt, bool inf, bo
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static bool xslpattern_collate(const WCHAR *str1, const WCHAR *str2, bool inf, bool strict)
 {
     int ret = CompareStringW(LOCALE_USER_DEFAULT, 0, str1 ? str1 : L"", -1, str2 ? str2 : L"", -1) - CSTR_EQUAL;
@@ -5233,7 +5233,7 @@ static int xpath_comp_op_eval(struct xpath_parser_context *ctxt, struct xpath_st
             if (ctxt->error != XPATH_EXPRESSION_OK) return 0;
             total += xpath_comp_op_eval(ctxt, &comp->steps.values[op->ch2]);
             if (ctxt->error != XPATH_EXPRESSION_OK) return 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!ctxt->context->xpath)
                 ret = xslpattern_compare_values(ctxt, op->value, op->value2);
             else
@@ -5464,7 +5464,7 @@ static int xpath_comp_op_eval(struct xpath_parser_context *ctxt, struct xpath_st
                     struct xpath_object *val;
 
                     val = comp->steps.values[op->ch2].value4;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (val && val->type == _XPATH_NUMBER && val->floatval == 1.0 - xpath_adjust_nodeset_index(ctxt, 0))
 #else
                     if (val && val->type == _XPATH_NUMBER && val->floatval == 1.0)
@@ -6968,7 +6968,7 @@ static void xslpattern_compile_primary_expr(struct xpath_parser_context *ctxt)
     {
         xpath_compile_number(ctxt);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (*ctxt->cur == '-' && (is_ascii_digit(ctxt->cur[1]) || (ctxt->cur[1] == '.' && is_ascii_digit(ctxt->cur[2]))))
     {
         struct xpath_object *num;
@@ -7231,7 +7231,7 @@ static WCHAR * xslpattern_compile_nodetest(struct xpath_parser_context *ctxt, en
  *              | '.'
  *              | '..'
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void xslpattern_compile_relative_location_path(struct xpath_parser_context *ctxt);
 
 #endif
@@ -7248,7 +7248,7 @@ static void xslpattern_compile_step(struct xpath_parser_context *ctxt)
 
     xpath_parse_skipspaces(ctxt);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (xpath_parse_cmp(ctxt, L"("))
     {
         xslpattern_compile_relative_location_path(ctxt);
@@ -7451,7 +7451,7 @@ static void xslpattern_compile_path_expr(struct xpath_parser_context *ctxt)
     {
         location_path = false;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (*ctxt->cur == '-' && (is_ascii_digit(ctxt->cur[1]) || (ctxt->cur[1] == '.' && is_ascii_digit(ctxt->cur[2]))))
     {
         location_path = false;

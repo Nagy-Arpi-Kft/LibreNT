@@ -73,7 +73,7 @@ typedef __builtin_va_list       va_list;
 #define ACPI_FALLTHROUGH __attribute__((__fallthrough__))
 #endif
 
-#if defined(__REACTOS__) && defined(__i386__)
+#if defined(__LIBRENT__) && defined(__i386__)
 /* Flush CPU cache - used when going to sleep. Wbinvd or similar. */
 
 #ifdef ACPI_APPLICATION
@@ -123,7 +123,7 @@ do {                                                        \
         :"=a"(Acq):"a"(0),"c"(FacsPtr),"i"(~3L):"edx");\
 } while(0)
 
-#endif /* __REACTOS__ && __i386__ */
+#endif /* __LIBRENT__ && __i386__ */
 
 /*
  * Flexible array members are not allowed to be part of a union under

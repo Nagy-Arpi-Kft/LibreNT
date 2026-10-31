@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Explorer
+ * PROJECT:     LibreNT Explorer
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     The combo box of the address band
  * COPYRIGHT:   Copyright 2009 Andrew Hill <ash77 at domain reactos.org>

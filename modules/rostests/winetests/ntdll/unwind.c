@@ -1814,7 +1814,7 @@ static void call_virtual_unwind_arm64( void *code_mem, int testnum, const struct
     }
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define DW(dword) ((dword >> 0) & 0xff), ((dword >> 8) & 0xff), ((dword >> 16) & 0xff), ((dword >> 24) & 0xff)
 
 static void test_virtual_unwind_arm64(void)
@@ -2648,7 +2648,7 @@ static void test_virtual_unwind_arm64(void)
         call_virtual_unwind_arm64( code_mem, i, &tests[i] );
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #undef UWOP_ALLOC_SMALL
 #undef UWOP_ALLOC_LARGE
@@ -3500,7 +3500,7 @@ static void test_dynamic_unwind(void)
     pRtlDeleteGrowableFunctionTable( growable_table );
     check_growable_table(runtime_func, 0, (ULONG_PTR)code_mem, (ULONG_PTR)code_mem + code_offset + 64, FALSE);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     param.Type = MemExtendedParameterAttributeFlags;
     param.ULong64 = MEM_EXTENDED_PARAMETER_EC_CODE;
     ec_code = 0;
@@ -3576,7 +3576,7 @@ static void test_dynamic_unwind(void)
         pRtlDeleteGrowableFunctionTable( growable_table );
         VirtualFree( (void *)ec_code, 0, MEM_RELEASE );
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 }
 
 
@@ -3601,13 +3601,13 @@ START_TEST(unwind)
 
 #ifdef __arm__
     test_virtual_unwind_arm();
-#elif defined(__aarch64__) && !defined(__REACTOS__)
+#elif defined(__aarch64__) && !defined(__LIBRENT__)
     test_virtual_unwind_arm64();
 #elif defined(__x86_64__)
     test_virtual_unwind_x86();
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     test_virtual_unwind_arm64();
-#endif // __REACTOS__
+#endif // __LIBRENT__
 #endif
 
     test_dynamic_unwind();

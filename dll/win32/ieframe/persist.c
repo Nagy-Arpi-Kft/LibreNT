@@ -236,7 +236,7 @@ static HRESULT WINAPI PersistStreamInit_GetClassID(IPersistStreamInit *iface, CL
 static HRESULT WINAPI PersistStreamInit_IsDirty(IPersistStreamInit *iface)
 {
     WebBrowser *This = impl_from_IPersistStreamInit(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)\n", This);
     return S_FALSE;
 #else
@@ -247,7 +247,7 @@ static HRESULT WINAPI PersistStreamInit_IsDirty(IPersistStreamInit *iface)
 static HRESULT WINAPI PersistStreamInit_Load(IPersistStreamInit *iface, LPSTREAM pStg)
 {
     WebBrowser *This = impl_from_IPersistStreamInit(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)->(%p)\n", This, pStg);
     if(!pStg)
         return E_POINTER;
@@ -262,7 +262,7 @@ static HRESULT WINAPI PersistStreamInit_Save(IPersistStreamInit *iface, LPSTREAM
         BOOL fSameAsLoad)
 {
     WebBrowser *This = impl_from_IPersistStreamInit(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)->(%p %x)\n", This, pStg, fSameAsLoad);
     if(!pStg)
         return E_POINTER;
@@ -277,7 +277,7 @@ static HRESULT WINAPI PersistStreamInit_GetSizeMax(IPersistStreamInit *iface,
         ULARGE_INTEGER *pcbSize)
 {
     WebBrowser *This = impl_from_IPersistStreamInit(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)->(%p)\n", This, pcbSize);
     if(!pcbSize)
         return E_POINTER;
@@ -292,7 +292,7 @@ static HRESULT WINAPI PersistStreamInit_GetSizeMax(IPersistStreamInit *iface,
 static HRESULT WINAPI PersistStreamInit_InitNew(IPersistStreamInit *iface)
 {
     WebBrowser *This = impl_from_IPersistStreamInit(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)\n", This);
     WebBrowser_Ext_InitNew(This);
 #else

@@ -32,7 +32,7 @@ WINE_DEFAULT_DEBUG_CHANNEL (shell);
 #define DRAG_IMAGE_KEY RGB(255, 0, 255)
 #define DRAG_IMAGE_KEY_PIXEL 0x00FF00FFu
 
-static const WCHAR s_DragImageFormat[] = L"ReactOS Shell Drag Image";
+static const WCHAR s_DragImageFormat[] = L"LibreNT Shell Drag Image";
 static const WCHAR s_DragImageClass[] = L"SysDragImage";
 
 typedef struct _DRAG_IMAGE_HEADER

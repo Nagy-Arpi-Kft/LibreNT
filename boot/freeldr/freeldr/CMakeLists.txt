@@ -18,12 +18,12 @@ endif()
 
 include_directories(BEFORE include)
 include_directories(
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/include
-    ${REACTOS_SOURCE_DIR}/sdk/lib/cmlib
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/elf)
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/include
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/cmlib
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/elf)
 
-add_definitions(-D_NTHAL_ -D_BLDR_ -D_NTSYSTEM_ -DNTDDI_VERSION=${REACTOS_TARGET_NTDDI})
+add_definitions(-D_NTHAL_ -D_BLDR_ -D_NTSYSTEM_ -DNTDDI_VERSION=${LIBRENT_TARGET_NTDDI})
 
 option(FREELDR_WIM_RAMDISK "Enable FreeLDR boot.wim ramdisk decompression support" ON)
 
@@ -66,14 +66,14 @@ if(FREELDR_WIM_RAMDISK)
         lib/wim/wim_freeldr.c)
 
     add_library(freeldr_wimcore STATIC
-        ${REACTOS_SOURCE_DIR}/sdk/lib/libwim/lzx.c
-        ${REACTOS_SOURCE_DIR}/sdk/lib/libwim/sha1.c
-        ${REACTOS_SOURCE_DIR}/sdk/lib/libwim/wimcore.c
-        ${REACTOS_SOURCE_DIR}/sdk/lib/libwim/xpress_huff.c)
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/libwim/lzx.c
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/libwim/sha1.c
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/libwim/wimcore.c
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/libwim/xpress_huff.c)
     set_property(TARGET freeldr_wimcore PROPERTY C_STANDARD 11)
     target_include_directories(freeldr_wimcore PRIVATE
-        ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libwim
-        ${REACTOS_SOURCE_DIR}/boot/freeldr/freeldr/include)
+        ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libwim
+        ${LIBRENT_SOURCE_DIR}/boot/freeldr/freeldr/include)
     target_compile_definitions(freeldr_wimcore PRIVATE
         XPRESS_HUFF_DECOMPRESS_ONLY=1
         _NTHAL_
@@ -91,7 +91,7 @@ if(FREELDR_WIM_RAMDISK)
     set_source_files_properties(
         lib/wim/wim_freeldr.c
         PROPERTIES
-            INCLUDE_DIRECTORIES "${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libwim")
+            INCLUDE_DIRECTORIES "${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libwim")
 endif()
 
 list(APPEND FREELDR_BOOTMGR_SOURCE
@@ -164,8 +164,6 @@ if(FREELDR_HAS_BIOS_BOOT)
     include(pcat.cmake)
     include(rosload.cmake)
 endif()
-if(ARCH STREQUAL "ppc")
-    include(ofw.cmake)
-elseif(NOT BOOTLOADER_UEFI AND (NOT ARCH STREQUAL "i386" OR NOT (SARCH STREQUAL "pc98" OR SARCH STREQUAL "xbox")))
+if(NOT BOOTLOADER_UEFI AND (NOT ARCH STREQUAL "i386" OR NOT (SARCH STREQUAL "pc98" OR SARCH STREQUAL "xbox")))
     include(uefi.cmake)
 endif()

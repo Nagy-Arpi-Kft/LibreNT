@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS system libraries
+ * PROJECT:           LibreNT system libraries
  * PURPOSE:           Network configuration
  * FILE:              dll/win32/netcfgx/netinstall.c
  * PROGRAMER:         Eric Kohl

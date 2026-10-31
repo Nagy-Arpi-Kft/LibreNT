@@ -17,10 +17,10 @@
 ---
 
 <p align="center">
-  <img width="1000" alt="The LiberNT desktop on arm64" src="media/graphics/screenshots/libernt-desktop-arm64.png">
+  <img width="1000" alt="The LibreNT desktop on arm64" src="media/graphics/screenshots/libernt-desktop-arm64.png">
 </p>
 
-<p align="center"><sub>The LiberNT desktop on arm64, from build nt10.0-043-2555 in QEMU</sub></p>
+<p align="center"><sub>The LibreNT desktop on arm64, from build nt10.0-043-2555 in QEMU</sub></p>
 
 ---
 
@@ -45,13 +45,13 @@ LibreNT brings modern hardware and platforms to the NT architecture.
 
 | Feature | What it means for you |
 | --- | --- |
-| **64-bit first** | The kernel, HAL and FreeLoader run on amd64, arm64 and riscv64. |
+| **64-bit first** | The kernel, HAL and FreeLoader run on amd64 and arm64. |
 | **UEFI boot** | Boots on UEFI firmware, with a GOP framebuffer and early display support. The preinstalled disk boots with UEFI or BIOS. |
 | **Modern buses and storage** | PCIe, PCI, Plug and Play, USB with xHCI, SD/eMMC, and storage and bus drivers. |
 | **Board support** | Real boards, including the Raspberry Pi and its RP1 I/O controller. |
 | **The Windows 11 driver model** | Windows 11 (NT10) compatibility and driver-model work, checked against Windows 11 itself. |
 | **Graphics and x86 apps on Arm** | The graphics driver model with Mesa, and WoW64 with FEX, are build options you can switch on. |
-| **LiberNT Setup** | Lists drives the way Windows Setup does, creates, deletes, formats, shrinks and extends partitions, and installs LiberNT on NTFS with the EFI system partition it needs. |
+| **LibreNT Setup** | Lists drives the way Windows Setup does, creates, deletes, formats, shrinks and extends partitions, and installs LibreNT on NTFS with the EFI system partition it needs. |
 | **Your own build** | `menuconfig` lets you choose the target, compiler and build type, and switch features on or off. |
 
 ---
@@ -75,26 +75,26 @@ Every build on the [Releases](https://github.com/Nagy-Arpi-Kft/LibreNT/releases)
 | File | What it is |
 | --- | --- |
 | `bootcd-iso-…-<arch>-…zip` | `bootcd.iso`, a CD image that runs LibreNT or starts LibreNT Setup |
-| `LibreNT-img-…-<arch>-…zip` | `LiberNT.img`, a disk with LibreNT already installed |
-| `LibreNT-vhd-…-<arch>-…zip` | `LiberNT.vhd`, the same preinstalled disk for VHD-based virtual machines |
-| `LibreNT-vhdx-…-<arch>-…zip` | `LiberNT.vhdx`, the same preinstalled disk for Hyper-V Generation 2 |
+| `LibreNT-img-…-<arch>-…zip` | `LibreNT.img`, a disk with LibreNT already installed |
+| `LibreNT-vhd-…-<arch>-…zip` | `LibreNT.vhd`, the same preinstalled disk for VHD-based virtual machines |
+| `LibreNT-vhdx-…-<arch>-…zip` | `LibreNT.vhdx`, the same preinstalled disk for Hyper-V Generation 2 |
 
 ### Step 2: Boot It
 
-The quickest way to try LiberNT is the preinstalled disk:
+The quickest way to try LibreNT is the preinstalled disk:
 
-1. Unzip `LiberNT.img` (or `LiberNT.vhd`)
-2. Start it in a virtual machine such as **QEMU**, or use the VHD in **VirtualBox** or a **Hyper-V** Generation 1 virtual machine. Hyper-V Generation 2 takes only `LiberNT.vhdx`, with Secure Boot turned off
-3. Or write `LiberNT.img` to a USB drive or an SD card and boot the machine from it. It boots with UEFI or BIOS
+1. Unzip `LibreNT.img` (or `LibreNT.vhd`)
+2. Start it in a virtual machine such as **QEMU**, or use the VHD in **VirtualBox** or a **Hyper-V** Generation 1 virtual machine. Hyper-V Generation 2 takes only `LibreNT.vhdx`, with Secure Boot turned off
+3. Or write `LibreNT.img` to a USB drive or an SD card and boot the machine from it. It boots with UEFI or BIOS
 
 > [!CAUTION]
-> Writing `LiberNT.img` to a USB drive or an SD card erases everything on it. Double-check the target device first.
+> Writing `LibreNT.img` to a USB drive or an SD card erases everything on it. Double-check the target device first.
 
-### Step 3: Install LiberNT
+### Step 3: Install LibreNT
 
-Boot `bootcd.iso` in a virtual machine or on a PC, and follow the instructions of **LiberNT Setup**.
+Boot `bootcd.iso` in a virtual machine or on a PC, and follow the instructions of **LibreNT Setup**.
 
-The preinstalled disk also carries LiberNT Setup. Run `C:\<architecture>\libernt.exe`, for example `C:\arm64\libernt.exe`, to install LiberNT on another disk from the running system.
+The preinstalled disk also carries LibreNT Setup. Run `C:\<architecture>\librent.exe`, for example `C:\arm64\librent.exe`, to install LibreNT on another disk from the running system.
 
 > [!CAUTION]
 > Setup can delete and format partitions. Back up anything important on the target disk before you install.
@@ -107,10 +107,10 @@ The preinstalled disk also carries LiberNT Setup. Run `C:\<architecture>\libernt
 LibreNT/
 ├── base/            # Applications, services, setup and the shell
 ├── boot/            # FreeLoader, boot data and boot images
-├── bootloader/      # Boot manager, Windows loader, UEFI and Open Firmware support
+├── bootloader/      # Boot manager, Windows loader and UEFI support
 ├── dll/             # User-mode DLLs, including ntdll and the Win32 libraries
 ├── drivers/         # Kernel-mode drivers: buses, storage, file systems, network, input and more
-├── hal/             # Hardware abstraction layers for x86, Arm, Arm64, PowerPC and RISC-V
+├── hal/             # Hardware abstraction layers for x86, Arm and Arm64
 ├── media/           # Fonts, themes, INF files, sounds and branding
 ├── modules/         # Optional applications, tests and wallpapers
 ├── ntoskrnl/        # The NT kernel and executive
@@ -132,7 +132,7 @@ Report bugs and suggest features in [Issues](https://github.com/LiberNT/LiberNT/
 
 ## Use of AI
 
-We want to make it clear: AI is part of how LiberNT is built. It helps us review and write code, and everything it writes is then reviewed by a human. 
+We want to make it clear: AI is part of how LibreNT is built. It helps us review and write code, and everything it writes is then reviewed by a human. 
 ---
 
 ## License

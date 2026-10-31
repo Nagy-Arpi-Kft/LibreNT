@@ -51,7 +51,7 @@ Abstract:
 
 #define FAT_FILL_FREE 0
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -62,7 +62,7 @@ FatAllocateCcb (
     return (PCCB) FsRtlAllocatePoolWithTag( PagedPool, sizeof(CCB), TAG_CCB );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -78,7 +78,7 @@ FatFreeCcb (
     ExFreePool( Ccb );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -89,7 +89,7 @@ FatAllocateFcb (
     return (PFCB) FsRtlAllocatePoolWithTag( PagedPool, sizeof(FCB), TAG_FCB );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -105,7 +105,7 @@ FatFreeFcb (
     ExFreePool( Fcb );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -116,7 +116,7 @@ FatAllocateNonPagedFcb (
     return (PNON_PAGED_FCB) ExAllocateFromNPagedLookasideList( &FatNonPagedFcbLookasideList );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -132,7 +132,7 @@ FatFreeNonPagedFcb (
     ExFreeToNPagedLookasideList( &FatNonPagedFcbLookasideList, (PVOID) NonPagedFcb );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -149,7 +149,7 @@ FatAllocateResource (
     return Resource;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -167,7 +167,7 @@ FatFreeResource (
     ExFreeToNPagedLookasideList( &FatEResourceLookasideList, (PVOID) Resource );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -178,7 +178,7 @@ FatAllocateIrpContext (
     return (PIRP_CONTEXT) ExAllocateFromNPagedLookasideList( &FatIrpContextLookasideList );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -3107,12 +3107,12 @@ Return Value:
 --*/
 
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     NTSTATUS Status;
 #endif
     ULONG i;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     OEM_STRING OemA;
     OEM_STRING OemB;
 #endif
@@ -3278,7 +3278,7 @@ Return Value:
         //  Now we have the fun part.  Make a copy of the Lfn.
         //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         OemA.Buffer = NULL;
         OemB.Buffer = NULL;
 #endif
@@ -3292,7 +3292,7 @@ Return Value:
 
         RtlCopyMemory( Unicode.Buffer, Lfn->Buffer, Lfn->Length );
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         Status = STATUS_SUCCESS;
 #endif
 

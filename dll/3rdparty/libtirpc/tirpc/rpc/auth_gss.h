@@ -125,7 +125,7 @@ struct rpc_gss_init_res {
 /* Maximum sequence number value. */
 #define MAXSEQ		0x80000000
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef __BEGIN_DECLS
 #define __BEGIN_DECLS
 #define __END_DECLS

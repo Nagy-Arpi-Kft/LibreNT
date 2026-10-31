@@ -1,5 +1,5 @@
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_executable(iphlpapi_winetest iphlpapi.c testlist.c)
 target_link_libraries(iphlpapi_winetest wine ws2_32_inaddr)

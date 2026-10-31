@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            ntoskrnl/ke/arm64/topology.c
  * PURPOSE:         ARM64 CPU, NUMA and SMT topology discovery
@@ -7,7 +7,7 @@
  */
 
 #include <ntoskrnl.h>
-#include <reactos/arm64/acpi.h>
+#include <librent/arm64/acpi.h>
 
 #define NDEBUG
 #include <debug.h>

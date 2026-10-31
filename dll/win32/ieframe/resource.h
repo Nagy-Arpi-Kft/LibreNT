@@ -53,7 +53,7 @@
 #define ID_BROWSE_GOTOFAV_FIRST        2000
 #define ID_BROWSE_GOTOFAV_MAX          65000
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define IDS_INTERNET                   880
 #define IDS_INTERNET_DESCRIPTION       881
 #define IDS_INTSHCUT_OPEN              882
@@ -85,7 +85,7 @@
 #define IDS_ADDRESS                    1106
 
 #define IDB_IETOOLBAR                  1400
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define IDC_PAGEICO                    1401
 #endif
 

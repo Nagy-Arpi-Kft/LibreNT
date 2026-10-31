@@ -493,7 +493,7 @@ struct GpMetafile{
     IStream *record_stream;
     BOOL auto_frame; /* If true, determine the frame automatically */
     GpPointF auto_frame_min, auto_frame_max;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RECT record_bounds;
 #endif
     DWORD next_object_id;

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PROJECT:     LiberNT Build
+PROJECT:     LibreNT Build
 LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 PURPOSE:     Build the LLVM runtimes of a configured Clang build tree against the SDK headers
 COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -73,14 +73,14 @@ def up_to_date(manifest_file, recipe, names, outputs):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--reactos-build', required=True, type=Path)
+    parser.add_argument('--librent-build', required=True, type=Path)
     parser.add_argument('--llvm-source', type=Path)
     parser.add_argument('--toolchain', type=Path)
     parser.add_argument('--prefix', type=Path)
     parser.add_argument('--jobs', default=os.cpu_count() or 8, type=int)
     args = parser.parse_args()
     source = Path(__file__).resolve().parents[3]
-    build = args.reactos_build.resolve()
+    build = args.librent_build.resolve()
     cache = {}
     for line in (build / 'CMakeCache.txt').read_text().splitlines():
         if not line.startswith(('#', '//')) and ':' in line and '=' in line:
@@ -89,10 +89,10 @@ def main():
     arch = cache.get('ARCH')
     selected = TARGETS.get((arch, cache.get('ARM64EC_RUNTIME', '').upper() in ('1', 'ON', 'TRUE', 'YES')))
     if selected is None:
-        parser.error(f'--reactos-build is configured for {arch}, which has no runtime recipe here')
+        parser.error(f'--librent-build is configured for {arch}, which has no runtime recipe here')
     triple, processor, builtins_name, machine_flags, builtins_options = selected
-    toolchain = (args.toolchain or Path(cache['REACTOS_CLANG_LLVM_MINGW_ROOT'])).resolve()
-    llvm = (args.llvm_source or Path(os.environ.get('REACTOS_LLVM_SOURCE') or toolchain / 'src/llvm-project')).resolve()
+    toolchain = (args.toolchain or Path(cache['LIBRENT_CLANG_LLVM_MINGW_ROOT'])).resolve()
+    llvm = (args.llvm_source or Path(os.environ.get('LIBRENT_LLVM_SOURCE') or toolchain / 'src/llvm-project')).resolve()
     prefix = (args.prefix or build / f'{arch}-cxx-runtime').resolve()
     runtime = build / f'{arch}-cxx-build'
     runtime.mkdir(parents=True, exist_ok=True)
@@ -105,11 +105,11 @@ def main():
             parser.error(f'missing matching runtime input: {path}')
     run('cmake', '--build', build, '--target', 'xdk', 'psdk')
     includes = [resource / 'include'] + [source / 'sdk/include' / path for path in
-                ['ucrt', 'vcruntime', 'crt', 'psdk', '', 'ddk', 'reactos']] + [
+                ['ucrt', 'vcruntime', 'crt', 'psdk', '', 'ddk', 'librent']] + [
                 build / 'sdk/include', build / 'sdk/include/psdk', build / 'sdk/include/ddk']
     flags = (f'{machine_flags} -fms-extensions -funwind-tables '
              '-D_DLL -D__USE_CRTIMP -D_WIN32_WINNT=0x0A00 -DWINVER=0x0A00 '
-             '-D__REACTOS__ -D_CRT_DECLARE_NONSTDC_NAMES=1 -D__LARGE_MBSTATE_T '
+             '-D__LIBRENT__ -D_CRT_DECLARE_NONSTDC_NAMES=1 -D__LARGE_MBSTATE_T '
              '-nostdlibinc ').lstrip()
     flags += ' '.join('-isystem ' + cmake_string(path) for path in includes)
     config = ['set(CMAKE_SYSTEM_NAME Windows)', f'set(CMAKE_SYSTEM_PROCESSOR {processor})',
@@ -123,7 +123,7 @@ def main():
         config += [f'set(CMAKE_{language}_FLAGS_INIT {cmake_string(flags)})',
                    f'set(CMAKE_{language}_STANDARD_LIBRARIES "" CACHE STRING "" FORCE)']
     config += [f'set(CMAKE_ASM_FLAGS_INIT {cmake_string(machine_flags)})']
-    toolchain_file = runtime / 'reactos-toolchain.cmake'
+    toolchain_file = runtime / 'librent-toolchain.cmake'
     toolchain_file.write_text('\n'.join(config) + '\n')
     options = {
         'CMAKE_TOOLCHAIN_FILE': toolchain_file,
@@ -154,7 +154,7 @@ def main():
         'options': {key: str(value) for key, value in options.items()}},
         sort_keys=True).encode()).hexdigest()
     names = include_names(roots)
-    manifest_file = prefix / 'reactos-runtime.json'
+    manifest_file = prefix / 'librent-runtime.json'
     if up_to_date(manifest_file, recipe, names, outputs):
         print(f'LLVM runtimes for {arch} are up to date in {prefix}', flush=True)
         return

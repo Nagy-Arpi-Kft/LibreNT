@@ -35,7 +35,7 @@
 
 #include "msipriv.h"
 #include "query.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -783,7 +783,7 @@ MSIDBERROR WINAPI MsiViewGetErrorW( MSIHANDLE handle, WCHAR *buffer, DWORD *bufl
         MSIHANDLE remote;
 
         if (!(remote = msi_get_remote(handle)))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return rpc_handle ? MSIDBERROR_FUNCTIONERROR : MSIDBERROR_INVALIDARG;
 #else
             return MSIDBERROR_INVALIDARG;
@@ -817,7 +817,7 @@ MSIDBERROR WINAPI MsiViewGetErrorW( MSIHANDLE handle, WCHAR *buffer, DWORD *bufl
     if (msi_strncpyW(column, -1, buffer, buflen) == ERROR_MORE_DATA)
         r = MSIDBERROR_MOREDATA;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (buffer) query->view->error = MSIDBERROR_NOERROR;
 #endif
     msiobj_release( &query->hdr );
@@ -841,7 +841,7 @@ MSIDBERROR WINAPI MsiViewGetErrorA( MSIHANDLE handle, char *buffer, DWORD *bufle
         MSIHANDLE remote;
 
         if (!(remote = msi_get_remote(handle)))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return rpc_handle ? MSIDBERROR_FUNCTIONERROR : MSIDBERROR_INVALIDARG;
 #else
             return MSIDBERROR_INVALIDARG;
@@ -875,7 +875,7 @@ MSIDBERROR WINAPI MsiViewGetErrorA( MSIHANDLE handle, char *buffer, DWORD *bufle
     if (msi_strncpyWtoA(column, -1, buffer, buflen, FALSE) == ERROR_MORE_DATA)
         r = MSIDBERROR_MOREDATA;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (buffer) query->view->error = MSIDBERROR_NOERROR;
 #endif
     msiobj_release( &query->hdr );
@@ -962,7 +962,7 @@ UINT WINAPI MsiDatabaseApplyTransformA( MSIHANDLE hdb, const char *transform, in
 UINT WINAPI MsiDatabaseGenerateTransformA( MSIHANDLE hdb, MSIHANDLE hdbref, const char *szTransformFile,
                                            int iReserved1, int iReserved2 )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MSIDATABASE *db, *ref;
 
     if (!(db = msihandle2msiinfo( hdb, MSIHANDLETYPE_DATABASE )))
@@ -979,7 +979,7 @@ UINT WINAPI MsiDatabaseGenerateTransformA( MSIHANDLE hdb, MSIHANDLE hdbref, cons
 UINT WINAPI MsiDatabaseGenerateTransformW( MSIHANDLE hdb, MSIHANDLE hdbref, const WCHAR *szTransformFile,
                                            int iReserved1, int iReserved2 )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MSIDATABASE *db, *ref;
 
     if (!(db = msihandle2msiinfo( hdb, MSIHANDLETYPE_DATABASE )))
@@ -1031,7 +1031,7 @@ UINT WINAPI MsiDatabaseCommit( MSIHANDLE hdb )
 
     /* FIXME: unlock the database */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (r == ERROR_SUCCESS && !db->memory_only)
     {
         free( db->deletefile );
@@ -1284,7 +1284,7 @@ UINT __cdecl s_remote_ViewGetColumnInfo(MSIHANDLE view, MSICOLINFO info, struct 
 
 MSIDBERROR __cdecl s_remote_ViewGetError(MSIHANDLE view, LPWSTR *column)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD size = 0;
 
     MsiViewGetErrorW(view, NULL, &size);

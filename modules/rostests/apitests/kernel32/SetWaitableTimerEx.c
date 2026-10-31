@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Tests for SetWaitableTimerEx
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -70,7 +70,7 @@ START_TEST(SetWaitableTimerEx)
     ZeroMemory(&Reason, sizeof(Reason));
     Reason.Version = POWER_REQUEST_CONTEXT_VERSION;
     Reason.Flags = POWER_REQUEST_CONTEXT_SIMPLE_STRING;
-    Reason.Reason.SimpleReasonString = L"ReactOS timer parity";
+    Reason.Reason.SimpleReasonString = L"LibreNT timer parity";
     DueTime.QuadPart = -100000;
     CheckCall(SetTimerEx, "simple wake reason", Timer, &DueTime, 0, &Reason, 0, TRUE, ERROR_NOT_SUPPORTED);
     Wait = WaitForSingleObject(Timer, 2000);

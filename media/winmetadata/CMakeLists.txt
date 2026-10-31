@@ -41,5 +41,5 @@ endforeach()
 
 add_custom_target(winmetadata DEPENDS ${WINMD_OUTPUTS})
 foreach(OUTPUT ${WINMD_OUTPUTS})
-    add_cd_file(TARGET winmetadata FILE ${OUTPUT} DESTINATION reactos/system32/WinMetadata FOR all)
+    add_cd_file(TARGET winmetadata FILE ${OUTPUT} DESTINATION librent/system32/WinMetadata FOR all)
 endforeach()

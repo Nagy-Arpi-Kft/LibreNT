@@ -25,4 +25,4 @@
 #define VERSION         "FreeLoader v3.2"
 #define COPYRIGHT       "Copyright (C) 1996-" COPYRIGHT_YEAR " ReactOS Project"
 #define AUTHOR_EMAIL    "<www.reactos.org>"
-#define BY_AUTHOR       "by ReactOS Project"
+#define BY_AUTHOR       "by LibreNT Project"

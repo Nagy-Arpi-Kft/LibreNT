@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/bug.c
  * PURPOSE:         Bugcheck Support
@@ -2024,7 +2024,7 @@ KeInitializeCrashDumpHeader(IN ULONG Type, IN ULONG Flags, OUT PVOID Buffer, IN 
     Header->BugCheckParameter2 = KiBugCheckData[2];
     Header->BugCheckParameter3 = KiBugCheckData[3];
     Header->BugCheckParameter4 = KiBugCheckData[4];
-    RtlCopyMemory(Header->VersionUser, "ReactOS", sizeof("ReactOS"));
+    RtlCopyMemory(Header->VersionUser, "LibreNT", sizeof("LibreNT"));
     Header->KdDebuggerDataBlock = (ULONG64)(ULONG_PTR)&KdDebuggerDataBlock;
 
     Header->PhysicalMemoryBlock.NumberOfRuns = MmPhysicalMemoryBlock->NumberOfRuns;

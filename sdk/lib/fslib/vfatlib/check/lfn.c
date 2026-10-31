@@ -26,7 +26,7 @@
 #define NDEBUG
 #include <debug.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(push, 1)
 #endif
 
@@ -41,7 +41,7 @@ typedef struct {
     uint8_t name11_12[4];	/* last 2 characters in name */
 } LFN_ENT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(pop)
 #endif
 
@@ -74,13 +74,13 @@ static unsigned char fat_uni2esc[64] = {
 /* for maxlen param */
 #define UNTIL_0		INT_MAX
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void copy_lfn_part(unsigned char *dst, LFN_ENT * lfn);
 static char *cnv_unicode(const unsigned char *uni, int maxlen, int use_q);
 #endif
 
 /* Convert name part in 'lfn' from unicode to ASCII */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define CNV_THIS_PART(lfn)				\
     ({							\
 	unsigned char __part_uni[CHARS_PER_LFN*2];		\
@@ -534,13 +534,13 @@ void lfn_check_orphaned(void)
     free(long_name);
     if (interactive)
 	printf("1: Delete.\n2: Leave it.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (rw)
 #else
     else
 #endif
 	printf("  Auto-deleting.\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((!interactive && rw) || (interactive && get_key("12", "?") == '1')) {
 #else
     if (!interactive || get_key("12", "?") == '1') {

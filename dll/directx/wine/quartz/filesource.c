@@ -110,7 +110,7 @@ static BOOL process_pattern_string(const WCHAR *pattern, HANDLE file)
     size = wcstol(pattern, NULL, 10);
     mask = malloc(size);
     expect = malloc(size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!mask || !expect)
     {
         free(mask);
@@ -127,7 +127,7 @@ static BOOL process_pattern_string(const WCHAR *pattern, HANDLE file)
         return FALSE;
     }
     pattern++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (*pattern && byte_from_hex_char(*pattern) == -1 && (*pattern != ','))
 #else
     while (byte_from_hex_char(*pattern) == -1 && (*pattern != ','))
@@ -149,7 +149,7 @@ static BOOL process_pattern_string(const WCHAR *pattern, HANDLE file)
         return FALSE;
     }
     pattern++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (*pattern && byte_from_hex_char(*pattern) == -1 && (*pattern != ','))
 #else
     while (byte_from_hex_char(*pattern) == -1 && (*pattern != ','))
@@ -164,7 +164,7 @@ static BOOL process_pattern_string(const WCHAR *pattern, HANDLE file)
             expect[i / 2] = d << 4;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (i / 2 != size || i % 2)
     {
         free(expect);
@@ -174,7 +174,7 @@ static BOOL process_pattern_string(const WCHAR *pattern, HANDLE file)
 
 #endif
     actual = malloc(size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!actual)
     {
         free(expect);
@@ -408,7 +408,7 @@ static const struct strmbase_filter_ops filter_ops =
 static DWORD CALLBACK io_thread(void *arg)
 {
     struct async_reader *filter = arg;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     struct request *req;
 #endif
     OVERLAPPED *ovl;
@@ -427,7 +427,7 @@ static DWORD CALLBACK io_thread(void *arg)
 
         EnterCriticalSection(&filter->sample_cs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WakeAllConditionVariable(&filter->sample_cv);
 #else
         req = CONTAINING_RECORD(ovl, struct request, ovl);
@@ -509,7 +509,7 @@ static HRESULT WINAPI FileSource_Load(IFileSourceFilter * iface, LPCOLESTR pszFi
     {
         return HRESULT_FROM_WIN32(GetLastError());
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CreateIoCompletionPort(hFile, This->port, 0, 0);
 #endif
 
@@ -817,7 +817,7 @@ static HRESULT WINAPI FileAsyncReader_WaitForNext(IAsyncReader *iface,
     {
         if (filter->flushing)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             for (i = 0; i < filter->max_requests; ++i)
             {
                 struct request *req = &filter->requests[i];
@@ -859,7 +859,7 @@ static HRESULT WINAPI FileAsyncReader_WaitForNext(IAsyncReader *iface,
                 TRACE("Returning sample %u.\n", i);
                 return S_OK;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (req->sample && GetLastError() != ERROR_IO_INCOMPLETE)
             {
                 HRESULT hr = HRESULT_FROM_WIN32(GetLastError());
@@ -978,7 +978,7 @@ static HRESULT WINAPI FileAsyncReader_BeginFlush(IAsyncReader * iface)
     EnterCriticalSection(&filter->sample_cs);
 
     filter->flushing = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CancelIoEx(filter->file, NULL);
     for (i = 0; i < filter->max_requests; ++i)
     {
@@ -1008,7 +1008,7 @@ static HRESULT WINAPI FileAsyncReader_EndFlush(IAsyncReader * iface)
     EnterCriticalSection(&filter->sample_cs);
 
     filter->flushing = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         unsigned int i;
 

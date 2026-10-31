@@ -44,7 +44,7 @@ typedef struct
 } DOC_TEXTBLOCK, *PDOC_TEXTBLOCK;
 
 #define LIF_FLAGSMASK   (LIF_STATE | LIF_ITEMID | LIF_URL)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define LIS_MASK        (LIS_FOCUSED | LIS_ENABLED | LIS_VISITED | LIS_DEFAULTCOLORS)
 #else
 #define LIS_MASK        (LIS_FOCUSED | LIS_ENABLED | LIS_VISITED)
@@ -1343,7 +1343,7 @@ static LRESULT SYSLINK_Draw (const SYSLINK_INFO *infoPtr, HDC hdc)
     PDOC_ITEM Current;
     HFONT hOldFont;
     COLORREF OldTextColor, OldBkColor;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     COLORREF TextColor;
 #endif
     HBRUSH hBrush;
@@ -1362,7 +1362,7 @@ static LRESULT SYSLINK_Draw (const SYSLINK_INFO *infoPtr, HDC hdc)
 
     hBrush = (HBRUSH)SendMessageW(infoPtr->Notify, WM_CTLCOLORSTATIC,
                                   (WPARAM)hdc, (LPARAM)infoPtr->Self);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TextColor = GetTextColor(hdc);
 #endif
     if (!(infoPtr->Style & LWS_TRANSPARENT))
@@ -1372,7 +1372,7 @@ static LRESULT SYSLINK_Draw (const SYSLINK_INFO *infoPtr, HDC hdc)
     }
     else SetBkMode( hdc, TRANSPARENT );
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DeleteObject(hBrush);
 #endif
 
@@ -1391,7 +1391,7 @@ static LRESULT SYSLINK_Draw (const SYSLINK_INFO *infoPtr, HDC hdc)
             if(Current->Type == slText)
             {
                  SelectObject(hdc, infoPtr->Font);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                  SetTextColor(hdc, TextColor);
 #else
                  SetTextColor(hdc, infoPtr->TextColor);
@@ -1403,7 +1403,7 @@ static LRESULT SYSLINK_Draw (const SYSLINK_INFO *infoPtr, HDC hdc)
                  BOOL Highlight = (Current == infoPtr->HotItem) ||
                                   ((Current->u.Link.state & LIS_FOCUSED) && infoPtr->HasFocus);
                  SelectObject(hdc, Highlight ? infoPtr->LinkFont : infoPtr->Font);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                  if (Current->u.Link.state & LIS_DEFAULTCOLORS)
                      SetTextColor(hdc, TextColor);
                  else

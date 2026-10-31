@@ -26,7 +26,7 @@ STRINGTABLE
     4 "The specified installation package could not be opened. Please check the file path and try again."
     5 "path %s not found"
     9 "insert disk %s"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     10 "Windows Installer %s\n\nUsage:\nmsiexec command {required parameter} [optional parameter]\n\nInstall a product:\n\t/i {package|product_code} [property]\n\t/package {package|product_code} [property]\n\t/a package [property]\nRepair an installation:\n\t/f[p|o|e|d|c|a|u|m|s|v] {package|product_code}\nUninstall a product:\n\t/uninstall {package|product_code} [property]\n\t/x {package|product_code} [property]\nAdvertise a product:\n\t/j[u|m] package [/t transform] [/g languageid]\nApply a patch:\n\t/p patch_package [property]\n\t/p patch_package /a package [property]\nLog and user interface modifiers for the above commands:\n\t/l[*][i|w|e|a|r|u|c|m|o|p|v|][+|!] log_file\n\t/q{|n|b|r|f|n+|b+|b-}\nRegister the MSI Service:\n\t/y\nUnregister the MSI Service:\n\t/z\nDisplay this help:\n\t/help\n\t/?\n"
 #else
     10 "Windows Installer %s\n\n" \
@@ -62,9 +62,9 @@ STRINGTABLE
     13 "network drive for feature missing"
     14 "feature from:"
     15 "choose which folder contains %s"
-#ifdef __REACTOS__
-    34 "LiberNT Installer Package"
-    35 "LiberNT Installer Patch"
+#ifdef __LIBRENT__
+    34 "LibreNT Installer Package"
+    35 "LibreNT Installer Patch"
     36 "&Install"
     37 "Re&pair"
     38 "&Uninstall"
@@ -87,7 +87,7 @@ STRINGTABLE
     IDS_INFO_ACTIONSTART "Action start [Time]: [1]."
     IDS_INFO_ACTIONENDED "Action ended [Time]: [1]. Return value [2]."
     IDS_INFO_LOGGINGSTART "=== Logging started: [Date]  [Time] ==="
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IDS_INFO_LOGGINGSTOPPED "=== Logging stopped: [Date]  [Time] ==="
 #endif
 

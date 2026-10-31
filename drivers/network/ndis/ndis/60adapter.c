@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NDIS library
+ * PROJECT:     LibreNT NDIS library
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * FILE:        drivers/network/ndis/ndis/60adapter.c
  * PURPOSE:     NDIS 6 LOGICAL_ADAPTER lifecycle.
@@ -471,7 +471,7 @@ Ndis6ImSeedTcpipRegistry(_In_ PCUNICODE_STRING DeviceName)
     Key = Ndis6ImOpenKey(Path);
     if (Key != NULL)
     {
-        Ndis6ImSetSz(Key, L"DriverDesc", REG_SZ, L"ReactOS NDIS Virtual Miniport");
+        Ndis6ImSetSz(Key, L"DriverDesc", REG_SZ, L"LibreNT NDIS Virtual Miniport");
         Ndis6ImSetSz(Key, L"NetCfgInstanceId", REG_SZ, Guid);
         ZwClose(Key);
     }
@@ -826,7 +826,7 @@ Ndis6CreateWdfLogicalAdapter(
         : NULL;
 
     /* Prefer the NDIS installation's \Device\{NetCfgInstanceId} name. If
-     * ReactOS setup did not create Linkage yet, use NetAdapterCx's WDF FDO
+     * LibreNT setup did not create Linkage yet, use NetAdapterCx's WDF FDO
      * name and make an RTL-owned copy with the same lifetime semantics. */
     Status = Ndis6ReadExportName(AddDeviceInfo->PhysicalDeviceObject,
                                  &AdapterName);

@@ -6,14 +6,14 @@ set(BOOTFONT_DATA_H ${CMAKE_CURRENT_BINARY_DIR}/bootfont_data.h)
 add_custom_command(
     OUTPUT ${BOOTFONT_DATA_C} ${BOOTFONT_DATA_H}
     COMMAND native-bin2c
-            ${REACTOS_SOURCE_DIR}/media/fonts/lucon.ttf
+            ${LIBRENT_SOURCE_DIR}/media/fonts/lucon.ttf
             ${BOOTFONT_DATA_C}
             ${BOOTFONT_DATA_H}
             BIN
             bootfont_data
     DEPENDS
             native-bin2c
-            ${REACTOS_SOURCE_DIR}/media/fonts/lucon.ttf)
+            ${LIBRENT_SOURCE_DIR}/media/fonts/lucon.ttf)
 
 set(BOOTFONT_UI_DATA_C ${CMAKE_CURRENT_BINARY_DIR}/bootfont_ui_data.c)
 set(BOOTFONT_UI_DATA_H ${CMAKE_CURRENT_BINARY_DIR}/bootfont_ui_data.h)
@@ -21,14 +21,14 @@ set(BOOTFONT_UI_DATA_H ${CMAKE_CURRENT_BINARY_DIR}/bootfont_ui_data.h)
 add_custom_command(
     OUTPUT ${BOOTFONT_UI_DATA_C} ${BOOTFONT_UI_DATA_H}
     COMMAND native-bin2c
-            ${REACTOS_SOURCE_DIR}/media/fonts/selawk.ttf
+            ${LIBRENT_SOURCE_DIR}/media/fonts/selawk.ttf
             ${BOOTFONT_UI_DATA_C}
             ${BOOTFONT_UI_DATA_H}
             BIN
             bootfont_ui_data
     DEPENDS
             native-bin2c
-            ${REACTOS_SOURCE_DIR}/media/fonts/selawk.ttf)
+            ${LIBRENT_SOURCE_DIR}/media/fonts/selawk.ttf)
 
 add_library(bootfont STATIC
     bootfont.c

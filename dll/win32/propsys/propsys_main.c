@@ -116,7 +116,7 @@ static const IClassFactoryVtbl PropertySystemFactoryVtbl =
 
 static IClassFactory PropertySystemFactory = { &PropertySystemFactoryVtbl };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI propsys_ps_DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv);
 #endif
 
@@ -132,7 +132,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
         return IClassFactory_QueryInterface(&PropertySystemFactory, riid, ppv);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (propsys_ps_DllGetClassObject(rclsid, riid, ppv) == S_OK)
         return S_OK;
 #endif
@@ -166,7 +166,7 @@ static ULONG WINAPI propsys_Release(IPropertySystem *iface)
     return 1;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT propdesc_get_by_name( const WCHAR *name, IPropertyDescription **desc );
 static HRESULT propdesc_get_by_key( const PROPERTYKEY *key, IPropertyDescription **desc );
 #endif
@@ -182,7 +182,7 @@ static HRESULT WINAPI propsys_GetPropertyDescription(IPropertySystem *iface,
     if (!ppv)
         return E_INVALIDARG;
     *ppv = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = propschema_get_by_key( propkey, &IID_IPropertyDescription, (void **)&desc );
 #else
     hr = propdesc_get_by_key( propkey, &desc );
@@ -209,7 +209,7 @@ static HRESULT WINAPI propsys_GetPropertyDescriptionByName(IPropertySystem *ifac
     if (!ppv)
         return E_INVALIDARG;
     *ppv = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = propschema_get_by_name( canonical_name, &IID_IPropertyDescription, (void **)&desc );
 #else
     hr = propdesc_get_by_name( canonical_name, &desc );
@@ -233,7 +233,7 @@ static HRESULT WINAPI propsys_GetPropertyDescriptionListFromString(IPropertySyst
 static HRESULT WINAPI propsys_EnumeratePropertyDescriptions(IPropertySystem *iface,
     PROPDESC_ENUMFILTER filter, REFIID riid, void **ppv)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return propschema_enumerate(filter, riid, ppv);
 #else
     FIXME("%d %s %p: stub\n", filter, debugstr_guid(riid), ppv);
@@ -245,7 +245,7 @@ static HRESULT WINAPI propsys_FormatForDisplay(IPropertySystem *iface,
     REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS flags,
     LPWSTR dest, DWORD destlen)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return propschema_format_for_display(key, propvar, flags, dest, destlen);
 #else
     FIXME("%p %p %x %p %ld: stub\n", key, propvar, flags, dest, destlen);
@@ -257,7 +257,7 @@ static HRESULT WINAPI propsys_FormatForDisplayAlloc(IPropertySystem *iface,
     REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS flags,
     LPWSTR *text)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return propschema_format_for_display_alloc(key, propvar, flags, text);
 #else
     FIXME("%p %p %x %p: stub\n", key, propvar, flags, text);
@@ -332,7 +332,7 @@ HRESULT WINAPI PSGetPropertyDescription(REFPROPERTYKEY propkey, REFIID riid, voi
 
 HRESULT WINAPI PSGetPropertyDescriptionListFromString(LPCWSTR proplist, REFIID riid, void **ppv)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return propschema_list_from_string(proplist, riid, ppv);
 #else
     FIXME("%s, %p, %p\n", debugstr_w(proplist), riid, ppv);
@@ -387,7 +387,7 @@ HRESULT WINAPI PSGetPropertyKeyFromName(PCWSTR name, PROPERTYKEY *key)
 
 HRESULT WINAPI PSRefreshPropertySchema(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     APTTYPEQUALIFIER qualifier;
     APTTYPE type;
 
@@ -633,7 +633,7 @@ HRESULT WINAPI PSCreateMemoryPropertyStore(REFIID riid, void **ppv)
     return PropertyStore_CreateInstance(NULL, riid, ppv);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 struct property_description
 {
     IPropertyDescription IPropertyDescription_iface;

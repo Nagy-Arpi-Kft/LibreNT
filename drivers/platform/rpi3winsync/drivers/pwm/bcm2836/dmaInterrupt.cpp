@@ -338,7 +338,7 @@ Return Value:
                     // has two control blocks), check next packet.
                     //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     ULONG currentPacketFirstCbAddress =
                         FIRST_CB_ADDRESS_OF_PACKET(currentPacket,
                             deviceContext->dmaCbPa.LowPart) +

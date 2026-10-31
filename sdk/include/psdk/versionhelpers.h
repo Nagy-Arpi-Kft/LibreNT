@@ -3,7 +3,7 @@
  *
  * Inline helper functions for Windows version detection
  *
- * This file is part of the ReactOS PSDK package.
+ * This file is part of the LibreNT PSDK package.
  *
  * Contributors:
  *   Created by Timo Kreuzer <timo.kreuzer@reactos.org>
@@ -144,11 +144,11 @@ IsActiveSessionCountLimited()
     return !(fSuiteTerminal & !fSuiteSingleUserTS);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VERSIONHELPERAPI
-IsReactOS()
+IsLibreNT()
 {
     /* Hardcoded SharedUserData and PAGE_SIZE to avoid NDK includes */
     return *(UINT*)((ULONG_PTR)0x7FFE0000 + 4096 - sizeof(ULONG)) == 0x8EAC705;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__

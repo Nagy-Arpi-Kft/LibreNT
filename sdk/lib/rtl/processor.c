@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS runtime library (RTL)
+ * PROJECT:     LibreNT runtime library (RTL)
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of processor related routines
  * COPYRIGHT:   Copyright 2026 Timo Kreuzer <timo.kreuzer@reactos.org>

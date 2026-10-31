@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     BSD - See COPYING.ARM in the top level directory
  * PURPOSE:     Serial Port Boot Driver for Headless Terminal Support
  * COPYRIGHT:   Copyright 2010 ReactOS Portable Systems Group

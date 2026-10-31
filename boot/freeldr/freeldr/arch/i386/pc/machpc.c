@@ -17,7 +17,7 @@
  */
 
 #include <freeldr.h>
-#include <reactos/drivers/bootvid/framebuf.h>
+#include <librent/drivers/bootvid/framebuf.h>
 #include <cportlib/cportlib.h>
 
 #include "../ntldr/ntldropts.h"
@@ -1840,7 +1840,7 @@ MachInit(const char *CmdLine)
     MachVtbl.VideoGetPaletteColor = PcVideoGetPaletteColor;
     MachVtbl.VideoSync = PcVideoSync;
     MachVtbl.Beep = PcBeep;
-    MachVtbl.PrepareForReactOS = PcPrepareForReactOS;
+    MachVtbl.PrepareForLibreNT = PcPrepareForLibreNT;
     MachVtbl.GetMemoryMap = PcMemGetMemoryMap;
     MachVtbl.GetExtendedBIOSData = PcGetExtendedBIOSData;
     MachVtbl.GetFloppyCount = PcGetFloppyCount;
@@ -1857,10 +1857,10 @@ MachInit(const char *CmdLine)
 }
 
 VOID
-PcPrepareForReactOS(VOID)
+PcPrepareForLibreNT(VOID)
 {
     /* Prepare video and turn off the floppy motor */
-    PcVideoPrepareForReactOS();
+    PcVideoPrepareForLibreNT();
     DiskStopFloppyMotor();
 }
 #endif

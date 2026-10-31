@@ -3,7 +3,7 @@
  *
  * Windows NT WDM Driver Developer Kit
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Amine Khaldi (amine.khaldi@reactos.org)
@@ -86,7 +86,7 @@ $define(USHORT=USHORT)
 #define NTHALAPI
 #endif
 
-/* For ReactOS */
+/* For LibreNT */
 #if !defined(_NTOSKRNL_) && !defined(_BLDR_) && !defined(_NTSYSTEM_)
 #define NTKERNELAPI DECLSPEC_IMPORT
 #else
@@ -170,7 +170,7 @@ $define(USHORT=USHORT)
 #if !defined(USE_DMA_MACROS) && !defined(_NTHAL_)
 #define USE_DMA_MACROS
 #endif
-#if !defined(NO_LEGACY_DRIVERS) && !defined(__REACTOS__)
+#if !defined(NO_LEGACY_DRIVERS) && !defined(__LIBRENT__)
 #define NO_LEGACY_DRIVERS
 #endif
 #endif /* defined(_WIN64) */

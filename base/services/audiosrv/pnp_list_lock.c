@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS
+ * PROJECT:     LibreNT
  * LICENSE:     GPL - See COPYING in the top level directory
  * PURPOSE:     Audio Service Plug and Play list locking mechanism
  * COPYRIGHT:   Copyright 2007 Andrew Greenwood

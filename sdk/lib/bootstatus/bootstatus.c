@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Modern Boot Status
+ * PROJECT:     LibreNT Modern Boot Status
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Borderless boot-status surface
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -10,11 +10,11 @@
 #include <wingdi.h>
 #include <winuser.h>
 
-#include <reactos/bootstatus.h>
+#include <librent/bootstatus.h>
 
 #include <debug.h>
 
-#define BOOT_STATUS_CLASS_NAME L"ReactOSBootStatusWindow"
+#define BOOT_STATUS_CLASS_NAME L"LibreNTBootStatusWindow"
 #define BOOT_STATUS_COPYDATA_TAG 0x53544252 /* 'RBTS' */
 
 typedef struct _BOOT_STATUS_UPDATE_DATA

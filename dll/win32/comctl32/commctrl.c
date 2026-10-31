@@ -67,7 +67,7 @@
 #include "commctrl.h"
 #include "winerror.h"
 #include "winreg.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define NO_SHLWAPI_STREAM
 #include "shlwapi.h"
 #endif
@@ -950,7 +950,7 @@ CreateToolbar (HWND hwnd, DWORD style, UINT wID, INT nBitmaps,
 			    iNumButtons, 0, 0, 0, 0, CCSIZEOF_STRUCT(TBBUTTON, dwData));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI DllGetVersion(DLLVERSIONINFO *info)
 {
     if (info->cbSize != sizeof(*info))
@@ -979,7 +979,7 @@ HRESULT WINAPI DllInstall(BOOL bInstall, LPCWSTR cmdline)
     TRACE("(%u, %s): stub\n", bInstall, debugstr_w(cmdline));
     return S_OK;
 }
-#elif defined(__REACTOS__)
+#elif defined(__LIBRENT__)
 HRESULT WINAPI DllInstall(BOOL install, const WCHAR *cmdline)
 {
     TRACE("(%u, %s): stub\n", install, debugstr_w(cmdline));
@@ -1654,8 +1654,8 @@ LRESULT WINAPI SetPathWordBreakProc(HWND hwnd, BOOL bSet)
 int WINAPI DrawShadowText(HDC hdc, LPCWSTR text, UINT length, RECT *rect, DWORD flags,
                           COLORREF crText, COLORREF crShadow, int offset_x, int offset_y)
 {
-#ifdef __REACTOS__
-    return COMCTL32_ReactOSDrawShadowText(hdc, text, length, rect, flags, crText, crShadow,
+#ifdef __LIBRENT__
+    return COMCTL32_LibreNTDrawShadowText(hdc, text, length, rect, flags, crText, crShadow,
             offset_x, offset_y);
 #else
     int bkmode, ret;
@@ -1685,7 +1685,7 @@ int WINAPI DrawShadowText(HDC hdc, LPCWSTR text, UINT length, RECT *rect, DWORD 
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(push, 2)
 typedef struct
 {
@@ -2027,7 +2027,7 @@ static HICON scaledown_load(HINSTANCE hinst, const WCHAR *name, int cx, int cy, 
 HRESULT WINAPI LoadIconWithScaleDown(HINSTANCE hinst, const WCHAR *name, int cx, int cy, HICON *icon)
 {
     DWORD error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT flags;
 #endif
 
@@ -2038,7 +2038,7 @@ HRESULT WINAPI LoadIconWithScaleDown(HINSTANCE hinst, const WCHAR *name, int cx,
     if (!name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     flags = (hinst || IS_INTRESOURCE(name)) ? 0 : LR_LOADFROMFILE;
     *icon = scaledown_load(hinst, name, cx, cy, flags);
     if (*icon)
@@ -2052,7 +2052,7 @@ HRESULT WINAPI LoadIconWithScaleDown(HINSTANCE hinst, const WCHAR *name, int cx,
     if (!*icon)
     {
         error = GetLastError();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hinst && error == ERROR_RESOURCE_NAME_NOT_FOUND)
             error = ERROR_RESOURCE_TYPE_NOT_FOUND;
 #endif
@@ -3571,7 +3571,7 @@ LRESULT COMCTL32_NCPaint(HWND hwnd, WPARAM wp, LPARAM lp, const WCHAR *theme_cla
         CombineRgn(clipRgn, clipRgn, region, RGN_AND);
     OffsetRect(&r, -r.left, -r.top);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     dc = GetDCEx(hwnd, region, DCX_WINDOW | DCX_CACHE | DCX_INTERSECTRGN);
     ExcludeClipRect(dc, r.left + cxEdge, r.top + cyEdge, r.right - cxEdge, r.bottom - cyEdge);
 #else

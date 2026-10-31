@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/mmcc/nvs/check-backends.cmake
 # PURPOSE:     Check memory manager architecture backend contracts
 #

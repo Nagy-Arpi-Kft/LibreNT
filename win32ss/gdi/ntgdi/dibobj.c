@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS win32 kernel mode subsystem
+ * PROJECT:         LibreNT win32 kernel mode subsystem
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            win32ss/gdi/ntgdi/dibobj.c
  * PURPOSE:         Dib object functions
@@ -2474,7 +2474,7 @@ DIB_CreateDIBSection(
 
     /* WINE NOTE: WINE makes use of a colormap, which is a color translation
                   table between the DIB and the X physical device. Obviously,
-                  this is left out of the ReactOS implementation. Instead,
+                  this is left out of the LibreNT implementation. Instead,
                   we call NtGdiSetDIBColorTable. */
     /* Create a palette for the DIB */
     ppalDIB = CreateDIBPalette(bmi, dc, usage);

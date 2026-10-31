@@ -21,10 +21,10 @@
 #define COBJMACROS
 
 #include <stdarg.h>
-#if defined(__REACTOS__) && (DLL_EXPORT_VERSION < 0x0a00)
+#if defined(__LIBRENT__) && (DLL_EXPORT_VERSION < 0x0a00)
 #define WIN32_NO_STATUS
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* NDK loads the Win32 types before its NTSTATUS definitions. */
 #include <ndk/rtlfuncs.h>
 #endif
@@ -32,7 +32,7 @@
 #include "winbase.h"
 #include "winreg.h"
 #include "winnls.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 #include "shlwapi.h"
@@ -54,7 +54,7 @@
 #include "wine/exception.h"
 
 #include "msipriv.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -348,7 +348,7 @@ static void MSI_FreePackage( MSIOBJECTHDR *arg)
     if( package->dialog )
         msi_dialog_destroy( package->dialog );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (package->property_table_held)
     {
         MSIQUERY *view;
@@ -372,7 +372,7 @@ static void MSI_FreePackage( MSIOBJECTHDR *arg)
         custom_stop_server(package->custom_server_32_process, package->custom_server_32_pipe);
     if (package->custom_server_64_process)
         custom_stop_server(package->custom_server_64_process, package->custom_server_64_pipe);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (package->custom_server_emulated_process)
         custom_stop_server(package->custom_server_emulated_process, package->custom_server_emulated_pipe);
 #endif
@@ -395,7 +395,7 @@ static UINT create_temp_property_table(MSIPACKAGE *package)
     rc = MSI_ViewExecute(view, 0);
     MSI_ViewClose(view);
     msiobj_release(&view->hdr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (rc != ERROR_SUCCESS)
     {
         rc = MSI_DatabaseOpenViewW(package->db, L"ALTER TABLE `_Property` HOLD", &view);
@@ -782,7 +782,7 @@ static VOID set_installer_properties(MSIPACKAGE *package)
 
     /* set the os things */
     OSVersion.dwOSVersionInfoSize = sizeof(OSVersion);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetVersionExW((OSVERSIONINFOW *)&OSVersion);
     verval = OSVersion.dwMinorVersion + OSVersion.dwMajorVersion * 100;
 #else
@@ -821,7 +821,7 @@ static VOID set_installer_properties(MSIPACKAGE *package)
 
     GetNativeSystemInfo( &sys_info );
     len = swprintf( bufstr, ARRAY_SIZE(bufstr), L"%d", sys_info.wProcessorLevel );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         USHORT process_machine, native_machine;
 
@@ -1062,7 +1062,7 @@ MSIPACKAGE *MSI_CreatePackage( MSIDATABASE *db )
         len = swprintf( uilevel, ARRAY_SIZE(uilevel), L"%u", gUILevel & INSTALLUILEVEL_MASK );
         msi_set_property( package->db, L"UILevel", uilevel, len );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         r = db->memory_only ? ERROR_SUCCESS : msi_load_suminfo_properties( package );
 #else
         r = msi_load_suminfo_properties( package );
@@ -1588,8 +1588,8 @@ UINT MSI_OpenPackageW(LPCWSTR szPackage, DWORD dwOptions, MSIPACKAGE **pPackage)
     MSI_RecordSetInteger(data_row, 2, package->num_langids ? package->langids[0] : 0);
     MSI_RecordSetInteger(data_row, 3, msi_get_string_table_codepage(package->db->strings));
     MSI_ProcessMessageVerbatim(package, INSTALLMESSAGE_COMMONDATA, data_row);
-#ifdef __REACTOS__
-    if (dwOptions & REACTOS_OPENPACKAGEFLAGS_INSTALL)
+#ifdef __LIBRENT__
+    if (dwOptions & LIBRENT_OPENPACKAGEFLAGS_INSTALL)
         MSI_ProcessMessageVerbatim(package, INSTALLMESSAGE_COMMONDATA, data_row);
 #endif
 
@@ -1620,7 +1620,7 @@ UINT MSI_OpenPackageW(LPCWSTR szPackage, DWORD dwOptions, MSIPACKAGE **pPackage)
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static UINT create_folder_cache_table( MSIPACKAGE *package )
 {
     static const int folders[] =
@@ -1707,7 +1707,7 @@ UINT WINAPI MsiOpenPackageExW( const WCHAR *szPackage, DWORD dwOptions, MSIHANDL
 
     if ( !*szPackage )
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = create_empty_package( &package );
         if (ret != ERROR_SUCCESS) return ret;
         *phPackage = alloc_msihandle( &package->hdr );
@@ -1722,7 +1722,7 @@ UINT WINAPI MsiOpenPackageExW( const WCHAR *szPackage, DWORD dwOptions, MSIHANDL
     if( dwOptions )
         FIXME( "dwOptions %#lx not supported\n", dwOptions );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (szPackage[0] != '#' && PathIsRelativeW( szPackage ) && !UrlIsW( szPackage, URLIS_URL ) &&
         GetFileAttributesW( szPackage ) != INVALID_FILE_ATTRIBUTES)
     {
@@ -1886,7 +1886,7 @@ static INT internal_ui_handler(MSIPACKAGE *package, INSTALLMESSAGE eMessageType,
         case 1:
             /* do nothing */
             return 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case 2:
             msi_dialog_show_cancel(package, MSI_RecordGetInteger(record, 2) != 0);
             return 1;
@@ -2566,7 +2566,7 @@ UINT __cdecl s_remote_GetProperty(MSIHANDLE hinst, LPCWSTR property, LPWSTR *val
 {
     WCHAR empty[1];
     UINT r;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MSIPACKAGE *package = msihandle2msiinfo(hinst, MSIHANDLETYPE_PACKAGE);
     BOOL deferred = FALSE;
 

@@ -13,12 +13,12 @@ add_definitions(
     -D__NTDLL__
     -D_NTOSKRNL_
     -DCRTDLL
-    -DNTDDI_VERSION=${REACTOS_TARGET_NTDDI})
+    -DNTDDI_VERSION=${LIBRENT_TARGET_NTDDI})
 
 include_directories(
     BEFORE include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
-    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/symcrypt/inc)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/symcrypt/inc)
 
 add_library(rtl_um OBJECT
     rtl/libsupp.c
@@ -60,7 +60,7 @@ list(APPEND SOURCE
 set_source_files_properties(rtl/capability.c PROPERTIES
     COMPILE_DEFINITIONS "__WINE_PE_BUILD;SYMCRYPT_PLATFORM_WINE=1")
 
-if(ARCH STREQUAL "amd64" OR ARCH STREQUAL "arm64" OR ARCH STREQUAL "riscv64")
+if(ARCH STREQUAL "amd64" OR ARCH STREQUAL "arm64")
     list(APPEND SOURCE rtl/xstate_wow64.c)
 endif()
 
@@ -78,33 +78,17 @@ elseif(ARCH STREQUAL "arm64")
     list(APPEND ASM_SOURCE
         dispatch/arm64/dispatch.S
         ldr/arm64/guardcheck.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/memcpy-advsimd.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/memset.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcpy.S
-        ${REACTOS_SOURCE_DIR}/sdk/lib/crt/string/arm64/wcscmp.S)
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/memcpy-advsimd.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/memset.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/strcpy.S
+        ${LIBRENT_SOURCE_DIR}/sdk/lib/crt/string/arm64/wcscmp.S)
     list(APPEND SOURCE dispatch/dispatch.c)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND ASM_SOURCE dispatch/riscv64/dispatch.S)
-    list(APPEND SOURCE
-        dispatch/dispatch.c
-        rtl/riscv64/rtlexcpt.c)
-elseif(ARCH STREQUAL "ppc")
-    list(APPEND ASM_SOURCE dispatch/ppc/dispatch.S)
-    list(APPEND SOURCE
-        dispatch/dispatch.c
-        rtl/ppc/rtlexcpt.c)
 endif()
 
-if(ARCH STREQUAL "riscv64")
-    list(APPEND SOURCE ldr/riscv64/emulation.c)
-else()
-    list(APPEND SOURCE ldr/noemulation.c)
-endif()
+list(APPEND SOURCE ldr/noemulation.c)
 
 if(ARCH STREQUAL "arm64")
     list(APPEND SOURCE rtl/arm64/perfctr.c)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND SOURCE rtl/riscv64/perfctr.c)
 else()
     list(APPEND SOURCE rtl/noperfctr.c)
 endif()
@@ -159,10 +143,10 @@ endif()
 
 add_pch(ntdll include/ntdll.h "${PCH_SKIP_SOURCE}")
 add_dependencies(ntdll ntstatus asm)
-add_cd_file(TARGET ntdll DESTINATION reactos/system32 NO_CAB FOR all)
+add_cd_file(TARGET ntdll DESTINATION librent/system32 NO_CAB FOR all)
 
 if(ARM64EC_RUNTIME)
-    include_directories(${REACTOS_SOURCE_DIR}/ntoskrnl/include)
+    include_directories(${LIBRENT_SOURCE_DIR}/ntoskrnl/include)
     add_arm64ec_x64_source(NTDLL_CHPE_X64_SOURCE chpebridge_x64.c)
 endif()
 
@@ -170,7 +154,7 @@ add_library(ntdll_chpe MODULE EXCLUDE_FROM_ALL
     chpebridge.c
     ${NTDLL_CHPE_X64_SOURCE}
     ${CMAKE_CURRENT_BINARY_DIR}/ntdll_chpe.def)
-target_include_directories(ntdll_chpe PRIVATE ${REACTOS_SOURCE_DIR}/sdk/lib/cryptlib)
+target_include_directories(ntdll_chpe PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/lib/cryptlib)
 if(ARM64EC_RUNTIME)
     target_sources(ntdll_chpe PRIVATE
         chpedynfntbl.c

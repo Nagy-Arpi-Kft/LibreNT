@@ -509,7 +509,7 @@ static void __attribute__((used)) args_stack_to_regs( void **args, void **regs, 
 /* Call a function with the specified arguments, restoring the stack
  * properly afterwards as we don't know the calling convention of the
  * function */
-#if defined __i386__ && defined _MSC_VER && defined __REACTOS__ // Wine has removed this :(
+#if defined __i386__ && defined _MSC_VER && defined __LIBRENT__ // Wine has removed this :(
 __declspec(naked) LONG_PTR __cdecl call_server_func(SERVER_ROUTINE func, unsigned char * args, unsigned int stack_size,
                                                     const NDR_PROC_PARTIAL_OIF_HEADER *header )
 {

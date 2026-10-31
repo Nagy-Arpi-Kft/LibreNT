@@ -1,7 +1,7 @@
 
 include_directories(
     include
-    ${REACTOS_SOURCE_DIR}/win32ss/include)
+    ${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 spec2def(gdi32_vista.dll gdi32_vista.spec ADD_IMPORTLIB)
 
@@ -28,4 +28,4 @@ add_importlibs(gdi32_vista gdi32 ntdll)
 #add_importlibs(gdi32_vista user32 advapi32 kernel32 ntdll)
 #add_pch(gdi32_vista include/precomp.h SOURCE)
 add_dependencies(gdi32_vista psdk)
-add_cd_file(TARGET gdi32_vista DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET gdi32_vista DESTINATION librent/system32 FOR all)

@@ -1294,7 +1294,7 @@ PcVideoSync(VOID)
 }
 
 VOID
-PcVideoPrepareForReactOS(VOID)
+PcVideoPrepareForLibreNT(VOID)
 {
     /* Preserve the VBE linear framebuffer selected during hardware detect. */
     if (BootFrameBufferMode != 0 && PcVideoSetBiosVesaMode(BootFrameBufferMode))

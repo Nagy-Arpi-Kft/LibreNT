@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell Link maker
+ * PROJECT:     LibreNT Shell Link maker
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Shell Link maker
  * COPYRIGHT:   Copyright 2011 Rafal Harabien <rafalh@reactos.org>
@@ -231,8 +231,8 @@ static const struct SPECIALFOLDER
     const char* dummyPath;
     const char* unexpPath;
 } g_specialfolders[] = {
-    { CSIDL_WINDOWS, "windows", "X:\\reactos", "%SystemRoot%" },
-    { CSIDL_SYSTEM,  "system",  "X:\\reactos\\system32", "%SystemRoot%\\system32" },
+    { CSIDL_WINDOWS, "windows", "X:\\librent", "%SystemRoot%" },
+    { CSIDL_SYSTEM,  "system",  "X:\\librent\\system32", "%SystemRoot%\\system32" },
     { 0, NULL, NULL, NULL }
 };
 

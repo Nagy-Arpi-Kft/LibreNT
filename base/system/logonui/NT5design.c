@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS Logon User Interface Host
+ * PROJECT:     LibreNT Logon User Interface Host
  * FILE:        base/system/logonui/NT5design.c
  * PROGRAMMERS: Ged Murphy (gedmurphy@reactos.org)
  */
@@ -125,7 +125,7 @@ VOID
 NT5_CreateLogoffScreen(LPWSTR lpText,
                        HDC hdcMem)
 {
-    /* Draw the reactos logo */
+    /* Draw the LibreNT logo */
     NT5_DrawLogoffIcon(hdcMem);
 
     /* Draw the first text string */

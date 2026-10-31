@@ -23,7 +23,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(quartz);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define V4L_CALL( func, params ) qcap_backend_call( unix_ ## func, params )
 #else
 #define V4L_CALL( func, params ) WINE_UNIX_CALL( unix_ ## func, params )
@@ -903,7 +903,7 @@ static const IAMVideoControlVtbl IAMVideoControl_VTable =
     video_control_GetFrameRateList
 };
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static BOOL WINAPI load_capture_funcs(INIT_ONCE *once, void *param, void **context)
 {
     __wine_init_unix_call();
@@ -917,7 +917,7 @@ HRESULT vfw_capture_create(IUnknown *outer, IUnknown **out)
 {
     struct vfw_capture *object;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (!InitOnceExecuteOnce(&init_once, load_capture_funcs, NULL, NULL) || !__wine_unixlib_handle)
         return E_FAIL;
 #endif

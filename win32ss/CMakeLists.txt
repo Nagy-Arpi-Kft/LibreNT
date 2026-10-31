@@ -30,10 +30,10 @@ endif()
 include_directories(
     .
     include
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/include
-    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/freetype/include
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/include
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/freetype/include
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 add_definitions(
     -DLANGPACK
@@ -282,9 +282,9 @@ if((ARCH STREQUAL "amd64" OR ARCH STREQUAL "arm64") AND CMAKE_C_COMPILER_ID STRE
 endif()
 target_link_libraries(win32k ${PSEH_LIB} dxguid libcntpr wddm_bridge)
 
-if(REACTOS_USE_WDDM)
+if(LIBRENT_USE_WDDM)
     target_compile_definitions(win32k PRIVATE
-        REACTOS_WDDM_TARGET_LEVEL=${REACTOS_WDDM_TARGET_LEVEL})
+        LIBRENT_WDDM_TARGET_LEVEL=${LIBRENT_WDDM_TARGET_LEVEL})
 endif()
 
 
@@ -294,7 +294,7 @@ endif()
 
 add_importlibs(win32k ntoskrnl hal ftfd hidparse)
 add_pch(win32k pch.h SOURCE)
-add_cd_file(TARGET win32k DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET win32k DESTINATION librent/system32 FOR all)
 
 if(ARM64EC_RUNTIME)
     add_library(win32ksys sys-stubs-arm64ec.c)

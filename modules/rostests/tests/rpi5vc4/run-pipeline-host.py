@@ -24,7 +24,7 @@ def function_region(source, name, next_name):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--revision", help="Git revision of the miniport to test")
-    parser.add_argument("--source-root", type=Path, help="ReactOS source directory")
+    parser.add_argument("--source-root", type=Path, help="LibreNT source directory")
     args = parser.parse_args()
     here = Path(__file__).resolve().parent
     root = args.source_root or here.parents[3]

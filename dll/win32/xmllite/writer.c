@@ -39,7 +39,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(xmllite);
 DEFINE_GUID(IID_IXmlWriterOutput, 0xc1131708, 0x0f59, 0x477f, 0x93, 0x59, 0x7d, 0x33, 0x24, 0x51, 0xbc, 0x1a);
 
 static const WCHAR xmlnsuriW[] = L"http://www.w3.org/2000/xmlns/";
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR xmluriW[] = L"http://www.w3.org/XML/1998/namespace";
 #endif
 
@@ -66,7 +66,7 @@ typedef enum
 typedef struct
 {
     IXmlWriterOutput IXmlWriterOutput_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IXmlWriterOutput IXmlWriterOutputImpl_iface;
 #endif
     LONG ref;
@@ -80,7 +80,7 @@ typedef struct
 } xmlwriteroutput;
 
 static const struct IUnknownVtbl xmlwriteroutputvtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct IUnknownVtbl xmlwriteroutputimplvtbl;
 #endif
 
@@ -90,13 +90,13 @@ struct element
     WCHAR *qname;
     unsigned int len; /* qname length in chars */
     struct list ns;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list attributes;
     unsigned int attribute_ns;
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct written_attribute
 {
     struct list entry;
@@ -143,7 +143,7 @@ static inline xmlwriteroutput *impl_from_IXmlWriterOutput(IXmlWriterOutput *ifac
     return CONTAINING_RECORD(iface, xmlwriteroutput, IXmlWriterOutput_iface);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline xmlwriteroutput *impl_from_IXmlWriterOutputImpl(IXmlWriterOutput *iface)
 {
     return CONTAINING_RECORD(iface, xmlwriteroutput, IXmlWriterOutputImpl_iface);
@@ -231,7 +231,7 @@ static struct element *alloc_element(xmlwriter *writer, const WCHAR *prefix, con
     }
     lstrcatW(ret->qname, local);
     list_init(&ret->ns);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     list_init(&ret->attributes);
     ret->attribute_ns = 0;
 #endif
@@ -242,7 +242,7 @@ static struct element *alloc_element(xmlwriter *writer, const WCHAR *prefix, con
 static void writer_free_element(xmlwriter *writer, struct element *element)
 {
     struct ns *ns, *ns2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct written_attribute *attr, *attr2;
 
     LIST_FOR_EACH_ENTRY_SAFE(attr, attr2, &element->attributes, struct written_attribute, entry)
@@ -355,7 +355,7 @@ static struct ns *writer_push_ns(xmlwriter *writer, const WCHAR *prefix, int pre
     return ns;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static struct ns *writer_find_ns_current(const xmlwriter *writer, const WCHAR *prefix, const WCHAR *uri)
 {
     struct element *element;
@@ -407,7 +407,7 @@ static struct ns *writer_find_ns(const xmlwriter *writer, const WCHAR *prefix, c
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static struct ns *writer_find_attribute_ns(const xmlwriter *writer, const WCHAR *prefix, const WCHAR *uri)
 {
     struct element *element;
@@ -927,7 +927,7 @@ static HRESULT writer_output_ns(xmlwriter *writer, const struct element *element
     HRESULT hr = S_OK;
     struct ns *ns;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LIST_FOR_EACH_ENTRY_REV(ns, &element->ns, struct ns, entry)
 #else
     LIST_FOR_EACH_ENTRY(ns, &element->ns, struct ns, entry)
@@ -1075,7 +1075,7 @@ static HRESULT WINAPI xmlwriter_SetOutput(IXmlWriter *iface, IUnknown *output)
     /* now try IXmlWriterOutput, ISequentialStream, IStream */
     hr = IUnknown_QueryInterface(output, &IID_IXmlWriterOutput, (void**)&writeroutput);
     if (hr == S_OK) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (writeroutput->lpVtbl == &xmlwriteroutputimplvtbl)
             This->output = impl_from_IXmlWriterOutputImpl(writeroutput);
 #else
@@ -1228,7 +1228,7 @@ static BOOL is_valid_xml_space_value(const WCHAR *value)
     return value && (!wcscmp(value, L"preserve") || !wcscmp(value, L"default"));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI xmlwriter_WriteAttributeString(IXmlWriter *iface, LPCWSTR prefix,
     LPCWSTR local, LPCWSTR uri, LPCWSTR value)
 {
@@ -2055,7 +2055,7 @@ static HRESULT WINAPI xmlwriter_WriteNmToken(IXmlWriter *iface, const WCHAR *nmt
     if (is_empty_string(nmtoken))
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_valid_nmtoken(nmtoken, &len))
         return WC_E_NAMECHARACTER;
 #endif
@@ -2077,7 +2077,7 @@ static HRESULT WINAPI xmlwriter_WriteNmToken(IXmlWriter *iface, const WCHAR *nmt
         ;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (SUCCEEDED(hr) && !is_valid_nmtoken(nmtoken, &len))
         hr = WC_E_NAMECHARACTER;
 #endif
@@ -2621,7 +2621,7 @@ static HRESULT WINAPI xmlwriteroutput_QueryInterface(IXmlWriterOutput *iface, RE
 
     TRACE("(%p)->(%s %p)\n", This, debugstr_guid(riid), ppvObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(riid, &IID_IXmlWriterOutput))
     {
         *ppvObject = &This->IXmlWriterOutputImpl_iface;
@@ -2682,7 +2682,7 @@ static const struct IUnknownVtbl xmlwriteroutputvtbl =
     xmlwriteroutput_Release
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI xmlwriteroutputimpl_QueryInterface(IXmlWriterOutput *iface, REFIID riid, void **obj)
 {
     xmlwriteroutput *This = impl_from_IXmlWriterOutputImpl(iface);
@@ -2750,7 +2750,7 @@ static HRESULT create_writer_output(IUnknown *stream, IMalloc *imalloc, xml_enco
     memset(writeroutput, 0, sizeof(*writeroutput));
 
     writeroutput->IXmlWriterOutput_iface.lpVtbl = &xmlwriteroutputvtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     writeroutput->IXmlWriterOutputImpl_iface.lpVtbl = &xmlwriteroutputimplvtbl;
 #endif
     writeroutput->ref = 1;

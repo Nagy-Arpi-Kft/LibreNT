@@ -17,7 +17,7 @@
 
 #pragma once
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "btrfs.h"
 #include <stdlib.h>
 #else

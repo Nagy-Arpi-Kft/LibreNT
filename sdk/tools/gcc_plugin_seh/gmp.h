@@ -1,11 +1,11 @@
 /*
- * PROJECT:     ReactOS SDK
+ * PROJECT:     LibreNT SDK
  * LICENSE:     BSD Zero Clause License (https://spdx.org/licenses/0BSD)
  * PURPOSE:     Minimal GMP declarations required by GCC plugin headers
  */
 
-#ifndef REACTOS_GCC_PLUGIN_SEH_GMP_H
-#define REACTOS_GCC_PLUGIN_SEH_GMP_H
+#ifndef LIBRENT_GCC_PLUGIN_SEH_GMP_H
+#define LIBRENT_GCC_PLUGIN_SEH_GMP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,4 +38,4 @@ void mpz_clear(mpz_ptr);
 }
 #endif
 
-#endif /* REACTOS_GCC_PLUGIN_SEH_GMP_H */
+#endif /* LIBRENT_GCC_PLUGIN_SEH_GMP_H */

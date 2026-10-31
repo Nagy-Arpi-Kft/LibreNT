@@ -95,7 +95,7 @@ typedef unsigned int    BOOL;
 typedef unsigned long   DWORD;
 typedef unsigned char   BYTE;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _IMAGE_DOS_HEADER {      // DOS .EXE header
     WORD   e_magic;                     // Magic number
     WORD   e_cblp;                      // Bytes on last page of file

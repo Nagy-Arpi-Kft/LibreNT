@@ -1,5 +1,5 @@
 /*
- * ReactOS VBE miniport video driver
+ * LibreNT VBE miniport video driver
  *
  * Copyright (C) 2004 Filip Navara
  *

@@ -256,7 +256,7 @@ static HRESULT WINAPI JScriptError_GetExceptionInfo(IActiveScriptError *iface, E
         jsstr_to_bstr(This->ei.source, &excepinfo->bstrSource);
     if(This->ei.message)
         jsstr_to_bstr(This->ei.message, &excepinfo->bstrDescription);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(This->ei.help_file)
         jsstr_to_bstr(This->ei.help_file, &excepinfo->bstrHelpFile);
     excepinfo->dwHelpContext = This->ei.help_context;
@@ -342,7 +342,7 @@ void reset_ei(jsexcept_t *ei)
         jsstr_release(ei->line);
         ei->line = NULL;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(ei->help_file) {
         jsstr_release(ei->help_file);
         ei->help_file = NULL;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS System Control Panel Applet
+ * PROJECT:     LibreNT System Control Panel Applet
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        dll/cpl/sysdm/advanced.c
  * PURPOSE:     Memory, start-up and profiles settings
@@ -12,7 +12,7 @@
 #define NTOS_MODE_USER
 #include <ndk/pstypes.h> /* For SharedUserData */
 
-static TCHAR ReportAsWorkstationKey[] = _T("SYSTEM\\CurrentControlSet\\Control\\ReactOS\\Settings\\Version");
+static TCHAR ReportAsWorkstationKey[] = _T("SYSTEM\\CurrentControlSet\\Control\\LibreNT\\Settings\\Version");
 static TCHAR DataCollectionKey[] = _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection");
 
 #define DIAGDATA_LEVEL_OFF 0

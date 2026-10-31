@@ -1,8 +1,8 @@
 /*
- * PROJECT:         ReactOS Hardware Abstraction Layer
+ * PROJECT:         LibreNT Hardware Abstraction Layer
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * PURPOSE:         NMI handling
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

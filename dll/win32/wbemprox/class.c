@@ -126,7 +126,7 @@ static HRESULT WINAPI enum_class_object_Next(
 
     *puReturned = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (view->type == VIEW_TYPE_SELECT && !view->table_count) return WBEM_E_INVALID_CLASS;
 #endif
 
@@ -238,7 +238,7 @@ static struct record *create_record( struct table *table )
     {
         record->fields[i].type    = table->columns[i].type;
         record->fields[i].u.ival  = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         record->fields[i].assigned = FALSE;
 #endif
     }
@@ -389,7 +389,7 @@ static HRESULT record_get_value( const struct record *record, UINT index, VARIAN
         FIXME("unhandled type %u\n", record->fields[index].type);
         return WBEM_E_INVALID_PARAMETER;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!record->fields[index].assigned &&
         (record->fields[index].type == CIM_SINT32 || record->fields[index].type == CIM_UINT32))
         vartype = VT_NULL;
@@ -430,7 +430,7 @@ static HRESULT record_set_value( struct record *record, UINT index, VARIANT *var
 
     if ((hr = to_longlong( var, &val, &type )) != S_OK) return hr;
     if (type != record->fields[index].type) return WBEM_E_TYPE_MISMATCH;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     record->fields[index].assigned = TRUE;
 #endif
 

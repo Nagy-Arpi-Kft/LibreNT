@@ -1920,7 +1920,7 @@ HRESULT create_channelbsc(IMoniker *mon, const WCHAR *headers, BYTE *post_data, 
     }
 
     if(post_data) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if((SIZE_T)post_data_size == ~(SIZE_T)0) {
             IBindStatusCallback_Release(&ret->bsc.IBindStatusCallback_iface);
             return E_OUTOFMEMORY;
@@ -1930,7 +1930,7 @@ HRESULT create_channelbsc(IMoniker *mon, const WCHAR *headers, BYTE *post_data, 
         ret->bsc.request_data.post_data = GlobalAlloc(0, post_data_size+1);
 #endif
         if(!ret->bsc.request_data.post_data) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             release_request_data(&ret->bsc.request_data);
 #endif
             IBindStatusCallback_Release(&ret->bsc.IBindStatusCallback_iface);
@@ -2406,21 +2406,21 @@ HRESULT navigate_new_window(HTMLOuterWindow *window, IUri *uri, const WCHAR *nam
         }
 
         hres = IUri_GetDisplayUri(window->uri_nofrag, &context_url);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(FAILED(hres)) {
             INewWindowManager_Release(new_window_mgr);
 #else
         if(FAILED(hres))
 #endif
             return hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
         hres = IUri_GetDisplayUri(uri, &display_uri);
         if(FAILED(hres)) {
             SysFreeString(context_url);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             INewWindowManager_Release(new_window_mgr);
 #endif
             return hres;
@@ -2671,7 +2671,7 @@ static HRESULT translate_uri(HTMLOuterWindow *window, IUri *orig_uri, BSTR *ret_
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT submit_form(HTMLOuterWindow *window, HTMLOuterWindow *source_window, const WCHAR *target,
                     IUri *submit_uri, nsIInputStream *post_stream)
 #else
@@ -2700,7 +2700,7 @@ HRESULT submit_form(HTMLOuterWindow *window, const WCHAR *target, IUri *submit_u
 
         window->readystate_locked--;
     }else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hres = navigate_new_window(source_window, submit_uri, target, &request_data, NULL);
 #else
         hres = navigate_new_window(window, submit_uri, target, &request_data, NULL);

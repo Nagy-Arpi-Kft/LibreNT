@@ -45,7 +45,7 @@ static COLORREF color_3dshadow, color_3ddkshadow, color_3dhighlight;
 /* offsets for GetWindowLong for static private information */
 #define HFONT_GWL_OFFSET    0
 #define HICON_GWL_OFFSET    (sizeof(HFONT))
-#define UISTATE_GWL_OFFSET (HICON_GWL_OFFSET+sizeof(HICON)) // ReactOS: keep in sync with STATIC_UISTATE_GWL_OFFSET
+#define UISTATE_GWL_OFFSET (HICON_GWL_OFFSET+sizeof(HICON)) // LibreNT: keep in sync with STATIC_UISTATE_GWL_OFFSET
 #define STATIC_EXTRA_BYTES  (UISTATE_GWL_OFFSET + sizeof(LONG))
 
 typedef void (*pfPaint)( HWND hwnd, HDC hdc, DWORD style );
@@ -283,7 +283,7 @@ static VOID STATIC_TryPaintFcn(HWND hwnd, LONG full_style)
 
 static HBRUSH STATIC_SendWmCtlColorStatic(HWND hwnd, HDC hdc)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return GetControlBrush( hwnd, hdc, WM_CTLCOLORSTATIC);
 #else
     HBRUSH hBrush;
@@ -334,12 +334,12 @@ static BOOL hasTextStyle( DWORD style )
 /***********************************************************************
  *           StaticWndProc_common
  */
-LRESULT WINAPI StaticWndProc_common( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL unicode ) // ReactOS
+LRESULT WINAPI StaticWndProc_common( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL unicode ) // LibreNT
 {
     LRESULT lResult = 0;
     LONG full_style = GetWindowLongW( hwnd, GWL_STYLE );
     LONG style = full_style & SS_TYPEMASK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PWND pWnd;
 
     pWnd = ValidateHwnd(hwnd);
@@ -370,12 +370,12 @@ LRESULT WINAPI StaticWndProc_common( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
             ERR("Unknown style 0x%02lx\n", style );
             return -1;
         }
-        STATIC_update_uistate(hwnd, unicode); // ReactOS r30727
+        STATIC_update_uistate(hwnd, unicode); // LibreNT r30727
         STATIC_InitColours();
         break;
 
     case WM_NCDESTROY:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         NtUserSetWindowFNID(hwnd, FNID_DESTROY);
 #endif
         if (style == SS_ICON) {
@@ -566,16 +566,16 @@ LRESULT WINAPI StaticWndProc_common( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
     case STM_SETIMAGE:
         switch(wParam) {
 	case IMAGE_BITMAP:
-	    if (style != SS_BITMAP) return 0; // ReactOS r43158
+	    if (style != SS_BITMAP) return 0; // LibreNT r43158
 	    lResult = (LRESULT)STATIC_SetBitmap( hwnd, (HBITMAP)lParam, full_style );
 	    break;
 	case IMAGE_ENHMETAFILE:
-	    if (style != SS_ENHMETAFILE) return 0; // ReactOS r43158
+	    if (style != SS_ENHMETAFILE) return 0; // LibreNT r43158
 	    lResult = (LRESULT)STATIC_SetEnhMetaFile( hwnd, (HENHMETAFILE)lParam, full_style );
 	    break;
 	case IMAGE_ICON:
 	case IMAGE_CURSOR:
-	    if (style != SS_ICON) return 0; // ReactOS r43158
+	    if (style != SS_ICON) return 0; // LibreNT r43158
 	    lResult = (LRESULT)STATIC_SetIcon( hwnd, (HICON)lParam, full_style );
 	    break;
 	default:
@@ -591,7 +591,7 @@ LRESULT WINAPI StaticWndProc_common( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM
         STATIC_TryPaintFcn( hwnd, full_style );
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_UPDATEUISTATE:
         if (unicode)
             DefWindowProcW(hwnd, uMsg, wParam, lParam);
@@ -704,7 +704,7 @@ static void STATIC_PaintTextfn( HWND hwnd, HDC hdc, DWORD style )
 
     if (style & SS_NOPREFIX)
         format |= DT_NOPREFIX;
-    else if (GetWindowLongW(hwnd, UISTATE_GWL_OFFSET) & UISF_HIDEACCEL) // ReactOS r30727
+    else if (GetWindowLongW(hwnd, UISTATE_GWL_OFFSET) & UISF_HIDEACCEL) // LibreNT r30727
         format |= DT_HIDEPREFIX;
 
     if ((style & SS_TYPEMASK) != SS_SIMPLE)
@@ -782,7 +782,7 @@ static void STATIC_PaintRectfn( HWND hwnd, HDC hdc, DWORD style )
     GetClientRect( hwnd, &rc);
 
     /* FIXME: send WM_CTLCOLORSTATIC */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hBrush = STATIC_SendWmCtlColorStatic(hwnd, hdc); // Always sent....
 #endif
     switch (style & SS_TYPEMASK)

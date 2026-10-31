@@ -7,8 +7,8 @@ if(CMAKE_CROSSCOMPILING)
         -D_IMAGEHLP_SOURCE_)
 
     include_directories(
-        BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine
-        ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+        BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine
+        ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 
     spec2def(dbghelp.dll dbghelp.spec ADD_IMPORTLIB)
 
@@ -36,13 +36,6 @@ if(CMAKE_CROSSCOMPILING)
         symbol.c
         type.c)
 
-    if(ARCH STREQUAL "riscv64")
-        include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/rtl)
-        list(APPEND SOURCE cpu_riscv64.c)
-    elseif(ARCH STREQUAL "ppc")
-        list(APPEND SOURCE cpu_ppc.c)
-    endif()
-
     add_library(dbghelp MODULE
         ${SOURCE}
         version.rc
@@ -51,12 +44,9 @@ if(CMAKE_CROSSCOMPILING)
 
     set_module_type(dbghelp win32dll)
     target_link_libraries(dbghelp wine ${PSEH_LIB} oldnames zlib symz)
-    if(ARCH STREQUAL "riscv64")
-        target_link_libraries(dbghelp riscv64_rvuw)
-    endif()
     add_delay_importlibs(dbghelp version)
     add_importlibs(dbghelp psapi msvcrt kernel32_vista kernel32 ntdll)
-    add_cd_file(TARGET dbghelp DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET dbghelp DESTINATION librent/system32 FOR all)
     set_wine_module(dbghelp)
 
     if(MSVC)

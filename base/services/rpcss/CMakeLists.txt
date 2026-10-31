@@ -1,8 +1,8 @@
 
 add_rpc_files(server
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine/epm.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine/irot.idl
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine/irpcss.idl)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine/epm.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine/irot.idl
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine/irpcss.idl)
 
 
 list(APPEND SOURCE
@@ -15,11 +15,11 @@ list(APPEND SOURCE
     ${CMAKE_CURRENT_BINARY_DIR}/irot_s.c
     ${CMAKE_CURRENT_BINARY_DIR}/irpcss_s.c)
 
-include_directories(${REACTOS_BINARY_DIR}/sdk/include/wine)
+include_directories(${LIBRENT_BINARY_DIR}/sdk/include/wine)
 add_executable(rpcss ${SOURCE} rpcss.rc)
 
 target_link_libraries(rpcss ${PSEH_LIB} wine)
 set_module_type(rpcss win32cui UNICODE)
 add_importlibs(rpcss advapi32 rpcrt4 msvcrt kernel32 ntdll)
 add_pch(rpcss precomp.h SOURCE)
-add_cd_file(TARGET rpcss DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rpcss DESTINATION librent/system32 FOR all)

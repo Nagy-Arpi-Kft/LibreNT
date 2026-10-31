@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * FILE:            ntoskrnl/include/ntoskrnl.h
  * PURPOSE:         Main Kernel Header
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
@@ -129,7 +129,7 @@ C_ASSERT(MAX_WIN32_PATH == MAX_PATH);
 #include "config.h"
 #include "internal/ntoskrnl.h"
 
-#include <reactos/probe.h>
+#include <librent/probe.h>
 #include "internal/probe.h"
 #include "resource.h"
 

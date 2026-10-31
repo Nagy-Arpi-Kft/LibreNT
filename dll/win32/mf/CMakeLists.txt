@@ -22,7 +22,7 @@ target_compile_definitions(mf PRIVATE __WINESRC__)
 target_link_libraries(mf mfuuid strmiids uuid wine wine_dll_canunload wine_dll_register)
 add_importlibs(mf advapi32 mfplat ole32 kernelbase msvcrt kernel32 ntdll)
 add_delay_importlibs(mf evr urlmon user32)
-add_cd_file(TARGET mf DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mf DESTINATION librent/system32 FOR all)
 set_wine_module(mf)
 
 if(MSVC)

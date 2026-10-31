@@ -1,8 +1,8 @@
 /*
- * PROJECT:     ReactOS Setup Library
+ * PROJECT:     LibreNT Setup Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Boot Stores Management functionality, with support for
- *              NT 5.x family (MS Windows <= 2003, and ReactOS) bootloaders.
+ *              NT 5.x family (MS Windows <= 2003, and LibreNT) bootloaders.
  * COPYRIGHT:   Copyright 2017-2018 Hermes Belusca-Maito
  */
 
@@ -340,7 +340,7 @@ FreeLdrMigrateBootDrivePart(
         /* Check for boot type to migrate */
         if (!IniGetKey(OsIniSection, L"BootType", &KeyData) || !KeyData)
         {
-            /* Certainly not a ReactOS installation */
+            /* Certainly not a LibreNT installation */
             DPRINT1("No BootType value present\n");
             continue;
         }
@@ -392,7 +392,7 @@ CreateCommonFreeLdrSections(
     IniSection = IniAddSection(BootStore->IniCache, L"Display");
 
     /* TitleText and MinimalUI */
-    IniAddKey(IniSection, L"TitleText", L"LiberNT Boot Manager");
+    IniAddKey(IniSection, L"TitleText", L"LibreNT Boot Manager");
     IniAddKey(IniSection, L"MinimalUI", L"Yes");
 
     /*
@@ -1065,7 +1065,7 @@ CreateNTOSEntry(
         IniAddKey(IniSection, L"BootType", L"Windows2003");
         IniAddKey(IniSection, L"SystemPath", Options->OsLoadPath);
         IniAddKey(IniSection, L"Options", Options->OsLoadOptions);
-        IniAddKey(IniSection, L"BootLogo", L"LiberNT");
+        IniAddKey(IniSection, L"BootLogo", L"LibreNT");
     }
     else
     if (BootEntry->OsOptionsLength >= sizeof(BOOTSECTOR_OPTIONS) &&
@@ -1484,12 +1484,12 @@ FreeLdrEnumerateBootEntries(
         /* Check for supported boot type */
         if (!IniGetKey(OsIniSection, L"BootType", &KeyData) || !KeyData)
         {
-            /* Certainly not a ReactOS installation */
+            /* Certainly not a LibreNT installation */
             DPRINT1("No BootType value present\n");
             goto DoEnum;
         }
 
-        // TODO: What to do with "Windows" ; "WindowsNT40" ; "ReactOSSetup" ?
+        // TODO: What to do with "Windows" ; "WindowsNT40" ; "LibreNTSetup" ?
         if ((_wcsicmp(KeyData, L"Windows2003")     == 0) ||
             (_wcsicmp(KeyData, L"\"Windows2003\"") == 0))
         {

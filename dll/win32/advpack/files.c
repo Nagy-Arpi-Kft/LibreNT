@@ -308,7 +308,7 @@ done:
     return HRESULT_FROM_WIN32(dwLastError);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT DELNODE_recurse_dirtree(LPWSTR fname, DWORD flags)
 {
     DWORD fattrs = GetFileAttributesW(fname);
@@ -472,7 +472,7 @@ HRESULT WINAPI DelNodeW(LPCWSTR pszFileOrDirName, DWORD dwFlags)
     
     TRACE("(%s, %ld)\n", debugstr_w(pszFileOrDirName), dwFlags);
     
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (dwFlags)
         FIXME("Flags ignored!\n");
 #endif

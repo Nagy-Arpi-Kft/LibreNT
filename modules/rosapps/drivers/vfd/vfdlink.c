@@ -49,7 +49,7 @@ VfdSetLink(
 		//
 		//	Delete the old drive letter
 		//
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		name_buf[sizeof(name_buf) - 1] = UNICODE_NULL;
 #else
 		name_buf[ARRAYSIZE(name_buf) - 1] = UNICODE_NULL;
@@ -89,7 +89,7 @@ VfdSetLink(
 		//	Create a new drive letter
 		//
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		name_buf[sizeof(name_buf) - 1] = UNICODE_NULL;
 
 		_snwprintf(name_buf, sizeof(name_buf) - 1,
@@ -146,7 +146,7 @@ VfdLoadLink(
 
 	RtlZeroMemory(params, sizeof(params));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	name_buf[sizeof(name_buf) - 1] = UNICODE_NULL;
 
 	_snwprintf(name_buf, sizeof(name_buf) - 1,
@@ -213,7 +213,7 @@ VfdStoreLink(
 		return STATUS_DRIVER_INTERNAL_ERROR;
 	}
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	name_buf[sizeof(name_buf) - 1] = UNICODE_NULL;
 
 	_snwprintf(name_buf, sizeof(name_buf) - 1,

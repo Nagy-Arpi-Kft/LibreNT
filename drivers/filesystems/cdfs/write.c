@@ -34,7 +34,7 @@ Abstract:
 //  This macro just puts a nice little try-except around RtlZeroMemory
 //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define SafeZeroMemory(IC,AT,BYTE_COUNT) {                  \
     _SEH2_TRY {                                             \
         RtlZeroMemory( (AT), (BYTE_COUNT) );                \

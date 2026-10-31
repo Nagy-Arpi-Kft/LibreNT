@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/userenv/profile.c
  * PURPOSE:         User profile code
  * PROGRAMMERS:     Eric Kohl
@@ -2190,7 +2190,7 @@ LoadUserProfileW(
          * for example on a domain server, if any. It is then used to create
          * a local image (copy) of the profile on the local computer.
          *
-         * FIXME: We currently don't implement this in ReactOS; instead, we use
+         * FIXME: We currently don't implement this in LibreNT; instead, we use
          * it directly as *the* user's profile path, without doing any copy...
          */
         if (lpProfileInfo->lpProfilePath)
@@ -2369,7 +2369,7 @@ cleanup:
     {
         // TODO: Use a localized *.mc resource message* error.
         ReportError(lpProfileInfo->dwFlags,
-                    L"ReactOS could not load the locally stored user profile. "
+                    L"LibreNT could not load the locally stored user profile. "
                     L"Possible causes of this error include insufficient security rights or a corrupt local profile.\n"
                     L"\nError: %lu\n",
                     dwError);

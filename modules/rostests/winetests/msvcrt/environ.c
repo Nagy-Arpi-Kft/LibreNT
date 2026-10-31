@@ -24,7 +24,7 @@
 #include <process.h>
 #include <winnls.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 _CRTIMP void __cdecl __getmainargs(int *, char ***, char ***, int, int *);
 _CRTIMP void __cdecl __wgetmainargs(int *, wchar_t ***, wchar_t ***, int, int *);
 #endif

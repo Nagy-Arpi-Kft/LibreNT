@@ -1382,7 +1382,7 @@ HRESULT __RPC_STUB IEnumMoniker_Next_Stub(
 BOOL CALLBACK IRunnableObject_IsRunning_Proxy(
     IRunnableObject* This)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)\n", This);
     return IRunnableObject_RemoteIsRunning_Proxy(This) == S_OK;
 #else
@@ -1396,7 +1396,7 @@ BOOL CALLBACK IRunnableObject_IsRunning_Proxy(
 HRESULT __RPC_STUB IRunnableObject_IsRunning_Stub(
     IRunnableObject* This)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)\n", This);
     return IRunnableObject_IsRunning(This) ? S_OK : S_FALSE;
 #else
@@ -1613,7 +1613,7 @@ HRESULT __RPC_STUB IEnumSTATSTG_Next_Stub(
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT CALLBACK IEnumSTATPROPSTG_Next_Proxy(
     IEnumSTATPROPSTG* This,
     ULONG celt,

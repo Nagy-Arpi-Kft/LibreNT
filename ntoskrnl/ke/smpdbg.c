@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Gated SMP runtime progress and deadlock diagnostics
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -9,7 +9,7 @@
  */
 
 #include <ntoskrnl.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 
 #define NDEBUG
 #include <debug.h>

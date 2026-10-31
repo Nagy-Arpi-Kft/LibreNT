@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Raspberry Pi 3 video support
+# PROJECT:     LibreNT Raspberry Pi 3 video support
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the Windows-compatible VC4 D3D9 user-mode driver
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -19,6 +19,6 @@ target_include_directories(rpi3vc4um PRIVATE
 set_module_type(rpi3vc4um win32dll ENTRYPOINT DllMain 12)
 add_importlibs(rpi3vc4um rpi3mmal msvcrt kernel32 ntdll)
 add_dependencies(rpi3vc4um psdk)
-add_cd_file(TARGET rpi3vc4um DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rpi3vc4um DESTINATION librent/system32 FOR all)
 set_target_properties(rpi3vc4um PROPERTIES
     FOLDER "Drivers/Platform/Raspberry Pi 3")

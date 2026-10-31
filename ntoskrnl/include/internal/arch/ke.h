@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 1998, 1999, 2000, 2001 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -21,8 +21,6 @@
 
 #ifdef _M_IX86
 #include <internal/i386/ke.h>
-#elif defined(_M_PPC)
-#include <internal/powerpc/ke.h>
 #elif defined(_M_MIPS)
 #include <internal/mips/ke.h>
 #elif defined(_M_ARM)

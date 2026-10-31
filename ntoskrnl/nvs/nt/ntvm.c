@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NT Virtual Memory Subsystem
+ * PROJECT:     LibreNT NT Virtual Memory Subsystem
  * FILE:        ntoskrnl/nvs/nt/ntvm.c
  * PURPOSE:     NT virtual memory system call interfaces
  *

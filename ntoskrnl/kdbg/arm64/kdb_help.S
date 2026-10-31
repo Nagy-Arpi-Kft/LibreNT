@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel (ARM64)
+ * PROJECT:         LibreNT Kernel (ARM64)
  * PURPOSE:         KDBG helper to switch to debugger stack and call function
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  */

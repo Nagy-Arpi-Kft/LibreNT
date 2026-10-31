@@ -1,5 +1,5 @@
 /*
- * ReactOS Calc (Math functions, IEEE-754 engine)
+ * LibreNT Calc (Math functions, IEEE-754 engine)
  *
  * Copyright 2007-2017, Carlo Bramini
  *
@@ -387,7 +387,7 @@ static __int64 cbrti(__int64 x) {
 void rpn_cbrt(calc_number_t *c)
 {
     if (calc.base == IDC_RADIO_DEC)
-#if defined(__GNUC__) && !defined(__REACTOS__)
+#if defined(__GNUC__) && !defined(__LIBRENT__)
         c->f = cbrt(c->f);
 #else
         c->f = pow(c->f,1./3.);

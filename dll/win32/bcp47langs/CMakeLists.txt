@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(bcp47langs MODULE ${SOURCE})
 set_module_type(bcp47langs win32dll ENTRYPOINT DllMain 12)
 add_importlibs(bcp47langs msvcrt kernel32 ntdll)
-add_cd_file(TARGET bcp47langs DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET bcp47langs DESTINATION librent/system32 FOR all)

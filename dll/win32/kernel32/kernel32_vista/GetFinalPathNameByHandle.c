@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Win32 Base API
+ * PROJECT:     LibreNT Win32 Base API
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of GetFinalPathNameByHandleW
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

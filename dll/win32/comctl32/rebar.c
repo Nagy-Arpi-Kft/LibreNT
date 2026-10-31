@@ -182,7 +182,7 @@ typedef struct
     INT      ihitoffset;  /* offset of hotspot from gripper.left */
     INT      ichevronhotBand; /* last band that had a hot chevron */
     INT      iGrabbedBand;/* band number of band whose gripper was grabbed */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     INT      igrabberhotBand;
 #endif
 
@@ -587,7 +587,7 @@ REBAR_DrawChevron (HDC hdc, const REBAR_INFO *infoPtr, REBAR_BAND *lpBand)
     if (theme)
     {
         int stateId;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int partId = RP_CHEVRON;
 
         if ((infoPtr->dwStyle & CCS_VERT) &&
@@ -601,7 +601,7 @@ REBAR_DrawChevron (HDC hdc, const REBAR_INFO *infoPtr, REBAR_BAND *lpBand)
             stateId = CHEVS_HOT;
         else
             stateId = CHEVS_NORMAL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DrawThemeBackground (theme, hdc, partId, stateId, &lpBand->rcChevron, NULL);
 #else
         DrawThemeBackground (theme, hdc, RP_CHEVRON, stateId, &lpBand->rcChevron, NULL);
@@ -626,7 +626,7 @@ REBAR_DrawChevron (HDC hdc, const REBAR_INFO *infoPtr, REBAR_BAND *lpBand)
     }
 }
 
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
 static void
 REBAR_DrawBandSeparator (HWND hwnd, HDC hdc, RECT *rect, UINT flags, int stateId)
 #else
@@ -639,7 +639,7 @@ REBAR_DrawBandSeparator (HWND hwnd, HDC hdc, RECT *rect, UINT flags)
 
     if (theme)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int partId = (flags == BF_RIGHT) ? RP_SPLITTER : RP_SPLITTERVERT;
 
         if (IsThemePartDefined(theme, partId, 0) &&
@@ -1936,13 +1936,13 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
     UINT i;
     INT oldrow;
     RECT cr;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
     HTHEME theme;
 #endif
 
     GetClientRect (infoPtr->hwndSelf, &cr);
 
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
     theme = GetWindowTheme(infoPtr->hwndSelf);
     if (theme)
     {
@@ -1968,7 +1968,7 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
 		if (infoPtr->dwStyle & CCS_VERT) {
 		    rcRowSep.right += SEP_WIDTH_SIZE;
 		    rcRowSep.bottom = infoPtr->calcSize.cx;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
                     REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcRowSep, BF_RIGHT, SPLITS_NORMAL);
 #else
                     REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcRowSep, BF_RIGHT);
@@ -1977,7 +1977,7 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
 		else {
 		    rcRowSep.bottom += SEP_WIDTH_SIZE;
 		    rcRowSep.right = infoPtr->calcSize.cx;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
                     REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcRowSep, BF_BOTTOM, SPLITS_NORMAL);
 #else
                     REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcRowSep, BF_BOTTOM);
@@ -1991,7 +1991,7 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
 	/* draw band separator between bands in a row */
         if (infoPtr->dwStyle & RBS_BANDBORDERS && lpBand->rcBand.left > 0) {
 	    RECT rcSep;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
             int sepState = SPLITS_NORMAL;
 
             if (infoPtr->iGrabbedBand == (INT)i)
@@ -2003,7 +2003,7 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
 	    if (infoPtr->dwStyle & CCS_VERT) {
                 rcSep.bottom = rcSep.top;
 		rcSep.top -= SEP_WIDTH_SIZE;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
                 REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcSep, BF_BOTTOM, sepState);
 #else
                 REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcSep, BF_BOTTOM);
@@ -2012,7 +2012,7 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
 	    else {
                 rcSep.right = rcSep.left;
 		rcSep.left -= SEP_WIDTH_SIZE;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
                 REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcSep, BF_RIGHT, sepState);
 #else
                 REBAR_DrawBandSeparator (infoPtr->hwndSelf, hdc, &rcSep, BF_RIGHT);
@@ -2023,7 +2023,7 @@ static LRESULT REBAR_EraseBkGnd (const REBAR_INFO *infoPtr, HDC hdc)
 	}
 
 	/* draw the actual background */
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
         if (!theme)
 #endif
         REBAR_DrawBandBackground (infoPtr, lpBand, hdc, &cr, &rcBand);
@@ -2986,7 +2986,7 @@ REBAR_ShowBand (REBAR_INFO *infoPtr, INT iBand, BOOL show)
 
 
 static LRESULT
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 REBAR_SizeToRect (REBAR_INFO *infoPtr, WPARAM flags, RECT *lpRect)
 #else
 REBAR_SizeToRect (REBAR_INFO *infoPtr, const RECT *lpRect)
@@ -2996,7 +2996,7 @@ REBAR_SizeToRect (REBAR_INFO *infoPtr, const RECT *lpRect)
 
     TRACE("[%s]\n", wine_dbgstr_rect(lpRect));
     REBAR_SizeToHeight(infoPtr, get_rect_cy(infoPtr, lpRect));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (flags & RBSTR_CHANGERECT)
     {
         RECT client_rect;
@@ -3052,7 +3052,7 @@ REBAR_Destroy (REBAR_INFO *infoPtr)
     DPA_Destroy (infoPtr->bands);
     infoPtr->bands = NULL;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DestroyCursor (infoPtr->hcurArrow);
     DestroyCursor (infoPtr->hcurHorz);
     DestroyCursor (infoPtr->hcurVert);
@@ -3132,7 +3132,7 @@ REBAR_LButtonDown (REBAR_INFO *infoPtr, LPARAM lParam)
 
         SetCapture (infoPtr->hwndSelf);
         infoPtr->iGrabbedBand = iHitBand;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         InvalidateRect(infoPtr->hwndSelf, NULL, TRUE);
 #endif
 
@@ -3191,7 +3191,7 @@ REBAR_MouseLeave (REBAR_INFO *infoPtr)
     }
     infoPtr->iOldBand = -1;
     infoPtr->ichevronhotBand = -2;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (infoPtr->igrabberhotBand >= 0)
     {
         infoPtr->igrabberhotBand = -1;
@@ -3257,7 +3257,7 @@ REBAR_MouseMove (REBAR_INFO *infoPtr, LPARAM lParam)
 
         REBAR_InternalHitTest(infoPtr, &ptMove, &htFlags, &iHitBand);
 
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
         {
             INT iGrabberHot = (htFlags == RBHT_GRABBER) ? iHitBand : -1;
 
@@ -3365,7 +3365,7 @@ REBAR_NCCreate (HWND hwnd, const CREATESTRUCTW *cs)
     infoPtr->iOldBand = -1;
     infoPtr->ichevronhotBand = -2;
     infoPtr->iGrabbedBand = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     infoPtr->igrabberhotBand = -1;
 #endif
     infoPtr->hwndSelf = hwnd;
@@ -3454,7 +3454,7 @@ REBAR_NCPaint (const REBAR_INFO *infoPtr)
     if (infoPtr->dwStyle & WS_MINIMIZE)
 	return 0; /* Nothing to do */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(infoPtr->dwStyle & WS_BORDER) &&
         (!COMCTL32_IsThemed (infoPtr->hwndSelf) || (infoPtr->dwStyle & CCS_NODIVIDER)))
         return 0;
@@ -3511,7 +3511,7 @@ REBAR_Paint (const REBAR_INFO *infoPtr, HDC hdc)
 {
     if (hdc) {
         TRACE("painting\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         REBAR_EraseBkGnd(infoPtr, hdc);
 #endif
         REBAR_Refresh (infoPtr, hdc);
@@ -3636,7 +3636,7 @@ REBAR_StyleChanged (REBAR_INFO *infoPtr, INT nType, const STYLESTRUCT *lpStyle)
     if (nType == GWL_STYLE)
     {
         infoPtr->orgStyle = infoPtr->dwStyle = lpStyle->styleNew;
-#if defined(__REACTOS__) && __WINE_COMCTL32_VERSION == 6
+#if defined(__LIBRENT__) && __WINE_COMCTL32_VERSION == 6
         if (GetWindowTheme(infoPtr->hwndSelf))
             infoPtr->dwStyle &= ~WS_BORDER;
 #endif
@@ -3647,7 +3647,7 @@ REBAR_StyleChanged (REBAR_INFO *infoPtr, INT nType, const STYLESTRUCT *lpStyle)
     return FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LRESULT REBAR_ThemeChanged(REBAR_INFO *infoPtr)
 {
     LRESULT result = COMCTL32_ThemeChanged(infoPtr->hwndSelf, L"Rebar", TRUE, TRUE);
@@ -3795,7 +3795,7 @@ REBAR_WindowProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	    return REBAR_ShowBand (infoPtr, wParam, lParam);
 
 	case RB_SIZETORECT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    return REBAR_SizeToRect (infoPtr, wParam, (LPRECT)lParam);
 #else
 	    return REBAR_SizeToRect (infoPtr, (LPCRECT)lParam);
@@ -3878,7 +3878,7 @@ REBAR_WindowProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	    return REBAR_StyleChanged (infoPtr, wParam, (LPSTYLESTRUCT)lParam);
 
         case WM_THEMECHANGED:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             return REBAR_ThemeChanged(infoPtr);
 #else
             return COMCTL32_ThemeChanged (infoPtr->hwndSelf, L"Rebar", FALSE, FALSE);
@@ -3886,7 +3886,7 @@ REBAR_WindowProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         case WM_SYSCOLORCHANGE:
             COMCTL32_RefreshSysColors();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             infoPtr->clrBtnText = comctl32_color.clrBtnText;
             infoPtr->clrBtnFace = comctl32_color.clrBtnFace;
 #endif

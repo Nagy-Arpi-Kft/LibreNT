@@ -76,7 +76,7 @@ static HRESULT get_protocol_cf(LPCWSTR schema, DWORD schema_len, CLSID *pclsid, 
     static const WCHAR wszProtocolsKey[] =
         {'P','R','O','T','O','C','O','L','S','\\','H','a','n','d','l','e','r','\\'};
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((size_t)schema_len > (~(size_t)0 - sizeof(wszProtocolsKey)) / sizeof(WCHAR) - 1)
         return E_OUTOFMEMORY;
     wszKey = malloc(sizeof(wszProtocolsKey) + ((size_t)schema_len + 1) * sizeof(WCHAR));
@@ -85,7 +85,7 @@ static HRESULT get_protocol_cf(LPCWSTR schema, DWORD schema_len, CLSID *pclsid, 
     wszKey = malloc(sizeof(wszProtocolsKey) + (schema_len + 1) * sizeof(WCHAR));
 #endif
     memcpy(wszKey, wszProtocolsKey, sizeof(wszProtocolsKey));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(wszKey + ARRAY_SIZE(wszProtocolsKey), schema, (size_t)schema_len * sizeof(WCHAR));
     wszKey[ARRAY_SIZE(wszProtocolsKey) + schema_len] = 0;
 #else
@@ -251,7 +251,7 @@ HRESULT get_protocol_handler(IUri *uri, CLSID *clsid, IClassFactory **ret)
     return hres;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL is_direct_builtin_protocol(IUri *uri)
 {
     name_space *ns;
@@ -461,7 +461,7 @@ static HRESULT WINAPI InternetSession_CreateBinding(IInternetSession *iface,
     if(FAILED(hres))
         return hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     protocol->url_binding = szUrl != NULL;
 #endif
     *ppOInetProt = (IInternetProtocol*)&protocol->IInternetProtocolEx_iface;

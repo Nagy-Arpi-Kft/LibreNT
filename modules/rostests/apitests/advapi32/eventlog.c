@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS api tests
+ * PROJECT:         LibreNT api tests
  * LICENSE:         GPLv2+ - See COPYING in the top level directory
  * PURPOSE:         Supplemental tests for Winetests' Event Logging functions
  * PROGRAMMER:      Hermes Belusca-Maito
@@ -14,7 +14,7 @@ START_TEST(eventlog_supp)
         /* Input */
         ULONG MaxDataSize;
 
-        /* Output for Windows <= 2k3 | Windows Vista+ (or "old" ReactOS) */
+        /* Output for Windows <= 2k3 | Windows Vista+ (or "old" LibreNT) */
         struct
         {
             BOOL  Success;

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Win32k subsystem
+ * PROJECT:         LibreNT Win32k subsystem
  * FILE:            win32ss/pch.h
  * PURPOSE:         Main Win32K Header
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
@@ -107,7 +107,7 @@ extern "C" {
 #ifndef __cplusplus
 #include <include/ntusrtyp.h>
 #include <include/ntuser.h>
-#include <reactos/ntdcomp.h>
+#include <librent/ntdcomp.h>
 #include <include/callback.h>
 #endif // __cplusplus
 

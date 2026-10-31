@@ -511,7 +511,7 @@
 
   /* documentation is in ftbitmap.h */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   FT_EXPORT_DEF( FT_Error )
   FT_Bitmap_Convert_ReactOS_Hack( FT_Library        library,
                                   const FT_Bitmap  *source,
@@ -622,7 +622,7 @@
             FT_Int  val = ss[0]; /* avoid a byte->int cast on each line */
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (hack)
             {
                 tt[0] = (FT_Byte)( ( val & 0x80 ) ? 0xff : 0);
@@ -645,7 +645,7 @@
             tt[5] = (FT_Byte)( ( val & 0x04 ) >> 2 );
             tt[6] = (FT_Byte)( ( val & 0x02 ) >> 1 );
             tt[7] = (FT_Byte)(   val & 0x01 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
 
@@ -662,7 +662,7 @@
 
             for ( ; j > 0; j-- )
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               if (hack)
                 tt[0] = (FT_Byte)( ( val & 0x80 ) ? 0xff : 0);
               else
@@ -823,7 +823,7 @@
     return error;
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   FT_EXPORT_DEF( FT_Error )
   FT_Bitmap_Convert( FT_Library        library,
                      const FT_Bitmap  *source,

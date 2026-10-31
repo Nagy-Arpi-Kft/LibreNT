@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 3 VC4 WDDM miniport
+ * PROJECT:     LibreNT Raspberry Pi 3 VC4 WDDM miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     BCM2837 VC4 display-engine definitions
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -9,7 +9,7 @@
 
 #include "softgpu.h"
 #include "rpi3vc4_damage.h"
-#include <reactos/rpi3vc4_umd.h>
+#include <librent/rpi3vc4_umd.h>
 
 #define RPI3VC4_POOL_TAG                  '3cVR'
 

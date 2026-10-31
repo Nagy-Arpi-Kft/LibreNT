@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Font Shell Extension
+ * PROJECT:     LibreNT Font Shell Extension
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     CFontExt implementation
  * COPYRIGHT:   Copyright 2019-2021 Mark Jansen <mark.jansen@reactos.org>
@@ -251,7 +251,7 @@ STDMETHODIMP CFontExt::GetDetailsOf(PCUITEMID_CHILD pidl, UINT iColumn, SHELLDET
         return E_FAIL;
     }
 
-    // Name, ReactOS specific?
+    // Name, LibreNT specific?
     if (iColumn == FONTEXT_COL_NAME)
         return GetDisplayNameOf(pidl, 0, &psd->str);
 
@@ -797,7 +797,7 @@ STDMETHODIMP CFontExt::Drop(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt,
     HRESULT hr = InstallFontsFromDataObject(m_hwndView, pDataObj);
 
     CStringW text, title;
-    title.LoadStringW(IDS_REACTOS_FONTS_FOLDER);
+    title.LoadStringW(IDS_LIBRENT_FONTS_FOLDER);
     if (FAILED_UNEXPECTEDLY(hr))
     {
         // Show error message

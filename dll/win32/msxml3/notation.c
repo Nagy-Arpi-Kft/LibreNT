@@ -352,7 +352,7 @@ static HRESULT WINAPI domnotation_put_dataType(IXMLDOMNotation *iface, BSTR p)
 
 static HRESULT WINAPI domnotation_get_xml(IXMLDOMNotation *iface, BSTR *p)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct domnotation *notation = impl_from_IXMLDOMNotation(iface);
 
     TRACE("%p, %p.\n", iface, p);

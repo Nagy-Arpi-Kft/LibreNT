@@ -3,7 +3,7 @@
 
 //#include <features.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     #undef NETCONFIG
     extern char NETCONFIG[];
 #else
@@ -80,7 +80,7 @@ typedef struct {
 #define NC_UDP		"udp"
 #define NC_ICMP		"icmp"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef __BEGIN_DECLS
 #define __BEGIN_DECLS
 #define __END_DECLS

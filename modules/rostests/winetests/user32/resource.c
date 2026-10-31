@@ -154,7 +154,7 @@ static void test_LoadStringW(void)
     length1 = LoadStringW(hInst, 2, returnedstringw, 1); /* get resource string */
     ok(!length1, "got %d.\n", length1);
     ok(GetLastError() == 0xdeadbeef, "got %lu.\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!returnedstringw[0] || broken(returnedstringw[0] == 0xcccc) /* WS03 */, "got %#x.\n", returnedstringw[0]);
 #else
     ok(!returnedstringw[0], "got %#x.\n", returnedstringw[0]);
@@ -164,7 +164,7 @@ static void test_LoadStringW(void)
 
 static void test_LoadStringA (void)
 {
-#if defined(__REACTOS__) && defined(_M_AMD64)
+#if defined(__LIBRENT__) && defined(_M_AMD64)
     skip("LoadStringA test broken on amd64!\n");
 #else
     HINSTANCE hInst = GetModuleHandleA(NULL);

@@ -23,7 +23,7 @@
 #include "winbase.h"
 #include "ole2.h"
 #include "msxml6.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wingdi.h"
 #endif
 #include "mshtml.h"

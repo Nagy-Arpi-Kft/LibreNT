@@ -14,12 +14,13 @@ modules/[Aa][Hh][Kk]_[Tt]ests
 .settings
 .vs
 .vscode
+.claude
+.repowise
 sdk/tools/winesync/winesync.cfg
 
 # Local feed configuration and the source feeds checked out by scripts/feeds
 feeds.conf
 /submodules/dxc/
-/submodules/felix86/
 /submodules/fex-arm64ec/
 /submodules/ffmpeg/
 /submodules/mesa/

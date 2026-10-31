@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel Debugger over Network extension stubs
+ * PROJECT:     LibreNT Kernel Debugger over Network extension stubs
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Main source file
  * COPYRIGHT:   Copyright 2022 Hervé Poussineau <hpoussin@reactos.org>

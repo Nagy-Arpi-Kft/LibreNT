@@ -489,7 +489,7 @@ typedef enum _FILE_INFORMATION_CLASS
     FileValidDataLengthInformation = 39,
     FileShortNameInformation = 40,
     FileIoCompletionNotificationInformation = 41,
-#if (NTDDI_VERSION >= NTDDI_VISTA) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_VISTA) || defined(__LIBRENT__)
     FileIoStatusBlockRangeInformation = 42,
     FileIoPriorityHintInformation = 43,
     FileSfioReserveInformation = 44,
@@ -499,7 +499,7 @@ typedef enum _FILE_INFORMATION_CLASS
     FileNormalizedNameInformation = 48,
     FileNetworkPhysicalNameInformation = 49,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN7) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN7) || defined(__LIBRENT__)
     FileIdGlobalTxDirectoryInformation = 50,
     FileIsRemoteDeviceInformation = 51,
     FileAttributeCacheInformation = 52, // FileUnusedInformation since Windows 8.1
@@ -507,41 +507,41 @@ typedef enum _FILE_INFORMATION_CLASS
     FileStandardLinkInformation = 54,
     FileRemoteProtocolInformation = 55,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN8) || defined(__LIBRENT__)
     FileRenameInformationBypassAccessCheck = 56,
     FileLinkInformationBypassAccessCheck = 57,
     FileVolumeNameInformation = 58,
     FileIdInformation = 59,
     FileIdExtdDirectoryInformation = 60,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WINBLUE) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WINBLUE) || defined(__LIBRENT__)
     FileReplaceCompletionInformation = 61,
     FileHardLinkFullIdInformation = 62,
     FileIdExtdBothDirectoryInformation = 63, // Update 1
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS1) || defined(__LIBRENT__)
     FileDispositionInformationEx = 64,
     FileRenameInformationEx = 65,
     FileRenameInformationExBypassAccessCheck = 66,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS2) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS2) || defined(__LIBRENT__)
     FileDesiredStorageClassInformation = 67,
     FileStatInformation = 68,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS3) || defined(__LIBRENT__)
     FileMemoryPartitionInformation = 69,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS4) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS4) || defined(__LIBRENT__)
     FileStatLxInformation = 70,
     FileCaseSensitiveInformation = 71,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN10_RS5) || defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN10_RS5) || defined(__LIBRENT__)
     FileLinkInformationEx = 72,
     FileLinkInformationExBypassAccessCheck = 73,
     FileStorageReserveIdInformation = 74,
     FileCaseSensitiveInformationForceAccessCheck = 75,
 #endif
-#if (NTDDI_VERSION >= NTDDI_WIN11) || defined(__REACTOS__) // 10.0.20150.1000
+#if (NTDDI_VERSION >= NTDDI_WIN11) || defined(__LIBRENT__) // 10.0.20150.1000
     FileKnownFolderInformation = 76,
 #endif
     FileMaximumInformation

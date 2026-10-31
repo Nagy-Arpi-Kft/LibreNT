@@ -18,7 +18,7 @@ add_library(dwmcore MODULE
     ${CMAKE_CURRENT_BINARY_DIR}/dwmcore.def)
 
 target_include_directories(dwmcore PRIVATE
-    ${REACTOS_SOURCE_DIR}/base/system/dwm)
+    ${LIBRENT_SOURCE_DIR}/base/system/dwm)
 
 set_module_type(dwmcore win32dll UNICODE)
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
@@ -29,4 +29,4 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 endif()
 target_link_libraries(dwmcore uuid dx10guid)
 add_importlibs(dwmcore win32u opengl32 advapi32 user32 gdi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET dwmcore DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dwmcore DESTINATION librent/system32 FOR all)

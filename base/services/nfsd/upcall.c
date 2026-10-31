@@ -66,7 +66,7 @@ static const nfs41_upcall_op *g_upcall_op_table[] = {
     NULL,
     NULL
 };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const uint32_t g_upcall_op_table_size = (sizeof(g_upcall_op_table) / sizeof(g_upcall_op_table[0]));
 #else
 static const uint32_t g_upcall_op_table_size = ARRAYSIZE(g_upcall_op_table);

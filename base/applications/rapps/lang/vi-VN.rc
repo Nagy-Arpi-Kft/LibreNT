@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Applications Manager
+ * PROJECT:     LibreNT Applications Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Vietnamese resource file
  * TRANSLATOR:  Copyright 2026 Nguyen Duc Thinh <ducthinh100812@gmail.com>
@@ -168,10 +168,10 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APPTITLE "Trình quản lý ứng dụng ReactOS"
+    IDS_APPTITLE "Trình quản lý ứng dụng LibreNT"
     IDS_APP_AUTHORS "Bản quyền 2009 Dmitry Chapyshev"
-    IDS_WELCOME_TITLE "Chào mừng bạn đến với Trình quản lý ứng dụng ReactOS!"
-    IDS_WELCOME_TEXT "Chọn một danh mục bên trái, sau đó chọn một ứng dụng để cài đặt hoặc gỡ bỏ.\nTrang web LiberNT: "
+    IDS_WELCOME_TITLE "Chào mừng bạn đến với Trình quản lý ứng dụng LibreNT!"
+    IDS_WELCOME_TEXT "Chọn một danh mục bên trái, sau đó chọn một ứng dụng để cài đặt hoặc gỡ bỏ.\nTrang web LibreNT: "
     IDS_WELCOME_URL "https://reactos.org"
 
     IDS_APPWIZ_TITLE "Thêm/Xóa chương trình"

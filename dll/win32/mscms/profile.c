@@ -1460,7 +1460,7 @@ BOOL WINAPI WcsEnumColorProfilesSize( WCS_PROFILE_MANAGEMENT_SCOPE scope, ENUMTY
 /******************************************************************************
  * WcsGetDefaultColorProfile         [MSCMS.@]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HKEY wcs_open_default_key( WCS_PROFILE_MANAGEMENT_SCOPE scope, PCWSTR device_name, BOOL create )
 {
     WCHAR path[MAX_PATH];
@@ -1592,7 +1592,7 @@ BOOL WINAPI WcsGetDefaultColorProfile( WCS_PROFILE_MANAGEMENT_SCOPE scope, PCWST
 /******************************************************************************
  * WcsGetDefaultColorProfileSize     [MSCMS.@]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI WcsGetDefaultColorProfileSize( WCS_PROFILE_MANAGEMENT_SCOPE scope, PCWSTR device_name,
                                            COLORPROFILETYPE type, COLORPROFILESUBTYPE subtype,
                                            DWORD profile_id, PDWORD profile_size)

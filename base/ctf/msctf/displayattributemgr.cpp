@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CTF
+ * PROJECT:     LibreNT CTF
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     ITfDisplayAttributeMgr implementation
  * COPYRIGHT:   Copyright 2010 CodeWeavers, Aric Stewart

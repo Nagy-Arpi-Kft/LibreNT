@@ -45,7 +45,7 @@ typedef EVT_SYSTEMWORKITEM *PFN_WDF_SYSTEMWORKITEM;
 // #include "FxDsf.h"    // DSF support.
 // #include <device_common.h>
 // #include "FxTelemetry.hpp"
-// __REACTOS__
+// __LIBRENT__
 typedef struct _STACK_DEVICE_CAPABILITIES {
     //
     // The capabilities as garnered from IRP_MN_QUERY_CAPABILITIES.
@@ -59,7 +59,7 @@ typedef struct _STACK_DEVICE_CAPABILITIES {
     //
     DEVICE_WAKE_DEPTH DeepestWakeableDstate[PowerSystemHibernate+1];
 } STACK_DEVICE_CAPABILITIES, *PSTACK_DEVICE_CAPABILITIES;
-// end __REACTOS__
+// end __LIBRENT__
 
 
 _Must_inspect_result_

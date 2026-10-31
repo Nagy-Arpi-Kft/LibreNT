@@ -12,9 +12,9 @@
 #if defined(_M_IX86) || defined(_M_AMD64)
 #include <arch/pc/pcbios.h>
 #endif
-#include <reactos/arc/loaderblk.h>
+#include <librent/arc/loaderblk.h>
 #include <Fdt.h>
-#include <reactos/riscv64/fdtlib.h>
+#include <librent/riscv64/fdtlib.h>
 
 #include <debug.h>
 DBG_DEFAULT_CHANNEL(HWDETECT);

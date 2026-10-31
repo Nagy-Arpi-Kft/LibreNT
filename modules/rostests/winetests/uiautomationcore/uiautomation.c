@@ -20,7 +20,7 @@
 
 #define COBJMACROS
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <oleauto.h>
 #endif
 #include <assert.h>
@@ -1896,7 +1896,7 @@ static void ok_method_sequence_(const struct prov_method_sequence *expected_list
     }
 
     /* Handle trailing optional/todo_wine methods. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (expected->prov && (expected->flags & (METHOD_OPTIONAL | METHOD_TODO)))
 #else
     while (expected->prov && ((expected->flags & METHOD_OPTIONAL) ||
@@ -8477,7 +8477,7 @@ static void test_UiaNodeFromHandle(const char *name)
         Sleep(10);
         hr = CoGetApartmentType(&apt_type, &apt_qualifier);
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     todo_wine ok(hr == S_OK || broken(hr == CO_E_NOTINITIALIZED), "Unexpected hr %#lx\n", hr);
 #else
     ok(hr == S_OK || broken(hr == CO_E_NOTINITIALIZED), "Unexpected hr %#lx\n", hr);
@@ -8776,7 +8776,7 @@ static SAFEARRAY *get_safearray_for_elprov(IRawElementProviderSimple *elprov)
 }
 
 static IRawElementProviderSimple *base_hwnd_prov, *proxy_prov, *parent_proxy_prov, *nc_prov;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SAFEARRAY* WINAPI test_uia_provider_callback(HWND hwnd, enum ProviderType prov_type)
 #else
 static SAFEARRAY WINAPI *test_uia_provider_callback(HWND hwnd, enum ProviderType prov_type)
@@ -8972,7 +8972,7 @@ static CONDITION_VARIABLE *clientside_provider_callback_cv;
  * if we can match one by HWND. This is necessary due to certain versions of
  * Windows 10 unpredictably attempting to create elements in the background.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static SAFEARRAY* WINAPI uia_com_win_event_clientside_provider_callback(HWND hwnd, enum ProviderType prov_type)
 #else
 static SAFEARRAY WINAPI *uia_com_win_event_clientside_provider_callback(HWND hwnd, enum ProviderType prov_type)
@@ -18648,7 +18648,7 @@ static void launch_test_process(const char *name, const char *test_name)
     memset(&startup, 0, sizeof(startup));
     startup.cb = sizeof(startup);
     CreateProcessA(NULL, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &startup, &proc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wait_child_process(proc.hProcess);
 #else
     wait_child_process(&proc);

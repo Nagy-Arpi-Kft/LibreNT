@@ -5,12 +5,12 @@ list(APPEND SOURCE
 
 if(FFMPEG_ROOT)
     list(APPEND SOURCE
-        reactos.c
+        librent.c
         unix_demuxer.c
         unix_media_type.c)
 else()
     list(APPEND SOURCE
-        reactos_stubs.c)
+        librent_stubs.c)
 endif()
 
 add_library(winedmo MODULE ${SOURCE} ${CMAKE_CURRENT_BINARY_DIR}/winedmo.def)
@@ -18,7 +18,7 @@ target_compile_definitions(winedmo PRIVATE __WINESRC__)
 set_module_type(winedmo win32dll)
 target_link_libraries(winedmo mfuuid wine)
 add_importlibs(winedmo msvcrt kernel32 ntdll)
-add_cd_file(TARGET winedmo DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET winedmo DESTINATION librent/system32 FOR all)
 
 if(FFMPEG_ROOT)
     target_include_directories(winedmo PRIVATE "${FFMPEG_ROOT}/include")

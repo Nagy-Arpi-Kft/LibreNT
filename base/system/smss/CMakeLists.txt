@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys)
 
 list(APPEND SOURCE
     crashdmp.c
@@ -18,4 +18,4 @@ target_link_libraries(smss nt ${PSEH_LIB} smlib)
 set_module_type(smss nativecui)
 add_importlibs(smss ntdll)
 add_pch(smss smss.h SOURCE)
-add_cd_file(TARGET smss DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET smss DESTINATION librent/system32 FOR all)

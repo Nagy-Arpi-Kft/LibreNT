@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Runtime Library
+ * PROJECT:         LibreNT Runtime Library
  * PURPOSE:         Activation Context Support
  * FILE:            lib/rtl/actctx.c
  * PROGRAMERS:
@@ -13,7 +13,7 @@
  */
 
 /* Based on Wine 3.2-37c98396 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 
 #include <rtl.h>
@@ -45,7 +45,7 @@ extern LPCSTR debugstr_us( const UNICODE_STRING *str ) DECLSPEC_HIDDEN;
 
 BOOLEAN RtlpNotAllowingMultipleActivation;
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #define ACTCTX_FLAGS_ALL (\
  ACTCTX_FLAG_PROCESSOR_ARCHITECTURE_VALID |\
@@ -67,7 +67,7 @@ BOOLEAN RtlpNotAllowingMultipleActivation;
 #define RT_MANIFEST                        ((ULONG_PTR)24)
 #define CREATEPROCESS_MANIFEST_RESOURCE_ID ((ULONG_PTR)1)
 
-#ifndef __REACTOS__ // defined in oaidl.h
+#ifndef __LIBRENT__ // defined in oaidl.h
 /* from oaidl.h */
 typedef enum tagLIBFLAGS {
     LIBFLAG_FRESTRICTED   = 0x1,
@@ -102,7 +102,7 @@ typedef enum tagOLEMISC
     OLEMISC_WANTSTOMENUMERGE             = 0x100000,
     OLEMISC_SUPPORTSMULTILEVELUNDO       = 0x200000
 } OLEMISC;
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 #define MAX_NAMESPACES 64
 
@@ -563,7 +563,7 @@ struct assembly
     ULONG                          num_compat_contexts;
     ACTCTX_REQUESTED_RUN_LEVEL     run_level;
     ULONG                          ui_access;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LARGE_INTEGER                  manifest_time;
 #endif
 };
@@ -580,7 +580,7 @@ enum context_sections
     ACTIVATABLE_CLASS_SECTION = 128,
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct _ASSEMBLY_STORAGE_MAP_ENTRY
 {
     ULONG Flags;
@@ -594,13 +594,13 @@ typedef struct _ASSEMBLY_STORAGE_MAP
     ULONG AssemblyCount;
     PASSEMBLY_STORAGE_MAP_ENTRY *AssemblyArray;
 } ASSEMBLY_STORAGE_MAP, *PASSEMBLY_STORAGE_MAP;
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 typedef struct _ACTIVATION_CONTEXT
 {
     ULONG               magic;
     LONG                ref_count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG Flags;
     LIST_ENTRY Links;
     PACTIVATION_CONTEXT_DATA ActivationContextData;
@@ -612,7 +612,7 @@ typedef struct _ACTIVATION_CONTEXT
     PASSEMBLY_STORAGE_MAP_ENTRY InlineStorageMapEntries;
     ULONG StackTraceIndex;
     PVOID StackTraces[4][4];
-#endif // __REACTOS__
+#endif // __LIBRENT__
     struct file_info    config;
     struct file_info    appdir;
     struct assembly    *assemblies;
@@ -622,7 +622,7 @@ typedef struct _ACTIVATION_CONTEXT
     DWORD               sections;
     struct strsection_header  *wndclass_section;
     struct strsection_header  *dllredirect_section;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct strsection_header  *assemblyinfo_section;
 #endif
     struct strsection_header  *progid_section;
@@ -666,7 +666,7 @@ static const WCHAR winrtv1W[] = L"urn:schemas-microsoft-com:winrt.v1";
 static const WCHAR compatibilityNSW[] = L"urn:schemas-microsoft-com:compatibility.v1";
 static const WCHAR windowsSettings2005NSW[] = L"http://schemas.microsoft.com/SMI/2005/WindowsSettings";
 static const WCHAR windowsSettings2011NSW[] = L"http://schemas.microsoft.com/SMI/2011/WindowsSettings";
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR windowsSettings2013NSW[] = L"http://schemas.microsoft.com/SMI/2013/WindowsSettings";
 static const WCHAR windowsSettings2024NSW[] = L"http://schemas.microsoft.com/SMI/2024/WindowsSettings";
 #endif
@@ -1012,7 +1012,7 @@ static BOOL is_matching_identity( const struct assembly_identity *id1,
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_neutral_language( const WCHAR *language )
 {
     return !language || !language[0] || !wcscmp( language, L"*" ) || !wcsicmp( language, L"neutral" );
@@ -1036,7 +1036,7 @@ static BOOL add_dependent_assembly_id(struct actctx_loader* acl,
 
     /* check if we already have that assembly */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 1; i < acl->actctx->num_assemblies; i++)
 #else
     for (i = 0; i < acl->actctx->num_assemblies; i++)
@@ -1207,7 +1207,7 @@ static void actctx_release( ACTIVATION_CONTEXT *actctx )
         RtlFreeHeap( GetProcessHeap(), 0, actctx->appdir.info );
         RtlFreeHeap( GetProcessHeap(), 0, actctx->assemblies );
         RtlFreeHeap( GetProcessHeap(), 0, actctx->dllredirect_section );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         RtlFreeHeap( GetProcessHeap(), 0, actctx->assemblyinfo_section );
 #endif
         RtlFreeHeap( GetProcessHeap(), 0, actctx->wndclass_section );
@@ -1392,7 +1392,7 @@ static BOOL next_xml_elem( xmlbuf_t *xmlbuf, struct xml_elem *elem, const struct
             }
             xmlbuf->ptr = ptr + 3;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (ptr + 8 <= xmlbuf->end && !wcsncmp( ptr, L"![CDATA[", 8 ))
         {
             for (ptr += 8; ptr + 3 <= xmlbuf->end; ptr++)
@@ -1529,7 +1529,7 @@ static void parse_expect_no_attr(xmlbuf_t* xmlbuf, BOOL* end)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void parse_unknown_elem(xmlbuf_t *xmlbuf, const struct xml_elem *parent);
 #endif
 
@@ -1537,7 +1537,7 @@ static void parse_expect_end_elem( xmlbuf_t *xmlbuf, const struct xml_elem *pare
 {
     struct xml_elem elem;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (next_xml_elem(xmlbuf, &elem, parent))
         parse_unknown_elem(xmlbuf, &elem);
 #else
@@ -1701,7 +1701,7 @@ static void parse_com_class_progid(xmlbuf_t *xmlbuf, struct entity *entity, cons
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end) return;
 #else
     if (end) set_error( xmlbuf );
@@ -1953,7 +1953,7 @@ static BOOL parse_typelib_version(const xmlstr_t *str, struct entity *entity)
         if (*curr >= '0' && *curr <= '9')
         {
             ver[pos] = ver[pos] * 10 + *curr - '0';
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             if (ver[pos] >= 0x10000) goto error;
 #endif
         }
@@ -2046,7 +2046,7 @@ static void parse_window_class_elem( xmlbuf_t *xmlbuf, struct dll_redirect *dll,
     {
         if (xml_attr_cmp(&attr, L"versioned"))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (xmlstr_cmpi(&attr.value, L"no") || xmlstr_cmpi(&attr.value, L"false"))
                 entity->u.class.versioned = FALSE;
             else if (!xmlstr_cmpi(&attr.value, L"yes") && !xmlstr_cmpi(&attr.value, L"true"))
@@ -2346,7 +2346,7 @@ static void parse_dependency_elem( xmlbuf_t *xmlbuf, struct actctx_loader *acl,
         if (xml_attr_cmp(&attr, L"optional"))
         {
             optional = xmlstr_cmpi( &attr.value, L"yes" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (xmlstr_cmpi( &attr.value, L"true" )) optional = TRUE;
 #endif
             TRACE("optional=%s\n", debugstr_xmlstr(&attr.value));
@@ -2596,7 +2596,7 @@ static void parse_compatibility_application_elem(xmlbuf_t *xmlbuf, struct assemb
                                                  struct actctx_loader* acl, const struct xml_elem *parent)
 {
     struct xml_elem elem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
@@ -2627,7 +2627,7 @@ static void parse_compatibility_elem(xmlbuf_t *xmlbuf, struct assembly *assembly
                                      struct actctx_loader* acl, const struct xml_elem *parent)
 {
     struct xml_elem elem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
@@ -2688,7 +2688,7 @@ static void parse_windows_settings_elem( xmlbuf_t *xmlbuf, struct assembly *asse
                                          struct actctx_loader *acl, const struct xml_elem *parent )
 {
     struct xml_elem elem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
@@ -2705,7 +2705,7 @@ static void parse_windows_settings_elem( xmlbuf_t *xmlbuf, struct assembly *asse
             xml_elem_cmp( &elem, L"dpiAwareness", windowsSettings2016NSW ) ||
             xml_elem_cmp( &elem, L"gdiScaling", windowsSettings2017NSW ) ||
             xml_elem_cmp( &elem, L"heapType", windowsSettings2020NSW ) ||
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             xml_elem_cmp( &elem, L"highResolutionScrollingAware", windowsSettings2013NSW ) ||
             xml_elem_cmp( &elem, L"longPathAware", windowsSettings2016NSW ) ||
             xml_elem_cmp( &elem, L"printerDriverIsolation", windowsSettings2011NSW ) ||
@@ -2806,7 +2806,7 @@ static void parse_requested_privileges_elem( xmlbuf_t *xmlbuf, struct assembly *
                                              struct actctx_loader *acl, const struct xml_elem *parent )
 {
     struct xml_elem elem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
@@ -2831,7 +2831,7 @@ static void parse_security_elem( xmlbuf_t *xmlbuf, struct assembly *assembly,
                                  struct actctx_loader *acl, const struct xml_elem *parent )
 {
     struct xml_elem elem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
@@ -2856,7 +2856,7 @@ static void parse_trust_info_elem( xmlbuf_t *xmlbuf, struct assembly *assembly,
                                    struct actctx_loader *acl, const struct xml_elem *parent )
 {
     struct xml_elem elem;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL end = FALSE;
 
     parse_expect_no_attr(xmlbuf, &end);
@@ -2958,7 +2958,7 @@ static void parse_assembly_elem( xmlbuf_t *xmlbuf, struct assembly* assembly,
 
             if (!xmlbuf->error && expected_ai)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (!is_expected_identity( expected_ai, &assembly->id )) set_error( xmlbuf );
                 else
 #endif
@@ -3049,7 +3049,7 @@ static NTSTATUS parse_manifest_buffer( struct actctx_loader* acl, struct assembl
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_structural_utf8( const void *buffer, SIZE_T size )
 {
     const BYTE *bytes = buffer;
@@ -3088,7 +3088,7 @@ static NTSTATUS parse_manifest( struct actctx_loader* acl, struct assembly_ident
 
     TRACE( "parsing manifest loaded from %s base dir %s\n", debugstr_w(filename), debugstr_w(directory) );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (size < 5) return STATUS_INVALID_PARAMETER;
 #endif
 
@@ -3109,7 +3109,7 @@ static NTSTATUS parse_manifest( struct actctx_loader* acl, struct assembly_ident
     assembly->manifest.type = assembly->manifest.info ? ACTIVATION_CONTEXT_PATH_TYPE_WIN32_FILE
                                                       : ACTIVATION_CONTEXT_PATH_TYPE_NONE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (assembly->manifest.info)
     {
         FILE_NETWORK_OPEN_INFORMATION file_info;
@@ -3131,7 +3131,7 @@ static NTSTATUS parse_manifest( struct actctx_loader* acl, struct assembly_ident
     {
         xmlbuf.ptr = buffer;
         xmlbuf.end = xmlbuf.ptr + size / sizeof(WCHAR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = validate_manifest( &xmlbuf, size, TRUE, !ai );
         if (NT_SUCCESS(status))
 #endif
@@ -3149,7 +3149,7 @@ static NTSTATUS parse_manifest( struct actctx_loader* acl, struct assembly_ident
             new_buff[i] = RtlUshortByteSwap( buf[i] );
         xmlbuf.ptr = new_buff;
         xmlbuf.end = xmlbuf.ptr + size / sizeof(WCHAR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = validate_manifest( &xmlbuf, size, TRUE, !ai );
         if (NT_SUCCESS(status))
 #endif
@@ -3161,7 +3161,7 @@ static NTSTATUS parse_manifest( struct actctx_loader* acl, struct assembly_ident
         DWORD len;
         WCHAR *new_buff;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!is_structural_utf8( buffer, size )) return STATUS_SXS_CANT_GEN_ACTCTX;
 #endif
         /* let's assume utf-8 for now */
@@ -3182,7 +3182,7 @@ static NTSTATUS parse_manifest( struct actctx_loader* acl, struct assembly_ident
 
         xmlbuf.ptr = new_buff;
         xmlbuf.end = xmlbuf.ptr + len / sizeof(WCHAR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = validate_manifest( &xmlbuf, 0, FALSE, !ai );
         if (NT_SUCCESS(status))
 #endif
@@ -3198,7 +3198,7 @@ static NTSTATUS open_nt_file( HANDLE *handle, UNICODE_STRING *name )
     IO_STATUS_BLOCK io;
 
     InitializeObjectAttributes( &attr, name, OBJ_CASE_INSENSITIVE, 0, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return NtOpenFile( handle, GENERIC_READ | SYNCHRONIZE, &attr, &io,
                        FILE_SHARE_READ | FILE_SHARE_DELETE, FILE_SYNCHRONOUS_IO_ALERT | FILE_NON_DIRECTORY_FILE );
 #else
@@ -3207,7 +3207,7 @@ static NTSTATUS open_nt_file( HANDLE *handle, UNICODE_STRING *name )
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL is_pe_file( HANDLE file )
 {
     IMAGE_DOS_HEADER dos;
@@ -3347,7 +3347,7 @@ static NTSTATUS get_manifest_in_module( struct actctx_loader* acl, struct assemb
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 IMAGE_RESOURCE_DIRECTORY *find_entry_by_name( IMAGE_RESOURCE_DIRECTORY *dir,
                                              LPCWSTR name, void *root,
                                              int want_dir );
@@ -3405,7 +3405,7 @@ static NTSTATUS search_manifest_in_module( struct actctx_loader* acl, struct ass
 
     return status;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static NTSTATUS get_manifest_in_pe_file( struct actctx_loader* acl, struct assembly_identity* ai,
                                          LPCWSTR filename, LPCWSTR directory, BOOL shared,
@@ -3748,7 +3748,7 @@ static NTSTATUS open_manifest_file( struct actctx_loader *acl, struct assembly_i
     nameW.Buffer = NULL;
     if (*lang) p += swprintf( p, len - (p - buffer), L"%s\\", lang );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     swprintf( p, len - (p - buffer), L"%s.DLL", ai->name );
 #else
     swprintf( p, len - (p - buffer), L"%s.dll", ai->name );
@@ -3765,7 +3765,7 @@ static NTSTATUS open_manifest_file( struct actctx_loader *acl, struct assembly_i
         RtlFreeUnicodeString( &nameW );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     swprintf( p, len - (p - buffer), L"%s.MANIFEST", ai->name );
 #else
     swprintf( p, len - (p - buffer), L"%s.manifest", ai->name );
@@ -3831,7 +3831,7 @@ static NTSTATUS lookup_assembly(struct actctx_loader* acl,
 
     swprintf( buffer, total, L"%s%s\\", acl->actctx->appdir.info, ai->name );
     status = open_manifest_file( acl, ai, lang, directory, buffer, total );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     goto done;
 #endif
     if (status != STATUS_SXS_ASSEMBLY_NOT_FOUND) goto done;
@@ -3895,7 +3895,7 @@ static NTSTATUS find_query_actctx( ACTIVATION_CONTEXT **actctx, DWORD flags, ULO
         if (*actctx) return STATUS_INVALID_PARAMETER;
 
         *actctx = get_current_actctx_no_addref();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!*actctx && (class != ActivationContextBasicInformation))
             *actctx = process_actctx;
 #endif
@@ -4143,7 +4143,7 @@ static NTSTATUS find_dll_redirection(ACTIVATION_CONTEXT* actctx, const UNICODE_S
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 C_ASSERT(sizeof(ACTIVATION_CONTEXT_DATA_ASSEMBLY_INFORMATION) == 0x6c);
 C_ASSERT(sizeof(ACTIVATION_CONTEXT_DATA_ASSEMBLY_GLOBAL_INFORMATION) == 0x38);
 C_ASSERT(sizeof(struct strsection_header) == 0x2c);
@@ -5913,11 +5913,11 @@ static NTSTATUS find_string(ACTIVATION_CONTEXT* actctx, ULONG section_kind,
 
     switch (section_kind)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ACTIVATION_CONTEXT_SECTION_ASSEMBLY_INFORMATION:
         status = find_assembly_information(actctx, section_name, data);
         break;
-#endif // __REACTOS__
+#endif // __LIBRENT__
     case ACTIVATION_CONTEXT_SECTION_DLL_REDIRECTION:
         status = find_dll_redirection(actctx, section_name, data);
         break;
@@ -5940,7 +5940,7 @@ static NTSTATUS find_string(ACTIVATION_CONTEXT* actctx, ULONG section_kind,
 
     if (status != STATUS_SUCCESS) return status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (data && (flags & FIND_ACTCTX_SECTION_KEY_RETURN_ASSEMBLY_METADATA))
     {
         status = fill_assembly_metadata(actctx, data);
@@ -6028,11 +6028,11 @@ void actctx_init(void)
         process_actctx = check_actctx(handle);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NtCurrentTeb()->ProcessEnvironmentBlock->ActivationContextData = process_actctx->ActivationContextData;
 #else
     NtCurrentTeb()->Peb->ActivationContextData = process_actctx;
-#endif // __REACTOS__
+#endif // __LIBRENT__
 }
 
 
@@ -6058,7 +6058,7 @@ RtlCreateActivationContext(IN ULONG Flags,
     NTSTATUS status = STATUS_NO_MEMORY;
     HANDLE file = 0;
     struct actctx_loader acl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HMODULE source_module;
 #endif
 
@@ -6079,7 +6079,7 @@ RtlCreateActivationContext(IN ULONG Flags,
     if ((pActCtx->dwFlags & ACTCTX_FLAG_RESOURCE_NAME_VALID) && !pActCtx->lpResourceName)
         return STATUS_INVALID_PARAMETER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     source_module = NtCurrentTeb()->ProcessEnvironmentBlock->ImageBaseAddress;
     if ((pActCtx->dwFlags & ACTCTX_FLAG_HMODULE_VALID) && pActCtx->hModule) source_module = pActCtx->hModule;
 #endif
@@ -6092,7 +6092,7 @@ RtlCreateActivationContext(IN ULONG Flags,
     actctx->config.type = ACTIVATION_CONTEXT_PATH_TYPE_NONE;
     actctx->config.info = NULL;
     actctx->appdir.type = ACTIVATION_CONTEXT_PATH_TYPE_WIN32_FILE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pActCtx->dwFlags & ACTCTX_FLAG_HMODULE_VALID)
     {
         UNICODE_STRING module_name;
@@ -6165,7 +6165,7 @@ RtlCreateActivationContext(IN ULONG Flags,
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = set_application_directory( actctx, pActCtx, nameW.Buffer, source_module );
     if (!NT_SUCCESS(status))
     {
@@ -6180,14 +6180,14 @@ RtlCreateActivationContext(IN ULONG Flags,
     acl.allocated_dependencies = 0;
 
     if (pActCtx->dwFlags & ACTCTX_FLAG_LANGID_VALID) lang = pActCtx->wLangId;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (pActCtx->dwFlags & ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID) directory = pActCtx->lpAssemblyDirectory;
 #endif
 
     if (pActCtx->dwFlags & ACTCTX_FLAG_RESOURCE_NAME_VALID)
     {
         /* if we have a resource it's a PE file */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         NTSTATUS resource_status;
 
         if (pActCtx->dwFlags & ACTCTX_FLAG_HMODULE_VALID)
@@ -6397,10 +6397,10 @@ void WINAPI RtlFreeActivationContextStack( ACTIVATION_CONTEXT_STACK *actctx_stac
 {
     RTL_ACTIVATION_CONTEXT_STACK_FRAME *frame;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Nothing to do if there is no stack */
     if (!actctx_stack) return;
-#endif // __REACTOS_
+#endif // __LIBRENT_
 
     frame = actctx_stack->ActiveFrame;
     while (frame)
@@ -6539,7 +6539,7 @@ NTSTATUS WINAPI RtlQueryInformationActivationContext( ULONG flags, HANDLE handle
             if (!subinst) return STATUS_INVALID_PARAMETER;
 
             index = *(DWORD*)subinst;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!index)
             {
                 if (retlen) *retlen = sizeof(*afdi);
@@ -6571,7 +6571,7 @@ NTSTATUS WINAPI RtlQueryInformationActivationContext( ULONG flags, HANDLE handle
                 return STATUS_BUFFER_TOO_SMALL;
             }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             afdi->ulFlags = index == 1 ? ACTIVATION_CONTEXT_DATA_ASSEMBLY_INFORMATION_ROOT_ASSEMBLY : 0;
             if (assembly->type != ASSEMBLY_SHARED_MANIFEST)
                 afdi->ulFlags |= ACTIVATION_CONTEXT_DATA_ASSEMBLY_INFORMATION_PRIVATE_ASSEMBLY;
@@ -6581,7 +6581,7 @@ NTSTATUS WINAPI RtlQueryInformationActivationContext( ULONG flags, HANDLE handle
             afdi->ulEncodedAssemblyIdentityLength = (id_len - 1) * sizeof(WCHAR);
             afdi->ulManifestPathType = assembly->manifest.type;
             afdi->ulManifestPathLength = assembly->manifest.info ? (path_len - 1) * sizeof(WCHAR) : 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             afdi->liManifestLastWriteTime = assembly->manifest_time;
 #else
             /* FIXME afdi->liManifestLastWriteTime = 0; */
@@ -6716,7 +6716,7 @@ NTSTATUS WINAPI RtlQueryInformationActivationContext( ULONG flags, HANDLE handle
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS
 NTAPI
 RtlQueryInformationActiveActivationContext(ULONG ulInfoClass,
@@ -6761,7 +6761,7 @@ RtlpFindActivationContextSection_CheckParameters( ULONG flags, const GUID *guid,
 
     return STATUS_SUCCESS;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /***********************************************************************
  *		RtlFindActivationContextSectionString (NTDLL.@)
@@ -6779,7 +6779,7 @@ NTSTATUS WINAPI RtlFindActivationContextSectionString( ULONG flags, const GUID *
     TRACE("%08lx %s %lu %s %p\n", flags, debugstr_guid(guid), section_kind,
           debugstr_us(section_name), data);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = RtlpFindActivationContextSection_CheckParameters(flags, guid, section_kind, section_name, data);
     if (!NT_SUCCESS(status))
     {
@@ -6805,7 +6805,7 @@ NTSTATUS WINAPI RtlFindActivationContextSectionString( ULONG flags, const GUID *
         WARN("invalid parameter\n");
         return STATUS_INVALID_PARAMETER;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     actctx = check_actctx( get_current_actctx_no_addref() );
     if (actctx) status = find_string( actctx, section_kind, section_name, flags, data );
@@ -6903,7 +6903,7 @@ NTSTATUS WINAPI RtlQueryActivationContextApplicationSettings( DWORD flags, HANDL
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Stubs */
 
 NTSTATUS
@@ -6981,7 +6981,7 @@ RtlpInitializeActCtx(PVOID* pOldShimData)
 
     actctx_init();
 
-    /* ReactOS specific:
+    /* LibreNT specific:
        Now that we have found the process_actctx we can initialize the process compat subsystem */
     LdrpInitializeProcessCompat(process_actctx, pOldShimData);
 
@@ -7006,4 +7006,4 @@ RtlpInitializeActCtx(PVOID* pOldShimData)
     return Status;
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__

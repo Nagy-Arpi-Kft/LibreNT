@@ -398,7 +398,7 @@ typedef struct
     SID_AND_ATTRIBUTES32 User;
 } TOKEN_USER32;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     ULONG   IsolationPrefix;
@@ -858,7 +858,7 @@ typedef struct
     ULONG CallbackId;
 } ALPC_CONTEXT_ATTR32, *PALPC_CONTEXT_ATTR32;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct
 {
     ULONG Flags;

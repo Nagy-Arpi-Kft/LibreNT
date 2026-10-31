@@ -296,7 +296,7 @@ extern "C" {
 #define VALID_NTFT                      0xC0
 #define PARTITION_NTFT                  0x80
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define PARTITION_OLD_LINUX             0x43
 #define PARTITION_LINUX                 0x83
 #define PARTITION_ISO9660               0x96
@@ -322,7 +322,7 @@ extern "C" {
   ( ((PartitionType) == PARTITION_EXTENDED) || \
     ((PartitionType) == PARTITION_XINT13_EXTENDED) )
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define IsRecognizedPartition(PartitionType) \
   ( IsFTPartition(PartitionType) || \
     ((PartitionType) == PARTITION_FAT_12) || \
@@ -433,8 +433,8 @@ typedef enum _PARTITION_STYLE {
   PARTITION_STYLE_MBR,
   PARTITION_STYLE_GPT,
   PARTITION_STYLE_RAW,
-#ifdef __REACTOS__
-  /* ReactOS custom partition handlers */
+#ifdef __LIBRENT__
+  /* LibreNT custom partition handlers */
   PARTITION_STYLE_BRFR = 128 /* Xbox-BRFR partitioning scheme */
 #endif
 } PARTITION_STYLE;

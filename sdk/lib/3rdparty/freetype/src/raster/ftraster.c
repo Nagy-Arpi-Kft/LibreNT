@@ -3284,7 +3284,7 @@
     const FT_Outline*  outline    = (const FT_Outline*)params->source;
     const FT_Bitmap*   target_map = params->target;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     black_TWorker *worker;
     Long *buffer;
 #else
@@ -3329,7 +3329,7 @@
     if ( !target_map->buffer )
       return FT_THROW( Invalid );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     worker = malloc(sizeof(*worker));
     buffer = malloc(FT_MAX_BLACK_POOL * sizeof(Long));
     if (!worker || !buffer)
@@ -3344,13 +3344,13 @@
     ras.target  = *target_map;
 
     ras.buff     = buffer;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     worker->sizeBuff = &buffer[FT_MAX_BLACK_POOL];
 #else
     ras.sizeBuff = (&buffer)[1]; /* Points to right after buffer. */
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
       FT_Error error = Render_Glyph( RAS_VAR );
       free(buffer);

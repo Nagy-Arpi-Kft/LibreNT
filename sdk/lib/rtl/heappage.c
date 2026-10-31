@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            lib/rtl/heappage.c
  * PURPOSE:         RTL Page Heap implementation
  * PROGRAMMERS:     Copyright 2011 Aleksey Bragin
@@ -15,7 +15,7 @@
 
 #include <rtl.h>
 #include <heap.h>
-#include <reactos/verifier.h>
+#include <librent/verifier.h>
 
 #define NDEBUG
 #include <debug.h>

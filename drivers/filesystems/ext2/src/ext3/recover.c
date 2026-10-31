@@ -101,7 +101,7 @@ Ext2RecoverJournal(
     ULONG                   jNo = 0;
     PEXT2_MCB               jcb = NULL;
     struct block_device *   bd = &Vcb->bd;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     struct super_block *    sb = &Vcb->sb;
 #endif
     struct inode *          ji = NULL;

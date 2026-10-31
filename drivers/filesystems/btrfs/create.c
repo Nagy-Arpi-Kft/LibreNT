@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU Lesser General Public Licence
  * along with WinBtrfs.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <sys/stat.h>
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 #include "btrfs_drv.h"
 #include "crc32c.h"
 #include <ntddstor.h>
@@ -4101,11 +4101,11 @@ static NTSTATUS open_file2(device_extension* Vcb, ULONG RequestedDisposition, fi
         ctx->granted_access = *granted_access;
         ctx->fileref = fileref;
         KeInitializeEvent(&ctx->event, NotificationEvent, false);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         Status = FsRtlCheckOplock(fcb_oplock(fileref->fcb), Irp, ctx, (POPLOCK_WAIT_COMPLETE_ROUTINE) oplock_complete, NULL);
 #else
         Status = FsRtlCheckOplock(fcb_oplock(fileref->fcb), Irp, ctx, oplock_complete, NULL);
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
         if (Status == STATUS_PENDING) {
             *opctx = ctx;
             return Status;

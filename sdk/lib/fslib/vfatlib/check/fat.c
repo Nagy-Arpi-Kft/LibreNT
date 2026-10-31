@@ -350,7 +350,7 @@ void reclaim_free(DOS_FS * fs)
 	get_fat(&curEntry, fs->fat, i, fs);
 
 	if (!get_owner(fs, i) && curEntry.value &&
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    !FAT_IS_BAD(fs, curEntry.value)) {
 #else
 	    !FAT_IS_BAD(fs, curEntry.value) && rw) {
@@ -494,7 +494,7 @@ void reclaim_file(DOS_FS * fs)
     }
     while (changed);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (rw) {
 #endif
     /* Now we can start recovery */
@@ -521,7 +521,7 @@ void reclaim_file(DOS_FS * fs)
 	       reclaimed, reclaimed == 1 ? "" : "s",
 	       (unsigned long long)reclaimed * fs->cluster_size, files,
 	       files == 1 ? "" : "s");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	}
 #endif
 
@@ -554,11 +554,11 @@ uint32_t update_free(DOS_FS * fs)
 	    if (interactive)
 		printf("1) Correct\n2) Don't correct\n");
 	    else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (rw)
 #endif
 		printf("  Auto-correcting.\n");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	    if (!interactive || get_key("12", "?") == '1')
 #else
 	    if ((!interactive && rw) || (interactive && get_key("12", "?") == '1'))

@@ -31,7 +31,7 @@
 #include "winnls.h"
 #include "setupapi_private.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 #endif
 
@@ -203,7 +203,7 @@ UINT WINAPI SetupPromptForDiskA(HWND hwndParent, PCSTR DialogTitle, PCSTR DiskNa
     ret = SetupPromptForDiskW(hwndParent, DialogTitleW, DiskNameW, PathToSourceW,
             FileSoughtW, TagFileW, DiskPromptStyle, PathBufferW, MAX_PATH, PathRequiredSize);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HeapFree(GetProcessHeap(), 0, DialogTitleW);
     HeapFree(GetProcessHeap(), 0, DiskNameW);
     HeapFree(GetProcessHeap(), 0, PathToSourceW);

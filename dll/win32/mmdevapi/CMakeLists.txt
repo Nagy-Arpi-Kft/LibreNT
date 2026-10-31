@@ -2,8 +2,8 @@
 spec2def(mmdevapi.dll mmdevapi.spec ADD_IMPORTLIB)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/sound
-    ${REACTOS_SOURCE_DIR}/drivers/wdm/audio/legacy/wdmaud)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/sound
+    ${LIBRENT_SOURCE_DIR}/drivers/wdm/audio/legacy/wdmaud)
 
 list(APPEND SOURCE
     audiosessionmanager.c
@@ -11,7 +11,7 @@ list(APPEND SOURCE
     client.c
     devenum.c
     main.c
-    reactos_session.c
+    librent_session.c
     session.c
     spatialaudio.c
     mmdevapi_private.h
@@ -21,9 +21,9 @@ list(APPEND SOURCE
 
 if(NOT ARCH STREQUAL "arm")
     list(APPEND SOURCE
-        reactos_render_engine.c
-        reactos_render_engine.h
-        reactos_wdmaud.c)
+        librent_render_engine.c
+        librent_render_engine.h
+        librent_wdmaud.c)
 endif()
 
 list(APPEND PCH_SKIP_SOURCE
@@ -44,5 +44,5 @@ target_link_libraries(mmdevapi uuid wine)
 add_importlibs(mmdevapi ole32 oleaut32 user32 advapi32 version setupapi msvcrt kernel32_vista kernel32 ntdll)
 add_delay_importlibs(mmdevapi winmm)
 add_dependencies(mmdevapi dxsdk)
-add_cd_file(TARGET mmdevapi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET mmdevapi DESTINATION librent/system32 FOR all)
 set_wine_module(mmdevapi)

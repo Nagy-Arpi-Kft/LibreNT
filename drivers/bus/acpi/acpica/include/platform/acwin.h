@@ -68,7 +68,7 @@ typedef unsigned int                    u32;
 typedef COMPILER_DEPENDENT_UINT64       u64;
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * Map low I/O functions for MS. This allows us to disable MS language
  * extensions for maximum portability.
@@ -82,7 +82,7 @@ typedef COMPILER_DEPENDENT_UINT64       u64;
 #define mkdir           _mkdir
 #define fileno          _fileno
 #define isatty          _isatty
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #if _MSC_VER <= 1200 /* Versions below VC++ 6 */
 #define vsnprintf       _vsnprintf
@@ -110,13 +110,13 @@ typedef COMPILER_DEPENDENT_UINT64       u64;
 
 /*! [Begin] no source code translation  */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef ACPI_APPLICATION
 #define ACPI_FLUSH_CPU_CACHE()
 #else
 #define ACPI_FLUSH_CPU_CACHE()  __asm {WBINVD}
 #endif
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #ifdef _DEBUG
 #define ACPI_SIMPLE_RETURN_MACROS
@@ -124,7 +124,7 @@ typedef COMPILER_DEPENDENT_UINT64       u64;
 
 /*! [End] no source code translation !*/
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  * Global Lock acquire/release code
  *
@@ -175,6 +175,6 @@ typedef COMPILER_DEPENDENT_UINT64       u64;
         __asm exit_rel:                             \
         __asm mov           Pnd, al                 \
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #endif /* __ACWIN_H__ */

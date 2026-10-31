@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS USB Hub Driver
+ * PROJECT:     LibreNT USB Hub Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     USBHub main driver functions
  * COPYRIGHT:   Copyright 2017 Vadim Galyant <vgal@rambler.ru>
@@ -1512,7 +1512,7 @@ USBH_SyncGetHubDescriptor(IN PUSBHUB_FDO_EXTENSION HubExtension)
      * and earlier hubs, use the classic 0x29 hub descriptor type.
      *
      * The payload is still stored in a USB_HUB_DESCRIPTOR-compatible
-     * buffer; the current ReactOS stack only consumes bNumberOfPorts
+     * buffer; the current LibreNT stack only consumes bNumberOfPorts
      * and bPowerOnToPowerGood from this structure.
      */
     if (HubExtension->HubDeviceDescriptor.bcdUSB >= 0x0300)

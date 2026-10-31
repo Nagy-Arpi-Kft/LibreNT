@@ -22,14 +22,14 @@
 
 #define IPHLPAPI_DLL_LINKAGE
 #include "ntstatus.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include "windef.h"
 #include "winbase.h"
 #include "winreg.h"
 #include "winsock2.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ndk/iofuncs.h>
 #include <ndk/rtlfuncs.h>
 #else
@@ -42,13 +42,13 @@
 #include "fltdefs.h"
 #include "ifdef.h"
 #include "netioapi.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "ip2string.h"
 #endif
 #include "netiodef.h"
 #include "icmpapi.h"
 #include "psapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winsvc.h"
 #include <winsvc_undoc.h>
 #include "dhcp.h"
@@ -56,7 +56,7 @@
 
 #include "wine/nsi.h"
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <tdiinfo.h>
 #include <tcpioctl.h>
 #include <tcpip_undoc.h>
@@ -67,7 +67,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(iphlpapi);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef interface
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 DWORD IphlpapiCancelMibChangeNotify2(HANDLE handle);
@@ -145,7 +145,7 @@ static void if_counted_string_copy( WCHAR *dst, unsigned int len, IF_COUNTED_STR
  */
 DWORD WINAPI AddIPAddress(IPAddr Address, IPMask IpMask, DWORD IfIndex, PULONG NTEContext, PULONG NTEInstance)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!NTEContext || !NTEInstance)
     return ERROR_INVALID_PARAMETER;
   return RtlNtStatusToDosError(addIPAddress(Address, IpMask, IfIndex, NTEContext, NTEInstance));
@@ -184,7 +184,7 @@ BOOL WINAPI CancelIPChangeNotify(LPOVERLAPPED overlapped)
  */
 DWORD WINAPI CancelMibChangeNotify2(HANDLE handle)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return IphlpapiCancelMibChangeNotify2(handle);
 #else
     FIXME("(handle %p): stub\n", handle);
@@ -210,7 +210,7 @@ DWORD WINAPI CancelMibChangeNotify2(HANDLE handle)
  */
 DWORD WINAPI CreateIpForwardEntry(PMIB_IPFORWARDROW pRoute)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return createIpForwardEntry(pRoute);
 #else
   FIXME("(pRoute %p): stub\n", pRoute);
@@ -421,7 +421,7 @@ DWORD WINAPI CreateSortedAddressPairs( const PSOCKADDR_IN6 src_list, DWORD src_c
  */
 DWORD WINAPI DeleteIPAddress(ULONG NTEContext)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return RtlNtStatusToDosError(deleteIpAddress(NTEContext));
 #else
   FIXME("(NTEContext %ld): stub\n", NTEContext);
@@ -447,7 +447,7 @@ DWORD WINAPI DeleteIPAddress(ULONG NTEContext)
  */
 DWORD WINAPI DeleteIpForwardEntry(PMIB_IPFORWARDROW pRoute)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return deleteIpForwardEntry(pRoute);
 #else
   FIXME("(pRoute %p): stub\n", pRoute);
@@ -773,7 +773,7 @@ DWORD WINAPI GetAdaptersInfo( IP_ADAPTER_INFO *info, ULONG *size )
 
         info->LeaseObtained = 0;
         info->LeaseExpires = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         getDhcpInfoForAdapter( info->AdapterName, info );
 #endif
 
@@ -1228,7 +1228,7 @@ static DWORD dns_servers_query_code( ULONG family )
     return DnsConfigDnsServersUnspec;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void adapter_dns_suffix( const WCHAR *name, WCHAR *suffix )
 {
     static const WCHAR interfaces[] = L"SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\\Interfaces\\";
@@ -1265,7 +1265,7 @@ static DWORD dns_info_alloc( IP_ADAPTER_ADDRESSES *aa, ULONG family, ULONG flags
     DWORD err, i, size, attempt, sockaddr_len;
     WCHAR name[MAX_ADAPTER_NAME_LENGTH + 1];
     DNS_ADDR_ARRAY *servers;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     WCHAR *search;
 #endif
 
@@ -1275,7 +1275,7 @@ static DWORD dns_info_alloc( IP_ADAPTER_ADDRESSES *aa, ULONG family, ULONG flags
         if (!(flags & GAA_FLAG_SKIP_DNS_SERVER))
         {
             servers = (DNS_ADDR_ARRAY *)buf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             size = sizeof(buf);
 #endif
             for (attempt = 0; attempt < 5; attempt++)
@@ -1320,7 +1320,7 @@ static DWORD dns_info_alloc( IP_ADAPTER_ADDRESSES *aa, ULONG family, ULONG flags
         if (!aa->DnsSuffix) return ERROR_NOT_ENOUGH_MEMORY;
         aa->DnsSuffix[0] = '\0';
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         adapter_dns_suffix( name, aa->DnsSuffix );
 #else
         if (!DnsQueryConfig( DnsConfigSearchList, 0, name, NULL, NULL, &size ) &&
@@ -1414,7 +1414,7 @@ static DWORD adapters_addresses_alloc( ULONG family, ULONG flags, IP_ADAPTER_ADD
     err = dns_info_alloc( aa, family, flags );
     if (err) goto err;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < *count; i++)
     {
         MIB_IPINTERFACE_ROW row;
@@ -1484,7 +1484,7 @@ ULONG WINAPI DECLSPEC_HOTPATCH GetAdaptersAddresses( ULONG family, ULONG flags, 
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI NhpAllocateAndGetInterfaceInfoFromStack( IP_INTERFACE_NAME_INFO **table, DWORD *count, BOOL order,
                                                       HANDLE heap, DWORD flags )
 {
@@ -2333,7 +2333,7 @@ DWORD WINAPI GetIpForwardTable( MIB_IPFORWARDTABLE *table, ULONG *size, BOOL sor
         row->dwForwardProto = rw[i].protocol;
         row->dwForwardAge = dyn[i].age;
         row->dwForwardNextHopAS = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             MIB_IPINTERFACE_ROW ifrow;
 
@@ -2730,7 +2730,7 @@ err:
     return err;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD ipnet_row2_get_luid( const MIB_IPNET_ROW2 *row, NET_LUID *luid )
 {
     NET_IFINDEX index;
@@ -3550,7 +3550,7 @@ static DWORD get_owner_module_from_pid( TCPIP_OWNER_MODULE_INFO_CLASS class, voi
     if (!size) return ERROR_INVALID_PARAMETER;
     if (!pid) return ERROR_NOT_FOUND;
     if (!(process = OpenProcess( PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid ))) return GetLastError();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = ARRAY_SIZE(path);
     if (!QueryFullProcessImageNameW( process, 0, path, &len )) len = 0;
 #else
@@ -3575,7 +3575,7 @@ static DWORD get_owner_module_from_pid( TCPIP_OWNER_MODULE_INFO_CLASS class, voi
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD get_owner_module( TCPIP_OWNER_MODULE_INFO_CLASS class, void *buffer, DWORD *size, DWORD pid, ULONGLONG tag )
 {
     TCPIP_OWNER_MODULE_BASIC_INFO *info = buffer;
@@ -3621,7 +3621,7 @@ DWORD WINAPI GetOwnerModuleFromTcpEntry( PMIB_TCPROW_OWNER_MODULE entry, TCPIP_O
 
     if (!entry) return ERROR_INVALID_PARAMETER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return get_owner_module( class, buffer, size, entry->dwOwningPid, entry->OwningModuleInfo[0] );
 #else
     return get_owner_module_from_pid( class, buffer, size, entry->dwOwningPid );
@@ -3638,14 +3638,14 @@ DWORD WINAPI GetOwnerModuleFromTcp6Entry( PMIB_TCP6ROW_OWNER_MODULE entry, TCPIP
 
     if (!entry) return ERROR_INVALID_PARAMETER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return get_owner_module( class, buffer, size, entry->dwOwningPid, entry->OwningModuleInfo[0] );
 #else
     return get_owner_module_from_pid( class, buffer, size, entry->dwOwningPid );
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI GetOwnerModuleFromUdpEntry(PMIB_UDPROW_OWNER_MODULE entry, TCPIP_OWNER_MODULE_INFO_CLASS class, void *buffer, DWORD *size)
 {
     TRACE("entry %p, class %d, buffer %p, size %p.\n", entry, class, buffer, size);
@@ -4281,7 +4281,7 @@ DWORD WINAPI NotifyAddrChange(PHANDLE Handle, LPOVERLAPPED overlapped)
 DWORD WINAPI NotifyIpInterfaceChange(ADDRESS_FAMILY family, PIPINTERFACE_CHANGE_CALLBACK callback,
                                      PVOID context, BOOLEAN init_notify, PHANDLE handle)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return IphlpapiNotifyIpInterfaceChange(family, callback, context, init_notify, handle);
 #else
     FIXME("(family %d, callback %p, context %p, init_notify %d, handle %p): stub\n",
@@ -4297,7 +4297,7 @@ DWORD WINAPI NotifyIpInterfaceChange(ADDRESS_FAMILY family, PIPINTERFACE_CHANGE_
 DWORD WINAPI NotifyRouteChange2(ADDRESS_FAMILY family, PIPFORWARD_CHANGE_CALLBACK callback, VOID* context,
                                 BOOLEAN init_notify, HANDLE* handle)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return IphlpapiNotifyRouteChange2(family, callback, context, init_notify, handle);
 #else
     FIXME("(family %d, callback %p, context %p, init_notify %d, handle %p): stub\n",
@@ -4337,7 +4337,7 @@ DWORD WINAPI NotifyRouteChange(PHANDLE Handle, LPOVERLAPPED overlapped)
 DWORD WINAPI NotifyUnicastIpAddressChange(ADDRESS_FAMILY family, PUNICAST_IPADDRESS_CHANGE_CALLBACK callback,
                                           PVOID context, BOOLEAN init_notify, PHANDLE handle)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return IphlpapiNotifyUnicastIpAddressChange(family, callback, context, init_notify, handle);
 #else
     FIXME("(family %d, callback %p, context %p, init_notify %d, handle %p): semi-stub\n",
@@ -4369,7 +4369,7 @@ DWORD WINAPI NotifyUnicastIpAddressChange(ADDRESS_FAMILY family, PUNICAST_IPADDR
  * FIXME
  *  Stub, returns ERROR_NOT_SUPPORTED.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD WINAPI SendARP(IPAddr DestIP, IPAddr SrcIP, PULONG pMacAddr, PULONG PhyAddrLen)
 {
     UNICODE_STRING name = RTL_CONSTANT_STRING(L"\\Device\\Ip");
@@ -4519,7 +4519,7 @@ DWORD WINAPI SetIfEntry(PMIB_IFROW pIfRow)
  */
 DWORD WINAPI SetIpForwardEntry(PMIB_IPFORWARDROW pRoute)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return setIpForwardEntry(pRoute);
 #else
   FIXME("(pRoute %p): stub\n", pRoute);
@@ -4617,7 +4617,7 @@ DWORD WINAPI SetIpTTL(UINT nTTL)
  */
 DWORD WINAPI SetTcpEntry(PMIB_TCPROW pTcpRow)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   TRACE("(pTcpRow %p)\n", pTcpRow);
   return setTcpEntry(pTcpRow);
 #else
@@ -5263,7 +5263,7 @@ DWORD WINAPI GetBestRoute2( NET_LUID *luid, NET_IFINDEX index,
     int max_prefix_len;
     DWORD ret;
     BOOL v6;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NET_IFINDEX if_index;
 #endif
 
@@ -5341,7 +5341,7 @@ DWORD WINAPI GetBestRoute2( NET_LUID *luid, NET_IFINDEX index,
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if_index = uni_row ? index : 0;
 #endif
     uni_row = NULL;
@@ -5408,7 +5408,7 @@ skip_system_route:
 
     if (max_prefix_len == -1)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (if_index && (v6 ? IN6_IS_ADDR_LINKLOCAL(&dst->Ipv6.sin6_addr)
                             : dst->Ipv4.sin_addr.S_un.S_un_b.s_b1 == 169 && dst->Ipv4.sin_addr.S_un.S_un_b.s_b2 == 254)
             && (uni_row = find_first_matching_unicast_addr( uni, v6, src, NULL, if_index )))
@@ -5424,7 +5424,7 @@ skip_system_route:
         goto done;
     }
     index = fwd->Table[best_idx].InterfaceIndex;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (fwd->Table[best_idx].InterfaceLuid.Info.IfType != IF_TYPE_SOFTWARE_LOOPBACK
         && ((v6 && IN6_IS_ADDR_LOOPBACK(&dst->Ipv6.sin6_addr))
         || (!v6 && dst->Ipv4.sin_addr.S_un.S_un_b.s_b1 == 127)))
@@ -5549,7 +5549,7 @@ DWORD WINAPI ParseNetworkString(const WCHAR *str, DWORD type,
     return ERROR_INVALID_PARAMETER;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 struct icmp_handle_data
 {
     HANDLE nsi_device;

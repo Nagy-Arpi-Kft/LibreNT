@@ -3,7 +3,7 @@ add_subdirectory(glu32)
 add_subdirectory(mesa)
 add_subdirectory(opengl32)
 if(MESA_GALLIUM_FROM_SOURCE)
-    if(EXISTS "${REACTOS_SOURCE_DIR}/submodules/mesa/CMakeLists.txt")
+    if(EXISTS "${LIBRENT_SOURCE_DIR}/submodules/mesa/CMakeLists.txt")
         add_subdirectory(mesa_gallium)
     else()
         message(STATUS "Mesa Gallium: the mesa feed is not checked out; skipping it. "

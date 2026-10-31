@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/ntdll/t_cfg.c
  * PURPOSE:     Dynamic Control Flow Guard registry regression tests
  *

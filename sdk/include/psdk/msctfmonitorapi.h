@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS PSDK
+ * PROJECT:     LibreNT PSDK
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     Definitions for the MS CTF monitor
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>

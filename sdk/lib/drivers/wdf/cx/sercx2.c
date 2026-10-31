@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Kernel-Mode Driver Framework
+ * PROJECT:     LibreNT Kernel-Mode Driver Framework
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Version-2 serial KMDF class extension
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -9,7 +9,7 @@
 #include <ntddser.h>
 #include <SerCx.h>
 #include <initguid.h>
-#include <reactos/drivers/reshubio.h>
+#include <librent/drivers/reshubio.h>
 
 typedef struct _SERCX2_PIO_TRANSMIT_CONTEXT
 {

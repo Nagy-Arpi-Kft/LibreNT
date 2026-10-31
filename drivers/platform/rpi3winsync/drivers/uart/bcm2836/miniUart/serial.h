@@ -1404,7 +1404,7 @@ WDF_DECLARE_CONTEXT_TYPE_WITH_NAME(SERIAL_INTERRUPT_CONTEXT,
 // even if only actually one BYTE (lower 8 bits) is needed to read or written
 // 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline
 #else
 static __inline
@@ -1417,7 +1417,7 @@ UCHAR SerialReadRegisterUChar(_In_ UCHAR* x)
     return uchReturnValue;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __inline
 #else
 static __inline

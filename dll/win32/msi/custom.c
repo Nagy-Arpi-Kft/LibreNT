@@ -24,7 +24,7 @@
 #include <stdio.h>
 
 #include "ntstatus.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include "windef.h"
@@ -36,7 +36,7 @@
 #include "oleauto.h"
 
 #include "msipriv.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -45,7 +45,7 @@
 #include "wine/debug.h"
 #include "wine/exception.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef WIN32_NO_STATUS
 #include <ndk/mmfuncs.h>
 #endif
@@ -74,7 +74,7 @@ static CRITICAL_SECTION_DEBUG custom_action_cs_debug =
 };
 static CRITICAL_SECTION custom_action_cs = { &custom_action_cs_debug, -1, 0, 0, 0, 0 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static CRITICAL_SECTION custom_server_cs;
 static CRITICAL_SECTION_DEBUG custom_server_cs_debug =
 {
@@ -418,7 +418,7 @@ typedef struct
     INT type;
     GUID guid;
     DWORD arch;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     USHORT emulated_machine;
     MSIHANDLE remote_handle;
 #endif
@@ -429,7 +429,7 @@ static void free_custom_action_data( custom_action_info *info )
     EnterCriticalSection( &custom_action_cs );
 
     list_remove( &info->entry );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (info->remote_handle)
         MsiCloseHandle( info->remote_handle );
 #endif
@@ -630,7 +630,7 @@ static HANDLE get_admin_token(void)
     return linked.LinkedToken;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static USHORT get_image_machine( const WCHAR *name )
 {
     IMAGE_DOS_HEADER dos;
@@ -715,7 +715,7 @@ static DWORD custom_start_server(MSIPACKAGE *package, DWORD arch)
     WCHAR path[MAX_PATH], cmdline[MAX_PATH + 23];
     PROCESS_INFORMATION pi = {0};
     STARTUPINFOW si = {0};
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR buffer[48];
 #else
     WCHAR buffer[24];
@@ -726,7 +726,7 @@ static DWORD custom_start_server(MSIPACKAGE *package, DWORD arch)
     HANDLE pipe;
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (emulated_machine)
     {
         if (custom_server_running(&package->custom_server_emulated_process, &package->custom_server_emulated_pipe))
@@ -745,7 +745,7 @@ static DWORD custom_start_server(MSIPACKAGE *package, DWORD arch)
         return ERROR_SUCCESS;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (emulated_machine)
         swprintf(buffer, ARRAY_SIZE(buffer), L"\\\\.\\pipe\\msica_%x_64_%04x",
                  GetCurrentProcessId(), emulated_machine);
@@ -774,7 +774,7 @@ static DWORD custom_start_server(MSIPACKAGE *package, DWORD arch)
             return error;
         }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (emulated_machine)
     {
         if (!get_emulated_server_path(emulated_machine, path, ARRAY_SIZE(path)))
@@ -786,7 +786,7 @@ static DWORD custom_start_server(MSIPACKAGE *package, DWORD arch)
 #endif
     else
         wcscpy(path, sysdir);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!emulated_machine)
 #endif
     lstrcatW(path, L"\\msiexec.exe");
@@ -838,7 +838,7 @@ static DWORD custom_start_server(MSIPACKAGE *package, DWORD arch)
         return error;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (emulated_machine)
     {
         package->custom_server_emulated_process = pi.hProcess;
@@ -870,7 +870,7 @@ void custom_stop_server(HANDLE process, HANDLE pipe)
     CloseHandle(pipe);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD custom_start_server_locked(MSIPACKAGE *package, DWORD arch, USHORT emulated_machine)
 {
     DWORD r;
@@ -891,13 +891,13 @@ static DWORD WINAPI custom_client_thread(void *arg)
     HANDLE pipe;
     DWORD size;
     DWORD rc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT attempt;
 #endif
 
     CoInitializeEx(NULL, COINIT_MULTITHREADED); /* needed to marshal streams */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (attempt = 0;; attempt++)
     {
         if (info->emulated_machine)
@@ -1048,7 +1048,7 @@ static custom_action_info *do_msidbCustomActionTypeDll(
     info->source = wcsdup( source );
     info->action = wcsdup( action );
     info->handle = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info->remote_handle = 0;
 #endif
     CoCreateGuid( &info->guid );
@@ -1094,7 +1094,7 @@ static custom_action_info *do_msidbCustomActionTypeDll(
         return NULL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info->emulated_machine = get_emulated_server_machine(source, info->arch);
     if (custom_start_server_locked(package, info->arch, info->emulated_machine) != ERROR_SUCCESS)
 #else
@@ -1508,7 +1508,7 @@ static custom_action_info *do_msidbCustomActionTypeScript(
     msiobj_addref( &package->hdr );
     info->package = package;
     info->type = type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info->target = function ? wcsdup( function ) : NULL;
     info->source = script ? wcsdup( script ) : NULL;
     info->action = action ? wcsdup( action ) : NULL;
@@ -1739,7 +1739,7 @@ UINT ACTION_CustomAction(MSIPACKAGE *package, const WCHAR *action)
     const WCHAR *source, *target, *ptr, *deferred_data = NULL;
     WCHAR *deformated = NULL;
     int len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT error_mode = 0;
     BOOL system_context;
 #endif
@@ -1805,7 +1805,7 @@ UINT ACTION_CustomAction(MSIPACKAGE *package, const WCHAR *action)
         goto end;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     system_context = (type & msidbCustomActionTypeInScript) && (type & msidbCustomActionTypeNoImpersonate);
     if (system_context)
         error_mode = SetErrorMode( SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX );
@@ -1877,7 +1877,7 @@ UINT ACTION_CustomAction(MSIPACKAGE *package, const WCHAR *action)
                debugstr_w(target) );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (system_context)
         SetErrorMode( error_mode );
 #endif
@@ -1944,7 +1944,7 @@ void ACTION_FinishCustomActions(const MSIPACKAGE* package)
     LeaveCriticalSection( &custom_action_cs );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void custom_release_remote_handle( MSIHANDLE handle )
 {
     custom_action_info *info;
@@ -1970,7 +1970,7 @@ UINT __cdecl s_remote_GetActionInfo(const GUID *guid, WCHAR **name, int *type, W
     *name = wcsdup(info->action);
     *type = info->type;
     *hinst = alloc_msihandle(&info->package->hdr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection( &custom_action_cs );
     info->remote_handle = *hinst;
     LeaveCriticalSection( &custom_action_cs );

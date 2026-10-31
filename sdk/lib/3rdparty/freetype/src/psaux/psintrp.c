@@ -525,7 +525,7 @@
     CF2_ArrStackRec  vStemHintArray;
 
     CF2_HintMaskRec   hintMask;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CF2_GlyphPathRec *glyphPath_allocated = malloc(sizeof(*glyphPath_allocated));
     if (!glyphPath_allocated) return;
 /* Ugly but it allows us to reduce the diff */
@@ -2627,7 +2627,7 @@
            * discard `counterMask' and `counterHintMap'.
            *
            */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           CF2_HintMapRec *counterHintMap_allocated = malloc(sizeof(*counterHintMap_allocated));
           CF2_HintMaskRec  counterMask;
           if (!counterHintMap_allocated)
@@ -2659,7 +2659,7 @@
                              &counterMask,
                              0,
                              FALSE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           free(counterHintMap_allocated);
 #undef counterHintMap
 #endif
@@ -3068,7 +3068,7 @@
 
     FT_TRACE4(( "\n" ));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(glyphPath_allocated);
 #undef glyphPath
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Processor group, CPU set, node and hetero-policy topology routines
  * COPYRIGHT:   Copyright 2026 ReactOS Portable Systems Group
@@ -35,7 +35,7 @@ USHORT
 NTAPI
 KeQueryActiveGroupCount(VOID)
 {
-    /* ReactOS models a single processor group. */
+    /* LibreNT models a single processor group. */
     return 1;
 }
 

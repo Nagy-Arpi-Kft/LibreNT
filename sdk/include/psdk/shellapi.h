@@ -32,7 +32,7 @@ extern "C" {
 #define SEE_MASK_CLASSKEY       0x00000003
 #define SEE_MASK_IDLIST         0x00000004
 #define SEE_MASK_INVOKEIDLIST   0x0000000C
-#if (NTDDI_VERSION < NTDDI_VISTA) || defined(__REACTOS__)
+#if (NTDDI_VERSION < NTDDI_VISTA) || defined(__LIBRENT__)
 #define SEE_MASK_ICON           0x00000010
 #endif
 #define SEE_MASK_HOTKEY         0x00000020

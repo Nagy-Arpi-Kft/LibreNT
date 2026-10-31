@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Win32 Graphical Subsystem (WIN32K)
+ * PROJECT:         LibreNT Win32 Graphical Subsystem (WIN32K)
  * FILE:            win32ss/include/ntgdityp.h
  * PURPOSE:         Win32 Shared GDI Types for NtGdi*
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
@@ -111,7 +111,7 @@ enum
     XFORM_FORMAT_LTOL = 0x20,
     XFORM_NO_TRANSLATION = 0x40,
 
-    /* ReactOS specific */
+    /* LibreNT specific */
     XFORM_INTEGER = 0x1000,
 };
 
@@ -209,7 +209,7 @@ typedef DWORD LFTYPE;
 #define GCABCW_NOFLOAT 0x0001
 #define GCABCW_INDICES 0x0002
 
-// NtGdiGetTextExtent* flags (reactos own)
+// NtGdiGetTextExtent* flags (LibreNT own)
 #define GTEF_INDICES 0x1
 
 /* CAPS1 support */
@@ -701,8 +701,8 @@ typedef struct _DRIVER_FUNCTIONS
     PFN_DrvLockDisplayArea         LockDisplayArea;
     PFN_DrvUnlockDisplayArea       UnlockDisplayArea;
 
-    /* ReactOS specify */
-    PFN_DrvEnableDriver            EnableDriver; //ReactOS Extra
+    /* LibreNT specify */
+    PFN_DrvEnableDriver            EnableDriver; //LibreNT Extra
 } DRIVER_FUNCTIONS, *PDRIVER_FUNCTIONS;
 
 #define ASSERT_PFN(pfn) \

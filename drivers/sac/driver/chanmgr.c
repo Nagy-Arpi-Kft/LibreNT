@@ -1,9 +1,9 @@
 /*
- * PROJECT:     ReactOS Drivers
+ * PROJECT:     LibreNT Drivers
  * LICENSE:     BSD - See COPYING.ARM in the top level directory
  * FILE:        drivers/sac/driver/chanmgr.c
  * PURPOSE:     Driver for the Server Administration Console (SAC) for EMS
- * PROGRAMMERS: ReactOS Portable Systems Group
+ * PROGRAMMERS: LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

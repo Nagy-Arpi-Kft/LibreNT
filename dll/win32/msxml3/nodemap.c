@@ -340,7 +340,7 @@ static HRESULT xmlnodemap_invoke(IUnknown *iface, DISPID id, LCID lcid, WORD fla
 
     TRACE("%p, %ld, %lx, %x, %p, %p, %p.\n", iface, id, lcid, flags, params, res, ei);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (id == DISPID_VALUE && (flags == DISPATCH_METHOD || flags == DISPATCH_PROPERTYGET ||
                                flags == (DISPATCH_METHOD | DISPATCH_PROPERTYGET)))
     {

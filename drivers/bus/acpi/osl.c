@@ -1,13 +1,13 @@
 /*******************************************************************************
 *                                                                              *
-* ACPI Component Architecture Operating System Layer (OSL) for ReactOS         *
+* ACPI Component Architecture Operating System Layer (OSL) for LibreNT         *
 *                                                                              *
 *******************************************************************************/
 
 #include "precomp.h"
 
 #include <arc/arc.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/drivers/acpi/acpi.h>
 #include <pseh/pseh2.h>
 
 #define NDEBUG

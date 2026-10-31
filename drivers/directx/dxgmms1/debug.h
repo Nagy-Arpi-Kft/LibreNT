@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX GPU Memory Manager and Scheduler
+ * PROJECT:     LibreNT DirectX GPU Memory Manager and Scheduler
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Debug and tracing helpers for dxgmms1.sys
  * COPYRIGHT:   Copyright 2024 LiberNT Team
@@ -56,7 +56,7 @@
  *   Expr    - Boolean expression that must be TRUE.
  *   BugCode - DXGMMS1_BUGCHECK_* sub-code identifying the assertion.
  *
- * Stop code 0x00000171 is not assigned to any public ReactOS or Windows
+ * Stop code 0x00000171 is not assigned to any public LibreNT or Windows
  * driver bugcheck; it serves as a private dxgmms1 assertion sentinel.
  */
 #if DBG

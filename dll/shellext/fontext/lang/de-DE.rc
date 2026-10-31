@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS FontExt Shell Extension
+ * PROJECT:     LibreNT FontExt Shell Extension
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     German resource translation
  * COPYRIGHT:   Copyright 2021 Joachim Henze (Joachim.Henze@reactos.org)
@@ -19,7 +19,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_REACTOS_FONTS_FOLDER "LiberNT Schriftartenordner"
+    IDS_LIBRENT_FONTS_FOLDER "LibreNT Schriftartenordner"
     IDS_INSTALL_OK "The font(s) have been installed successfully."
     IDS_INSTALL_FAILED "Failed to install the font(s)."
     IDS_CONFIRM_DELETE_FONT "Do you want to delete the font(s)?"

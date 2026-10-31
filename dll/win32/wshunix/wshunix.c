@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS WinSock Helper DLL for AF_UNIX
+ * PROJECT:     LibreNT WinSock Helper DLL for AF_UNIX
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Local stream socket helper
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>

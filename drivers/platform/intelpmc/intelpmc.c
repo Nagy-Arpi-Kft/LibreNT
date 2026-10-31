@@ -1,14 +1,14 @@
 /*
- * PROJECT:     LiberNT Intel Power Management Controller Driver
+ * PROJECT:     LibreNT Intel Power Management Controller Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Alder Lake-N PMC ownership, S0ix diagnostics, and SMP suspend policy
  */
 
 #include <ntddk.h>
 #include <intrin.h>
-#include <reactos/drivers/acpi/acpisystem.h>
+#include <librent/drivers/acpi/acpisystem.h>
 #include <initguid.h>
-#include <reactos/drivers/intelpmc.h>
+#include <librent/drivers/intelpmc.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -742,7 +742,7 @@ IntelPmcAddDevice(
     DeviceExtension->PhysicalDevice = PhysicalDeviceObject;
     IoInitializeRemoveLock(&DeviceExtension->RemoveLock, INTELPMC_TAG, 0, 0);
     KeInitializeSpinLock(&DeviceExtension->RegisterLock);
-    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_REACTOS_INTEL_PMC, NULL, &DeviceExtension->InterfaceName);
+    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_LIBRENT_INTEL_PMC, NULL, &DeviceExtension->InterfaceName);
     if (!NT_SUCCESS(Status))
     {
         IoDeleteDevice(DeviceObject);

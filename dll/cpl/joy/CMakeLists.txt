@@ -15,5 +15,5 @@ add_library(joy MODULE
 set_module_type(joy cpl UNICODE)
 target_link_libraries(joy dinput_data_formats dxguid uuid wine)
 add_importlibs(joy dinput dinput8 xinput1_3 ole32 comctl32 user32 gdi32 advapi32 combase msvcrt kernel32 ntdll)
-add_cd_file(TARGET joy DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET joy DESTINATION librent/system32 FOR all)
 set_wine_module(joy)

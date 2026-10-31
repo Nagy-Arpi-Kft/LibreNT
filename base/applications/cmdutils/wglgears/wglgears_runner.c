@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Raspberry Pi 5 OpenGL test harness
+ * PROJECT:     LibreNT Raspberry Pi 5 OpenGL test harness
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Run the unmodified Mesa WGL gears demo for a bounded interval
@@ -10,7 +10,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-#include <reactos/dwmprof.h>
+#include <librent/dwmprof.h>
 
 #define WGLGEARS_SAMPLE_COUNT 3
 #define WGLGEARS_TIMEOUT_MILLISECONDS 30000

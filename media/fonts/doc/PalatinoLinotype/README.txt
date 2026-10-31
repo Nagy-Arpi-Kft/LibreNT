@@ -1,1 +1,1 @@
-ReactOS "Palatino Linotype" fonts are based on TeXGyrePagella fonts.
+LibreNT "Palatino Linotype" fonts are based on TeXGyrePagella fonts.

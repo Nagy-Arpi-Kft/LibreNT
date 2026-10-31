@@ -116,8 +116,8 @@ DriverEntry(
             UDFPrint(("UDF: OS Version Major: %x, Minor: %x, Build number: %d\n",
                                 MajorVersion, MinorVersion, BuildNumber));
 */
-#ifdef __REACTOS__
-            UDFPrint(("UDF Init: OS should be ReactOS\n"));
+#ifdef __LIBRENT__
+            UDFPrint(("UDF Init: OS should be LibreNT\n"));
 #endif
 
             // initialize the global data structure

@@ -17,7 +17,7 @@ extern PEXT2_GLOBAL Ext2Global;
 
 /* DEFINITIONS *************************************************************/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -42,7 +42,7 @@ Ext2DeviceControlCompletion (
 #endif
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -434,7 +434,7 @@ Ext2ProcessVolumeProperty(
         case APP_CMD_SET_PROPERTY2:
 
             RtlZeroMemory(Vcb->sHidingPrefix, HIDINGPAT_LEN);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (Vcb->bHidingPrefix == Property2->bHidingPrefix) {
 #else
             if (Vcb->bHidingPrefix = Property2->bHidingPrefix) {
@@ -445,7 +445,7 @@ Ext2ProcessVolumeProperty(
             }
 
             RtlZeroMemory(Vcb->sHidingSuffix, HIDINGPAT_LEN);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (Vcb->bHidingSuffix == Property2->bHidingSuffix) {
 #else
             if (Vcb->bHidingSuffix = Property2->bHidingSuffix) {
@@ -527,7 +527,7 @@ Ext2ProcessVolumeProperty(
             RtlCopyMemory(Property2->UUID, Vcb->SuperBlock->s_uuid, 16);
             Property2->DrvLetter = Vcb->DrvLetter;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (Property2->bHidingPrefix == Vcb->bHidingPrefix) {
 #else
             if (Property2->bHidingPrefix = Vcb->bHidingPrefix) {
@@ -540,7 +540,7 @@ Ext2ProcessVolumeProperty(
                                HIDINGPAT_LEN);
             }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (Property2->bHidingSuffix == Vcb->bHidingSuffix) {
 #else
             if (Property2->bHidingSuffix = Vcb->bHidingSuffix) {
@@ -644,7 +644,7 @@ Ex2ProcessUserPerfStat(
 )
 {
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PEXT2_VCB   Vcb = NULL;
 #endif
     PDEVICE_OBJECT  DeviceObject = NULL;

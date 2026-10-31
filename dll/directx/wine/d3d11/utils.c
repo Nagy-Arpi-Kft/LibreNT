@@ -312,7 +312,7 @@ DXGI_FORMAT dxgi_format_from_wined3dformat(enum wined3d_format_id format)
         case WINED3DFMT_BC7_UNORM: return DXGI_FORMAT_BC7_UNORM;
         case WINED3DFMT_BC7_UNORM_SRGB: return DXGI_FORMAT_BC7_UNORM_SRGB;
         case WINED3DFMT_NV12_PLANAR: return DXGI_FORMAT_NV12;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case WINED3DFMT_P010_PLANAR: return DXGI_FORMAT_P010;
 #endif
         case WINED3DFMT_YUY2: return DXGI_FORMAT_YUY2;
@@ -428,7 +428,7 @@ enum wined3d_format_id wined3dformat_from_dxgi_format(DXGI_FORMAT format)
         case DXGI_FORMAT_BC7_UNORM: return WINED3DFMT_BC7_UNORM;
         case DXGI_FORMAT_BC7_UNORM_SRGB: return WINED3DFMT_BC7_UNORM_SRGB;
         case DXGI_FORMAT_NV12: return WINED3DFMT_NV12_PLANAR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case DXGI_FORMAT_P010: return WINED3DFMT_P010_PLANAR;
 #endif
         case DXGI_FORMAT_YUY2: return WINED3DFMT_YUY2;
@@ -612,7 +612,7 @@ BOOL validate_d3d11_resource_access_flags(D3D11_RESOURCE_DIMENSION resource_dime
     switch (usage)
     {
         case D3D11_USAGE_DEFAULT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!is_texture && feature_level >= D3D_FEATURE_LEVEL_11_0 && bind_flags
                     && !(bind_flags & ~(D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS)))
                 break;

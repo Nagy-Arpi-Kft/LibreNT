@@ -1,9 +1,9 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/halarm64/acpi/halacpi.c
  * PURPOSE:         HAL ACPI Code
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
@@ -14,7 +14,7 @@
 #include <ntifs.h>
 #include <ndk/extypes.h>
 #include <ndk/kefuncs.h>
-#include <reactos/hal/acpi_cstate.h>
+#include <librent/hal/acpi_cstate.h>
 #include <stdarg.h>
 #include <ntstrsafe.h>
 #define NDEBUG

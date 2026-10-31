@@ -46,7 +46,7 @@ Scene::Scene(Canvas &pCanvas, const string &name) :
     canvas_(pCanvas), name_(name),
     currentFrame_(0), running_(0), duration_(0), nframes_(0)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     options_["duration"] = Scene::Option("duration", "5.0",
                                          "The duration of each benchmark in seconds");
 #else

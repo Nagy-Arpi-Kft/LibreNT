@@ -87,7 +87,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetFileInformationByHandle( HANDLE file, FILE_INFO
         SetLastError( ERROR_INVALID_PARAMETER );
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!NT_SUCCESS(status))
     {
         SetLastError( RtlNtStatusToDosError( status ));

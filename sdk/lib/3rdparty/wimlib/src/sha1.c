@@ -324,7 +324,7 @@ sha1_blocks_x86_avx_bmi2(u32 h[5], const void *data, size_t num_blocks)
  * so during the j'th set of 4 rounds we do the SHA1MSG2 step for j+1'th set of
  * message schedule words, PXOR for j+2'th set, and SHA1MSG1 for the j+3'th set.
  */
-#if (defined(__i386__) || defined(__x86_64__)) && !(defined(__REACTOS__) && !defined(__clang__))
+#if (defined(__i386__) || defined(__x86_64__)) && !(defined(__LIBRENT__) && !defined(__clang__))
 #include <immintrin.h>
 
 #define SHA1_NI_4ROUNDS(i, w0, w1, w2, w3, we0, we1)			\

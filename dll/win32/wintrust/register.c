@@ -1224,7 +1224,7 @@ HRESULT WINAPI SoftpubDllUnregisterServer(void)
  */
 HRESULT WINAPI mscat32DllRegisterServer(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
      TRACE("\n");
 #else
      FIXME("stub\n");
@@ -1237,7 +1237,7 @@ HRESULT WINAPI mscat32DllRegisterServer(void)
  */
 HRESULT WINAPI mscat32DllUnregisterServer(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
      TRACE("\n");
 #else
      FIXME("stub\n");

@@ -785,7 +785,7 @@ EXTINLINE BOOL NtUserxSetForegroundWindow(HWND hWnd)
 }
 
 
-/* ReactOS-specific definitions */
+/* LibreNT-specific definitions */
 
 EXTINLINE LPARAM NtUserxGetMessageExtraInfo(VOID)
 {

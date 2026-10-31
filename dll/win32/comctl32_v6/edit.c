@@ -65,7 +65,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(edit);
 					   wrapped line, instead of in front of the next character */
 #define EF_USE_SOFTBRK		0x0100	/* Enable soft breaks in text. */
 #define EF_DIALOGMODE           0x0200  /* Indicates that we are inside a dialog window */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define EF_HOT			0x0400
 #endif
 
@@ -99,7 +99,7 @@ typedef struct
 	HFONT font;			/* NULL means standard system font */
 	INT x_offset;			/* scroll offset	for multi lines this is in pixels
 								for single lines it's in characters */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD dwCaretWidth;
 #endif
 	INT line_height;		/* height of a screen line in pixels */
@@ -724,7 +724,7 @@ static void EDIT_BuildLineDefs_ML(EDITSTATE *es, INT istart, INT iend, INT delta
 		if ((es->style & ES_CENTER) || (es->style & ES_RIGHT))
 			rc.left = es->format_rect.left;
 		else
-#ifdef __REACTOS__ /* CORE-11475 */
+#ifdef __LIBRENT__ /* CORE-11475 */
 			rc.left = (short)LOWORD(EDIT_EM_PosFromChar(es, nstart_index, FALSE));
 #else
                         rc.left = LOWORD(EDIT_EM_PosFromChar(es, nstart_index, FALSE));
@@ -2552,7 +2552,7 @@ static void EDIT_EM_ReplaceSel(EDITSTATE *es, BOOL can_undo, const WCHAR *lpsz_r
 		EDIT_CalcLineWidth_SL(es);
 		/* remove chars that don't fit */
 		if (honor_limit && !(es->style & ES_AUTOHSCROLL) && (es->text_width > fw)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			while ((es->text_width > fw) && s + strl > 0) {
 #else
 			while ((es->text_width > fw) && s + strl >= s) {
@@ -2678,7 +2678,7 @@ static void EDIT_EM_SetHandle(EDITSTATE *es, HLOCAL hloc)
     if (!hloc)
         return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (es->text)
 #endif
     EDIT_UnlockBuffer(es, TRUE);
@@ -3657,7 +3657,7 @@ static void EDIT_WM_Paint(EDITSTATE *es, HDC hdc)
             EndPaint(es->hwndSelf, &ps);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void EDIT_UpdateHot(EDITSTATE *es, BOOL nonclient)
 {
     TRACKMOUSEEVENT tme;
@@ -3708,14 +3708,14 @@ static void EDIT_WM_NCPaint(HWND hwnd, HRGN region)
         RECT r;
         int cxEdge = GetSystemMetrics(SM_CXEDGE),
             cyEdge = GetSystemMetrics(SM_CYEDGE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int part = EP_EDITTEXT;
 #else
         const int part = EP_EDITTEXT;
 #endif
         int state = ETS_NORMAL;
         DWORD dwStyle = GetWindowLongW(hwnd, GWL_STYLE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         EDITSTATE *es = (EDITSTATE *)GetWindowLongPtrW(hwnd, 0);
         BOOL hot = es && (es->flags & EF_HOT);
         int borderPart = (dwStyle & WS_VSCROLL)
@@ -3760,7 +3760,7 @@ static void EDIT_WM_NCPaint(HWND hwnd, HRGN region)
             CombineRgn(cliprgn, cliprgn, region, RGN_AND);
         OffsetRect(&r, -r.left, -r.top);
 
-#ifdef __REACTOS__ /* r73789 */
+#ifdef __LIBRENT__ /* r73789 */
         dc = GetDCEx(hwnd, region, DCX_WINDOW|DCX_CACHE|DCX_INTERSECTRGN);
         /* Exclude client part */
         ExcludeClipRect(dc,
@@ -3798,7 +3798,7 @@ static void EDIT_WM_SetFocus(HTHEME theme, EDITSTATE *es)
     if (!(es->style & ES_NOHIDESEL))
         EDIT_InvalidateText(es, es->selection_start, es->selection_end);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SystemParametersInfo(SPI_GETCARETWIDTH, 0, &es->dwCaretWidth, 0);
     CreateCaret(es->hwndSelf, NULL, es->dwCaretWidth, es->line_height);
 #else
@@ -3893,7 +3893,7 @@ static void EDIT_WM_SetFont(EDITSTATE *es, HFONT font, BOOL redraw)
 		EDIT_UpdateText(es, NULL, TRUE);
 	if (es->flags & EF_FOCUSED) {
 		DestroyCaret();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		CreateCaret(es->hwndSelf, NULL, es->dwCaretWidth, es->line_height);
 #else
 		CreateCaret(es->hwndSelf, 0, 1, es->line_height);
@@ -4003,7 +4003,7 @@ static LRESULT  EDIT_WM_StyleChanged ( EDITSTATE *es, WPARAM which, const STYLES
                 /* Only a subset of changes can be applied after the control
                  * has been created.
                  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 style_change_mask = ES_UPPERCASE | ES_LOWERCASE |
                                     ES_NUMBER | ES_LEFT | ES_RIGHT | ES_CENTER;
 #else
@@ -4323,7 +4323,7 @@ static LRESULT EDIT_EM_GetThumb(EDITSTATE *es)
  */
 static BOOL EDIT_EM_SetCueBanner(EDITSTATE *es, BOOL draw_focused, const WCHAR *cue_text)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *new_text;
     DWORD size;
 #endif
@@ -4331,7 +4331,7 @@ static BOOL EDIT_EM_SetCueBanner(EDITSTATE *es, BOOL draw_focused, const WCHAR *
     if (es->style & ES_MULTILINE || !cue_text)
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size = (lstrlenW(cue_text) + 1) * sizeof(*cue_text);
     if (!(new_text = Alloc(size))) return FALSE;
     memcpy(new_text, cue_text, size);
@@ -4992,13 +4992,13 @@ static LRESULT CALLBACK EDIT_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPAR
         break;
 
     case WM_MOUSEMOVE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         EDIT_UpdateHot(es, FALSE);
 #endif
         result = EDIT_WM_MouseMove(es, (short)LOWORD(lParam), (short)HIWORD(lParam));
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_NCMOUSEMOVE:
         EDIT_UpdateHot(es, TRUE);
         result = DefWindowProcW(hwnd, msg, wParam, lParam);
@@ -5058,7 +5058,7 @@ static LRESULT CALLBACK EDIT_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPAR
         break;
 
     case WM_VSCROLL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         SCROLLINFO si;
 
@@ -5125,13 +5125,13 @@ static LRESULT CALLBACK EDIT_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPAR
         return DefWindowProcW(hwnd, msg, wParam, lParam);
 
     case WM_IME_SELECT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         result = DefWindowProcW(hwnd, msg, wParam, lParam);
 #endif
         break;
 
     case WM_IME_CONTROL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         result = DefWindowProcW(hwnd, msg, wParam, lParam);
 #endif
         break;

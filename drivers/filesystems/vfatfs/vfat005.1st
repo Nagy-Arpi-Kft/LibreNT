@@ -4,9 +4,9 @@ To install :
 	extract files
 	delete all object files (*.o) in all subdirectories
          (because include file include/ddk/iotypes.h is modified and is used by many files)
-	recompile reactos
+	recompile librent
 
 What's new :
  - some bugfixes
  - support for IRP_MJ_DIRECTORY_CONTROL
-    (see reactos/tst/sshell.c for use of ZwQueryDirectoryFile)
+    (see librent/tst/sshell.c for use of ZwQueryDirectoryFile)

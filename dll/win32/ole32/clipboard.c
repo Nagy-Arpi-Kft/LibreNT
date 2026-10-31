@@ -1197,7 +1197,7 @@ static DWORD get_tymed_from_nonole_cf(UINT cf)
     case CF_OEMTEXT:
     case CF_UNICODETEXT:
     case CF_HDROP:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case CF_LOCALE:
 #endif
         return TYMED_ISTREAM | TYMED_HGLOBAL;
@@ -1697,7 +1697,7 @@ static HRESULT WINAPI snapshot_GetCanonicalFormatEtc(IDataObject *iface, FORMATE
 static HRESULT WINAPI snapshot_SetData(IDataObject *iface, FORMATETC *fmt,
                                        STGMEDIUM *med, BOOL release)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     snapshot *This = impl_from_IDataObject(iface);
 
     TRACE("(%p, %p, %p, %d)\n", iface, fmt, med, release);
@@ -1865,7 +1865,7 @@ static HRESULT set_clipboard_formats(ole_clipbrd *clipbrd, IDataObject *data)
     priv_data->unk2 = 1;
     priv_data->count = count;
     priv_data->unk3[0] = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     priv_data->unk3[1] = sizeof(void *) == 8;
 #else
     priv_data->unk3[1] = 0;
@@ -2261,7 +2261,7 @@ HRESULT WINAPI OleGetClipboard(IDataObject **obj)
     HRESULT hr;
     ole_clipbrd *clipbrd;
     DWORD seq_no;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HWND wnd;
 #endif
 
@@ -2271,7 +2271,7 @@ HRESULT WINAPI OleGetClipboard(IDataObject **obj)
     *obj = NULL;
 
     if(FAILED(hr = get_ole_clipbrd(&clipbrd))) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(FAILED(hr = get_clipbrd_window(clipbrd, &wnd))) return hr;
     if(!OpenClipboard(wnd)) return CLIPBRD_E_CANT_OPEN;
     CloseClipboard();

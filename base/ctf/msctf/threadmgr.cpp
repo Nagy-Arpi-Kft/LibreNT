@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CTF
+ * PROJECT:     LibreNT CTF
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     ITfThreadMgr implementation
  * COPYRIGHT:   Copyright 2008 Aric Stewart, CodeWeavers

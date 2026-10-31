@@ -1468,7 +1468,7 @@ static struct decoder_pattern const tiff_patterns[] = {
 
 static struct regsvr_decoder const decoder_list[] = {
     {   &CLSID_WICWmpDecoder,
-        "LiberNT",
+        "LibreNT",
         "JPEG XR Decoder",
         "1.0.0.0",
         &GUID_VendorMicrosoft,
@@ -1617,7 +1617,7 @@ static GUID const * const tiff_encode_formats[] = {
 
 static struct regsvr_encoder const encoder_list[] = {
     {   &CLSID_WICWmpEncoder,
-        "LiberNT",
+        "LibreNT",
         "JPEG XR Encoder",
         "1.0.0.0",
         &GUID_VendorMicrosoft,
@@ -1999,7 +1999,7 @@ static const struct reader_containers xmpalt_containers[] = {
 
 static struct regsvr_metadatareader const metadatareader_list[] = {
     {   &CLSID_WICXMPStructMetadataReader,
-        "LiberNT",
+        "LibreNT",
         "XMP Struct Reader",
         "1.0.0.0",
         "1.0.0.0",
@@ -2009,7 +2009,7 @@ static struct regsvr_metadatareader const metadatareader_list[] = {
         xmpstruct_containers
     },
     {   &CLSID_WICXMPBagMetadataReader,
-        "LiberNT",
+        "LibreNT",
         "XMP Bag Reader",
         "1.0.0.0",
         "1.0.0.0",
@@ -2019,7 +2019,7 @@ static struct regsvr_metadatareader const metadatareader_list[] = {
         xmpbag_containers
     },
     {   &CLSID_WICXMPSeqMetadataReader,
-        "LiberNT",
+        "LibreNT",
         "XMP Seq Reader",
         "1.0.0.0",
         "1.0.0.0",
@@ -2029,7 +2029,7 @@ static struct regsvr_metadatareader const metadatareader_list[] = {
         xmpseq_containers
     },
     {   &CLSID_WICXMPAltMetadataReader,
-        "LiberNT",
+        "LibreNT",
         "XMP Alt Reader",
         "1.0.0.0",
         "1.0.0.0",
@@ -2099,9 +2099,9 @@ static struct regsvr_metadatareader const metadatareader_list[] = {
         1, 1, 0,
         app1_containers
     },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {   &CLSID_WICJpegLuminanceMetadataReader,
-        "ReactOS",
+        "LibreNT",
         "JPEG Luminance Reader",
         "1.0.0.0",
         "1.0.0.0",
@@ -2111,7 +2111,7 @@ static struct regsvr_metadatareader const metadatareader_list[] = {
         NULL
     },
     {   &CLSID_WICJpegChrominanceMetadataReader,
-        "ReactOS",
+        "LibreNT",
         "JPEG Chrominance Reader",
         "1.0.0.0",
         "1.0.0.0",

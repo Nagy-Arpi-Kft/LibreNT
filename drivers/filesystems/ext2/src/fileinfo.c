@@ -10,7 +10,7 @@
 /* INCLUDES *****************************************************************/
 
 #include "ext2fs.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "linux/ext4.h"
 #include "linux/ext4_xattr.h"
 #else

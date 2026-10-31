@@ -1,5 +1,5 @@
 /*
- * llvm-mingw's libunwind can reference K32 process APIs even when ReactOS is
+ * llvm-mingw's libunwind can reference K32 process APIs even when LibreNT is
  * built with a pre-Win7 export set. Provide the single wrapper it needs from
  * the compatibility library instead of widening kernel32's versioned exports.
  */

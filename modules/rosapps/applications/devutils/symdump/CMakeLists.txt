@@ -1,5 +1,5 @@
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/include/reactos/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/include/librent/wine)
 add_executable(symdump symdump.c)
 set_module_type(symdump win32cui)
 target_link_libraries(symdump wine)
@@ -7,4 +7,4 @@ add_importlibs(symdump dbghelp shlwapi msvcrt kernel32 ntdll)
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     target_compile_options(symdump PRIVATE -Wno-unused-but-set-variable)
 endif()
-add_cd_file(TARGET symdump DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET symdump DESTINATION librent/system32 FOR all)

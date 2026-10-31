@@ -22,7 +22,7 @@
 #include "initguid.h"
 #include "audioclient.h"
 #include "mmdeviceapi.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "roapi.h"
 #endif
 
@@ -187,7 +187,7 @@ struct session
     HANDLE worker_thread, worker_control_event, audio_buf_event;
     BOOLEAN worker_running, worker_paused;
     CRITICAL_SECTION cs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG async_id;
 #endif
 };
@@ -412,7 +412,7 @@ static HRESULT WINAPI session_StartAsync( ISpeechContinuousRecognitionSession *i
 
     TRACE("iface %p, action %p.\n", iface, action);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = async_action_create(NULL, session_start_async, InterlockedIncrement(&impl->async_id), action)))
 #else
     if (FAILED(hr = async_action_create(NULL, session_start_async, action)))
@@ -467,7 +467,7 @@ static HRESULT WINAPI session_StopAsync( ISpeechContinuousRecognitionSession *if
 
     TRACE("iface %p, action %p.\n", iface, action);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = async_action_create(NULL, session_stop_async, InterlockedIncrement(&impl->async_id), action)))
 #else
     if (FAILED(hr = async_action_create(NULL, session_stop_async, action)))
@@ -529,7 +529,7 @@ static HRESULT WINAPI session_PauseAsync( ISpeechContinuousRecognitionSession *i
 
     *action = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = async_action_create(NULL, session_pause_async, InterlockedIncrement(&impl->async_id), action)))
 #else
     if (FAILED(hr = async_action_create(NULL, session_pause_async, action)))
@@ -641,7 +641,7 @@ struct recognizer
     LONG ref;
 
     ISpeechContinuousRecognitionSession *session;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG async_id;
 #endif
 };
@@ -779,7 +779,7 @@ static HRESULT WINAPI recognizer_CompileConstraintsAsync( ISpeechRecognizer *ifa
                                                           IAsyncOperation_SpeechRecognitionCompilationResult **operation )
 {
     IAsyncOperation_IInspectable **value = (IAsyncOperation_IInspectable **)operation;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct recognizer *impl = impl_from_ISpeechRecognizer(iface);
 
     FIXME("iface %p, operation %p semi-stub!\n", iface, operation);
@@ -1230,7 +1230,7 @@ DEFINE_IINSPECTABLE(statics, ISpeechRecognizerStatics, struct recognizer_statics
 
 static HRESULT WINAPI statics_get_SystemSpeechLanguage( ISpeechRecognizerStatics *iface, ILanguage **language )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR name[LOCALE_NAME_MAX_LENGTH];
     ILanguageFactory *factory;
     HSTRING str;

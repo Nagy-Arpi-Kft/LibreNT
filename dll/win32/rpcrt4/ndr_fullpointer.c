@@ -86,7 +86,7 @@ static void expand_pointer_table_if_necessary(PFULL_PTR_XLAT_TABLES pXlatTables,
 {
     if (RefId >= pXlatTables->RefIdToPointer.NumberOfEntries)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         void* ptrNew;
         ptrNew = realloc(pXlatTables->RefIdToPointer.XlatTable, sizeof(void *) * RefId * 2);
         if (!ptrNew)
@@ -115,7 +115,7 @@ static void expand_pointer_table_if_necessary(PFULL_PTR_XLAT_TABLES pXlatTables,
 #endif
         if (!pXlatTables->RefIdToPointer.XlatTable || !pXlatTables->RefIdToPointer.StateTable)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             free(pXlatTables->RefIdToPointer.XlatTable);
             free(pXlatTables->RefIdToPointer.StateTable);
             pXlatTables->RefIdToPointer.XlatTable = NULL;

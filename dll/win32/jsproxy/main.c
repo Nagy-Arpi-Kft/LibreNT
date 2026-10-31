@@ -17,7 +17,7 @@
  */
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define COBJMACROS
 #endif
 #include <sys/types.h>
@@ -29,7 +29,7 @@
 #include "ws2tcpip.h"
 #include "winnls.h"
 #include "wininet.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define COBJMACROS
 #endif
 #include "ole2.h"
@@ -69,7 +69,7 @@ static inline char *strdupWA( const WCHAR *src )
     if (src)
     {
         int len = WideCharToMultiByte( CP_ACP, 0, src, -1, NULL, 0, NULL, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((dst = GlobalAlloc( GMEM_FIXED, len ))) WideCharToMultiByte( CP_ACP, 0, src, -1, dst, len, NULL, NULL );
 #else
         if ((dst = malloc( len ))) WideCharToMultiByte( CP_ACP, 0, src, -1, dst, len, NULL, NULL );
@@ -282,7 +282,7 @@ static char *get_computer_name( COMPUTER_NAME_FORMAT format )
 
 static void printf_addr( const WCHAR *fmt, WCHAR *buf, SIZE_T size, struct sockaddr_in *addr )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     swprintf( buf, fmt,
 #else
     swprintf( buf, size, fmt,

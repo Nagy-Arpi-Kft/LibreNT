@@ -2252,7 +2252,7 @@ Return Value:
                         //  just free what we got.
                         //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                         InterlockedCompareExchangePointer( &FatReserveMdl, ReserveMdl, NULL );
 #else
                         InterlockedCompareExchangePointer( (void * volatile*)&FatReserveMdl, ReserveMdl, NULL );
@@ -2329,7 +2329,7 @@ Return Value:
     NTSTATUS Status = STATUS_UNSUCCESSFUL;
     PIO_STACK_LOCATION IrpSp;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     IO_STATUS_BLOCK Iosb = {0,0};
 #else
     IO_STATUS_BLOCK Iosb = {{0}};
@@ -5072,7 +5072,7 @@ Return Value:
                                       DirentByteOffset,
                                       sizeof(DIRENT),
                                       &DirentBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                       &Dirent,
 #else
                                       (PVOID *)&Dirent,
@@ -5106,7 +5106,7 @@ Return Value:
                                           SecondPageOffset,
                                           sizeof(DIRENT),
                                           &SecondPageBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                           &SecondPageDirent,
 #else
                                           (PVOID *)&SecondPageDirent,
@@ -5880,7 +5880,7 @@ Return Value:
                                       DirentByteOffset,
                                       sizeof(DIRENT),
                                       &DirentBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                       &Dirent,
 #else
                                       (PVOID *)&Dirent,
@@ -5916,7 +5916,7 @@ Return Value:
                                           SecondPageOffset,
                                           sizeof(DIRENT),
                                           &SecondPageBcb,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                           &SecondPageDirent,
 #else
                                           (PVOID *)&SecondPageDirent,

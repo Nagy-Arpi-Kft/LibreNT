@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Test for DLL Load Notification API
  * COPYRIGHT:   Copyright 2024 Ratin Gao <ratin@knsoft.org>

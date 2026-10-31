@@ -1,5 +1,5 @@
 
-if(REACTOS_USE_WDDM)
+if(LIBRENT_USE_WDDM)
     remove_definitions(-DDXGKDDI_INTERFACE_VERSION=0x1052)
     add_definitions(-DDXGKDDI_INTERFACE_VERSION=0x11007)
 endif()
@@ -8,7 +8,7 @@ spec2def(opengl32.dll opengl32.spec ADD_IMPORTLIB)
 
 include_directories(
     ../mesa
-    ${REACTOS_SOURCE_DIR}/win32ss/include)
+    ${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 add_definitions(
     -D_GDI32_ # prevent gl* being declared __declspec(dllimport) in MS headers
@@ -57,4 +57,4 @@ target_link_libraries(opengl32
 set_module_type(opengl32 win32dll)
 add_importlibs(opengl32 gdi32 user32 advapi32 msvcrt kernel32 ntdll)
 add_pch(opengl32 opengl32.h SOURCE)
-add_cd_file(TARGET opengl32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET opengl32 DESTINATION librent/system32 FOR all)

@@ -22,7 +22,7 @@
 #include <wintirpc.h>
 #include <rpc/rpc.h>
 #include <stdio.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <winsock.h>
 #else
 #include <winsock2.h>
@@ -47,7 +47,7 @@ tirpc_report(LPTSTR lpszMsg)
 	hEventSource = RegisterEventSource(NULL,
 									   TEXT("tirpc.dll"));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	swprintf_s(chMsg, sizeof(chMsg), L"tirpc report: %d", GetLastError());
 #else
 	_snwprintf(chMsg, sizeof(chMsg) / sizeof(WCHAR), L"tirpc report: %d", GetLastError());
@@ -93,7 +93,7 @@ BOOL winsock_fini(void)
 	return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 char NETCONFIG[MAX_PATH] = "";
 #endif
 BOOL WINAPI DllMain/*tirpc_main*/(HINSTANCE hinstDLL,	// DLL module handle
@@ -112,7 +112,7 @@ BOOL WINAPI DllMain/*tirpc_main*/(HINSTANCE hinstDLL,	// DLL module handle
 		// The DLL is loading due to process
 		// initialization or a call to LoadLibrary. 
         case DLL_PROCESS_ATTACH:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!GetSystemDirectoryA(NETCONFIG, ARRAYSIZE(NETCONFIG)))
                 return FALSE;
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS
+ * PROJECT:     LibreNT
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Shell namespace tree control
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -10,7 +10,7 @@
 #include <commoncontrols.h>
 #include <uxtheme.h>
 
-#define NAMESPACE_TREE_CLASS L"ReactOS Namespace Tree Control"
+#define NAMESPACE_TREE_CLASS L"LibreNT Namespace Tree Control"
 
 class CNamespaceShellItemArray :
     public CComObjectRootEx<CComMultiThreadModelNoCS>,

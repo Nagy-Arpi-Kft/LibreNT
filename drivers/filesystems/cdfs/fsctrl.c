@@ -641,7 +641,7 @@ Return Value:
     ULONG TocDiskFlags = 0;
     ULONG MediaChangeCount = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DEVICE_TYPE FilesystemDeviceType;
 #endif
 
@@ -657,13 +657,13 @@ Return Value:
     //  always be waitable.
     //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IrpSp->DeviceObject == CdData.HddFileSystemDeviceObject) {
         FilesystemDeviceType = FILE_DEVICE_DISK_FILE_SYSTEM;
     } else {
 #endif
     NT_ASSERT( Vpb->RealDevice->DeviceType == FILE_DEVICE_CD_ROM );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FilesystemDeviceType = FILE_DEVICE_CD_ROM_FILE_SYSTEM;
     }
 #endif
@@ -712,7 +712,7 @@ Return Value:
     //
 
     Status = CdPerformDevIoCtrl( IrpContext,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                  IOCTL_CDROM_CHECK_VERIFY,
 #else
                                  (FilesystemDeviceType == FILE_DEVICE_DISK_FILE_SYSTEM ? IOCTL_DISK_CHECK_VERIFY : IOCTL_CDROM_CHECK_VERIFY),
@@ -745,7 +745,7 @@ Return Value:
     //
 
     Status = CdPerformDevIoCtrl( IrpContext,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                  IOCTL_CDROM_GET_DRIVE_GEOMETRY,
 #else
                                  (FilesystemDeviceType == FILE_DEVICE_DISK_FILE_SYSTEM ? IOCTL_DISK_GET_DRIVE_GEOMETRY : IOCTL_CDROM_GET_DRIVE_GEOMETRY),
@@ -817,7 +817,7 @@ Return Value:
         Status = IoCreateDevice( CdData.DriverObject,
                                  sizeof( VOLUME_DEVICE_OBJECT ) - sizeof( DEVICE_OBJECT ),
                                  NULL,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                  FILE_DEVICE_CD_ROM_FILE_SYSTEM,
 #else
                                  FilesystemDeviceType,
@@ -875,7 +875,7 @@ Return Value:
 
         if (Status != STATUS_SUCCESS)  {
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
             //
             // Don't bail out if that was a disk based ISO image, it is legit
@@ -887,7 +887,7 @@ Return Value:
             } else {
 #endif
             try_leave( Status );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
         }
@@ -1066,7 +1066,7 @@ Return Value:
         //
 
         if (!FlagOn( Vcb->VcbState, VCB_STATE_AUDIO_DISK) &&
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             ((Vcb->CdromToc->LastTrack - Vcb->CdromToc->FirstTrack) == 0)) {
 #else
            ((FilesystemDeviceType == FILE_DEVICE_DISK_FILE_SYSTEM) ||
@@ -2499,7 +2499,7 @@ Return Value:
     //  We only allow the invalidate call to come in on our file system devices.
     //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (IrpSp->DeviceObject != CdData.FileSystemDeviceObject)  {
 #else
     if (IrpSp->DeviceObject != CdData.FileSystemDeviceObject &&
@@ -2557,7 +2557,7 @@ Return Value:
                                         0,
                                         *IoFileObjectType,
                                         KernelMode,
-                                        (PVOID*)&FileToMarkBad, /* ReactOS Change: GCC "passing argument 5 of 'ObReferenceObjectByHandle' from incompatible pointer type" */
+                                        (PVOID*)&FileToMarkBad, /* LibreNT Change: GCC "passing argument 5 of 'ObReferenceObjectByHandle' from incompatible pointer type" */
                                         NULL );
 
     if (!NT_SUCCESS(Status)) {

@@ -1,5 +1,5 @@
 """
-PROJECT:     ReactOS tools
+PROJECT:     LibreNT tools
 LICENSE:     MIT (https://spdx.org/licenses/MIT)
 PURPOSE:     Script to update caroots.inf with the latest CA root certificates from Mozilla NSS
              and the code signing roots of the Microsoft Trusted Root Program

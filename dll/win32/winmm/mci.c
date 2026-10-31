@@ -1035,7 +1035,7 @@ static	DWORD	MCI_GetString(LPWSTR* str, LPWSTR* args)
     return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void MCI_NormalizeCommandSpaces(LPWSTR str)
 {
     BOOL quoted = FALSE, spaced = FALSE;
@@ -1074,7 +1074,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
     DWORD	dwRet, flg, cflg = 0;
     WORD	eid;
     BOOL	inCst, found;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL	skipCst, emptyCst;
 #endif
 
@@ -1082,7 +1082,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
     while (*args) {
 	lmem = (const char*)lpCmd;
 	found = inCst = FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	skipCst = emptyCst = FALSE;
 #endif
 	offset = _offset;
@@ -1101,7 +1101,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 
 	    switch (eid) {
 	    case MCI_CONSTANT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (len) {
 		    skipCst = TRUE;
 		    cflg = flg;
@@ -1117,18 +1117,18 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 	    case MCI_END_CONSTANT:
 		/* there may be additional integral values after flag in constant */
 		if (inCst && MCI_GetDWord(&(data[offset]), &args)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    if (cflg && (*dwFlags & cflg))
 			return MCIERR_FLAGS_NOT_COMPATIBLE;
 #endif
 		    *dwFlags |= cflg;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    found = TRUE;
 		    eid = MCI_END_COMMAND;
 #endif
 		}
 		inCst = FALSE;	cflg = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		skipCst = FALSE;
 #endif
 		break;
@@ -1140,7 +1140,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 	    }
 
 	    if (
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 !(skipCst && eid != MCI_CONSTANT && eid != MCI_END_CONSTANT) &&
 #endif
                 wcsnicmp(args, str, len) == 0 &&
@@ -1156,7 +1156,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 		    case MCI_END_COMMAND:
 		    case MCI_END_COMMAND_LIST:
 		    case MCI_CONSTANT: 	/* done above */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			if (eid == MCI_CONSTANT) {
 			    inCst = TRUE;
 			    skipCst = FALSE;
@@ -1166,7 +1166,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 		    case MCI_END_CONSTANT:  /* done above */
 			break;
 		case MCI_FLAG:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    if (flg && (*dwFlags & flg))
 			return MCIERR_DUPLICATE_FLAGS;
 #endif
@@ -1178,7 +1178,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 		case MCI_HDC:
 		case MCI_INTEGER:
 		    if (inCst) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			if (cflg && (*dwFlags & cflg))
 			    return MCIERR_FLAGS_NOT_COMPATIBLE;
 #endif
@@ -1228,7 +1228,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 		case MCI_HPAL:
 		case MCI_HDC:			if (!inCst) offset += sizeof(HANDLE)/sizeof(DWORD); break;
 		case MCI_INTEGER:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		    if (!inCst && !skipCst) offset++;
 #else
 		    if (!inCst) offset++;
@@ -1243,7 +1243,7 @@ static	DWORD	MCI_ParseOptArgs(DWORD* data, int _offset, LPCWSTR lpCmd,
 	} while (eid != MCI_END_COMMAND);
 	if (!found) {
 	    WARN("Optarg %s not found\n", debugstr_w(args));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	    if (emptyCst)
 		return MCIERR_BAD_CONSTANT;
 	    return MCIERR_UNRECOGNIZED_KEYWORD;
@@ -1401,7 +1401,7 @@ DWORD WINAPI mciSendStringW(LPCWSTR lpstrCommand, LPWSTR lpstrRet,
     if (!(verb = wcsdup(lpstrCommand)))
 	return MCIERR_OUT_OF_MEMORY;
     CharLowerW(verb);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MCI_NormalizeCommandSpaces(verb);
 #endif
 
@@ -1422,7 +1422,7 @@ DWORD WINAPI mciSendStringW(LPCWSTR lpstrCommand, LPWSTR lpstrRet,
 	LPWSTR	tmp;
         WCHAR	buf[128];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (uDevID == MCI_ALL_DEVICE_ID) {
 	    dwRet = MCIERR_CANNOT_USE_ALL;
 	    goto errCleanUp;
@@ -1445,7 +1445,7 @@ DWORD WINAPI mciSendStringW(LPCWSTR lpstrCommand, LPWSTR lpstrRet,
 		/* dwFlags and data[2] will be correctly set in ParseOpt loop */
 	    } else {
 		WARN("open new requires device type\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		dwRet = MCIERR_NEW_REQUIRES_ALIAS;
 #else
 		dwRet = MCIERR_MISSING_DEVICE_NAME;
@@ -2160,7 +2160,7 @@ static	DWORD MCI_Sound(UINT wDevID, DWORD dwFlags, LPMCI_SOUND_PARMSW lpParms)
     return dwRet;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD MCI_SendCommandToAll(UINT16 wMsg, DWORD_PTR dwParam1, DWORD_PTR dwParam2)
 {
     MCIDEVICEID *devices;
@@ -2224,7 +2224,7 @@ DWORD	MCI_SendCommand(UINT wDevID, UINT16 wMsg, DWORD_PTR dwParam1, DWORD_PTR dw
         dwRet = MCI_Sound(wDevID, dwParam1, (LPMCI_SOUND_PARMSW)dwParam2);
 	break;
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if ((UINT16)wDevID == (UINT16)MCI_ALL_DEVICE_ID) {
 	    if (wMsg == MCI_STATUS)
 	        dwRet = MCIERR_CANNOT_USE_ALL;

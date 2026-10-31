@@ -31,7 +31,7 @@
 #include "psapi.h"
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 #endif
@@ -414,7 +414,7 @@ static void test_query_cpu(void)
 
     len = 0xdeadbeef;
     status = pNtQuerySystemInformation( SystemProcessorBrandString, buffer, sizeof(buffer), &len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
     {
         ok(status == STATUS_INVALID_INFO_CLASS, "Unexpected status 0x%lx\n", status );
@@ -647,7 +647,7 @@ static void test_query_process( BOOL extended )
             {
                 todo_wine ok( !!ti->StackBase, "Got NULL StackBase.\n" );
                 todo_wine ok( !!ti->StackLimit, "Got NULL StackLimit.\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if ((GetNTVersion() >= _WIN32_WINNT_VISTA) && !is_reactos()) // Broken on Win 2003
 #endif
                 ok( !!ti->Win32StartAddress, "Got NULL Win32StartAddress.\n" );
@@ -666,7 +666,7 @@ static void test_query_process( BOOL extended )
                     expected_address = tbi.TebBaseAddress;
                     if (is_wow64 && is_process_wow64)
                         expected_address = (BYTE *)expected_address - 0x2000;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if ((GetNTVersion() < _WIN32_WINNT_VISTA) && !is_reactos()) // Broken on Win 2003
                         expected_address = NULL;
 #endif
@@ -698,7 +698,7 @@ static void test_query_process( BOOL extended )
 
     HeapFree( GetProcessHeap(), 0, spi_buf);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
     {
         win_skip("Skipping ClientId tests on pre-NT6.\n");
@@ -743,7 +743,7 @@ static void test_query_process( BOOL extended )
 
         NtClose( handle );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     winetest_pop_context();
@@ -1612,7 +1612,7 @@ static void test_query_firmware(void)
     sfti->Action = SystemFirmwareTable_Get;
 
     status = pNtQuerySystemInformation(SystemFirmwareTableInformation, sfti, min_sfti_len, &len1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status == STATUS_INVALID_DEVICE_REQUEST)
     {
         win_skip("SystemFirmwareTableInformation not available\n");
@@ -2462,7 +2462,7 @@ static void test_query_process_image_info(void)
         broken( !info.MajorOperatingSystemVersion ),  /* <= win8 */
         "wrong major OS version %x/%x\n",
         info.MajorOperatingSystemVersion, nt->OptionalHeader.MajorOperatingSystemVersion );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_WIN7)
         ok( info.MinorOperatingSystemVersion == 0, "wrong minor version %x/%x\n", info.MinorOperatingSystemVersion, 0 );
     else
@@ -3611,14 +3611,14 @@ static void test_thread_ideal_processor(void)
     ok(status == STATUS_INVALID_INFO_CLASS, "Unexpected status %#lx.\n", status);
 
     status = pNtQueryInformationThread( GetCurrentThread(), ThreadIdealProcessorEx, &processor, sizeof(processor) + 1, &len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(status == (GetNTVersion() >= _WIN32_WINNT_WIN7 ? STATUS_INFO_LENGTH_MISMATCH : STATUS_INVALID_INFO_CLASS), "Unexpected status %#lx.\n", status);
 #else
     ok(status == STATUS_INFO_LENGTH_MISMATCH, "Unexpected status %#lx.\n", status);
 #endif
 
     status = pNtQueryInformationThread( GetCurrentThread(), ThreadIdealProcessorEx, &processor, sizeof(processor), &len );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(status == (GetNTVersion() >= _WIN32_WINNT_WIN7 ? STATUS_SUCCESS : STATUS_INVALID_INFO_CLASS), "Unexpected status %#lx.\n", status);
 #else
     ok(status == STATUS_SUCCESS, "Unexpected status %#lx.\n", status);
@@ -3878,7 +3878,7 @@ static void test_system_debug_control(void)
 {
     NTSTATUS status;
     int class;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SYSTEM_KERNEL_DEBUGGER_INFORMATION skdi = {0};
 
     pNtQuerySystemInformation( SystemKernelDebuggerInformation, &skdi, sizeof(skdi), NULL );
@@ -3886,7 +3886,7 @@ static void test_system_debug_control(void)
 
     for (class = 0; class < SysDbgMaxInfoClass; ++class)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((class == SysDbgBreakPoint) && is_reactos()) continue; // Don't break into the kernel debugger!
         if ((class == SysDbgDisableKernelDebugger) && is_reactos()) continue; // Don't disable the kernel debugger!
 #endif
@@ -3897,7 +3897,7 @@ static void test_system_debug_control(void)
             ok( status == STATUS_DEBUGGER_INACTIVE || status == STATUS_NOT_IMPLEMENTED || status == STATUS_INFO_LENGTH_MISMATCH,
                     "class %d, got %#lx.\n", class, status );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else if (class == SysDbgEnableKernelDebugger && skdi.DebuggerEnabled)
         {
             ok( status == STATUS_INVALID_PARAMETER, "class %d, got %#lx.\n", class, status );
@@ -3905,7 +3905,7 @@ static void test_system_debug_control(void)
 #endif
         else
         {
-            ok( status == STATUS_DEBUGGER_INACTIVE || status == STATUS_ACCESS_DENIED || status == STATUS_INFO_LENGTH_MISMATCH || broken(/* __REACTOS__ Win 2003: */ status == STATUS_NOT_IMPLEMENTED),
+            ok( status == STATUS_DEBUGGER_INACTIVE || status == STATUS_ACCESS_DENIED || status == STATUS_INFO_LENGTH_MISMATCH || broken(/* __LIBRENT__ Win 2003: */ status == STATUS_NOT_IMPLEMENTED),
                 "class %d, got %#lx.\n", class, status );
         }
     }
@@ -3947,7 +3947,7 @@ static void test_process_token(int argc, char **argv)
     ret = DuplicateTokenEx( token, TOKEN_ALL_ACCESS, NULL, SecurityAnonymous, TokenImpersonation, &token_info.Token );
     ok( ret, "got error %lu\n", GetLastError() );
     status = pNtSetInformationProcess( pi.hProcess, ProcessAccessToken, &token_info, sizeof(token_info) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_WIN7)
         todo_wine ok( status == STATUS_BAD_TOKEN_TYPE, "got %#lx\n", status );
     else
@@ -4089,7 +4089,7 @@ static void test_process_id(void)
     ok( info.ImageName.Length == image_name->Length, "got %#x, %#x.\n", info.ImageName.Length, image_name->Length );
     ok( !wcscmp( name, image_name->Buffer ), "got %s, %s.\n", debugstr_w(name), debugstr_w(image_name->Buffer) );
 
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x601)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x601)
     bret = EnumProcesses( pids, sizeof(pids), &len );
     ok( bret, "got error %lu.\n", GetLastError() );
     for (i = 0; i < len / sizeof(*pids); ++i)
@@ -4145,7 +4145,7 @@ static void test_processor_idle_cycle_time(void)
     ok( !status, "got %#lx.\n", status );
     ok( size == cpu_count * sizeof(*buffer), "got %#lx.\n", size );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pNtQuerySystemInformationEx == NULL)
     {
         win_skip("NtQuerySystemInformationEx is not available.\n");

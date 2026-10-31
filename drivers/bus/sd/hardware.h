@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT SD/SDIO/eMMC Bus Driver
+ * PROJECT:     LibreNT SD/SDIO/eMMC Bus Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Hardware-specific SDHCI hooks
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -84,14 +84,6 @@ SdBusHardwareSetHs400EnhancedStrobe(
 
 NTSTATUS
 SdBusHardwareAttach(
-    _In_ PFDO_EXTENSION FdoExtension);
-
-NTSTATUS
-SdBusK1xAttach(
-    _In_ PFDO_EXTENSION FdoExtension);
-
-NTSTATUS
-SdBusJh7110Attach(
     _In_ PFDO_EXTENSION FdoExtension);
 
 #endif /* _SDBUS_HARDWARE_H_ */

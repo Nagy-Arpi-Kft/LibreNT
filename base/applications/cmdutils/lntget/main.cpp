@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS package manager
+ * PROJECT:     LibreNT package manager
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     lntget command-line interface
  * COPYRIGHT:   Copyright 2026 Ahmed Arif
@@ -40,7 +40,7 @@ struct CommandOptions
 void PrintHelp()
 {
     std::printf(
-        "lntget %.*s - LiberNT package manager for the WinGet community repository\n\n"
+        "lntget %.*s - LibreNT package manager for the WinGet community repository\n\n"
         "Usage:\n"
         "  lntget search [[-q] <query>] [--id|--name|--moniker|--tag|--command <value>] [-e] [-n <count>]\n"
         "  lntget show <query> [--id <id>] [-e]\n"

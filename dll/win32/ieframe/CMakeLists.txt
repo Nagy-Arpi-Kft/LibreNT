@@ -51,7 +51,7 @@ add_idl_reg_scripts(ieframe regtypelib ieframe_v1.idl)
 target_link_libraries(ieframe cpprt uuid wine wine_dll_register)
 add_importlibs(ieframe urlmon shell32 comctl32 shlwapi oleaut32 ole32 user32 gdi32 advapi32 msvcrt kernel32 ntdll)
 add_pch(ieframe precomp.h SOURCE)
-add_cd_file(TARGET ieframe DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET ieframe DESTINATION librent/system32 FOR all)
 
 set_wine_module_FIXME(ieframe) # CORE-5743: No CONST_VTABLE
 
@@ -60,7 +60,7 @@ add_library(ieframe_sublib OBJECT
     CShellNameSpace.cpp
     objects.cpp)
 get_target_property(ieframe_sublib_includes ieframe_sublib INCLUDE_DIRECTORIES)
-list(REMOVE_ITEM ieframe_sublib_includes ${REACTOS_SOURCE_DIR}/sdk/include/wine ${REACTOS_BINARY_DIR}/sdk/include/wine)
+list(REMOVE_ITEM ieframe_sublib_includes ${LIBRENT_SOURCE_DIR}/sdk/include/wine ${LIBRENT_BINARY_DIR}/sdk/include/wine)
 set_target_properties(ieframe_sublib PROPERTIES INCLUDE_DIRECTORIES "${ieframe_sublib_includes}")
 target_link_libraries(ieframe_sublib PRIVATE atl_classes)
 target_compile_definitions(ieframe_sublib PRIVATE UNICODE _UNICODE)

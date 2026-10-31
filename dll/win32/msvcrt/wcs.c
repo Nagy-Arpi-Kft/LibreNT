@@ -36,7 +36,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(msvcrt);
 
 #ifdef _MSC_VER
 #pragma function(_wcsset,wcscat,wcscmp,wcscpy,wcslen)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if defined(_M_ARM) || _MSC_VER >= 1950
 #pragma function(wcsncmp,wcsncpy)
 #endif
@@ -2157,7 +2157,7 @@ int CDECL wctomb_s(int *len, char *mbchar, size_t size, wchar_t wch)
 int CDECL _wctomb_l(char *dst, wchar_t ch, _locale_t locale)
 {
     int len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int maxlen;
     if (!dst)
         return 0;
@@ -2222,12 +2222,12 @@ INT CDECL wcrtomb_s(size_t *len, char *mbchar,
  */
 size_t CDECL wcrtomb( char *dst, wchar_t ch, mbstate_t *s)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int len;
 #endif
     if(s)
         *s = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!dst)
     {
         _wctomb_s_l(&len, NULL, 0, ch, NULL);

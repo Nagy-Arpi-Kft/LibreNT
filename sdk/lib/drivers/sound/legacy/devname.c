@@ -1,5 +1,5 @@
 /*
-    ReactOS Sound System
+    LibreNT Sound System
     Device naming & creation helper routines
 
     Author:

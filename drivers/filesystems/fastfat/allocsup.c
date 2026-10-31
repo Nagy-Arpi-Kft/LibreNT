@@ -271,7 +271,7 @@ FatLogOf(
 #pragma alloc_text(PAGE, FatTruncateFileAllocation)
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static
 #endif
 INLINE
@@ -2907,7 +2907,7 @@ Return Value:
             ULONG ClusterEnd;
             ULONG MyStart, MyLength, count;
 #if DBG
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             ULONG PreviousClear = 0;
 #endif
             ULONG i = 0;
@@ -2988,7 +2988,7 @@ Return Value:
                 }
 
 #if DBG
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef _MSC_VER
 #pragma prefast( suppress:28931, "this is DBG build only" )
 #endif
@@ -5099,7 +5099,7 @@ Return Value:
 
                 if (FatIndexBitSize == 32) {
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifdef _MSC_VER
 #pragma warning( suppress: 4213 )
 #endif

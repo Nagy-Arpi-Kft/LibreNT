@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Raspberry Pi 5 XPDM graphics stack
+ * PROJECT:     LibreNT Raspberry Pi 5 XPDM graphics stack
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Bounded V3D 7.1 render-and-readback execution boundary
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -12,7 +12,7 @@
 
 #include "rpi5vc4_v3d.h"
 #include "rpi5vc4_v3d_terrain_shaders.h"
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 
 #define V3D_HUB_INT_STS                    0x0050
 #define V3D_HUB_INT_CLR                    0x0058

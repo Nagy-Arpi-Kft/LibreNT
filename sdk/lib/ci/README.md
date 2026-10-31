@@ -13,7 +13,7 @@ Trust sources
 * The kernel embeds SHA-256 hashes of the system DLLs produced by the same build.
   `catalog.py` regenerates this catalog when a system image changes. Matching is
   by complete file content, not by filename, directory, version resource or
-  application identity. This supplies operating-system image trust for ReactOS's
+  application identity. This supplies operating-system image trust for LibreNT's
   unsigned development builds.
 * An external image needs a valid embedded Authenticode signature and a code
   signing certificate identifying Microsoft Corporation, with a chain to one of
@@ -53,7 +53,7 @@ Store-only audit returns `STATUS_NOT_SUPPORTED`. The process creation mitigation
 options mask therefore does not advertise signature-policy creation support.
 
 `modules/rostests/tests/imagesigning` exercises the runtime policy and its
-kernel enforcement with the same binary and fixtures on Windows and ReactOS.
+kernel enforcement with the same binary and fixtures on Windows and LibreNT.
 It requires an unsigned DLL, a Microsoft-signed DLL, and a copy of that signed
 DLL with an executable-section byte changed. Fixture architecture must match
 the test executable.

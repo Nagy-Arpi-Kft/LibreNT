@@ -1,5 +1,5 @@
 /*
- *  ReactOS Application Main Window
+ *  LibreNT Application Main Window
  *
  *  framewnd.h
  *

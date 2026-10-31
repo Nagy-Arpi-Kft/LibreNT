@@ -2,7 +2,7 @@
 
 # rpi3winsync is an exact, directly tracked Windows 10 BSP source snapshot.
 # Projects are enabled individually as their Windows framework dependencies
-# gain compatible ReactOS implementations.
+# gain compatible LibreNT implementations.
 set(_rpi3winsync_root "${CMAKE_CURRENT_LIST_DIR}/rpi3winsync")
 set(_vchiq_userland_root "${_rpi3winsync_root}/drivers/misc/userland")
 

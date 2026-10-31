@@ -22,7 +22,7 @@
 #define COBJMACROS
 
 #include "windef.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 #include "winbase.h"

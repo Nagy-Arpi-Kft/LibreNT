@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS MSC Shell Extension
+ * PROJECT:     LibreNT MSC Shell Extension
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Shell extension implementation
  * COPYRIGHT:   Copyright 2026 Whindmar Saksit <whindsaks@proton.me>

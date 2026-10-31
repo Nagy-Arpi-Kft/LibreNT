@@ -1,5 +1,5 @@
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 
 list(APPEND SOURCE
     aacs.c
@@ -37,7 +37,7 @@ target_compile_options(cdrom PRIVATE
 target_link_libraries(cdrom ntoskrnl_vista libcntpr ${PSEH_LIB})
 add_importlibs(cdrom wdfldr ntoskrnl hal)
 # add_pch(cdrom cdrom.h SOURCE)
-add_cd_file(TARGET cdrom DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET cdrom DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(cdrom_reg.inf)
 add_driver_inf(cdrom cdrom.inf)
 

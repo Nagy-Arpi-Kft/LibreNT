@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Header file for APIC hal
  * COPYRIGHT:   Copyright 2011 Timo Kreuzer <timo.kreuzer@reactos.org>
@@ -63,7 +63,7 @@
 #define APIC_RESERVED_VECTOR 0xFE
 
 /* Upper bound on boot-IOAPIC redirection entries (PCH-class: 120 pins) */
-#include <reactos/hal/acpi_pci.h>
+#include <librent/hal/acpi_pci.h>
 #define APIC_MAX_GSI_PINS HAL_ACPI_MAX_GSI_PINS
 
 /* Pins actually present, from the IOAPIC version register; stays at

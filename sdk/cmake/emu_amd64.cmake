@@ -1,11 +1,11 @@
-# PROJECT:     LiberNT Build System
+# PROJECT:     LibreNT Build System
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the AMD64 guest runtime of the AMD64 emulator in a nested tree
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/emu_amd64_targets.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/emu_amd64_targets.cmake")
 
-set(EMU_AMD64_BINARY_DIR "${REACTOS_BINARY_DIR}/_emu_amd64")
+set(EMU_AMD64_BINARY_DIR "${LIBRENT_BINARY_DIR}/_emu_amd64")
 set(EMU_AMD64_TARGETS ${EMU_AMD64_MODULES} ${EMU_AMD64_EXECUTABLES})
 
 foreach(_target IN LISTS EMU_AMD64_TARGETS)
@@ -39,7 +39,7 @@ function(_emu_amd64_get_target_file _target _output)
         endif()
     endif()
 
-    file(RELATIVE_PATH _relative_dir "${REACTOS_BINARY_DIR}" "${_binary_dir}")
+    file(RELATIVE_PATH _relative_dir "${LIBRENT_BINARY_DIR}" "${_binary_dir}")
     set(${_output} "${EMU_AMD64_BINARY_DIR}/${_relative_dir}/${_prefix}${_output_name}${_suffix}" PARENT_SCOPE)
 endfunction()
 
@@ -49,7 +49,7 @@ foreach(_target IN LISTS EMU_AMD64_TARGETS)
     list(APPEND EMU_AMD64_FILES "${_file}")
 endforeach()
 
-get_filename_component(_emu_amd64_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${REACTOS_SOURCE_DIR}")
+get_filename_component(_emu_amd64_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${LIBRENT_SOURCE_DIR}")
 set(_emu_amd64_cmake_args
     -DARCH:STRING=amd64
     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
@@ -62,10 +62,10 @@ set(_emu_amd64_cmake_args
     -DMESA_GALLIUM_FROM_SOURCE:BOOL=OFF
     -DOPTIMIZE:STRING=${OPTIMIZE}
     -DPCH:BOOL=${PCH}
-    -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=${REACTOS_CLANG_LLVM_MINGW_ROOT}
-    -DREACTOS_GRAPHICS_DRIVER_MODEL:STRING=${REACTOS_GRAPHICS_DRIVER_MODEL}
-    -DREACTOS_TARGET_NT:STRING=${REACTOS_TARGET_NT}
-    -DREACTOS_WDDM_LEVEL:STRING=${REACTOS_WDDM_LEVEL}
+    -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=${LIBRENT_CLANG_LLVM_MINGW_ROOT}
+    -DLIBRENT_GRAPHICS_DRIVER_MODEL:STRING=${LIBRENT_GRAPHICS_DRIVER_MODEL}
+    -DLIBRENT_TARGET_NT:STRING=${LIBRENT_TARGET_NT}
+    -DLIBRENT_WDDM_LEVEL:STRING=${LIBRENT_WDDM_LEVEL}
     -DROSCONFIG_PROFILE:STRING=generic
     -DROSCONFIG_SKIP_OVERRIDES:BOOL=ON
     -DSEPARATE_DBG:BOOL=${SEPARATE_DBG}
@@ -73,16 +73,16 @@ set(_emu_amd64_cmake_args
     -DWITH_DEBUG_SYMBOLS:BOOL=${WITH_DEBUG_SYMBOLS})
 
 string(JOIN "\n" _emu_amd64_configure_signature ${_emu_amd64_cmake_args})
-set(_emu_amd64_signature_file "${REACTOS_BINARY_DIR}/CMakeFiles/emu-amd64-configure.txt")
-set(_emu_amd64_configure_stamp "${REACTOS_BINARY_DIR}/CMakeFiles/emu-amd64-configure.stamp")
+set(_emu_amd64_signature_file "${LIBRENT_BINARY_DIR}/CMakeFiles/emu-amd64-configure.txt")
+set(_emu_amd64_configure_stamp "${LIBRENT_BINARY_DIR}/CMakeFiles/emu-amd64-configure.stamp")
 file(GENERATE OUTPUT "${_emu_amd64_signature_file}" CONTENT "${_emu_amd64_configure_signature}\n")
 
 find_program(NESTED_BUILD_PYTHON_EXECUTABLE NAMES python3 python REQUIRED)
 add_custom_command(
     OUTPUT "${_emu_amd64_configure_stamp}"
-    COMMAND ${CMAKE_COMMAND} -S "${REACTOS_SOURCE_DIR}" -B "${EMU_AMD64_BINARY_DIR}" -G "${CMAKE_GENERATOR}" ${_emu_amd64_cmake_args}
+    COMMAND ${CMAKE_COMMAND} -S "${LIBRENT_SOURCE_DIR}" -B "${EMU_AMD64_BINARY_DIR}" -G "${CMAKE_GENERATOR}" ${_emu_amd64_cmake_args}
     COMMAND "${NESTED_BUILD_PYTHON_EXECUTABLE}"
-        "${REACTOS_SOURCE_DIR}/sdk/tools/cxx-runtime/build-cxx-runtime.py" --reactos-build "${EMU_AMD64_BINARY_DIR}"
+        "${LIBRENT_SOURCE_DIR}/sdk/tools/cxx-runtime/build-cxx-runtime.py" --librent-build "${EMU_AMD64_BINARY_DIR}"
     COMMAND ${CMAKE_COMMAND} -E touch "${_emu_amd64_configure_stamp}"
     BYPRODUCTS "${EMU_AMD64_BINARY_DIR}/build.ninja"
     DEPENDS "${_emu_amd64_signature_file}"
@@ -98,18 +98,18 @@ else()
     set(_emu_amd64_heal)
 endif()
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
 
 list(LENGTH EMU_AMD64_TARGETS _emu_amd64_target_count)
 add_custom_target(emu_amd64 ALL
     ${_emu_amd64_heal}
-    COMMAND ${REACTOS_NESTED_BUILD} "${EMU_AMD64_BINARY_DIR}" --target ${EMU_AMD64_TARGETS}
+    COMMAND ${LIBRENT_NESTED_BUILD} "${EMU_AMD64_BINARY_DIR}" --target ${EMU_AMD64_TARGETS}
     BYPRODUCTS ${EMU_AMD64_FILES}
     COMMENT "Building ${_emu_amd64_target_count} AMD64 guest runtime targets"
     USES_TERMINAL
     VERBATIM)
 add_dependencies(emu_amd64 emu_amd64_configure)
 
-add_cd_file(TARGET emu_amd64 FILE ${EMU_AMD64_FILES} DESTINATION reactos/SystemAMD64 FOR all)
+add_cd_file(TARGET emu_amd64 FILE ${EMU_AMD64_FILES} DESTINATION librent/SystemAMD64 FOR all)
 
 message(STATUS "AMD64 emulation: building ${_emu_amd64_target_count} AMD64 guest targets into SystemAMD64")

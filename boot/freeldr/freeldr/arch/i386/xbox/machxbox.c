@@ -413,7 +413,7 @@ MachInit(const char *CmdLine)
     MachVtbl.VideoGetPaletteColor = XboxVideoGetPaletteColor;
     MachVtbl.VideoSync = XboxVideoSync;
     MachVtbl.Beep = PcBeep;
-    MachVtbl.PrepareForReactOS = XboxPrepareForReactOS;
+    MachVtbl.PrepareForLibreNT = XboxPrepareForLibreNT;
     MachVtbl.GetMemoryMap = XboxMemGetMemoryMap;
     MachVtbl.GetExtendedBIOSData = XboxGetExtendedBIOSData;
     MachVtbl.GetFloppyCount = XboxGetFloppyCount;
@@ -436,10 +436,10 @@ MachInit(const char *CmdLine)
 }
 
 VOID
-XboxPrepareForReactOS(VOID)
+XboxPrepareForLibreNT(VOID)
 {
     /* Prepare video and turn off debug messages to screen */
-    XboxVideoPrepareForReactOS();
+    XboxVideoPrepareForLibreNT();
     DebugDisableScreenPort();
 }
 

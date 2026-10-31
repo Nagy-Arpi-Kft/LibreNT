@@ -647,7 +647,7 @@ static struct mui_res
 
 static void test_mui(void)
 {
-#if defined(__REACTOS__) && DLL_EXPORT_VERSION < 0x600
+#if defined(__LIBRENT__) && DLL_EXPORT_VERSION < 0x600
     skip("Cannot build test_mui() unless DLL_EXPORT_VERSION >= 0x600.\n");
 #else
     static const WCHAR ln_dll[] = L"test_mui.dll";
@@ -715,7 +715,7 @@ static void test_mui(void)
     r = GetFileMUIInfo( MUI_QUERY_TYPE | MUI_QUERY_CHECKSUM | MUI_QUERY_LANGUAGE_NAME
             | MUI_QUERY_RESOURCE_TYPES, ln_dll, NULL, &size );
     ok( !r, "GetFileMUIInfo succeeded\n" );
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     ok( GetLastError() == ERROR_BAD_EXE_FORMAT || GetLastError() == ERROR_INSUFFICIENT_BUFFER /* Vista x64 */, "GetLastError() = %ld\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_BAD_EXE_FORMAT, "GetLastError() = %ld\n", GetLastError() );

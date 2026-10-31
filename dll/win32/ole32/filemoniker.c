@@ -82,7 +82,7 @@ static HRESULT WINAPI FileMonikerImpl_QueryInterface(IMoniker *iface, REFIID rii
     *ppvObject = 0;
 
     if (IsEqualIID(&IID_IUnknown, riid)      ||
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         IsEqualIID(&IID_IPersist, riid)      ||
 #endif
         IsEqualIID(&IID_IPersistStream,riid) ||
@@ -810,7 +810,7 @@ FileMonikerImpl_Enum(IMoniker* iface,BOOL fForward, IEnumMoniker** ppenumMoniker
     TRACE("(%p,%d,%p)\n",iface,fForward,ppenumMoniker);
 
     if (ppenumMoniker == NULL)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return E_INVALIDARG;
 #else
         return E_POINTER;
@@ -1485,7 +1485,7 @@ HRESULT FileMoniker_CreateFromDisplayName(LPBC pbc, LPCOLESTR szDisplayName,
         IMoniker_Release(file_moniker);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return MK_E_SYNTAX;
 #else
     return MK_E_CANTOPENFILE;

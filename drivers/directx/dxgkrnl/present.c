@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Swap chain / present infrastructure
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -52,7 +52,7 @@
 #include "vidsch.h"
 #include "present.h"
 #include "present_queue_core.h"
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 
 #define DXGK_PRESENT_EXEC_LOG_LIMIT  32
 #define DXGK_PRESENT_EXEC_SLOW_US    5000ULL
@@ -336,7 +336,7 @@ DxgkpWaitForPresentQueues(
         KeWaitForSingleObject(&Adapter->PresentQueueCallsDrainedEvent, Executive, KernelMode, FALSE, NULL);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 static NTSTATUS
 DxgkpCreateDwmVBlankEvent(
     _Outptr_ PKEVENT *Event)
@@ -397,7 +397,7 @@ DxgkpSignalQueueVBlankWaiters(
         if (Force || VBlankCount >= Waiter->TargetVBlank)
             KeSetEvent(&Waiter->Event, IO_NO_INCREMENT, FALSE);
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     if (Queue->DwmVBlankEvent != NULL &&
         (Force ||
          (Queue->DwmVBlankTargetArmed &&
@@ -738,7 +738,7 @@ Cleanup:
     return Status;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 NTSTATUS
 DxgkPresentOpenDwmVBlankEvent(
     _In_ PDXGKRNL_ADAPTER Adapter,
@@ -2439,7 +2439,7 @@ DxgkPresentInit(
     ULONG i;
     ULONG NumSources;
     PDXGKRNL_PRESENT_QUEUE Queues;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     NTSTATUS Status;
 #endif
 
@@ -2492,7 +2492,7 @@ DxgkPresentInit(
         InitializeListHead(&Queues[i].MmioFlipList);
         Queues[i].MmioFlipWorkQueued = 0;
         InitializeListHead(&Queues[i].VBlankWaiterList);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
         Status = DxgkpCreateDwmVBlankEvent(&Queues[i].DwmVBlankEvent);
         if (!NT_SUCCESS(Status))
         {
@@ -2752,7 +2752,7 @@ VOID
 DxgkPresentTeardown(
     _In_ PDXGKRNL_ADAPTER Adapter)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     PDXGKRNL_PRESENT_QUEUE Queues;
     ULONG Index;
 #endif
@@ -2774,7 +2774,7 @@ DxgkPresentTeardown(
 
     if (Adapter->PresentQueues != NULL)
     {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
         Queues = (PDXGKRNL_PRESENT_QUEUE)Adapter->PresentQueues;
         for (Index = 0; Index < Adapter->PresentQueueCount; ++Index)
         {
@@ -4561,7 +4561,7 @@ static BOOLEAN
 DxgkpMpo1Supported(
     _In_ PDXGKRNL_ADAPTER Adapter)
 {
-    return REACTOS_WDDM_TARGET_LEVEL >= 1300 &&
+    return LIBRENT_WDDM_TARGET_LEVEL >= 1300 &&
            Adapter->MiniportContext != NULL &&
            !Adapter->MiniportContext->IsDisplayOnlyDriver &&
            DXGK_CB_FULL(Adapter, DxgkDdiCheckMultiPlaneOverlaySupport) != NULL &&

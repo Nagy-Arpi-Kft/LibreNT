@@ -3,7 +3,7 @@
  *
  * Windows NT status codes
  *
- * This file is part of the ReactOS SDK.
+ * This file is part of the LibreNT SDK.
  *
  * Contributors:
  *   Created by Casper S. Hornstrup <chorns@users.sourceforge.net>

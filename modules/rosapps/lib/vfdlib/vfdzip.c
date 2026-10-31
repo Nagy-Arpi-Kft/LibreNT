@@ -19,7 +19,7 @@
 #include "vfdio.h"
 #include "vfdlib.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define ZLIB_WINAPI
 #else
 #define Z_SOLO

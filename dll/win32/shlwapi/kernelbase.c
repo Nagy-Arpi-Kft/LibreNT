@@ -407,7 +407,7 @@ LONG WINAPI SHRegOpenUSKeyW(LPCWSTR Path, REGSAM AccessType, HUSKEY hRelativeUSK
 
     /* Create internal HUSKEY */
     hKey = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*hKey));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!hKey)
         return ERROR_NOT_ENOUGH_MEMORY;
 #endif
@@ -1009,7 +1009,7 @@ BOOL WINAPI SHRegGetBoolUSValueA(
 	    /* process returned data via type into bool */
 	    switch (type) {
 	    case REG_SZ:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		data[datalen] = '\0';     /* set end of string */
 #else
 		data[9] = '\0';     /* set end of string */
@@ -1020,7 +1020,7 @@ BOOL WINAPI SHRegGetBoolUSValueA(
 		if (lstrcmpiA(data, "FALSE") == 0) ret = FALSE;
 		break;
 	    case REG_DWORD:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (datalen != sizeof(work)) break;
 		memcpy(&work, data, sizeof(work));
 #else
@@ -1071,7 +1071,7 @@ BOOL WINAPI SHRegGetBoolUSValueW(
 	      debugstr_w(pszSubKey), debugstr_w(pszValue),
 	      (fIgnoreHKCU) ? "Ignoring HKCU" : "Tries HKCU then HKLM");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	datalen = (ARRAY_SIZE(data)-1) * sizeof(WCHAR);
 #else
 	datalen = (sizeof(data)-1) * sizeof(WCHAR);
@@ -1082,7 +1082,7 @@ BOOL WINAPI SHRegGetBoolUSValueW(
 	    /* process returned data via type into bool */
 	    switch (type) {
 	    case REG_SZ:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (datalen % sizeof(WCHAR)) break;
 		data[datalen / sizeof(WCHAR)] = '\0';     /* set end of string */
 #else
@@ -1094,7 +1094,7 @@ BOOL WINAPI SHRegGetBoolUSValueW(
 		    ret = FALSE;
 		break;
 	    case REG_DWORD:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		if (datalen != sizeof(work)) break;
 		memcpy(&work, data, sizeof(work));
 #else

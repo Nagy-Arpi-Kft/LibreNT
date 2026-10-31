@@ -932,7 +932,7 @@ HRESULT __cdecl SchRpcGetNumberOfMissedRuns(const WCHAR *path, DWORD *runs)
 
 HRESULT __cdecl SchRpcEnableTask(const WCHAR *path, DWORD enabled)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *value = enabled ? L"true" : L"false";
     WCHAR *full_name, *xml, *body, *settings, *settings_end, *open, *close, *new_xml, *p;
     const WCHAR *prefix_end, *suffix, *before = L"", *after = L"";

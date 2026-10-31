@@ -49,7 +49,7 @@ char* __cdecl _Getdays(void);
 wchar_t* __cdecl _W_Getdays(void);
 char* __cdecl _Getmonths(void);
 wchar_t* __cdecl _W_Getmonths(void);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 size_t __cdecl _Strftime(char*,size_t,const char*,const struct tm*,void*);
 #else
 int __cdecl ___lc_collate_cp_func(void);

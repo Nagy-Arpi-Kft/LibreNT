@@ -21,7 +21,7 @@
 #define COBJMACROS
 
 #include "initguid.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define __IKsControl_INTERFACE_DEFINED__
 #endif
 #include "endpointvolume.h"

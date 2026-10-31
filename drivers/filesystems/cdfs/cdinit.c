@@ -25,7 +25,7 @@ Abstract:
 DRIVER_INITIALIZE DriverEntry;
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DriverEntry(
     _In_ PDRIVER_OBJECT DriverObject,
     _In_ PUNICODE_STRING RegistryPath
@@ -36,7 +36,7 @@ DriverEntry(
 DRIVER_UNLOAD CdUnload;
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdUnload(
     _In_ PDRIVER_OBJECT DriverObject
     );
@@ -45,7 +45,7 @@ NTSTATUS
 CdInitializeGlobalData (
     _In_ PDRIVER_OBJECT DriverObject,
     _In_ PDEVICE_OBJECT FileSystemDeviceObject
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ,
     IN PDEVICE_OBJECT HddFileSystemDeviceObject
 #endif
@@ -63,7 +63,7 @@ CdInitializeGlobalData (
 //
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DriverEntry(
     _In_ PDRIVER_OBJECT DriverObject,
     _In_ PUNICODE_STRING RegistryPath
@@ -93,7 +93,7 @@ Return Value:
     UNICODE_STRING UnicodeString;
     PDEVICE_OBJECT CdfsFileSystemDeviceObject;
     FS_FILTER_CALLBACKS FilterCallbacks;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PDEVICE_OBJECT HddFileSystemDeviceObject;
 #endif
 
@@ -117,7 +117,7 @@ Return Value:
         return Status;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     //
     // Create the HDD device object.
     //
@@ -199,7 +199,7 @@ Return Value:
     if (!NT_SUCCESS( Status )) {
 
         IoDeleteDevice( CdfsFileSystemDeviceObject );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IoDeleteDevice (HddFileSystemDeviceObject);
 #endif
         return Status;
@@ -209,14 +209,14 @@ Return Value:
     //  Initialize the global data structures
     //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     Status = CdInitializeGlobalData( DriverObject, CdfsFileSystemDeviceObject );
 #else
     Status = CdInitializeGlobalData( DriverObject, CdfsFileSystemDeviceObject, HddFileSystemDeviceObject );
 #endif
     if (!NT_SUCCESS (Status)) {
         IoDeleteDevice (CdfsFileSystemDeviceObject);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         IoDeleteDevice (HddFileSystemDeviceObject);
 #endif
         return Status;
@@ -229,13 +229,13 @@ Return Value:
     //
 
     CdfsFileSystemDeviceObject->Flags |= DO_LOW_PRIORITY_FILESYSTEM;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HddFileSystemDeviceObject->Flags |= DO_LOW_PRIORITY_FILESYSTEM;
 #endif
 
     IoRegisterFileSystem( CdfsFileSystemDeviceObject );
     ObReferenceObject (CdfsFileSystemDeviceObject);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IoRegisterFileSystem( HddFileSystemDeviceObject );
     ObReferenceObject (HddFileSystemDeviceObject);
 #endif
@@ -258,7 +258,7 @@ Return Value:
 
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdUnload(
     _In_ PDRIVER_OBJECT DriverObject
     )
@@ -298,7 +298,7 @@ Return Value:
     IoFreeWorkItem (CdData.CloseItem);
     ExDeleteResourceLite( &CdData.DataResource );
     ObDereferenceObject (CdData.FileSystemDeviceObject);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ObDereferenceObject (CdData.HddFileSystemDeviceObject);
 #endif
 }
@@ -311,7 +311,7 @@ NTSTATUS
 CdInitializeGlobalData (
     _In_ PDRIVER_OBJECT DriverObject,
     _In_ PDEVICE_OBJECT FileSystemDeviceObject
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ,
     IN PDEVICE_OBJECT HddFileSystemDeviceObject
 #endif
@@ -385,7 +385,7 @@ Return Value:
 
     CdData.DriverObject = DriverObject;
     CdData.FileSystemDeviceObject = FileSystemDeviceObject;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CdData.HddFileSystemDeviceObject = HddFileSystemDeviceObject;
 #endif
 
@@ -397,10 +397,10 @@ Return Value:
     //  Initialize the cache manager callback routines
     //
 
-    CdData.CacheManagerCallbacks.AcquireForLazyWrite  = (PVOID)&CdAcquireForCache;/* ReactOS Change: GCC "assignment from incompatible pointer type" */
-    CdData.CacheManagerCallbacks.ReleaseFromLazyWrite = (PVOID)&CdReleaseFromCache;/* ReactOS Change: GCC "assignment from incompatible pointer type" */
-    CdData.CacheManagerCallbacks.AcquireForReadAhead  = (PVOID)&CdAcquireForCache;/* ReactOS Change: GCC "assignment from incompatible pointer type" */
-    CdData.CacheManagerCallbacks.ReleaseFromReadAhead = (PVOID)&CdReleaseFromCache;/* ReactOS Change: GCC "assignment from incompatible pointer type" */
+    CdData.CacheManagerCallbacks.AcquireForLazyWrite  = (PVOID)&CdAcquireForCache;/* LibreNT Change: GCC "assignment from incompatible pointer type" */
+    CdData.CacheManagerCallbacks.ReleaseFromLazyWrite = (PVOID)&CdReleaseFromCache;/* LibreNT Change: GCC "assignment from incompatible pointer type" */
+    CdData.CacheManagerCallbacks.AcquireForReadAhead  = (PVOID)&CdAcquireForCache;/* LibreNT Change: GCC "assignment from incompatible pointer type" */
+    CdData.CacheManagerCallbacks.ReleaseFromReadAhead = (PVOID)&CdReleaseFromCache;/* LibreNT Change: GCC "assignment from incompatible pointer type" */
 
     CdData.CacheManagerVolumeCallbacks.AcquireForLazyWrite  = &CdNoopAcquire;
     CdData.CacheManagerVolumeCallbacks.ReleaseFromLazyWrite = &CdNoopRelease;

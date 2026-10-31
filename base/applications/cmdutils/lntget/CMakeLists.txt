@@ -1,6 +1,6 @@
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib
-    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/zlib/contrib)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/zlib/contrib)
 
 list(APPEND SOURCE
     category.cpp
@@ -29,4 +29,4 @@ if(MSVC)
 endif()
 target_link_libraries(lntget cppstl cpprt minizip zlib)
 add_importlibs(lntget advapi32 bcrypt comctl32 crypt32 gdi32 shell32 user32 wininet msvcrt kernel32 ntdll)
-add_cd_file(TARGET lntget DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET lntget DESTINATION librent/system32 FOR all)

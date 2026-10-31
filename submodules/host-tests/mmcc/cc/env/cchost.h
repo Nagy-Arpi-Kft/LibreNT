@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/cc/env/cchost.h
  * PURPOSE:     Host-native environment for cache manager tests
  *

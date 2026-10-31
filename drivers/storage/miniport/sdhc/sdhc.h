@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT SD Host Controller Miniport Driver
+ * PROJECT:     LibreNT SD Host Controller Miniport Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     SDHCI miniport internal definitions
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -9,8 +9,8 @@
 
 #include <ntddk.h>
 #include <ntddsd.h>
-#include <reactos/drivers/sd/sdhci.h>
-#include <reactos/drivers/sd/sddef.h>
+#include <librent/drivers/sd/sdhci.h>
+#include <librent/drivers/sd/sddef.h>
 
 /** @brief Pool tag: 'SDhC' */
 #define TAG_SDHC 'ChDS'

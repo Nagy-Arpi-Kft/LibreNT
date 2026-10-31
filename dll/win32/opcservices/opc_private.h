@@ -70,7 +70,7 @@ extern HRESULT compress_add_file(struct zip_archive *archive, const WCHAR *path,
 extern HRESULT compress_finalize_archive(struct zip_archive *archive);
 extern void compress_release_archive(struct zip_archive *archive);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct zip_entry
 {
     WCHAR *name;

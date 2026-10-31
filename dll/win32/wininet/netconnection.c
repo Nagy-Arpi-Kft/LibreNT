@@ -40,7 +40,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(wininet);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline BOOL mask_cert_errors(netconn_t *conn, DWORD err)
 {
     return conn->mask_errors;
@@ -275,7 +275,7 @@ static BOOL WINAPI winsock_startup(INIT_ONCE *once, void *param, void **context)
     WSADATA wsa_data;
     DWORD res;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     res = WSAStartup(MAKEWORD(2,2), &wsa_data);
 #else
     res = WSAStartup(MAKEWORD(1,1), &wsa_data);

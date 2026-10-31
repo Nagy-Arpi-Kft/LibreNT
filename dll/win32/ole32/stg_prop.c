@@ -223,7 +223,7 @@ struct tagPropertyStorage_impl
     struct dictionary *name_to_propid;
     struct dictionary *propid_to_name;
     struct dictionary *propid_to_prop;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     FMTID other_fmtid;
     BYTE *other_section;
     DWORD other_section_size;
@@ -478,7 +478,7 @@ static ULONG WINAPI IPropertyStorage_fnRelease(
         This->cs.DebugInfo->Spare[0] = 0;
         DeleteCriticalSection(&This->cs);
         PropertyStorage_DestroyDictionaries(This);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         HeapFree(GetProcessHeap(), 0, This->other_section);
 #endif
         HeapFree(GetProcessHeap(), 0, This);
@@ -1127,7 +1127,7 @@ static HRESULT WINAPI IPropertyStorage_fnSetTimes(
     const FILETIME* patime,
     const FILETIME* pmtime)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p, %p, %p, %p\n", iface, pctime, patime, pmtime);
     return S_OK;
 #else
@@ -1844,7 +1844,7 @@ static HRESULT PropertyStorage_ReadDictionary(PropertyStorage_impl *This, const 
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT PropertyStorage_ReadOtherSection(PropertyStorage_impl *This,
  const FORMATIDOFFSET *entry, DWORD stream_size)
 {
@@ -1910,7 +1910,7 @@ static HRESULT PropertyStorage_ReadFromStream(PropertyStorage_impl *This)
 
     This->dirty = FALSE;
     This->highestProp = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HeapFree(GetProcessHeap(), 0, This->other_section);
     This->other_section = NULL;
     This->other_section_size = 0;
@@ -1963,7 +1963,7 @@ static HRESULT PropertyStorage_ReadFromStream(PropertyStorage_impl *This)
     This->originatorOS = hdr.dwOSVer;
     if (PROPSETHDR_OSVER_KIND(hdr.dwOSVer) == PROPSETHDR_OSVER_KIND_MAC)
         WARN("File comes from a Mac, strings will probably be screwed up\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(&This->fmtid, &FMTID_DocSummaryInformation) ||
      IsEqualGUID(&This->fmtid, &FMTID_UserDefinedProperties))
     {
@@ -2094,7 +2094,7 @@ static HRESULT PropertyStorage_ReadFromStream(PropertyStorage_impl *This)
                             This->codePage = (USHORT)prop.iVal;
                         break;
                     case PID_LOCALE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (prop.vt == VT_I4 || prop.vt == VT_UI4)
 #else
                         if (prop.vt == VT_I4)
@@ -2262,7 +2262,7 @@ end:
     return SUCCEEDED(c->hr);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SECTIONHEADER_OFFSET (This->section_base)
 #else
 #define SECTIONHEADER_OFFSET sizeof(PROPERTYSETHEADER) + sizeof(FORMATIDOFFSET)
@@ -2529,12 +2529,12 @@ static HRESULT PropertyStorage_WritePropertyToStream(PropertyStorage_impl *This,
         *sectionOffset += bytesWritten;
         if (bytesWritten % sizeof(DWORD))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             static const BYTE zeros[sizeof(DWORD)];
 #endif
             DWORD padding = sizeof(DWORD) - bytesWritten % sizeof(DWORD);
             TRACE("adding %ld bytes of padding\n", padding);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hr = IStream_Write(This->stm, zeros, padding, &count);
 #endif
             *sectionOffset += padding;
@@ -2593,7 +2593,7 @@ static HRESULT PropertyStorage_WriteHeadersToStream(PropertyStorage_impl *This)
     if (FAILED(hr))
         goto end;
     PropertyStorage_MakeHeader(This, &hdr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->section_base = sizeof(PROPERTYSETHEADER) + sizeof(FORMATIDOFFSET);
     if (This->other_section)
         StorageUtl_WriteDWord(&hdr.reserved, 0, 2);
@@ -2607,7 +2607,7 @@ static HRESULT PropertyStorage_WriteHeadersToStream(PropertyStorage_impl *This)
         goto end;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->other_section)
     {
         BOOL other_first = IsEqualGUID(&This->other_fmtid, &FMTID_DocSummaryInformation);
@@ -2714,7 +2714,7 @@ static HRESULT PropertyStorage_WriteToStream(PropertyStorage_impl *This)
 
     if (This->locale != LOCALE_SYSTEM_DEFAULT)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         var.vt = VT_UI4;
         var.ulVal = This->locale;
 #else
@@ -2748,7 +2748,7 @@ static HRESULT PropertyStorage_WriteToStream(PropertyStorage_impl *This)
         return hr;
     StorageUtl_WriteDWord(&dwTemp, 0, sectionOffset);
     hr = IStream_Write(This->stm, &dwTemp, sizeof(dwTemp), &count);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && This->other_section &&
      !IsEqualGUID(&This->other_fmtid, &FMTID_DocSummaryInformation))
     {
@@ -2901,7 +2901,7 @@ static HRESULT PropertyStorage_ConstructEmpty(IStream *stm, REFFMTID rfmtid,
             ps->codePage = GetACP();
         else
             ps->codePage = CP_UNICODE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ps->locale = GetUserDefaultLCID();
 #else
         ps->locale = LOCALE_SYSTEM_DEFAULT;
@@ -2997,7 +2997,7 @@ static HRESULT WINAPI enum_stat_propset_stg_Next(IEnumSTATPROPSETSTG *iface, ULO
 
 static HRESULT WINAPI enum_stat_propset_stg_Skip(IEnumSTATPROPSETSTG *iface, ULONG celt)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct enum_stat_propset_stg *psenum = impl_from_IEnumSTATPROPSETSTG(iface);
     ULONG count = 0;
 
@@ -3372,7 +3372,7 @@ SERIALIZEDPROPERTYVALUE* WINAPI StgConvertVariantToProperty(const PROPVARIANT *p
     USHORT CodePage, SERIALIZEDPROPERTYVALUE *pprop, ULONG *pcb, PROPID pid,
     BOOLEAN fReserved, ULONG *pcIndirect)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const void *data = NULL;
     ULONG fixed = 0, count = 0, size;
     char *mb = NULL;

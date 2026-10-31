@@ -1,10 +1,10 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Kernel-Mode Test Suite for the Win11-parity PTE / virtual-memory
  *              query surface (kmwin11new)
  *
- * Aggressive Win11<->ReactOS parity checks for the page-table / VA-translation
+ * Aggressive Win11<->LibreNT parity checks for the page-table / VA-translation
  * APIs:
  *
  *   MmIsAddressValid, MmGetPhysicalAddress, MmGetVirtualForPhysical,
@@ -13,7 +13,7 @@
  *
  * Every contract asserted here is observable from a kernel-mode driver, so the
  * SAME binary is meant to run against the Win11 ARM64 reference kernel (ground
- * truth) and against ReactOS; a failing assertion on ReactOS pinpoints a stub
+ * truth) and against LibreNT; a failing assertion on LibreNT pinpoints a stub
  * or a divergence from the Windows contract. This is common, architecture-
  * neutral test code: nothing here is gated to a single architecture.
  *
@@ -25,7 +25,7 @@
  * allocation is freed. Each test function is self-contained and skip()s on a
  * setup failure.
  *
- * Implementation status on the current ReactOS parity target (for reference):
+ * Implementation status on the current LibreNT parity target (for reference):
  *   - MmIsAddressValid                 implemented
  *   - MmGetPhysicalAddress             implemented
  *   - MmGetVirtualForPhysical          implemented (recently added)
@@ -430,10 +430,10 @@ TestSecureVirtualMemory(VOID)
     ok(Secure != NULL, "MmSecureVirtualMemory(RW) returned NULL\n");
     /*
      * Diagnostic only (NOT asserted): on Windows the secure handle is an opaque
-     * value that is typically NOT the base address. The ReactOS stub returns
+     * value that is typically NOT the base address. The LibreNT stub returns
      * the address unchanged, so "handle == Base" in the log flags the stub.
      */
-    trace("Secure handle %p vs Base %p (equal => ReactOS stub)\n", Secure, Base);
+    trace("Secure handle %p vs Base %p (equal => LibreNT stub)\n", Secure, Base);
     ok_bool_false(PteUnsecureFaulted(Secure), "MmUnsecureVirtualMemory(RW) faulted");
 
     /* Secure the same RW range but only for read access. */
@@ -459,7 +459,7 @@ TestSecureVirtualMemory(VOID)
 
 /* ------------------------------------------------------------------------- */
 /* MmSecureVirtualMemory - securing for RW blocks a protection downgrade      */
-/* (Win11 contract; the ReactOS stub does not really secure -> divergence)    */
+/* (Win11 contract; the LibreNT stub does not really secure -> divergence)    */
 /* ------------------------------------------------------------------------- */
 
 static
@@ -529,7 +529,7 @@ TestSecureBlocksDowngrade(VOID)
 }
 
 /* ------------------------------------------------------------------------- */
-/* MmFlushVirtualMemory - STUB on ReactOS; resolved dynamically, SEH-guarded */
+/* MmFlushVirtualMemory - STUB on LibreNT; resolved dynamically, SEH-guarded */
 /* ------------------------------------------------------------------------- */
 
 static
@@ -582,7 +582,7 @@ TestFlushVirtualMemory(VOID)
     /*
      * Win11 contract: flushing a valid committed range completes successfully.
      * (Private, non-file-backed memory may report STATUS_NOT_MAPPED_DATA, which
-     * we treat as success-ish.) The ReactOS implementation is a stub that fills
+     * we treat as success-ish.) The LibreNT implementation is a stub that fills
      * the IO_STATUS_BLOCK with STATUS_NOT_IMPLEMENTED -> divergence, captured by
      * the IoStatus assertion below where the routine is exported.
      */

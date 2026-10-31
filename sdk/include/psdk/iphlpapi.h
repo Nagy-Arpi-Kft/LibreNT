@@ -61,18 +61,18 @@ IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetIpNetTable(PMIB_IPNETTABLE pIpNetTable, PUL
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetIpForwardTable(PMIB_IPFORWARDTABLE pIpForwardTable, PULONG pdwSize, BOOL bOrder);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetTcpTable(PMIB_TCPTABLE pTcpTable, PDWORD pdwSize, BOOL bOrder);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetUdpTable(PMIB_UDPTABLE pUdpTable, PDWORD pdwSize, BOOL bOrder);
-#if !defined(__REACTOS__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
+#if !defined(__LIBRENT__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetUdp6Table(PMIB_UDP6TABLE pUdpTable, PDWORD pdwSize, BOOL bOrder);
 #endif
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetIpStatistics(PMIB_IPSTATS pStats);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetIpStatisticsEx(PMIB_IPSTATS pStats, DWORD dwFamily);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetIcmpStatistics(PMIB_ICMP pStats);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetIcmpStatisticsEx(PMIB_ICMP_EX pStats, DWORD dwFamily);
-#if !defined(__REACTOS__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
+#if !defined(__LIBRENT__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetOwnerModuleFromTcp6Entry(PMIB_TCP6ROW_OWNER_MODULE entry, TCPIP_OWNER_MODULE_INFO_CLASS infoclass, void *info, DWORD *size);
 #endif
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetOwnerModuleFromTcpEntry(PMIB_TCPROW_OWNER_MODULE entry, TCPIP_OWNER_MODULE_INFO_CLASS infoclass, void *info, DWORD *size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetOwnerModuleFromUdpEntry(PMIB_UDPROW_OWNER_MODULE entry, TCPIP_OWNER_MODULE_INFO_CLASS infoclass, void *info, DWORD *size);
 #endif
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetTcpStatistics(PMIB_TCPSTATS pStats);
@@ -81,7 +81,7 @@ IPHLPAPI_DLL_LINKAGE ULONG WINAPI GetPerTcpConnectionEStats(MIB_TCPROW *row, TCP
                                                             ULONG rw_size, UCHAR *ro_static, ULONG ro_static_version,
                                                             ULONG ro_static_size, UCHAR *ro_dynamic, ULONG ro_dynamic_version,
                                                             ULONG ro_dynamic_size);
-#if !defined(__REACTOS__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
+#if !defined(__LIBRENT__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
 IPHLPAPI_DLL_LINKAGE ULONG WINAPI GetPerTcp6ConnectionEStats(MIB_TCP6ROW *row, TCP_ESTATS_TYPE stats, UCHAR *rw, ULONG rw_version,
                                                              ULONG rw_size, UCHAR *ro_static, ULONG ro_static_version,
                                                              ULONG ro_static_size, UCHAR *ro_dynamic, ULONG ro_dynamic_version,
@@ -94,7 +94,7 @@ IPHLPAPI_DLL_LINKAGE DWORD WINAPI CreateIpForwardEntry(PMIB_IPFORWARDROW pRoute)
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI SetIpForwardEntry(PMIB_IPFORWARDROW pRoute);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI DeleteIpForwardEntry(PMIB_IPFORWARDROW pRoute);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI SetIpStatistics(PMIB_IPSTATS pIpStats);
-#if !defined(__REACTOS__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
+#if !defined(__LIBRENT__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI SetPerTcp6ConnectionEStats(MIB_TCP6ROW *row, TCP_ESTATS_TYPE state, BYTE *rw, ULONG version, ULONG size, ULONG offset);
 #endif
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI SetPerTcpConnectionEStats(MIB_TCPROW *row, TCP_ESTATS_TYPE state, BYTE *rw, ULONG version, ULONG size, ULONG offset);
@@ -110,7 +110,7 @@ IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetInterfaceInfo(PIP_INTERFACE_INFO pIfTable, 
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetUniDirectionalAdapterInfo(PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS pIPIfInfo, PULONG dwOutBufLen);
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetBestInterface(IPAddr dwDestAddr, PDWORD pdwBestIfIndex);
 
-#if defined(__WINE_WINSOCKAPI_STDLIB_H) || (defined(__REACTOS__) && defined(_WINSOCK2API_))
+#if defined(__WINE_WINSOCKAPI_STDLIB_H) || (defined(__LIBRENT__) && defined(_WINSOCK2API_))
 IPHLPAPI_DLL_LINKAGE DWORD WINAPI GetBestInterfaceEx(
 #ifdef USE_WS_PREFIX
     struct WS_sockaddr *dst,
@@ -156,7 +156,7 @@ typedef enum NET_ADDRESS_FORMAT_ {
     NET_ADDRESS_IPV6,
 } NET_ADDRESS_FORMAT;
 
-#if (!defined(__REACTOS__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)) && (defined(__WINE_WINDNS_H) || (defined(__REACTOS__) && defined(_WINDNS_INCLUDED_)))
+#if (!defined(__LIBRENT__) || defined(_WS2IPDEF_) || defined(__WINE_WINSOCKAPI_STDLIB_H)) && (defined(__WINE_WINDNS_H) || (defined(__LIBRENT__) && defined(_WINDNS_INCLUDED_)))
 
 typedef struct NET_ADDRESS_INFO_
 {
@@ -180,7 +180,7 @@ IPHLPAPI_DLL_LINKAGE DWORD WINAPI ParseNetworkString(const WCHAR *NetworkString,
                                                       USHORT *PortNumber,
                                                       BYTE *PrefixLength);
 
-#endif /* __WINE_WINDNS_H || (__REACTOS__ && _WINDNS_INCLUDED_) */
+#endif /* __WINE_WINDNS_H || (__LIBRENT__ && _WINDNS_INCLUDED_) */
 
 #ifdef __cplusplus
 }

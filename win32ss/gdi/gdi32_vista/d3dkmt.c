@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Display Driver Model
+ * PROJECT:     LibreNT Display Driver Model
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     D3DKMT dxgkrnl syscalls
  * COPYRIGHT:   Copyright 2023 Justin Miller <justin.miller@reactos.org>

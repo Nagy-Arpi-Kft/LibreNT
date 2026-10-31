@@ -148,7 +148,7 @@ static const IClassFactoryVtbl ObjrefMonikerCFVtbl =
 
 static IClassFactory ObjrefMonikerCF = { &ObjrefMonikerCFVtbl };
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const IClassFactoryVtbl ComCatCFVtbl =
 {
     ClassFactory_QueryInterface,
@@ -215,7 +215,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID iid,LPVOID *ppv)
         return IClassFactory_QueryInterface(&ObjrefMonikerCF, iid, ppv);
     if (IsEqualCLSID(rclsid, &CLSID_PointerMoniker))
         return IClassFactory_QueryInterface(&PointerMonikerCF, iid, ppv);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualGUID(rclsid, &CLSID_StdComponentCategoriesMgr))
     {
         HRESULT (WINAPI *combase_get_class_object)(REFCLSID, REFIID, void **);

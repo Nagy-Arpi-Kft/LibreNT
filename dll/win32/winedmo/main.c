@@ -17,8 +17,8 @@
  */
 
 #define COBJMACROS
-#ifdef __REACTOS__
-#include "reactos.h"
+#ifdef __LIBRENT__
+#include "librent.h"
 #else
 #include "unixlib.h"
 #endif
@@ -51,7 +51,7 @@ static void stream_context_destroy( struct stream_context *context )
 }
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static struct stream_context *get_stream_context( UINT64 handle )
 {
     return (struct stream_context *)(UINT_PTR)handle;
@@ -106,7 +106,7 @@ BOOL WINAPI DllMain( HINSTANCE instance, DWORD reason, void *reserved )
 
     if (reason == DLL_PROCESS_ATTACH)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         NTSTATUS status;
 
         DisableThreadLibraryCalls( instance );
@@ -322,14 +322,14 @@ static HRESULT get_media_type( UINT code, void *params, struct media_type *media
     NTSTATUS status;
 
     media_type->format = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((status = demuxer_stream_type( params )) && status == STATUS_BUFFER_TOO_SMALL)
 #else
     if ((status = WINE_UNIX_CALL( code, params )) && status == STATUS_BUFFER_TOO_SMALL)
 #endif
     {
         if (!(media_type->format = malloc( media_type->format_size ))) return STATUS_NO_MEMORY;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         status = demuxer_stream_type( params );
 #else
         status = WINE_UNIX_CALL( code, params );

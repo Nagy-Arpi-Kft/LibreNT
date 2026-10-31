@@ -39,7 +39,7 @@ const struct builtin_class_descr ICONTITLE_builtin_class =
 
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *           ICONTITLE_Create
  */

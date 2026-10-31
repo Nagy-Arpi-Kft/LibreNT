@@ -49,7 +49,7 @@ struct COMPLETE_DVD_MANUFACTURER_DESCRIPTOR
 };
 #include <poppack.h>
 C_ASSERT(sizeof(struct COMPLETE_DVD_MANUFACTURER_DESCRIPTOR) == 2053);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 C_ASSERT(sizeof(STORAGE_TEMPERATURE_INFO) == 16);
 C_ASSERT(FIELD_OFFSET(STORAGE_TEMPERATURE_DATA_DESCRIPTOR, TemperatureInfo) == 24);
 C_ASSERT(sizeof(STORAGE_TEMPERATURE_DATA_DESCRIPTOR) == 40);
@@ -120,7 +120,7 @@ static void test_dos_devices(void)
     char drivestr[3];
     HANDLE file;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char root_path[MAX_PATH], buf3[MAX_PATH];
 
     GetWindowsDirectoryA(root_path, sizeof(root_path));
@@ -138,7 +138,7 @@ static void test_dos_devices(void)
         return;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sprintf(buf3, "%s/", root_path);
     for (char *p = buf3; *p; p++) {
         if (*p == '\\') *p = '/';                                  // Replace backslashes with forward slashes
@@ -152,7 +152,7 @@ static void test_dos_devices(void)
 
     ret = QueryDosDeviceA( drivestr, buf, sizeof(buf) );
     ok(ret, "failed to query drive %s, error %lu\n", drivestr, GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sprintf(buf3, "\\??\\%s\\", root_path);
     for (char *p = buf3; *p; p++) {
         if (p != (buf3 + 4)) *p = (char)tolower((unsigned char)*p); // Lowercase everything except "C:\"
@@ -190,7 +190,7 @@ static void test_dos_devices(void)
 
     /* try with DDD_RAW_TARGET_PATH */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = DefineDosDeviceA( DDD_RAW_TARGET_PATH, drivestr, buf3 );
 #else
     ret = DefineDosDeviceA( DDD_RAW_TARGET_PATH, drivestr, "\\??\\C:\\windows\\" );
@@ -199,7 +199,7 @@ static void test_dos_devices(void)
 
     ret = QueryDosDeviceA( drivestr, buf, sizeof(buf) );
     ok(ret, "failed to query drive %s, error %lu\n", drivestr, GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(!strcmp(buf, buf3), "got path %s\n", debugstr_a(buf));
 #else
     ok(!strcmp(buf, "\\??\\C:\\windows\\"), "got path %s\n", debugstr_a(buf));
@@ -705,7 +705,7 @@ static void test_disk_query_property(void)
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
         ok(ret, "expect ret %#x, got %#x\n", TRUE, ret);
@@ -727,12 +727,12 @@ static void test_disk_query_property(void)
             ok(seek_pen.Size == sizeof(seek_pen), "got %ld\n", seek_pen.Size);
             ok(seek_pen.IncursSeekPenalty == TRUE || seek_pen.IncursSeekPenalty == FALSE, "got %d.\n", seek_pen.IncursSeekPenalty);
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     query.PropertyId = StorageDeviceTemperatureProperty;
     query.QueryType = PropertyStandardQuery;
     memset(&header, 0xcc, sizeof(header));
@@ -957,7 +957,7 @@ static void test_GetVolumePathNameA(void)
     DWORD error;
     UINT i;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char sysroot[MAX_PATH];
     char patched[MAX_PATH];
 
@@ -1059,7 +1059,7 @@ static void test_GetVolumePathNameA(void)
     ok(ret, "Failed to obtain the volume path, error %lu.\n", GetLastError());
     ok(!strcmp(volume_path, expect_path), "Expected %s, got %s.\n",
             debugstr_a( expect_path ), debugstr_a( volume_path ));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Free patched strings */
     free((void*)test_paths[8].file_name);
     free((void*)test_paths[9].file_name);
@@ -1441,7 +1441,7 @@ static void test_mounted_folder(void)
     NTSTATUS status;
     HANDLE file;
     DWORD size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int i = 0;
     char sysroot[MAX_PATH] = {0}, buf[MAX_PATH] = {0};
     WCHAR buf2[MAX_PATH] = {0};
@@ -1540,7 +1540,7 @@ static void test_mounted_folder(void)
     ok(ret != INVALID_FILE_ATTRIBUTES, "got error %lu\n", GetLastError());
     ok((ret & FILE_ATTRIBUTE_REPARSE_POINT) && (ret & FILE_ATTRIBUTE_DIRECTORY), "got attributes %#x\n", ret);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sprintf(buf, "C:\\winetest_mnt\\%s", sysroot + 3);
     file = CreateFileA( buf, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
         NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL );
@@ -1552,8 +1552,8 @@ static void test_mounted_folder(void)
 
     status = NtQueryInformationFile( file, &io, name, sizeof(name_buffer), FileNameInformation );
     ok(!status, "got status %#lx\n", status);
-#ifdef __REACTOS__
-    /* Copy \windows (or \reactos) to buf2. */
+#ifdef __LIBRENT__
+    /* Copy \windows (or \librent) to buf2. */
     while ((buf2[i] = (WCHAR)(unsigned char)sysroot[i+2]) != 0) i++;
     ok(name->FileNameLength == wcslen(buf2) * sizeof(WCHAR), "got length %lu\n", name->FileNameLength);
     ok(!wcsnicmp(name->FileName, buf2, wcslen(buf2)), "got name %s\n",
@@ -1584,7 +1584,7 @@ static void test_mounted_folder(void)
     ret = GetVolumeInformationA( "C:\\winetest_mnt\\", NULL, 0, NULL, NULL, NULL, NULL, 0 );
     ok(ret, "got error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetVolumePathNameA( buf, path, sizeof(path) );
 #else
     ret = GetVolumePathNameA( "C:\\winetest_mnt\\windows", path, sizeof(path) );
@@ -1592,7 +1592,7 @@ static void test_mounted_folder(void)
     ok(ret, "got error %lu\n", GetLastError());
     ok(!strcmp(path, "C:\\winetest_mnt\\"), "got %s\n", debugstr_a(path));
     SetLastError(0xdeadbeef);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     strcat(buf, "\\");
     ret = GetVolumeNameForVolumeMountPointA( buf, path, sizeof(path) );
 #else
@@ -1601,7 +1601,7 @@ static void test_mounted_folder(void)
     ok(!ret, "expected failure\n");
     ok(GetLastError() == ERROR_NOT_A_REPARSE_POINT, "wrong error %lu\n", GetLastError());
     SetLastError(0xdeadbeef);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = GetVolumeInformationA( buf, NULL, 0, NULL, NULL, NULL, NULL, 0 );
 #else
     ret = GetVolumeInformationA( "C:\\winetest_mnt\\windows\\", NULL, 0, NULL, NULL, NULL, NULL, 0 );
@@ -1668,7 +1668,7 @@ static void test_mounted_folder(void)
         ret = GetVolumeInformationA( "C:\\winetest_link\\", NULL, 0, NULL, NULL, NULL, NULL, 0 );
         ok(ret, "got error %lu\n", GetLastError());
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sprintf(buf, "C:\\winetest_link\\%s\\", sysroot + 3);
         ret = GetVolumePathNameA( buf, path, sizeof(path) );
 #else
@@ -1677,7 +1677,7 @@ static void test_mounted_folder(void)
         ok(ret, "got error %lu\n", GetLastError());
         ok(!strcmp(path, "C:\\"), "got %s\n", path);
         SetLastError(0xdeadbeef);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = GetVolumeNameForVolumeMountPointA( buf, path, sizeof(path) );
 #else
         ret = GetVolumeNameForVolumeMountPointA( "C:\\winetest_link\\windows\\", path, sizeof(path) );
@@ -1685,7 +1685,7 @@ static void test_mounted_folder(void)
         ok(!ret, "expected failure\n");
         ok(GetLastError() == ERROR_NOT_A_REPARSE_POINT, "wrong error %lu\n", GetLastError());
         SetLastError(0xdeadbeef);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = GetVolumeInformationA( buf, NULL, 0, NULL, NULL, NULL, NULL, 0 );
 #else
         ret = GetVolumeInformationA( "C:\\winetest_link\\windows\\", NULL, 0, NULL, NULL, NULL, NULL, 0 );
@@ -1705,7 +1705,7 @@ static void test_mounted_folder(void)
         /* The following test makes it clear that when we encounter a symlink
          * while resolving, we resolve *every* junction in the path, i.e. both
          * mount points and symlinks. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         sprintf(buf, "C:\\winetest_link\\winetest_mnt\\winetest_link\\%s\\", sysroot + 3);
         ret = GetVolumePathNameA( buf, path, sizeof(path) );
 #else
@@ -1715,7 +1715,7 @@ static void test_mounted_folder(void)
         ok(!strcmp(path, "C:\\") || !strcmp(path, "C:\\winetest_link\\winetest_mnt\\") /* 2008 */,
                 "got %s\n", debugstr_a(path));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         file = CreateFileA( buf, 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL );
 #else
         file = CreateFileA( "C:\\winetest_link\\winetest_mnt\\winetest_link\\windows\\", 0,
@@ -1725,7 +1725,7 @@ static void test_mounted_folder(void)
 
         status = NtQueryInformationFile( file, &io, name, sizeof(name_buffer), FileNameInformation );
         ok(!status, "got status %#lx\n", status);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(name->FileNameLength == wcslen(buf2) * sizeof(WCHAR), "got length %lu\n", name->FileNameLength);
         ok(!wcsnicmp(name->FileName, buf2, wcslen(buf2)), "got name %s\n",
                 debugstr_wn(name->FileName, name->FileNameLength / sizeof(WCHAR)));
@@ -1767,7 +1767,7 @@ static void test_GetVolumeInformationByHandle(void)
     HANDLE file;
     NTSTATUS status;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char sysroot[MAX_PATH];
 
     GetWindowsDirectoryA(sysroot, sizeof(sysroot));
@@ -1783,7 +1783,7 @@ static void test_GetVolumeInformationByHandle(void)
         return;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     file = CreateFileA( sysroot, 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
             OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL );
 #else
@@ -1927,7 +1927,7 @@ static void test_mountmgr_query_points(void)
             IOCTL_MOUNTMGR_QUERY_POINTS, input, sizeof(*input), output, sizeof(*output) );
     ok(status == STATUS_BUFFER_OVERFLOW, "got %#lx\n", status);
     ok(io.Status == STATUS_BUFFER_OVERFLOW, "got status %#lx\n", io.Status);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     todo_wine ok(io.Information == offsetof(MOUNTMGR_MOUNT_POINTS, MountPoints[0]) || broken(io.Information == sizeof(MOUNTMGR_MOUNT_POINTS)) /* WS03 */, "got information %#Ix\n", io.Information);
 #else
     todo_wine ok(io.Information == offsetof(MOUNTMGR_MOUNT_POINTS, MountPoints[0]), "got information %#Ix\n", io.Information);

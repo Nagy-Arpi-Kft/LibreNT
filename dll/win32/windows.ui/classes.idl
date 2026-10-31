@@ -51,7 +51,7 @@ namespace Windows.UI.Shell {
     runtimeclass TaskbarManager;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 namespace Windows.Devices.Input {
     runtimeclass PenDevice;
 }

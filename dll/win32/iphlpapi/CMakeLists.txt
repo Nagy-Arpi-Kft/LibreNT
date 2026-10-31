@@ -1,8 +1,8 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine
-    ${REACTOS_SOURCE_DIR}/dll/win32/dhcpcsvc/include
-    ${REACTOS_SOURCE_DIR}/sdk/lib/tdilib)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine
+    ${LIBRENT_SOURCE_DIR}/dll/win32/dhcpcsvc/include
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/tdilib)
 
 spec2def(iphlpapi.dll iphlpapi.spec ADD_IMPORTLIB)
 
@@ -40,4 +40,4 @@ add_library(iphlpapi MODULE
 set_module_type(iphlpapi win32dll UNICODE)
 target_link_libraries(iphlpapi iphlpapi_native wine tdilib uuid)
 add_importlibs(iphlpapi dhcpcsvc dnsapi nsi advapi32 psapi ws2_32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET iphlpapi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET iphlpapi DESTINATION librent/system32 FOR all)

@@ -1,7 +1,7 @@
 
 spec2def(classpnp.sys classpnp.spec ADD_IMPORTLIB)
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 
 list(APPEND SOURCE
     autorun.c
@@ -52,7 +52,7 @@ endif()
 set_module_type(classpnp kernelmodedriver)
 target_link_libraries(classpnp ntoskrnl_vista libcntpr ${PSEH_LIB})
 add_importlibs(classpnp ntoskrnl hal)
-add_cd_file(TARGET classpnp DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET classpnp DESTINATION librent/system32/drivers NO_CAB FOR all)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_compile_options(classpnp PRIVATE -Wno-unused-but-set-variable)

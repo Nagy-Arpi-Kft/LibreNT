@@ -1,6 +1,6 @@
 
 add_definitions(-DDEBUG_MODE)
-include_directories(${REACTOS_SOURCE_DIR}/ntoskrnl/include)
+include_directories(${LIBRENT_SOURCE_DIR}/ntoskrnl/include)
 
 list(APPEND SOURCE
     descriptor.c
@@ -22,4 +22,4 @@ target_link_libraries(usbccgp ${PSEH_LIB})
 set_module_type(usbccgp kernelmodedriver)
 add_importlibs(usbccgp ntoskrnl hal usbd)
 add_pch(usbccgp usbccgp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET usbccgp DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET usbccgp DESTINATION librent/system32/drivers NO_CAB FOR all)

@@ -2,7 +2,7 @@
 spec2def(sysdm.cpl sysdm.spec)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/lib/udmihelp)
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/udmihelp)
 
 list(APPEND SOURCE
     advanced.c
@@ -31,4 +31,4 @@ set_module_type(sysdm cpl UNICODE)
 target_link_libraries(sysdm udmihelp uuid)
 add_importlibs(sysdm advapi32 setupapi user32 gdi32 comctl32 comdlg32 msimg32 shell32 shlwapi ole32 powrprof msvcrt kernel32 ntdll)
 add_pch(sysdm precomp.h SOURCE)
-add_cd_file(TARGET sysdm DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET sysdm DESTINATION librent/system32 FOR all)

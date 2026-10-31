@@ -25,7 +25,7 @@ struct sensor
     WCHAR *manufacturer;
     WCHAR *model;
     WCHAR *friendly_name;
-    REACTOS_SENSOR_CHANNEL_INFORMATION channel;
+    LIBRENT_SENSOR_CHANNEL_INFORMATION channel;
     ULONG channel_index;
     GUID category;
     GUID type;
@@ -39,57 +39,57 @@ static inline struct sensor *sensor_from_ISensor(ISensor *iface)
     return CONTAINING_RECORD(iface, struct sensor, ISensor_iface);
 }
 
-static BOOL sensor_kind_from_channel(const REACTOS_SENSOR_CHANNEL_INFORMATION *channel, struct sensor_kind *kind)
+static BOOL sensor_kind_from_channel(const LIBRENT_SENSOR_CHANNEL_INFORMATION *channel, struct sensor_kind *kind)
 {
     switch (channel->Type)
     {
-        case REACTOS_SENSOR_TYPE_VOLTAGE:
-            if (channel->Unit != REACTOS_SENSOR_UNIT_MICROVOLTS)
+        case LIBRENT_SENSOR_TYPE_VOLTAGE:
+            if (channel->Unit != LIBRENT_SENSOR_UNIT_MICROVOLTS)
                 return FALSE;
             kind->category = &SENSOR_CATEGORY_ELECTRICAL;
             kind->type = &SENSOR_TYPE_VOLTAGE;
             kind->data_key = &SENSOR_DATA_TYPE_VOLTAGE_VOLTS;
-            kind->unit = REACTOS_SENSOR_UNIT_MICROVOLTS;
+            kind->unit = LIBRENT_SENSOR_UNIT_MICROVOLTS;
             kind->scale = 0.000001;
             return TRUE;
 
-        case REACTOS_SENSOR_TYPE_TEMPERATURE:
-            if (channel->Unit != REACTOS_SENSOR_UNIT_MICRODEGREES_CELSIUS)
+        case LIBRENT_SENSOR_TYPE_TEMPERATURE:
+            if (channel->Unit != LIBRENT_SENSOR_UNIT_MICRODEGREES_CELSIUS)
                 return FALSE;
             kind->category = &SENSOR_CATEGORY_ENVIRONMENTAL;
             kind->type = &SENSOR_TYPE_ENVIRONMENTAL_TEMPERATURE;
             kind->data_key = &SENSOR_DATA_TYPE_TEMPERATURE_CELSIUS;
-            kind->unit = REACTOS_SENSOR_UNIT_MICRODEGREES_CELSIUS;
+            kind->unit = LIBRENT_SENSOR_UNIT_MICRODEGREES_CELSIUS;
             kind->scale = 0.000001;
             return TRUE;
 
-        case REACTOS_SENSOR_TYPE_FAN_SPEED:
-            if (channel->Unit != REACTOS_SENSOR_UNIT_REVOLUTIONS_PER_MINUTE)
+        case LIBRENT_SENSOR_TYPE_FAN_SPEED:
+            if (channel->Unit != LIBRENT_SENSOR_UNIT_REVOLUTIONS_PER_MINUTE)
                 return FALSE;
             kind->category = &SENSOR_CATEGORY_MECHANICAL;
             kind->type = &SENSOR_TYPE_CUSTOM;
             kind->data_key = &SENSOR_DATA_TYPE_CUSTOM_VALUE1;
-            kind->unit = REACTOS_SENSOR_UNIT_REVOLUTIONS_PER_MINUTE;
+            kind->unit = LIBRENT_SENSOR_UNIT_REVOLUTIONS_PER_MINUTE;
             kind->scale = 1.0;
             return TRUE;
 
-        case REACTOS_SENSOR_TYPE_CURRENT:
-            if (channel->Unit != REACTOS_SENSOR_UNIT_MICROAMPS)
+        case LIBRENT_SENSOR_TYPE_CURRENT:
+            if (channel->Unit != LIBRENT_SENSOR_UNIT_MICROAMPS)
                 return FALSE;
             kind->category = &SENSOR_CATEGORY_ELECTRICAL;
             kind->type = &SENSOR_TYPE_CURRENT;
             kind->data_key = &SENSOR_DATA_TYPE_CURRENT_AMPS;
-            kind->unit = REACTOS_SENSOR_UNIT_MICROAMPS;
+            kind->unit = LIBRENT_SENSOR_UNIT_MICROAMPS;
             kind->scale = 0.000001;
             return TRUE;
 
-        case REACTOS_SENSOR_TYPE_POWER:
-            if (channel->Unit != REACTOS_SENSOR_UNIT_MILLIWATTS)
+        case LIBRENT_SENSOR_TYPE_POWER:
+            if (channel->Unit != LIBRENT_SENSOR_UNIT_MILLIWATTS)
                 return FALSE;
             kind->category = &SENSOR_CATEGORY_ELECTRICAL;
             kind->type = &SENSOR_TYPE_ELECTRICAL_POWER;
             kind->data_key = &SENSOR_DATA_TYPE_ELECTRICAL_POWER_WATTS;
-            kind->unit = REACTOS_SENSOR_UNIT_MILLIWATTS;
+            kind->unit = LIBRENT_SENSOR_UNIT_MILLIWATTS;
             kind->scale = 0.001;
             return TRUE;
 
@@ -377,8 +377,8 @@ static HRESULT WINAPI sensor_GetState(ISensor *iface, SensorState *state)
 static HRESULT WINAPI sensor_GetData(ISensor *iface, ISensorDataReport **out)
 {
     struct sensor *sensor = sensor_from_ISensor(iface);
-    REACTOS_SENSOR_READ_INPUT input;
-    REACTOS_SENSOR_READING reading;
+    LIBRENT_SENSOR_READ_INPUT input;
+    LIBRENT_SENSOR_READING reading;
     HANDLE device;
     DWORD bytes;
     HRESULT hr;
@@ -390,14 +390,14 @@ static HRESULT WINAPI sensor_GetData(ISensor *iface, ISensorDataReport **out)
     if (device == INVALID_HANDLE_VALUE)
         return sensor_hresult_from_last_error();
     memset(&input, 0, sizeof(input));
-    input.Version = REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION;
+    input.Version = LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION;
     input.Size = sizeof(input);
     input.ChannelIndex = sensor->channel_index;
     memset(&reading, 0, sizeof(reading));
     bytes = 0;
-    if (!DeviceIoControl(device, IOCTL_REACTOS_SENSOR_READ_CHANNEL, &input, sizeof(input), &reading, sizeof(reading), &bytes, NULL))
+    if (!DeviceIoControl(device, IOCTL_LIBRENT_SENSOR_READ_CHANNEL, &input, sizeof(input), &reading, sizeof(reading), &bytes, NULL))
         hr = sensor_hresult_from_last_error();
-    else if (bytes < sizeof(reading) || reading.Version != REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION || reading.Size < sizeof(reading) || reading.Size > bytes ||
+    else if (bytes < sizeof(reading) || reading.Version != LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION || reading.Size < sizeof(reading) || reading.Size > bytes ||
              !IsEqualGUID(&reading.SensorId, &sensor->channel.SensorId) || reading.Type != sensor->channel.Type || reading.Unit != sensor->channel.Unit)
         hr = HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
     else
@@ -468,9 +468,9 @@ static const ISensorVtbl sensor_vtbl =
     sensor_SetEventSink,
 };
 
-HRESULT sensor_create(const WCHAR *device_path, const REACTOS_SENSOR_PROVIDER_INFORMATION *provider, ULONG channel_index, REFIID iid, void **out)
+HRESULT sensor_create(const WCHAR *device_path, const LIBRENT_SENSOR_PROVIDER_INFORMATION *provider, ULONG channel_index, REFIID iid, void **out)
 {
-    const REACTOS_SENSOR_CHANNEL_INFORMATION *channel;
+    const LIBRENT_SENSOR_CHANNEL_INFORMATION *channel;
     struct sensor_kind kind;
     struct sensor *sensor;
     HRESULT hr;

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Raspberry Pi 5 OpenGL test harness
+ * PROJECT:     LibreNT Raspberry Pi 5 OpenGL test harness
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Exercise incremental OpenGL 3.0 driver contracts
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>

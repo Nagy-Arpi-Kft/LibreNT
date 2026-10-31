@@ -502,7 +502,7 @@ xml_update_image_info(WIMStruct *wim, int image)
 		total_bytes += size * inode->i_nlink;
 		hard_link_bytes += size * (inode->i_nlink - 1);
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (dir_count && imd->root_dentry)
 		dir_count--;
 #endif
@@ -1242,7 +1242,7 @@ wimlib_set_image_property(WIMStruct *wim, int image, const tchar *property_name,
 	if (image < 1 || image > info->image_count)
 		return WIMLIB_ERR_INVALID_IMAGE;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	if (!tstrcmp(property_name, T("NAME")) &&
 	    image_name_in_use(wim, property_value, image))
 		return WIMLIB_ERR_IMAGE_NAME_COLLISION;

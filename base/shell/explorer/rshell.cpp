@@ -1,5 +1,5 @@
 /*
- * ReactOS Explorer
+ * LibreNT Explorer
  *
  * Copyright 2014 Giannis Adamopoulos
  *

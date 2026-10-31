@@ -7,7 +7,7 @@
  */
 BOOL WINAPI DECLSPEC_HOTPATCH GetThreadGroupAffinity( HANDLE thread, GROUP_AFFINITY *affinity )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NTSTATUS status;
 #endif
 
@@ -16,7 +16,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetThreadGroupAffinity( HANDLE thread, GROUP_AFFIN
         SetLastError( ERROR_INVALID_PARAMETER );
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = NtQueryInformationThread( thread, ThreadGroupInformation,
                                        affinity, sizeof(*affinity), NULL );
     if (!NT_SUCCESS(status))
@@ -38,12 +38,12 @@ BOOL WINAPI DECLSPEC_HOTPATCH GetThreadGroupAffinity( HANDLE thread, GROUP_AFFIN
 BOOL WINAPI DECLSPEC_HOTPATCH SetThreadGroupAffinity( HANDLE thread, const GROUP_AFFINITY *new,
                                                       GROUP_AFFINITY *old )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NTSTATUS status;
 #endif
 
     if (old && !GetThreadGroupAffinity( thread, old )) return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = NtSetInformationThread( thread, ThreadGroupInformation, (void *)new, sizeof(*new) );
     if (!NT_SUCCESS(status))
     {

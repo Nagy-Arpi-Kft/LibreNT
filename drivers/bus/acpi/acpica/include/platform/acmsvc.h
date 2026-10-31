@@ -118,7 +118,7 @@
 #endif
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef _M_IX86
 /* Flush CPU cache - used when going to sleep. Wbinvd or similar. */
 
@@ -179,7 +179,7 @@
         __asm mov           Pnd, al                 \
 }
 #endif /* _M_IX86 */
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /* warn C4001: use of slash-slash comments */
 /* NOTE: MSVC 2015 headers use these extensively */

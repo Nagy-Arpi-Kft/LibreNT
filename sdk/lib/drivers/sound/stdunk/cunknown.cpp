@@ -1,5 +1,5 @@
 /*
-    ReactOS Kernel-Mode COM
+    LibreNT Kernel-Mode COM
     IUnknown implementations
 
     LICENSE

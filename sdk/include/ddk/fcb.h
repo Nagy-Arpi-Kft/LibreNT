@@ -297,7 +297,7 @@ typedef struct _SRV_OPEN
 #define FOBX_FLAG_UNC_NAME 0x2000000
 #define FOBX_FLAG_ENCLOSED_ALLOCATED 0x4000000
 #define FOBX_FLAG_MARKED_AS_DORMANT 0x8000000
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define FOBX_FLAG_DISABLE_COLLAPSING 0x20000000
 #endif
 
@@ -372,7 +372,7 @@ RxpTrackDereference(
     _In_ PVOID Instance);
 
 #define REF_TRACING_ON(TraceMask) (TraceMask & RdbssReferenceTracingValue)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define PRINT_REF_COUNT(TYPE, Count)                          \
     if (REF_TRACING_ON( RDBSS_REF_TRACK_ ## TYPE) &&          \
         (RdbssReferenceTracingValue & RX_PRINT_REF_TRACKING)) \
@@ -642,7 +642,7 @@ RxFinalizeNetFobx(
     _In_ BOOLEAN RecursiveFinalize,
     _In_ BOOLEAN ForceFinalize);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define FILL_IN_FCB(Fcb, a, nl, ct, lat, lwt, lct, as, fs, vdl)  \
     (Fcb)->Attributes = a;                                       \
     (Fcb)->NumberOfLinks = nl;                                   \

@@ -48,8 +48,8 @@ add_library(d3dwine MODULE
     version.rc
     ${CMAKE_CURRENT_BINARY_DIR}/d3dwine.def)
 
-if(REACTOS_USE_WDDM)
-    target_compile_definitions(d3dwine PRIVATE REACTOS_WINE_WDDM)
+if(LIBRENT_USE_WDDM)
+    target_compile_definitions(d3dwine PRIVATE LIBRENT_WINE_WDDM)
     target_sources(d3dwine PRIVATE reactos_wddm.c)
     set_source_files_properties(reactos_wddm.c PROPERTIES
         COMPILE_OPTIONS "-UDXGKDDI_INTERFACE_VERSION;-DDXGKDDI_INTERFACE_VERSION=0x11007")
@@ -60,7 +60,7 @@ target_link_libraries(d3dwine wine vkd3d dxguid dx10guid uuid)
 add_importlibs(d3dwine user32 opengl32 gdi32 gdi32_vista advapi32 msvcrt kernel32_vista kernel32 ntdll)
 add_dependencies(d3dwine d3d_idl_headers)
 add_pch(d3dwine precomp.h SOURCE)
-add_cd_file(TARGET d3dwine DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET d3dwine DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(d3dwine) # CORE-5743: No ARRAY_SIZE
 
 

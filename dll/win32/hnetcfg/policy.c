@@ -1322,7 +1322,7 @@ static HRESULT WINAPI fwpolicy2_get_Rules(INetFwPolicy2 *iface, INetFwRules **ru
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct fw_service_restriction
 {
     INetFwServiceRestriction INetFwServiceRestriction_iface;
@@ -1466,7 +1466,7 @@ static const struct INetFwServiceRestrictionVtbl fw_service_restriction_vtbl =
 static HRESULT WINAPI fwpolicy2_get_ServiceRestriction(INetFwPolicy2 *iface, INetFwServiceRestriction **ServiceRestriction)
 {
     fw_policy2 *This = impl_from_INetFwPolicy2( iface );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     fw_service_restriction *restriction;
 
     TRACE("%p %p\n", This, ServiceRestriction);

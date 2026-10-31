@@ -24,5 +24,5 @@ add_library(lcms2
 target_include_directories(lcms2
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_include_directories(lcms2 BEFORE PRIVATE ${REACTOS_SOURCE_DIR}/sdk/include/ucrt)
+target_include_directories(lcms2 BEFORE PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/include/ucrt)
 add_dependencies(lcms2 psdk)

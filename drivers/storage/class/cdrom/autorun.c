@@ -1015,7 +1015,7 @@ Return Value:
 
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DeviceDisableGesn(
     _In_ WDFWORKITEM  WorkItem
     )
@@ -2060,7 +2060,7 @@ Return Value:
 
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DeviceMediaChangeRegistryCallBack(
     _In_z_ PWSTR ValueName,
     _In_ ULONG ValueType,
@@ -2216,7 +2216,7 @@ Return Value:
 
     if(!NT_SUCCESS(status))
     {
-        // NT_ASSERT(FALSE); __REACTOS__ : allow to fail (for 1st stage setup)
+        // NT_ASSERT(FALSE); __LIBRENT__ : allow to fail (for 1st stage setup)
 
         // always take the safe path.  if we can't open the service key, disable autorun
         return TRUE;
@@ -2697,7 +2697,7 @@ Return Value:
 IO_COMPLETION_ROUTINE RequestMcnSyncIrpCompletion;
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 RequestMcnSyncIrpCompletion(
     _In_ PDEVICE_OBJECT DeviceObject,
     _In_ PIRP Irp,
@@ -2822,7 +2822,7 @@ Return Value:
 
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 DeviceMainTimerTickHandler(
     _In_ WDFTIMER  Timer
     )

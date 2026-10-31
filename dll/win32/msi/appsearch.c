@@ -47,7 +47,7 @@ struct signature
     FILETIME MinTime;
     FILETIME MaxTime;
     LPWSTR   Languages;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int      ValueLength;
 #endif
 };
@@ -288,7 +288,7 @@ done:
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void convert_reg_value( DWORD regType, const BYTE *value, DWORD sz, WCHAR **appValue, int *len )
 #else
 static void convert_reg_value( DWORD regType, const BYTE *value, DWORD sz, WCHAR **appValue )
@@ -299,7 +299,7 @@ static void convert_reg_value( DWORD regType, const BYTE *value, DWORD sz, WCHAR
 
     switch (regType)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case REG_MULTI_SZ:
         {
             const WCHAR *src = (const WCHAR *)value, *end = src + sz / sizeof(WCHAR);
@@ -469,7 +469,7 @@ static UINT search_reg( MSIPACKAGE *package, WCHAR **appValue, struct signature 
         break;
     case msidbLocatorTypeFileName:
         *appValue = search_file( package, ptr, sig );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!*appValue && ptr == (LPWSTR)value && (regType == REG_SZ || regType == REG_EXPAND_SZ) &&
             (end = wcschr( ptr, ' ' )))
         {
@@ -479,7 +479,7 @@ static UINT search_reg( MSIPACKAGE *package, WCHAR **appValue, struct signature 
 #endif
         break;
     case msidbLocatorTypeRawValue:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         convert_reg_value( regType, value, sz, appValue, &sig->ValueLength );
 #else
         convert_reg_value( regType, value, sz, appValue );
@@ -1093,7 +1093,7 @@ static UINT search_sig_name( MSIPACKAGE *package, const WCHAR *sigName, struct s
 
     *appValue = NULL;
     rc = get_signature( package, sig, sigName );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     sig->ValueLength = -1;
 #endif
     if (rc == ERROR_SUCCESS)
@@ -1133,7 +1133,7 @@ static UINT ITERATE_AppSearch(MSIRECORD *row, LPVOID param)
     r = search_sig_name( package, sigName, &sig, &value );
     if (value)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         r = msi_set_property( package->db, propName, value, sig.ValueLength );
 #else
         r = msi_set_property( package->db, propName, value, -1 );
@@ -1170,7 +1170,7 @@ UINT ACTION_AppSearch(MSIPACKAGE *package)
 
     r = MSI_OpenQuery( package->db, &view, L"SELECT * FROM `AppSearch`" );
     if (r != ERROR_SUCCESS)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ERROR_FUNCTION_NOT_CALLED;
 #else
         return ERROR_SUCCESS;

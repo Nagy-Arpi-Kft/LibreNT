@@ -17,7 +17,7 @@
 
 #pragma once
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #undef _WIN32_WINNT
 #undef NTDDI_VERSION
 
@@ -25,7 +25,7 @@
 #define NTDDI_VERSION 0x06020000 // Win 8
 #define _CRT_SECURE_NO_WARNINGS
 #define _NO_CRT_STDIO_INLINE
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -40,16 +40,16 @@
 
 #include <ntifs.h>
 #include <ntddk.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntdddisk.h>
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 #include <mountmgr.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <rtlfuncs.h>
 #include <iotypes.h>
 #include <pseh/pseh2.h>
 #include <pseh/pseh_cpp_aliases.h>
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 #include <windef.h>
 #include <wdm.h>
 
@@ -67,7 +67,7 @@
 #include "btrfs.h"
 #include "btrfsioctl.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 C_ASSERT(sizeof(bool) == 1);
 #endif
 
@@ -139,11 +139,11 @@ C_ASSERT(sizeof(bool) == 1);
 #define leave
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef InterlockedIncrement64
 #define InterlockedIncrement64(a) __sync_add_and_fetch(a, 1)
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #ifndef FILE_SUPPORTS_BLOCK_REFCOUNTING
 #define FILE_SUPPORTS_BLOCK_REFCOUNTING 0x08000000
@@ -157,7 +157,7 @@ C_ASSERT(sizeof(bool) == 1);
 #define FILE_DEVICE_ALLOW_APPCONTAINER_TRAVERSAL 0x00020000
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef _MSC_VER
 typedef struct _FILE_ID_128 {
     UCHAR Identifier[16];
@@ -167,7 +167,7 @@ typedef struct _FILE_ID_128 {
 #endif
 #else
 #define FILE_CS_FLAG_CASE_SENSITIVE_DIR                 1
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 typedef struct _DUPLICATE_EXTENTS_DATA {
     HANDLE FileHandle;
@@ -197,13 +197,13 @@ typedef struct _FSCTL_SET_INTEGRITY_INFORMATION_BUFFER {
 #define FSCTL_GET_INTEGRITY_INFORMATION CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 159, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define FSCTL_SET_INTEGRITY_INFORMATION CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 160, METHOD_BUFFERED, FILE_READ_DATA | FILE_WRITE_DATA)
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef _MSC_VER
 #define __drv_aliasesMem
 #define _Dispatch_type_(a)
 #define _Lock_level_order_(a,b)
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 _Create_lock_level_(tree_lock)
 _Create_lock_level_(fcb_lock)
@@ -1635,7 +1635,7 @@ extern BTRFS_UUID boot_uuid;
 // based on function in sys/sysmacros.h
 #define makedev(major, minor) (((minor) & 0xFF) | (((major) & 0xFFF) << 8) | (((uint64_t)((minor) & ~0xFF)) << 12) | (((uint64_t)((major) & ~0xFFF)) << 32))
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 // not in mingw yet
 #ifndef _MSC_VER
 typedef struct {
@@ -1675,7 +1675,7 @@ typedef struct {
 #ifndef FSRTL_FCB_HEADER_V2
 #define FSRTL_FCB_HEADER_V2 2
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static __inline POPLOCK fcb_oplock(fcb* fcb) {
     if (fcb->Header.Version >= FSRTL_FCB_HEADER_V2)
@@ -1779,10 +1779,10 @@ static __inline bool write_fcb_compressed(fcb* fcb) {
 #define S_IXUSR 0000100
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define S_IFDIR __S_IFDIR
 #define S_IFREG __S_IFREG
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #ifndef S_IRGRP
 #define S_IRGRP (S_IRUSR >> 3)
@@ -1848,7 +1848,7 @@ typedef BOOLEAN (__stdcall *tCcCopyReadEx)(PFILE_OBJECT FileObject, PLARGE_INTEG
 #define CC_ENABLE_DISK_IO_ACCOUNTING 0x00000010
 #endif
 
-#if defined(__REACTOS__) && (NTDDI_VERSION < NTDDI_VISTA)
+#if defined(__LIBRENT__) && (NTDDI_VERSION < NTDDI_VISTA)
 typedef struct _ECP_LIST ECP_LIST;
 typedef struct _ECP_LIST *PECP_LIST;
 #endif
@@ -1870,7 +1870,7 @@ typedef BOOLEAN (__stdcall *tFsRtlCheckLockForOplockRequest)(PFILE_LOCK FileLock
 
 typedef BOOLEAN (__stdcall *tFsRtlAreThereCurrentOrInProgressFileLocks)(PFILE_LOCK FileLock);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef _MSC_VER
 PEPROCESS __stdcall PsGetThreadProcess(_In_ PETHREAD Thread); // not in mingw
 #endif
@@ -1921,7 +1921,7 @@ typedef struct _PEB {
     PVOID Reserved7[1];
     ULONG SessionId;
 } PEB,*PPEB;
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #if defined(_MSC_VER) || __GNUC__ >= 15
 __kernel_entry

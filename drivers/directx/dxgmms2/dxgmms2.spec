@@ -3,6 +3,6 @@
 ; VidSchInterface data-table contracts can be established independently.
 1 stdcall DriverUnload(ptr)
 
-; ReactOS-private registration bridge consumed by dxgkrnl.sys by name.
+; LibreNT-private registration bridge consumed by dxgkrnl.sys by name.
 4 stdcall DxgkMms2Register(ptr ptr)
 5 stdcall DxgkMms2Unregister(ptr)

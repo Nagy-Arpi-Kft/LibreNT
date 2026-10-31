@@ -1,5 +1,5 @@
 /*
- *  ReactOS test program -
+ *  LibreNT test program -
  *
  *  main.c
  *

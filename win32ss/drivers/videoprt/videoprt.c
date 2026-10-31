@@ -946,7 +946,7 @@ IntLoadRegistryParameters(VOID)
 
     ExFreePoolWithTag(KeyInfo, TAG_VIDEO_PORT);
 
-    /* FIXME: Old ReactOS-compatibility... */
+    /* FIXME: Old LibreNT-compatibility... */
     if (VpBaseVideo) VpNoVesa = TRUE;
 
     if (VpNoVesa)

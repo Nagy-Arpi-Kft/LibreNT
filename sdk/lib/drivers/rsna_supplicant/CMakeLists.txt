@@ -1,5 +1,5 @@
 
-# ReactOS Native WiFi - RSNA (WPA2-PSK) supplicant
+# LibreNT Native WiFi - RSNA (WPA2-PSK) supplicant
 #
 # Self-contained static library: crypto primitives and the IEEE 802.11i
 # 4-Way Handshake state machine, no NDIS/driver/socket dependency.

@@ -1,10 +1,10 @@
 /*
- * PROJECT:     ReactOS Intel PRO/1000 Driver
+ * PROJECT:     LibreNT Intel PRO/1000 Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Hardware specific functions
  * COPYRIGHT:   2018 Mark Jansen (mark.jansen@reactos.org)
  *              2019 Victor Perevertkin (victor.perevertkin@reactos.org)
- *              2024 ReactOS Team - Modernization for 82574L PCIe support
+ *              2024 LibreNT Team - Modernization for 82574L PCIe support
  *              2026 Ahmed ARIF (arif.ing@outlook.com) - NDIS 6.x port
  */
 

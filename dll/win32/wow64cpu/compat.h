@@ -1,4 +1,4 @@
-/* ReactOS compatibility definitions for the Wine WoW64 sources. */
+/* LibreNT compatibility definitions for the Wine WoW64 sources. */
 
 #pragma once
 

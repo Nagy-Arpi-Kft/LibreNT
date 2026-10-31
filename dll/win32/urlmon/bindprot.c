@@ -472,7 +472,7 @@ static HRESULT WINAPI BindProtocol_StartEx(IInternetProtocolEx *iface, IUri *pUr
     IUnknown *protocol_unk = NULL;
     LPOLESTR clsid_str;
     HRESULT hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL direct;
 #endif
 
@@ -490,7 +490,7 @@ static HRESULT WINAPI BindProtocol_StartEx(IInternetProtocolEx *iface, IUri *pUr
     IUri_AddRef(pUri);
     This->uri = pUri;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->terminated = FALSE;
     direct = This->url_binding && is_direct_builtin_protocol(pUri);
     if(!direct) {
@@ -503,7 +503,7 @@ static HRESULT WINAPI BindProtocol_StartEx(IInternetProtocolEx *iface, IUri *pUr
                 &IID_IInternetProtocol, (void**)&protocol);
         IServiceProvider_Release(service_provider);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -531,14 +531,14 @@ static HRESULT WINAPI BindProtocol_StartEx(IInternetProtocolEx *iface, IUri *pUr
             return hres;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->clsid = clsid;
     if(!direct) {
 #endif
     StringFromCLSID(&clsid, &clsid_str);
     IInternetProtocolSink_ReportProgress(pOIProtSink, BINDSTATUS_PROTOCOLCLASSID, clsid_str);
     CoTaskMemFree(clsid_str);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -550,7 +550,7 @@ static HRESULT WINAPI BindProtocol_StartEx(IInternetProtocolEx *iface, IUri *pUr
 
     set_binding_sink(This, pOIProtSink, pOIBindInfo);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!This->redirecting) {
 #endif
     hres = IUnknown_QueryInterface(protocol_unk, &IID_IInternetPriority, (void**)&priority);
@@ -558,7 +558,7 @@ static HRESULT WINAPI BindProtocol_StartEx(IInternetProtocolEx *iface, IUri *pUr
         IInternetPriority_SetPriority(priority, This->priority);
         IInternetPriority_Release(priority);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -728,7 +728,7 @@ static HRESULT WINAPI ProtocolHandler_Terminate(IInternetProtocol *iface, DWORD 
     if(This->protocol) {
         IInternetProtocol_Terminate(This->protocol, 0);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (This->protocol_unk && !This->lock_count) {
 #else
         if (This->protocol_unk) {
@@ -737,7 +737,7 @@ static HRESULT WINAPI ProtocolHandler_Terminate(IInternetProtocol *iface, DWORD 
             This->protocol = NULL;
         }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->terminated = TRUE;
 #endif
 
@@ -798,7 +798,7 @@ static HRESULT WINAPI ProtocolHandler_Read(IInternetProtocol *iface, void *pv,
         IInternetProtocol *protocol;
         ULONG cread = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!This->protocol) {
             *pcbRead = read;
             return read ? S_OK : E_ABORT;
@@ -823,7 +823,7 @@ static HRESULT WINAPI ProtocolHandler_Read(IInternetProtocol *iface, void *pv,
             This->continue_call--;
         read += cread;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if(!This->protocol)
             IInternetProtocol_Release(protocol);
 #endif
@@ -844,13 +844,13 @@ static HRESULT WINAPI ProtocolHandler_Seek(IInternetProtocol *iface, LARGE_INTEG
 static HRESULT WINAPI ProtocolHandler_LockRequest(IInternetProtocol *iface, DWORD dwOptions)
 {
     BindProtocol *This = impl_from_IInternetProtocol(iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hres;
 #endif
 
     TRACE("(%p)->(%08lx)\n", This, dwOptions);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = IInternetProtocol_LockRequest(This->protocol, dwOptions);
     if(SUCCEEDED(hres))
         InterlockedIncrement(&This->lock_count);
@@ -866,7 +866,7 @@ static HRESULT WINAPI ProtocolHandler_UnlockRequest(IInternetProtocol *iface)
 
     TRACE("(%p)\n", This);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->protocol) {
         HRESULT hres = IInternetProtocol_UnlockRequest(This->protocol);
 
@@ -1018,7 +1018,7 @@ static HRESULT report_data(BindProtocol *This)
             return S_OK;
 
         bscf = BSCF_FIRSTDATANOTIFICATION;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(hres == S_FALSE)
             bscf |= BSCF_LASTDATANOTIFICATION|BSCF_DATAFULLYAVAILABLE;
         else
@@ -1103,7 +1103,7 @@ static HRESULT handle_redirect(BindProtocol *This, const WCHAR *url)
     IInternetProtocol_Terminate(This->protocol, 0); /* should this be done in StartEx? */
     release_protocol_handler(This);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->redirecting = TRUE;
     hres = IInternetProtocolEx_Start(&This->IInternetProtocolEx_iface, url, This->protocol_sink, This->bind_info, This->pi, 0);
     This->redirecting = FALSE;

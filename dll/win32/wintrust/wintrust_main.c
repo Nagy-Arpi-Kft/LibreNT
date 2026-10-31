@@ -284,7 +284,7 @@ static LONG WINTRUST_DefaultVerify(HWND hwnd, GUID *actionID,
     numSteps = WINTRUST_AddTrustStepsFromFunctions(verifySteps,
      provData->psPfns);
     err = WINTRUST_ExecuteSteps(verifySteps, numSteps, provData);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     while (err && provData->pSigState && !provData->pSigState->fNoMoreSigs)
     {
         DWORD i, j, first;
@@ -1039,7 +1039,7 @@ BOOL WINAPI WINTRUST_AddSgnr(CRYPT_PROVIDER_DATA *data,
         SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (sgnr->cbStruct != sizeof(CRYPT_PROVIDER_SGNR))
         idxSigner = data->csSigners;
 #endif
@@ -1063,7 +1063,7 @@ BOOL WINAPI WINTRUST_AddSgnr(CRYPT_PROVIDER_DATA *data,
              sizeof(CRYPT_PROVIDER_SGNR));
         }
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             memset(&data->pasSigners[idxSigner], 0,
              sizeof(CRYPT_PROVIDER_SGNR));

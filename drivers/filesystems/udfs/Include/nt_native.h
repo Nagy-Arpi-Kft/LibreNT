@@ -874,7 +874,7 @@ typedef struct _IO_STATUS_BLOCK {
 
 typedef
 VOID
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTAPI
 #endif
 (*PIO_APC_ROUTINE) (

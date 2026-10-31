@@ -36,7 +36,7 @@
 #include <stdlib.h>
 
 #include "windef.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winbase.h"
 #endif
 #include "winternl.h"

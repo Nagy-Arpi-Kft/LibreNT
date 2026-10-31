@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(dsrole MODULE ${SOURCE})
 set_module_type(dsrole win32dll ENTRYPOINT DllMain 12)
 add_importlibs(dsrole netapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET dsrole DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET dsrole DESTINATION librent/system32 FOR all)

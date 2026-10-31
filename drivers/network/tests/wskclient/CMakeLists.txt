@@ -1,5 +1,5 @@
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(
     -DNTDDI_VERSION=0x06000000
     -D_WIN32_WINNT=0x0600
@@ -14,4 +14,4 @@ spec2def(wskclient.sys wskclient.spec)
 add_library(wskclient MODULE ${SOURCE})
 set_module_type(wskclient kernelmodedriver)
 add_importlibs(wskclient ntoskrnl netio hal)
-add_cd_file(TARGET wskclient DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET wskclient DESTINATION librent/system32/drivers FOR all)

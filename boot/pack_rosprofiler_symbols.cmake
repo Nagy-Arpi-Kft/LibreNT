@@ -62,7 +62,7 @@ if(_available GREATER _maximum_symbol_bytes)
     set(_available "${_maximum_symbol_bytes}")
 endif()
 
-set(_manifest "ReactOS profiler symbol package\n")
+set(_manifest "LibreNT profiler symbol package\n")
 string(APPEND _manifest "image_size_bytes=${_image_bytes}\n")
 string(APPEND _manifest "estimated_base_payload_bytes=${_base_bytes}\n")
 string(APPEND _manifest "reserved_free_bytes=${_reserve_bytes}\n")

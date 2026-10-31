@@ -171,7 +171,7 @@ library WindowsInstaller
         msiUILevelSourceResOnly = 256
     } MsiUILevel;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     typedef enum {
         msiReinstallModeFileMissing = 2,
         msiReinstallModeFileOlderVersion = 4,
@@ -266,7 +266,7 @@ library WindowsInstaller
         [id(DISPID_INSTALLER_RELATEDPRODUCTS), propget]
             StringList *RelatedProducts(
                 [in] BSTR UpgradeCode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         [id(DISPID_INSTALLER_CONFIGUREPRODUCT)]
             void ConfigureProduct(
                 [in] BSTR Product,

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS ATA Bus Driver
+ * PROJECT:     LibreNT ATA Bus Driver
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Intel ATA controller minidriver
  * COPYRIGHT:   Copyright 2026 Dmitry Borisov <di.sean@protonmail.com>

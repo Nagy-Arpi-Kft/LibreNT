@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT NDIS library
+ * PROJECT:     LibreNT NDIS library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        drivers/network/ndis/ndis/60thunk_rx.c
  * PURPOSE:     NDIS 6 -> NDIS 5 receive thunk + status indication.
@@ -1002,7 +1002,7 @@ Ndis6FilterTerminalStatus(
     case NDIS_STATUS_DOT11_STOP_AP:
     case NDIS_STATUS_DOT11_PHY_FREQUENCY_ADOPTED:
     case NDIS_STATUS_DOT11_CAN_SUSTAIN_AP:
-        /* 802.11 WLAN indications — no legacy WLAN stack in ReactOS, drop. */
+        /* 802.11 WLAN indications — no legacy WLAN stack in LibreNT, drop. */
         return;
 
     default:

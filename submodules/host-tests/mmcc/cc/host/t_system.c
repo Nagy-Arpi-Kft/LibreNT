@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/cc/host/t_system.c
  * PURPOSE:     Cache manager end-to-end host-native tests
  *

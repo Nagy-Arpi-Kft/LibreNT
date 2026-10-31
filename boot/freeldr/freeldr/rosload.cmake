@@ -15,8 +15,8 @@ list(APPEND ROSLOAD_SOURCE
     settingsmenu.c
     oslist.c
     lib/rtl/libsupp.c
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/config/cmboot.c
-    ${REACTOS_SOURCE_DIR}/ntoskrnl/ke/config.c
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/config/cmboot.c
+    ${LIBRENT_SOURCE_DIR}/ntoskrnl/ke/config.c
     ntldr/startup.c
     ntldr/conversion.c
     ntldr/headless.c
@@ -39,7 +39,7 @@ if(ARCH STREQUAL "i386")
         ntldr/arch/i386/winldr.c)
 
     list(APPEND ROSLOAD_ASM_SOURCE
-        ${REACTOS_SOURCE_DIR}/bootloader/arch/i386/resume.S
+        ${LIBRENT_SOURCE_DIR}/bootloader/arch/i386/resume.S
         arch/i386/drvmap.S
         arch/i386/linux.S)
 
@@ -50,7 +50,7 @@ elseif(ARCH STREQUAL "amd64")
         ntldr/arch/amd64/winldr.c)
 
     list(APPEND ROSLOAD_ASM_SOURCE
-        ${REACTOS_SOURCE_DIR}/bootloader/arch/amd64/resume.S
+        ${LIBRENT_SOURCE_DIR}/bootloader/arch/amd64/resume.S
         arch/amd64/misc.S
         arch/amd64/linux.S)
 

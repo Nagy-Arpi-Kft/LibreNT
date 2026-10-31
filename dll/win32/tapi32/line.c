@@ -1180,7 +1180,7 @@ DWORD WINAPI lineHold(HCALL hCall)
 /***********************************************************************
  *		lineInitialize (TAPI32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG line_app_count;
 #endif
 
@@ -1193,7 +1193,7 @@ DWORD WINAPI lineInitialize(
 {
     FIXME("(%p, %p, %p, %s, %p): stub.\n", lphLineApp, hInstance,
 	  lpfnCallback, debugstr_a(lpszAppName), lpdwNumDevs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lphLineApp || !lpfnCallback || !lpdwNumDevs)
         return LINEERR_INVALPOINTER;
 
@@ -1566,7 +1566,7 @@ DWORD WINAPI lineSetupTransferA(HCALL hCall, LPHCALL lphConsultCall, LPLINECALLP
 DWORD WINAPI lineShutdown(HLINEAPP hLineApp)
 {
     FIXME("(%p): stub.\n", hLineApp);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!hLineApp)
         return LINEERR_INVALAPPHANDLE;
 #endif

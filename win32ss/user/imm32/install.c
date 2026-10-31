@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS IMM32
+ * PROJECT:     LibreNT IMM32
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Implementing IME installation
  * COPYRIGHT:   Copyright 2020-2025 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>

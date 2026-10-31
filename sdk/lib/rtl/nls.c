@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS system libraries
+ * PROJECT:           LibreNT system libraries
  * FILE:              lib/rtl/nls.c
  * PURPOSE:           National Language Support (NLS) functions
  * PROGRAMMERS:       Emanuele Aliberti
@@ -9,7 +9,7 @@
 /* INCLUDES *****************************************************************/
 
 #include <rtl.h>
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 
 #define NDEBUG
 #include <debug.h>

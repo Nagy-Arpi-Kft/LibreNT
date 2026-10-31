@@ -26,11 +26,11 @@
 #include "ntstatus.h"
 #include "windef.h"
 #include "winbase.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "ntuser.h"
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 #include "wine/winedmo.h"
@@ -54,7 +54,7 @@ struct stream_context
 
 C_ASSERT( sizeof(struct stream_context) == offsetof( struct stream_context, buffer ) );
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 struct seek_callback_params
 {
     struct dispatch_callback_params dispatch;
@@ -174,7 +174,7 @@ enum unix_funcs
     unix_funcs_count,
 };
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define UNIX_CALL( func, params ) (__wine_unixlib_handle ? WINE_UNIX_CALL( unix_##func, params ) : STATUS_PROCEDURE_NOT_FOUND)
 #endif
 

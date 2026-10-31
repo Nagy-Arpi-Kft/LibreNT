@@ -450,7 +450,7 @@ HRESULT parse_decimal(const WCHAR **iter, const WCHAR *end, double *ret)
         }
 
         while(ptr < end && is_digit(*ptr)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             int digit = *ptr++ - '0';
 
             if(e > (INT_MAX - digit) / 10)
@@ -694,7 +694,7 @@ static int next_token(parser_ctx_t *ctx, unsigned *loc, void *lval)
             switch(*ctx->ptr) {
             case '-':  /* -- or --> */
                 ctx->ptr++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if(ctx->nl && ctx->ptr < ctx->end && *ctx->ptr == '>') {
 #else
                 if(ctx->is_html && ctx->nl && ctx->ptr < ctx->end && *ctx->ptr == '>') {

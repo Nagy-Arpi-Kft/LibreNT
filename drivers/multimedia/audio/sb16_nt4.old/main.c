@@ -1,5 +1,5 @@
 /*
-    ReactOS
+    LibreNT
     Sound Blaster driver
 
     Programmers:

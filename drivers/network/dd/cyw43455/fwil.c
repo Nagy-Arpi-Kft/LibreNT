@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT Broadcom/Cypress CYW43455 Native 802.11 Miniport
+ * PROJECT:     LibreNT Broadcom/Cypress CYW43455 Native 802.11 Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     BCDC/SDPCM control transport, fil commands, escan and events
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include "cyw43455.h"
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 
 #define NDEBUG
 #include <debug.h>

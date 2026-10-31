@@ -1,15 +1,15 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Windows 11 public NtGdi D3DKMT export entry points
  * COPYRIGHT:   Copyright 2026 LiberNT Contributors
  */
 
 #include "dxgkrnl_private.h"
-#include <reactos/rddm/rxgkntgdi.h>
+#include <librent/rddm/rxgkntgdi.h>
 
 /*
- * Windows keeps these syscall entry points in dxgkrnl.  ReactOS keeps user
+ * Windows keeps these syscall entry points in dxgkrnl.  LibreNT keeps user
  * capture and nested-buffer marshalling in win32k, so each exported entry
  * returns through the registered win32k dispatcher before it reaches the
  * existing dxgkrnl core.  That preserves the native public ABI without

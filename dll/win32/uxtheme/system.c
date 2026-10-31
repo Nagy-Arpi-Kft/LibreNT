@@ -29,11 +29,11 @@
 #include "vfwmsgs.h"
 #include "uxtheme.h"
 #include "vssym32.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winnls.h"
 #include "resource.h"
-#include <reactos/dwmframe.h>
-#include <reactos/colorscheme.h>
+#include <librent/dwmframe.h>
+#include <librent/colorscheme.h>
 #include <dwmapi.h>
 #endif
 
@@ -68,7 +68,7 @@ struct user_api_hook user_api = {0};
 
 /***********************************************************************/
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static BOOL CALLBACK UXTHEME_broadcast_msg_enumchild (HWND hWnd, LPARAM msg)
 {
     PostMessageW(hWnd, msg, 0, 0);
@@ -486,7 +486,7 @@ HRESULT UXTHEME_SetActiveTheme(PTHEME_FILE tf)
             RegSetValueExW(hKey, L"DllName", 0, REG_SZ, (const BYTE*)szCurrentTheme,
 		(lstrlenW(szCurrentTheme)+1)*sizeof(WCHAR));
             RegSetValueExW(hKey, L"LoadedBefore", 0, REG_SZ, (const BYTE *)tmp, sizeof(WCHAR) * 2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 WCHAR buffer[sizeof("4294967295")];
                 UINT length = wsprintfW(buffer, L"%u", GetUserDefaultUILanguage());
@@ -501,7 +501,7 @@ HRESULT UXTHEME_SetActiveTheme(PTHEME_FILE tf)
             RegDeleteValueW(hKey, L"SizeName");
             RegDeleteValueW(hKey, L"DllName");
             RegDeleteValueW(hKey, L"LoadedBefore");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             RegDeleteValueW(hKey, L"LastUserLangID");
 #endif
         }
@@ -529,7 +529,7 @@ HRESULT UXTHEME_SetActiveTheme(PTHEME_FILE tf)
  */
 void UXTHEME_InitSystem(HINSTANCE hInst)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hDllInst = hInst;
     gdwErrorInfoTlsIndex = TlsAlloc();
 #endif
@@ -541,14 +541,14 @@ void UXTHEME_InitSystem(HINSTANCE hInst)
     atDialogHook         = GlobalAddAtomW(L"uxtheme_dlg_hook");
 
     UXTHEME_LoadTheme();
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ThemeHooksInstall();
 #endif
 }
 
 void UXTHEME_UninitSystem(void)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ThemeHooksRemove();
 #endif
     MSSTYLES_SetActiveTheme(NULL, FALSE);
@@ -559,14 +559,14 @@ void UXTHEME_UninitSystem(void)
     GlobalDeleteAtom(atDialogThemeEnabled);
     GlobalDeleteAtom(atDialogBrush);
     GlobalDeleteAtom(atDialogHook);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UXTHEME_DeleteParseErrorInfo();
     TlsFree(gdwErrorInfoTlsIndex);
     gdwErrorInfoTlsIndex = TLS_OUT_OF_INDEXES;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void UXTHEME_ReloadTheme(BOOL load)
 {
     if (load)
@@ -586,7 +586,7 @@ BOOL UXTHEME_IsAppThemed(void)
 
 BOOL WINAPI IsAppThemed(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("\n");
     SetLastError(ERROR_SUCCESS);
     return bThemeActive && UXTHEME_LoadThemeHooks();
@@ -637,7 +637,7 @@ HRESULT WINAPI EnableTheming(BOOL fEnable)
             RegSetValueExW(hKey, L"ThemeActive", 0, REG_SZ, (BYTE *)L"0", 2 * sizeof(WCHAR));
             RegCloseKey(hKey);
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         UXTHEME_broadcast_theme_changed(NULL, fEnable);
 #else
 	UXTHEME_broadcast_msg (NULL, WM_THEMECHANGED);
@@ -683,7 +683,7 @@ static LPWSTR UXTHEME_GetWindowProperty(HWND hwnd, ATOM aProp, LPWSTR pszBuffer,
     return NULL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL UXTHEME_ClassListContains(LPCWSTR classList, LPCWSTR wanted)
 {
     SIZE_T wantedLength = lstrlenW(wanted);
@@ -854,7 +854,7 @@ static void UXTHEME_ApplyLiquidProperties(HWND hwnd, LPCWSTR classList,
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HTHEME
 open_theme_data_prop(HWND hwnd, LPCWSTR pszClassList, DWORD flags, UINT dpi,
                      BOOL bSetWindowProp)
@@ -875,7 +875,7 @@ static HTHEME open_theme_data(HWND hwnd, LPCWSTR pszClassList, DWORD flags, UINT
         return NULL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!g_bThemeHooksActive && (!bThemeActive || !UXTHEME_LoadThemeHooks()))
     {
         SetLastError(E_PROP_ID_UNSUPPORTED);
@@ -909,7 +909,7 @@ static HTHEME open_theme_data(HWND hwnd, LPCWSTR pszClassList, DWORD flags, UINT
         if(!pszUseClassList)
             pszUseClassList = pszClassList;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (pszUseClassList)
             hTheme = MSSTYLES_OpenThemeClassForApp(pszAppName,
                                                    UXTHEME_UseLightClasses(pszUseClassList, flags) ?
@@ -919,15 +919,15 @@ static HTHEME open_theme_data(HWND hwnd, LPCWSTR pszClassList, DWORD flags, UINT
         if (pszUseClassList)
             hTheme = MSSTYLES_OpenThemeClass(pszAppName, pszUseClassList, dpi);
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         UXTHEME_ApplyLiquidProperties(hwnd, pszUseClassList, flags, dpi);
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else
         UXTHEME_ApplyLiquidProperties(hwnd, pszClassList, flags, dpi);
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (bSetWindowProp && IsWindow(hwnd))
 #else
     if(IsWindow(hwnd))
@@ -939,7 +939,7 @@ static HTHEME open_theme_data(HWND hwnd, LPCWSTR pszClassList, DWORD flags, UINT
     return hTheme;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HTHEME
 open_theme_data(HWND hwnd, LPCWSTR pszClassList, DWORD flags, UINT dpi)
 {
@@ -1075,7 +1075,7 @@ void WINAPI SetThemeAppProperties(DWORD dwFlags)
 {
     TRACE("(0x%08lx)\n", dwFlags);
     dwThemeAppProperties = dwFlags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetLastError(ERROR_SUCCESS);
 #endif
 }
@@ -1267,20 +1267,20 @@ HRESULT WINAPI CloseThemeFile(HTHEMEFILE hThemeFile)
  * char *b = "\0" or NULL; where \0 can be zero or more of any character, makes no difference
  *   the function fails returning invalid parameter... very strange
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI ApplyTheme(HTHEMEFILE hThemeFile, UINT flags, HWND hWnd)
 #else
 HRESULT WINAPI ApplyTheme(HTHEMEFILE hThemeFile, char *unknown, HWND hWnd)
 #endif
 {
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p,%#x,%p)\n", hThemeFile, flags, hWnd);
 #else
     TRACE("(%p,%s,%p)\n", hThemeFile, unknown, hWnd);
 #endif
     hr = UXTHEME_SetActiveTheme(hThemeFile);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UXTHEME_broadcast_theme_changed(NULL, hThemeFile != NULL);
 #else
     UXTHEME_broadcast_msg (NULL, WM_THEMECHANGED);
@@ -1345,7 +1345,7 @@ HRESULT WINAPI GetThemeDefaults(LPCWSTR pszThemeFileName, LPWSTR pszColorName,
     hr = MSSTYLES_OpenThemeFile(pszThemeFileName, NULL, NULL, &pt);
     if(FAILED(hr)) return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pszColorName)
         lstrcpynW(pszColorName, pt->pszSelectedColor, dwColorNameLen);
     if (pszSizeName)
@@ -1626,7 +1626,7 @@ HRESULT WINAPI CheckThemeSignature(LPCWSTR pszThemeFileName)
     return S_OK;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 BOOL WINAPI ThemeHooksInstall(void)
 {
     struct user_api_hook hooks;

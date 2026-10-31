@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT private DWM client API
+ * PROJECT:     LibreNT private DWM client API
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Windows 11-compatible private DWM client entry points
@@ -14,7 +14,7 @@
 
 #include <stdarg.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ndk/exfuncs.h>
 #include <ndk/obfuncs.h>
 #include <ndk/rtlfuncs.h>
@@ -308,7 +308,7 @@ DwmPrivateValidRect(const RECT *Rect)
 static HRESULT
 DwmPrivateDuplicateHandle(HANDLE Source, HANDLE *Duplicate)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NTSTATUS Status;
 
     *Duplicate = NULL;
@@ -525,7 +525,7 @@ HRESULT WINAPI
 DwmpAllocateSecurityDescriptor(PSECURITY_DESCRIPTOR *Descriptor,
                                ACCESS_MASK Access)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SID_IDENTIFIER_AUTHORITY Authority = {SECURITY_NT_AUTHORITY};
     PSECURITY_DESCRIPTOR NewDescriptor = NULL;
     PSID Sid = NULL;
@@ -582,7 +582,7 @@ DwmpAllocateSecurityDescriptor(PSECURITY_DESCRIPTOR *Descriptor,
 void WINAPI
 DwmpFreeSecurityDescriptor(PSECURITY_DESCRIPTOR Descriptor)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RtlFreeHeap(RtlGetProcessHeap(), 0, Descriptor);
 #else
     UNREFERENCED_PARAMETER(Descriptor);
@@ -1043,7 +1043,7 @@ DwmpCreateSessionShutdownEvent(DWORD SessionId, HANDLE *Event)
 {
     WCHAR Name[96];
     PSECURITY_DESCRIPTOR Descriptor = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UNICODE_STRING NativeName;
     OBJECT_ATTRIBUTES ObjectAttributes;
     NTSTATUS Status;
@@ -1060,7 +1060,7 @@ DwmpCreateSessionShutdownEvent(DWORD SessionId, HANDLE *Event)
     {
         return HRESULT_FROM_WIN32(GetLastError());
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RtlInitUnicodeString(&NativeName, Name);
     InitializeObjectAttributes(&ObjectAttributes, &NativeName, 0, NULL,
                                Descriptor);
@@ -1237,7 +1237,7 @@ DwmpEnableWindowNotifications(BOOL Enable)
 {
     UNREFERENCED_PARAMETER(Enable);
     /* Windows gates the transport behind WindowNotificationsFromDWM.
-     * ReactOS does not expose that feature or its server-side notification
+     * LibreNT does not expose that feature or its server-side notification
      * stream, so the native disabled-feature result is the exact contract. */
     return E_NOTIMPL;
 }

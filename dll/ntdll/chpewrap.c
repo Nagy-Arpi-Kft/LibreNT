@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS NT Library
+ * PROJECT:         LibreNT NT Library
  * FILE:            dll/ntdll/chpewrap.c
  * PURPOSE:         CHPE-wrapped Nt* syscall implementations
  * LICENSE:         LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)

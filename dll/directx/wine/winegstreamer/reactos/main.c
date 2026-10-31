@@ -1,10 +1,10 @@
 /*
- * ReactOS native adapter for Wine GStreamer parser classes
+ * LibreNT native adapter for Wine GStreamer parser classes
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * COPYRIGHT:   Adapted from Wine dlls/winegstreamer/main.c
  *
  * This keeps Wine's private winegstreamer COM boundary while using the
- * native ReactOS DirectShow parsers on systems without a Unix GStreamer
+ * native LibreNT DirectShow parsers on systems without a Unix GStreamer
  * backend.
  */
 

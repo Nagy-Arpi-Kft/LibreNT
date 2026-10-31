@@ -264,7 +264,7 @@ DXGI_FORMAT dxgi_format_from_wined3dformat(enum wined3d_format_id format)
         case WINED3DFMT_BC7_UNORM: return DXGI_FORMAT_BC7_UNORM;
         case WINED3DFMT_BC7_UNORM_SRGB: return DXGI_FORMAT_BC7_UNORM_SRGB;
         case WINED3DFMT_NV12_PLANAR: return DXGI_FORMAT_NV12;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case WINED3DFMT_P010_PLANAR: return DXGI_FORMAT_P010;
 #endif
         case WINED3DFMT_YUY2: return DXGI_FORMAT_YUY2;
@@ -380,7 +380,7 @@ enum wined3d_format_id wined3dformat_from_dxgi_format(DXGI_FORMAT format)
         case DXGI_FORMAT_BC7_UNORM: return WINED3DFMT_BC7_UNORM;
         case DXGI_FORMAT_BC7_UNORM_SRGB: return WINED3DFMT_BC7_UNORM_SRGB;
         case DXGI_FORMAT_NV12: return WINED3DFMT_NV12_PLANAR;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case DXGI_FORMAT_P010: return WINED3DFMT_P010_PLANAR;
 #endif
         case DXGI_FORMAT_YUY2: return WINED3DFMT_YUY2;
@@ -524,7 +524,7 @@ unsigned int wined3d_bind_flags_from_dxgi_usage(DXGI_USAGE dxgi_usage)
     return wined3d_bind_flags;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DXGI_WINED3D_SWAPCHAIN_FLAGS \
         (WINED3D_SWAPCHAIN_USE_CLOSEST_MATCHING_MODE | WINED3D_SWAPCHAIN_RESTORE_WINDOW_RECT \
         | WINED3D_SWAPCHAIN_REGISTER_STATE | WINED3D_SWAPCHAIN_RESTORE_WINDOW_STATE \
@@ -600,14 +600,14 @@ HRESULT wined3d_swapchain_desc_from_dxgi(struct wined3d_swapchain_desc *wined3d_
     struct dxgi_output *dxgi_output = unsafe_impl_from_IDXGIOutput(dxgi_containing_output);
     bool allow_latency_waitable = false;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (dxgi_desc->Scaling > DXGI_SCALING_ASPECT_RATIO_STRETCH)
 #else
     if (dxgi_desc->Scaling != DXGI_SCALING_STRETCH)
 #endif
         FIXME("Ignoring scaling %#x.\n", dxgi_desc->Scaling);
     if (dxgi_desc->AlphaMode != DXGI_ALPHA_MODE_UNSPECIFIED && dxgi_desc->AlphaMode != DXGI_ALPHA_MODE_IGNORE
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             && dxgi_desc->AlphaMode != DXGI_ALPHA_MODE_PREMULTIPLIED
 #endif
             )

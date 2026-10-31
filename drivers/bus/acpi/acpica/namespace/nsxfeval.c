@@ -427,7 +427,7 @@ AcpiEvaluateObject (
         goto CleanupReturnObject;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     AcpiExEnterInterpreter ();
 #endif
 
@@ -465,7 +465,7 @@ AcpiEvaluateObject (
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     AcpiUtRemoveReference (Info->ReturnObject);
     AcpiExExitInterpreter ();
     goto Cleanup;

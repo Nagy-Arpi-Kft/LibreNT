@@ -11,11 +11,11 @@ if(NOT FFMPEG_ROOT)
     set_module_type(msmpeg2vdec win32dll)
     target_link_libraries(msmpeg2vdec wine_dll_canunload)
     add_importlibs(msmpeg2vdec msvcrt kernel32 ntdll)
-    add_cd_file(TARGET msmpeg2vdec DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET msmpeg2vdec DESTINATION librent/system32 FOR all)
     return()
 endif()
 
-set(WINEGSTREAMER_DIR ${REACTOS_SOURCE_DIR}/dll/directx/wine/winegstreamer)
+set(WINEGSTREAMER_DIR ${LIBRENT_SOURCE_DIR}/dll/directx/wine/winegstreamer)
 
 list(APPEND SOURCE
     main.c
@@ -40,5 +40,5 @@ target_link_libraries(msmpeg2vdec strmbase mfuuid dmoguids strmiids wmcodecdspuu
     "${FFMPEG_ROOT}/lib/libavutil.dll.a")
 add_importlibs(msmpeg2vdec mf mfplat ole32 oleaut32 user32 msvcrt kernel32 ntdll)
 add_dependencies(msmpeg2vdec wineheaders dxsdk ffmpeg)
-add_cd_file(TARGET msmpeg2vdec DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msmpeg2vdec DESTINATION librent/system32 FOR all)
 set_wine_module(msmpeg2vdec)

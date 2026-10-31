@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS api tests
+ * PROJECT:         LibreNT api tests
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         Test for SetWindowExtEx
  * PROGRAMMERS:     Timo Kreuzer

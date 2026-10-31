@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS System Control Panel Applet
+ * PROJECT:     LibreNT System Control Panel Applet
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        dll/cpl/sysdm/hardware.c
  * PURPOSE:     Hardware devices
@@ -16,7 +16,7 @@ static BOOL
 LaunchDeviceManager(HWND hWndParent)
 {
 /* Hack for ROS to start our devmgmt until we have MMC */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ((INT_PTR)ShellExecuteW(NULL, L"open", L"devmgmt.exe", NULL, NULL, SW_SHOWNORMAL) > 32);
 #else
     HMODULE hDll;
@@ -38,7 +38,7 @@ LaunchDeviceManager(HWND hWndParent)
     Ret = DevMgrExec(hWndParent, hApplet, NULL /* ??? */, SW_SHOW);
     FreeLibrary(hDll);
     return Ret;
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 }
 
 static VOID

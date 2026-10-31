@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS RP1 Ethernet Driver
+ * PROJECT:     LibreNT RP1 Ethernet Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:        drivers/network/dd/rp1gem/rp1gem.c
  * PURPOSE:     Raspberry Pi 5 RP1 Cadence GEM NDIS 6.30 miniport
@@ -431,16 +431,16 @@ Rp1GemFreeDatapath(
  * DMA adapter object for a bare ACPI\PRP0001 node (it has no _CCA / DMA
  * properties), so NdisMAllocateSharedMemory fails there with
  * STATUS_INSUFFICIENT_RESOURCES (0xC000009A) -> MiniportInitializeEx fails ->
- * Code 10. ReactOS's NDIS is lenient and the same call succeeds, which is why
+ * Code 10. LibreNT's NDIS is lenient and the same call succeeds, which is why
  * the identical .sys works on ROS but not Win11.
  *
  * The RP1 GEM DMA is cache-coherent and 1:1 mapped to system RAM on the RPi5
  * (the RX *data* buffers already use this exact MmAllocateContiguousMemory +
- * MmGetPhysicalAddress path and the link comes up at 1Gbps on ReactOS), so the
+ * MmGetPhysicalAddress path and the link comes up at 1Gbps on LibreNT), so the
  * CPU physical address equals the device DMA address. MmNonCached keeps the
  * rings coherent without explicit cache maintenance, matching the previous
  * NdisMAllocateSharedMemory(Cached=FALSE) behaviour. This path is identical on
- * ReactOS and Win11, preserving parity.
+ * LibreNT and Win11, preserving parity.
  */
 static PVOID
 Rp1GemAllocateDmaCommonBuffer(
@@ -521,7 +521,7 @@ Rp1GemAllocateReceivePath(
      * MdlChain below). The NDIS contract requires that when a pool is created
      * with a nonzero DataSize (pool-allocated data), the MdlChain passed at
      * allocation be NULL. Win11 enforces this and returns NULL for the
-     * mismatched call (NBL alloc fails -> MiniportInitializeEx fails); ReactOS
+     * mismatched call (NBL alloc fails -> MiniportInitializeEx fails); LibreNT
      * is lenient and allowed DataSize=1536 + an explicit MdlChain. Zero works
      * on both -> parity preserved.
      */
@@ -2127,7 +2127,7 @@ Rp1GemQueryInformation(
 
         case OID_GEN_VENDOR_DESCRIPTION:
         {
-            static const CHAR Description[] = "ReactOS RP1 Cadence GEM Ethernet";
+            static const CHAR Description[] = "LibreNT RP1 Cadence GEM Ethernet";
             return Rp1GemCopyQuery(OidRequest, Description, sizeof(Description));
         }
 
@@ -2275,7 +2275,7 @@ Rp1GemSetInformation(
 
 /*
  * Win11-on-RPi5 init diagnostics. The same .sys brings the link up at 1Gbps on
- * ReactOS but fails MiniportInitializeEx on Win11 ARM64 (Code 10 / 0xC0000001),
+ * LibreNT but fails MiniportInitializeEx on Win11 ARM64 (Code 10 / 0xC0000001),
  * and Win11 has no kernel debugger attached so DPRINT is invisible. Dump a
  * decisive snapshot to \Registry\Machine\SOFTWARE\Rp1GemDiag that the guest can
  * read back: which Stage we reached, the failing NDIS status, the CM resources
@@ -2859,7 +2859,7 @@ DriverEntry(
      * km/ndis.h: NDIS_MIN_API=0x630 on ARM64/ARM, vs 0x400 on x86/x64).
      * A miniport declaring < 6.30 is rejected by NdisMRegisterMiniportDriver
      * with NDIS_STATUS_BAD_VERSION. Declare 6.30 with the matching
-     * characteristics REVISION_2 (Direct-OID handlers stay NULL). ReactOS's
+     * characteristics REVISION_2 (Direct-OID handlers stay NULL). LibreNT's
      * NDIS accepts this too; this keeps one binary working on both. */
     Chars.Header.Revision = NDIS_MINIPORT_DRIVER_CHARACTERISTICS_REVISION_2;
     Chars.Header.Size = NDIS_SIZEOF_MINIPORT_DRIVER_CHARACTERISTICS_REVISION_2;

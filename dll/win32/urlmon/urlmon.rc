@@ -39,7 +39,7 @@ FONT 8, "MS Shell Dlg"
     PUSHBUTTON "", ID_AXINSTALL_INSTALL_BTN, 144, 48, 50, 14, WS_GROUP | WS_TABSTOP | WS_DISABLED
     CONTROL "", 102, "static", SS_ETCHEDHORZ, 10, 70, 240, 1
     ICON    "", ID_AXINSTALL_ICON, 10, 82, 32, 32, WS_CHILD | WS_VISIBLE
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CONTROL "When installed, an ActiveX component has full access to your computer. Do not click install unless you have absolute trust in the above source.",
 #else
     CONTROL "When installed, an ActiveX component has full access to your " \
@@ -73,12 +73,12 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 /* @makedep: urlmon.rgs */
 1 WINE_REGISTRY urlmon.rgs
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 2 WINE_REGISTRY "urlmon_urlmon.rgs"
 #endif
 
 /* @makedep: urlmon.inf */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 REGINST REGINST urlmon_utf16.inf
 
 #define WINE_FILENAME_STR "urlmon.dll"

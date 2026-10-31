@@ -962,7 +962,7 @@ static void test_set_io_completion(void)
     SIZE_T size = 3;
     HANDLE h, h2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pNtSetIoCompletionEx)
     {
         win_skip("NtSetIoCompletionEx() is unavailable.\n");
@@ -4331,7 +4331,7 @@ static void test_file_completion_information(void)
 
         info.Flags = flag;
         status = pNtSetInformationFile(server, &io, &info, sizeof(info), FileIoCompletionNotificationInformation);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() < _WIN32_WINNT_VISTA)
         {
             ok(status == STATUS_ACCESS_DENIED, "Got unexpected status %#lx.\n", status);
@@ -4341,7 +4341,7 @@ static void test_file_completion_information(void)
 #endif
         ok(status == STATUS_SUCCESS, "Got unexpected status %#lx.\n", status);
         test_completion_flags(server, flag);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
@@ -4351,7 +4351,7 @@ static void test_file_completion_information(void)
         status = pNtSetInformationFile(server, &io, &fci, sizeof(fci), FileCompletionInformation);
         ok(status == STATUS_SUCCESS, "Got unexpected status %#lx.\n", status);
         ok(io.Status == STATUS_SUCCESS, "Got unexpected iosb.Status %#lx.\n", io.Status);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((flag == FILE_SKIP_SET_EVENT_ON_HANDLE) && (GetNTVersion() >= _WIN32_WINNT_VISTA))
 #else
         if (flag == FILE_SKIP_SET_EVENT_ON_HANDLE)

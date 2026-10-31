@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ke/krnlinit.c
  * PURPOSE:         Portable part of kernel initialization
@@ -270,7 +270,7 @@ KiInitSpinLocks(IN PKPRCB Prcb,
 
         /* Initialize the lock */
 #ifdef _M_ARM64
-        // Win11 arm64 LockQueue has only 17 entries; timer locks live in a ReactOS array
+        // Win11 arm64 LockQueue has only 17 entries; timer locks live in a LibreNT array
         Prcb->TimerTableLockQueue[i].Next = NULL;
         Prcb->TimerTableLockQueue[i].Lock = &KiTimerTableLock[i];
 #else

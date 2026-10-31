@@ -2,7 +2,7 @@
 #ifndef _JSCRIPT_PRECOMP_H
 #define _JSCRIPT_PRECOMP_H
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/config.h>
 #define _USE_MATH_DEFINES
 #include <math.h>

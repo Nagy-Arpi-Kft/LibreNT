@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * FILE:             drivers/net/tdihelpers/tdiconn.c
  * PURPOSE:          Ancillary functions driver
  * PROGRAMMER:       Art Yerkes (ayerkes@speakeasy.net)
@@ -10,8 +10,8 @@
  */
 
 #include <afd.h>
-#include <reactos/tdiunix.h>
-#include <reactos/tdibth.h>
+#include <librent/tdiunix.h>
+#include <librent/tdibth.h>
 
 #ifdef UNIMPLEMENTED
 #undef UNIMPLEMENTED
@@ -20,7 +20,7 @@
 /* If you want to see the DPRINT() output in your debugger,
  * remove the following line (or comment it out) */
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 UINT TdiAddressSizeFromType( UINT AddressType ) {
     switch( AddressType ) {

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Console Utilities Library
+ * PROJECT:     LibreNT Console Utilities Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Provides basic abstraction wrappers around CRT streams or
  *              Win32 console API I/O functions, to deal with i18n + Unicode

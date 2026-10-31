@@ -12,7 +12,7 @@ if(NOT ENABLE_FFMPEG)
     return()
 endif()
 
-set(FFMPEG_SOURCE_DIR "${REACTOS_SOURCE_DIR}/submodules/ffmpeg")
+set(FFMPEG_SOURCE_DIR "${LIBRENT_SOURCE_DIR}/submodules/ffmpeg")
 if(NOT EXISTS "${FFMPEG_SOURCE_DIR}/configure")
     message(STATUS "FFmpeg: the ffmpeg feed is not checked out; building the decoders without it. "
         "Run scripts/feeds update ffmpeg to build it.")
@@ -41,24 +41,24 @@ find_program(FFMPEG_MAKE NAMES gmake make NO_CACHE)
 if(NOT FFMPEG_SH OR NOT FFMPEG_MAKE)
     message(FATAL_ERROR "FFmpeg needs sh and make. Use -DENABLE_FFMPEG=OFF to disable it.")
 endif()
-set(_ffmpeg_llvm "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin")
+set(_ffmpeg_llvm "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin")
 
-set(FFMPEG_SDK_LIBDIR "${REACTOS_BINARY_DIR}/submodules/ffmpeg-sdk-lib")
+set(FFMPEG_SDK_LIBDIR "${LIBRENT_BINARY_DIR}/submodules/ffmpeg-sdk-lib")
 set(_ffmpeg_sdk_libraries
     msvcrtex libucrtbase libmsvcrt libkernel32 libntdll ucrtoldnames
     libadvapi32 libbcrypt libole32 libpsapi libshell32 libuser32 libws2_32)
 export_sdk_libraries(ffmpeg_sdk_libs "${FFMPEG_SDK_LIBDIR}"
     LIBRARIES ${_ffmpeg_sdk_libraries}
     DEPENDS ${_ffmpeg_sdk_libraries} ucrtoldnames_target)
-include("${REACTOS_SOURCE_DIR}/submodules/reactos-sdk-flags.cmake")
-reactos_sdk_flags(_ffmpeg_sdk
+include("${LIBRENT_SOURCE_DIR}/submodules/librent-sdk-flags.cmake")
+librent_sdk_flags(_ffmpeg_sdk
     COMPILER "${_ffmpeg_llvm}/clang"
     ARCH ${_ffmpeg_sdk_arch}
     ARCH_FLAGS "${_ffmpeg_arch_flags}"
-    SOURCE_DIR "${REACTOS_SOURCE_DIR}"
-    BUILD_DIR "${REACTOS_BINARY_DIR}"
+    SOURCE_DIR "${LIBRENT_SOURCE_DIR}"
+    BUILD_DIR "${LIBRENT_BINARY_DIR}"
     LIBDIR "${FFMPEG_SDK_LIBDIR}"
-    CXX_RUNTIME "${REACTOS_LIBCXX_ROOT}"
+    CXX_RUNTIME "${LIBRENT_LIBCXX_ROOT}"
     CRT full)
 
 set(_ffmpeg_asm_args)
@@ -71,7 +71,7 @@ if(ARCH STREQUAL "amd64" OR ARCH STREQUAL "i386")
     endif()
 endif()
 
-set(FFMPEG_ROOT "${REACTOS_BINARY_DIR}/submodules/ffmpeg-install")
+set(FFMPEG_ROOT "${LIBRENT_BINARY_DIR}/submodules/ffmpeg-install")
 set(FFMPEG_DLLS avformat-62 avcodec-62 avutil-60 swresample-6)
 set(FFMPEG_LICENSE "${FFMPEG_ROOT}/FFmpeg-COPYING.LGPLv2.1.txt")
 set(_ffmpeg_byproducts "${FFMPEG_LICENSE}")
@@ -87,9 +87,9 @@ include(ExternalProject)
 # The configuration is LGPL-2.1-or-later: no GPL, version3 or nonfree parts.
 ExternalProject_Add(ffmpeg
     EXCLUDE_FROM_ALL TRUE
-    PREFIX "${REACTOS_BINARY_DIR}/submodules/ffmpeg-prefix"
+    PREFIX "${LIBRENT_BINARY_DIR}/submodules/ffmpeg-prefix"
     SOURCE_DIR "${FFMPEG_SOURCE_DIR}"
-    BINARY_DIR "${REACTOS_BINARY_DIR}/submodules/ffmpeg-build"
+    BINARY_DIR "${LIBRENT_BINARY_DIR}/submodules/ffmpeg-build"
     INSTALL_DIR "${FFMPEG_ROOT}"
     DOWNLOAD_COMMAND ""
     UPDATE_COMMAND ""
@@ -140,8 +140,8 @@ ExternalProject_Add(ffmpeg
 ExternalProject_Add_StepDependencies(ffmpeg configure "${FFMPEG_SOURCE_DIR}/RELEASE" ffmpeg_sdk_libs)
 
 foreach(_ffmpeg_dll IN LISTS FFMPEG_DLLS)
-    add_cd_file(FILE "${FFMPEG_ROOT}/bin/${_ffmpeg_dll}.dll" TARGET ffmpeg DESTINATION reactos/system32 FOR all)
+    add_cd_file(FILE "${FFMPEG_ROOT}/bin/${_ffmpeg_dll}.dll" TARGET ffmpeg DESTINATION librent/system32 FOR all)
     # Processes restricted to OS-signed images load these through msmpeg2vdec.
     set_property(GLOBAL APPEND PROPERTY CI_SYSTEM_FILES "${FFMPEG_ROOT}/bin/${_ffmpeg_dll}.dll")
 endforeach()
-add_cd_file(FILE "${FFMPEG_LICENSE}" TARGET ffmpeg DESTINATION reactos/3rdParty FOR all)
+add_cd_file(FILE "${FFMPEG_LICENSE}" TARGET ffmpeg DESTINATION librent/3rdParty FOR all)

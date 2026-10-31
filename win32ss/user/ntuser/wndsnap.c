@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS Win32k subsystem
+ * PROJECT:          LibreNT Win32k subsystem
  * PURPOSE:          Window snap preview animation
  * FILE:             win32ss/user/ntuser/wndsnap.c
  * PROGRAMER:

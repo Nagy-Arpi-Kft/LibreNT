@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VidPN (Video Present Network) topology management
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -40,8 +40,8 @@
 #include "pnp.h"
 #include "hotplug_work_core.h"
 #include <ntddvdeo.h>
-#include <reactos/dwmframe.h>
-#include <reactos/rddm/rxgkioctl.h>
+#include <librent/dwmframe.h>
+#include <librent/rddm/rxgkioctl.h>
 
 /* ========================================================================
  * Forward declarations for all interface functions
@@ -879,7 +879,7 @@ DxgkVidPnReleaseProcessOwners(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 NTSTATUS
 DxgkVidPnQueryExclusiveOwnership(
     _In_ HANDLE ProcessId,

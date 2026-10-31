@@ -5,9 +5,9 @@
 # single source of truth — and verified for completeness below. A single
 # wow64_i386 target drives one nested build of all of them.
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/wow64_targets.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/wow64_targets.cmake")
 
-set(WOW64_I386_BINARY_DIR "${REACTOS_BINARY_DIR}/_wow64_i386")
+set(WOW64_I386_BINARY_DIR "${LIBRENT_BINARY_DIR}/_wow64_i386")
 set(WOW64_I386_TARGETS ${WOW64_I386_MODULES} ${WOW64_I386_AUXILIARY_MODULES} ${WOW64_I386_EXECUTABLES})
 
 # The 32-bit OpenGL loader resolves its ICD from SysWOW64.  Build the matching
@@ -30,7 +30,7 @@ if(TARGET dxilconv)
     list(APPEND WOW64_I386_TARGETS dxilconv)
 endif()
 
-# Walk a target's link closure to find the DLL modules it imports. ReactOS
+# Walk a target's link closure to find the DLL modules it imports. LibreNT
 # links DLL imports through "lib<module>" import libraries, so those names
 # are mapped back to the module targets that provide them.
 set_property(GLOBAL PROPERTY WOW64_I386_VISITED_TARGETS)
@@ -128,7 +128,7 @@ function(_wow64_get_target_file _target _output)
         endif()
     endif()
 
-    file(RELATIVE_PATH _relative_dir "${REACTOS_BINARY_DIR}" "${_binary_dir}")
+    file(RELATIVE_PATH _relative_dir "${LIBRENT_BINARY_DIR}" "${_binary_dir}")
     set(${_output} "${WOW64_I386_BINARY_DIR}/${_relative_dir}/${_prefix}${_output_name}${_suffix}" PARENT_SCOPE)
 endfunction()
 
@@ -143,7 +143,7 @@ if(WOW64_I386_DXILCONV_FILE)
 endif()
 if(WOW64_I386_MESA_FILE)
     list(APPEND WOW64_I386_OPTIONAL_FILES "${WOW64_I386_MESA_FILE}")
-    add_optional_registry_inf(INF "${REACTOS_SOURCE_DIR}/dll/opengl/mesa_gallium/mesa-gallium-wow64.inf"
+    add_optional_registry_inf(INF "${LIBRENT_SOURCE_DIR}/dll/opengl/mesa_gallium/mesa-gallium-wow64.inf"
                               REQUIRES "${WOW64_I386_MESA_FILE}")
     if(WOW64_I386_MESA_D3D_FILE)
         list(APPEND WOW64_I386_OPTIONAL_FILES "${WOW64_I386_MESA_D3D_FILE}")
@@ -170,14 +170,14 @@ foreach(_alias IN LISTS WOW64_I386_ALIASES)
     endif()
     _wow64_get_target_file("${_alias_target}" _alias_source)
     list(APPEND WOW64_I386_ALIAS_SOURCES "${_alias_source}")
-    list(APPEND WOW64_I386_ALIAS_FILES "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-aliases/${_alias_name}")
+    list(APPEND WOW64_I386_ALIAS_FILES "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-aliases/${_alias_name}")
     if(_alias_target IN_LIST WOW64_I386_ARCH_COMMAND_TARGETS)
         list(APPEND WOW64_I386_ARCH_COMMAND_FILES
-            "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-aliases/${_alias_name}")
+            "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-aliases/${_alias_name}")
     endif()
 endforeach()
 
-get_filename_component(_wow64_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${REACTOS_SOURCE_DIR}")
+get_filename_component(_wow64_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${LIBRENT_SOURCE_DIR}")
 set(_wow64_i386_cmake_args
     -DARCH:STRING=i386
     -DOARCH:STRING=pentium
@@ -189,12 +189,12 @@ set(_wow64_i386_cmake_args
     -DDBG:BOOL=${DBG}
     -DBISON_EXECUTABLE:FILEPATH=${BISON_EXECUTABLE}
     -DFLEX_EXECUTABLE:FILEPATH=${FLEX_EXECUTABLE}
-    -DHOST_TOOLS_DIR:PATH=${REACTOS_BINARY_DIR}/host-tools/bin
+    -DHOST_TOOLS_DIR:PATH=${LIBRENT_BINARY_DIR}/host-tools/bin
     -DKD_DEBUGGER:STRING=NONE
     -DOPTIMIZE:STRING=${OPTIMIZE}
     -DPCH:BOOL=${PCH}
-    -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=${REACTOS_CLANG_LLVM_MINGW_ROOT}
-    -DREACTOS_TARGET_NT:STRING=${REACTOS_TARGET_NT}
+    -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=${LIBRENT_CLANG_LLVM_MINGW_ROOT}
+    -DLIBRENT_TARGET_NT:STRING=${LIBRENT_TARGET_NT}
     -DROSCONFIG_PROFILE:STRING=generic
     -DROSCONFIG_SKIP_OVERRIDES:BOOL=ON
     -DSEPARATE_DBG:BOOL=${SEPARATE_DBG}
@@ -225,13 +225,13 @@ endif()
 # Reconfigure the i386 rules only when their configuration inputs change. Once
 # generated, the nested Ninja graph tracks normal CMake/source dependencies.
 string(JOIN "\n" _wow64_i386_configure_signature ${_wow64_i386_cmake_args})
-set(_wow64_i386_signature_file "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-configure.txt")
-set(_wow64_i386_configure_stamp "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-configure.stamp")
+set(_wow64_i386_signature_file "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-configure.txt")
+set(_wow64_i386_configure_stamp "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-configure.stamp")
 file(GENERATE OUTPUT "${_wow64_i386_signature_file}" CONTENT "${_wow64_i386_configure_signature}\n")
 
 set(_wow64_i386_env)
 if(MSVC)
-    set(_wow64_i386_env_script "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-env.cmd")
+    set(_wow64_i386_env_script "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-env.cmd")
     file(WRITE "${_wow64_i386_env_script}"
         "@set VSCMD_ARG_no_logo=1\n"
         "@call \"$ENV{VCINSTALLDIR}\\Auxiliary\\Build\\vcvarsall.bat\" /clean_env\n"
@@ -244,12 +244,12 @@ set(_wow64_i386_runtime)
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     find_program(NESTED_BUILD_PYTHON_EXECUTABLE NAMES python3 python REQUIRED)
     set(_wow64_i386_runtime COMMAND "${NESTED_BUILD_PYTHON_EXECUTABLE}"
-        "${REACTOS_SOURCE_DIR}/sdk/tools/cxx-runtime/build-cxx-runtime.py" --reactos-build "${WOW64_I386_BINARY_DIR}")
+        "${LIBRENT_SOURCE_DIR}/sdk/tools/cxx-runtime/build-cxx-runtime.py" --librent-build "${WOW64_I386_BINARY_DIR}")
 endif()
 
 add_custom_command(
     OUTPUT "${_wow64_i386_configure_stamp}"
-    COMMAND ${_wow64_i386_env} ${CMAKE_COMMAND} -S "${REACTOS_SOURCE_DIR}" -B "${WOW64_I386_BINARY_DIR}" -G "${CMAKE_GENERATOR}" ${_wow64_i386_cmake_args}
+    COMMAND ${_wow64_i386_env} ${CMAKE_COMMAND} -S "${LIBRENT_SOURCE_DIR}" -B "${WOW64_I386_BINARY_DIR}" -G "${CMAKE_GENERATOR}" ${_wow64_i386_cmake_args}
     ${_wow64_i386_runtime}
     COMMAND ${CMAKE_COMMAND} -E touch "${_wow64_i386_configure_stamp}"
     BYPRODUCTS "${WOW64_I386_BINARY_DIR}/build.ninja"
@@ -273,19 +273,19 @@ endif()
 
 set(_wow64_i386_validate)
 if(VALIDATE_COMPAT_BINARIES)
-    set(_wow64_i386_validate_list "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-validate.txt")
+    set(_wow64_i386_validate_list "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-validate.txt")
     string(REPLACE ";" "\n" _wow64_i386_validate_text "${WOW64_I386_VALIDATION_FILES}")
     file(WRITE "${_wow64_i386_validate_list}" "${_wow64_i386_validate_text}\n")
     set(_wow64_i386_validate COMMAND ${CMAKE_COMMAND}
         "-DWOW64_VALIDATE_LIST=${_wow64_i386_validate_list}"
-        -P "${REACTOS_SOURCE_DIR}/sdk/cmake/wow64-validate.cmake")
+        -P "${LIBRENT_SOURCE_DIR}/sdk/cmake/wow64-validate.cmake")
 endif()
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
 
 add_custom_target(wow64_i386 ALL
     ${_wow64_i386_heal}
-    COMMAND ${_wow64_i386_env} ${REACTOS_NESTED_BUILD} "${WOW64_I386_BINARY_DIR}" --target ${WOW64_I386_TARGETS}
+    COMMAND ${_wow64_i386_env} ${LIBRENT_NESTED_BUILD} "${WOW64_I386_BINARY_DIR}" --target ${WOW64_I386_TARGETS}
     ${_wow64_i386_validate}
     BYPRODUCTS ${WOW64_I386_VALIDATION_FILES}
     COMMENT "Building ${_wow64_i386_target_count} i386 WoW64 targets"
@@ -293,15 +293,15 @@ add_custom_target(wow64_i386 ALL
     VERBATIM)
 add_dependencies(wow64_i386 wow64_i386_configure)
 
-add_cd_file(TARGET wow64_i386 FILE ${WOW64_I386_FILES} DESTINATION reactos/SysWOW64 FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${WOW64_I386_FILES} DESTINATION librent/SysWOW64 FOR all)
 
 _wow64_get_target_file(wbemprox _wow64_wbemprox_file)
 _wow64_get_target_file(wbemdisp _wow64_wbemdisp_file)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_wbemprox_file} ${_wow64_wbemdisp_file} DESTINATION reactos/SysWOW64/wbem FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_wbemprox_file} ${_wow64_wbemdisp_file} DESTINATION librent/SysWOW64/wbem FOR all)
 
 if(WOW64_I386_OPTIONAL_FILES)
     add_cd_file(TARGET wow64_i386 FILE ${WOW64_I386_OPTIONAL_FILES}
-        DESTINATION reactos/SysWOW64 OPTIONAL FOR all)
+        DESTINATION librent/SysWOW64 OPTIONAL FOR all)
 endif()
 
 _wow64_get_target_file(comctl32 _wow64_comctl32_file)
@@ -313,27 +313,27 @@ _wow64_get_target_file(msvcr80 _wow64_msvcr80_file)
 _wow64_get_target_file(msvcm90 _wow64_msvcm90_file)
 _wow64_get_target_file(msvcp90 _wow64_msvcp90_file)
 _wow64_get_target_file(msvcr90 _wow64_msvcr90_file)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_comctl32_file} DESTINATION reactos/winsxs/x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_comctl32_v6_file} DESTINATION reactos/winsxs/x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_gdiplus_file} DESTINATION reactos/winsxs/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.7601.23038_none_deadbeef FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_gdiplus_file} DESTINATION reactos/winsxs/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.0.14393.0_none_deadbeef FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_msvcr80_file} ${_wow64_msvcp80_file} ${_wow64_msvcm80_file} DESTINATION reactos/winsxs/x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9680_none_deadbeef FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_msvcr90_file} ${_wow64_msvcp90_file} ${_wow64_msvcm90_file} DESTINATION reactos/winsxs/x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_deadbeef FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_comctl32_file} DESTINATION librent/winsxs/x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_comctl32_v6_file} DESTINATION librent/winsxs/x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_gdiplus_file} DESTINATION librent/winsxs/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.7601.23038_none_deadbeef FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_gdiplus_file} DESTINATION librent/winsxs/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.0.14393.0_none_deadbeef FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_msvcr80_file} ${_wow64_msvcp80_file} ${_wow64_msvcm80_file} DESTINATION librent/winsxs/x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9680_none_deadbeef FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_msvcr90_file} ${_wow64_msvcp90_file} ${_wow64_msvcm90_file} DESTINATION librent/winsxs/x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_deadbeef FOR all)
 _wow64_get_target_file(fusion _wow64_fusion_file)
 _wow64_get_target_file(fusion_1_1 _wow64_fusion_1_1_file)
 _wow64_get_target_file(fusion_2_0 _wow64_fusion_2_0_file)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_file} DESTINATION reactos/Microsoft.NET/Framework/v1.0.3705 FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_1_1_file} DESTINATION reactos/Microsoft.NET/Framework/v1.1.4322 FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_file} DESTINATION reactos/Microsoft.NET/Framework/v4.0.30319 FOR all)
-add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_2_0_file} DESTINATION reactos/Microsoft.NET/Framework/v2.0.50727 FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_file} DESTINATION librent/Microsoft.NET/Framework/v1.0.3705 FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_1_1_file} DESTINATION librent/Microsoft.NET/Framework/v1.1.4322 FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_file} DESTINATION librent/Microsoft.NET/Framework/v4.0.30319 FOR all)
+add_cd_file(TARGET wow64_i386 FILE ${_wow64_fusion_2_0_file} DESTINATION librent/Microsoft.NET/Framework/v2.0.50727 FOR all)
 add_cd_file(FILE
-    ${REACTOS_SOURCE_DIR}/dll/win32/comctl32/x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef.manifest
-    ${REACTOS_SOURCE_DIR}/dll/win32/comctl32/x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef.manifest
-    ${REACTOS_SOURCE_DIR}/dll/win32/gdiplus/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.7601.23038_none_deadbeef.manifest
-    ${REACTOS_SOURCE_DIR}/dll/win32/gdiplus/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.0.14393.0_none_deadbeef.manifest
-    ${REACTOS_SOURCE_DIR}/dll/win32/msvcr80/x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9680_none_deadbeef.manifest
-    ${REACTOS_SOURCE_DIR}/dll/win32/msvcr90/x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_deadbeef.manifest
-    DESTINATION reactos/winsxs/manifests FOR all)
+    ${LIBRENT_SOURCE_DIR}/dll/win32/comctl32/x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.2600.2982_none_deadbeef.manifest
+    ${LIBRENT_SOURCE_DIR}/dll/win32/comctl32/x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.2600.2982_none_deadbeef.manifest
+    ${LIBRENT_SOURCE_DIR}/dll/win32/gdiplus/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.7601.23038_none_deadbeef.manifest
+    ${LIBRENT_SOURCE_DIR}/dll/win32/gdiplus/x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.0.14393.0_none_deadbeef.manifest
+    ${LIBRENT_SOURCE_DIR}/dll/win32/msvcr80/x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9680_none_deadbeef.manifest
+    ${LIBRENT_SOURCE_DIR}/dll/win32/msvcr90/x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_deadbeef.manifest
+    DESTINATION librent/winsxs/manifests FOR all)
 
 if(WOW64_I386_ALIAS_FILES)
     list(LENGTH WOW64_I386_ALIAS_FILES _wow64_alias_count)
@@ -343,17 +343,17 @@ if(WOW64_I386_ALIAS_FILES)
         list(GET WOW64_I386_ALIAS_FILES ${_alias_index} _alias_file)
         add_custom_command(
             OUTPUT "${_alias_file}"
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${REACTOS_BINARY_DIR}/CMakeFiles/wow64-i386-aliases"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${LIBRENT_BINARY_DIR}/CMakeFiles/wow64-i386-aliases"
             COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_alias_source}" "${_alias_file}"
             DEPENDS wow64_i386 "${_alias_source}"
             COMMENT "Creating WoW64 alias ${_alias_file}"
             VERBATIM)
     endforeach()
     add_custom_target(wow64_i386_aliases DEPENDS ${WOW64_I386_ALIAS_FILES})
-    add_cd_file(TARGET wow64_i386_aliases FILE ${WOW64_I386_ALIAS_FILES} DESTINATION reactos/SysWOW64 FOR all)
+    add_cd_file(TARGET wow64_i386_aliases FILE ${WOW64_I386_ALIAS_FILES} DESTINATION librent/SysWOW64 FOR all)
     # Native cmd.exe searches System32, not SysWOW64.  The qualified names
     # make it safe to expose these genuine i386 images on the native PATH.
-    add_cd_file(TARGET wow64_i386_aliases FILE ${WOW64_I386_ARCH_COMMAND_FILES} DESTINATION reactos/system32 FOR all)
+    add_cd_file(TARGET wow64_i386_aliases FILE ${WOW64_I386_ARCH_COMMAND_FILES} DESTINATION librent/system32 FOR all)
 endif()
 
 message(STATUS "WoW64: double-building ${_wow64_i386_target_count} i386 targets into SysWOW64")

@@ -1018,7 +1018,7 @@ UINT WINAPI Shell_MergeMenus (HMENU hmDst, HMENU hmSrc, UINT uInsert, UINT uIDAd
 	return(uIDMax);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct
 {
     IContextMenu3 IContextMenu3_iface;
@@ -1331,4 +1331,4 @@ HRESULT WINAPI SHCreateDefaultContextMenu(const DEFCONTEXTMENU *pdcm, REFIID rii
     ILFree(folder_pidl);
     return ret;
 }
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */

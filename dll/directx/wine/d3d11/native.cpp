@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Direct3D 11 runtime
+ * PROJECT:     LibreNT Direct3D 11 runtime
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Direct3D 11 user-mode display driver backend
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -6220,7 +6220,7 @@ public:
 HRESULT STDMETHODCALLTYPE NativeSwapChain::SetPrivateData(REFGUID guid, UINT size, const void *data)
 {
     NativeLock guard(device);
-    if (!IsEqualGUID(guid, GUID_ReactOSDXGICompositionWindow))
+    if (!IsEqualGUID(guid, GUID_LibreNTDXGICompositionWindow))
         return private_data.Set(guid, size, data, NULL);
     if (!composition || !data || size != sizeof(reactos_dxgi_composition_target))
         return E_INVALIDARG;

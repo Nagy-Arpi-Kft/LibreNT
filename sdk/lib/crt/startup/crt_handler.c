@@ -176,7 +176,7 @@ __mingw_SEH_error_handler (struct _EXCEPTION_RECORD* ExceptionRecord,
 	  action = 0; // EXCEPTION_CONTINUE_EXECUTION;
 	}
       break;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case EXCEPTION_DATATYPE_MISALIGNMENT:
     case EXCEPTION_INVALID_HANDLE:
 #endif
@@ -282,7 +282,7 @@ _gnu_exception_handler (EXCEPTION_POINTERS *exception_data)
 	}
       break;
 #ifdef _WIN64
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case EXCEPTION_DATATYPE_MISALIGNMENT:
     case EXCEPTION_INVALID_HANDLE:
 #endif

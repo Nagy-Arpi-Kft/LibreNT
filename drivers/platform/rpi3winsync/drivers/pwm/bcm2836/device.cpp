@@ -11,7 +11,7 @@ Abstract:
 #include "driver.h"
 #include "device.tmh"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma code_seg("PAGE")
 static
 NTSTATUS
@@ -236,7 +236,7 @@ Return Value:
         goto Exit;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     status = CreateAudioChild(device);
 
     if (!NT_SUCCESS(status))
@@ -572,21 +572,21 @@ Return Value:
     if (deviceContext->dmaChannelRegs)
     {
         MmUnmapIoSpace(deviceContext->dmaChannelRegs, sizeof(DMA_CHANNEL_REGS));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         deviceContext->dmaChannelRegs = NULL;
 #endif
     }
     if (deviceContext->pwmRegs)
     {
         MmUnmapIoSpace(deviceContext->pwmRegs, sizeof(PWM_REGS));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         deviceContext->pwmRegs = NULL;
 #endif
     }
     if (deviceContext->cmPwmRegs)
     {
         MmUnmapIoSpace(deviceContext->cmPwmRegs, sizeof(CM_PWM_REGS));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         deviceContext->cmPwmRegs = NULL;
 #endif
     }

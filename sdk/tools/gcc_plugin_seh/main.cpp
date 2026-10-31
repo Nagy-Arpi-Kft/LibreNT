@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS SDK
+ * PROJECT:     LibreNT SDK
  * LICENSE:     BSD Zero Clause License (https://spdx.org/licenses/0BSD)
  * PURPOSE:     Helper pragma implementation for pseh library (amd64)
  * COPYRIGHT:   Copyright 2021 Jérôme Gardou
@@ -126,7 +126,7 @@ handle_seh_pragma(cpp_reader* UNUSED parser)
 
     if (!cfun)
     {
-        error("%<#pragma REACTOS seh%> is not allowed outside functions");
+        error("%<#pragma LIBRENT seh%> is not allowed outside functions");
         return;
     }
 
@@ -138,7 +138,7 @@ handle_seh_pragma(cpp_reader* UNUSED parser)
         (pragma_lex(&x) != CPP_EOF)
         )
     {
-        error("%<#pragma REACTOS seh%> needs two parameters");
+        error("%<#pragma LIBRENT seh%> needs two parameters");
         return;
     }
 
@@ -159,14 +159,14 @@ handle_seh_pragma(cpp_reader* UNUSED parser)
     }
     else
     {
-        error("Wrong argument for %<#pragma REACTOS seh%>. Expected \"except\" or \"finally\"");
+        error("Wrong argument for %<#pragma LIBRENT seh%>. Expected \"except\" or \"finally\"");
         return;
     }
     seh_fun->count++;
 
     seh_fun->handlers.push_back({is_except, (unsigned int)TREE_INT_CST_LOW(line)});
 
-    /* Make sure we use a frame pointer. REACTOS' PSEH depends on this */
+    /* Make sure we use a frame pointer. LibreNT's PSEH depends on this */
     cfun->machine->accesses_prev_frame = 1;
 
     /* Keep handlerdata generation canonical: one SEH block per function. */
@@ -231,7 +231,7 @@ static
 void
 register_seh_pragmas(void* UNUSED event_data, void* UNUSED user_data)
 {
-    c_register_pragma("REACTOS", "seh", handle_seh_pragma);
+    c_register_pragma("LIBRENT", "seh", handle_seh_pragma);
 }
 
 /* Return 0 on success or error code on failure */

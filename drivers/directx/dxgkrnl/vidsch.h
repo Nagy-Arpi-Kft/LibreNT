@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Video Scheduler (VidSch) internal header
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -15,7 +15,7 @@
  *   - ISR-level interrupt notification and DPC-level completion processing
  *   - VSync-synchronized flip/present operations
  *
- * Windows 11 routes scheduling through dxgmms2.sys. ReactOS keeps it inline
+ * Windows 11 routes scheduling through dxgmms2.sys. LibreNT keeps it inline
  * in dxgkrnl.sys so scheduler state shares the adapter lifetime.
  */
 
@@ -194,7 +194,7 @@ typedef struct _VIDSCH_DMA_PACKET
     /* Claims and retirement records own the current reserved identity. */
     BOOLEAN                     UnboundFence;
     ULONG                       FenceIdentityEpoch;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* Set before the provider retires a faulted packet as a fence watermark. */
     volatile LONG               Faulted;
     NTSTATUS                    FaultStatus;
@@ -286,7 +286,7 @@ typedef struct _VIDSCH_ENGINE
      */
     KSPIN_LOCK                  QueueLock;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /*
      * QueueLock protects ActivePacketList. The provider owns every packet
      * reference while its entry is published; retirement removes the entry

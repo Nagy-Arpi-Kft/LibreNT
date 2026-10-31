@@ -71,7 +71,7 @@ QueryAvailableFileSystemFormat(
  * The returned flags are mostly related to Sony Memory Stick devices.
  * On Vista+, the returned information is disk sector size and volume length in sectors,
  * regardless of the type of disk.
- * ReactOS returns DEVICE_HOTPLUG flag if inspected device is a hotplug device,
+ * LibreNT returns DEVICE_HOTPLUG flag if inspected device is a hotplug device,
  * as well as sector size and volume length of disk device.
  */
 BOOL

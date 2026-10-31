@@ -342,7 +342,7 @@ static HRESULT CDECL jpeg_decoder_get_metadata_blocks(struct decoder* iface, UIN
     BYTE header[4];
     bool add_block;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int table;
 #endif
 
@@ -354,7 +354,7 @@ static HRESULT CDECL jpeg_decoder_get_metadata_blocks(struct decoder* iface, UIN
     if (FAILED(hr))
         return hr;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* TODO: support for App0, Xmp, and chrominance/luminance blocks is missing. */
 
 #endif
@@ -429,7 +429,7 @@ static HRESULT CDECL jpeg_decoder_get_metadata_blocks(struct decoder* iface, UIN
         offset += length;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (table = 1; table >= 0 && hr == S_OK; table--)
     {
         if (!This->cinfo.quant_tbl_ptrs[table])

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Virtual Native 802.11 (dot11) Miniport
+ * PROJECT:     LibreNT Virtual Native 802.11 (dot11) Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS OID query/set handling, including the OID_DOT11_* surface
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -376,7 +376,7 @@ VWifiOidQuery(
 
         case OID_GEN_VENDOR_DESCRIPTION:
         {
-            static const CHAR Desc[] = "ReactOS Virtual Native 802.11 Adapter";
+            static const CHAR Desc[] = "LibreNT Virtual Native 802.11 Adapter";
             return VWifiOidQueryBuffer(Request, (PVOID)Desc, sizeof(Desc));
         }
 

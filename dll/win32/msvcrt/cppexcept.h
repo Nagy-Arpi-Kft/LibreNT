@@ -27,7 +27,7 @@
 #include "unknwn.h"
 #include "cxx.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "msvc_fwd_decl.h"
 #endif
 

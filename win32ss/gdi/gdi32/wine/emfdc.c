@@ -33,7 +33,7 @@
 #include "gdi_private.h"
 #include "wine/wingdi16.h"
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/winternl.h"
 #else
 #include "winternl.h"
@@ -212,7 +212,7 @@ static const RECTL empty_bounds = { 0, 0, -1, -1 };
 
 static BOOL emfdc_record( struct emf *emf, EMR *emr )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD len;
     SIZE_T size;
 #else
@@ -224,7 +224,7 @@ static BOOL emfdc_record( struct emf *emf, EMR *emr )
 
     assert( !(emr->nSize & 3) );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (emr->nSize > MAXDWORD - emf->emh->nBytes || emf->emh->nRecords == MAXDWORD)
         return FALSE;
 #else
@@ -233,7 +233,7 @@ static BOOL emfdc_record( struct emf *emf, EMR *emr )
 #endif
 
     size = HeapSize( GetProcessHeap(), 0, emf->emh );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (size == (SIZE_T)-1) return FALSE;
     len = emf->emh->nBytes + emr->nSize;
 #else
@@ -241,7 +241,7 @@ static BOOL emfdc_record( struct emf *emf, EMR *emr )
 #endif
     if (len > size)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         size = size / 2 > MAXDWORD - len ? len : len + size / 2;
 #else
         size += (size / 2) + emr->nSize;
@@ -250,7 +250,7 @@ static BOOL emfdc_record( struct emf *emf, EMR *emr )
         if (!emh) return FALSE;
         emf->emh = emh;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy( (char *)emf->emh + emf->emh->nBytes, emr, emr->nSize );
     emf->emh->nBytes = len;
     emf->emh->nRecords++;
@@ -384,7 +384,7 @@ static UINT emfdc_add_handle( struct emf *emf, HGDIOBJ obj )
 
     if (index == emf->handles_size)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         HGDIOBJ *handles;
 
         if (emf->handles_size > UINT_MAX / sizeof(*handles) - HANDLE_LIST_INC)
@@ -395,7 +395,7 @@ static UINT emfdc_add_handle( struct emf *emf, HGDIOBJ obj )
         emf->handles = handles;
 #endif
         emf->handles_size += HANDLE_LIST_INC;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         emf->handles = HeapReAlloc( GetProcessHeap(), HEAP_ZERO_MEMORY,
                                     emf->handles,
                                     emf->handles_size * sizeof(emf->handles[0]) );
@@ -410,7 +410,7 @@ static UINT emfdc_add_handle( struct emf *emf, HGDIOBJ obj )
     return index + 1; /* index 0 is reserved for the hmf, so we increment everything by 1 */
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static UINT emfdc_record_object( struct emf *emf, EMR *emr, UINT index )
 {
     if (!index) return 0;
@@ -470,7 +470,7 @@ static DWORD emfdc_create_brush( struct emf *emf, HBRUSH brush )
             emr.lb.lbColor = logbrush.lbColor;
             emr.lb.lbHatch = logbrush.lbHatch;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             index = emfdc_record_object( emf, &emr.emr, index );
 #else
             if(!emfdc_record( emf, &emr.emr ))
@@ -531,7 +531,7 @@ static DWORD emfdc_create_brush( struct emf *emf, HBRUSH brush )
             memcpy( (BYTE *)emr + emr->offBmi, info, emr->cbBmi );
             get_brush_bitmap_info( brush, NULL, (char *)emr + emr->offBits, NULL );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             index = emfdc_record_object( emf, &emr->emr, index );
 #else
             if (!emfdc_record( emf, &emr->emr )) index = 0;
@@ -612,7 +612,7 @@ static BOOL emfdc_create_font( struct emf *emf, HFONT font )
     emr.elfw.elfPanose.bMidline         = PAN_NO_FIT;
     emr.elfw.elfPanose.bXHeight         = PAN_NO_FIT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return emfdc_record_object( emf, &emr.emr, index );
 #else
     return emfdc_record( emf, &emr.emr ) ? index : 0;
@@ -682,7 +682,7 @@ static DWORD emfdc_create_pen( struct emf *emf, HPEN hPen )
     emr.emr.iType = EMR_CREATEPEN;
     emr.emr.nSize = sizeof(emr);
     emr.ihPen = index = emfdc_add_handle( emf, hPen );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return emfdc_record_object( emf, &emr.emr, index );
 #else
     return emfdc_record( emf, &emr.emr ) ? index : 0;
@@ -772,7 +772,7 @@ static DWORD emfdc_create_palette( struct emf *emf, HPALETTE hPal )
     for (i = 0; i < hdr->lgpl.palNumEntries; i++)
     {
         hdr->lgpl.palPalEntry[i].peFlags = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!emfdc_add_palette_entry( emf, hdr->lgpl.palPalEntry + i )) return 0;
 #else
         emfdc_add_palette_entry( emf, hdr->lgpl.palPalEntry + i );
@@ -783,7 +783,7 @@ static DWORD emfdc_create_palette( struct emf *emf, HPALETTE hPal )
     hdr->emr.nSize = offsetof( EMRCREATEPALETTE, lgpl.palPalEntry[hdr->lgpl.palNumEntries] );
     hdr->ihPal = emfdc_add_handle( emf, hPal );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return emfdc_record_object( emf, &hdr->emr, hdr->ihPal );
 #else
     if (!emfdc_record( emf, &hdr->emr ))
@@ -906,7 +906,7 @@ static void get_points_bounds( RECTL *bounds, const POINT *pts, UINT count, WINE
 }
 
 /* helper for path stroke and fill functions */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL emfdrv_stroke_and_fill_path( struct emf *emf, INT type )
 {
     EMRSTROKEANDFILLPATH emr;
@@ -1705,7 +1705,7 @@ BOOL EMFDC_AlphaBlend( WINEDC *dc_attr, INT x_dst, INT y_dst, INT width_dst, INT
 BOOL EMFDC_PatBlt( WINEDC *dc_attr, INT left, INT top, INT width, INT height, DWORD rop )
 {
     struct emf *emf = dc_attr->emf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     RECTL *bounds = &dc_attr->emf_bounds;
     LONGLONG right = (LONGLONG)left + width, bottom = (LONGLONG)top + height;
     POINT points[2];
@@ -1713,7 +1713,7 @@ BOOL EMFDC_PatBlt( WINEDC *dc_attr, INT left, INT top, INT width, INT height, DW
     EMRBITBLT emr;
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (right < INT_MIN || right > INT_MAX || bottom < INT_MIN || bottom > INT_MAX)
         return FALSE;
     points[0].x = left;
@@ -1726,7 +1726,7 @@ BOOL EMFDC_PatBlt( WINEDC *dc_attr, INT left, INT top, INT width, INT height, DW
 #endif
     emr.emr.iType = EMR_BITBLT;
     emr.emr.nSize = sizeof(emr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     get_points_bounds(&emr.rclBounds, points, 2, NULL);
     if (emr.rclBounds.left == emr.rclBounds.right || emr.rclBounds.top == emr.rclBounds.bottom)
     {
@@ -1765,7 +1765,7 @@ BOOL EMFDC_PatBlt( WINEDC *dc_attr, INT left, INT top, INT width, INT height, DW
     emr.cbBitsSrc = 0;
 
     ret = emfdc_record( emf, &emr.emr );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ret && emr.rclBounds.left <= emr.rclBounds.right)
     {
         if (bounds->left > bounds->right)
@@ -2414,7 +2414,7 @@ BOOL EMFDC_SetMapMode( WINEDC *dc_attr, INT mode )
     return emfdc_record( dc_attr->emf, &emr.emr );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL EMFDC_SetICMMode( WINEDC *dc_attr, DWORD mode )
 {
     EMRSETICMMODE emr;
@@ -2643,7 +2643,7 @@ BOOL EMFDC_DeleteDC( WINEDC *dc_attr )
 
 
 //
-// ReactOS Print Support
+// LibreNT Print Support
 //
 BOOL EMFDC_WriteEscape( WINEDC *dc_attr, INT nEscape, INT cbInput, LPSTR lpszInData, DWORD emrType)
 {
@@ -2741,13 +2741,13 @@ BOOL WINAPI EMFDC_GdiComment( HDC hdc, UINT bytes, const BYTE *buffer )
 
     if (!(dc_attr = get_dc_ptr( hdc )) || !dc_attr->emf) return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (bytes > MAXDWORD - offsetof(EMRGDICOMMENT,Data) - 3) return FALSE;
 #endif
     rounded_size = (bytes+3) & ~3;
     total = offsetof(EMRGDICOMMENT,Data) + rounded_size;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(emr = HeapAlloc(GetProcessHeap(), 0, total))) return FALSE;
 #else
     emr = HeapAlloc(GetProcessHeap(), 0, total);
@@ -2774,7 +2774,7 @@ HDC WINAPI CreateEnhMetaFileA( HDC hdc, const char *filename, const RECT *rect,
     WCHAR *filenameW = NULL;
     WCHAR *descriptionW = NULL;
     DWORD len1, len2, total;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HDC ret = 0;
 #else
     HDC ret;
@@ -2783,7 +2783,7 @@ HDC WINAPI CreateEnhMetaFileA( HDC hdc, const char *filename, const RECT *rect,
     if (filename)
     {
         total = MultiByteToWideChar( CP_ACP, 0, filename, -1, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!total || !(filenameW = HeapAlloc( GetProcessHeap(), 0, total * sizeof(WCHAR) )))
             goto done;
         if (!MultiByteToWideChar( CP_ACP, 0, filename, -1, filenameW, total ))
@@ -2799,7 +2799,7 @@ HDC WINAPI CreateEnhMetaFileA( HDC hdc, const char *filename, const RECT *rect,
         len1 = (DWORD)strlen(description);
         len2 = (DWORD)strlen(description + len1 + 1);
         total = MultiByteToWideChar( CP_ACP, 0, description, len1 + len2 + 3, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!total || !(descriptionW = HeapAlloc( GetProcessHeap(), 0, total * sizeof(WCHAR) )))
             goto done;
         if (!MultiByteToWideChar( CP_ACP, 0, description, len1 + len2 + 3, descriptionW, total ))
@@ -2812,7 +2812,7 @@ HDC WINAPI CreateEnhMetaFileA( HDC hdc, const char *filename, const RECT *rect,
 
     ret = CreateEnhMetaFileW( hdc, filenameW, rect, descriptionW );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #endif
     HeapFree( GetProcessHeap(), 0, filenameW );
@@ -2838,7 +2838,7 @@ HDC WINAPI CreateEnhMetaFileW( HDC hdc, const WCHAR *filename, const RECT *rect,
     //if (!(ret = NtGdiCreateMetafileDC( hdc ))) return 0;
     if(!(dc_attr = alloc_dc_ptr(OBJ_ENHMETADC)))
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
        if (dc_attr->hdc) DeleteDC( dc_attr->hdc );
 #endif
        return 0;
@@ -2846,7 +2846,7 @@ HDC WINAPI CreateEnhMetaFileW( HDC hdc, const WCHAR *filename, const RECT *rect,
 
     ret = dc_attr->hdc;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (/*!(dc_attr = get_dc_ptr( ret )) ||*/ !(emf = HeapAlloc( GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(*emf) )))
 #else
     if (/*!(dc_attr = get_dc_ptr( ret )) ||*/ !(emf = HeapAlloc( GetProcessHeap(), 0, sizeof(*emf) )))
@@ -2877,7 +2877,7 @@ HDC WINAPI CreateEnhMetaFileW( HDC hdc, const WCHAR *filename, const RECT *rect,
 
     emf->handles = HeapAlloc( GetProcessHeap(), HEAP_ZERO_MEMORY,
                               HANDLE_LIST_INC * sizeof(emf->handles[0]) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!emf->handles)
     {
         DeleteDC( ret );

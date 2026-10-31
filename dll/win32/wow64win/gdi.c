@@ -30,7 +30,7 @@
 #include "wow64win_private.h"
 #include "native_stubs.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 W32KAPI ULONG WINAPI NtGdiEnumObjects( HDC hdc, INT type, ULONG size, void *buffer );
 W32KAPI DWORD WINAPI NtGdiGetCharacterPlacementW( HDC hdc, const WCHAR *str, INT count, INT max_extent,
                                                   GCP_RESULTSW *results, DWORD flags );
@@ -115,14 +115,14 @@ typedef struct
 } OUTLINETEXTMETRIC32;
 
 
-#if defined(__REACTOS__) && !defined(GDI_OBJECT_TYPE_BITMAP)
+#if defined(__LIBRENT__) && !defined(GDI_OBJECT_TYPE_BITMAP)
 #define GDI_OBJECT_TYPE_BITMAP 0x00050000
 #endif
 
 static DWORD gdi_handle_type( HGDIOBJ obj )
 {
     unsigned int handle = HandleToUlong( obj );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int type = handle & NTGDI_HANDLE_TYPE_MASK;
 
     if (type == GDI_OBJECT_TYPE_BITMAP) return NTGDI_OBJ_BITMAP;
@@ -500,7 +500,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDICheckOcclusion( UINT *args )
     {
         ULONG hWnd;
     } *desc32 = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     D3DKMT_CHECKOCCLUSION desc;
 
     if (!desc32) return NtGdiDdDDICheckOcclusion( NULL );
@@ -525,7 +525,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDICloseAdapter( UINT *args )
     return NtGdiDdDDICloseAdapter( desc );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiDdDDICreateAllocation( UINT *args )
 {
     struct
@@ -632,7 +632,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDICreateAllocation( UINT *args )
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiDdDDICreateAllocation2( UINT *args )
 {
     struct
@@ -771,13 +771,13 @@ NTSTATUS WINAPI wow64_NtGdiDdDDICreateDCFromMemory( UINT *args )
     desc.Width = desc32->Width;
     desc.Height = desc32->Height;
     desc.Pitch = desc32->Pitch;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hDeviceDc = Handle32ToHandle( desc32->hDeviceDc );
 #else
     desc.hDeviceDc = UlongToHandle( desc32->hDeviceDc );
 #endif
     desc.pColorTable = UlongToPtr( desc32->pColorTable );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hDc = Handle32ToHandle( desc32->hDc );
     desc.hBitmap = Handle32ToHandle( desc32->hBitmap );
 #else
@@ -874,7 +874,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDICreateSynchronizationObject2( UINT *args )
     if (desc->Info.Type == D3DDDI_CPU_NOTIFICATION)
     {
         ULONG event = HandleToUlong( desc->Info.CPUNotification.Event );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         desc->Info.CPUNotification.Event = Handle32ToHandle( event );
 #else
         desc->Info.CPUNotification.Event = UlongToHandle( event );
@@ -932,7 +932,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIDestroyDCFromMemory( UINT *args )
     D3DKMT_DESTROYDCFROMMEMORY desc;
 
     if (!desc32) return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hDc = Handle32ToHandle( desc32->hDc );
     desc.hBitmap = Handle32ToHandle( desc32->hBitmap );
 #else
@@ -1041,7 +1041,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenAdapterFromDeviceName( UINT *args )
     return status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiDdDDIOpenAdapterFromGdiDisplayName( UINT *args )
 {
     D3DKMT_OPENADAPTERFROMGDIDISPLAYNAME *desc = get_ptr( &args );
@@ -1064,7 +1064,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenAdapterFromHdc( UINT *args )
     NTSTATUS status;
 
     if (!desc32) return STATUS_INVALID_PARAMETER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hDc = Handle32ToHandle( desc32->hDc );
 #else
     desc.hDc = UlongToHandle( desc32->hDc );
@@ -1128,7 +1128,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenKeyedMutexFromNtHandle( UINT *args )
     D3DKMT_OPENKEYEDMUTEXFROMNTHANDLE desc;
     NTSTATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hNtHandle = Handle32ToHandle( desc32->hNtHandle );
 #else
     desc.hNtHandle = UlongToHandle( desc32->hNtHandle );
@@ -1155,7 +1155,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenNtHandleFromName( UINT *args )
 
     desc.dwDesiredAccess = desc32->dwDesiredAccess;
     desc.pObjAttrib = objattr_32to64( &attr, UlongToPtr( desc32->pObjAttrib ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hNtHandle = Handle32ToHandle( desc32->hNtHandle );
 #else
     desc.hNtHandle = UlongToHandle( desc32->hNtHandle );
@@ -1165,7 +1165,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenNtHandleFromName( UINT *args )
     return status;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiDdDDIOpenResource( UINT *args )
 {
     struct
@@ -1229,7 +1229,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenResource( UINT *args )
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiDdDDIOpenResource2( UINT *args )
 {
     struct
@@ -1297,7 +1297,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenResource2( UINT *args )
 }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiDdDDIOpenResourceFromNtHandle( UINT *args )
 {
     struct
@@ -1387,7 +1387,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenSyncObjectFromNtHandle( UINT *args )
     D3DKMT_OPENSYNCOBJECTFROMNTHANDLE desc;
     NTSTATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hNtHandle = Handle32ToHandle( desc32->hNtHandle );
 #else
     desc.hNtHandle = UlongToHandle( desc32->hNtHandle );
@@ -1420,7 +1420,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenSyncObjectFromNtHandle2( UINT *args )
     D3DKMT_OPENSYNCOBJECTFROMNTHANDLE2 desc;
     NTSTATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hNtHandle = Handle32ToHandle( desc32->hNtHandle );
 #else
     desc.hNtHandle = ULongToHandle( desc32->hNtHandle );
@@ -1453,7 +1453,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIOpenSyncObjectNtHandleFromName( UINT *args )
 
     desc.dwDesiredAccess = desc32->dwDesiredAccess;
     desc.pObjAttrib = objattr_32to64( &attr, UlongToPtr( desc32->pObjAttrib ) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hNtHandle = Handle32ToHandle( desc32->hNtHandle );
 #else
     desc.hNtHandle = UlongToHandle( desc32->hNtHandle );
@@ -1536,7 +1536,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIQueryResourceInfoFromNtHandle( UINT *args )
     NTSTATUS status;
 
     desc.hDevice = desc32->hDevice;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hNtHandle = Handle32ToHandle( desc32->hNtHandle );
 #else
     desc.hNtHandle = UlongToHandle( desc32->hNtHandle );
@@ -1663,7 +1663,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIShareObjects( UINT *args )
     ULONG *handle_ptr = get_ptr( &args );
 
     struct object_attr64 attr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE handle = Handle32ToHandle( *handle_ptr );
 #else
     HANDLE handle = UlongToHandle( *handle_ptr );
@@ -1715,7 +1715,7 @@ NTSTATUS WINAPI wow64_NtGdiDdDDIWaitForSynchronizationObjectFromCpu( UINT *args 
     desc.ObjectCount = desc32->ObjectCount;
     desc.ObjectHandleArray = UlongToPtr( desc32->ObjectHandleArray );
     desc.FenceValueArray = UlongToPtr( desc32->FenceValueArray );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     desc.hAsyncEvent = Handle32ToHandle( desc32->hAsyncEvent );
 #else
     desc.hAsyncEvent = UlongToHandle( desc32->hAsyncEvent );
@@ -1974,7 +1974,7 @@ NTSTATUS WINAPI wow64_NtGdiExtGetObjectW( UINT *args )
             return count;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case NTGDI_OBJ_BRUSH:
         {
             struct
@@ -2407,7 +2407,7 @@ NTSTATUS WINAPI wow64_NtGdiGetRasterizerCaps( UINT *args )
     return NtGdiGetRasterizerCaps( status, size );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiEnumObjects( UINT *args )
 {
     HDC hdc = get_handle( &args );
@@ -2496,7 +2496,7 @@ NTSTATUS WINAPI wow64_NtGdiGetRealizationInfo( UINT *args )
 {
     HDC hdc = get_handle( &args );
     struct font_realization_info *info = get_ptr( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HFONT font = get_handle( &args );
 
     return ((ROS_NTGDI_GET_REALIZATION_INFO)NtGdiGetRealizationInfo)( hdc, info, font );
@@ -2524,7 +2524,7 @@ NTSTATUS WINAPI wow64_NtGdiGetTextCharsetInfo( UINT *args )
     return NtGdiGetTextCharsetInfo( hdc, fs, flags );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiGetTextExtent( UINT *args )
 {
     HDC hdc = get_handle( &args );
@@ -2779,7 +2779,7 @@ NTSTATUS WINAPI wow64_NtGdiHfontCreate( UINT *args )
     return HandleToUlong( NtGdiHfontCreate( logfont, unk2, unk3, unk4, data ));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiInit( UINT *args )
 {
     return NtGdiInit();
@@ -2828,7 +2828,7 @@ NTSTATUS WINAPI wow64_NtGdiOpenDCW( UINT *args )
     ULONG type = get_ulong( &args );
     BOOL is_display = get_ulong( &args );
     HANDLE hspool = get_handle( &args );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG *dhpdev32 = get_ptr( &args );
     void *dhpdev = NULL;
 
@@ -3316,7 +3316,7 @@ NTSTATUS WINAPI wow64_NtGdiWidenPath( UINT *args )
     return NtGdiWidenPath( hdc );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS WINAPI wow64_NtGdiGetStockObject( UINT *args )
 {
     INT object = get_ulong( &args );

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            ntoskrnl/ke/amd64/thrdini.c
  * PURPOSE:         amd64 Thread Context Creation
  * PROGRAMMER:      Timo Kreuzer (timo.kreuzer@reactos.org)
@@ -96,7 +96,7 @@ KiInitializeContextThread(IN PKTHREAD Thread,
 
         /* Set the Thread's NPX State */
         Thread->NpxState = SharedUserData->XState.EnabledFeatures;
-        /* TODO: NpxIrql was a ReactOS extension to DISPATCHER_HEADER; removed at Win7 */
+        /* TODO: NpxIrql was a LibreNT extension to DISPATCHER_HEADER; removed at Win7 */
 #if (NTDDI_VERSION < NTDDI_WIN7)
         Thread->Header.NpxIrql = PASSIVE_LEVEL;
 #endif

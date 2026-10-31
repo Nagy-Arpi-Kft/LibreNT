@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(appxalluserstore MODULE ${SOURCE})
 set_module_type(appxalluserstore win32dll ENTRYPOINT DllMain 12)
 add_importlibs(appxalluserstore msvcrt kernel32 ntdll)
-add_cd_file(TARGET appxalluserstore DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET appxalluserstore DESTINATION librent/system32 FOR all)

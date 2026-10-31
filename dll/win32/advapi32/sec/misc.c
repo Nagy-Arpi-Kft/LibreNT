@@ -5,7 +5,7 @@
  * Copyright 2003 CodeWeavers Inc. (Ulrich Czekalla)
  * Copyright 2006 Robert Reif
  *
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/advapi32/sec/misc.c
  * PURPOSE:         Miscellaneous security functions (some ported from Wine)
  */
@@ -664,7 +664,7 @@ LookupAccountNameW(LPCWSTR lpSystemName,
         return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpAccountName || !*lpAccountName)
         lpAccountName = L"BUILTIN";
 #endif
@@ -688,7 +688,7 @@ LookupAccountNameW(LPCWSTR lpSystemName,
     {
         pDomainSid = ReferencedDomains->Domains[TranslatedSid->DomainIndex].Sid;
         nSubAuthorities = *GetSidSubAuthorityCount(pDomainSid);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         dwSidLength = GetSidLengthRequired(nSubAuthorities + (TranslatedSid->Use != SidTypeDomain));
 
         dwDomainNameLength = ReferencedDomains->Domains[TranslatedSid->DomainIndex].Name.Length / sizeof(WCHAR);
@@ -709,7 +709,7 @@ LookupAccountNameW(LPCWSTR lpSystemName,
         else
         {
             CopySid(*cbSid, Sid, pDomainSid);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (TranslatedSid->Use != SidTypeDomain)
             {
                 *GetSidSubAuthorityCount(Sid) = nSubAuthorities + 1;
@@ -1579,7 +1579,7 @@ TreeResetNamedSecurityInfoW(LPWSTR pObjectName,
     return ErrorCode;
 }
 
-#if defined(HAS_FN_PROGRESSW) && !defined(__REACTOS__)
+#if defined(HAS_FN_PROGRESSW) && !defined(__LIBRENT__)
 
 typedef struct _INTERNAL_FNPROGRESSW_DATA
 {
@@ -1656,7 +1656,7 @@ TreeResetNamedSecurityInfoA(LPSTR pObjectName,
                             PROG_INVOKE_SETTING ProgressInvokeSetting,
                             PVOID Args)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ERROR_CALL_NOT_IMPLEMENTED;
 #else
 #ifndef HAS_FN_PROGRESSW
@@ -1695,7 +1695,7 @@ TreeResetNamedSecurityInfoA(LPSTR pObjectName,
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD
 WINAPI
 TreeSetNamedSecurityInfoA(LPSTR pObjectName,

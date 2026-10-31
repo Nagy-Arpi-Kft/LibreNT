@@ -31,10 +31,10 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 endif()
 
 add_pch(cmipci precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET cmipci DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET cmipci DESTINATION librent/system32/drivers FOR all)
 
 if(ARCH STREQUAL "i386")
-    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/CM8738-x32.inf" DESTINATION reactos/inf FOR all)
+    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/CM8738-x32.inf" DESTINATION librent/inf FOR all)
 else()
-    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/CM8738-x64.inf" DESTINATION reactos/inf FOR all)
+    add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/CM8738-x64.inf" DESTINATION librent/inf FOR all)
 endif()

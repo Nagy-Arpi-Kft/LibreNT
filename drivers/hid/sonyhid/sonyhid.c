@@ -1,12 +1,12 @@
 /*
- * PROJECT:     ReactOS HID Stack
+ * PROJECT:     LibreNT HID Stack
  * LICENSE:     GPL-3.0-or-later
  * FILE:        drivers/hid/sonyhid/sonyhid.c
  * PURPOSE:     Sony DualShock 3 / DualShock 4 / DualSense HID support
  *
  * Cleanroom feature plan derived from public Linux hid-sony /
  * hid-playstation architecture (multi-evdev, LED class, battery,
- * motion sensors). All code is original ReactOS implementation.
+ * motion sensors). All code is original LibreNT implementation.
  *
  * DEVICES RECOGNIZED:
  *   DualShock 3     USB / Bluetooth IDs

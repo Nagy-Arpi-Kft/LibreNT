@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Accessibility Control Panel
+ * PROJECT:         LibreNT Accessibility Control Panel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            dll/cpl/access/keyboard.c
  * PURPOSE:         Keyboard-related accessibility settings

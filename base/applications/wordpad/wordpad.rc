@@ -31,7 +31,7 @@ BEGIN
         MENUITEM "&Open...\tCtrl+O",      ID_FILE_OPEN
         MENUITEM "&Save\tCtrl+S",         ID_FILE_SAVE
         MENUITEM "Save &as...",           ID_FILE_SAVEAS
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
@@ -39,7 +39,7 @@ BEGIN
         MENUITEM "&Print...\tCtrl+P",     ID_PRINT
         MENUITEM "Print previe&w",        ID_PREVIEW
         MENUITEM "Page Se&tup...",        ID_PRINTSETUP
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
@@ -50,7 +50,7 @@ BEGIN
     BEGIN
         MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
         MENUITEM "R&edo\tCtrl+Y",               ID_EDIT_REDO
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
@@ -60,7 +60,7 @@ BEGIN
         MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
         MENUITEM "&Clear\tDel",                 ID_EDIT_CLEAR
         MENUITEM "&Select all\tCtrl+A",         ID_EDIT_SELECTALL
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
@@ -68,14 +68,14 @@ BEGIN
         MENUITEM "&Find...\tCtrl+F",            ID_FIND
         MENUITEM "Find &next\tF3",              ID_FIND_NEXT
         MENUITEM "&Replace...\tCtrl+H",         ID_REPLACE
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
 #endif
         MENUITEM "Read-&only",                  ID_EDIT_READONLY
         MENUITEM "&Modified",                   ID_EDIT_MODIFIED
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
@@ -95,7 +95,7 @@ BEGIN
         MENUITEM "&Format Bar",     ID_TOGGLE_FORMATBAR
         MENUITEM "&Ruler",          ID_TOGGLE_RULER
         MENUITEM "&Status Bar",     ID_TOGGLE_STATUSBAR
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         MENUITEM "", -1, MFT_SEPARATOR
 #else
         MENUITEM SEPARATOR
@@ -219,7 +219,7 @@ BEGIN
     STRING_PROMPT_SAVE_CHANGES,  "Save changes to '%s'?"
     STRING_SEARCH_FINISHED,      "Finished searching the document."
     STRING_LOAD_RICHED_FAILED,   "Failed to load the RichEdit library."
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     STRING_SAVE_LOSEFORMATTING,  "You have chosen to save in plain text format, which will cause all formatting to be lost. Are you sure that you wish to do this?"
 #else
     STRING_SAVE_LOSEFORMATTING,  "You have chosen to save in plain text format, " \
@@ -307,7 +307,7 @@ BEGIN
     LTEXT "", IDC_PAGEFMT_ID, 0,0,0,0
 END
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 MAINACCELTABLE ACCELERATORS
 BEGIN
     "1",          ID_BACK_1,          VIRTKEY, CONTROL

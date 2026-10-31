@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NTFS library
+ * PROJECT:     LibreNT NTFS library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     NTFS volume formatter: boot sector and boot area
  */
@@ -28,7 +28,7 @@ FormatEncodeRecordSize(_In_ ULONG Size,
 }
 
 /*
- * Builds the BPB. The bootstrap area is intentionally left zeroed: on ReactOS
+ * Builds the BPB. The bootstrap area is intentionally left zeroed: on LibreNT
  * the boot code comes from loader\ntfs.bin and is installed by
  * InstallNtfsBootCode(), which copies the BPB written here into it.
  */

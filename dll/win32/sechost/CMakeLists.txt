@@ -1,7 +1,7 @@
 add_definitions(-D__WINESRC__)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/wine
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wine
     ${CMAKE_CURRENT_BINARY_DIR})
 
 add_rpc_files(client svcctl.idl plugplay.idl)
@@ -21,5 +21,5 @@ set_module_type(sechost win32dll ENTRYPOINT 0)
 target_link_libraries(sechost wine ${PSEH_LIB})
 add_delay_importlibs(sechost rpcrt4 advapi32)
 add_importlibs(sechost kernelbase msvcrt kernel32_vista kernel32 ntdll)
-add_cd_file(TARGET sechost DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET sechost DESTINATION librent/system32 FOR all)
 set_wine_module(sechost)

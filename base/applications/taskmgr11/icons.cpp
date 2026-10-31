@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Task Manager
+ * PROJECT:     LibreNT Task Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Vector icon set, drawn with GDI+ at any size (resolution
  *              independent). All outlines are from Lucide 1.16.0, ISC/MIT

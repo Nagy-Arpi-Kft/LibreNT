@@ -1,5 +1,5 @@
 /*
- * ReactOS Access Control List Editor
+ * LibreNT Access Control List Editor
  * Copyright (C) 2004 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 /*
- * PROJECT:         ReactOS Access Control List Editor
+ * PROJECT:         LibreNT Access Control List Editor
  * FILE:            lib/acledit/acledit.c
  * PURPOSE:         Access Control List Editor
  * PROGRAMMER:      Thomas Weidenmueller (w3seek@users.sourceforge.net)

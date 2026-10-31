@@ -1350,12 +1350,12 @@ static BOOL convert_dib_to_bmp(const void **data, unsigned int *size)
 
     TRACE("Converting DIB file to BMP\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (*size > UINT_MAX - sizeof(BITMAPFILEHEADER))
         return FALSE;
 #endif
     new_size = *size + sizeof(BITMAPFILEHEADER);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(new_data = malloc(new_size)))
         return FALSE;
 #else

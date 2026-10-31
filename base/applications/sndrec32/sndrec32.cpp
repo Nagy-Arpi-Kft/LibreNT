@@ -1,4 +1,4 @@
-/* PROJECT:         ReactOS sndrec32
+/* PROJECT:         LibreNT sndrec32
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            base/applications/sndrec32/sndrec32.cpp
  * PURPOSE:         Sound recording
@@ -173,7 +173,7 @@ _tWinMain(HINSTANCE hInstance,
 
     /* Inits strings */
     LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadString(hInstance, IDC_REACTOS_SNDREC32, szWindowClass, MAX_LOADSTRING);
+    LoadString(hInstance, IDC_LIBRENT_SNDREC32, szWindowClass, MAX_LOADSTRING);
     LoadString(hInstance, IDS_STRPOS, str_pos, MAX_LOADSTRING);
     LoadString(hInstance, IDS_STRDUR, str_dur, MAX_LOADSTRING);
     LoadString(hInstance, IDS_STRBUF, str_buf, MAX_LOADSTRING);
@@ -193,7 +193,7 @@ _tWinMain(HINSTANCE hInstance,
     }
 
     /* Loads key accelerators */
-    hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_REACTOS_SNDREC32));
+    hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_LIBRENT_SNDREC32));
 
     /* Starts main loop */
     while (GetMessage(&msg, NULL, 0, 0))
@@ -598,7 +598,7 @@ WndProc(HWND hWnd,
                 case ID_ABOUT:
                     LoadStringW(hInst, IDS_APP_TITLE, szAppName, _countof(szAppName));
                     ShellAboutW(hWnd, szAppName, NULL,
-                                LoadIconW(hInst, MAKEINTRESOURCEW(IDI_REACTOS_SNDREC32)));
+                                LoadIconW(hInst, MAKEINTRESOURCEW(IDI_LIBRENT_SNDREC32)));
                     break;
 
                 case ID_FILE_SAVEAS:

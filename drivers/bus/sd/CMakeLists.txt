@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 list(APPEND SOURCE
     sdbus.c
@@ -16,8 +16,6 @@ list(APPEND SOURCE
     emmc.c
     sdhost.c
     dwmmc.c
-    k1x.c
-    jh7110.c
     hardware.h
     sdhost.h
     dwmmc.h
@@ -27,6 +25,6 @@ add_library(sdbus MODULE ${SOURCE} sdbus.rc)
 set_module_type(sdbus kernelmodedriver)
 add_importlibs(sdbus ntoskrnl hal)
 add_pch(sdbus sdbus.h SOURCE)
-add_cd_file(TARGET sdbus DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET sdbus DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(sdbus_reg.inf)
 add_driver_inf(sdbus sdbus.inf)

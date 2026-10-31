@@ -37,7 +37,7 @@ struct list_constraint
 
     BOOLEAN enabled;
     IVector_HSTRING *commands;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HSTRING tag;
 #endif
 };
@@ -97,7 +97,7 @@ static ULONG WINAPI list_constraint_Release( ISpeechRecognitionListConstraint *i
     if (!ref)
     {
         IVector_HSTRING_Release(impl->commands);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WindowsDeleteString(impl->tag);
 #endif
         free(impl);
@@ -181,7 +181,7 @@ static HRESULT WINAPI constraint_put_IsEnabled( ISpeechRecognitionConstraint *if
 
 static HRESULT WINAPI constraint_get_Tag( ISpeechRecognitionConstraint *iface, HSTRING *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list_constraint *impl = impl_from_ISpeechRecognitionConstraint(iface);
     TRACE("iface %p, value %p.\n", iface, value);
     if (!value) return E_POINTER;
@@ -194,7 +194,7 @@ static HRESULT WINAPI constraint_get_Tag( ISpeechRecognitionConstraint *iface, H
 
 static HRESULT WINAPI constraint_put_Tag( ISpeechRecognitionConstraint *iface, HSTRING value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list_constraint *impl = impl_from_ISpeechRecognitionConstraint(iface);
     HSTRING tag;
     HRESULT hr;
@@ -385,7 +385,7 @@ static HRESULT WINAPI constraint_factory_CreateWithTag( ISpeechRecognitionListCo
 
     if (!(impl = calloc(1, sizeof(*impl)))) return E_OUTOFMEMORY;
     if (FAILED(hr = vector_hstring_create_copy(commands, &impl->commands))) goto error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = WindowsDuplicateString(tag, &impl->tag))) goto error;
 #endif
 
@@ -400,7 +400,7 @@ static HRESULT WINAPI constraint_factory_CreateWithTag( ISpeechRecognitionListCo
 
 error:
     if (impl->commands) IVector_HSTRING_Release(impl->commands);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WindowsDeleteString(impl->tag);
 #endif
     free(impl);

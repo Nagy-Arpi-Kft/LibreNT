@@ -1,10 +1,10 @@
 [Version]
 Signature = "$WINDOWS NT$"
-;Signature  = "$ReactOS$"
+;Signature  = "$LibreNT$"
 LayoutFile = layout.inf
 Class     = Image
 ClassGuid = {6bdd1fc6-810f-11d0-bec7-08002be2092f}
-Provider  = %ReactOS%
+Provider  = %LibreNT%
 DriverVer=02/28/2010,1.00
 
 [DestinationDirs]
@@ -25,7 +25,7 @@ HKR,,Installer32, 0,"sti_ci.dll,ClassInstall"
 
 [Strings]
 ; Non-localizable
-ReactOS = "LiberNT Project"
+LibreNT = "LibreNT Project"
 
 ; Localizable
 ImageClassName = "Image"

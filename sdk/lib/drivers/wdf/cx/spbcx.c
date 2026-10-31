@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Kernel-Mode Driver Framework
+ * PROJECT:     LibreNT Kernel-Mode Driver Framework
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Simple-peripheral-bus KMDF class extension
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -8,7 +8,7 @@
 #include "classlibrary.h"
 #include <spbcx.h>
 #include <initguid.h>
-#include <reactos/drivers/reshubio.h>
+#include <librent/drivers/reshubio.h>
 
 typedef struct _SPBCX_TRANSFER
 {

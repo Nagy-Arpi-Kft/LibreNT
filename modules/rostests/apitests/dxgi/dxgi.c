@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DXGI factory, D3D11 device, and software render probe tests.
  */
@@ -146,7 +146,7 @@ probe_wndproc(HWND Window, UINT Message, WPARAM WParam, LPARAM LParam)
 static HWND
 create_probe_window(void)
 {
-    static const WCHAR ClassName[] = L"ReactOSD3D11ProbeWindow";
+    static const WCHAR ClassName[] = L"LibreNTD3D11ProbeWindow";
     WNDCLASSW Class;
     HINSTANCE Instance = GetModuleHandleW(NULL);
 

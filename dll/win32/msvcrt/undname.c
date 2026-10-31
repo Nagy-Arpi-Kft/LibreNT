@@ -93,7 +93,7 @@ struct datatype_t
 
 static BOOL symbol_demangle(struct parsed_symbol* sym);
 static char* get_class_name(struct parsed_symbol* sym);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL get_unknown_class(struct parsed_symbol* sym, struct datatype_t* ct);
 #endif
 
@@ -569,7 +569,7 @@ static BOOL get_qualified_type(struct datatype_t *ct, struct parsed_symbol* sym,
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (sym->flags & UNDNAME_NO_ARGUMENTS)
     {
         const char* save = sym->current;
@@ -823,7 +823,7 @@ static char* get_class_name(struct parsed_symbol* sym)
     sym->stack.num = mark;
     return s;
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static BOOL get_unknown_class(struct parsed_symbol* sym, struct datatype_t* ct)
 {
@@ -1251,7 +1251,7 @@ static BOOL demangle_datatype(struct parsed_symbol* sym, struct datatype_t* ct,
         }
         break;
     default :
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((sym->flags & UNDNAME_NO_ARGUMENTS) && dt > '`')
         {
             get_unknown_class(sym, ct);
@@ -1560,7 +1560,7 @@ static BOOL symbol_demangle(struct parsed_symbol* sym)
     {
         struct datatype_t   ct;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (demangle_datatype(sym, &ct, 0) && !*sym->current)
 #else
         if (demangle_datatype(sym, &ct, 0))

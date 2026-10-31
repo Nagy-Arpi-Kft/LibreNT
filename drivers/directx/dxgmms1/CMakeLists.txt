@@ -7,7 +7,7 @@
 # table at initialisation time.
 #
 # Build order inside drivers/directx:
-#   1. dxgmms1  (no upstream ReactOS deps beyond ntoskrnl/hal)
+#   1. dxgmms1  (no upstream LibreNT deps beyond ntoskrnl/hal)
 #   2. dxgkrnl  (links against dxgmms1 import library)
 
 # dxgmms1 and dxgkrnl exchange WDDM structures by value. Keep both targets on
@@ -35,4 +35,4 @@ add_library(dxgmms1 MODULE
 set_module_type(dxgmms1 kernelmodedriver)
 add_importlibs(dxgmms1 ntoskrnl hal)
 add_pch(dxgmms1 dxgmms1_private.h "${SOURCE}")
-add_cd_file(TARGET dxgmms1 DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET dxgmms1 DESTINATION librent/system32/drivers FOR all)

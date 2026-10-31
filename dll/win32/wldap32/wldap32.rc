@@ -1,4 +1,4 @@
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*
  * Top level resource file for WLDAP32
  *

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS 'General' Shim library
+ * PROJECT:     LibreNT 'General' Shim library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Shim to apply the msys2 decoy
  * COPYRIGHT:   Copyright 2025 Timo kreuzer <timo.kreuzer@reactos.org>
@@ -23,8 +23,8 @@ BOOL WINAPI SHIM_OBJ_NAME(Notify)(DWORD fdwReason, PVOID ptr)
 {
     if (fdwReason == SHIM_NOTIFY_ATTACH)
     {
-        ReactOS_ShimData *pShimData = (ReactOS_ShimData *)NtCurrentPeb()->pShimData;
-        if (pShimData && pShimData->dwMagic == REACTOS_SHIMDATA_MAGIC)
+        LibreNT_ShimData *pShimData = (LibreNT_ShimData *)NtCurrentPeb()->pShimData;
+        if (pShimData && pShimData->dwMagic == LIBRENT_SHIMDATA_MAGIC)
         {
             /* Grab the private function from ntdll */
             RtlGetCurrentDirectory_U_RtlpMsysDecoy = pShimData->RtlGetCurrentDirectory_U_RtlpMsysDecoy;

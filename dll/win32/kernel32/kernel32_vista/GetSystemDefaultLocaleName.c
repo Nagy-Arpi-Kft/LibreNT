@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Win32 Base API
+ * PROJECT:     LibreNT Win32 Base API
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Implementation of GetSystemDefaultLocaleName
  * COPYRIGHT:   Adapted from the ReactOS/Wine locale implementation

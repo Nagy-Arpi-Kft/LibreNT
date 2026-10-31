@@ -9,7 +9,7 @@
 
 #if !DBG
 
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 //	suppress empty compile unit warning
 #pragma warning (disable: 4206)
 #pragma message ("Debug feature is disabled.")
@@ -178,7 +178,7 @@ GetSystemIrpName(ULONG minor_code)
 
 
 #include <ntdddisk.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <ntddft.h>
 #endif
 #include <ntddstor.h>
@@ -351,7 +351,7 @@ GetSystemIrpName(ULONG minor_code)
 
 #include <mountmgr.h>
 #include <mountdev.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <ntddft2.h>
 #endif
 #include <ntddvol.h>
@@ -516,7 +516,7 @@ GetIoControlName(
 	CASE_RETURN_STR(IOCTL_DISK_GROW_PARTITION);
 	CASE_RETURN_STR(IOCTL_DISK_GET_CACHE_INFORMATION);
 	CASE_RETURN_STR(IOCTL_DISK_SET_CACHE_INFORMATION);
-#if !defined(__REACTOS__) || (NTDDI_VERSION < NTDDI_WS03)
+#if !defined(__LIBRENT__) || (NTDDI_VERSION < NTDDI_WS03)
 	CASE_RETURN_STR(IOCTL_DISK_GET_WRITE_CACHE_STATE);
 #else
     CASE_RETURN_STR(OBSOLETE_DISK_GET_WRITE_CACHE_STATE);
@@ -538,7 +538,7 @@ GetIoControlName(
 	CASE_RETURN_STR(IOCTL_DISK_GET_MEDIA_TYPES);
 	CASE_RETURN_STR(IOCTL_DISK_SIMBAD);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	// ntddft.h
 	CASE_RETURN_STR(FT_INITIALIZE_SET);
 	CASE_RETURN_STR(FT_REGENERATE);

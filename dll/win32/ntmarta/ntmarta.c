@@ -1,5 +1,5 @@
 /*
- * ReactOS MARTA provider
+ * LibreNT MARTA provider
  * Copyright (C) 2005 - 2006 ReactOS Team
  *
  * This library is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 /*
- * PROJECT:         ReactOS MARTA provider
+ * PROJECT:         LibreNT MARTA provider
  * FILE:            lib/ntmarta/ntmarta.c
- * PURPOSE:         ReactOS MARTA provider
+ * PURPOSE:         LibreNT MARTA provider
  * PROGRAMMER:      Thomas Weidenmueller <w3seek@reactos.com>
  *
  * UPDATE HISTORY:

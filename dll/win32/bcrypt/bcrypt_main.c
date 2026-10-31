@@ -58,7 +58,7 @@ enum alg_id
     ALG_ID_AES,
     ALG_ID_AES_GMAC,
     ALG_ID_RC4,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ALG_ID_DES,
     ALG_ID_DESX,
     ALG_ID_3DES_112,
@@ -163,7 +163,7 @@ struct gcm_key
 #define BLOCK_LENGTH_3DES   8
 #define BLOCK_LENGTH_AES   16
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct legacy_key
 {
     PCSYMCRYPT_BLOCKCIPHER cipher;
@@ -189,7 +189,7 @@ struct symmetric_key
     {
         struct aes_key aes;
         struct gcm_key gcm;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         struct legacy_key legacy;
 #endif
     };
@@ -495,7 +495,7 @@ static const struct
 }
 builtin_algorithms[] =
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {  BCRYPT_3DES_ALGORITHM,       BCRYPT_CIPHER_INTERFACE,                558,    0,    0 },
 #else
     {  BCRYPT_3DES_ALGORITHM,       BCRYPT_CIPHER_INTERFACE,                522,    0,    0 },
@@ -504,7 +504,7 @@ builtin_algorithms[] =
     {  BCRYPT_AES_ALGORITHM,        BCRYPT_CIPHER_INTERFACE,                654,    0,    0 },
     {  BCRYPT_AES_GMAC_ALGORITHM,   BCRYPT_CIPHER_INTERFACE,                654,    0,    0, 0, CHAIN_MODE_GCM },
     {  BCRYPT_RC4_ALGORITHM,        BCRYPT_CIPHER_INTERFACE,                654,    0,    0 },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {  BCRYPT_DES_ALGORITHM,        BCRYPT_CIPHER_INTERFACE,                542,    0,    0 },
     {  BCRYPT_DESX_ALGORITHM,       BCRYPT_CIPHER_INTERFACE,                574,    0,    0 },
     {  BCRYPT_3DES_112_ALGORITHM,   BCRYPT_CIPHER_INTERFACE,                542,    0,    0 },
@@ -624,7 +624,7 @@ static const struct algorithm pseudo_algorithms[] =
     {{ MAGIC_ALG }, ALG_ID_3DES, CHAIN_MODE_CBC },
     {{ MAGIC_ALG }, ALG_ID_3DES, CHAIN_MODE_ECB },
     {{ MAGIC_ALG }, ALG_ID_3DES, CHAIN_MODE_CFB },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {{ MAGIC_ALG }, ALG_ID_3DES_112, CHAIN_MODE_CBC },
     {{ MAGIC_ALG }, ALG_ID_3DES_112, CHAIN_MODE_ECB },
     {{ MAGIC_ALG }, ALG_ID_3DES_112, CHAIN_MODE_CFB },
@@ -638,7 +638,7 @@ static const struct algorithm pseudo_algorithms[] =
     {{ MAGIC_ALG }, ALG_ID_AES, CHAIN_MODE_CFB },
     {{ MAGIC_ALG }, ALG_ID_AES, CHAIN_MODE_CCM },
     {{ MAGIC_ALG }, ALG_ID_AES, CHAIN_MODE_GCM },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {{ MAGIC_ALG }, ALG_ID_DES, CHAIN_MODE_CBC },
     {{ MAGIC_ALG }, ALG_ID_DES, CHAIN_MODE_ECB },
     {{ MAGIC_ALG }, ALG_ID_DES, CHAIN_MODE_CFB },
@@ -647,7 +647,7 @@ static const struct algorithm pseudo_algorithms[] =
     {{ 0 }}, /* DES_ECB */
     {{ 0 }}, /* DES_CFB */
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {{ MAGIC_ALG }, ALG_ID_DESX, CHAIN_MODE_CBC },
     {{ MAGIC_ALG }, ALG_ID_DESX, CHAIN_MODE_ECB },
     {{ MAGIC_ALG }, ALG_ID_DESX, CHAIN_MODE_CFB },
@@ -656,7 +656,7 @@ static const struct algorithm pseudo_algorithms[] =
     {{ 0 }}, /* DESX_ECB */
     {{ 0 }}, /* DESX_CFB */
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {{ MAGIC_ALG }, ALG_ID_RC2, CHAIN_MODE_CBC },
     {{ MAGIC_ALG }, ALG_ID_RC2, CHAIN_MODE_ECB },
     {{ MAGIC_ALG }, ALG_ID_RC2, CHAIN_MODE_CFB },
@@ -899,7 +899,7 @@ static NTSTATUS get_generic_alg_property( enum alg_id id, const WCHAR *prop, UCH
     return STATUS_NOT_IMPLEMENTED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static NTSTATUS get_legacy_property( enum alg_id id, enum chain_mode mode, const WCHAR *prop, UCHAR *buf, ULONG size,
                                      ULONG *ret_size )
 {
@@ -1120,7 +1120,7 @@ static NTSTATUS get_alg_property( const struct algorithm *alg, const WCHAR *prop
 
     switch (alg->id)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:
@@ -1163,7 +1163,7 @@ static NTSTATUS set_alg_property( struct algorithm *alg, const WCHAR *prop, UCHA
 {
     switch (alg->id)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:
@@ -1454,7 +1454,7 @@ static NTSTATUS get_key_property( const struct key *key, const WCHAR *prop, UCHA
 
     switch (key->alg_id)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:
@@ -1814,7 +1814,7 @@ static NTSTATUS alloc_aes_key( struct key *key, enum chain_mode mode, ULONG bloc
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static NTSTATUS alloc_legacy_key( struct key *key, enum chain_mode mode, const BCRYPT_KEY_LENGTHS_STRUCT *key_lengths,
                                   const UCHAR *secret, ULONG secret_len )
 {
@@ -2047,7 +2047,7 @@ static NTSTATUS generate_symmetric_key( const struct algorithm *alg, const UCHAR
         }
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:
@@ -2254,7 +2254,7 @@ static NTSTATUS decrypt_symmetric( struct key *key, const UCHAR *input, ULONG in
             if (iv && iv_len != key->s.block_size) return STATUS_INVALID_PARAMETER;
             return decrypt_aes_vector( key, input, input_len, iv, output, output_len, ret_len, flags );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:
@@ -2298,7 +2298,7 @@ static NTSTATUS decrypt_rsa( const struct key *key, const UCHAR *input, ULONG in
             if (output) return STATUS_BUFFER_TOO_SMALL;
             return STATUS_SUCCESS;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         output_len = size;
 #endif
         if (SymCryptRsaRawDecrypt( key->a.rsa.handle, input, input_len, SYMCRYPT_NUMBER_FORMAT_MSB_FIRST, 0, output,
@@ -2618,7 +2618,7 @@ static NTSTATUS encrypt_symmetric( struct key *key, const UCHAR *input, ULONG in
             if (iv && iv_len != key->s.block_size) return STATUS_INVALID_PARAMETER;
             return encrypt_aes_vector( key, input, input_len, iv, output, output_len, ret_len, flags );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:
@@ -2645,7 +2645,7 @@ static NTSTATUS encrypt_rsa( const struct key *key, const UCHAR *input, ULONG in
         if (output) return STATUS_BUFFER_TOO_SMALL;
         return STATUS_SUCCESS;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     output_len = size;
 #endif
 
@@ -2658,7 +2658,7 @@ static NTSTATUS encrypt_rsa( const struct key *key, const UCHAR *input, ULONG in
     }
     else if (flags == BCRYPT_PAD_PKCS1)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (SymCryptRsaPkcs1Encrypt( key->a.rsa.handle, input, input_len, 0, SYMCRYPT_NUMBER_FORMAT_MSB_FIRST, output,
                                      output_len, &size )) return STATUS_INTERNAL_ERROR;
 #else
@@ -4061,7 +4061,7 @@ static NTSTATUS duplicate_key( const struct key *src, struct key **ret_key )
         else SymCryptAesKeyCopy( &src->s.aes.handle, &dst->s.aes.handle );
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case ALG_ID_3DES:
     case ALG_ID_DES:
     case ALG_ID_DESX:

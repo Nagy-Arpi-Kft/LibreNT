@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS Win32k subsystem
+ * PROJECT:          LibreNT Win32k subsystem
  * PURPOSE:          GDI BitBlt Functions
  * FILE:             win32ss/gdi/eng/bitblt.c
  * PROGRAMERS:       Jason Filby
@@ -887,7 +887,7 @@ IntEngBitBlt(
 
 #endif // !_USE_DIBLIB_
 
-/**** REACTOS FONT RENDERING CODE *********************************************/
+/**** LIBRENT FONT RENDERING CODE *********************************************/
 
 #define TEXT_GAMMA_MIN          1000
 #define TEXT_GAMMA_MAX          2200

@@ -1,15 +1,15 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            hal/halx86/apic/msivec.c
  * PURPOSE:         MSI Vector Allocation and Management (amd64)
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
 
 #include <hal.h>
-#include <reactos/hal/msi.h>
+#include <librent/hal/msi.h>
 #include "apicp.h"
 #include "msip.h"
 #include <smp.h>

@@ -19,7 +19,7 @@
 //extern int vsnprintf();
 #include <wintirpc.h>
 #include <stdio.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <varargs.h>
 #endif
 

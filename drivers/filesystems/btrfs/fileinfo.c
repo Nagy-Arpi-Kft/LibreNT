@@ -20,7 +20,7 @@
 
 #if (NTDDI_VERSION >= NTDDI_WIN10)
 // not currently in mingw - introduced with Windows 10
-#if !defined(_MSC_VER) || defined(__REACTOS__)
+#if !defined(_MSC_VER) || defined(__LIBRENT__)
 #define FileIdInformation (enum _FILE_INFORMATION_CLASS)59
 #define FileHardLinkFullIdInformation (enum _FILE_INFORMATION_CLASS)62
 #define FileDispositionInformationEx (enum _FILE_INFORMATION_CLASS)64
@@ -31,7 +31,7 @@
 #define FileLinkInformationEx (enum _FILE_INFORMATION_CLASS)72
 #define FileStorageReserveIdInformation (enum _FILE_INFORMATION_CLASS)74
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _FILE_ID_INFORMATION {
     ULONGLONG VolumeSerialNumber;
     FILE_ID_128 FileId;
@@ -88,7 +88,7 @@ typedef struct _FILE_RENAME_INFORMATION_EX {
     WCHAR FileName[1];
 } FILE_RENAME_INFORMATION_EX, *PFILE_RENAME_INFORMATION_EX;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _FILE_DISPOSITION_INFORMATION_EX {
     ULONG Flags;
 } FILE_DISPOSITION_INFORMATION_EX, *PFILE_DISPOSITION_INFORMATION_EX;
@@ -159,7 +159,7 @@ typedef struct _FILE_LINKS_FULL_ID_INFORMATION {
 #endif
 #endif
 
-#if defined(__REACTOS__) && (NTDDI_VERSION < NTDDI_WIN10)
+#if defined(__LIBRENT__) && (NTDDI_VERSION < NTDDI_WIN10)
 typedef struct _FILE_RENAME_INFORMATION_EX {
     union {
         BOOLEAN ReplaceIfExists;
@@ -3862,7 +3862,7 @@ end:
     return Status;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static NTSTATUS set_case_sensitive_information(PIRP Irp) {
     FILE_CASE_SENSITIVE_INFORMATION* fcsi = (FILE_CASE_SENSITIVE_INFORMATION*)Irp->AssociatedIrp.SystemBuffer;
     PIO_STACK_LOCATION IrpSp = IoGetCurrentIrpStackLocation(Irp);
@@ -3943,7 +3943,7 @@ NTSTATUS __stdcall drv_set_information(IN PDEVICE_OBJECT DeviceObject, IN PIRP I
     }
 
     if (fcb != Vcb->dummy_fcb && is_subvol_readonly(fcb->subvol, Irp) && IrpSp->Parameters.SetFile.FileInformationClass != FilePositionInformation &&
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         (fcb->inode != SUBVOL_ROOT_INODE || (IrpSp->Parameters.SetFile.FileInformationClass != FileBasicInformation && IrpSp->Parameters.SetFile.FileInformationClass != FileRenameInformation && IrpSp->Parameters.SetFile.FileInformationClass != FileRenameInformationEx))) {
 #else
         (fcb->inode != SUBVOL_ROOT_INODE || (IrpSp->Parameters.SetFile.FileInformationClass != FileBasicInformation && IrpSp->Parameters.SetFile.FileInformationClass != FileRenameInformation))) {
@@ -4048,7 +4048,7 @@ NTSTATUS __stdcall drv_set_information(IN PDEVICE_OBJECT DeviceObject, IN PIRP I
             break;
         }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef _MSC_VER
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch"
@@ -4526,7 +4526,7 @@ end:
     return Status;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static NTSTATUS fill_in_file_standard_link_information(FILE_STANDARD_LINK_INFORMATION* fsli, fcb* fcb, file_ref* fileref, LONG* length) {
     TRACE("FileStandardLinkInformation\n");
 
@@ -5034,7 +5034,7 @@ static NTSTATUS fill_in_file_case_sensitive_information(FILE_CASE_SENSITIVE_INFO
     return STATUS_SUCCESS;
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static NTSTATUS fill_in_file_compression_information(FILE_COMPRESSION_INFORMATION* fci, LONG* length, fcb* fcb) {
     *length -= sizeof(FILE_COMPRESSION_INFORMATION);
@@ -5294,7 +5294,7 @@ static NTSTATUS query_info(device_extension* Vcb, PFILE_OBJECT FileObject, PIRP 
             Status = STATUS_INVALID_PARAMETER;
             goto exit;
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         case FileHardLinkInformation:
         {
             FILE_LINKS_INFORMATION* fli = Irp->AssociatedIrp.SystemBuffer;

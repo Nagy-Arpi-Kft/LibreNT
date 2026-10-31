@@ -1,5 +1,5 @@
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_executable(dbghelp_winetest dbghelp.c minidump.c path.c testlist.c)
 target_compile_definitions(dbghelp_winetest PRIVATE __WINESRC__ WINETEST_USE_DBGSTR_LONGLONG strcasecmp=_stricmp)

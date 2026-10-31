@@ -653,7 +653,7 @@
 @ stdcall ScriptTextOut(ptr ptr long long long ptr ptr ptr long ptr long ptr ptr ptr)
 @ stdcall ScriptXtoCP(long long long ptr ptr ptr ptr ptr ptr)
 
-; ReactOS Display Driver Model
+; LibreNT Display Driver Model
 @ stdcall -version=0xA00+ D3DKMTAdjustFullscreenGamma(ptr) NtGdiDdDDIAdjustFullscreenGamma
 @ stdcall -version=0x600+ D3DKMTCheckExclusiveOwnership() NtGdiDdDDICheckExclusiveOwnership
 @ stdcall -version=0x600+ D3DKMTCheckMonitorPowerState(ptr) NtGdiDdDDICheckMonitorPowerState

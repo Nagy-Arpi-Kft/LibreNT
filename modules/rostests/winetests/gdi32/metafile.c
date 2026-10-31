@@ -3372,7 +3372,7 @@ static void test_emf_BitBlt(void)
 {
     static const XFORM xform = {0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
     static const int bitmap_width = 4, bitmap_height = 4;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned char bmi_buffer[FIELD_OFFSET(BITMAPINFO, bmiColors) + 256 * sizeof(RGBQUAD)];
 #else
     unsigned char bmi_buffer[FIELD_OFFSET(BITMAPINFO, bmiColors[256])];
@@ -6516,7 +6516,7 @@ static void test_emf_StretchDIBits(void)
     static const unsigned char dib_bits[4 * 4 * 4] = { 0 };
     static const int bitmap_width = 4, bitmap_height = 4;
     union {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         unsigned char b[FIELD_OFFSET(BITMAPINFO, bmiColors) + 256 * sizeof(RGBQUAD)];
 #else
         unsigned char b[FIELD_OFFSET(BITMAPINFO, bmiColors[256])];
@@ -7902,7 +7902,7 @@ static void test_emf_SetDIBitsToDevice(void)
     static const unsigned char dib_bits[4 * 4 * 4] = { 0 };
     static const int bitmap_width = 4, bitmap_height = 4;
     union {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         unsigned char b[FIELD_OFFSET(BITMAPINFO, bmiColors) + 256 * sizeof(RGBQUAD)];
 #else
         unsigned char b[FIELD_OFFSET(BITMAPINFO, bmiColors[256])];
@@ -10573,7 +10573,7 @@ static void test_emf_AlphaBlend(void)
     static const XFORM xform = {0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
     static const BLENDFUNCTION blend = {AC_SRC_OVER, 0, 128, 0};
     static const int bitmap_width = 4, bitmap_height = 4;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned char bmi_buffer[FIELD_OFFSET(BITMAPINFO, bmiColors) + 256 * sizeof(RGBQUAD)];
 #else
     unsigned char bmi_buffer[FIELD_OFFSET(BITMAPINFO, bmiColors[256])];

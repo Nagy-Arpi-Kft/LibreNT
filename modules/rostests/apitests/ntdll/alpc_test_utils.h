@@ -1,7 +1,7 @@
 /*
- * PROJECT:         LiberNT API tests
+ * PROJECT:         LibreNT API tests
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
- * PURPOSE:         Shared helpers for native and ReactOS ALPC parity tests
+ * PURPOSE:         Shared helpers for native and LibreNT ALPC parity tests
  * COPYRIGHT:       Copyright 2026 Ahmed ARIF
  */
 

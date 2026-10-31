@@ -19,7 +19,7 @@ import subprocess
 import sys
 
 
-NESTED_BUILD_MIRROR = 'REACTOS_NESTED_BUILD_MIRROR'
+NESTED_BUILD_MIRROR = 'LIBRENT_NESTED_BUILD_MIRROR'
 PROGRESS_LINE = re.compile(rb'^\[[0-9]+/[0-9]+\]')
 CONSOLE_ERASE = b'\r\x1b[K'
 if os.name == 'nt' or os.environ.get('TERM', 'dumb') == 'dumb':

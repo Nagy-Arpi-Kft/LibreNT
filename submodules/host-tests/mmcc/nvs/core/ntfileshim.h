@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/core/ntfileshim.h
  * PURPOSE:     NT file I/O host-test compatibility definitions
  *

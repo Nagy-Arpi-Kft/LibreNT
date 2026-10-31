@@ -94,7 +94,7 @@ void destroy_view( struct view *view )
     free( view );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR *eval_like_set( WCHAR c, const WCHAR *pattern, BOOL *match )
 {
     const WCHAR *p = pattern + 1;
@@ -128,13 +128,13 @@ static const WCHAR *eval_like_set( WCHAR c, const WCHAR *pattern, BOOL *match )
 
 static BOOL eval_like( const WCHAR *text, const WCHAR *pattern )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (wcsstr( pattern, L"[" )) FIXME( "character ranges (i.e. [abc], [^a-z]) are not supported\n" );
 #endif
 
     while (*text)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         const WCHAR *next;
         BOOL match;
 #else
@@ -150,7 +150,7 @@ static BOOL eval_like( const WCHAR *text, const WCHAR *pattern )
             return !!*text;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (*pattern == '[' && (next = eval_like_set( *text, pattern, &match )))
         {
             if (!match) return FALSE;
@@ -531,7 +531,7 @@ HRESULT eval_cond( const struct table *table, UINT row, const struct expr *cond,
     return WBEM_E_INVALID_QUERY;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static WCHAR *build_assoc_query( const WCHAR *class, UINT class_len )
 {
     static const WCHAR fmtW[] = L"SELECT * FROM __ASSOCIATORS WHERE Class='%s'";
@@ -583,7 +583,7 @@ static BSTR build_namespace(void)
     return SysAllocString( L"ROOT\\CIMV2" );
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static WCHAR *build_canonical_path( const WCHAR *relpath )
 {
     BSTR server, namespace;
@@ -663,7 +663,7 @@ static HRESULT do_query( enum wbm_namespace ns, const WCHAR *str, struct query *
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR *get_keyword_value( const struct keyword *keyword, const WCHAR *name )
 {
     for (; keyword; keyword = keyword->next)
@@ -1485,7 +1485,7 @@ HRESULT get_propval( const struct view *view, UINT index, const WCHAR *name, VAR
         val_ptr = get_value_bstr( table, row, column );
         break;
     case CIM_UINT64:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((table->columns[column].type & COL_FLAG_NULLABLE) && (ULONGLONG)val == ~0ull)
         {
             vartype = VT_NULL;
@@ -1495,7 +1495,7 @@ HRESULT get_propval( const struct view *view, UINT index, const WCHAR *name, VAR
         vartype = VT_BSTR;
         val_ptr = get_value_bstr( table, row, column );
         break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case CIM_BOOLEAN:
         if ((table->columns[column].type & COL_FLAG_NULLABLE) && val == WBEMPROX_NULL_BOOLEAN)
             vartype = VT_NULL;

@@ -7,8 +7,8 @@ add_definitions(
     -Dmain=mainptr)
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libjpeg
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libjpeg
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 
 spec2def(libjpeg.dll libjpeg.spec ADD_IMPORTLIB)
 
@@ -65,4 +65,4 @@ add_library(libjpeg MODULE ${SOURCE} ${CMAKE_CURRENT_BINARY_DIR}/libjpeg.def)
 set_module_type(libjpeg win32dll)
 add_importlibs(libjpeg msvcrt kernel32)
 add_pch(libjpeg precomp.h SOURCE)
-add_cd_file(TARGET libjpeg DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET libjpeg DESTINATION librent/system32 FOR all)

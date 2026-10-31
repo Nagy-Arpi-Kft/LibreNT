@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/zlib)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/zlib)
 
 add_definitions(
     -D_WINE
@@ -42,5 +42,5 @@ target_link_libraries(wininet wine ${PSEH_LIB} oldnames zlib)
 add_delay_importlibs(wininet secur32 crypt32 cryptui iphlpapi dhcpcsvc ws2_32)
 add_importlibs(wininet mpr shlwapi shell32 user32 advapi32 normaliz kernel32_vista msvcrt kernel32 ntdll)
 add_pch(wininet precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET wininet DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wininet DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(wininet) # CORE-5743: No ARRAY_SIZE macro

@@ -28,7 +28,7 @@
 DEBUG_CHANNEL(nls);
 
 #include "lcformat_private.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     #include "japanese.h"
     #define strcasecmp _stricmp
 #endif
@@ -46,7 +46,7 @@ INT WINAPI CompareStringEx(LPCWSTR locale, DWORD flags, LPCWSTR str1, INT len1,
 extern int wine_fold_string(int flags, const WCHAR *src, int srclen, WCHAR *dst, int dstlen);
 extern int wine_get_sortkey(int flags, const WCHAR *src, int srclen, char *dst, int dstlen);
 extern int wine_compare_string(int flags, const WCHAR *str1, int len1, const WCHAR *str2, int len2);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern UINT GetLocalisedText(IN UINT uID, IN LPWSTR lpszDest, IN UINT cchDest, IN LANGID lang);
 #else
 extern UINT GetLocalisedText(IN UINT uID, IN LPWSTR lpszDest, IN UINT cchDest);
@@ -61,7 +61,7 @@ extern HMODULE kernel32_handle;
 #define WC_FLAGSMASK (WC_DISCARDNS|WC_SEPCHARS|WC_DEFAULTCHAR|WC_ERR_INVALID_CHARS|\
                       WC_COMPOSITECHECK|WC_NO_BEST_FIT_CHARS)
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* current code pages */
 static const union cptable *ansi_cptable;
 static const union cptable *oem_cptable;
@@ -99,7 +99,7 @@ struct locale_name
 /* locale ids corresponding to the various Unix locale parameters */
 static LCID lcid_LC_COLLATE;
 static LCID lcid_LC_CTYPE;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static LCID lcid_LC_MESSAGES;
 #endif
 static LCID lcid_LC_MONETARY;
@@ -239,7 +239,7 @@ GetSortCtypes(VOID)
     return SortCtypes;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* Copy Ascii string to Unicode without using codepages */
 static inline void strcpynAtoW( WCHAR *dst, const char *src, size_t n )
 {
@@ -255,7 +255,7 @@ static inline unsigned short get_table_entry( const unsigned short *table, WCHAR
 {
     return table[table[table[ch >> 8] + ((ch >> 4) & 0x0f)] + (ch & 0xf)];
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 /***********************************************************************
  *		get_lcid_codepage
@@ -270,7 +270,7 @@ static inline UINT get_lcid_codepage( LCID lcid )
     return ret;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *		get_codepage_table
  *
@@ -307,7 +307,7 @@ static const union cptable *get_codepage_table( unsigned int codepage )
     }
     return ret;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 #if (WINVER >= 0x0600)
 #if 0 // See kernel32_vista
@@ -838,7 +838,7 @@ static inline HANDLE create_registry_key(void)
 }
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* update the registry settings for a given locale parameter */
 /* return TRUE if an update was needed */
 static BOOL locale_update_registry( HKEY hkey, const WCHAR *name, LCID lcid,
@@ -1205,7 +1205,7 @@ static UINT setup_unix_locales(void)
 
     return unix_cp;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 
 /***********************************************************************
@@ -1279,7 +1279,7 @@ LCID WINAPI GetSystemDefaultLCID(void)
     return lcid;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  *		GetSystemDefaultLocaleName (KERNEL32.@)
  */
@@ -1404,7 +1404,7 @@ BOOL WINAPI GetUserPreferredUILanguages( DWORD flags, ULONG *count, WCHAR *buffe
     return get_dummy_preferred_ui_language( flags, count, buffer, size );
 }
 #endif // (WINVER >= 0x0600)
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 /***********************************************************************
  *		GetUserDefaultUILanguage (KERNEL32.@)
@@ -1707,7 +1707,7 @@ static int get_value_base_by_lctype( LCTYPE lctype )
     return lctype == LOCALE_ILANGUAGE || lctype == LOCALE_IDEFAULTLANGUAGE ? 16 : 10;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static WCHAR get_font_signature_word( const WCHAR *hex )
 {
     WCHAR value = 0;
@@ -1810,7 +1810,7 @@ INT WINAPI GetLocaleInfoW( LCID lcid, LCTYPE lctype, LPWSTR buffer, INT len )
     if (!(hrsrc = FindResourceExW( kernel32_handle, (LPWSTR)RT_STRING,
                                    ULongToPtr((lctype >> 4) + 1), lang_id )))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError( FindResourceExW( kernel32_handle, (LPWSTR)RT_STRING,
                                        ULongToPtr((LOCALE_ILANGUAGE >> 4) + 1), lang_id ) ?
                       ERROR_INVALID_FLAGS : ERROR_INVALID_PARAMETER );
@@ -1839,7 +1839,7 @@ INT WINAPI GetLocaleInfoW( LCID lcid, LCTYPE lctype, LPWSTR buffer, INT len )
         else ret = i;
     }
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = (lctype == LOCALE_FONTSIGNATURE) ? *p / 4 : *p + 1;
 #else
         ret = (lctype == LOCALE_FONTSIGNATURE) ? *p : *p + 1;
@@ -1875,7 +1875,7 @@ INT WINAPI GetLocaleInfoW( LCID lcid, LCTYPE lctype, LPWSTR buffer, INT len )
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (lctype == LOCALE_FONTSIGNATURE)
         {
             for (i = 0; i < (unsigned int)ret; i++)
@@ -2092,7 +2092,7 @@ BOOL WINAPI SetLocaleInfoW( LCID lcid, LCTYPE lctype, LPCWSTR data )
 }
 
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /******************************************************************************
  *              GetACP   (KERNEL32.@)
  *
@@ -2870,7 +2870,7 @@ INT WINAPI WideCharToMultiByte( UINT page, DWORD flags, LPCWSTR src, INT srclen,
           page, debugstr_wn(src, srclen), debugstr_an(dst, ret), ret);
     return ret;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 
 /***********************************************************************
@@ -2922,7 +2922,7 @@ BOOL WINAPI SetThreadLocale( LCID lcid )
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /**********************************************************************
  *           SetThreadUILanguage    (KERNEL32.@)
  *
@@ -2943,7 +2943,7 @@ LANGID WINAPI SetThreadUILanguage( LANGID langid )
     TRACE("(0x%04x) stub - returning success\n", langid);
     return langid;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 /******************************************************************************
  *		ConvertDefaultLocale (KERNEL32.@)
@@ -3057,7 +3057,7 @@ BOOL WINAPI IsValidLocale( LCID lcid, DWORD flags )
     return FALSE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /******************************************************************************
  *           IsValidLocaleName   (KERNEL32.@)
  */
@@ -3076,7 +3076,7 @@ BOOL WINAPI IsValidLocaleName( LPCWSTR locale )
 
     return locale_name.matches > 0;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 static BOOL CALLBACK enum_lang_proc_a( HMODULE hModule, LPCSTR type,
                                        LPCSTR name, WORD LangID, LONG_PTR lParam )
@@ -3404,7 +3404,7 @@ BOOL WINAPI GetStringTypeExA( LCID locale, DWORD type, LPCSTR src, INT count, LP
     return GetStringTypeA(locale, type, src, count, chartype);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline void map_byterev(const WCHAR *src, int len, WCHAR *dst)
 {
     while (len--)
@@ -3864,7 +3864,7 @@ static int lcmap_string(DWORD flags, const WCHAR *src, int srclen, WCHAR *dst, i
 
     return ret;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 /*************************************************************************
  *           LCMapStringEx   (KERNEL32.@)
@@ -4280,7 +4280,7 @@ INT WINAPI CompareStringA(LCID lcid, DWORD flags,
     return ret;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*************************************************************************
  *           lstrcmp     (KERNEL32.@)
  *           lstrcmpA    (KERNEL32.@)
@@ -4449,9 +4449,9 @@ void LOCALE_Init(void)
     setlocale(LC_NUMERIC, "C");  /* FIXME: oleaut32 depends on this */
 }
 
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HANDLE NLS_RegOpenKey(HANDLE hRootKey, LPCWSTR szKeyName)
 #else
 static HANDLE NLS_RegOpenKey(HANDLE hRootKey, LPCWSTR szKeyName)
@@ -4462,7 +4462,7 @@ static HANDLE NLS_RegOpenKey(HANDLE hRootKey, LPCWSTR szKeyName)
     HANDLE hkey;
 
     RtlInitUnicodeString( &keyName, szKeyName );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitializeObjectAttributes(&attr, &keyName, OBJ_CASE_INSENSITIVE, hRootKey, NULL);
 #else
     InitializeObjectAttributes(&attr, &keyName, 0, hRootKey, NULL);
@@ -4474,7 +4474,7 @@ static HANDLE NLS_RegOpenKey(HANDLE hRootKey, LPCWSTR szKeyName)
     return hkey;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL NLS_RegEnumValue(HANDLE hKey, UINT ulIndex,
                       LPWSTR szValueName, ULONG valueNameSize,
                       LPWSTR szValueData, ULONG valueDataSize)
@@ -4927,7 +4927,7 @@ BOOL WINAPI EnumLanguageGroupLocalesW(LANGGROUPLOCALE_ENUMPROCW pLangGrpLcEnumPr
  */
 BOOL WINAPI InvalidateNLSCache(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     JapaneseEra_ClearCache();
     return TRUE;
 #else
@@ -5417,7 +5417,7 @@ static const struct geoinfo_t geoinfodata[] = {
     { 161832257, {'X','X',0}, {'X','X',0}, 10026358, 0, LOCATION_REGION }, /* Latin America and the Caribbean */
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Callback function ptrs for EnumSystemCodePagesA/W */
 typedef struct
 {
@@ -5541,7 +5541,7 @@ EnumSystemCodePagesA (
 
 
 static int
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NLS_GetGeoFriendlyName(GEOID Location, LPWSTR szFriendlyName, int cchData, LANGID lang)
 #else
 NLS_GetGeoFriendlyName(GEOID Location, LPWSTR szFriendlyName, int cchData)
@@ -5552,13 +5552,13 @@ NLS_GetGeoFriendlyName(GEOID Location, LPWSTR szFriendlyName, int cchData)
     Location &= 0xFFFF;
 
     if (cchData == 0)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return GetLocalisedText(Location, NULL, 0, lang);
 #else
         return GetLocalisedText(Location, NULL, 0);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetLocalisedText(Location, szFriendlyName, (UINT)cchData, lang))
 #else
     if (GetLocalisedText(Location, szFriendlyName, (UINT)cchData))
@@ -5567,7 +5567,7 @@ NLS_GetGeoFriendlyName(GEOID Location, LPWSTR szFriendlyName, int cchData)
 
     return 0;
 }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static const struct geoinfo_t *get_geoinfo_dataptr(GEOID geoid)
 {
@@ -5615,7 +5615,7 @@ INT WINAPI GetGeoInfoW(GEOID geoid, GEOTYPE geotype, LPWSTR data, int data_len, 
     switch (geotype) {
     case GEO_FRIENDLYNAME:
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return NLS_GetGeoFriendlyName(geoid, data, data_len, lang);
 #else
         return NLS_GetGeoFriendlyName(geoid, data, data_len);
@@ -5752,7 +5752,7 @@ BOOL WINAPI EnumSystemGeoID(GEOCLASS geoclass, GEOID parent, GEO_ENUMPROC enumpr
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 INT WINAPI GetUserDefaultLocaleName(LPWSTR localename, int buffersize)
 {
     LCID userlcid;
@@ -6342,4 +6342,4 @@ INT WINAPI ResolveLocaleName(LPCWSTR name, LPWSTR localename, INT len)
     SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
     return 0;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__

@@ -1,5 +1,5 @@
 /*
- * ReactOS User32 Library
+ * LibreNT User32 Library
  * - Various drawing functions
  *
  * Copyright 2001 Casper S. Hournstroup

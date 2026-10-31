@@ -30,5 +30,5 @@ set_module_type(d3d8 win32dll UNICODE)
 target_link_libraries(d3d8 dxguid uuid wine)
 add_importlibs(d3d8 d3dwine msvcrt kernel32 ntdll)
 add_pch(d3d8 precomp.h "")
-add_cd_file(TARGET d3d8 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET d3d8 DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(d3d8) # CORE-5743: No CONST_VTABLE

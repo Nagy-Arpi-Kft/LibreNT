@@ -202,7 +202,7 @@ static RpcPktHdr *handle_bind_error(RpcConnection *conn, RPC_STATUS error)
                                       reject_reason);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define MGMT_IS_SERVER_LISTENING_OPNUM 2
 
 static const RPC_SYNTAX_IDENTIFIER mgmt_syntax =
@@ -297,7 +297,7 @@ static RPC_STATUS process_bind_packet_no_send(
       RpcServerInterface* sif = NULL;
       unsigned int j;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (is_mgmt_syntax(&ctxt_elem->abstract_syntax))
       {
           for (j = 0; j < ctxt_elem->num_syntaxes; j++)
@@ -454,7 +454,7 @@ static RPC_STATUS process_request_packet(RpcConnection *conn, RpcPktRequestHdr *
     return RPC_S_OK;
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (is_mgmt_syntax(&conn->ActiveInterface))
     return process_mgmt_request(conn, hdr);
 #endif
@@ -618,7 +618,7 @@ static DWORD CALLBACK RPCRT4_worker_thread(LPVOID the_arg)
   return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static PTP_POOL server_pool;
 
 static void CALLBACK RPCRT4_pool_worker(PTP_CALLBACK_INSTANCE instance, void *context)
@@ -692,7 +692,7 @@ static DWORD CALLBACK RPCRT4_io_thread(LPVOID the_arg)
       packet->msg = msg;
       packet->auth_data = auth_data;
       packet->auth_length = auth_length;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!RPCRT4_queue_worker(packet)) {
 #else
       if (!QueueUserWorkItem(RPCRT4_worker_thread, packet, WT_EXECUTELONGFUNCTION)) {
@@ -1307,7 +1307,7 @@ RPC_STATUS WINAPI RpcServerRegisterIf3( RPC_IF_HANDLE IfSpec, UUID* MgrTypeUuid,
 /***********************************************************************
  *             RpcServerUnregisterIf (RPCRT4.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 RPC_STATUS WINAPI RpcServerUnregisterIf( RPC_IF_HANDLE IfSpec, UUID* MgrTypeUuid, UINT WaitForCallsToComplete )
 {
   PRPC_SERVER_INTERFACE If = IfSpec;
@@ -1865,7 +1865,7 @@ RPC_STATUS WINAPI RpcMgmtEpEltInqBegin(RPC_BINDING_HANDLE Binding, ULONG Inquiry
   return RPC_S_INVALID_BINDING;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static RPC_STATUS mgmt_is_server_listening(RPC_BINDING_HANDLE Binding)
 {
   static const RPC_CLIENT_INTERFACE mgmt_client_if =
@@ -1917,7 +1917,7 @@ RPC_STATUS WINAPI RpcMgmtIsServerListening(RPC_BINDING_HANDLE Binding)
   if (Binding) {
     RpcBinding *rpc_binding = (RpcBinding*)Binding;
     status = RPCRT4_IsServerListening(rpc_binding->Protseq, rpc_binding->Endpoint);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status == RPC_S_OK)
       status = mgmt_is_server_listening(Binding);
 #endif
@@ -1944,7 +1944,7 @@ RPC_STATUS WINAPI RpcMgmtSetAuthorizationFn(RPC_MGMT_AUTHORIZATION_FN fn)
  */
 RPC_STATUS WINAPI RpcMgmtSetServerStackSize(ULONG ThreadStackSize)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   TP_POOL_STACK_INFORMATION stack;
   RPC_STATUS status = RPC_S_OK;
 

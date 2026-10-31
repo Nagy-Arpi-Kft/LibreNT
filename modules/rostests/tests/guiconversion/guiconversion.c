@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT regression tests
+ * PROJECT:     LibreNT regression tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Exercise failed GUI thread conversion after thread teardown
  */
@@ -44,7 +44,7 @@ main(int argc, char **argv)
         return 1;
 
     _snwprintf(Command, ARRAYSIZE(Command), L"\"%ls\" child", Path);
-    _snwprintf(Desktop, ARRAYSIZE(Desktop), L"WinSta0\\ReactOS_Missing_Desktop_%lu", GetCurrentProcessId());
+    _snwprintf(Desktop, ARRAYSIZE(Desktop), L"WinSta0\\LibreNT_Missing_Desktop_%lu", GetCurrentProcessId());
     Startup.cb = sizeof(Startup);
     Startup.lpDesktop = Desktop;
     Created = CreateProcessW(Path, Command, NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, NULL, &Startup, &Process);

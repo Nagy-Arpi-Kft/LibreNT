@@ -37,7 +37,7 @@
 //#include <unistd.h>
 #include <sys/stat.h>
 //#include <inttypes.h>
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 #include <uuid/uuid.h>
 #endif
 
@@ -49,7 +49,7 @@ extern int opterr, optind;
 struct stat isostat;
 unsigned int padding = 0;
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 uuid_t disk_uuid, part_uuid, iso_uuid;
 #endif
 
@@ -86,7 +86,7 @@ uint8_t efi_boot = 0, efi_media = 0, efi_sys = 0;
 
 int apm_parts = 3;
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 uint8_t afp_header[] = { 0x45, 0x52, 0x08, 0x00, 0x00, 0x00, 0x90, 0x90, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 uuid_t efi_system_partition = {0xC1, 0x2A, 0x73, 0x28, 0xF8, 0x1F, 0x11, 0xD2, 0xBA, 0x4B, 0x00, 0xA0, 0xC9, 0x3E, 0xC9, 0x3B};
@@ -169,7 +169,7 @@ struct iso_primary_descriptor {
     uint16_t block_size;
 };
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 struct gpt_header {
     uint64_t signature;
     uint32_t revision;
@@ -246,7 +246,7 @@ printh(void)
     printf(FMT, "   -o --offset", "Specify partition offset (default 0)");
     printf(FMT, "   -t --type", "Specify partition type (default 0x17)");
     printf(FMT, "   -i --id", "Specify MBR ID (default random)");
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     printf(FMT, "   -u --uefi", "Build EFI bootable image");
     printf(FMT, "   -m --mac", "Add AFP table support");
 #endif
@@ -284,7 +284,7 @@ check_option(int argc, char *argv[])
         { "forcehd0", no_argument, NULL, 'f' },
         { "ctrlhd0", no_argument, NULL, 'c' },
         { "partok", no_argument, NULL, 'p'},
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 	{ "uefi", no_argument, NULL, 'u'},
 	{ "mac", no_argument, NULL, 'm'},
 #endif
@@ -352,7 +352,7 @@ check_option(int argc, char *argv[])
             partok = 1;
             break;
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 	case 'u':
 	    mode |= EFI;
 	    if (entry)
@@ -546,7 +546,7 @@ read_catalogue(const uint8_t *buf)
 }
 
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 int
 read_efi_section(const uint8_t *buf)
 {
@@ -645,7 +645,7 @@ initialise_mbr(uint8_t *mbr)
 
     }
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if (mode & MAC) {
 	memcpy(mbr, afp_header, sizeof(afp_header));
     }
@@ -654,7 +654,7 @@ initialise_mbr(uint8_t *mbr)
     if (!entry)
 	entry = 1;
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if (mode & EFI)
 	type = 0;
 #endif
@@ -711,7 +711,7 @@ initialise_mbr(uint8_t *mbr)
             tmp = lendian_int(psize);
             memcpy(&mbr[12], &tmp, sizeof(tmp));
         }
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
         if (i == 2 && (mode & EFI))
         {
             mbr[0] = 0x0;
@@ -798,7 +798,7 @@ uint32_t chksum_crc32 (unsigned char *block, unsigned int length)
 	return (crc ^ 0xFFFFFFFF);
 }
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 void
 reverse_uuid(uuid_t uuid)
 {
@@ -826,7 +826,7 @@ ascii_to_utf16le(uint16_t *dst, const char *src)
     return (uint16_t *)p;
 }
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
 void
 initialise_gpt(uint8_t *gpt, uint32_t current, uint32_t alternate, int primary)
 {
@@ -976,7 +976,7 @@ main(int argc, char *argv[])
     uint8_t *buf = NULL, *bufz = NULL;
     int cylsize = 0, frac = 0;
     size_t mbr_size;
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     size_t orig_gpt_size, free_space, gpt_size;
 #endif
     struct iso_primary_descriptor descriptor;
@@ -992,7 +992,7 @@ main(int argc, char *argv[])
         return 1;
     }
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if ((mode & EFI) && offset)
 	errx(1, "%s: --offset is invalid with UEFI images\n", argv[0]);
 #endif
@@ -1043,7 +1043,7 @@ main(int argc, char *argv[])
 
     buf += 32;
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if (mode & EFI)
     {
 	if (!read_efi_section(buf)) {
@@ -1061,7 +1061,7 @@ main(int argc, char *argv[])
 
     buf += 32;
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if (mode & MAC)
     {
 	if (!read_efi_section(buf)) {
@@ -1094,7 +1094,7 @@ main(int argc, char *argv[])
         err(1, "%s", argv[0]);
 
     isosize = lendian_int(descriptor.size) * lendian_short(descriptor.block_size);
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     free_space = isostat.st_size - isosize;
 #endif
 
@@ -1145,7 +1145,7 @@ main(int argc, char *argv[])
     if (fwrite(buf, sizeof(char), mbr_size, fp) != mbr_size)
         err(1, "%s: write error - 1", argv[0]);
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if (efi_lba) {
 	reverse_uuid(basic_partition);
 	reverse_uuid(hfs_partition);
@@ -1212,7 +1212,7 @@ main(int argc, char *argv[])
             err(1, "%s: could not add padding bytes", argv[0]);
     }
 
-#ifdef REACTOS_ISOHYBRID_EFI_MAC_SUPPORT
+#ifdef LIBRENT_ISOHYBRID_EFI_MAC_SUPPORT
     if (efi_lba) {
 	buf = realloc(buf, orig_gpt_size);
 	memset(buf, 0, orig_gpt_size);

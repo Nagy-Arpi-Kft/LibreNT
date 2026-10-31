@@ -1,9 +1,9 @@
 
 # =============================================================================
-# Clang/LLVM configuration for ReactOS (clang19+)
+# Clang/LLVM configuration for LibreNT (clang19+)
 # =============================================================================
 
-if(_REACTOS_CLANG_BUILD_CONFIG)
+if(_LIBRENT_CLANG_BUILD_CONFIG)
 
 if(POLICY CMP0116)
     cmake_policy(SET CMP0116 NEW)
@@ -48,7 +48,7 @@ if(USE_DUMMY_PSEH)
 endif()
 
 # Clang implements native SEH for these targets.
-if(ARCH STREQUAL "amd64" OR ARCH STREQUAL "arm64" OR ARCH STREQUAL "riscv64" OR ARCH STREQUAL "ppc")
+if(ARCH STREQUAL "amd64" OR ARCH STREQUAL "arm64")
     set(CLANG_NATIVE_SEH TRUE)
 endif()
 
@@ -83,7 +83,7 @@ add_compile_options("$<$<NOT:$<COMPILE_LANGUAGE:CXX>>:-nostdlibinc>")
 # Add Clang's builtin include path for compiler-provided headers such as
 # xmmintrin.h and mmintrin.h.  Keep it explicit because -nostdlibinc and
 # -nobuiltininc are used below, but mark it as a system include so diagnostics
-# from Clang's own headers don't pollute ReactOS builds.
+# from Clang's own headers don't pollute LibreNT builds.
 execute_process(COMMAND ${CMAKE_C_COMPILER} -print-resource-dir OUTPUT_VARIABLE CLANG_RESOURCE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
 set(CLANG_RESOURCE_INCLUDE_FLAG "-isystem ${CLANG_RESOURCE_DIR}/include")
 
@@ -116,11 +116,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # Tuning
-if(ARCH STREQUAL "ppc")
-    add_compile_options(-mcpu=${OARCH})
-else()
-    add_compile_options(-march=${OARCH} -mtune=${TUNE})
-endif()
+add_compile_options(-march=${OARCH} -mtune=${TUNE})
 
 # Warnings, errors
 add_compile_options(-Werror -Wall -Wpointer-arith "-Wno-error=#pragma-messages")
@@ -169,11 +165,6 @@ elseif(ARCH STREQUAL "arm64")
     if(NOT ARM64EC_RUNTIME)
         add_compile_options("$<$<NOT:$<COMPILE_LANGUAGE:ASM>>:-moutline-atomics>")
     endif()
-elseif(ARCH STREQUAL "riscv64")
-    add_compile_options(-mabi=lp64 -mcmodel=medany -mno-relax)
-    add_compile_options("$<$<NOT:$<COMPILE_LANGUAGE:ASM>>:-fno-builtin-memcpy;-fno-builtin-memmove;-fno-builtin-memset>")
-elseif(ARCH STREQUAL "ppc")
-    add_compile_options("$<$<NOT:$<COMPILE_LANGUAGE:ASM>>:-fno-builtin-memcpy;-fno-builtin-memmove;-fno-builtin-memset>")
 endif()
 
 # Other
@@ -213,17 +204,13 @@ elseif(ARCH STREQUAL "arm64")
     else()
         set(LLVM_DLLTOOL_MACHINE arm64)
     endif()
-elseif(ARCH STREQUAL "riscv64")
-    set(LLVM_DLLTOOL_MACHINE riscv64)
-elseif(ARCH STREQUAL "ppc")
-    set(LLVM_DLLTOOL_MACHINE ppc)
 endif()
 set(_target_tool_triplet ${CMAKE_C_COMPILER_TARGET})
 
 if(SEPARATE_DBG)
     # PDB style debug puts all dwarf debug info in a separate dbg file
     message(STATUS "Building separate debug symbols")
-    file(MAKE_DIRECTORY ${REACTOS_BINARY_DIR}/symbols)
+    file(MAKE_DIRECTORY ${LIBRENT_BINARY_DIR}/symbols)
     if(CMAKE_GENERATOR STREQUAL "Ninja")
         # Those variables seems to be set but empty in newer CMake versions
         # and Ninja generator relies on them to generate PDB name, so unset them.
@@ -237,31 +224,31 @@ if(SEPARATE_DBG)
 
     get_target_property(SYMZ native-symz IMPORTED_LOCATION)
     set(strip_debug "${CMAKE_STRIP} --strip-debug <TARGET>")
-    set(pack_symbols "${SYMZ} <TARGET> ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}")
+    set(pack_symbols "${SYMZ} <TARGET> ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}")
 
     set(CMAKE_C_LINK_EXECUTABLE
         "<CMAKE_C_COMPILER> -Wl,--start-group <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_CXX_LINK_EXECUTABLE
         "<CMAKE_CXX_COMPILER> -Wl,--start-group <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_C_CREATE_SHARED_LIBRARY
         "<CMAKE_C_COMPILER> -Wl,--start-group <CMAKE_SHARED_LIBRARY_C_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_CXX_CREATE_SHARED_LIBRARY
         "<CMAKE_CXX_COMPILER> -Wl,--start-group <CMAKE_SHARED_LIBRARY_CXX_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_RC_CREATE_SHARED_LIBRARY
         "<CMAKE_C_COMPILER> -shared -Wl,--start-group <CMAKE_SHARED_LIBRARY_C_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
 else()
@@ -277,14 +264,14 @@ set(CMAKE_C_CREATE_SHARED_MODULE ${CMAKE_C_CREATE_SHARED_LIBRARY})
 set(CMAKE_CXX_CREATE_SHARED_MODULE ${CMAKE_CXX_CREATE_SHARED_LIBRARY})
 set(CMAKE_RC_CREATE_SHARED_MODULE ${CMAKE_RC_CREATE_SHARED_LIBRARY})
 
-set(CMAKE_EXE_LINKER_FLAGS "${REACTOS_CLANG_BASE_LINKER_FLAGS} -Wl,--disable-stdcall-fixup,--gc-sections")
-set(CMAKE_SHARED_LINKER_FLAGS "${REACTOS_CLANG_BASE_LINKER_FLAGS} -Wl,--disable-stdcall-fixup")
-set(CMAKE_MODULE_LINKER_FLAGS "${REACTOS_CLANG_BASE_LINKER_FLAGS} -Wl,--disable-stdcall-fixup")
+set(CMAKE_EXE_LINKER_FLAGS "${LIBRENT_CLANG_BASE_LINKER_FLAGS} -Wl,--disable-stdcall-fixup,--gc-sections")
+set(CMAKE_SHARED_LINKER_FLAGS "${LIBRENT_CLANG_BASE_LINKER_FLAGS} -Wl,--disable-stdcall-fixup")
+set(CMAKE_MODULE_LINKER_FLAGS "${LIBRENT_CLANG_BASE_LINKER_FLAGS} -Wl,--disable-stdcall-fixup")
 
 set(CMAKE_C_COMPILE_OBJECT "<CMAKE_C_COMPILER> <DEFINES> ${_compress_debug_sections_flag} ${CLANG_RESOURCE_INCLUDE_FLAG} <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
 set(_reactos_cppstl_pre_include_flags "")
 set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> <DEFINES>${_reactos_cppstl_pre_include_flags} ${CLANG_RESOURCE_INCLUDE_FLAG} <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
-set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${_compress_debug_sections_flag} -x assembler-with-cpp -o <OBJECT> -I${REACTOS_SOURCE_DIR}/sdk/include/asm -I${REACTOS_BINARY_DIR}/sdk/include/asm <INCLUDES> <FLAGS> <DEFINES> -D__ASM__ -c <SOURCE>")
+set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${_compress_debug_sections_flag} -x assembler-with-cpp -o <OBJECT> -I${LIBRENT_SOURCE_DIR}/sdk/include/asm -I${LIBRENT_BINARY_DIR}/sdk/include/asm <INCLUDES> <FLAGS> <DEFINES> -D__ASM__ -c <SOURCE>")
 
 set(_rc_target_flag)
 set(RC_PREPROCESSOR_TARGET "--preprocessor-arg=--target=${CMAKE_C_COMPILER_TARGET}")
@@ -292,7 +279,7 @@ if(ARCH STREQUAL "i386")
     set(_rc_target_flag "--target=pe-i386")
 elseif(ARCH STREQUAL "amd64")
     set(_rc_target_flag "--target=pe-x86-64")
-elseif(ARCH STREQUAL "arm64" OR ARCH STREQUAL "riscv64" OR ARCH STREQUAL "ppc")
+elseif(ARCH STREQUAL "arm64")
     set(_rc_target_flag "--target=${CMAKE_C_COMPILER_TARGET}")
 endif()
 
@@ -319,7 +306,7 @@ endfunction()
 function(set_subsystem MODULE SUBSYSTEM)
     if(ARCH STREQUAL "amd64")
         set(_subsystem_version "5.02")
-    elseif(ARCH STREQUAL "arm" OR ARCH STREQUAL "arm64" OR ARCH STREQUAL "riscv64" OR ARCH STREQUAL "ppc")
+    elseif(ARCH STREQUAL "arm" OR ARCH STREQUAL "arm64")
         set(_subsystem_version "6.02")
     else()
         set(_subsystem_version "5.01")
@@ -332,7 +319,7 @@ function(set_image_base MODULE IMAGE_BASE)
 endfunction()
 
 function(set_module_type_toolchain MODULE TYPE)
-    # Set the PE image version numbers from the NT OS version ReactOS is based on
+    # Set the PE image version numbers from the NT OS version LibreNT is based on
     target_link_options(${MODULE} PRIVATE
         -Wl,--major-image-version,${_NT_MAJOR} -Wl,--minor-image-version,0${_NT_MINOR} -Wl,--major-os-version,${_NT_MAJOR} -Wl,--minor-os-version,0${_NT_MINOR})
 
@@ -340,15 +327,11 @@ function(set_module_type_toolchain MODULE TYPE)
         add_arm64ec_chpe_support(${MODULE})
     endif()
 
-    if(RISCV64_FAST_MISALIGNED_ACCESS AND NOT TYPE IN_LIST KERNEL_MODULE_TYPES)
-        target_compile_options(${MODULE} PRIVATE -mno-scalar-strict-align)
-    endif()
-
     if(ARCH STREQUAL "arm64" AND NOT ARM64EC_RUNTIME)
         if(TYPE IN_LIST KERNEL_MODULE_TYPES)
-            set_target_properties(${MODULE} PROPERTIES REACTOS_LSE_ATOMICS lse_atomics_km)
+            set_target_properties(${MODULE} PROPERTIES LIBRENT_LSE_ATOMICS lse_atomics_km)
         else()
-            set_target_properties(${MODULE} PROPERTIES REACTOS_LSE_ATOMICS lse_atomics_um)
+            set_target_properties(${MODULE} PROPERTIES LIBRENT_LSE_ATOMICS lse_atomics_um)
         endif()
     endif()
 
@@ -370,7 +353,7 @@ function(set_module_type_toolchain MODULE TYPE)
         # characteristic fixups in the POST_BUILD step.
 
         # Place INIT &.rsrc section at the tail of the module, before .reloc
-        add_linker_script(${MODULE} ${REACTOS_SOURCE_DIR}/sdk/cmake/init-section.lds)
+        add_linker_script(${MODULE} ${LIBRENT_SOURCE_DIR}/sdk/cmake/init-section.lds)
 
         add_custom_command(TARGET ${MODULE} POST_BUILD
             COMMAND native-pefixup --${TYPE} $<TARGET_FILE:${MODULE}>)
@@ -392,7 +375,7 @@ function(add_arm64ec_chpe_support MODULE)
         return()
     endif()
 
-    get_target_property(_chpe_added ${MODULE} REACTOS_ARM64EC_CHPE_ADDED)
+    get_target_property(_chpe_added ${MODULE} LIBRENT_ARM64EC_CHPE_ADDED)
     if(_chpe_added)
         return()
     endif()
@@ -410,8 +393,8 @@ function(add_arm64ec_chpe_support MODULE)
         set_target_properties(${MODULE} PROPERTIES LINKER_LANGUAGE C)
     endif()
 
-    target_sources(${MODULE} PRIVATE ${REACTOS_SOURCE_DIR}/sdk/lib/vcruntime/arm64ec/chpe.S)
-    set_target_properties(${MODULE} PROPERTIES REACTOS_ARM64EC_CHPE_ADDED TRUE)
+    target_sources(${MODULE} PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/lib/vcruntime/arm64ec/chpe.S)
+    set_target_properties(${MODULE} PROPERTIES LIBRENT_ARM64EC_CHPE_ADDED TRUE)
 endfunction()
 
 function(add_delay_importlibs _module)
@@ -533,7 +516,7 @@ function(CreateBootSectorTarget _target_name _asm_file _binary_file _base_addres
     # Step 1: Preprocess with Clang
     add_custom_command(
         OUTPUT ${_preprocessed_file}
-        COMMAND ${CMAKE_ASM_COMPILER} -E -x assembler-with-cpp -MMD -MF ${_preprocessed_depfile} -MT ${_preprocessed_file} -o ${_preprocessed_file} -I${REACTOS_SOURCE_DIR}/sdk/include/asm -I${REACTOS_BINARY_DIR}/sdk/include/asm ${_includes} ${_defines} -D__ASM__ ${_asm_file}
+        COMMAND ${CMAKE_ASM_COMPILER} -E -x assembler-with-cpp -MMD -MF ${_preprocessed_depfile} -MT ${_preprocessed_file} -o ${_preprocessed_file} -I${LIBRENT_SOURCE_DIR}/sdk/include/asm -I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_includes} ${_defines} -D__ASM__ ${_asm_file}
         DEPENDS ${_asm_file}
         DEPFILE ${_preprocessed_depfile})
 
@@ -582,7 +565,7 @@ function(add_asm16_bin _target _binary_file _base_address)
     # Step 1: Preprocess with Clang
     add_custom_command(
         OUTPUT ${_preprocessed_file}
-        COMMAND ${CMAKE_ASM_COMPILER} -E -x assembler-with-cpp -o ${_preprocessed_file} -I${REACTOS_SOURCE_DIR}/sdk/include/asm -I${REACTOS_BINARY_DIR}/sdk/include/asm ${_directory_includes} ${_source_file_defines} ${_directory_defines} -D__ASM__ ${_concatenated_asm_file}
+        COMMAND ${CMAKE_ASM_COMPILER} -E -x assembler-with-cpp -o ${_preprocessed_file} -I${LIBRENT_SOURCE_DIR}/sdk/include/asm -I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_directory_includes} ${_source_file_defines} ${_directory_defines} -D__ASM__ ${_concatenated_asm_file}
         DEPENDS ${_concatenated_asm_file})
 
     # Step 2: Assemble with Clang (produces ELF objects)
@@ -655,8 +638,8 @@ add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:$<IF:$<BOOL:$<TARGET_PROPERTY:WIT
 
 # Clang/LLVM runtime libraries
 
-set(REACTOS_LIBCXX_ROOT
-    "${REACTOS_BINARY_DIR}/${ARCH}-cxx-runtime" CACHE PATH
+set(LIBRENT_LIBCXX_ROOT
+    "${LIBRENT_BINARY_DIR}/${ARCH}-cxx-runtime" CACHE PATH
     "LLVM runtimes built against the SDK headers (see sdk/tools/cxx-runtime/build-cxx-runtime.py)")
 
 if(ARCH STREQUAL "i386")
@@ -667,31 +650,27 @@ elseif(ARCH STREQUAL "arm")
     set(_clang_builtins_name libclang_rt.builtins-arm.a)
 elseif(ARCH STREQUAL "arm64")
     set(_clang_builtins_name libclang_rt.builtins-aarch64.a)
-elseif(ARCH STREQUAL "riscv64")
-    set(_clang_builtins_name libclang_rt.builtins-riscv64.a)
-elseif(ARCH STREQUAL "ppc")
-    set(_clang_builtins_name libclang_rt.builtins-powerpcle.a)
 else()
     message(FATAL_ERROR "Unsupported ARCH for the LLVM runtimes: ${ARCH}")
 endif()
 
-set(_clang_rt_builtins "${REACTOS_LIBCXX_ROOT}/lib/windows/${_clang_builtins_name}")
-set(_llvm_libcxx "${REACTOS_LIBCXX_ROOT}/lib/libc++.a")
-set(_llvm_libcxxabi "${REACTOS_LIBCXX_ROOT}/lib/libc++abi.a")
-set(_llvm_libunwind "${REACTOS_LIBCXX_ROOT}/lib/libunwind.a")
+set(_clang_rt_builtins "${LIBRENT_LIBCXX_ROOT}/lib/windows/${_clang_builtins_name}")
+set(_llvm_libcxx "${LIBRENT_LIBCXX_ROOT}/lib/libc++.a")
+set(_llvm_libcxxabi "${LIBRENT_LIBCXX_ROOT}/lib/libc++abi.a")
+set(_llvm_libunwind "${LIBRENT_LIBCXX_ROOT}/lib/libunwind.a")
 
 if(NOT EXISTS "${_clang_rt_builtins}" OR NOT EXISTS "${_llvm_libcxx}" OR
    NOT EXISTS "${_llvm_libcxxabi}" OR NOT EXISTS "${_llvm_libunwind}" OR
-   NOT EXISTS "${REACTOS_LIBCXX_ROOT}/include/c++/v1/__config_site")
+   NOT EXISTS "${LIBRENT_LIBCXX_ROOT}/include/c++/v1/__config_site")
     message(STATUS
         "Build the LLVM runtimes with sdk/tools/cxx-runtime/build-cxx-runtime.py, "
-        "or set REACTOS_LIBCXX_ROOT to their install directory")
+        "or set LIBRENT_LIBCXX_ROOT to their install directory")
 endif()
 
 add_library(libgcc INTERFACE)
 target_link_libraries(libgcc INTERFACE ${_clang_rt_builtins} libkernel32)
 if(ARCH STREQUAL "arm64" AND NOT ARM64EC_RUNTIME)
-    link_libraries("$<TARGET_PROPERTY:REACTOS_LSE_ATOMICS>")
+    link_libraries("$<TARGET_PROPERTY:LIBRENT_LSE_ATOMICS>")
 endif()
 link_libraries(${_clang_rt_builtins})
 add_link_options(-Wl,--allow-multiple-definition)
@@ -720,10 +699,10 @@ add_library(libstdc++ STATIC IMPORTED GLOBAL)
 set_target_properties(libstdc++ PROPERTIES IMPORTED_LOCATION ${_llvm_libcxx})
 target_link_libraries(libstdc++ INTERFACE libsupc++ oldnames libucrtbase)
 string(APPEND _reactos_cppstl_pre_include_flags
-    " -I${REACTOS_LIBCXX_ROOT}/include/c++/v1")
-if(EXISTS "${REACTOS_SOURCE_DIR}/sdk/include/ucrt")
+    " -I${LIBRENT_LIBCXX_ROOT}/include/c++/v1")
+if(EXISTS "${LIBRENT_SOURCE_DIR}/sdk/include/ucrt")
     target_include_directories(libstdc++ SYSTEM INTERFACE
-        "$<$<COMPILE_LANGUAGE:CXX>:${REACTOS_SOURCE_DIR}/sdk/include/ucrt>")
+        "$<$<COMPILE_LANGUAGE:CXX>:${LIBRENT_SOURCE_DIR}/sdk/include/ucrt>")
 endif()
 
 set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> <DEFINES>${_reactos_cppstl_pre_include_flags} ${CLANG_RESOURCE_INCLUDE_FLAG} <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
@@ -731,8 +710,8 @@ set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> <DEFINES>${_reactos_cppstl_pr
 # Create our alias libraries
 add_library(cppstl ALIAS libstdc++)
 
-else() # NOT _REACTOS_CLANG_BUILD_CONFIG
+else() # NOT _LIBRENT_CLANG_BUILD_CONFIG
 
 message(FATAL_ERROR "Use toolchain-clang.cmake as CMAKE_TOOLCHAIN_FILE")
 
-endif() # _REACTOS_CLANG_BUILD_CONFIG
+endif() # _LIBRENT_CLANG_BUILD_CONFIG

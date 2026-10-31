@@ -1505,7 +1505,7 @@ Return Value:
     // synchronize against this interrupt. For KMDF this will flush DPCs and
     // for UMDF this will send a message to reflector to flush queued DPCs.
     //
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /*
      * This causes DPCs to be flushed when SystemAffinity is already disabled.
      * To be clear this isn't the fault of KMDF, but instead it's the fault

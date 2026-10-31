@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            hal/halx86/legacy/bus/pcibus.c
  * PURPOSE:         PCI Bus Support (Configuration Space, Resource Allocation)
@@ -9,7 +9,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <hal.h>
-#include <reactos/hal/acpi_pci.h>   /* PHAL_ACPI_PCI_ROUTE_QUERY */
+#include <librent/hal/acpi_pci.h>   /* PHAL_ACPI_PCI_ROUTE_QUERY */
 #define NDEBUG
 #include <debug.h>
 

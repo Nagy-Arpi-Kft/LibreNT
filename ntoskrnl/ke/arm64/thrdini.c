@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/ke/arm64/thrdini.c
  * PURPOSE:         Thread startup stubs for ARM64
@@ -8,11 +8,11 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/cpuaudit.h>
+#include <librent/cpuaudit.h>
 #endif
 #define NDEBUG
 #include <debug.h>
-#include <reactos/smpdbg.h>
+#include <librent/smpdbg.h>
 
 /*
  * Stack layout used during context acquisition:

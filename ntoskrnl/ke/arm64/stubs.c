@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            ntoskrnl/ke/arm64/stubs.c
  * PURPOSE:         Minimal ARM64 kernel support stubs required for linking
@@ -558,7 +558,7 @@ KeSwitchKernelStack(
         }
     }
 
-    /* Relocate the ReactOS callback chain until KSTACK_CONTROL owns it. */
+    /* Relocate the LibreNT callback chain until KSTACK_CONTROL owns it. */
     if (CurrentThread->CallbackStack != NULL)
     {
         PKCALLOUT_FRAME OldCalloutFrame = (PKCALLOUT_FRAME)CurrentThread->CallbackStack;

@@ -186,7 +186,7 @@ bindresvport_sa(sd, sa)
 #ifdef _WIN32
 		memset(sa, 0, salen);
 		if ((error = getsockopt(sd, SOL_SOCKET, SO_PROTOCOL_INFO, (char *)&proto_info, &proto_info_size)) == SOCKET_ERROR) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 			int sockerr = WSAGetLastError();
 #endif
 			return -1;
@@ -246,7 +246,7 @@ bindresvport_sa(sd, sa)
 
 	error = bind(sd, sa, salen);
 	if (error) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		int err = WSAGetLastError();
 #endif
 	}

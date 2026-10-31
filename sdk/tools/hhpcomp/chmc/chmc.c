@@ -103,14 +103,14 @@ int chmc_pmgi_add_entry(struct chmcFile *chm, const char *name, int pmgl_id);
 void chmc_pmgi_add(struct chmcFile *chm, struct chmcPmgiChunkNode *pmgi);
 void chmc_string_init(struct chmcStringChunk *node);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 int chmc_uncompressed_done(struct chmcFile *chm);
 int chmc_pmgi_done(struct chmcFile *chm);
 int chmc_write(struct chmcFile *chm);
 int chmc_appendfile(struct chmcFile *chm, const char *filename, void *buf,
                 size_t size );
 int chmc_pmgl_add_entry(struct chmcFile *chm, struct chmcTreeNode *entry);
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 struct chmcLzxInfo
 {
@@ -668,7 +668,7 @@ int chmc_system_done(struct chmcFile *chm)
 	sysp = malloc(16384);
 	if (sysp) {
 		UInt32 val;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		UInt16 code, len;
 #endif
 		const char *entry_val;
@@ -943,7 +943,7 @@ int chmc_crunch_lzx(struct chmcFile *chm, int sect_id)
 
 	assert(chm);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	if ((wsize_code < 15) || (wsize_code > 21)) {
 		fprintf(stderr, "window size must be between 15 and 21 inclusive\n");
 		return CHMC_EINVAL;

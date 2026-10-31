@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Media Foundation decoders
+ * PROJECT:     LibreNT Media Foundation decoders
  * FILE:        dll/win32/msmpeg2vdec/wine/unixlib.h
  * PURPOSE:     Types Wine's transform interface expects from its Unix-call header
  *

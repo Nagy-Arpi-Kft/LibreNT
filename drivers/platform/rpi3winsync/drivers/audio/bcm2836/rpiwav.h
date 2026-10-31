@@ -10,7 +10,7 @@ Abstract:
 #pragma once
 
 // Fix warning from stdunk.h by disabling back-compat hack.
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define _NEW_DELETE_OPERATORS_
 #endif
 
@@ -21,7 +21,7 @@ Abstract:
 #include <wdf.h>
 #include <wdfminiport.h>
 #include <MsApoFxProxy.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntstrsafe.h>
 #else
 #include <Ntstrsafe.h>

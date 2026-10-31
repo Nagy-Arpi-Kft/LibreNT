@@ -145,7 +145,7 @@ static void test_SetupDiInstallClassExA(void)
     }
 
     /* [Version]Signature+Class+ClassGUID;[ClassInstall32.NT]AddReg; [SampleClassAddReg]HKR;*/
-    strcat(inf, "HKR,,,,\"ReactOS Test SetupDiInstallClassExA\"\n");
+    strcat(inf, "HKR,,,,\"LibreNT Test SetupDiInstallClassExA\"\n");
     create_inf_file(inffile, inf);
     StringCbPrintfA(path, sizeof(path), "%s\\%s", CURR_DIR, inffile);
 
@@ -181,7 +181,7 @@ static void test_SetupDiInstallClassExA(void)
     }
 
     /* Add a reference */
-    strcat(inf, "AddService=Reactostest,,Reactostest.Service\n");
+    strcat(inf, "AddService=Librenttest,,Librenttest.Service\n");
     create_inf_file(inffile, inf);
     infhandle =  SetupOpenInfFileA(path, NULL, INF_STYLE_WIN4, NULL);
     SetLastError(0xdeadbeef);
@@ -193,7 +193,7 @@ static void test_SetupDiInstallClassExA(void)
     DeleteFileA(inffile);
 
     /* Add the section */
-    strcat(inf, "[Reactostest.Service]\n");
+    strcat(inf, "[Librenttest.Service]\n");
     create_inf_file(inffile, inf);
     infhandle = SetupOpenInfFileA(path, NULL, INF_STYLE_WIN4, NULL);
     SetLastError(0xdeadbeef);
@@ -205,7 +205,7 @@ static void test_SetupDiInstallClassExA(void)
     DeleteFileA(inffile);
 
     /* Just the ServiceBinary */
-    strcat(inf, "ServiceBinary=%12%\\reactostest.sys\n");
+    strcat(inf, "ServiceBinary=%12%\\librenttest.sys\n");
     create_inf_file(inffile, inf);
     infhandle = SetupOpenInfFileA(path, NULL, INF_STYLE_WIN4, NULL);
     SetLastError(0xdeadbeef);
@@ -262,7 +262,7 @@ static void test_SetupDiInstallClassExA(void)
     scm_handle = OpenSCManagerA(NULL, NULL, GENERIC_ALL);
 
     /* Open the service to see if it's really there */
-    svc_handle = OpenServiceA(scm_handle, "Reactostest", DELETE);
+    svc_handle = OpenServiceA(scm_handle, "Librenttest", DELETE);
     ok(svc_handle != NULL, "Service was not created\n");
 
     SetLastError(0xdeadbeef);

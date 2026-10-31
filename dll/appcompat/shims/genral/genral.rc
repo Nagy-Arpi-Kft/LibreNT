@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT 'General' Shim library
+ * PROJECT:     LibreNT 'General' Shim library
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Version resource
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -7,12 +7,12 @@
 
 #include <windef.h>
 
-#define REACTOS_FILEVERSION 10,0,26100,0
-#define REACTOS_STR_FILE_VERSION "10.0.26100.0"
-#define REACTOS_PRODUCTVERSION 10,0,26100,0
-#define REACTOS_STR_PRODUCT_VERSION "10.0"
+#define LIBRENT_FILEVERSION 10,0,26100,0
+#define LIBRENT_STR_FILE_VERSION "10.0.26100.0"
+#define LIBRENT_PRODUCTVERSION 10,0,26100,0
+#define LIBRENT_STR_PRODUCT_VERSION "10.0"
 
-#define REACTOS_STR_FILE_DESCRIPTION  "General purpose shims"
-#define REACTOS_STR_INTERNAL_NAME     "acgenral"
-#define REACTOS_STR_ORIGINAL_FILENAME "acgenral.dll"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION  "General purpose shims"
+#define LIBRENT_STR_INTERNAL_NAME     "acgenral"
+#define LIBRENT_STR_ORIGINAL_FILENAME "acgenral.dll"
+#include <librent/version.rc>

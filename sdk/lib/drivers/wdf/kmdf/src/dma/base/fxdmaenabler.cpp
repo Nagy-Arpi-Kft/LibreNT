@@ -25,7 +25,7 @@ Revision History:
 
 extern "C" {
 // #include "FxDmaEnabler.tmh"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define RtlSizeTToULong RtlULongPtrToULong
 #endif
 }
@@ -126,7 +126,7 @@ FxDmaEnabler::Initialize(
     DEVICE_DESCRIPTION deviceDescription;
     PFX_DRIVER_GLOBALS pFxDriverGlobals = GetDriverGlobals();
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ULONG mapRegistersAllocated;
 #endif
     RtlZeroMemory(&deviceDescription, sizeof(DEVICE_DESCRIPTION));
@@ -427,7 +427,7 @@ FxDmaEnabler::Initialize(
     // adapter later will fail cleanly.
     //
     m_PDO = m_DeviceBase->GetPhysicalDevice();
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     mapRegistersAllocated = 0;
 #endif
     //

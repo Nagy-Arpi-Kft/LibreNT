@@ -89,7 +89,7 @@
 
 #define STRING_CMD_INFOLINE     620
 #define STRING_CMD_COPYRIGHT    621
-#define STRING_REACTOS_VERSION  623
+#define STRING_LIBRENT_VERSION  623
 #define STRING_CMD_SHELLINFO    624
 
 #define STRING_COLOR_HELP1 625
@@ -233,4 +233,4 @@
 
 /* These strings are language independent (cmd.rc) */
 #define STRING_FREEDOS_DEV 800
-#define STRING_REACTOS_DEV 801
+#define STRING_LIBRENT_DEV 801

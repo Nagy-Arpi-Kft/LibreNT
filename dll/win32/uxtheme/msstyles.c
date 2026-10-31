@@ -25,8 +25,8 @@
 #include "winbase.h"
 #include "wingdi.h"
 #include "winuser.h"
-#ifdef __REACTOS__
-#include <reactos/user32_vista.h>
+#ifdef __LIBRENT__
+#include <librent/user32_vista.h>
 #endif
 #include "winnls.h"
 #include "vfwmsgs.h"
@@ -65,7 +65,7 @@ static CRITICAL_SECTION_DEBUG handles_cs_debug =
 static CRITICAL_SECTION handles_cs = { &handles_cs_debug, -1, 0, 0, 0, 0 };
 static PTHEME_CLASS open_handles;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static PTHEME_FILE MSSTYLES_ReferenceActiveTheme(void)
 {
     PTHEME_FILE tf;
@@ -260,7 +260,7 @@ static void MSSTYLES_ApplyStoredMetrics(PTHEME_FILE tf);
  */
 HRESULT MSSTYLES_SetActiveTheme(PTHEME_FILE tf, BOOL setMetrics)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PTHEME_FILE old;
 
     if (tf)
@@ -980,7 +980,7 @@ static BOOL parse_handle_nonclient_size (struct PARSENONCLIENTSTATE* state,
                 state->metrics.iMenuHeight = size;
                 state->metricsDirty = TRUE;
                 break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case TMT_PADDEDBORDERWIDTH:
                 state->metrics.iPaddedBorderWidth = size;
                 state->metricsDirty = TRUE;
@@ -1164,7 +1164,7 @@ static void parse_app_class_name(LPCWSTR name, LPWSTR app_name, LPWSTR class_nam
  *     pszClassList        List of requested classes, semicolon delimited
  *     dpi                 DPI for theme parts
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static PTHEME_CLASS MSSTYLES_FindAppClass(PTHEME_FILE tf, LPCWSTR pszAppName,
                                           LPCWSTR pszDefaultAppName, LPCWSTR pszClassName)
 {
@@ -1215,7 +1215,7 @@ static PTHEME_CLASS open_theme_class(PTHEME_FILE theme, LPCWSTR pszAppName,
         if (szAppName[0] && pszAppName)
             return NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         cls = MSSTYLES_FindAppClass(theme, szAppName[0] ? szAppName : pszAppName,
                                     pszDefaultAppName, szClassName);
 #else
@@ -1233,7 +1233,7 @@ static PTHEME_CLASS open_theme_class(PTHEME_FILE theme, LPCWSTR pszAppName,
         if (szAppName[0] && pszAppName)
             return NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         cls = MSSTYLES_FindAppClass(theme, szAppName[0] ? szAppName : pszAppName,
                                     pszDefaultAppName, szClassName);
 #else
@@ -1280,7 +1280,7 @@ static PTHEME_CLASS open_theme_class(PTHEME_FILE theme, LPCWSTR pszAppName,
 
 PTHEME_CLASS MSSTYLES_OpenThemeClass(LPCWSTR pszAppName, LPCWSTR pszClassList, UINT dpi)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     PTHEME_FILE tf = MSSTYLES_ReferenceActiveTheme();
     PTHEME_CLASS cls = open_theme_class(tf, pszAppName, NULL, pszClassList, dpi);
 
@@ -1291,7 +1291,7 @@ PTHEME_CLASS MSSTYLES_OpenThemeClass(LPCWSTR pszAppName, LPCWSTR pszClassList, U
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PTHEME_CLASS MSSTYLES_OpenThemeClassForApp(LPCWSTR pszAppName, LPCWSTR pszDefaultAppName,
                                            LPCWSTR pszClassList, UINT dpi)
 {
@@ -1533,7 +1533,7 @@ static BOOL prepare_alpha (HBITMAP bmp, BOOL* hasAlpha, BOOL *hasDefaultTranspar
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static CRITICAL_SECTION_DEBUG MSSTYLES_ImageLockDebug =
 {
     0, 0, &MSSTYLES_ImageLock,
@@ -1576,7 +1576,7 @@ HBITMAP MSSTYLES_LoadBitmap (PTHEME_CLASS tc, LPCWSTR lpFilename, BOOL* hasAlpha
     }
     /* Not found? Load from resources */
     img = malloc(sizeof(*img));
-#if defined(__REACTOS__) && defined(ENABLE_PNG_SUPPORT)
+#if defined(__LIBRENT__) && defined(ENABLE_PNG_SUPPORT)
     if (MSSTYLES_TryLoadPng(tc->hTheme, szFile, L"IMAGE", &img->image))
     {
         prepare_png_alpha(img->image, hasAlpha);
@@ -1587,7 +1587,7 @@ HBITMAP MSSTYLES_LoadBitmap (PTHEME_CLASS tc, LPCWSTR lpFilename, BOOL* hasAlpha
 #endif
     img->image = LoadImageW(tc->hTheme, szFile, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
     prepare_alpha (img->image, hasAlpha, &has_default);
-#if defined(__REACTOS__) && defined(ENABLE_PNG_SUPPORT)
+#if defined(__LIBRENT__) && defined(ENABLE_PNG_SUPPORT)
     }
 #endif
     img->hasAlpha = *hasAlpha;
@@ -1602,7 +1602,7 @@ HBITMAP MSSTYLES_LoadBitmap (PTHEME_CLASS tc, LPCWSTR lpFilename, BOOL* hasAlpha
     return img->image;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HBITMAP MSSTYLES_LoadBitmap (PTHEME_CLASS tc, LPCWSTR lpFilename, BOOL* hasAlpha, BOOL *hasDefaultTransparentColour)
 {
     HBITMAP image;
@@ -1620,8 +1620,8 @@ static BOOL MSSTYLES_GetNextLong(LPCWSTR lpStringStart, LPCWSTR lpStringEnd, LPC
     LONG total = 0;
     BOOL gotNeg = FALSE;
 
-#ifdef __REACTOS__
-    /* ReactOS themes use negative content margins for overhanging shell controls. */
+#ifdef __LIBRENT__
+    /* LibreNT themes use negative content margins for overhanging shell controls. */
     while(cur < lpStringEnd && ((*cur < '0' || *cur > '9') && *cur != '-')) cur++;
 #else
     while(cur < lpStringEnd && (*cur < '0' || *cur > '9' || *cur == '-')) cur++;

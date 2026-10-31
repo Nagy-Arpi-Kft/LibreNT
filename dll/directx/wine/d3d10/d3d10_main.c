@@ -94,7 +94,7 @@ static HRESULT d3d10_create_device(IDXGIAdapter *adapter, D3D10_DRIVER_TYPE driv
             }
 
             case D3D10_DRIVER_TYPE_NULL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 HRESULT (WINAPI *create_null_adapter)(REFIID iid, void **adapter);
 

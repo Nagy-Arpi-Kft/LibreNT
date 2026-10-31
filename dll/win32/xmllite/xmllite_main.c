@@ -34,7 +34,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
     switch (fdwReason)
     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         case DLL_WINE_PREATTACH:
             return FALSE;    /* prefer native version */
 #endif

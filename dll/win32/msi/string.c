@@ -421,7 +421,7 @@ UINT msi_string2id( const string_table *st, const WCHAR *str, int len, UINT *id 
     return ERROR_INVALID_PARAMETER;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void string_totalsize( const string_table *st, const UINT *refs, UINT count, UINT *datasize, UINT *poolsize )
 #else
 static void string_totalsize( const string_table *st, UINT *datasize, UINT *poolsize )
@@ -435,7 +435,7 @@ static void string_totalsize( const string_table *st, UINT *datasize, UINT *pool
     *poolsize = 4;
     *datasize = 0;
     holesize = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for( i=1; i<count; i++ )
     {
         if( !refs[i] )
@@ -571,7 +571,7 @@ end:
     return st;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 UINT msi_save_string_table( const string_table *st, const UINT *refs, IStorage *storage, UINT *bytes_per_strref )
 #else
 UINT msi_save_string_table( const string_table *st, IStorage *storage, UINT *bytes_per_strref )
@@ -581,13 +581,13 @@ UINT msi_save_string_table( const string_table *st, IStorage *storage, UINT *byt
     UINT ret = ERROR_FUNCTION_FAILED;
     CHAR *data = NULL;
     USHORT *pool = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT count = 1;
 #endif
 
     TRACE("\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for( i=1; i<st->maxcount; i++ )
         if( refs[i] && st->strings[i].data )
             count = i + 1;
@@ -625,7 +625,7 @@ UINT msi_save_string_table( const string_table *st, IStorage *storage, UINT *byt
         *bytes_per_strref = sizeof(USHORT);
 
     n = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for( i=1; i<count; i++ )
     {
         if( !refs[i] )
@@ -650,7 +650,7 @@ UINT msi_save_string_table( const string_table *st, IStorage *storage, UINT *byt
         }
 
         if (sz)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             pool[ n*2 + 1 ] = min( refs[i], 0xffff );
 #else
             pool[ n*2 + 1 ] = st->strings[i].persistent_refcount;
@@ -702,7 +702,7 @@ err:
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 UINT msi_get_string_table_size( const string_table *st )
 {
     return st->maxcount;

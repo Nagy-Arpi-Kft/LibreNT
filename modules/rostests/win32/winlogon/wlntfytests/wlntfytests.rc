@@ -1,5 +1,5 @@
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION    "Tests for Winlogon notifications"
-#define REACTOS_STR_INTERNAL_NAME       "wlntfytests"
-#define REACTOS_STR_ORIGINAL_FILENAME   "wlntfytests.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION    "Tests for Winlogon notifications"
+#define LIBRENT_STR_INTERNAL_NAME       "wlntfytests"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "wlntfytests.dll"
+#include <librent/version.rc>

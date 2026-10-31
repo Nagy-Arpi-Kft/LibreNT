@@ -349,7 +349,7 @@ static HRESULT WINAPI opc_uri_GetRelationshipsPartUri(IOpcPartUri *iface, IOpcPa
 static HRESULT WINAPI opc_uri_GetRelativeUri(IOpcPartUri *iface, IOpcPartUri *part_uri,
         IUri **relative_uri)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct opc_uri *uri = impl_from_IOpcPartUri(iface);
     BSTR base = NULL, target = NULL;
     size_t i, common = 0, dir_end, up = 0;
@@ -554,7 +554,7 @@ static IUri *opc_part_uri_get_rels_uri(IUri *uri)
     }
     ret[0] = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (end != path)
     {
         memcpy(ret, path, (end - path) * sizeof(WCHAR));

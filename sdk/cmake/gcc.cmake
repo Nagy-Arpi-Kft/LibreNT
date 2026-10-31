@@ -303,7 +303,7 @@ endif()
 if(SEPARATE_DBG)
     # PDB style debug puts all dwarf debug info in a separate dbg file
     message(STATUS "Building separate debug symbols")
-    file(MAKE_DIRECTORY ${REACTOS_BINARY_DIR}/symbols)
+    file(MAKE_DIRECTORY ${LIBRENT_BINARY_DIR}/symbols)
     if(CMAKE_GENERATOR STREQUAL "Ninja")
         # Those variables seems to be set but empty in newer CMake versions
         # and Ninja generator relies on them to generate PDB name, so unset them.
@@ -317,31 +317,31 @@ if(SEPARATE_DBG)
 
     get_target_property(SYMZ native-symz IMPORTED_LOCATION)
     set(strip_debug "${CMAKE_STRIP} --strip-debug <TARGET>")
-    set(pack_symbols "${SYMZ} <TARGET> ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}")
+    set(pack_symbols "${SYMZ} <TARGET> ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}")
 
     set(CMAKE_C_LINK_EXECUTABLE
         "<CMAKE_C_COMPILER> -Wl,--start-group <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_CXX_LINK_EXECUTABLE
         "<CMAKE_CXX_COMPILER> -Wl,--start-group <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_C_CREATE_SHARED_LIBRARY
         "<CMAKE_C_COMPILER> -Wl,--start-group <CMAKE_SHARED_LIBRARY_C_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_CXX_CREATE_SHARED_LIBRARY
         "<CMAKE_CXX_COMPILER> -Wl,--start-group <CMAKE_SHARED_LIBRARY_CXX_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
     set(CMAKE_RC_CREATE_SHARED_LIBRARY
         "<CMAKE_C_COMPILER> -shared -Wl,--start-group <CMAKE_SHARED_LIBRARY_C_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group"
-        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${REACTOS_BINARY_DIR}/symbols/${SYMBOL_FILE}"
+        "${CMAKE_STRIP} --only-keep-debug <TARGET> -o ${LIBRENT_BINARY_DIR}/symbols/${SYMBOL_FILE}"
         ${strip_debug}
         ${pack_symbols})
 else()
@@ -365,11 +365,11 @@ set(CMAKE_C_COMPILE_OBJECT "<CMAKE_C_COMPILER> <DEFINES> ${_compress_debug_secti
 # FIXME: Once the GCC toolchain bugs are fixed, add _compress_debug_sections_flag to CXX too
 set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT> -c <SOURCE>")
 if(ARCH STREQUAL "arm64")
-    set(_arm64_asm_compat_include "-include ${REACTOS_SOURCE_DIR}/sdk/include/ndk/asm.h")
+    set(_arm64_asm_compat_include "-include ${LIBRENT_SOURCE_DIR}/sdk/include/ndk/asm.h")
 else()
     set(_arm64_asm_compat_include "")
 endif()
-set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${_compress_debug_sections_flag} -x assembler-with-cpp -o <OBJECT> -I${REACTOS_SOURCE_DIR}/sdk/include/asm -I${REACTOS_BINARY_DIR}/sdk/include/asm ${_arm64_asm_compat_include} <INCLUDES> <FLAGS> <DEFINES> -D__ASM__ -c <SOURCE>")
+set(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> ${_compress_debug_sections_flag} -x assembler-with-cpp -o <OBJECT> -I${LIBRENT_SOURCE_DIR}/sdk/include/asm -I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_arm64_asm_compat_include} <INCLUDES> <FLAGS> <DEFINES> -D__ASM__ -c <SOURCE>")
 
 set(CMAKE_RC_COMPILE_OBJECT "<CMAKE_RC_COMPILER> -O coff <INCLUDES> <DEFINES> -DRC_INVOKED -D__WIN32__=1 -D__FLAT__=1 ${I18N_DEFS} <FLAGS> <SOURCE> <OBJECT>")
 
@@ -413,7 +413,7 @@ function(set_image_base MODULE IMAGE_BASE)
 endfunction()
 
 function(set_module_type_toolchain MODULE TYPE)
-    # Set the PE image version numbers from the NT OS version ReactOS is based on
+    # Set the PE image version numbers from the NT OS version LibreNT is based on
     target_link_options(${MODULE} PRIVATE
         -Wl,--major-image-version,${_NT_MAJOR} -Wl,--minor-image-version,0${_NT_MINOR} -Wl,--major-os-version,${_NT_MAJOR} -Wl,--minor-os-version,0${_NT_MINOR})
 
@@ -430,7 +430,7 @@ function(set_module_type_toolchain MODULE TYPE)
         endif()
 
         # Place INIT &.rsrc section at the tail of the module, before .reloc
-        add_linker_script(${MODULE} ${REACTOS_SOURCE_DIR}/sdk/cmake/init-section.lds)
+        add_linker_script(${MODULE} ${LIBRENT_SOURCE_DIR}/sdk/cmake/init-section.lds)
 
         # Fixup section characteristics
         #  - Remove flags that LD overzealously puts (alignment flag, Initialized flags for code sections)
@@ -592,7 +592,7 @@ function(CreateBootSectorTarget _target_name _asm_file _binary_file _base_addres
 
     add_custom_command(
         OUTPUT ${_object_file}
-        COMMAND ${CMAKE_ASM_COMPILER} -x assembler-with-cpp -o ${_object_file} -I${REACTOS_SOURCE_DIR}/sdk/include/asm -I${REACTOS_BINARY_DIR}/sdk/include/asm ${_arm64_asm_compat_include} ${_includes} ${_defines} -D__ASM__ -c ${_asm_file}
+        COMMAND ${CMAKE_ASM_COMPILER} -x assembler-with-cpp -o ${_object_file} -I${LIBRENT_SOURCE_DIR}/sdk/include/asm -I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_arm64_asm_compat_include} ${_includes} ${_defines} -D__ASM__ -c ${_asm_file}
         DEPENDS ${_asm_file})
 
     add_custom_command(

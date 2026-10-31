@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/include/internal/cm.h
  * PURPOSE:         Internal header for the Configuration Manager
@@ -249,7 +249,7 @@ typedef struct _CM_KEY_BODY
     HANDLE ProcessID;
     LIST_ENTRY KeyBodyList;
 
-    /* ReactOS specific -- boolean flag to avoid recursive locking of the KCB */
+    /* LibreNT specific -- boolean flag to avoid recursive locking of the KCB */
     BOOLEAN KcbLocked;
     BOOLEAN NotifyClosed;
     CM_TRANS_PTR Trans;

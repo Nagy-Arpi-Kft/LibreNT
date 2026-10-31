@@ -25,7 +25,7 @@
 #include "windef.h"
 #include "winbase.h"
 #include "winerror.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wingdi.h>
 #endif
 #include "dciman.h"

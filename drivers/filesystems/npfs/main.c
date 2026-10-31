@@ -1,9 +1,9 @@
 /*
- * PROJECT:     ReactOS Named Pipe FileSystem
+ * PROJECT:     LibreNT Named Pipe FileSystem
  * LICENSE:     BSD - See COPYING.ARM in the top level directory
  * FILE:        drivers/filesystems/npfs/main.c
  * PURPOSE:     Named Pipe FileSystem Driver Initialization
- * PROGRAMMERS: ReactOS Portable Systems Group
+ * PROGRAMMERS: LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/

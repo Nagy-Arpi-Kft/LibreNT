@@ -182,7 +182,7 @@ OpenAliasByName(SAM_HANDLE DomainHandle,
                                     &Use);
     if (!NT_SUCCESS(Status))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (Status == STATUS_NONE_MAPPED)
             TRACE("SamLookupNamesInDomain(%wZ): name not found in domain\n", AliasName);
         else
@@ -1410,7 +1410,7 @@ NetLocalGroupGetMembers(
         if (ApiStatus != NERR_Success)
             goto done;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ZeroMemory(EnumContext, sizeof(*EnumContext));
 #endif
 
@@ -1452,7 +1452,7 @@ NetLocalGroupGetMembers(
         {
             if (EnumContext->DomainHandle != NULL)
                 SamCloseHandle(EnumContext->DomainHandle);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             EnumContext->DomainHandle = NULL;
 #endif
 

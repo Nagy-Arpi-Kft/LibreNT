@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Access control lists (ACLs) implementation
  * COPYRIGHT:   Copyright David Welch <welch@cwcom.net>
@@ -8,7 +8,7 @@
 /* INCLUDES *******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/acltransform.h>
+#include <librent/acltransform.h>
 #define NDEBUG
 #include <debug.h>
 

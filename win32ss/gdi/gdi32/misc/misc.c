@@ -1,5 +1,5 @@
 /*
- *  ReactOS GDI lib
+ *  LibreNT GDI lib
  *  Copyright (C) 2003 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /*
- * PROJECT:         ReactOS gdi32.dll
+ * PROJECT:         LibreNT gdi32.dll
  * FILE:            win32ss/gdi/gdi32/misc/misc.c
  * PURPOSE:         Miscellaneous functions
  * PROGRAMMER:      Thomas Weidenmueller <w3seek@reactos.com>
@@ -73,7 +73,7 @@ Escape(
     {
         case ABORTDOC:
             /* Note: Windows checks if the handle has any user data for the ABORTDOC command
-             * ReactOS copies this behavior to be compatible with windows 2003
+             * LibreNT copies this behavior to be compatible with windows 2003
              */
             if (GdiGetDcAttr(hdc) == NULL)
             {
@@ -91,7 +91,7 @@ Escape(
         case SETCOLORTABLE:
             /* Note 1: DRAFTMODE, FLUSHOUTPUT, SETCOLORTABLE are outdated */
             /* Note 2: Windows checks if the handle has any user data for the DRAFTMODE, FLUSHOUTPUT, SETCOLORTABLE commands
-             * ReactOS copies this behavior to be compatible with windows 2003
+             * LibreNT copies this behavior to be compatible with windows 2003
              */
             if (GdiGetDcAttr(hdc) == NULL)
             {
@@ -102,7 +102,7 @@ Escape(
 
         case SETABORTPROC:
             /* Note: Windows checks if the handle has any user data for the SETABORTPROC command
-             * ReactOS copies this behavior to be compatible with windows 2003
+             * LibreNT copies this behavior to be compatible with windows 2003
              */
             if (GdiGetDcAttr(hdc) == NULL)
             {
@@ -122,7 +122,7 @@ Escape(
 
         case ENDDOC:
             /* Note: Windows checks if the handle has any user data for the ENDDOC command
-             * ReactOS copies this behavior to be compatible with windows 2003
+             * LibreNT copies this behavior to be compatible with windows 2003
              */
             if (GdiGetDcAttr(hdc) == NULL)
             {
@@ -155,7 +155,7 @@ Escape(
             DOCINFOA di;
 
             /* Note: Windows checks if the handle has any user data for the STARTDOC command
-             * ReactOS copies this behavior to be compatible with windows 2003
+             * LibreNT copies this behavior to be compatible with windows 2003
              */
             if (GdiGetDcAttr(hdc) == NULL)
             {
@@ -497,7 +497,7 @@ static HRESULT UXTHEME_DrawImageBackground(HDC hdc, HBITMAP bmpSrc, RECT *prcSrc
         dstSize.y = abs(dstSize.y);
 
         /* Resize source image if destination smaller than margins */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         /* Revert Wine Commit 2b650fa as it breaks themed Explorer Toolbar Separators
            FIXME: Revisit this when the bug is fixed. CORE-9636 and Wine Bug #38538 */
         if (sm.cyTopHeight + sm.cyBottomHeight > dstSize.y || sm.cxLeftWidth + sm.cxRightWidth > dstSize.x) {
@@ -526,7 +526,7 @@ static HRESULT UXTHEME_DrawImageBackground(HDC hdc, HBITMAP bmpSrc, RECT *prcSrc
             rcSrc.right = srcSize.x;
             rcSrc.bottom = srcSize.y;
         }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
         hdcDst = hdc;
         OffsetViewportOrgEx(hdcDst, rcDst.left, rcDst.top, &org);

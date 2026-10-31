@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX GPU Memory Manager and Scheduler
+ * PROJECT:     LibreNT DirectX GPU Memory Manager and Scheduler
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Private internal header for dxgmms1.sys
  * COPYRIGHT:   Copyright 2024 LiberNT Team
@@ -42,12 +42,12 @@
 #undef _D3DKMDDI_H_
 
 /*
- * ReactOS debug macros (DPRINT, DPRINT1, ASSERT, etc.).
- * Use the explicit reactos/ path so the include is not shadowed by the
+ * LibreNT debug macros (DPRINT, DPRINT1, ASSERT, etc.).
+ * Use the explicit librent/ path so the include is not shadowed by the
  * local debug.h in drivers/directx/dxgmms1/ when -I points at this dir.
  * Must be included before the local debug.h which uses DPRINT/DPRINT1.
  */
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 /* Include our own debug helpers (wraps DPRINT/DPRINT1 with module prefix). */
 #include "debug.h"

@@ -22,13 +22,13 @@
 
 #include <assert.h>
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #endif
 
 #define COBJMACROS
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <limits.h>
 #endif
 #include "windef.h"
@@ -36,7 +36,7 @@
 #include "winreg.h"
 #include "winnls.h"
 #include "sqlext.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef TRACE_ON
 #endif
 #include "wine/debug.h"
@@ -84,14 +84,14 @@ static inline WCHAR *strdupAtoW(const char *str)
     LPWSTR ret = NULL;
 
     if(str) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int len;
 #else
         DWORD len;
 #endif
 
         len = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!len || (size_t)len > (size_t)-1 / sizeof(WCHAR)) return NULL;
         ret = malloc((size_t)len * sizeof(WCHAR));
         if (ret && !MultiByteToWideChar(CP_ACP, 0, str, -1, ret, len))
@@ -121,7 +121,7 @@ static LPWSTR SQLInstall_strdup_multi(LPCSTR str)
 {
     LPCSTR p;
     LPWSTR ret = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t count = 0, size;
     int len;
 #else
@@ -131,7 +131,7 @@ static LPWSTR SQLInstall_strdup_multi(LPCSTR str)
     if (!str)
         return ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (p = str; *p; p += size)
     {
         size = strlen(p) + 1;
@@ -143,7 +143,7 @@ static LPWSTR SQLInstall_strdup_multi(LPCSTR str)
         ;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = count ? MultiByteToWideChar(CP_ACP, 0, str, count, NULL, 0) : 0;
     if ((count && !len) || (size_t)len >= (size_t)-1 / sizeof(WCHAR)) return NULL;
     ret = malloc(((size_t)len + 1) * sizeof(WCHAR));
@@ -167,7 +167,7 @@ static LPSTR SQLInstall_strdup_multiWtoA(LPCWSTR str)
 {
     LPCWSTR p;
     LPSTR ret = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t count = 0, size;
     int len;
 #else
@@ -177,7 +177,7 @@ static LPSTR SQLInstall_strdup_multiWtoA(LPCWSTR str)
     if (!str)
         return ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (p = str; *p; p += size)
     {
         size = wcslen(p) + 1;
@@ -189,7 +189,7 @@ static LPSTR SQLInstall_strdup_multiWtoA(LPCWSTR str)
         ;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = count ? WideCharToMultiByte(CP_ACP, 0, str, count, NULL, 0, NULL, NULL) : 0;
     if (count && !len) return NULL;
     ret = malloc((size_t)len + 1);
@@ -214,7 +214,7 @@ static inline char *strdupWtoA( const WCHAR *str )
     char *ret = NULL;
     if (str)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int len = WideCharToMultiByte( CP_ACP, 0, str, -1, NULL, 0, NULL, NULL );
         if (!len) return NULL;
         ret = malloc( len );
@@ -234,7 +234,7 @@ static inline char *strdupWtoA( const WCHAR *str )
 
 static LPWSTR SQLInstall_strdup(LPCSTR str)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return strdupAtoW(str);
 #else
     DWORD len;
@@ -287,7 +287,7 @@ static BOOL SQLInstall_narrow(int mode, LPSTR buffer, LPCWSTR str, WORD str_leng
         if (len > buffer_length)
         {
             pbuf = malloc(len);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!pbuf) return FALSE;
 #endif
         }
@@ -511,7 +511,7 @@ BOOL WINAPI SQLConfigDataSourceW(HWND hwnd, WORD request, LPCWSTR driver, LPCWST
             char *driverA = strdupWtoA(driver);
             TRACE("Calling ConfigDSN\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!driverA || (attributes && !attr))
                 push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
             else
@@ -590,13 +590,13 @@ BOOL WINAPI SQLConfigDataSource(HWND hwnd, WORD request, LPCSTR driver, LPCSTR a
             TRACE("Calling ConfigDSNW\n");
 
             attr = SQLInstall_strdup_multi(attributes);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!attributes || attr)
 #else
             if(attr)
 #endif
                 ret = pConfigDSNW(hwnd, mapped_request, driverW, attr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else
                 push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
 #endif
@@ -775,7 +775,7 @@ BOOL WINAPI SQLGetInstalledDriversW(WCHAR *buf, WORD size, WORD *sizeout)
 
     valuelen = 256;
     value = malloc(valuelen * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!value) goto out_of_memory;
 #endif
 
@@ -787,7 +787,7 @@ BOOL WINAPI SQLGetInstalledDriversW(WCHAR *buf, WORD size, WORD *sizeout)
         res = RegEnumValueW(drivers, index, value, &len, NULL, NULL, NULL, NULL);
         while (res == ERROR_MORE_DATA)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             WCHAR *new_value;
 
             if (valuelen > MAXDWORD / 2 || (SIZE_T)valuelen > ~(SIZE_T)0 / sizeof(WCHAR) / 2)
@@ -818,7 +818,7 @@ BOOL WINAPI SQLGetInstalledDriversW(WCHAR *buf, WORD size, WORD *sizeout)
         index++;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #endif
     buf[written++] = 0;
@@ -828,7 +828,7 @@ done:
     if (sizeout)
         *sizeout = written;
     return ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 out_of_memory:
     push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
@@ -1121,7 +1121,7 @@ BOOL WINAPI SQLInstallDriver(LPCSTR lpszInfFile, LPCSTR lpszDriver,
                               pcbPathOut, ODBC_INSTALL_COMPLETE, &usage);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL get_install_path(const WCHAR *driver, const WCHAR *file_key, const WCHAR *path_in,
                              WCHAR *path, DWORD *usage_count, BOOL *installed)
 {
@@ -1306,7 +1306,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 #endif
 {
     HKEY hkey, hkeydriver;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error = ODBC_ERROR_GENERAL_ERR, disposition;
     size_t pathlen = wcslen(path);
     LONG status;
@@ -1317,7 +1317,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
     {
         if (RegCreateKeyW(hkey, regkey, &hkeydriver) == ERROR_SUCCESS)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             status = RegSetValueExW(hkeydriver, driver, 0, REG_SZ, (BYTE*)L"Installed", sizeof(L"Installed"));
             if (status != ERROR_SUCCESS)
 #else
@@ -1326,15 +1326,15 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                 ERR("Failed to write registry installed key\n");
 
             RegCloseKey(hkeydriver);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (status != ERROR_SUCCESS) goto done;
 #endif
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else goto done;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (RegCreateKeyExW(hkey, driver, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE,
                             NULL, &hkeydriver, &disposition) == ERROR_SUCCESS)
 #else
@@ -1348,7 +1348,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 
             /* Skip name entry */
             p = driver;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             p += wcslen(p) + 1;
 #else
             p += lstrlenW(p) + 1;
@@ -1361,7 +1361,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 
             /* Store Usage */
             size = sizeof(usagecount);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             status = RegGetValueA(hkeydriver, NULL, "UsageCount", RRF_RT_DWORD, &type, &usagecount, &size);
             if (status == ERROR_FILE_NOT_FOUND)
                 usagecount = disposition == REG_OPENED_EXISTING_KEY ? 1 : 0;
@@ -1375,7 +1375,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 #endif
             TRACE("Usage count %ld\n", usagecount);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             for (; *p && (!installed || disposition == REG_CREATED_NEW_KEY); p += wcslen(p) + 1)
 #else
             for (; *p; p += lstrlenW(p) + 1)
@@ -1386,7 +1386,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                 if (divider)
                 {
                     WCHAR *value;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     size_t len;
 
                     if (divider == p || divider - p >= ARRAY_SIZE(entry))
@@ -1403,7 +1403,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 
                     divider++;
                     TRACE("Writing pair %s,%s\n", debugstr_w(entry), debugstr_w(divider));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     len = wcslen(divider);
                     if (len >= MAXDWORD / sizeof(WCHAR))
                     {
@@ -1419,7 +1419,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                     {
                         if(GetFileAttributesW(divider) == INVALID_FILE_ATTRIBUTES)
                         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             if (len > MAXDWORD / sizeof(WCHAR) - pathlen - 1)
                             {
                                 error = ODBC_ERROR_OUT_OF_MEM;
@@ -1433,11 +1433,11 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                             value = malloc(len * sizeof(WCHAR));
                             if(!value)
                             {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                 RegCloseKey(hkeydriver);
 #endif
                                 ERR("Out of memory\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                 error = ODBC_ERROR_OUT_OF_MEM;
                                 goto driver_done;
 #else
@@ -1451,18 +1451,18 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                         }
                         else
                         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             value = calloc(1, len * sizeof(WCHAR));
 #else
                             value = calloc(1, (lstrlenW(divider)+1) * sizeof(WCHAR));
 #endif
                             if(!value)
                             {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                 RegCloseKey(hkeydriver);
 #endif
                                 ERR("Out of memory\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                 error = ODBC_ERROR_OUT_OF_MEM;
                                 goto driver_done;
 #else
@@ -1474,11 +1474,11 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                     }
                     else
                     {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                         len = lstrlenW(divider) + 1;
 #endif
                         value = malloc(len * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (!value)
                         {
                             error = ODBC_ERROR_OUT_OF_MEM;
@@ -1488,7 +1488,7 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
                         lstrcpyW(value, divider);
                     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     status = RegSetValueExW(hkeydriver, entry, 0, REG_SZ, (BYTE*)value,
                                            (wcslen(value) + 1) * sizeof(WCHAR));
                     if (status != ERROR_SUCCESS)
@@ -1498,14 +1498,14 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 #endif
                         ERR("Failed to write registry data %s %s\n", debugstr_w(entry), debugstr_w(value));
                     free(value);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (status != ERROR_SUCCESS) goto driver_done;
 #endif
                 }
                 else
                 {
                     ERR("No pair found. %s\n", debugstr_w(p));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     error = ODBC_ERROR_INVALID_KEYWORD_VALUE;
                     goto driver_done;
 #else
@@ -1517,11 +1517,11 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
             /* Set Usage Count */
             usagecount++;
             if (RegSetValueExA(hkeydriver, "UsageCount", 0, REG_DWORD, (BYTE*)&usagecount, sizeof(usagecount)) != ERROR_SUCCESS)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
 #endif
                 ERR("Failed to write registry UsageCount key\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 error = ODBC_ERROR_USAGE_UPDATE_FAILED;
                 goto driver_done;
             }
@@ -1529,22 +1529,22 @@ static void write_registry_values(const WCHAR *regkey, const WCHAR *driver, cons
 
             if (usage_count)
                 *usage_count = usagecount;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ret = TRUE;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 driver_done:
 #endif
             RegCloseKey(hkeydriver);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #endif
         RegCloseKey(hkey);
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret) push_error(error, L"Driver or translator installation failed");
     return ret;
 }
@@ -1602,7 +1602,7 @@ BOOL WINAPI SQLInstallDriverExW(LPCWSTR lpszDriver, LPCWSTR lpszPathIn,
                LPWSTR lpszPathOut, WORD cbPathOutMax, WORD *pcbPathOut,
                WORD fRequest, LPDWORD lpdwUsageCount)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     UINT len;
     WCHAR path[MAX_PATH];
 
@@ -1612,7 +1612,7 @@ BOOL WINAPI SQLInstallDriverExW(LPCWSTR lpszDriver, LPCWSTR lpszPathIn,
           debugstr_w(lpszPathIn), lpszPathOut, cbPathOutMax, pcbPathOut,
           fRequest, lpdwUsageCount);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return install_component(L"ODBC Drivers", L"Driver", lpszDriver, lpszPathIn, lpszPathOut,
                              cbPathOutMax, pcbPathOut, fRequest, lpdwUsageCount, TRUE);
 #else
@@ -1637,7 +1637,7 @@ BOOL WINAPI SQLInstallDriverEx(LPCSTR lpszDriver, LPCSTR lpszPathIn,
                WORD fRequest, LPDWORD lpdwUsageCount)
 {
     LPWSTR driver, pathin;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL ret = FALSE;
 #else
     WCHAR pathout[MAX_PATH];
@@ -1652,7 +1652,7 @@ BOOL WINAPI SQLInstallDriverEx(LPCSTR lpszDriver, LPCSTR lpszPathIn,
 
     driver = SQLInstall_strdup_multi(lpszDriver);
     pathin = SQLInstall_strdup(lpszPathIn);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpszDriver && !driver) || (lpszPathIn && !pathin))
 #else
 
@@ -1661,7 +1661,7 @@ BOOL WINAPI SQLInstallDriverEx(LPCSTR lpszDriver, LPCSTR lpszPathIn,
     if (ret)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
         goto out;
 #else
@@ -1683,7 +1683,7 @@ BOOL WINAPI SQLInstallDriverEx(LPCSTR lpszDriver, LPCSTR lpszPathIn,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = install_component(L"ODBC Drivers", L"Driver", driver, pathin, lpszPathOut,
                             cbPathOutMax, pcbPathOut, fRequest, lpdwUsageCount, FALSE);
 
@@ -1702,13 +1702,13 @@ BOOL WINAPI SQLInstallDriverManagerW(LPWSTR lpszPath, WORD cbPathMax,
 
     TRACE("(%p %d %p)\n", lpszPath, cbPathMax, pcbPathOut);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (cbPathMax < MAX_PATH)
         return FALSE;
 
 #endif
     clear_errors();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpszPath || cbPathMax < MAX_PATH)
     {
         push_error(ODBC_ERROR_INVALID_BUFF_LEN, L"Invalid buffer length");
@@ -1717,7 +1717,7 @@ BOOL WINAPI SQLInstallDriverManagerW(LPWSTR lpszPath, WORD cbPathMax,
 #endif
 
     len = GetSystemDirectoryW(path, MAX_PATH);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!len || len >= ARRAY_SIZE(path))
 #else
 
@@ -1727,7 +1727,7 @@ BOOL WINAPI SQLInstallDriverManagerW(LPWSTR lpszPath, WORD cbPathMax,
     if (lpszPath && cbPathMax > len)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         push_error(ODBC_ERROR_GENERAL_ERR, L"Failed to read system directory");
         return FALSE;
 #else
@@ -1735,7 +1735,7 @@ BOOL WINAPI SQLInstallDriverManagerW(LPWSTR lpszPath, WORD cbPathMax,
     	return TRUE;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return copy_install_path(path, lpszPath, cbPathMax, pcbPathOut, TRUE, FALSE);
 #else
     return FALSE;
@@ -1745,7 +1745,7 @@ BOOL WINAPI SQLInstallDriverManagerW(LPWSTR lpszPath, WORD cbPathMax,
 BOOL WINAPI SQLInstallDriverManager(LPSTR lpszPath, WORD cbPathMax,
                WORD *pcbPathOut)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT len;
 #else
     BOOL ret;
@@ -1755,13 +1755,13 @@ BOOL WINAPI SQLInstallDriverManager(LPSTR lpszPath, WORD cbPathMax,
 
     TRACE("(%p %d %p)\n", lpszPath, cbPathMax, pcbPathOut);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (cbPathMax < MAX_PATH)
         return FALSE;
 
 #endif
     clear_errors();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpszPath || cbPathMax < MAX_PATH)
 #else
 
@@ -1769,7 +1769,7 @@ BOOL WINAPI SQLInstallDriverManager(LPSTR lpszPath, WORD cbPathMax,
     if (ret)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         push_error(ODBC_ERROR_INVALID_BUFF_LEN, L"Invalid buffer length");
         return FALSE;
     }
@@ -1785,7 +1785,7 @@ BOOL WINAPI SQLInstallDriverManager(LPSTR lpszPath, WORD cbPathMax,
                 return FALSE;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     len = GetSystemDirectoryW(path, MAX_PATH);
     if (!len || len >= ARRAY_SIZE(path))
     {
@@ -1797,7 +1797,7 @@ BOOL WINAPI SQLInstallDriverManager(LPSTR lpszPath, WORD cbPathMax,
         }
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return copy_install_path(path, lpszPath, cbPathMax, pcbPathOut, FALSE, FALSE);
 #else
     return ret;
@@ -1900,14 +1900,14 @@ SQLRETURN WINAPI SQLInstallerError(WORD iError, DWORD *pfErrorCode,
             return SQL_ERROR;
     }
     ret = SQLInstallerErrorW(iError, pfErrorCode, wbuf, cbErrorMsgMax, &cbwbuf);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (wbuf && ret != SQL_ERROR)
 #else
     if (wbuf)
 #endif
     {
         WORD cbBuf = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!SQLInstall_narrow(1, lpszErrorMsg, wbuf, cbwbuf+1, cbErrorMsgMax, &cbBuf))
             ret = SQL_ERROR;
         else if (pcbErrorMsg)
@@ -1918,7 +1918,7 @@ SQLRETURN WINAPI SQLInstallerError(WORD iError, DWORD *pfErrorCode,
 #endif
             *pcbErrorMsg = cbBuf-1;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(wbuf);
 #endif
     return ret;
@@ -1928,7 +1928,7 @@ BOOL WINAPI SQLInstallTranslatorExW(LPCWSTR lpszTranslator, LPCWSTR lpszPathIn,
                LPWSTR lpszPathOut, WORD cbPathOutMax, WORD *pcbPathOut,
                WORD fRequest, LPDWORD lpdwUsageCount)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     UINT len;
     WCHAR path[MAX_PATH];
 
@@ -1938,7 +1938,7 @@ BOOL WINAPI SQLInstallTranslatorExW(LPCWSTR lpszTranslator, LPCWSTR lpszPathIn,
           debugstr_w(lpszPathIn), lpszPathOut, cbPathOutMax, pcbPathOut,
           fRequest, lpdwUsageCount);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return install_component(L"ODBC Translators", L"Translator", lpszTranslator, lpszPathIn,
                              lpszPathOut, cbPathOutMax, pcbPathOut, fRequest, lpdwUsageCount, TRUE);
 #else
@@ -1964,7 +1964,7 @@ BOOL WINAPI SQLInstallTranslatorEx(LPCSTR lpszTranslator, LPCSTR lpszPathIn,
 {
     LPCSTR p;
     LPWSTR translator, pathin;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL ret = FALSE;
 #else
     WCHAR pathout[MAX_PATH];
@@ -1977,7 +1977,7 @@ BOOL WINAPI SQLInstallTranslatorEx(LPCSTR lpszTranslator, LPCSTR lpszPathIn,
           debugstr_a(lpszPathIn), lpszPathOut, cbPathOutMax, pcbPathOut,
           fRequest, lpdwUsageCount);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (p = lpszTranslator; p && *p; p += strlen(p) + 1)
 #else
     for (p = lpszTranslator; *p; p += lstrlenA(p) + 1)
@@ -1986,7 +1986,7 @@ BOOL WINAPI SQLInstallTranslatorEx(LPCSTR lpszTranslator, LPCSTR lpszPathIn,
 
     translator = SQLInstall_strdup_multi(lpszTranslator);
     pathin = SQLInstall_strdup(lpszPathIn);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpszTranslator && !translator) || (lpszPathIn && !pathin))
 #else
 
@@ -1995,7 +1995,7 @@ BOOL WINAPI SQLInstallTranslatorEx(LPCSTR lpszTranslator, LPCSTR lpszPathIn,
     if (ret)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
         goto out;
 #else
@@ -2017,7 +2017,7 @@ BOOL WINAPI SQLInstallTranslatorEx(LPCSTR lpszTranslator, LPCSTR lpszPathIn,
 #endif
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = install_component(L"ODBC Translators", L"Translator", translator, pathin, lpszPathOut,
                             cbPathOutMax, pcbPathOut, fRequest, lpdwUsageCount, FALSE);
 
@@ -2177,7 +2177,7 @@ BOOL WINAPI SQLRemoveDriver(LPCSTR lpszDriver, BOOL fRemoveDSN,
     TRACE("%s %d %p\n", debugstr_a(lpszDriver), fRemoveDSN, lpdwUsageCount);
 
     driver = SQLInstall_strdup(lpszDriver);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpszDriver && !driver)
     {
         push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
@@ -2345,7 +2345,7 @@ BOOL WINAPI SQLRemoveTranslator(LPCSTR lpszTranslator, LPDWORD lpdwUsageCount)
     TRACE("%s %p\n", debugstr_a(lpszTranslator), lpdwUsageCount);
 
     translator = SQLInstall_strdup(lpszTranslator);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpszTranslator && !translator)
     {
         push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
@@ -2407,7 +2407,7 @@ BOOL WINAPI SQLWriteDSNToIniW(LPCWSTR lpszDSN, LPCWSTR lpszDriver)
     DWORD ret;
     HKEY hkey, hkeydriver, hkeyroot = HKEY_CURRENT_USER;
     WCHAR filename[MAX_PATH];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t driverlen;
 #endif
 
@@ -2420,7 +2420,7 @@ BOOL WINAPI SQLWriteDSNToIniW(LPCWSTR lpszDSN, LPCWSTR lpszDriver)
         push_error(ODBC_ERROR_INVALID_DSN, L"Invalid DSN");
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpszDriver || !*lpszDriver)
     {
         push_error(ODBC_ERROR_INVALID_NAME, L"Invalid driver name");
@@ -2443,7 +2443,7 @@ BOOL WINAPI SQLWriteDSNToIniW(LPCWSTR lpszDSN, LPCWSTR lpszDriver)
         if (RegOpenKeyW(hkey, lpszDriver, &hkeydriver) == ERROR_SUCCESS)
         {
             DWORD size = MAX_PATH * sizeof(WCHAR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (RegGetValueW(hkeydriver, NULL, L"driver", RRF_RT_REG_SZ, NULL, filename, &size) != ERROR_SUCCESS)
                 filename[0] = 0;
 #else
@@ -2469,18 +2469,18 @@ BOOL WINAPI SQLWriteDSNToIniW(LPCWSTR lpszDSN, LPCWSTR lpszDriver)
 
         /* Check for existing entry */
         if (RegOpenKeyW(HKEY_LOCAL_MACHINE, regpath, &hkey) == ERROR_SUCCESS)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
 #endif
             hkeyroot = HKEY_LOCAL_MACHINE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             RegCloseKey(hkey);
         }
 #endif
         else
             hkeyroot = HKEY_CURRENT_USER;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         RegCloseKey(hkey);
 #endif
         free(regpath);
@@ -2492,7 +2492,7 @@ BOOL WINAPI SQLWriteDSNToIniW(LPCWSTR lpszDSN, LPCWSTR lpszDriver)
 
         if ((ret = RegCreateKeyW(hkey, L"ODBC Data Sources", &sources)) == ERROR_SUCCESS)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ret = RegSetValueExW(sources, lpszDSN, 0, REG_SZ, (BYTE*)lpszDriver,
                                  (driverlen + 1) * sizeof(WCHAR));
 #else
@@ -2500,14 +2500,14 @@ BOOL WINAPI SQLWriteDSNToIniW(LPCWSTR lpszDSN, LPCWSTR lpszDriver)
 #endif
             RegCloseKey(sources);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (ret == ERROR_SUCCESS)
 #else
             RegDeleteTreeW(hkey, lpszDSN);
             if ((ret = RegCreateKeyW(hkey, lpszDSN, &hkeydriver)) == ERROR_SUCCESS)
 #endif
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ret = RegDeleteTreeW(hkey, lpszDSN);
                 if (ret == ERROR_FILE_NOT_FOUND) ret = ERROR_SUCCESS;
             }
@@ -2538,7 +2538,7 @@ BOOL WINAPI SQLWriteDSNToIni(LPCSTR lpszDSN, LPCSTR lpszDriver)
 
     TRACE("%s %s\n", debugstr_a(lpszDSN), debugstr_a(lpszDriver));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     clear_errors();
 #endif
     dsn = SQLInstall_strdup(lpszDSN);
@@ -2578,13 +2578,13 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
                LPCWSTR lpszString, LPCWSTR lpszFilename)
 {
     LONG ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HKEY hkey, root = HKEY_CURRENT_USER;
 #else
     HKEY hkey;
 #endif
     WCHAR *regpath;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     size_t filename_len, section_len, value_len = 0;
     size_t prefix_len = wcslen(L"Software\\ODBC\\");
     BOOL write = lpszEntry && lpszString;
@@ -2594,7 +2594,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
     TRACE("%s %s %s %s\n", debugstr_w(lpszSection), debugstr_w(lpszEntry),
                 debugstr_w(lpszString), debugstr_w(lpszFilename));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(!lpszFilename || !*lpszFilename || !lpszSection || !*lpszSection)
 #else
     if(!lpszFilename || !*lpszFilename)
@@ -2604,7 +2604,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
         return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     filename_len = wcslen(lpszFilename);
     section_len = wcslen(lpszSection);
     if (filename_len > (size_t)-1 / sizeof(WCHAR) - prefix_len - 2 ||
@@ -2617,7 +2617,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
     if (!regpath)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         value_len = wcslen(lpszString);
         if (value_len >= MAXDWORD / sizeof(WCHAR)) goto no_memory;
 #else
@@ -2625,7 +2625,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
         return FALSE;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     regpath = malloc((prefix_len + filename_len + section_len + 2) * sizeof(WCHAR));
     if (!regpath) goto no_memory;
 #endif
@@ -2636,7 +2636,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
 
     /* odbcinit.ini is only for drivers, so default to local Machine */
     if (!wcsicmp(lpszFilename, L"ODBCINST.INI") || config_mode == ODBC_SYSTEM_DSN)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         root = HKEY_LOCAL_MACHINE;
         ret = write ? RegCreateKeyW(root, regpath, &hkey) : RegOpenKeyW(root, regpath, &hkey);
@@ -2645,7 +2645,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
         ret = RegCreateKeyW(HKEY_LOCAL_MACHINE, regpath, &hkey);
 #endif
     else if (config_mode == ODBC_USER_DSN)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = write ? RegCreateKeyW(root, regpath, &hkey) : RegOpenKeyW(root, regpath, &hkey);
 #else
         ret = RegCreateKeyW(HKEY_CURRENT_USER, regpath, &hkey);
@@ -2653,7 +2653,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
     else
     {
         /* Check existing keys first */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((ret = RegOpenKeyW(root, regpath, &hkey)) != ERROR_SUCCESS)
         {
             root = HKEY_LOCAL_MACHINE;
@@ -2664,7 +2664,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
             ret = RegOpenKeyW(HKEY_LOCAL_MACHINE, regpath, &hkey);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ret != ERROR_SUCCESS && write)
         {
             root = HKEY_CURRENT_USER;
@@ -2676,13 +2676,13 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
 #endif
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     free(regpath);
 
 #endif
     if (ret == ERROR_SUCCESS)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!lpszEntry)
             ret = RegDeleteTreeW(root, regpath);
         else if (!lpszString)
@@ -2692,7 +2692,7 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
             ret = RegSetValueExW(hkey, lpszEntry, 0, REG_SZ, (BYTE*)lpszString, (lstrlenW(lpszString)+1)*sizeof(WCHAR));
 #endif
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ret = RegSetValueExW(hkey, lpszEntry, 0, REG_SZ, (BYTE*)lpszString,
                                  (value_len + 1) * sizeof(WCHAR));
         RegCloseKey(hkey);
@@ -2701,15 +2701,15 @@ BOOL WINAPI SQLWritePrivateProfileStringW(LPCWSTR lpszSection, LPCWSTR lpszEntry
          RegCloseKey(hkey);
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(regpath);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ret != ERROR_SUCCESS) push_error(ODBC_ERROR_REQUEST_FAILED, L"Request failed");
 #endif
     return ret == ERROR_SUCCESS;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 no_memory:
     push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");
@@ -2720,7 +2720,7 @@ no_memory:
 BOOL WINAPI SQLWritePrivateProfileString(LPCSTR lpszSection, LPCSTR lpszEntry,
                LPCSTR lpszString, LPCSTR lpszFilename)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL ret = FALSE;
 #else
     BOOL ret;
@@ -2731,14 +2731,14 @@ BOOL WINAPI SQLWritePrivateProfileString(LPCSTR lpszSection, LPCSTR lpszEntry,
 
     sect = strdupAtoW(lpszSection);
     entry = strdupAtoW(lpszEntry);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     string = lpszEntry ? strdupAtoW(lpszString) : NULL;
 #else
     string = strdupAtoW(lpszString);
 #endif
     file = strdupAtoW(lpszFilename);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpszSection && !sect) || (lpszEntry && !entry) ||
         (lpszEntry && lpszString && !string) || (lpszFilename && !file))
         push_error(ODBC_ERROR_OUT_OF_MEM, L"Out of memory");

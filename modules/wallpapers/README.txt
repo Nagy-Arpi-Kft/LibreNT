@@ -29,7 +29,7 @@ terms, current clearance status, and required provenance record.
 |-------------------------|--------------|-----------------|-------------------------|
 
 * The exact content type and account tier are not recorded. These images must
-not be pushed to upstream ReactOS or shipped in a public release until the
+not be pushed to upstream LibreNT or shipped in a public release until the
 per-file redistribution rights required by LICENSE.txt are documented.
 
 "Sunlit Meadow.jpg" was supplied as "8220trolley.jpg" and resampled to

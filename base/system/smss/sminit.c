@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Windows-Compatible Session Manager
+ * PROJECT:         LibreNT Windows-Compatible Session Manager
  * LICENSE:         BSD 2-Clause License
  * FILE:            base/system/smss/sminit.c
  * PURPOSE:         Main SMSS Code
@@ -872,7 +872,7 @@ VOID
 SmpLoadBootConfigurationStore(
     _In_ PUNICODE_STRING SystemPartition)
 {
-    static const PCWSTR StorePaths[] = { L"\\EFI\\LiberNT\\Boot\\BCD", L"\\Boot\\BCD" };
+    static const PCWSTR StorePaths[] = { L"\\EFI\\LibreNT\\Boot\\BCD", L"\\Boot\\BCD" };
     static BOOLEAN Attempted;
     UNICODE_STRING KeyName = RTL_CONSTANT_STRING(L"\\Registry\\Machine\\BCD00000000");
     OBJECT_ATTRIBUTES KeyAttributes, FileAttributes;
@@ -1039,7 +1039,7 @@ SmpTranslateSystemPartitionInformation(VOID)
     }
     if (!NT_SUCCESS(Status))
     {
-#if (NTDDI_VERSION > NTDDI_WIN7SP1) || defined(__REACTOS__)
+#if (NTDDI_VERSION > NTDDI_WIN7SP1) || defined(__LIBRENT__)
         /* If we failed because no drive letter associated to the system
          * volume was found (none was assigned to it), fall back to using
          * the OS boot drive letter instead. Otherwise, fail altogether.

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS test application
+ * PROJECT:     LibreNT test application
  * FILE:        apps/net/netreg/netreg.cpp
  * PURPOSE:     HTTP Registry Server
  * PROGRAMMERS: Art Yerkes (arty@users.sf.net)

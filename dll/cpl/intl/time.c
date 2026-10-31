@@ -1,5 +1,5 @@
 /*
- *  ReactOS
+ *  LibreNT
  *  Copyright (C) 2004 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 /*
- * PROJECT:         ReactOS International Control Panel
+ * PROJECT:         LibreNT International Control Panel
  * FILE:            dll/cpl/intl/time.c
  * PURPOSE:         Time property page
  * PROGRAMMERS:     Eric Kohl

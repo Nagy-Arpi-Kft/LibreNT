@@ -6,15 +6,15 @@
 #include <cmreslist.h>
 #include <ntstrsafe.h>
 #include <ntintsafe.h>
-#include <reactos/hal/acpi_pci.h>
+#include <librent/hal/acpi_pci.h>
 #include <acpiioct.h>
-#include <reactos/drivers/acpi/acpipci.h>
+#include <librent/drivers/acpi/acpipci.h>
 #include "pcidef.h"
 
 #define TAG_PCI '0ICP'
 #define TAG_PCI_ACPI 'aICP'
 
-EXTERN_C const GUID GUID_REACTOS_PCI_ROOT_BUS_INTERFACE;
+EXTERN_C const GUID GUID_LIBRENT_PCI_ROOT_BUS_INTERFACE;
 
 typedef struct _PCI_DEVICE
 {

@@ -122,7 +122,7 @@ BOOL EMFDRV_StretchBlt( PHYSDEV devDst, struct bitblt_coords *dst,
     pEMR->dwRop = rop;
     pEMR->xSrc = src->log_x;
     pEMR->ySrc = src->log_y;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NtGdiGetTransform(devSrc->hdc, GdiWorldSpaceToDeviceSpace, &pEMR->xformSrc);
 #else
     GetTransform(devSrc->hdc, 0x204, &pEMR->xformSrc);

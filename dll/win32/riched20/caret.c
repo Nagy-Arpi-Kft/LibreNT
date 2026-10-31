@@ -289,7 +289,7 @@ void update_caret(ME_TextEditor *editor)
   }
   else
     hide_caret(editor);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ImmIsIME(GetKeyboardLayout(0)))
   {
     HIMC hIMC = ImmGetContext(editor->hWnd);

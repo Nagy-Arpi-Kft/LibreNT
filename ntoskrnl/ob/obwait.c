@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ob/obwait.c
  * PURPOSE:         Handles Waiting on Objects
@@ -10,7 +10,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 #define NDEBUG
 #include <debug.h>
 

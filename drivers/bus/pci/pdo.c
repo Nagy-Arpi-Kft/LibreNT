@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS PCI bus driver
+ * PROJECT:         LibreNT PCI bus driver
  * FILE:            pdo.c
  * PURPOSE:         Child device object dispatch routines
  * PROGRAMMERS:     Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -20,10 +20,10 @@
 #include <devpkey.h>
 #include <wdmguid.h>
 
-DEFINE_GUID(GUID_REACTOS_PCI_ROOT_BUS_INTERFACE,
+DEFINE_GUID(GUID_LIBRENT_PCI_ROOT_BUS_INTERFACE,
             0xd7b6f1ba, 0x9f5a, 0x4d9d, 0x9d, 0xfe, 0x5d, 0x4a, 0x17, 0xb8, 0xc5, 0xa1);
 
-/* GUIDs not yet in the ReactOS SDK headers, or defined before initguid.h */
+/* GUIDs not yet in the LibreNT SDK headers, or defined before initguid.h */
 DEFINE_GUID(GUID_PCI_PME_INTERFACE,
             0xaac7e6ac, 0xbb0b, 0x11d2, 0xb4, 0x84, 0x00, 0xc0, 0x4f, 0x72, 0xde, 0x8b);
 DEFINE_GUID(GUID_PCI_EXPRESS_LINK_QUIESCENT_INTERFACE,
@@ -486,7 +486,7 @@ typedef struct _PCI_MSIX_MESSAGE_INFO
 /*
  * Message interrupt resource overlay for pre-Vista NTDDI builds.
  * The MessageInterrupt member of CM_PARTIAL_RESOURCE_DESCRIPTOR.u
- * is guarded by NTDDI_VERSION >= NTDDI_LONGHORN, but ReactOS builds
+ * is guarded by NTDDI_VERSION >= NTDDI_LONGHORN, but LibreNT builds
  * at WS03 level. The struct overlays Interrupt at the same offset.
  *
  * Raw layout: { USHORT Reserved, USHORT MessageCount, ULONG Vector, KAFFINITY Affinity }
@@ -1107,7 +1107,7 @@ PciPdoDetermineInterruptPolicy(
                                                KEY_READ,
                                                &KeyHandle)))
     {
-        /* ReactOS network and audio INFs commonly place hardware policy
+        /* LibreNT network and audio INFs commonly place hardware policy
          * under HKR in the main DDInstall section. Query the same class
          * driver key through the Win7 property path first, then keep the
          * direct registry-key fallback below for older callers. */

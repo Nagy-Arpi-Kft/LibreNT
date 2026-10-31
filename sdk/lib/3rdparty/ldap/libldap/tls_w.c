@@ -164,7 +164,7 @@ tlsw_session_accept( tls_session *session )
 static ssize_t
 tlsw_recv( Sockbuf_IO_Desc *sbiod, void *buf, size_t len )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	tlsw_session *session;
 #endif
 	if ( sbiod == NULL || buf == NULL || len <= 0 ) return 0;
@@ -175,7 +175,7 @@ tlsw_recv( Sockbuf_IO_Desc *sbiod, void *buf, size_t len )
 static ssize_t
 tlsw_send( Sockbuf_IO_Desc *sbiod, const void *buf, size_t len )
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	tlsw_session *session;
 #endif
 	if ( sbiod == NULL || buf == NULL || len <= 0 ) return 0;
@@ -261,7 +261,7 @@ tlsw_session_errmsg( tls_session *session, int rc, char *buf, size_t len )
 	return NULL;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void
 tlsw_x509_cert_dn( struct berval *cert, struct berval *dn, int get_subject )
 {
@@ -382,7 +382,7 @@ tlsw_sb_setup( Sockbuf_IO_Desc *sbiod, void *arg )
 {
 	struct tls_data *tls;
 	tlsw_session *session = arg;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	SECURITY_STATUS status;
 #endif
 

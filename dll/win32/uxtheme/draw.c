@@ -303,7 +303,7 @@ static PTHEME_PROPERTY UXTHEME_SelectImage(HTHEME hTheme, int iPartId, int iStat
  *
  * Load image for part/state
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT UXTHEME_LoadImage(HTHEME hTheme, int iPartId, int iStateId, const RECT *pRect,
 #else
 static HRESULT UXTHEME_LoadImage(HTHEME hTheme, int iPartId, int iStateId, const RECT *pRect,
@@ -608,7 +608,7 @@ static HRESULT UXTHEME_DrawImageGlyph(HTHEME hTheme, HDC hdc, int iPartId,
         hr = HRESULT_FROM_WIN32(GetLastError());
         return hr;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&MSSTYLES_ImageLock);
 #endif
     oldSrc = SelectObject(hdcSrc, bmpSrc);
@@ -625,13 +625,13 @@ static HRESULT UXTHEME_DrawImageGlyph(HTHEME hTheme, HDC hdc, int iPartId,
 
     topleft.x = pRect->left;
     topleft.y = pRect->top;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(halign == HA_CENTER)      topleft.x += (dstSize.x-srcSize.x)/2;
 #else
     if(halign == HA_CENTER)      topleft.x += (dstSize.x/2)-(srcSize.x/2);
 #endif
     else if(halign == HA_RIGHT)  topleft.x += dstSize.x-srcSize.x;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(valign == VA_CENTER)      topleft.y += (dstSize.y-srcSize.y)/2;
 #else
     if(valign == VA_CENTER)      topleft.y += (dstSize.y/2)-(srcSize.y/2);
@@ -645,7 +645,7 @@ static HRESULT UXTHEME_DrawImageGlyph(HTHEME hTheme, HDC hdc, int iPartId,
     }
 
     SelectObject(hdcSrc, oldSrc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&MSSTYLES_ImageLock);
 #endif
     DeleteDC(hdcSrc);
@@ -806,7 +806,7 @@ static HRESULT UXTHEME_DrawImageBackground(HTHEME hTheme, HDC hdc, int iPartId,
         hr = HRESULT_FROM_WIN32(GetLastError());
         return hr;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&MSSTYLES_ImageLock);
 #endif
     oldSrc = SelectObject(hdcSrc, bmpSrc);
@@ -830,7 +830,7 @@ static HRESULT UXTHEME_DrawImageBackground(HTHEME hTheme, HDC hdc, int iPartId,
         GetThemeEnumValue(hTheme, iPartId, iStateId, TMT_HALIGN, &halign);
 
         if (halign == HA_CENTER)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             rcDst.left += (dstSize.x-drawSize.x)/2;
 #else
             rcDst.left += (dstSize.x/2)-(drawSize.x/2);
@@ -838,7 +838,7 @@ static HRESULT UXTHEME_DrawImageBackground(HTHEME hTheme, HDC hdc, int iPartId,
         else if (halign == HA_RIGHT)
             rcDst.left = rcDst.right - drawSize.x;
         if (valign == VA_CENTER)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             rcDst.top  += (dstSize.y-drawSize.y)/2;
 #else
             rcDst.top  += (dstSize.y/2)-(drawSize.y/2);
@@ -976,7 +976,7 @@ draw_error:
         SetViewportOrgEx (hdcDst, org.x, org.y, NULL);
     }
     SelectObject(hdcSrc, oldSrc);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&MSSTYLES_ImageLock);
 #endif
     DeleteDC(hdcSrc);
@@ -2295,7 +2295,7 @@ BOOL WINAPI IsThemeBackgroundPartiallyTransparent(HTHEME hTheme, int iPartId,
 
     GetThemeEnumValue(hTheme, iPartId, iStateId, TMT_BGTYPE, &bgtype);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (bgtype == BT_NONE) return TRUE;
 #endif
     if (bgtype != BT_IMAGEFILE) return FALSE;

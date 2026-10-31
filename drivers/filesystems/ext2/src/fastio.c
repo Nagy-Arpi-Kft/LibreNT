@@ -56,7 +56,7 @@ Ext2IsFastIoPossible(
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -164,7 +164,7 @@ Ext2FastIoCheckIfPossible (
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -199,7 +199,7 @@ Ext2FastIoRead (IN PFILE_OBJECT         FileObject,
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -272,7 +272,7 @@ Ext2FastIoWrite (
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -388,7 +388,7 @@ Ext2FastIoQueryBasicInfo (
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -509,7 +509,7 @@ Ext2FastIoQueryStandardInfo (
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -621,7 +621,7 @@ Ext2FastIoLock (
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -728,7 +728,7 @@ Ext2FastIoUnlockSingle (
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -823,14 +823,14 @@ Ext2FastIoUnlockAll (
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
 #endif
 Ext2FastIoUnlockAllByKey (
     IN PFILE_OBJECT         FileObject,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IN PVOID                Process,
 #else
     IN PEPROCESS            Process,
@@ -934,7 +934,7 @@ Ext2FastIoUnlockAllByKey (
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN NTAPI
 #else
 BOOLEAN
@@ -1035,7 +1035,7 @@ Ext2FastIoQueryNetworkOpenInfo (
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1054,7 +1054,7 @@ Ext2AcquireForCreateSection (
     DEBUG(FASTIO_DEBUG_LEVEL, ("Ext2AcquireForCreateSection:  Fcb=%p\n", Fcb));
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -1073,7 +1073,7 @@ Ext2ReleaseForCreateSection (
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -1102,7 +1102,7 @@ Ext2AcquireFileForModWrite (
     return (ResourceAcquired ? STATUS_SUCCESS : STATUS_CANT_WAIT);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -1127,7 +1127,7 @@ Ext2ReleaseFileForModWrite (
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -1148,7 +1148,7 @@ Ext2AcquireFileForCcFlush (
     return STATUS_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -1170,7 +1170,7 @@ Ext2ReleaseFileForCcFlush (
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS

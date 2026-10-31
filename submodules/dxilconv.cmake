@@ -3,13 +3,13 @@
 #
 # dxilconv.dll, the DXBC to DXIL converter that the Direct3D 12 runtime loads
 # for shader model 6 drivers, built from the dxc (DirectXShaderCompiler) feed
-# against the ReactOS SDK. Upstream sources retain their original licenses.
+# against the LibreNT SDK. Upstream sources retain their original licenses.
 
 if(NOT ENABLE_DXILCONV)
     return()
 endif()
 
-set(DXILCONV_SOURCE_DIR "${REACTOS_SOURCE_DIR}/submodules/dxc")
+set(DXILCONV_SOURCE_DIR "${LIBRENT_SOURCE_DIR}/submodules/dxc")
 if(NOT EXISTS "${DXILCONV_SOURCE_DIR}/CMakeLists.txt")
     message(STATUS "dxilconv: the dxc feed is not checked out; building without it. "
         "Run scripts/feeds update dxc to build it.")
@@ -34,8 +34,8 @@ endif()
 
 find_program(DXILCONV_GIT_EXECUTABLE NAMES git REQUIRED)
 find_program(DXILCONV_NINJA NAMES ninja REQUIRED)
-find_program(DXILCONV_STRIP NAMES llvm-strip HINTS "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin" NO_CACHE REQUIRED)
-set(_dxilconv_patch "${CMAKE_CURRENT_LIST_DIR}/dxc-reactos-sdk.patch")
+find_program(DXILCONV_STRIP NAMES llvm-strip HINTS "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin" NO_CACHE REQUIRED)
+set(_dxilconv_patch "${CMAKE_CURRENT_LIST_DIR}/dxc-librent-sdk.patch")
 execute_process(
     COMMAND "${DXILCONV_GIT_EXECUTABLE}" apply --reverse --check "${_dxilconv_patch}"
     WORKING_DIRECTORY "${DXILCONV_SOURCE_DIR}"
@@ -54,11 +54,11 @@ if(NOT _dxilconv_patch_applied EQUAL 0)
 endif()
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_dxilconv_patch}")
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
 include(ExternalProject)
 
-set(DXILCONV_WORK_DIR "${REACTOS_BINARY_DIR}/submodules/dxilconv")
-set(DXILCONV_SDK_LIBDIR "${DXILCONV_WORK_DIR}/reactos-sdk-lib")
+set(DXILCONV_WORK_DIR "${LIBRENT_BINARY_DIR}/submodules/dxilconv")
+set(DXILCONV_SDK_LIBDIR "${DXILCONV_WORK_DIR}/librent-sdk-lib")
 set(DXILCONV_HOST_DIR "${DXILCONV_WORK_DIR}/host-build")
 set(DXILCONV_BUILD_DIR "${DXILCONV_WORK_DIR}/build")
 set(DXILCONV_BUILD_DLL "${DXILCONV_BUILD_DIR}/bin/dxilconv.dll")
@@ -90,9 +90,9 @@ ExternalProject_Add(dxilconv-tablegen
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         ${_dxilconv_common_args}
-        -DDIRECTX_HEADER_INCLUDE_DIR:PATH=${REACTOS_SOURCE_DIR}/sdk/include/psdk
+        -DDIRECTX_HEADER_INCLUDE_DIR:PATH=${LIBRENT_SOURCE_DIR}/sdk/include/psdk
     BUILD_COMMAND ${CMAKE_COMMAND} -E env CCACHE_DISABLE=1 SCCACHE_DISABLE=1
-        ${REACTOS_NESTED_BUILD} <BINARY_DIR> --target llvm-tblgen clang-tblgen
+        ${LIBRENT_NESTED_BUILD} <BINARY_DIR> --target llvm-tblgen clang-tblgen
     INSTALL_COMMAND ""
     BUILD_BYPRODUCTS "${DXILCONV_HOST_DIR}/bin/llvm-tblgen" "${DXILCONV_HOST_DIR}/bin/clang-tblgen"
     USES_TERMINAL_CONFIGURE TRUE
@@ -118,22 +118,22 @@ ExternalProject_Add(dxilconv-build
     CMAKE_GENERATOR Ninja
     CMAKE_ARGS
         ${_dxilconv_common_args}
-        -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${REACTOS_SOURCE_DIR}/submodules/reactos-sdk.cmake
+        -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${LIBRENT_SOURCE_DIR}/submodules/librent-sdk.cmake
         -DCMAKE_TRY_COMPILE_TARGET_TYPE:STRING=EXECUTABLE
-        -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=${REACTOS_CLANG_LLVM_MINGW_ROOT}
-        -DREACTOS_SDK_ARCH:STRING=${_dxilconv_sdk_arch}
-        -DREACTOS_SDK_TRIPLE:STRING=${_dxilconv_triple}
-        "-DREACTOS_SDK_ARCH_FLAGS:STRING=${_dxilconv_sdk_arch_flags}"
-        -DREACTOS_SDK_SOURCE_DIR:PATH=${REACTOS_SOURCE_DIR}
-        -DREACTOS_SDK_BUILD_DIR:PATH=${REACTOS_BINARY_DIR}
-        -DREACTOS_SDK_LIBDIR:PATH=${DXILCONV_SDK_LIBDIR}
-        -DREACTOS_SDK_CXX_RUNTIME:PATH=${REACTOS_LIBCXX_ROOT}
+        -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=${LIBRENT_CLANG_LLVM_MINGW_ROOT}
+        -DLIBRENT_SDK_ARCH:STRING=${_dxilconv_sdk_arch}
+        -DLIBRENT_SDK_TRIPLE:STRING=${_dxilconv_triple}
+        "-DLIBRENT_SDK_ARCH_FLAGS:STRING=${_dxilconv_sdk_arch_flags}"
+        -DLIBRENT_SDK_SOURCE_DIR:PATH=${LIBRENT_SOURCE_DIR}
+        -DLIBRENT_SDK_BUILD_DIR:PATH=${LIBRENT_BINARY_DIR}
+        -DLIBRENT_SDK_LIBDIR:PATH=${DXILCONV_SDK_LIBDIR}
+        -DLIBRENT_SDK_CXX_RUNTIME:PATH=${LIBRENT_LIBCXX_ROOT}
         -DLLVM_TABLEGEN:FILEPATH=${DXILCONV_HOST_DIR}/bin/llvm-tblgen
         -DCLANG_TABLEGEN:FILEPATH=${DXILCONV_HOST_DIR}/bin/clang-tblgen
-        -DD3D12_INCLUDE_DIR:PATH=${REACTOS_BINARY_DIR}/sdk/include/psdk
-        -DDXGI_INCLUDE_DIR:PATH=${REACTOS_BINARY_DIR}/sdk/include/psdk
+        -DD3D12_INCLUDE_DIR:PATH=${LIBRENT_BINARY_DIR}/sdk/include/psdk
+        -DDXGI_INCLUDE_DIR:PATH=${LIBRENT_BINARY_DIR}/sdk/include/psdk
     BUILD_COMMAND ${CMAKE_COMMAND} -E env CCACHE_DISABLE=1 SCCACHE_DISABLE=1
-        ${REACTOS_NESTED_BUILD} <BINARY_DIR> --target dxilconv
+        ${LIBRENT_NESTED_BUILD} <BINARY_DIR> --target dxilconv
     INSTALL_COMMAND ""
     BUILD_BYPRODUCTS "${DXILCONV_BUILD_DLL}"
     USES_TERMINAL_CONFIGURE TRUE
@@ -148,6 +148,6 @@ add_custom_command(
     DEPENDS dxilconv-build "${DXILCONV_BUILD_DLL}"
     VERBATIM)
 add_custom_target(dxilconv DEPENDS "${DXILCONV_DLL}" "${DXILCONV_LICENSE}")
-add_cd_file(FILE "${DXILCONV_DLL}" TARGET dxilconv DESTINATION reactos/system32 FOR all)
+add_cd_file(FILE "${DXILCONV_DLL}" TARGET dxilconv DESTINATION librent/system32 FOR all)
 set_property(GLOBAL APPEND PROPERTY CI_SYSTEM_FILES "${DXILCONV_DLL}")
-add_cd_file(FILE "${DXILCONV_LICENSE}" TARGET dxilconv DESTINATION reactos/3rdParty FOR all)
+add_cd_file(FILE "${DXILCONV_LICENSE}" TARGET dxilconv DESTINATION librent/3rdParty FOR all)

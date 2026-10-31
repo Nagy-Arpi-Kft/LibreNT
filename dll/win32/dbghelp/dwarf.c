@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
 #include "dbghelp_private.h"
 #include "image_private.h"
 #include <zlib.h>
@@ -1774,7 +1774,7 @@ static struct symt* dwarf2_parse_array_type(dwarf2_debug_info_t* di)
                     if (pc && symt_check_tag(*pc, SymTagData))
                     {
                         struct symt_data* elt = (struct symt_data*)(*pc);
-#if defined(__REACTOS__) && defined(DBGHELP_STATIC_LIB)
+#if defined(__LIBRENT__) && defined(DBGHELP_STATIC_LIB)
                         if (V_I4(&elt->u.value) < min.u.uvalue)
                             min.u.uvalue = V_I4(&elt->u.value);
                         if (V_I4(&elt->u.value) > max.u.uvalue)
@@ -2477,7 +2477,7 @@ static struct symt* dwarf2_parse_subprogram(dwarf2_debug_info_t* di)
      * (not the case for stabs), we just drop Wine's thunks here...
      * Actual thunks will be created in elf_module from the symbol table
      */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (elf_is_in_thunk_area(di->unit_ctx->module_ctx->load_offset + addr_ranges[0].low, di->unit_ctx->module_ctx->thunks) >= 0)
     {
         free(addr_ranges);

@@ -33,7 +33,7 @@
 #include "oleauto.h"
 
 #include "msipriv.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winemsi_s.h"
 #else
 #include "winemsi.h"
@@ -372,7 +372,7 @@ WCHAR *msi_resolve_source_folder( MSIPACKAGE *package, const WCHAR *name, MSIFOL
 
     TRACE("working to resolve %s\n", debugstr_w(name));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!wcscmp( name, L"SourceDir" ) ||
         ((package->WordCount & msidbSumInfoSourceTypeCompressed) && !wcscmp( name, L"SOURCEDIR" )))
         name = L"TARGETDIR";
@@ -460,7 +460,7 @@ UINT WINAPI MsiGetSourcePathA(MSIHANDLE hinst, const char *folder, char *buf, DW
         return r;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!list_empty(&package->folders))
         msi_set_sourcedir_props(package, FALSE);
 #endif
@@ -516,7 +516,7 @@ UINT WINAPI MsiGetSourcePathW(MSIHANDLE hinst, const WCHAR *folder, WCHAR *buf, 
         return r;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!list_empty(&package->folders))
         msi_set_sourcedir_props(package, FALSE);
 #endif
@@ -1185,7 +1185,7 @@ UINT MSI_GetFeatureCost( MSIPACKAGE *package, MSIFEATURE *feature, MSICOSTTREE t
     {
         MSIFEATURE *child;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (feature->ActionRequest == state)
             *cost = feature_cost( feature );
 #endif
@@ -1237,7 +1237,7 @@ UINT WINAPI MsiGetFeatureCostW( MSIHANDLE hInstall, const WCHAR *szFeature, MSIC
 
     TRACE( "%lu, %s, %d, %d, %p\n", hInstall, debugstr_w(szFeature), iCostTree, iState, piCost );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!szFeature)
     {
         if ((package = msihandle2msiinfo(hInstall, MSIHANDLETYPE_PACKAGE)))
@@ -1454,7 +1454,7 @@ static UINT MSI_SetComponentStateW(MSIPACKAGE *package, LPCWSTR szComponent,
     if (!comp)
         return ERROR_UNKNOWN_COMPONENT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (comp->Enabled)
     {
         if (iState == INSTALLSTATE_ABSENT && comp->Installed != INSTALLSTATE_LOCAL &&

@@ -1,12 +1,12 @@
 /*
- * PROJECT:     ReactOS Printing Include files
+ * PROJECT:     LibreNT Printing Include files
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Provide a constant for the current Printing Processor Environment based on the architecture
  * COPYRIGHT:   Copyright 2016 Colin Finck (colin@reactos.org)
  */
 
-#ifndef _REACTOS_PRTPROCENV_H
-#define _REACTOS_PRTPROCENV_H
+#ifndef _LIBRENT_PRTPROCENV_H
+#define _LIBRENT_PRTPROCENV_H
 
 const WCHAR wszCurrentEnvironment[] =
 #if defined(_X86_)
@@ -18,7 +18,7 @@ const WCHAR wszCurrentEnvironment[] =
 #elif defined(_M_ARM64) || defined(__aarch64__)
     L"Windows ARM64";
 #elif defined(_M_RISCV64) || (defined(__riscv) && (__riscv_xlen == 64))
-    L"ReactOS RISC-V64";
+    L"LibreNT RISC-V64";
 #elif defined(_M_PPC)
     L"Windows NT PowerPC";
 #else

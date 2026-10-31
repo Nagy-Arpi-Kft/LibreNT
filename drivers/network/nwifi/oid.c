@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Native WiFi (802.11) stack
+ * PROJECT:     LibreNT Native WiFi (802.11) stack
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Upper-miniport OID request handling
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -10,7 +10,7 @@
 #define NDEBUG
 #include <debug.h>
 
-#define NWIFI_VENDOR_DESCRIPTION    "ReactOS Native WiFi Virtual Adapter"
+#define NWIFI_VENDOR_DESCRIPTION    "LibreNT Native WiFi Virtual Adapter"
 #define NWIFI_VENDOR_DRIVER_VERSION 0x00010000
 #define NWIFI_DRIVER_VERSION        ((6 << 8) | 20)  /* NDIS 6.20 */
 

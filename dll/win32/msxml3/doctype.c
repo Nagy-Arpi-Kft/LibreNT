@@ -259,7 +259,7 @@ static HRESULT WINAPI domdoctype_replaceChild(IXMLDOMDocumentType *iface, IXMLDO
 static HRESULT WINAPI domdoctype_removeChild(IXMLDOMDocumentType *iface, IXMLDOMNode *node,
         IXMLDOMNode **oldNode)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p, %p, %p.\n", iface, node, oldNode);
 
     return E_FAIL;
@@ -419,7 +419,7 @@ static HRESULT WINAPI domdoctype_get_prefix(IXMLDOMDocumentType *iface, BSTR *pr
 
 static HRESULT WINAPI domdoctype_get_baseName(IXMLDOMDocumentType *iface, BSTR *name)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     domdoctype *doctype = impl_from_IXMLDOMDocumentType(iface);
 
     TRACE("%p, %p.\n", iface, name);

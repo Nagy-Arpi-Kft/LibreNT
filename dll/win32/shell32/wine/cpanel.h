@@ -31,7 +31,7 @@ extern "C" {
 struct applet_info
 {
     LONG_PTR data;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int idIcon;
 #endif
     HICON    icon;
@@ -47,7 +47,7 @@ typedef struct CPlApplet {
     unsigned		count;		/* number of subprograms */
     HMODULE     	hModule;	/* module of loaded applet */
     APPLET_PROC		proc;		/* entry point address */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HANDLE              hActCtx;
 #endif
     BOOL                context_activated; /* whether context is activated */

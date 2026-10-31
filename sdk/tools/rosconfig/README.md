@@ -1,7 +1,7 @@
-# rosconfig — menuconfig for the ReactOS build
+# rosconfig — menuconfig for the LibreNT build
 
 `rosconfig` is a small, dependency-free host tool that brings an
-OpenWrt/kconfig-style `menuconfig` workflow to the ReactOS CMake build.
+OpenWrt/kconfig-style `menuconfig` workflow to the LibreNT CMake build.
 It is cross-OS and builds on Linux, macOS and Windows (Windows 10+ console),
 with gcc, clang or MSVC.
 
@@ -146,7 +146,7 @@ profiles/
 Each `<variant>.cmake` declares `ROSCONFIG_PROFILE_PACKAGES`, a list of CMake
 targets that must exist, and `ROSCONFIG_PROFILE_CONFIGS`, a list of typed,
 profile-owned values written as `NAME:TYPE=VALUE`. Package targets are checked after all
-normal ReactOS subdirectories have been configured, so an incomplete or
+normal LibreNT subdirectories have been configured, so an incomplete or
 incompatible profile fails during configuration instead of producing a
 partially populated image.
 
@@ -198,7 +198,7 @@ config KD_DEBUGGER
     type choice
     value AUTO     "Automatic"
     value NONE     "Disabled"
-    value KDBG     "Integrated ReactOS debugger (KDBG)"
+    value KDBG     "Integrated LibreNT debugger (KDBG)"
     value EXTERNAL "External KD protocol"
     default AUTO
     help
@@ -245,7 +245,7 @@ Visibility follows the build path that actually consumes each setting:
 
 Builds use the WDDM/dxgkrnl display stack; the menu offers no other driver
 model. They target the Windows 11 24H2 (WDDM 3.2) contract; `config.cmake`
-fixes `REACTOS_WDDM_LEVEL` to 3.2, so there is no selectable level. Individual
+fixes `LIBRENT_WDDM_LEVEL` to 3.2, so there is no selectable level. Individual
 features still report only what is implemented end to end.
 
 ## Tool CLI (used by the scripts)

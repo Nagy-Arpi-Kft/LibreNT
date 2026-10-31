@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     End-to-end Explorer theme-transition test
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -434,9 +434,9 @@ probe_window_proc(HWND Window, UINT Message, WPARAM wParam, LPARAM lParam)
 
 START_TEST(ThemeShellTransition)
 {
-    const WCHAR ProbeClass[] = L"ReactOSThemeShellTransitionProbe";
+    const WCHAR ProbeClass[] = L"LibreNTThemeShellTransitionProbe";
     WCHAR ThemePath[MAX_PATH];
-    WCHAR ColorName[64] = L"ReactOS";
+    WCHAR ColorName[64] = L"LibreNT";
     WCHAR SizeName[64] = L"Normal Size";
     WCHAR CaptureValue[16];
     WNDCLASSW Class;

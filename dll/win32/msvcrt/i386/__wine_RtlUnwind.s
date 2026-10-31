@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS msvcrt.dll
+ * PROJECT:     LibreNT msvcrt.dll
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     x86 asm implementation of __wine__RtlUnwind
  * COPYRIGHT:   Copyright Timo Kreuzer <timo.kreuzer@reactos.org>

@@ -2,11 +2,11 @@
 #include <winuser.h>
 #include "resource.h"
 
-#define REACTOS_STR_FILE_DESCRIPTION    "LiberNT Network Statistics Utility"
-#define REACTOS_STR_INTERNAL_NAME       "netstat"
-#define REACTOS_STR_ORIGINAL_FILENAME   "netstat.exe"
-#define REACTOS_STR_ORIGINAL_COPYRIGHT  "Ged Murphy (gedmurphy@gmail.com)"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION    "LibreNT Network Statistics Utility"
+#define LIBRENT_STR_INTERNAL_NAME       "netstat"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "netstat.exe"
+#define LIBRENT_STR_ORIGINAL_COPYRIGHT  "Ged Murphy (gedmurphy@gmail.com)"
+#include <librent/version.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

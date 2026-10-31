@@ -528,7 +528,7 @@
 #define PROCESSOR_ARCHITECTURE_ARM64 12
 #define PROCESSOR_ARCHITECTURE_ARM32_ON_WIN64 13
 #define PROCESSOR_ARCHITECTURE_IA32_ON_ARM64 14
-/* ReactOS-native RISC-V64 architecture ID (not defined by the Windows SDK). */
+/* LibreNT-native RISC-V64 architecture ID (not defined by the Windows SDK). */
 #define PROCESSOR_ARCHITECTURE_RISCV64 15
 #define PROCESSOR_ARCHITECTURE_UNKNOWN 0xFFFF
 
@@ -5298,7 +5298,7 @@ FORCEINLINE PVOID GetCurrentFiber(VOID)
     return *(PVOID *)((PUCHAR)NtCurrentTeb() + 0x10);
 }
 #elif defined(_M_RISCV64)
-/* ReactOS-private NT TEB register; not ELF thread-pointer-relative TLS. */
+/* LibreNT-private NT TEB register; not ELF thread-pointer-relative TLS. */
 FORCEINLINE struct _TEB * NtCurrentTeb(VOID)
 {
     struct _TEB *Teb;

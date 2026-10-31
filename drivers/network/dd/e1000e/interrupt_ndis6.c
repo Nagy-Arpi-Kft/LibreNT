@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Intel PRO/1000 Driver
+ * PROJECT:     LibreNT Intel PRO/1000 Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NDIS 6.x Interrupt handling with MSI-X support
  * COPYRIGHT:       2026 Ahmed ARIF (arif.ing@outlook.com)

@@ -190,7 +190,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 IDI_VFD_ICON            ICON    DISCARDABLE     "res\\vfd.ico"
 IDI_IMAGE_ICON          ICON    DISCARDABLE     "res\\image.ico"
 IDI_CONFIG_ICON         ICON    DISCARDABLE     "res\\config.ico"
@@ -214,6 +214,6 @@ IDI_CONFIG_ICON         ICON    DISCARDABLE     "res/config.ico"
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <vfdmsg_lib.rc>
 #endif

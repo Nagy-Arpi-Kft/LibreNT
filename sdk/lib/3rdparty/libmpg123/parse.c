@@ -11,7 +11,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "getbits.h"
 #endif
 
@@ -20,7 +20,7 @@
 #include <ws2tcpip.h>
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "getbits.h"
 #endif
 

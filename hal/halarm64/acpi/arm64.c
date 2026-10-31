@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/halarm64/acpi/arm64.c
  * PURPOSE:         ARM64 ACPI table discovery helpers
@@ -8,7 +8,7 @@
 #include <hal.h>
 #include <halacpi_arm64.h>
 #include <ntifs.h>
-#include <reactos/arm64/acpi.h>
+#include <librent/arm64/acpi.h>
 #define NDEBUG
 #include <debug.h>
 

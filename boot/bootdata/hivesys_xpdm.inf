@@ -1,4 +1,4 @@
-; PROJECT:     ReactOS XPDM boot hive
+; PROJECT:     LibreNT XPDM boot hive
 ; LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
 ; FILE:        boot/bootdata/hivesys_xpdm.inf
 ; PURPOSE:     Registry entries required only by the legacy display model

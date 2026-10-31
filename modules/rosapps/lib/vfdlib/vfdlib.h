@@ -10,7 +10,7 @@
 #ifndef _VFDLIB_H_
 #define _VFDLIB_H_
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DWL_USER DWLP_USER
 #endif
 
@@ -147,7 +147,7 @@ PSTR ModuleMessage(
 
 #ifdef _DEBUG
 extern ULONG TraceFlags;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern PCHAR TraceFile;
 #else
 extern CHAR const * TraceFile;

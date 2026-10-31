@@ -385,7 +385,7 @@ static HRESULT search_domain_for_zone(HKEY domains, LPCWSTR domain, DWORD domain
     return found ? S_OK : S_FALSE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static HRESULT search_for_domain_mapping(HKEY domains, LPCWSTR schema, LPCWSTR host, DWORD host_len, DWORD *zone)
 {
     WCHAR *domain;
@@ -426,7 +426,7 @@ static HRESULT search_for_domain_mapping(HKEY domains, LPCWSTR schema, LPCWSTR h
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct domain_cache
 {
     WCHAR **names;
@@ -528,7 +528,7 @@ static HRESULT get_zone_from_domains(IUri *uri, DWORD *zone)
         return hres;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitOnceExecuteOnce(&domain_cache_once, init_domain_caches, NULL, NULL);
     hres = S_FALSE;
     res = RegOpenKeyW(HKEY_CURRENT_USER, wszZoneMapDomainsKey, &domains);
@@ -634,7 +634,7 @@ static HRESULT map_security_uri_to_zone(IUri *uri, DWORD *zone)
     return hres;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SECURL_CACHE_SIZE 8
 
 static struct
@@ -702,7 +702,7 @@ static HRESULT map_url_to_zone(LPCWSTR url, DWORD *zone, LPWSTR *ret_url)
 
     *zone = URLZONE_INVALID;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = get_cached_security_url(url, &secur_url);
 #else
     hres = CoInternetGetSecurityUrl(url, &secur_url, PSU_SECURITY_URL_ONLY, 0);
@@ -822,7 +822,7 @@ static HRESULT get_action_policy(DWORD zone, DWORD action, BYTE *policy, DWORD s
     return hres;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT generate_security_id(IUri *uri, BYTE *secid, DWORD *secid_len, DWORD zone, const WCHAR *domain)
 #else
 static HRESULT generate_security_id(IUri *uri, BYTE *secid, DWORD *secid_len, DWORD zone)
@@ -866,7 +866,7 @@ static HRESULT generate_security_id(IUri *uri, BYTE *secid, DWORD *secid_len, DW
         hres = IUri_GetHost(uri, &host);
         if(FAILED(hres))
             return hres;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(domain) {
             SysFreeString(host);
             if(!(host = SysAllocString(domain)))
@@ -932,7 +932,7 @@ static HRESULT get_security_id_for_url(LPCWSTR url, BYTE *secid, DWORD *secid_le
     if(FAILED(hres))
         return hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = generate_security_id(uri, secid, secid_len, zone, NULL);
 #else
     hres = generate_security_id(uri, secid, secid_len, zone);
@@ -942,7 +942,7 @@ static HRESULT get_security_id_for_url(LPCWSTR url, BYTE *secid, DWORD *secid_le
     return hres;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT get_security_id_for_uri(IUri *uri, BYTE *secid, DWORD *secid_len, const WCHAR *domain)
 #else
 static HRESULT get_security_id_for_uri(IUri *uri, BYTE *secid, DWORD *secid_len)
@@ -956,7 +956,7 @@ static HRESULT get_security_id_for_uri(IUri *uri, BYTE *secid, DWORD *secid_len)
     if(FAILED(hres))
         return hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hres = generate_security_id(secur_uri, secid, secid_len, zone, domain);
 #else
     hres = generate_security_id(secur_uri, secid, secid_len, zone);
@@ -1333,7 +1333,7 @@ static HRESULT WINAPI SecManagerImpl_GetSecurityIdEx2(IInternetSecurityManagerEx
     SecManagerImpl *This = impl_from_IInternetSecurityManagerEx2(iface);
     TRACE("(%p)->(%p %p %p %08Ix) stub\n", This, pUri, pbSecurityId, pcbSecurityId, dwReserved);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if(dwReserved)
         FIXME("dwReserved is not supported yet\n");
 #endif
@@ -1341,7 +1341,7 @@ static HRESULT WINAPI SecManagerImpl_GetSecurityIdEx2(IInternetSecurityManagerEx
     if(!pUri || !pcbSecurityId || !pbSecurityId)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return get_security_id_for_uri(pUri, pbSecurityId, pcbSecurityId, (const WCHAR *)dwReserved);
 #else
     return get_security_id_for_uri(pUri, pbSecurityId, pcbSecurityId);

@@ -186,7 +186,7 @@ def generate(root, work):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source-root", type=Path, help="LiberNT source directory")
+    parser.add_argument("--source-root", type=Path, help="LibreNT source directory")
     parser.add_argument("--keep", type=Path, help="Directory that keeps the generated sources")
     args = parser.parse_args()
     here = Path(__file__).resolve().parent
@@ -201,8 +201,8 @@ def main():
         subprocess.run(compiler + [
             "-std=gnu11", "-O1", "-g", "-fsanitize=address,undefined",
             "-fno-omit-frame-pointer", "-Wno-everything",
-            "-I", str(work), "-I", str(root / "sdk/include/reactos/drivers/directx"),
-            "-I", str(root / "sdk/include/reactos"),
+            "-I", str(work), "-I", str(root / "sdk/include/librent/drivers/directx"),
+            "-I", str(root / "sdk/include/librent"),
             str(here / "display_bringup_host.c"), "-o", str(executable),
         ], check=True)
         sys.exit(subprocess.run([str(executable)]).returncode)

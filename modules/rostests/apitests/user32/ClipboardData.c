@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Tests GetClipboardData results and register preservation
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -38,14 +38,14 @@ __asm__(
 
 START_TEST(ClipboardData)
 {
-    static const WCHAR Text[] = L"ReactOS parity";
+    static const WCHAR Text[] = L"LibreNT parity";
     HWND Owner;
     HGLOBAL Global;
     HANDLE Data;
     UINT Missing;
     PVOID Pointer;
 
-    Missing = RegisterClipboardFormatW(L"ReactOS ClipboardData Missing");
+    Missing = RegisterClipboardFormatW(L"LibreNT ClipboardData Missing");
     ok(Missing != 0, "RegisterClipboardFormatW failed: %lu\n", GetLastError());
 
     Owner = CreateWindowExW(0, L"static", NULL, WS_POPUP, 0, 0, 10, 10, NULL, NULL, NULL, NULL);
@@ -87,7 +87,7 @@ START_TEST(ClipboardData)
     if (Data)
     {
         Pointer = GlobalLock(Data);
-        ok(Pointer && !strcmp(Pointer, "ReactOS parity"), "Unexpected text %s\n", wine_dbgstr_a(Pointer));
+        ok(Pointer && !strcmp(Pointer, "LibreNT parity"), "Unexpected text %s\n", wine_dbgstr_a(Pointer));
         GlobalUnlock(Data);
     }
 

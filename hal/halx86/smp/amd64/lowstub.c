@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS HAL
+ * PROJECT:     LibreNT HAL
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     AMD64 real-mode entry stub shared by AP startup and S3 resume
  * COPYRIGHT:   Copyright 2023 Justin Miller <justin.miller@reactos.org>

@@ -22,7 +22,7 @@
 #define WIN32_NO_STATUS
 #include <windef.h>
 #include <winbase.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <winternl.h>
 #include <devioctl.h>
 #include <ntdddisk.h>
@@ -35,7 +35,7 @@
 #include <ntddstor.h>
 #include <ata.h>
 #include <mountmgr.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <winnls.h>
 #include <stdbool.h>
 #include "btrfs.h"
@@ -57,9 +57,9 @@
 #include <intrin.h>
 #endif
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define malloc(size)    RtlAllocateHeap(RtlGetProcessHeap(), 0, (size))
 #define free(ptr)       RtlFreeHeap(RtlGetProcessHeap(), 0, (ptr))
 #endif
@@ -70,7 +70,7 @@ void calc_sha256(uint8_t* hash, const void* input, size_t len);
 #define BLAKE2_HASH_SIZE 32
 void blake2b(void *out, size_t outlen, const void* in, size_t inlen);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define FSCTL_LOCK_VOLUME               CTL_CODE(FILE_DEVICE_FILE_SYSTEM,  6, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define FSCTL_UNLOCK_VOLUME             CTL_CODE(FILE_DEVICE_FILE_SYSTEM,  7, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define FSCTL_DISMOUNT_VOLUME           CTL_CODE(FILE_DEVICE_FILE_SYSTEM,  8, METHOD_BUFFERED, FILE_ANY_ACCESS)
@@ -90,7 +90,7 @@ NTSTATUS NTAPI NtReadFile(HANDLE FileHandle, HANDLE Event, PIO_APC_ROUTINE ApcRo
 #ifdef __cplusplus
 }
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 // These are undocumented, and what comes from format.exe
 typedef struct {
@@ -117,7 +117,7 @@ typedef struct {
     DSTRING* label;
 } options;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 FORCEINLINE VOID InitializeListHead(PLIST_ENTRY ListHead) {
     ListHead->Flink = ListHead->Blink = ListHead;
 }
@@ -133,7 +133,7 @@ FORCEINLINE VOID InsertTailList(PLIST_ENTRY ListHead, PLIST_ENTRY Entry) {
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG NTAPI NtGetTickCount(VOID);
 #endif
 
@@ -179,8 +179,8 @@ ULONG def_sector_size = 0, def_node_size = 0;
 uint64_t def_incompat_flags = BTRFS_INCOMPAT_FLAGS_EXTENDED_IREF | BTRFS_INCOMPAT_FLAGS_SKINNY_METADATA;
 uint16_t def_csum_type = CSUM_TYPE_CRC32C;
 
-#ifndef __REACTOS__
-// the following definitions come from fmifs.h in ReactOS
+#ifndef __LIBRENT__
+// the following definitions come from fmifs.h in LibreNT
 
 typedef struct {
     ULONG Lines;
@@ -240,9 +240,9 @@ typedef BOOLEAN (NTAPI* PFMIFSCALLBACK)(CALLBACKCOMMAND Command, ULONG SubAction
 
 #include <fmifs/fmifs.h>
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 NTSTATUS WINAPI ChkdskEx(PUNICODE_STRING DriveRoot, BOOLEAN FixErrors, BOOLEAN Verbose, BOOLEAN CheckOnlyIfDirty,
                          BOOLEAN ScanDrive, PFMIFSCALLBACK Callback) {
 #else
@@ -273,7 +273,7 @@ BtrfsChkdsk(
         Callback(OUTPUT, 0, &TextOut);
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     return STATUS_SUCCESS;
 #else
     *ExitStatus = (ULONG)STATUS_SUCCESS;
@@ -683,7 +683,7 @@ static NTSTATUS write_roots(HANDLE h, LIST_ENTRY* roots, uint32_t node_size, BTR
     return STATUS_SUCCESS;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void get_uuid(BTRFS_UUID* uuid) {
 #else
 static void get_uuid(BTRFS_UUID* uuid, ULONG* seed) {
@@ -691,7 +691,7 @@ static void get_uuid(BTRFS_UUID* uuid, ULONG* seed) {
     uint8_t i;
 
     for (i = 0; i < 16; i+=2) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         ULONG r = rand();
 #else
         ULONG r = RtlRandom(seed);
@@ -702,7 +702,7 @@ static void get_uuid(BTRFS_UUID* uuid, ULONG* seed) {
     }
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static void init_device(btrfs_dev* dev, uint64_t id, uint64_t size, BTRFS_UUID* fsuuid, uint32_t sector_size) {
 #else
 static void init_device(btrfs_dev* dev, uint64_t id, uint64_t size, BTRFS_UUID* fsuuid, uint32_t sector_size, ULONG* seed) {
@@ -719,7 +719,7 @@ static void init_device(btrfs_dev* dev, uint64_t id, uint64_t size, BTRFS_UUID* 
     dev->dev_item.dev_group = 0;
     dev->dev_item.seek_speed = 0;
     dev->dev_item.bandwidth = 0;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     get_uuid(&dev->dev_item.device_uuid);
 #else
     get_uuid(&dev->dev_item.device_uuid, seed);
@@ -802,7 +802,7 @@ static NTSTATUS write_superblocks(HANDLE h, btrfs_dev* dev, btrfs_root* chunk_ro
     memcpy(&sb->dev_item, &dev->dev_item, sizeof(DEV_ITEM));
 
     if (label->Length > 0) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ANSI_STRING as;
         unsigned int i;
 
@@ -818,7 +818,7 @@ static NTSTATUS write_superblocks(HANDLE h, btrfs_dev* dev, btrfs_root* chunk_ro
             }
         }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         utf8len = WideCharToMultiByte(CP_UTF8, 0, label->Buffer, label->Length / sizeof(WCHAR), NULL, 0, NULL, NULL);
 
         if (utf8len == 0 || utf8len > MAX_LABEL_SIZE) {
@@ -881,7 +881,7 @@ static __inline void win_time_to_unix(LARGE_INTEGER t, BTRFS_TIME* out) {
     out->nanoseconds = (l % 10000000) * 100;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID
 WINAPI
 GetSystemTimeAsFileTime(OUT PFILETIME lpFileTime)
@@ -1067,11 +1067,11 @@ static NTSTATUS write_btrfs(HANDLE h, uint64_t size, PUNICODE_STRING label, uint
     BTRFS_UUID fsuuid, chunkuuid;
     bool ssd;
     uint64_t metadata_flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ULONG seed;
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     srand((unsigned int)time(0));
     get_uuid(&fsuuid);
     get_uuid(&chunkuuid);
@@ -1092,7 +1092,7 @@ static NTSTATUS write_btrfs(HANDLE h, uint64_t size, PUNICODE_STRING label, uint
     fs_root = add_root(&roots, BTRFS_ROOT_FSTREE);
     reloc_root = add_root(&roots, BTRFS_ROOT_DATA_RELOC);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     init_device(&dev, 1, size, &fsuuid, sector_size);
 #else
     init_device(&dev, 1, size, &fsuuid, sector_size, &seed);
@@ -1315,7 +1315,7 @@ static bool is_power_of_two(ULONG i) {
     return ((i != 0) && !(i & (i - 1)));
 }
 
-#if !defined(__REACTOS__) && (defined(_X86_) || defined(_AMD64_))
+#if !defined(__LIBRENT__) && (defined(_X86_) || defined(_AMD64_))
 static void check_cpu() {
     unsigned int cpuInfo[4];
     bool have_sse42;
@@ -1344,7 +1344,7 @@ static NTSTATUS NTAPI FormatEx2(PUNICODE_STRING DriveRoot, FMIFS_MEDIA_FLAG Medi
     DISK_GEOMETRY dg;
     uint32_t sector_size, node_size;
     UNICODE_STRING btrfsus;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     HANDLE token;
     TOKEN_PRIVILEGES tp;
     LUID luid;
@@ -1354,7 +1354,7 @@ static NTSTATUS NTAPI FormatEx2(PUNICODE_STRING DriveRoot, FMIFS_MEDIA_FLAG Medi
 
     static WCHAR btrfs[] = L"\\Btrfs";
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &token))
         return STATUS_PRIVILEGE_NOT_HELD;
 
@@ -1492,7 +1492,7 @@ end:
         Status = STATUS_SUCCESS;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (Callback) {
         bool success = NT_SUCCESS(Status);
         Callback(DONE, 0, (PVOID)&success);
@@ -1502,7 +1502,7 @@ end:
     return Status;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 BOOLEAN
 NTAPI
@@ -1553,7 +1553,7 @@ BOOL __stdcall FormatEx(DSTRING* root, STREAM_MESSAGE* message, options* opts, u
     return NT_SUCCESS(Status);
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 void __stdcall SetSizes(ULONG sector, ULONG node) {
     if (sector != 0)
@@ -1577,7 +1577,7 @@ BOOL __stdcall GetFilesystemInformation(uint32_t unk1, uint32_t unk2, void* unk3
     return true;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, void* lpReserved) {
     if (dwReason == DLL_PROCESS_ATTACH)
         module = (HMODULE)hModule;

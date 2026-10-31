@@ -205,7 +205,7 @@ typedef union _D3DKMT_PTR_TYPE
 // Available only for Vista (LONGHORN) and later and for
 // multiplatform tools such as debugger extensions
 //
-#if defined(__REACTOS__) || ((NTDDI_VERSION >= NTDDI_LONGHORN) || defined(D3DKMDT_SPECIAL_MULTIPLATFORM_TOOL))
+#if defined(__LIBRENT__) || ((NTDDI_VERSION >= NTDDI_LONGHORN) || defined(D3DKMDT_SPECIAL_MULTIPLATFORM_TOOL))
 
 typedef ULONGLONG D3DGPU_VIRTUAL_ADDRESS;
 typedef ULONGLONG D3DGPU_SIZE_T;

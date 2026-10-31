@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NTDLL ARM64
+ * PROJECT:     LibreNT NTDLL ARM64
  * LICENSE:     MIT
  * PURPOSE:     C specific exception/unwind handler for ARM64 SEH metadata
  */

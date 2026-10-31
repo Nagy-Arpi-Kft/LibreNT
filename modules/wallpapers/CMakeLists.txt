@@ -9,5 +9,5 @@ file(GLOB WALLPAPER_FILES CONFIGURE_DEPENDS
 list(REMOVE_ITEM WALLPAPER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt")
 
 foreach(f ${WALLPAPER_FILES})
-    add_cd_file(FILE "${f}" DESTINATION reactos/Web/Wallpaper FOR all)
+    add_cd_file(FILE "${f}" DESTINATION librent/Web/Wallpaper FOR all)
 endforeach()

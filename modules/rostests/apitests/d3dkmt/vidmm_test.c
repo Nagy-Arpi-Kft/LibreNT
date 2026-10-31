@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VidMm allocation lifecycle tests via D3DKMT user-mode API
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -78,7 +78,7 @@ static void Test_BasicAllocation(void)
      * Create a 4KB allocation. A generic user-mode caller cannot supply the
      * per-KMD private driver data that a real Windows display driver validates,
      * so on Win11 this create is expected to be refused -- skip rather than
-     * fail. A KMD that accepts a plain size blob (e.g. the ReactOS reference
+     * fail. A KMD that accepts a plain size blob (e.g. the LibreNT reference
      * miniport in Phase B) succeeds and we exercise the destroy path.
      */
     hAlloc = CreateSingleAllocation(pfnD3DKMTCreateAllocation, hDevice, 4096);

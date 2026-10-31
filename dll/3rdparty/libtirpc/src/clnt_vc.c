@@ -976,10 +976,10 @@ read_vc(ctp, buf, len)
 	fd.fd = ct->ct_fd;
 	fd.events = POLLIN;
 	for (;;) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		switch (poll(&fd, 1, milliseconds)) {
 #else
-		/* ReactOS: use select instead of poll */
+		/* LibreNT: use select instead of poll */
 		fd_set infd;
 		struct timeval timeout;
 
@@ -1027,13 +1027,13 @@ read_vc(ctp, buf, len)
 }
 
 static int
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 write_vc(ctp, buf, len)
 #else
 write_vc(ctp, ptr, len)
 #endif
 	void *ctp;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	char *buf;
 #else
     void *ptr;
@@ -1042,7 +1042,7 @@ write_vc(ctp, ptr, len)
 {
 	struct ct_data *ct = (struct ct_data *)ctp;
 	int i = 0, cnt;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     char *buf = ptr;
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Bluetooth stack
+ * PROJECT:     LibreNT Bluetooth stack
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Bluetooth extensible transport miniport and radio definitions
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -17,7 +17,7 @@
 #include <bthguid.h>
 #include <bthminiddi.h>
 #include <ntddser.h>
-#include <reactos/drivers/bthlocal.h>
+#include <librent/drivers/bthlocal.h>
 
 #define BTHMINI_TAG                     'iMhB'
 #define BTHMINI_EVENT_READS             2

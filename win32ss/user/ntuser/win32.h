@@ -42,7 +42,7 @@
 #define W32PF_DISABLEIME              0x00800000
 #define W32PF_ICONTITLEREGISTERED     0x10000000
 #define W32PF_DPIAWARE                0x20000000
-// ReactOS
+// LibreNT
 #define W32PF_NOWINDOWGHOSTING       (0x01000000)
 #define W32PF_MANUALGUICHECK         (0x02000000)
 #define W32PF_CREATEDWINORDC         (0x04000000)
@@ -166,7 +166,7 @@ typedef struct _THREADINFO
     LIST_ENTRY          aphkStart[NB_HOOKS];
     CLIENTTHREADINFO    cti;  // Used only when no Desktop or pcti NULL.
 
-    /* ReactOS */
+    /* LibreNT */
 
     /* Thread Queue state tracking */
     // Send list QS_SENDMESSAGE
@@ -328,7 +328,7 @@ typedef struct _PROCESSINFO
     PRAWINPUTDEVICE pRawInputDevices;
     UINT cRawInputDevices;
 
-    /* ReactOS */
+    /* LibreNT */
     FAST_MUTEX PrivateFontListLock;
     LIST_ENTRY PrivateFontListHead;
     LIST_ENTRY PrivateMemFontListHead;

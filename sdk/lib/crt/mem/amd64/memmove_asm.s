@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS C runtime library
+ * PROJECT:     LibreNT C runtime library
  * LICENSE:     BSD-2-Clause (https://spdx.org/licenses/BSD-2-Clause)
  * PURPOSE:     AMD64 memcpy and memmove
  * COPYRIGHT:   Copyright 2018 The FreeBSD Foundation

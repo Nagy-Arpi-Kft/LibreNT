@@ -25,14 +25,14 @@
 #include "winternl.h"
 
 #include "wine/debug.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 #include "unixlib.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(winscard);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define UNIX_CALL( func, params ) ((void)(params), SCARD_E_NO_SERVICE)
 #else
 #define UNIX_CALL( func, params ) WINE_UNIX_CALL( unix_ ## func, params )
@@ -978,7 +978,7 @@ BOOL WINAPI DllMain( HINSTANCE hinst, DWORD reason, void *reserved )
     {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls( hinst );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (__wine_init_unix_call()) ERR( "no pcsclite support, expect problems\n" );
 #endif
 

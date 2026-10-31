@@ -100,7 +100,7 @@ static double pres_rcp(double *args, int n) {return 1.0 / args[0];}
 static double pres_lt(double *args, int n)  {return args[0] < args[1] ? 1.0 : 0.0;}
 static double pres_ge(double *args, int n)  {return args[0] >= args[1] ? 1.0 : 0.0;}
 static double pres_frc(double *args, int n) {return args[0] - floor(args[0]);}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static int pres_signbit(double value)
 {
     union

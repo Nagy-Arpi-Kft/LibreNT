@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     D3DKMT present path end-to-end tests via gdi32 user-mode API
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -10,7 +10,7 @@
  */
 
 #include "precomp.h"
-#include <reactos/drivers/directx/softgpu_2d_shared.h>
+#include <librent/drivers/directx/softgpu_2d_shared.h>
 
 /*
  * Positive presents use the software/VC4 miniports' linear surface contract.

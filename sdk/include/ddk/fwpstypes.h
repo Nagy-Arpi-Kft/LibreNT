@@ -4,7 +4,7 @@
  * Windows Filtering Platform — shared kernel-mode types used by both the
  * callout driver API (fwpsk.h) and the kernel management API (fwpmk.h).
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created for the dev-nt6-1 branch as part of the NT 5.2 -> NT 6.1 upgrade.

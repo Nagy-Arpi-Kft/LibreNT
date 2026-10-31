@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS FC Command
+ * PROJECT:     LibreNT FC Command
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Comparing files
  * COPYRIGHT:   Copyright 2021 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -7,7 +7,7 @@
 
 #include "fc.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <conutils.h>
 #else
 #include "conutils_noros.h"
@@ -650,7 +650,7 @@ int wmain(int argc, WCHAR **argv)
     return WildcardFileCompare(&fc);
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 int main(int argc, char **argv)
 {
     INT my_argc;

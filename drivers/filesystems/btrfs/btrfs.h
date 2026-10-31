@@ -9,9 +9,9 @@
 #pragma once
 
 #include <stdint.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <assert.h>
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static const uint64_t superblock_addrs[] = { 0x10000, 0x4000000, 0x4000000000, 0x4000000000000, 0 };
 
@@ -304,9 +304,9 @@ typedef struct {
     BTRFS_TIME otime;
 } INODE_ITEM;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static_assert(sizeof(INODE_ITEM) == 0xa0, "INODE_ITEM has wrong size");
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 typedef struct {
     INODE_ITEM inode;

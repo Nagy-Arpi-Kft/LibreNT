@@ -2,15 +2,15 @@
 #include <windows.h>
 #include <wtsapi32.h>
 #include <wine/test.h>
-#ifdef __REACTOS__
-#include <reactos/wtssession.h>
+#ifdef __LIBRENT__
+#include <librent/wtssession.h>
 #endif
 
 START_TEST(notification)
 {
     HWND window;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD session;
 #endif
 
@@ -35,7 +35,7 @@ START_TEST(notification)
     ok(!ret, "Unregistered window accepted\n");
     ret = WTSRegisterSessionNotification(window, NOTIFY_FOR_ALL_SESSIONS);
     ok(ret, "Register after unregister: %lu\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ret = ProcessIdToSessionId(GetCurrentProcessId(), &session);
     ok(ret, "ProcessIdToSessionId: %lu\n", GetLastError());
     SetLastError(0xdeadbeef);

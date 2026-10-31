@@ -39,12 +39,12 @@ TODO:
 #include <ui/rosctrls.h>
 #include <vssym32.h>
 #include <shdispid.h>
-#include <reactos/dwmsettings.h>
+#include <librent/dwmsettings.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
 static const WCHAR ExplorerContentBackdropOwner[] =
-    L"ReactOS.Shell.ExplorerContentBackdropOwner";
+    L"LibreNT.Shell.ExplorerContentBackdropOwner";
 
 // It would be easier to allocate these from 1 and up but the original code used the entire
 // FCIDM_SHVIEWFIRST..FCIDM_SHVIEWLAST range when dealing with IContextMenu and to avoid

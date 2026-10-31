@@ -3,13 +3,13 @@
 #include "resource.h"
 #include "cmdver.h"
 
-#define REACTOS_STR_FILE_DESCRIPTION   "LiberNT Command Processor"
-#define REACTOS_STR_INTERNAL_NAME      "cmd"
-#define REACTOS_STR_ORIGINAL_FILENAME  "cmd.exe"
-#define REACTOS_STR_ORIGINAL_COPYRIGHT "Copyright (C) 1994-1998 Tim Norman and others"
-#define REACTOS_STR_LEGAL_COPYRIGHT    "Copyright (C) 1998-2006 Eric Kohl and others"
+#define LIBRENT_STR_FILE_DESCRIPTION   "LibreNT Command Processor"
+#define LIBRENT_STR_INTERNAL_NAME      "cmd"
+#define LIBRENT_STR_ORIGINAL_FILENAME  "cmd.exe"
+#define LIBRENT_STR_ORIGINAL_COPYRIGHT "Copyright (C) 1994-1998 Tim Norman and others"
+#define LIBRENT_STR_LEGAL_COPYRIGHT    "Copyright (C) 1998-2006 Eric Kohl and others"
 
-#include <reactos/version.rc>
+#include <librent/version.rc>
 
 STRINGTABLE
 BEGIN
@@ -19,7 +19,7 @@ BEGIN
     Aaron Kaufman     Marc Desrochers\n\
     Rob Lake          John P Price\n\
     Hans B Pufal\n"
-    STRING_REACTOS_DEV  "    Eric Kohl         Emanuele Aliberti\n\
+    STRING_LIBRENT_DEV  "    Eric Kohl         Emanuele Aliberti\n\
     Paolo Pantaleo    Phillip Susi\n\
     Sylvain Petreolle\n"
 END

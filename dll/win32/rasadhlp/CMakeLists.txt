@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/winsock)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/winsock)
 spec2def(rasadhlp.dll rasadhlp.spec)
 
 list(APPEND SOURCE
@@ -16,4 +16,4 @@ add_library(rasadhlp MODULE
 set_module_type(rasadhlp win32dll)
 add_importlibs(rasadhlp ws2_32 msvcrt kernel32 ntdll)
 add_pch(rasadhlp precomp.h SOURCE)
-add_cd_file(TARGET rasadhlp DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET rasadhlp DESTINATION librent/system32 FOR all)

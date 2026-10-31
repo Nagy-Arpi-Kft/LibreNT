@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/mmcc/nvs/amd64/check-backend.cmake
 # PURPOSE:     Check AMD64 memory manager backend structure
 #

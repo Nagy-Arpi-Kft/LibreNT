@@ -5408,7 +5408,7 @@ static BOOL WINAPI CRYPT_AsnDecodeEnhancedKeyUsage(DWORD dwCertEncodingType,
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL CRYPT_AsnDecodeCertPolicyId(const BYTE *pbEncoded, DWORD cbEncoded,
  DWORD dwFlags, void *pvStructInfo, DWORD *pcbStructInfo, DWORD *pcbDecoded)
 {
@@ -6912,7 +6912,7 @@ static CryptDecodeObjectExFunc CRYPT_GetBuiltinDecoder(DWORD dwCertEncodingType,
         case LOWORD(X509_ENHANCED_KEY_USAGE):
             decodeFunc = CRYPT_AsnDecodeEnhancedKeyUsage;
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case LOWORD(X509_KEY_USAGE_RESTRICTION):
             decodeFunc = CRYPT_AsnDecodeKeyUsageRestriction;
             break;
@@ -7013,7 +7013,7 @@ static CryptDecodeObjectExFunc CRYPT_GetBuiltinDecoder(DWORD dwCertEncodingType,
         decodeFunc = CRYPT_AsnDecodeCertPolicyConstraints;
     else if (!strcmp(lpszStructType, szOID_ENHANCED_KEY_USAGE))
         decodeFunc = CRYPT_AsnDecodeEnhancedKeyUsage;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (!strcmp(lpszStructType, szOID_KEY_USAGE_RESTRICTION))
         decodeFunc = CRYPT_AsnDecodeKeyUsageRestriction;
 #endif

@@ -1,5 +1,5 @@
 /*
-    ReactOS Sound System
+    LibreNT Sound System
     MIDI UART support
 
     Author:

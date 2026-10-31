@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS shutdown/logoff utility
+ * PROJECT:         LibreNT shutdown/logoff utility
  * PURPOSE:         Precompiled header
  */
 

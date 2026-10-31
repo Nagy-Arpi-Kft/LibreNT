@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/modules/rostests/apitests/include)
+    ${LIBRENT_SOURCE_DIR}/modules/rostests/apitests/include)
 
 list(APPEND SOURCE
     pathcch_compile.c

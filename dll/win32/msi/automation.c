@@ -30,7 +30,7 @@
 #include "msipriv.h"
 #include "activscp.h"
 #include "oleauto.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/shlwapi.h"
 #else
 #include "shlwapi.h"

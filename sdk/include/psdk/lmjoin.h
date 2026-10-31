@@ -35,7 +35,7 @@ typedef enum tagNETSETUP_JOIN_STATUS
     NetSetupDomainName
 } NETSETUP_JOIN_STATUS, *PNETSETUP_JOIN_STATUS;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define NETSETUP_JOIN_DOMAIN              0x00000001
 #define NETSETUP_ACCT_CREATE              0x00000002
 #define NETSETUP_ACCT_DELETE              0x00000004

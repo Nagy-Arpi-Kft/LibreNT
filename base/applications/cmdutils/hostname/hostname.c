@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Hostname Command
+ * PROJECT:     LibreNT Hostname Command
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Retrieves the current DNS host name of the computer.
  * COPYRIGHT:   Copyright 2005 Emanuele Aliberti <ea@reactos.com>

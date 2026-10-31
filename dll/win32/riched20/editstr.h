@@ -385,7 +385,7 @@ typedef struct tagME_InStream ME_InStream;
 
 typedef struct tagME_TextEditor
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   HWND hWnd;
 #endif
   ITextHost2 *texthost;
@@ -394,7 +394,7 @@ typedef struct tagME_TextEditor
   unsigned int have_texthost2 : 1;
   ME_TextBuffer *pBuffer;
   ME_Cursor *pCursors;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DWORD edit_style;
   WORD bidi_effects;
 #endif
@@ -438,7 +438,7 @@ typedef struct tagME_TextEditor
   WCHAR password_char;
   BOOL bHaveFocus;
   DWORD freeze_count;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   /*for IME */
   int imeStartIndex;
 #endif

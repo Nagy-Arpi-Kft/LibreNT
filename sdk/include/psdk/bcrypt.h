@@ -39,12 +39,12 @@
 #define WINE_NTSTATUS_DECLARED
 typedef LONG NTSTATUS;
 #endif
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef WINE_PNTSTATUS_DECLARED
 #define WINE_PNTSTATUS_DECLARED
 typedef NTSTATUS *PNTSTATUS;
 #endif
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 #ifndef BCRYPT_SUCCESS
 #define BCRYPT_SUCCESS(st) ((NTSTATUS)(st) >= 0)
@@ -103,7 +103,7 @@ extern "C" {
 #define BCRYPT_AES_GMAC_ALGORITHM   L"AES-GMAC"
 #define BCRYPT_CHACHA20_POLY1305_ALGORITHM L"CHACHA20_POLY1305"
 #define BCRYPT_DES_ALGORITHM        L"DES"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define BCRYPT_DESX_ALGORITHM       L"DESX"
 #define BCRYPT_3DES_112_ALGORITHM   L"3DES_112"
 #endif

@@ -60,7 +60,7 @@ RxFcbTableRemoveFcb(
 #define RxIsFcbTableLockAcquired(T) (ExIsResourceAcquiredSharedLite(&(T)->TableLock) ||  \
                         	     ExIsResourceAcquiredExclusiveLite(&(T)->TableLock))
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define FCB_HASH_BUCKET(T, H) &(T)->HashBuckets[H % (T)->NumberOfBuckets]
 #endif
 

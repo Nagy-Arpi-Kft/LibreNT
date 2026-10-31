@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS PSDK
+ * PROJECT:     LibreNT PSDK
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     UDPMIB Header
  * COPYRIGHT:   Copyright 2025 Carl Bialorucki <carl.bialorucki@reactos.org>

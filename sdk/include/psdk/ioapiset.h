@@ -3,7 +3,7 @@
  *
  * Interface definitions for api-ms-win-core-io-l1
  *
- * This file is part of the ReactOS SDK.
+ * This file is part of the LibreNT SDK.
  *
  * Contributors:
  *   Created by Timo Kreuzer <timo.kreuzer@reactos.org>

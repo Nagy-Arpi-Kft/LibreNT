@@ -1,15 +1,15 @@
 /*
- * PROJECT:         ReactOS Boot Loader
+ * PROJECT:         LibreNT Boot Loader
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            boot/freeldr/freeldr/include/arch/arm/hardware.h
  * PURPOSE:         Header for ARC definitions (to be cleaned up)
- * PROGRAMMERS:     ReactOS Portable Systems Group
+ * PROGRAMMERS:     LibreNT Portable Systems Group
  */
 
 #pragma once
 
 #ifndef __REGISTRY_H
-//#include "../../reactos/registry.h"
+//#include "../../librent/registry.h"
 #endif
 
 #include "../../../../../armllb/inc/osloader.h"

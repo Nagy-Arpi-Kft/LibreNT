@@ -1,4 +1,4 @@
-; TDI test driver - ReactOS Operating System
+; TDI test driver - LibreNT Operating System
 
 LIBRARY TDITEST.SYS
 

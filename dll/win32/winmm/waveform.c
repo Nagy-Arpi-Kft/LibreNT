@@ -42,7 +42,7 @@
 #include "mmdeviceapi.h"
 #include "audioclient.h"
 #include "audiopolicy.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "endpointvolume.h"
 #endif
 
@@ -121,7 +121,7 @@ struct _WINMM_MMDevice {
     EDataFlow dataflow;
 
     ISimpleAudioVolume *volume;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IAudioEndpointVolume *endpoint_volume;
 #endif
 
@@ -223,7 +223,7 @@ void WINMM_DeleteWaveform(void)
 
         if(mmdevice->volume)
             ISimpleAudioVolume_Release(mmdevice->volume);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(mmdevice->endpoint_volume)
             IAudioEndpointVolume_Release(mmdevice->endpoint_volume);
 #endif
@@ -245,7 +245,7 @@ void WINMM_DeleteWaveform(void)
 
         if(mmdevice->volume)
             ISimpleAudioVolume_Release(mmdevice->volume);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(mmdevice->endpoint_volume)
             IAudioEndpointVolume_Release(mmdevice->endpoint_volume);
 #endif
@@ -953,7 +953,7 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
         /* we aren't guaranteed that the struct in lpFormat is a full
          * WAVEFORMATEX struct, which IAC::IsFormatSupported requires */
         device->orig_fmt = malloc(sizeof(WAVEFORMATEX));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!device->orig_fmt) goto error;
 #endif
         memcpy(device->orig_fmt, info->format, sizeof(PCMWAVEFORMAT));
@@ -973,7 +973,7 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
         }
     }else{
         device->orig_fmt = malloc(sizeof(WAVEFORMATEX) + info->format->cbSize);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!device->orig_fmt) goto error;
 #endif
         memcpy(device->orig_fmt, info->format,
@@ -1022,14 +1022,14 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
             (void**)&device->clock);
     if(FAILED(hr)){
         WARN("GetService failed: %08lx\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = hr2mmr(hr);
 #endif
         goto error;
     }
 
     if(!device->event){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         HANDLE *new_handles;
         WINMM_Device **new_devices;
 
@@ -1037,7 +1037,7 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
         device->event = CreateEventW(NULL, FALSE, FALSE, NULL);
         if(!device->event){
             WARN("CreateEvent failed: %08lx\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ret = MMSYSERR_NOMEM;
 #endif
             goto error;
@@ -1045,7 +1045,7 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
 
         /* As the devices thread is waiting on g_device_handles, it can
          * only be modified from within this same thread. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (g_devhandle_count == UINT_MAX ||
             (size_t)g_devhandle_count >= ~(size_t)0 / sizeof(*g_device_handles) ||
             (size_t)g_devhandle_count >= ~(size_t)0 / sizeof(*g_handle_devices))
@@ -1072,7 +1072,7 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
     hr = IAudioClient_SetEventHandle(device->client, device->event);
     if(FAILED(hr)){
         WARN("SetEventHandle failed: %08lx\n", hr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = hr2mmr(hr);
 #endif
         goto error;
@@ -1097,7 +1097,7 @@ static LRESULT WINMM_OpenDevice(WINMM_Device *device, WINMM_OpenInfo *info,
 
     return MMSYSERR_NOERROR;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 event_error:
     CloseHandle(device->event);
     device->event = NULL;
@@ -1105,7 +1105,7 @@ event_error:
 
 #endif
 error:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(info->flags & WAVE_FORMAT_QUERY) && !ret) ret = MMSYSERR_ERROR;
 #endif
     if(device->client){
@@ -2065,7 +2065,7 @@ static MMRESULT WINMM_SetupMMDeviceVolume(WINMM_MMDevice *mmdevice)
     return MMSYSERR_NOERROR;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static MMRESULT WINMM_SetupMMDeviceEndpointVolume(WINMM_MMDevice *mmdevice)
 {
     IMMDevice *device;
@@ -2097,7 +2097,7 @@ static MMRESULT WINMM_SetupMMDeviceEndpointVolume(WINMM_MMDevice *mmdevice)
 
 static BOOL WINMM_MMDeviceVolumeReady(WINMM_MMDevice *mmdevice)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mmdevice->dataflow == eRender)
         return mmdevice->endpoint_volume != NULL;
 #endif
@@ -2106,7 +2106,7 @@ static BOOL WINMM_MMDeviceVolumeReady(WINMM_MMDevice *mmdevice)
 
 static MMRESULT WINMM_SetupMMDeviceMixerVolume(WINMM_MMDevice *mmdevice)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mmdevice->dataflow == eRender)
         return WINMM_SetupMMDeviceEndpointVolume(mmdevice);
 #endif
@@ -2115,7 +2115,7 @@ static MMRESULT WINMM_SetupMMDeviceMixerVolume(WINMM_MMDevice *mmdevice)
 
 static HRESULT WINMM_GetMMDeviceMasterVolume(WINMM_MMDevice *mmdevice, float *volume)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mmdevice->dataflow == eRender)
         return IAudioEndpointVolume_GetMasterVolumeLevelScalar(mmdevice->endpoint_volume, volume);
 #endif
@@ -2124,7 +2124,7 @@ static HRESULT WINMM_GetMMDeviceMasterVolume(WINMM_MMDevice *mmdevice, float *vo
 
 static HRESULT WINMM_SetMMDeviceMasterVolume(WINMM_MMDevice *mmdevice, float volume)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mmdevice->dataflow == eRender)
         return IAudioEndpointVolume_SetMasterVolumeLevelScalar(mmdevice->endpoint_volume, volume, NULL);
 #endif
@@ -2133,7 +2133,7 @@ static HRESULT WINMM_SetMMDeviceMasterVolume(WINMM_MMDevice *mmdevice, float vol
 
 static HRESULT WINMM_GetMMDeviceMute(WINMM_MMDevice *mmdevice, BOOL *mute)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mmdevice->dataflow == eRender)
         return IAudioEndpointVolume_GetMute(mmdevice->endpoint_volume, mute);
 #endif
@@ -2142,7 +2142,7 @@ static HRESULT WINMM_GetMMDeviceMute(WINMM_MMDevice *mmdevice, BOOL *mute)
 
 static HRESULT WINMM_SetMMDeviceMute(WINMM_MMDevice *mmdevice, BOOL mute)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (mmdevice->dataflow == eRender)
         return IAudioEndpointVolume_SetMute(mmdevice->endpoint_volume, mute, NULL);
 #endif
@@ -4374,7 +4374,7 @@ UINT WINAPI mixerGetLineInfoW(HMIXEROBJ hmix, LPMIXERLINEW lpmliW, DWORD fdwInfo
 UINT WINAPI mixerGetLineInfoA(HMIXEROBJ hmix, LPMIXERLINEA lpmliA,
 			      DWORD fdwInfo)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     MIXERLINEW		mliW = {0};
 #else
     MIXERLINEW		mliW;

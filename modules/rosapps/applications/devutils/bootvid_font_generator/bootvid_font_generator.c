@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS BootVid Font Generator Utility
+ * PROJECT:     LibreNT BootVid Font Generator Utility
  * LICENSE:     GNU GPLv2 or any later version as published by the Free Software Foundation
  * PURPOSE:     Generates the FontData array for the bootdata.c file of bootvid.dll
  * COPYRIGHT:   Copyright 2016 Colin Finck <colin@reactos.org>
@@ -20,7 +20,7 @@
 #define X_OFFSET_DEF    0                // 0                  // 1
 #define Y_OFFSET_DEF    0
 
-#define HEIGHT          13  // Must be == BOOTCHAR_HEIGHT (see reactos/drivers/base/bootvid/precomp.h)
+#define HEIGHT          13  // Must be == BOOTCHAR_HEIGHT (see librent/drivers/base/bootvid/precomp.h)
 #define WIDTH           8   //  8 bits == 1 byte
 
 #ifdef DUMP_CHAR_ON_SCREEN

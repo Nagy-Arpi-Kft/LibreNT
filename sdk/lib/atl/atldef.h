@@ -1,5 +1,5 @@
 /*
-* PROJECT:     ReactOS ATL
+* PROJECT:     LibreNT ATL
 * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
 * PURPOSE:     ATL Base definitions
 * COPYRIGHT:   Copyright 2019 Mark Jansen (mark.jansen@reactos.org)
@@ -7,7 +7,7 @@
 
 #pragma once
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     #include <cstddef>
     #include <pseh/pseh2.h>
 #endif

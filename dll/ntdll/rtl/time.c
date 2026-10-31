@@ -1,11 +1,11 @@
 /*
- * PROJECT:     LiberNT NT Library
+ * PROJECT:     LibreNT NT Library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NTDLL time query wrappers
  */
 
 #include <ntdll.h>
-#include <reactos/precisetime.h>
+#include <librent/precisetime.h>
 
 #define NDEBUG
 #include <debug.h>

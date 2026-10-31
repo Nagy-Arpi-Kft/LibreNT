@@ -71,7 +71,7 @@ typedef struct
     DWORD resloader;
 } NE_TYPEINFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 //  From: James Houghtaling
 //  https://www.moon-soft.com/program/FORMAT/windows/ani.htm
 typedef struct taganiheader
@@ -266,7 +266,7 @@ static BYTE * ICO_GetIconDirectory( LPBYTE peimage, LPicoICONDIR* lplpiID, ULONG
 	return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static VOID USER32_RedirectToMunFile(LPWSTR lpszPath, DWORD cchPath)
 {
     static const LPCWSTR SystemDirectories[] = { L"System32", L"SysWOW64" };
@@ -320,7 +320,7 @@ static UINT ICO_ExtractIconExW(
 	UINT cxDesired,
 	UINT cyDesired,
 	UINT *pIconId,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT flags,
     /* This function is called from two different code paths.
      * One is from Shell32 using the ExtractIconEx function.
@@ -344,19 +344,19 @@ static UINT ICO_ExtractIconExW(
 	LPBYTE		peimage;
 	HANDLE		fmapping;
 	DWORD		fsizeh,fsizel;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR		szExpandedExePath[MAX_PATH];
 #endif
         WCHAR		szExePath[MAX_PATH];
         DWORD		dwSearchReturn;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%s, %d, %d, %p, 0x%08x, %d\n", debugstr_w(lpszExeFileName), nIconIndex, nIcons, pIconId, flags, fIconEx);
 #else
 	TRACE("%s, %d, %d %p 0x%08x\n", debugstr_w(lpszExeFileName), nIconIndex, nIcons, pIconId, flags);
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (RetPtr)
         *RetPtr = NULL;
 
@@ -367,7 +367,7 @@ static UINT ICO_ExtractIconExW(
         dwSearchReturn = SearchPathW(NULL, lpszExeFileName, NULL, ARRAY_SIZE(szExePath), szExePath, NULL);
         if ((dwSearchReturn == 0) || (dwSearchReturn > ARRAY_SIZE(szExePath)))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             WARN("File %s not found or path too long and fIconEx is '%d'\n",
                  debugstr_w(lpszExeFileName), fIconEx);
             if (fIconEx && !RetPtr && !pIconId)
@@ -380,13 +380,13 @@ static UINT ICO_ExtractIconExW(
 #endif
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     USER32_RedirectToMunFile(szExePath, ARRAY_SIZE(szExePath));
 #endif
 	hFile = CreateFileW(szExePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, 0);
 	if (hFile == INVALID_HANDLE_VALUE) return ret;
 	fsizel = GetFileSize(hFile,&fsizeh);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(fsizel | fsizeh))
     {
         /* Cannot map empty file */
@@ -412,7 +412,7 @@ static UINT ICO_ExtractIconExW(
 	}
 	CloseHandle(fmapping);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Check if we have a min size of 2 headers RIFF & 'icon'
      * at 8 chars each plus an anih header of 36 byptes.
      * Also, is this resource an animjated icon/cursor (RIFF) */
@@ -576,7 +576,7 @@ static UINT ICO_ExtractIconExW(
                 DWORD dataOffset;
                 LPBYTE imageData;
                 POINT hotSpot;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 LPICONIMAGE entry;
 #endif
 
@@ -586,13 +586,13 @@ static UINT ICO_ExtractIconExW(
                 {
                     HICON icon;
                     WORD *cursorData = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     BITMAPINFOHEADER bi;
                     DWORD cbColorTable = 0, cbTotal;
 #endif
 
                     imageData = peimage + dataOffset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     /* Calculate the size of color table */
                     ZeroMemory(&bi, sizeof(bi));
                     CopyMemory(&bi, imageData, sizeof(BITMAPCOREHEADER));
@@ -632,7 +632,7 @@ static UINT ICO_ExtractIconExW(
                     if(sig == 2)
                     {
                         /* we need to prepend the bitmap data with hot spots for CreateIconFromResourceEx */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         cursorData = HeapAlloc(GetProcessHeap(), 0, 2 * sizeof(WORD) + cbTotal);
 #else
                         cursorData = HeapAlloc(GetProcessHeap(), 0, entry->icHeader.biSizeImage + 2 * sizeof(WORD));
@@ -644,7 +644,7 @@ static UINT ICO_ExtractIconExW(
                         cursorData[0] = hotSpot.x;
                         cursorData[1] = hotSpot.y;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         CopyMemory(cursorData + 2, imageData, cbTotal);
 #else
                         memcpy(cursorData + 2, imageData, entry->icHeader.biSizeImage);
@@ -653,7 +653,7 @@ static UINT ICO_ExtractIconExW(
                         imageData = (LPBYTE)cursorData;
                     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     icon = CreateIconFromResourceEx(imageData, cbTotal, sig == 1, 0x00030000, cx[index], cy[index], flags);
                     if (fIconEx && sig == 1)
                         iconCount = 1;
@@ -696,7 +696,7 @@ static UINT ICO_ExtractIconExW(
             goto end;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         /* Check for boundary limit (and overflow) */
         if (((ULONG_PTR)(rootresdir + 1) < (ULONG_PTR)rootresdir) ||
             ((ULONG_PTR)(rootresdir + 1) > (ULONG_PTR)peimage + fsizel))
@@ -797,7 +797,7 @@ static UINT ICO_ExtractIconExW(
 	    xresdir = find_entry_by_id(iconresdir, LOWORD(pIconId[i]), rootresdir);
             if( !xresdir )
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
               /* XP/2K3 can decode icons this way. Vista/7 cannot. This handles
                * damaged Resources in 'Icon Group' by falling back to 'Icon' resources.
                * Older Watcom C/C++ compilers can generate such a case */
@@ -927,7 +927,7 @@ UINT WINAPI PrivateExtractIconsW (
 	{
 	  WARN("Uneven number %d of icons requested for small and large icons!\n", nIcons);
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ICO_ExtractIconExW(lpwstrFile, phicon, nIndex, nIcons, sizeX, sizeY,
                               pIconId, flags, TRUE);
 #else
@@ -952,7 +952,7 @@ UINT WINAPI PrivateExtractIconsA (
     UINT ret;
     INT len = MultiByteToWideChar(CP_ACP, 0, lpstrFile, -1, NULL, 0);
     LPWSTR lpwstrFile = HeapAlloc(GetProcessHeap(), 0, len * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpwstrFile == NULL)
         return 0;
 #endif
@@ -982,7 +982,7 @@ UINT WINAPI PrivateExtractIconExW (
 	TRACE("%s %d %p %p %d\n",
 	debugstr_w(lpwstrFile),nIndex,phIconLarge, phIconSmall, nIcons);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (nIndex == -1 || (!phIconSmall && !phIconLarge))
       /* get the number of icons */
       return ICO_ExtractIconExW(lpwstrFile, NULL, 0, 0, 0, 0, NULL,
@@ -1001,7 +1001,7 @@ UINT WINAPI PrivateExtractIconExW (
 	  cxsmicon = GetSystemMetrics(SM_CXSMICON);
 	  cysmicon = GetSystemMetrics(SM_CYSMICON);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ret = ICO_ExtractIconExW(lpwstrFile, hIcon, nIndex, 2,
                                cxicon | (cxsmicon<<16),
                                cyicon | (cysmicon<<16), NULL,
@@ -1020,7 +1020,7 @@ UINT WINAPI PrivateExtractIconExW (
 	  /* extract n small icons */
 	  cxsmicon = GetSystemMetrics(SM_CXSMICON);
 	  cysmicon = GetSystemMetrics(SM_CYSMICON);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       ret = ICO_ExtractIconExW(lpwstrFile, phIconSmall, nIndex, nIcons, cxsmicon,
                                cysmicon, NULL, LR_DEFAULTCOLOR, FALSE);
 #else
@@ -1033,7 +1033,7 @@ UINT WINAPI PrivateExtractIconExW (
 	  /* extract n large icons */
 	  cxicon = GetSystemMetrics(SM_CXICON);
 	  cyicon = GetSystemMetrics(SM_CYICON);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        ret = ICO_ExtractIconExW(lpwstrFile, phIconLarge, nIndex, nIcons, cxicon,
                                 cyicon, NULL, LR_DEFAULTCOLOR, FALSE);
 #else
@@ -1057,7 +1057,7 @@ UINT WINAPI PrivateExtractIconExA (
 	UINT ret;
 	INT len = MultiByteToWideChar(CP_ACP, 0, lpstrFile, -1, NULL, 0);
 	LPWSTR lpwstrFile = HeapAlloc(GetProcessHeap(), 0, len * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpwstrFile == NULL)
         return 0;
 #endif

@@ -1,5 +1,5 @@
 /*
- * reactos/lib/gdi32/misc/eng.c
+ * librent/lib/gdi32/misc/eng.c
  *
  * GDI32.DLL eng part
  *

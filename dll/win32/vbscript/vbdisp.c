@@ -533,7 +533,7 @@ static INVOKEKIND invoke_kind_for_func(function_type_t t)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct {
     MEMBERID memid;
     INVOKEKIND invkind;
@@ -1319,7 +1319,7 @@ static HRESULT WINAPI DispatchEx_GetTypeInfo(IDispatchEx *iface, UINT iTInfo, LC
     if(iTInfo) return DISP_E_BADINDEX;
     if(!This->desc) return E_UNEXPECTED;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return create_class_typeinfo(This->desc, ppTInfo);
 #else
     return build_class_typeinfo((class_desc_t*)This->desc, ppTInfo);
@@ -1394,7 +1394,7 @@ static HRESULT WINAPI DispatchEx_InvokeEx(IDispatchEx *iface, DISPID id, LCID lc
     This->desc->ctx->vbcaller->caller = prev_caller;
     if(pspCaller)
         IServiceProvider_Release(pspCaller);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(FAILED(hres) && hres != SCRIPT_E_REPORTED && HRESULT_FACILITY(hres) == FACILITY_CONTROL) {
         if(pei) {
             memset(pei, 0, sizeof(*pei));
@@ -1628,7 +1628,7 @@ static HRESULT WINAPI FuncRef_Invoke(IDispatch *iface, DISPID dispIdMember, REFI
      * reaching this vtable entry means the caller is outside the engine, so the
      * reference is entered as an external caller and errors are reported to the
      * host rather than propagated as an HRESULT. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         HRESULT hres = exec_script(This->ctx, TRUE, This->func, NULL, pDispParams, pVarResult);
 

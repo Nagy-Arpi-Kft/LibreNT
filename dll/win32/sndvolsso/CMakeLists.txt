@@ -8,4 +8,4 @@ list(APPEND SOURCE
 add_library(sndvolsso MODULE ${SOURCE})
 set_module_type(sndvolsso win32dll ENTRYPOINT DllMain 12)
 add_importlibs(sndvolsso msvcrt kernel32 ntdll)
-add_cd_file(TARGET sndvolsso DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET sndvolsso DESTINATION librent/system32 FOR all)

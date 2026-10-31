@@ -121,9 +121,9 @@ list(APPEND GEN_NLS
     c_949
     c_950)
 
-set(NLS_DESTINATIONS reactos/system32)
+set(NLS_DESTINATIONS librent/system32)
 if(ENABLE_WOW64)
-    list(APPEND NLS_DESTINATIONS reactos/SysWOW64)
+    list(APPEND NLS_DESTINATIONS librent/SysWOW64)
 endif()
 
 foreach(NLS ${GEN_NLS})

@@ -235,7 +235,7 @@ int CDECL _wchdir(const wchar_t * newdir)
     msvcrt_set_errno(newdir?GetLastError():0);
     return -1;
   }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Update the drive-specific current directory variable */
     WCHAR fulldir[MAX_PATH];
     if (GetCurrentDirectoryW(ARRAYSIZE(fulldir), fulldir) >= 2)

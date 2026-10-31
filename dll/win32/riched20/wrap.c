@@ -104,7 +104,7 @@ static HRESULT shape_run( ME_Context *c, ME_Run *run )
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL move_tail_glyphs( ME_Run *run, ME_Run *run2 )
 {
     const SCRIPT_PROPERTIES **props;
@@ -187,7 +187,7 @@ static ME_Run *split_run_extents( ME_WrapContext *wc, ME_Run *run, int nVChar )
   run2 = cursor.run;
   run2->script_analysis = run->script_analysis;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!move_tail_glyphs( run, run2 ))
     shape_run( wc->context, run2 );
   free( run->glyphs );
@@ -304,19 +304,19 @@ static void layout_row( ME_Run *start, ME_Run *last )
     if (!num_runs) return;
 
     if (num_runs > ARRAY_SIZE( buf ) / 5)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if ((size_t)num_runs > ~(size_t)0 / sizeof(int) / 5)
             return;
 #endif
         vis_to_log = malloc( num_runs * sizeof(int) * 5 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!vis_to_log) return;
     }
 #endif
 
     log_to_vis = vis_to_log + num_runs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     widths = vis_to_log + 2 * (size_t)num_runs;
     pos = vis_to_log + 3 * (size_t)num_runs;
     levels = (BYTE*)(vis_to_log + 4 * (size_t)num_runs);
@@ -793,7 +793,7 @@ static void ME_PrepareParagraphForWrapping( ME_TextEditor *editor, ME_Context *c
 static HRESULT itemize_para( ME_Context *c, ME_Paragraph *para )
 {
     ME_Run *run;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SCRIPT_ITEM buf[16], *items = buf, *new_items;
 #else
     SCRIPT_ITEM buf[16], *items = buf;
@@ -814,7 +814,7 @@ static HRESULT itemize_para( ME_Context *c, ME_Paragraph *para )
         hr = ScriptItemize( para->text->szData, para->text->nLen, items_passed, &control,
                             &state, items, &num_items );
         if (hr != E_OUTOFMEMORY) break; /* may not be enough items if hr == E_OUTOFMEMORY */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (items_passed - 1 > para->text->nLen) break; /* something else has gone wrong */
         if (items_passed > INT_MAX / 2 ||
             (size_t)items_passed > ~(size_t)0 / sizeof(*items) / 2) break;
@@ -823,13 +823,13 @@ static HRESULT itemize_para( ME_Context *c, ME_Paragraph *para )
 #endif
         items_passed *= 2;
         if (items == buf)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             new_items = malloc( (size_t)items_passed * sizeof( *items ) );
 #else
             items = malloc( items_passed * sizeof( *items ) );
 #endif
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             new_items = realloc( items, (size_t)items_passed * sizeof( *items ) );
         if (!new_items) break;
         items = new_items;
@@ -889,7 +889,7 @@ end:
 static HRESULT shape_para( ME_Context *c, ME_Paragraph *para )
 {
     ME_Run *run;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HRESULT hr = S_OK;
 #else
     HRESULT hr;

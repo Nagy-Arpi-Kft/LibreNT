@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT ACPI Time and Alarm Driver
+ * PROJECT:     LibreNT ACPI Time and Alarm Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ACPI000E real-time and persistent wake-alarm support
  */
@@ -985,7 +985,7 @@ AcpiTimeAddDevice(
         IoDeleteDevice(DeviceObject);
         return Status;
     }
-    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_REACTOS_ACPITIME, NULL, &DeviceExtension->InterfaceName);
+    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_LIBRENT_ACPITIME, NULL, &DeviceExtension->InterfaceName);
     if (!NT_SUCCESS(Status))
     {
         IoDetachDevice(DeviceExtension->LowerDevice);

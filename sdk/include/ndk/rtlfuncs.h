@@ -2983,11 +2983,11 @@ RtlCreateUserProcess(
 );
 
 /*
- * ReactOS always exports the pre-Win7 RtlCreateUserThread signature.
+ * LibreNT always exports the pre-Win7 RtlCreateUserThread signature.
  * The Win7+ variant has a completely different parameter layout that
- * ReactOS does not implement.
+ * LibreNT does not implement.
  */
-#if (NTDDI_VERSION >= NTDDI_WIN7) && !defined(__REACTOS__)
+#if (NTDDI_VERSION >= NTDDI_WIN7) && !defined(__LIBRENT__)
 NTSYSAPI
 NTSTATUS
 NTAPI
@@ -3870,7 +3870,7 @@ RtlFindSetBitsAndClear(
     _In_ ULONG HintIndex
 );
 
-#ifdef __REACTOS__ // ReactOS improvement
+#ifdef __LIBRENT__ // LibreNT improvement
 _At_(BitMapHeader->SizeOfBitMap, _Post_equal_to_(SizeOfBitMap))
 _At_(BitMapHeader->Buffer, _Post_equal_to_(BitMapBuffer))
 #endif
@@ -5574,7 +5574,7 @@ RtlRunOnceComplete(
 
 #endif
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA) || (defined(__REACTOS__) && defined(_NTDLLBUILD_))
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA) || (defined(__LIBRENT__) && defined(_NTDLLBUILD_))
 /* Put NTSYSAPI back when this will be really exported. Only statically linked for now */
 // NTSYSAPI
 VOID
@@ -5708,9 +5708,9 @@ RtlIsValidLocaleName(
 // Flags for RtlLocaleNameToLcid / RtlLcidToLocaleName / RtlIsValidLocaleName
 #define RTL_LOCALE_ALLOW_NEUTRAL_NAMES 0x00000002 // Return locales like "en" or "de"
 
-#endif /* Win Vista or ReactOS Ntdll build */
+#endif /* Win Vista or LibreNT Ntdll build */
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN7) || (defined(__REACTOS__) && defined(_NTDLLBUILD_))
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN7) || (defined(__LIBRENT__) && defined(_NTDLLBUILD_))
 
 // NTSYSAPI
 BOOLEAN
@@ -5722,7 +5722,7 @@ BOOLEAN
 NTAPI
 RtlTryAcquireSRWLockExclusive(PRTL_SRWLOCK SRWLock);
 
-#endif /* Win7 or ReactOS Ntdll build */
+#endif /* Win7 or LibreNT Ntdll build */
 
 #endif // NTOS_MODE_USER
 

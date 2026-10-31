@@ -2,10 +2,10 @@
 
 #include "resource.h"
 
-#define REACTOS_STR_FILE_DESCRIPTION    "LiberNT Find Command"
-#define REACTOS_STR_INTERNAL_NAME       "find"
-#define REACTOS_STR_ORIGINAL_FILENAME   "find.exe"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION    "LibreNT Find Command"
+#define LIBRENT_STR_INTERNAL_NAME       "find"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "find.exe"
+#include <librent/version.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

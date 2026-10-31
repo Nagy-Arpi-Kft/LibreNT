@@ -125,7 +125,7 @@ typedef struct
 typedef struct
 {
     HWND     hwndSelf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HTHEME   hTheme;
 #endif
     WCHAR      szTipText[INFOTIPSIZE];
@@ -168,7 +168,7 @@ typedef struct
 #define BALLOON_TEXT_MARGIN (NORMAL_TEXT_MARGIN+8)
 /* value used for CreateRoundRectRgn that specifies how much
  * each corner is curved */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define BALLOON_ROUNDEDNESS 16
 #define BALLOON_STEMHEIGHT 18
 #define BALLOON_STEMWIDTH 18
@@ -178,7 +178,7 @@ typedef struct
 #define BALLOON_STEMHEIGHT 13
 #define BALLOON_STEMWIDTH 10
 #define BALLOON_STEMINDENT 20
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 #define BALLOON_ICON_TITLE_SPACING 8 /* horizontal spacing between icon and title */
 #define BALLOON_TITLE_TEXT_SPACING 8 /* vertical spacing between icon/title and main text */
@@ -218,7 +218,7 @@ TOOLTIPS_InitSystemSettings (TOOLTIPS_INFO *infoPtr)
     infoPtr->hFont = infoPtr->hStatusFont;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HTHEME
 TOOLTIPS_GetTheme (const TOOLTIPS_INFO *infoPtr, DWORD dwStyle, int *pPart)
 {
@@ -284,7 +284,7 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
     DWORD dwStyle = GetWindowLongW(infoPtr->hwndSelf, GWL_STYLE);
     NMTTCUSTOMDRAW nmttcd;
     DWORD cdmode;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int themePart = 0;
     HTHEME hTheme = TOOLTIPS_GetTheme(infoPtr, dwStyle, &themePart);
 #endif
@@ -314,7 +314,7 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
 
         GetWindowRgn(infoPtr->hwndSelf, hRgn);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hTheme)
         {
             RECT rcBody = rc;
@@ -373,13 +373,13 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
         FillRgn(hdc, hRgn, hBrush);
         DeleteObject(hBrush);
         hBrush = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
     else
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hTheme)
         {
             if (IsThemeBackgroundPartiallyTransparent(hTheme, themePart, TTSS_NORMAL))
@@ -398,7 +398,7 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
         FillRect(hdc, &rc, hBrush);
         DeleteObject(hBrush);
         hBrush = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
@@ -430,7 +430,7 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
 
             /* draw title text */
             prevFont = SelectObject (hdc, infoPtr->hTitleFont);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             height = 0;
             if (hTheme)
             {
@@ -465,7 +465,7 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
     }
 
     /* draw text */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uFlags |= DT_EXPANDTABS;
     if (!hTheme ||
         FAILED(DrawThemeText(hTheme, hdc, themePart, TTSS_NORMAL,
@@ -482,7 +482,7 @@ TOOLTIPS_Refresh (const TOOLTIPS_INFO *infoPtr, HDC hdc)
     SelectObject (hdc, hOldFont);
     SetBkMode (hdc, oldBkMode);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((dwStyle & TTS_BALLOON) && !hTheme)
 #else
     if (dwStyle & TTS_BALLOON)
@@ -540,7 +540,7 @@ static void TOOLTIPS_GetDispInfoA(const TOOLTIPS_INFO *infoPtr, TTTOOL_INFO *too
         buffer[0] = '\0';
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* no text available - try calling parent instead as per native */
     /* FIXME: Unsure if SETITEM should save the value or not        */
     if (buffer[0] == 0x00) {
@@ -598,7 +598,7 @@ static void TOOLTIPS_GetDispInfoW(const TOOLTIPS_INFO *infoPtr, TTTOOL_INFO *too
         buffer[0] = '\0';
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* no text available - try calling parent instead as per native */
     /* FIXME: Unsure if SETITEM should save the value or not        */
     if (buffer[0] == 0x00) {
@@ -665,7 +665,7 @@ TOOLTIPS_CalcTipSize (const TOOLTIPS_INFO *infoPtr, LPSIZE lpSize)
     UINT uFlags = DT_EXTERNALLEADING | DT_CALCRECT;
     RECT rc = {0, 0, 0, 0};
     SIZE title = {0, 0};
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     int themePart = 0;
     HTHEME hTheme = TOOLTIPS_GetTheme(infoPtr, style, &themePart);
 #endif
@@ -690,7 +690,7 @@ TOOLTIPS_CalcTipSize (const TOOLTIPS_INFO *infoPtr, LPSIZE lpSize)
         }
         if (title.cx != 0) title.cx += BALLOON_ICON_TITLE_SPACING;
         hOldFont = SelectObject (hdc, infoPtr->hTitleFont);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!hTheme ||
             FAILED(GetThemeTextExtent(hTheme, hdc,
                                       (themePart == TTP_BALLOON) ? TTP_BALLOONTITLE
@@ -704,7 +704,7 @@ TOOLTIPS_CalcTipSize (const TOOLTIPS_INFO *infoPtr, LPSIZE lpSize)
         title.cx += (rcTitle.right - rcTitle.left);
     }
     hOldFont = SelectObject (hdc, infoPtr->hFont);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uFlags |= DT_EXPANDTABS;
     if (!hTheme ||
         FAILED(GetThemeTextExtent(hTheme, hdc, themePart, TTSS_NORMAL,
@@ -897,7 +897,7 @@ TOOLTIPS_Show (TOOLTIPS_INFO *infoPtr, BOOL track_activate)
     mon_info.cbSize = sizeof(mon_info);
     GetMonitorInfoW( monitor, &mon_info );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (rect.right > mon_info.rcMonitor.right)
     {
         rect.left -= size.cx - (BALLOON_STEMINDENT + BALLOON_STEMWIDTH);
@@ -949,7 +949,7 @@ TOOLTIPS_Show (TOOLTIPS_INFO *infoPtr, BOOL track_activate)
 	rect.bottom = rc.top - 2;
     	rect.top = rect.bottom - size.cy;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     AdjustWindowRectEx (&rect, GetWindowLongW (infoPtr->hwndSelf, GWL_STYLE),
 			FALSE, GetWindowLongW (infoPtr->hwndSelf, GWL_EXSTYLE));
@@ -966,7 +966,7 @@ TOOLTIPS_Show (TOOLTIPS_INFO *infoPtr, BOOL track_activate)
         {
           pts[0].x = ptfx;
           pts[0].y = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           pts[1].x = max(BALLOON_STEMINDENT, ptfx - BALLOON_STEMWIDTH);
 #else
           pts[1].x = max(BALLOON_STEMINDENT, ptfx - (BALLOON_STEMWIDTH / 2));
@@ -982,7 +982,7 @@ TOOLTIPS_Show (TOOLTIPS_INFO *infoPtr, BOOL track_activate)
         }
         else
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           pts[0].x = max(BALLOON_STEMINDENT, ptfx - BALLOON_STEMWIDTH);
 #else
           pts[0].x = max(BALLOON_STEMINDENT, ptfx - (BALLOON_STEMWIDTH / 2));
@@ -1004,7 +1004,7 @@ TOOLTIPS_Show (TOOLTIPS_INFO *infoPtr, BOOL track_activate)
         hRgn = CreateRoundRectRgn(0,
                                   (infoPtr->bToolBelow ? BALLOON_STEMHEIGHT : 0),
                                   rect.right - rect.left,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                   (infoPtr->bToolBelow ? rect.bottom - rect.top : rect.bottom - rect.top - BALLOON_STEMHEIGHT + 1),
 #else
                                   (infoPtr->bToolBelow ? rect.bottom - rect.top : rect.bottom - rect.top - BALLOON_STEMHEIGHT),
@@ -1443,14 +1443,14 @@ TOOLTIPS_DelToolT (TOOLTIPS_INFO *infoPtr, const TTTOOLINFOW *ti, BOOL isW)
 
     /* destroying tool that mouse was on on last relayed mouse move */
     if (infoPtr->nTool == nTool)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         KillTimer(infoPtr->hwndSelf, ID_TIMERSHOW);
         KillTimer(infoPtr->hwndSelf, ID_TIMERLEAVE);
 #endif
         /* -1 means no current tool (0 means first tool) */
         infoPtr->nTool = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     else if (infoPtr->nTool > nTool)
@@ -2051,7 +2051,7 @@ TOOLTIPS_Create (HWND hwnd)
     infoPtr->nCurrentTool = -1;
     infoPtr->nTrackTool = -1;
     infoPtr->hwndSelf = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     infoPtr->hTheme = OpenThemeData (hwnd, L"Tooltip");
 #endif
 
@@ -2092,7 +2092,7 @@ TOOLTIPS_Destroy (TOOLTIPS_INFO *infoPtr)
     DeleteObject (infoPtr->hStatusFont);
     DeleteObject (infoPtr->hTitleFont);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CloseThemeData (infoPtr->hTheme);
 #endif
 
@@ -2245,7 +2245,7 @@ TOOLTIPS_OnWMGetText (const TOOLTIPS_INFO *infoPtr, WPARAM size, LPWSTR pszText)
 static LRESULT
 TOOLTIPS_Timer (TOOLTIPS_INFO *infoPtr, INT iTimer)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     INT nOldTool, nTool;
 #else
     INT nOldTool;
@@ -2257,7 +2257,7 @@ TOOLTIPS_Timer (TOOLTIPS_INFO *infoPtr, INT iTimer)
     case ID_TIMERSHOW:
         KillTimer (infoPtr->hwndSelf, ID_TIMERSHOW);
 	nOldTool = infoPtr->nTool;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (nOldTool == -1) break;
         nTool = TOOLTIPS_CheckTool(infoPtr, TRUE);
         if (infoPtr->nTool != nOldTool) break;
@@ -2274,7 +2274,7 @@ TOOLTIPS_Timer (TOOLTIPS_INFO *infoPtr, INT iTimer)
 
     case ID_TIMERLEAVE:
         nOldTool = infoPtr->nTool;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (nOldTool == -1)
         {
             KillTimer(infoPtr->hwndSelf, ID_TIMERLEAVE);
@@ -2528,7 +2528,7 @@ TOOLTIPS_WindowProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	    COMCTL32_RefreshSysColors();
 	    return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	case WM_THEMECHANGED:
 	    CloseThemeData (infoPtr->hTheme);
 	    infoPtr->hTheme = OpenThemeData (hwnd, L"Tooltip");

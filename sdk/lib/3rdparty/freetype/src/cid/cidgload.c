@@ -285,7 +285,7 @@
                                 FT_Int*   max_advance )
   {
     FT_Error       error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     T1_DecoderRec *decoder_allocated = malloc(sizeof(*decoder_allocated));
     if (!decoder_allocated)
       return FT_THROW( Out_Of_Memory );
@@ -312,7 +312,7 @@
                                            0, /* hinting == 0 */
                                            cid_load_glyph );
     if ( error )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         free(decoder_allocated);
         return error;
@@ -341,7 +341,7 @@
 
     psaux->t1_decoder_funcs->done( &decoder );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(decoder_allocated);
 #undef decoder
     }
@@ -361,7 +361,7 @@
   {
     CID_GlyphSlot  glyph = (CID_GlyphSlot)cidglyph;
     FT_Error       error;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     T1_DecoderRec *decoder_allocated = malloc(sizeof(*decoder_allocated));
     if (!decoder_allocated) return FT_Err_Out_Of_Memory;
 /* Ugly but it allows us to reduce the diff */
@@ -551,7 +551,7 @@
     if ( must_finish_decoder )
       psaux->t1_decoder_funcs->done( &decoder );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free(decoder_allocated);
 #undef decoder
     }

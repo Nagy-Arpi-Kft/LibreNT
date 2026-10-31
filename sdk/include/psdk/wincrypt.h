@@ -21,7 +21,7 @@
 #ifndef __WINE_WINCRYPT_H
 #define __WINE_WINCRYPT_H
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <specstrings.h>
 #endif
 
@@ -548,7 +548,7 @@ typedef struct _CRL_DIST_POINTS_INFO {
 #define GET_CRL_DIST_POINT_ERR_INDEX(x) \
  (((x) >> CRL_DIST_POINT_ERR_INDEX_SHIFT) & CRL_DIST_POINT_ERR_INDEX_MASK)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define CRL_DIST_POINT_ERR_CRL_ISSUER_BIT 0x80000000L
 #else
 #define CRL_DIST_POINT_ERR_CRL_ISSUER_BIT __MSABI_LONG(0x80000000)
@@ -595,7 +595,7 @@ typedef struct _CERT_NAME_CONSTRAINTS_INFO {
     PCERT_GENERAL_SUBTREE rgExcludedSubtree;
 } CERT_NAME_CONSTRAINTS_INFO, *PCERT_NAME_CONSTRAINTS_INFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define CERT_EXCLUDED_SUBTREE_BIT 0x80000000L
 #else
 #define CERT_EXCLUDED_SUBTREE_BIT __MSABI_LONG(0x80000000)
@@ -1217,7 +1217,7 @@ typedef struct _CERT_SYSTEM_STORE_RELOCATE_PARA {
     } DUMMYUNIONNAME2;
 } CERT_SYSTEM_STORE_RELOCATE_PARA, *PCERT_SYSTEM_STORE_RELOCATE_PARA;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CERT_ENUM_SYSTEM_STORE_LOCATION)(
   _In_ LPCWSTR pwszStoreLocation,
@@ -1252,7 +1252,7 @@ typedef BOOL (WINAPI *PFN_CERT_ENUM_SYSTEM_STORE)(const void *pvSystemStore,
 typedef BOOL (WINAPI *PFN_CERT_ENUM_PHYSICAL_STORE)(const void *pvSystemStore,
  DWORD dwFlags, LPCWSTR pwszStoreName, PCERT_PHYSICAL_STORE_INFO pStoreInfo,
  void *pvReserved, void *pvArg);
-#endif // __REACTOS
+#endif // __LIBRENT__
 
 /* Encode/decode object */
 typedef LPVOID (__WINE_ALLOC_SIZE(1) WINAPI *PFN_CRYPT_ALLOC)(size_t cbsize);
@@ -1279,7 +1279,7 @@ typedef struct _CERT_STORE_PROV_INFO {
     HCRYPTOIDFUNCADDR hStoreProvFuncAddr2;
 } CERT_STORE_PROV_INFO, *PCERT_STORE_PROV_INFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CERT_DLL_OPEN_STORE_PROV_FUNC)(
   _In_ LPCSTR lpszStoreProvider,
@@ -1453,7 +1453,7 @@ typedef struct _CERT_STORE_PROV_FIND_INFO {
 typedef const CERT_STORE_PROV_FIND_INFO CCERT_STORE_PROV_FIND_INFO,
  *PCCERT_STORE_PROV_FIND_INFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef
 _Success_(return != 0)
 BOOL
@@ -1571,7 +1571,7 @@ typedef struct _CRYPT_OID_FUNC_ENTRY {
     void  *pvFuncAddr;
 } CRYPT_OID_FUNC_ENTRY, *PCRYPT_OID_FUNC_ENTRY;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CRYPT_ENUM_OID_FUNC)(
   _In_ DWORD dwEncodingType,
@@ -1632,7 +1632,7 @@ typedef struct _CRYPT_OID_INFO {
 } CRYPT_OID_INFO, *PCRYPT_OID_INFO;
 typedef const CRYPT_OID_INFO CCRYPT_OID_INFO, *PCCRYPT_OID_INFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CRYPT_ENUM_OID_INFO)(
   _In_ PCCRYPT_OID_INFO pInfo,
@@ -1669,7 +1669,7 @@ typedef struct _CRYPT_SIGN_MESSAGE_PARA {
 #define CRYPT_MESSAGE_KEYID_SIGNER_FLAG             0x00000004
 #define CRYPT_MESSAGE_SILENT_KEYSET_FLAG            0x00000008
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef PCCERT_CONTEXT
 (WINAPI *PFN_CRYPT_GET_SIGNER_CERTIFICATE)(
   _Inout_opt_ void *pvGetArg,
@@ -1763,7 +1763,7 @@ typedef struct _CRYPT_URL_INFO {
 
 typedef HANDLE HCRYPTASYNC, *PHCRYPTASYNC;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef void
 (WINAPI *PFN_CRYPT_ASYNC_PARAM_FREE_FUNC)(
   _In_ LPSTR pszParamOid,
@@ -1776,7 +1776,7 @@ typedef void (WINAPI *PFN_CRYPT_ASYNC_PARAM_FREE_FUNC)(LPSTR pszParamOid,
 #define CRYPT_PARAM_ASYNC_RETRIEVAL_COMPLETION ((LPCSTR)1)
 #define CRYPT_PARAM_CANCEL_ASYNC_RETRIEVAL     ((LPCSTR)2)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef void
 (WINAPI *PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC)(
   _Inout_opt_ void *pvCompletion,
@@ -1845,7 +1845,7 @@ typedef struct _CRYPT_RETRIEVE_AUX_INFO {
     DWORD     dwMaxUrlRetrievalByteCount;
 } CRYPT_RETRIEVE_AUX_INFO, *PCRYPT_RETRIEVE_AUX_INFO;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef void
 (WINAPI *PFN_FREE_ENCODED_OBJECT_FUNC)(
   _In_opt_ LPCSTR pszObjectOid,
@@ -1902,7 +1902,7 @@ BOOL WINAPI ContextDllCreateObjectContext(LPCSTR pszObjectOid,
 #define CRYPT_CHECK_FRESHNESS_TIME_VALIDITY 0x00000400
 #define CRYPT_ACCUMULATIVE_TIMEOUT          0x00000800
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CRYPT_CANCEL_RETRIEVAL)(
   _In_ DWORD dwFlags,
@@ -3812,7 +3812,7 @@ typedef struct _CERT_CHAIN_ENGINE_CONFIG
 
 /* message-related definitions */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CMSG_STREAM_OUTPUT)(
   _In_opt_ const void *pvArg,
@@ -4286,7 +4286,7 @@ typedef struct _CERT_STRONG_SIGN_PARA {
 #define CERT_STRONG_SIGN_ENABLE_CRL_CHECK       0x1
 #define CERT_STRONG_SIGN_ENABLE_OCSP_CHECK      0x2
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef BOOL
 (WINAPI *PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY)(
   _Inout_ PCMSG_CONTENT_ENCRYPT_INFO pContentEncryptInfo,
@@ -4357,7 +4357,7 @@ typedef BOOL (WINAPI *PFN_CMSG_IMPORT_KEY_TRANS)(
 #define CRYPT_USERDATA    0x00000001
 
 /* function declarations */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* advapi32.dll */
 WINADVAPI
 BOOL

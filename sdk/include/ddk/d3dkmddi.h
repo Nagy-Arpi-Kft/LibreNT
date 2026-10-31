@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Display Driver Model
+ * PROJECT:     LibreNT Display Driver Model
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Kernel-mode DDI structures for WDDM display miniport drivers.
  *              Defines DXGKARG_*, DXGK_SEGMENTDESCRIPTOR, DXGK_DRIVERCAPS,
@@ -9701,7 +9701,7 @@ C_ASSERT(FIELD_OFFSET(DXGKARGCB_PROTECTEDSESSIONSTATUS, Status) == 0x4);
 #endif /* DXGKDDI_INTERFACE_VERSION >= DXGKDDI_INTERFACE_VERSION_WDDM2_2 */
 
 /*
- * Canonical WDK callback parameter aliases.  ReactOS historically exposed
+ * Canonical WDK callback parameter aliases.  LibreNT historically exposed
  * only its pointer-typedef callback table; external miniports also name the
  * function types and their SAL-decorated arguments directly.
  */

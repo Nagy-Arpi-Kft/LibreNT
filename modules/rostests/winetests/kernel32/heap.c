@@ -481,7 +481,7 @@ static void test_HeapCreate(void)
     todo_wine
     ok( ptr1 != ptr, "HeapReAlloc HEAP_REALLOC_IN_PLACE_ONLY succeeded\n" );
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_NOT_ENOUGH_MEMORY || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_NOT_ENOUGH_MEMORY, "got error %lu\n", GetLastError() );
@@ -543,7 +543,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     ptr1 = HeapAlloc( heap, 0, 4 * alloc_size );
     ok( !ptr1, "HeapAlloc succeeded\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_NOT_ENOUGH_MEMORY || broken(GetLastError() == ERROR_INSUFFICIENT_BUFFER) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_NOT_ENOUGH_MEMORY, "got error %lu\n", GetLastError() );
@@ -561,7 +561,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     ptr1 = HeapAlloc( heap, 0, 4 * alloc_size );
     ok( !ptr1, "HeapAlloc succeeded\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_NOT_ENOUGH_MEMORY || broken(GetLastError() == ERROR_INSUFFICIENT_BUFFER) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_NOT_ENOUGH_MEMORY, "got error %lu\n", GetLastError() );
@@ -613,7 +613,7 @@ static void test_HeapCreate(void)
     rtl_entry.lpData = NULL;
     SetLastError( 0xdeadbeef );
     while (!RtlWalkHeap( heap, &rtl_entry )) rtl_entries[count++] = rtl_entry;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 3 || broken(count == 4) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 3, "got count %lu\n", count );
@@ -626,7 +626,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 3 || broken(count == 4) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 3, "got count %lu\n", count );
@@ -642,7 +642,7 @@ static void test_HeapCreate(void)
         if (!entries[i].wFlags)
             ok( rtl_entries[i].wFlags == 0, "got wFlags %#x\n", rtl_entries[i].wFlags );
         else if (entries[i].wFlags & PROCESS_HEAP_ENTRY_BUSY)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_COMMITTED|RTL_HEAP_ENTRY_BLOCK|RTL_HEAP_ENTRY_BUSY) || broken(rtl_entries[i].wFlags == 0x411) /* win7 */ || broken(rtl_entries[i].wFlags == RTL_HEAP_ENTRY_BUSY) /* WS03 */,
 #else
             ok( rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_COMMITTED|RTL_HEAP_ENTRY_BLOCK|RTL_HEAP_ENTRY_BUSY) || broken(rtl_entries[i].wFlags == 0x411) /* win7 */,
@@ -666,7 +666,7 @@ static void test_HeapCreate(void)
         winetest_pop_context();
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[0].wFlags == PROCESS_HEAP_REGION, "got wFlags %#x\n", entries[0].wFlags );
@@ -703,7 +703,7 @@ static void test_HeapCreate(void)
         "got cbData %#lx\n", entries[2].cbData );
     ok( entries[2].cbOverhead == 0, "got cbOverhead %#x\n", entries[2].cbOverhead );
     ok( entries[2].iRegionIndex == 0, "got iRegionIndex %d\n", entries[2].iRegionIndex );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -716,7 +716,7 @@ static void test_HeapCreate(void)
     rtl_entry.lpData = NULL;
     SetLastError( 0xdeadbeef );
     while (!RtlWalkHeap( heap, &rtl_entry )) rtl_entries[count++] = rtl_entry;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 4 || broken(count == 5) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 4, "got count %lu\n", count );
@@ -729,7 +729,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 4 || broken(count == 5) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 4, "got count %lu\n", count );
@@ -746,7 +746,7 @@ static void test_HeapCreate(void)
         if (!entries[i].wFlags)
             ok( rtl_entries[i].wFlags == 0, "got wFlags %#x\n", rtl_entries[i].wFlags );
         else if (entries[i].wFlags & PROCESS_HEAP_ENTRY_BUSY)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_COMMITTED|RTL_HEAP_ENTRY_BLOCK|RTL_HEAP_ENTRY_BUSY) || broken(rtl_entries[i].wFlags == 0x411) /* win7 */ || broken(rtl_entries[i].wFlags == RTL_HEAP_ENTRY_BUSY) /* WS03 */ || broken(rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_BLOCK|0x9)) /* WS03 */,
 #else
             ok( rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_COMMITTED|RTL_HEAP_ENTRY_BLOCK|RTL_HEAP_ENTRY_BUSY) || broken(rtl_entries[i].wFlags == 0x411) /* win7 */,
@@ -771,23 +771,23 @@ static void test_HeapCreate(void)
     }
 
     ok( entries[3].wFlags == PROCESS_HEAP_ENTRY_BUSY ||
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         broken(entries[3].wFlags == (PROCESS_HEAP_ENTRY_BUSY | PROCESS_HEAP_ENTRY_DDESHARE)) /* win7 */ || broken(entries[3].wFlags == PROCESS_HEAP_UNCOMMITTED_RANGE) /* WS03 */,
 #else
         broken(entries[3].wFlags == (PROCESS_HEAP_ENTRY_BUSY | PROCESS_HEAP_ENTRY_DDESHARE)) /* win7 */,
 #endif
         "got wFlags %#x\n", entries[3].wFlags );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[3].lpData == ptr, "got lpData %p\n", entries[3].lpData );
     ok( entries[3].cbData == 5 * alloc_size, "got cbData %#lx\n", entries[3].cbData );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     ok( entries[3].cbOverhead == 0 || entries[3].cbOverhead == 8 * sizeof(void *) /* win7 */,
         "got cbOverhead %#x\n", entries[3].cbOverhead );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( entries[3].iRegionIndex == 64 || broken(entries[3].iRegionIndex == 0) /* WS03 */, "got iRegionIndex %d\n", entries[3].iRegionIndex );
 #else
     ok( entries[3].iRegionIndex == 64, "got iRegionIndex %d\n", entries[3].iRegionIndex );
@@ -802,7 +802,7 @@ static void test_HeapCreate(void)
     rtl_entry.lpData = NULL;
     SetLastError( 0xdeadbeef );
     while (!RtlWalkHeap( heap, &rtl_entry )) rtl_entries[count++] = rtl_entry;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 5 || broken(count == 6) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 5, "got count %lu\n", count );
@@ -815,7 +815,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 5 || broken(count == 6) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 5, "got count %lu\n", count );
@@ -832,7 +832,7 @@ static void test_HeapCreate(void)
         if (!entries[i].wFlags)
             ok( rtl_entries[i].wFlags == 0, "got wFlags %#x\n", rtl_entries[i].wFlags );
         else if (entries[i].wFlags & PROCESS_HEAP_ENTRY_BUSY)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok( rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_COMMITTED|RTL_HEAP_ENTRY_BLOCK|RTL_HEAP_ENTRY_BUSY) || broken(rtl_entries[i].wFlags == 0x411) /* win7 */ || broken(rtl_entries[i].wFlags == RTL_HEAP_ENTRY_BUSY) /* WS03 */ || broken(rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_BLOCK|0x9)) /* WS03 */,
 #else
             ok( rtl_entries[i].wFlags == (RTL_HEAP_ENTRY_COMMITTED|RTL_HEAP_ENTRY_BLOCK|RTL_HEAP_ENTRY_BUSY) || broken(rtl_entries[i].wFlags == 0x411) /* win7 */,
@@ -859,7 +859,7 @@ static void test_HeapCreate(void)
     ok( entries[4].wFlags == PROCESS_HEAP_ENTRY_BUSY ||
         broken(entries[4].wFlags == (PROCESS_HEAP_ENTRY_BUSY | PROCESS_HEAP_ENTRY_DDESHARE)) /* win7 */,
         "got wFlags %#x\n", entries[4].wFlags );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok( entries[4].lpData == ptr1, "got lpData %p\n", entries[4].lpData );
@@ -880,7 +880,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 3 || broken(count == 4) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 3, "got count %lu\n", count );
@@ -897,7 +897,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 4 || broken(count == 5) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 4, "got count %lu\n", count );
@@ -905,7 +905,7 @@ static void test_HeapCreate(void)
     ok( !memcmp( entries + 16, entries, 1 * sizeof(entry) ), "entries differ\n" );
     ok( memcmp( entries + 17, entries + 2, 2 * sizeof(entry) ), "entries differ\n" );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[1].wFlags == PROCESS_HEAP_ENTRY_BUSY, "got wFlags %#x\n", entries[1].wFlags );
@@ -931,7 +931,7 @@ static void test_HeapCreate(void)
         "got cbData %#lx\n", entries[3].cbData );
     ok( entries[3].cbOverhead == 0, "got cbOverhead %#x\n", entries[3].cbOverhead );
     ok( entries[3].iRegionIndex == 0, "got iRegionIndex %d\n", entries[3].iRegionIndex );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -945,7 +945,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 5 || broken(count == 6) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 5, "got count %lu\n", count );
@@ -953,7 +953,7 @@ static void test_HeapCreate(void)
     ok( !memcmp( entries + 16, entries, 2 * sizeof(entry) ), "entries differ\n" );
     ok( memcmp( entries + 18, entries + 3, 2 * sizeof(entry) ), "entries differ\n" );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[2].wFlags == PROCESS_HEAP_ENTRY_BUSY, "got wFlags %#x\n", entries[2].wFlags );
@@ -979,7 +979,7 @@ static void test_HeapCreate(void)
         "got cbData %#lx\n", entries[4].cbData );
     ok( entries[4].cbOverhead == 0, "got cbOverhead %#x\n", entries[4].cbOverhead );
     ok( entries[4].iRegionIndex == 0, "got iRegionIndex %d\n", entries[4].iRegionIndex );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -988,7 +988,7 @@ static void test_HeapCreate(void)
     ret = HeapFree( heap, 0, ptr );
     ok( ret, "HeapFree failed, error %lu\n", GetLastError() );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) { /* NOTE: This crashes on WS03. */
 #endif
     size = 0;
@@ -997,7 +997,7 @@ static void test_HeapCreate(void)
     ok( !ret, "HeapQueryInformation succeeded\n" );
     ok( GetLastError() == ERROR_NOACCESS, "got error %lu\n", GetLastError() );
     ok( size == 0, "got size %Iu\n", size );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -1031,7 +1031,7 @@ static void test_HeapCreate(void)
 
     ret = pHeapQueryInformation( heap, HeapCompatibilityInformation, &compat_info, sizeof(compat_info), &size );
     ok( ret, "HeapQueryInformation failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( compat_info == 0 || broken(compat_info == 1) /* WS03 */, "got HeapCompatibilityInformation %lu\n", compat_info );
 #else
     ok( compat_info == 0, "got HeapCompatibilityInformation %lu\n", compat_info );
@@ -1078,7 +1078,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     ret = pHeapSetInformation( heap, HeapCompatibilityInformation, &compat_info, sizeof(compat_info) );
     ok( !ret, "HeapSetInformation succeeded\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == ERROR_GEN_FAILURE) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
@@ -1099,7 +1099,7 @@ static void test_HeapCreate(void)
 
     ret = pHeapQueryInformation( heap, HeapCompatibilityInformation, &compat_info, sizeof(compat_info), &size );
     ok( ret, "HeapQueryInformation failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( compat_info == 0 || broken(compat_info == 1) /* WS03 */, "got HeapCompatibilityInformation %lu\n", compat_info );
 #else
     ok( compat_info == 0, "got HeapCompatibilityInformation %lu\n", compat_info );
@@ -1110,7 +1110,7 @@ static void test_HeapCreate(void)
 
     ret = pHeapQueryInformation( heap, HeapCompatibilityInformation, &compat_info, sizeof(compat_info), &size );
     ok( ret, "HeapQueryInformation failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( compat_info == 2 || broken(compat_info == 1) /* WS03 */, "got HeapCompatibilityInformation %lu\n", compat_info );
 #else
     ok( compat_info == 2, "got HeapCompatibilityInformation %lu\n", compat_info );
@@ -1143,13 +1143,13 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( count == 3 || broken(count == 7) /* WS03 */, "got count %lu\n", count );
 #else
     ok( count == 3, "got count %lu\n", count );
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[0].wFlags == PROCESS_HEAP_REGION, "got wFlags %#x\n", entries[0].wFlags );
@@ -1159,7 +1159,7 @@ static void test_HeapCreate(void)
     ok( entries[0].iRegionIndex == 0, "got iRegionIndex %d\n", entries[0].iRegionIndex );
     ok( entries[1].wFlags == 0, "got wFlags %#x\n", entries[1].wFlags );
     ok( entries[2].wFlags == PROCESS_HEAP_UNCOMMITTED_RANGE, "got wFlags %#x\n", entries[2].wFlags );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -1174,13 +1174,13 @@ static void test_HeapCreate(void)
     while ((ret = HeapWalk( heap, &entry ))) entries[count++] = entry;
     ok( GetLastError() == ERROR_NO_MORE_ITEMS, "got error %lu\n", GetLastError() );
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok( count > 24, "got count %lu\n", count );
     if (count < 2) count = 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[0].wFlags == PROCESS_HEAP_REGION, "got wFlags %#x\n", entries[0].wFlags );
@@ -1200,7 +1200,7 @@ static void test_HeapCreate(void)
         todo_wine
         ok( entries[4 + i].cbOverhead == 2 * sizeof(void *), "got cbOverhead %#x\n", entries[4 + i].cbOverhead );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -1216,7 +1216,7 @@ static void test_HeapCreate(void)
     SetLastError( 0xdeadbeef );
     while (!RtlWalkHeap( heap, &rtl_entry )) rtl_entries[count++] = rtl_entry;
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok( count > 24, "got count %lu\n", count );
@@ -1265,7 +1265,7 @@ static void test_HeapCreate(void)
     ok( count > 24, "got count %lu\n", count );
     if (count < 2) count = 2;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     ok( entries[0].wFlags == PROCESS_HEAP_REGION, "got wFlags %#x\n", entries[0].wFlags );
@@ -1282,7 +1282,7 @@ static void test_HeapCreate(void)
         ok( entries[i].cbData == 0x18 + 2 * sizeof(void *), "got cbData %#lx\n", entries[i].cbData );
         ok( entries[i].cbOverhead == 0x8, "got cbOverhead %#x\n", entries[i].cbOverhead );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -1427,7 +1427,7 @@ static void test_HeapCreate(void)
 
     ret = pHeapQueryInformation( heap, HeapCompatibilityInformation, &compat_info, sizeof(compat_info), &size );
     ok( ret, "HeapQueryInformation failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( compat_info == 0 || broken(compat_info == 1) /* WS03 */, "got HeapCompatibilityInformation %lu\n", compat_info );
 #else
     ok( compat_info == 0, "got HeapCompatibilityInformation %lu\n", compat_info );
@@ -1438,7 +1438,7 @@ static void test_HeapCreate(void)
 
     ret = pHeapQueryInformation( heap, HeapCompatibilityInformation, &compat_info, sizeof(compat_info), &size );
     ok( ret, "HeapQueryInformation failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( compat_info == 2 || broken(compat_info == 1) /* WS03 */, "got HeapCompatibilityInformation %lu\n", compat_info );
 #else
     ok( compat_info == 2, "got HeapCompatibilityInformation %lu\n", compat_info );
@@ -1468,7 +1468,7 @@ static void test_HeapCreate(void)
     thread_params.flags = 0;
     SetEvent( thread_params.start_event );
     res = WaitForSingleObject( thread_params.ready_event, 100 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok( !res, "WaitForSingleObject returned %#lx, error %lu\n", res, GetLastError() );
@@ -1841,7 +1841,7 @@ static void test_GlobalAlloc(void)
     tmp_mem = GlobalReAlloc( mem, 0, GMEM_MOVEABLE );
     ok( !tmp_mem, "GlobalReAlloc succeeded\n" );
     ok( GetLastError() == ERROR_INVALID_HANDLE, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (sizeof(void *) != 8 && GetNTVersion() >= _WIN32_WINNT_VISTA) /* crashes on 64-bit, invalid on WS03 */
 #else
     if (sizeof(void *) != 8) /* crashes on 64-bit */
@@ -1888,7 +1888,7 @@ static void test_GlobalAlloc(void)
         SetLastError( 0xdeadbeef );
         ret = pRtlGetUserInfoHeap( GetProcessHeap(), 0, invalid_mem, (void **)&tmp_ptr, &tmp_flags );
         ok( !ret, "RtlGetUserInfoHeap failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == ERROR_NOACCESS) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
         ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
@@ -1938,13 +1938,13 @@ static void test_GlobalAlloc(void)
     size = GlobalSize( mem );
     ok( size == small_size, "GlobalSize returned %Iu\n", size );
     SetLastError( 0xdeadbeef );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     tmp_mem = GlobalReAlloc( mem, small_size, 0 );
     ok( tmp_mem == mem, "GlobalReAlloc returned %p, expected %p\n", tmp_mem, mem );
     ok( GetLastError() == 0xdeadbeef, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     if (tmp_mem) mem = tmp_mem;
@@ -1961,7 +1961,7 @@ static void test_GlobalAlloc(void)
     ok( !!mem, "GlobalAlloc failed, error %lu\n", GetLastError() );
     tmp_mem = GlobalReAlloc( mem, small_size + 1, GMEM_MOVEABLE );
     ok( !!tmp_mem, "GlobalReAlloc failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok( tmp_mem != mem, "GlobalReAlloc didn't relocate memory\n" );
@@ -1972,7 +1972,7 @@ static void test_GlobalAlloc(void)
     ok( !mem, "GlobalFree failed, error %lu\n", GetLastError() );
 
     /* test GlobalReAlloc flags / GlobalLock combinations */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) { skip("realloc_flags_tests invalid for WS03.\n"); }
     else {
 #endif
@@ -2181,14 +2181,14 @@ static void test_GlobalAlloc(void)
         if (flags & GMEM_MODIFY) ok( tmp_mem == mem, "GlobalReAlloc returned %p\n", tmp_mem );
         else if (flags & GMEM_DISCARDABLE) ok( !tmp_mem, "GlobalReAlloc succeeded\n" );
         else if (flags & GMEM_MOVEABLE) ok( tmp_mem == mem, "GlobalReAlloc returned %p, error %lu\n", tmp_mem, GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else ok( !tmp_mem || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "GlobalReAlloc succeeded\n" );
 #else
         else ok( !tmp_mem, "GlobalReAlloc succeeded\n" );
 #endif
         entry = *mem_entry_from_HANDLE( mem );
         if ((flags & GMEM_DISCARDABLE) && (flags & GMEM_MODIFY)) expect_entry.flags |= 4;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (flags == GMEM_MOVEABLE) ok( entry.ptr != expect_entry.ptr || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "got unexpected ptr %p\n", entry.ptr );
 #else
         if (flags == GMEM_MOVEABLE) ok( entry.ptr != expect_entry.ptr, "got unexpected ptr %p\n", entry.ptr );
@@ -2198,7 +2198,7 @@ static void test_GlobalAlloc(void)
 
         size = GlobalSize( mem );
         if (flags == GMEM_MOVEABLE) ok( size == 512, "GlobalSize returned %Iu\n", size );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else ok( size == small_size || broken(size == 512) /* Vista */, "GlobalSize returned %Iu\n", size );
 #else
         else ok( size == small_size, "GlobalSize returned %Iu\n", size );
@@ -2272,7 +2272,7 @@ static void test_GlobalAlloc(void)
         entry = *mem_entry_from_HANDLE( mem );
         if ((flags & GMEM_DISCARDABLE) && (flags & GMEM_MODIFY)) expect_entry.flags |= 4;
         if (flags & (GMEM_DISCARDABLE | GMEM_MODIFY)) ok( entry.ptr == expect_entry.ptr, "got ptr %p\n", entry.ptr );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else ok( entry.ptr != expect_entry.ptr || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "got unexpected ptr %p\n", entry.ptr );
 #else
         else ok( entry.ptr != expect_entry.ptr, "got unexpected ptr %p\n", entry.ptr );
@@ -2338,7 +2338,7 @@ static void test_GlobalAlloc(void)
 
         winetest_pop_context();
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -2674,7 +2674,7 @@ static void test_LocalAlloc(void)
     todo_wine
     ok( flags == LMEM_INVALID_HANDLE, "LocalFlags succeeded\n" );
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_NOACCESS || broken(GetLastError() == ERROR_INVALID_HANDLE) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_NOACCESS, "got error %lu\n", GetLastError() );
@@ -2696,7 +2696,7 @@ static void test_LocalAlloc(void)
     tmp_mem = LocalHandle( invalid_ptr );
     ok( !tmp_mem, "LocalHandle succeeded\n" );
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_NOACCESS || broken(GetLastError() == ERROR_INVALID_HANDLE) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_NOACCESS, "got error %lu\n", GetLastError() );
@@ -2711,13 +2711,13 @@ static void test_LocalAlloc(void)
     size = LocalSize( mem );
     ok( size == small_size, "LocalSize returned %Iu\n", size );
     SetLastError( 0xdeadbeef );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA) {
 #endif
     tmp_mem = LocalReAlloc( mem, small_size, 0 );
     ok( tmp_mem == mem, "LocalReAlloc returned %p, expected %p\n", tmp_mem, mem );
     ok( GetLastError() == 0xdeadbeef, "got error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     if (tmp_mem) mem = tmp_mem;
@@ -2734,7 +2734,7 @@ static void test_LocalAlloc(void)
     ok( !!mem, "LocalAlloc failed, error %lu\n", GetLastError() );
     tmp_mem = LocalReAlloc( mem, small_size + 1, LMEM_MOVEABLE );
     ok( !!tmp_mem, "LocalReAlloc failed, error %lu\n", GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
     ok( tmp_mem != mem, "LocalReAlloc didn't relocate memory\n" );
@@ -2746,7 +2746,7 @@ static void test_LocalAlloc(void)
 
     /* test LocalReAlloc flags / LocalLock / size combinations */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("realloc_flags_tests invalid for WS03.\n");
     } else {
@@ -2878,14 +2878,14 @@ static void test_LocalAlloc(void)
         if (flags & LMEM_MODIFY) ok( tmp_mem == mem, "LocalReAlloc returned %p\n", tmp_mem );
         else if (flags & LMEM_DISCARDABLE) ok( !tmp_mem, "LocalReAlloc succeeded\n" );
         else if (flags & LMEM_MOVEABLE) ok( tmp_mem == mem, "LocalReAlloc returned %p, error %lu\n", tmp_mem, GetLastError() );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else ok( !tmp_mem || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "LocalReAlloc succeeded\n" );
 #else
         else ok( !tmp_mem, "LocalReAlloc succeeded\n" );
 #endif
         entry = *mem_entry_from_HANDLE( mem );
         if ((flags & LMEM_DISCARDABLE) && (flags & LMEM_MODIFY)) expect_entry.flags |= 4;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (flags == LMEM_MOVEABLE) ok( entry.ptr != expect_entry.ptr || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "got unexpected ptr %p\n", entry.ptr );
 #else
         if (flags == LMEM_MOVEABLE) ok( entry.ptr != expect_entry.ptr, "got unexpected ptr %p\n", entry.ptr );
@@ -2895,7 +2895,7 @@ static void test_LocalAlloc(void)
 
         size = LocalSize( mem );
         if (flags == LMEM_MOVEABLE) ok( size == 512, "LocalSize returned %Iu\n", size );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else ok( size == small_size || broken(size == 512) /* Vista */, "LocalSize returned %Iu\n", size );
 #else
         else ok( size == small_size, "LocalSize returned %Iu\n", size );
@@ -3045,7 +3045,7 @@ static void test_LocalAlloc(void)
         entry = *mem_entry_from_HANDLE( mem );
         if ((flags & LMEM_DISCARDABLE) && (flags & LMEM_MODIFY)) expect_entry.flags |= 4;
         if (flags & (LMEM_DISCARDABLE | LMEM_MODIFY)) ok( entry.ptr == expect_entry.ptr, "got ptr %p\n", entry.ptr );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else ok( entry.ptr != expect_entry.ptr || broken(GetNTVersion() == _WIN32_WINNT_VISTA), "got unexpected ptr %p\n", entry.ptr );
 #else
         else ok( entry.ptr != expect_entry.ptr, "got unexpected ptr %p\n", entry.ptr );
@@ -3183,7 +3183,7 @@ static void test_LocalAlloc(void)
 
         winetest_pop_context();
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -3202,7 +3202,7 @@ static void test_LocalAlloc(void)
     ok( !!mem, "LocalAlloc failed, error %lu\n", GetLastError() );
     SetLastError( 0xdeadbeef );
     size = LocalSize( mem );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( size == 0 || broken(size == 1) /* Vista */, "LocalSize returned %Iu\n", size );
 #else
     ok( size == 0, "LocalSize returned %Iu\n", size );
@@ -3351,7 +3351,7 @@ static void test_block_layout( HANDLE heap, DWORD global_flags, DWORD heap_flags
         diff = min( llabs( ptr2 - ptr1 ), llabs( ptr1 - ptr0 ) );
         todo_wine_if( (!global_flags && alloc_size < 2 * sizeof(void *)) ||
                       ((heap_flags & HEAP_FREE_CHECKING_ENABLED) && diff >= 0x100000) )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
         ok( diff == expect_size, "got diff %#Ix exp %#Ix\n", diff, expect_size );
@@ -3415,7 +3415,7 @@ static void test_block_layout( HANDLE heap, DWORD global_flags, DWORD heap_flags
         ok( diff > expect_size, "got diff %#Ix\n", diff );
 
         tail = ptr0[alloc_size] | ptr1[alloc_size] | ptr2[alloc_size];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( !tail == !(global_flags & FLG_HEAP_ENABLE_TAIL_CHECK), "got tail %#x\n", tail );
 #else
         ok( !tail, "got tail\n" );
@@ -3484,22 +3484,22 @@ static void test_block_layout( HANDLE heap, DWORD global_flags, DWORD heap_flags
         ok( ret, "RtlSetUserValueHeap failed, error %lu\n", GetLastError() );
         SetLastError( 0xdeadbeef );
         ret = pRtlSetUserFlagsHeap( heap, 0, ptr0, 0, 0x1000 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
         ok( !ret, "RtlSetUserFlagsHeap succeeded\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
         ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
 #endif
         SetLastError( 0xdeadbeef );
         ret = pRtlSetUserFlagsHeap( heap, 0, ptr0, 0x100, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (GetNTVersion() >= _WIN32_WINNT_VISTA)
 #endif
         ok( !ret, "RtlSetUserFlagsHeap succeeded\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
         ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
@@ -3793,7 +3793,7 @@ static void test_heap_layout( HANDLE handle, DWORD global_flag, DWORD heap_flags
     DWORD force_flags = heap_flags & ~(HEAP_SHARED|HEAP_DISABLE_COALESCE_ON_FREE);
     struct heap *heap = handle;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("test_heap_layout() is invalid on WS03.\n");
         return;
@@ -4448,7 +4448,7 @@ static void test_GetPhysicallyInstalledSystemMemory(void)
 
     total_memory = 0;
     ret = pGetPhysicallyInstalledSystemMemory(&total_memory);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret || broken(GetLastError() == ERROR_INVALID_FUNCTION) /* Vista x64 ROS testbot */, "GetPhysicallyInstalledSystemMemory unexpectedly failed (%lu)\n", GetLastError());
     if (ret)
         ok(total_memory != 0, "expected total_memory != 0\n");
@@ -4460,7 +4460,7 @@ static void test_GetPhysicallyInstalledSystemMemory(void)
     memstatus.dwLength = sizeof(memstatus);
     ret = GlobalMemoryStatusEx(&memstatus);
     ok(ret, "GlobalMemoryStatusEx unexpectedly failed\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(total_memory >= memstatus.ullTotalPhys / 1024 || broken(total_memory == 0) /* Vista x64 ROS testbot */,
        "expected total_memory >= memstatus.ullTotalPhys / 1024\n");
 #else
@@ -4627,7 +4627,7 @@ static void test_heap_sizes(void)
     SIZE_T size, round_size = 0x400 * sizeof(void*);
     char *base;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA) {
         skip("test_heap_sizes() is invalid for WS03.\n");
         return;
@@ -4653,9 +4653,9 @@ START_TEST(heap)
     int argc;
     char **argv;
 
-#if defined(__REACTOS__) && defined(SKIPBADHEAP_K32_WINETEST)
+#if defined(__LIBRENT__) && defined(SKIPBADHEAP_K32_WINETEST)
     if (is_reactos()) {
-        ok(FALSE, "FIXME: These tests are too rough on ReactOS heap manager on x64. It will eventually finish but it takes over an hour to complete the test suite with it which isn't acceptable.\n");
+        ok(FALSE, "FIXME: These tests are too rough on LibreNT heap manager on x64. It will eventually finish but it takes over an hour to complete the test suite with it which isn't acceptable.\n");
         return;
     }
 #endif

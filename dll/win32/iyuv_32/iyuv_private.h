@@ -21,7 +21,7 @@
 
 #include "windef.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define COBJMACROS
 #include "mfapi.h"
 #include "mftransform.h"

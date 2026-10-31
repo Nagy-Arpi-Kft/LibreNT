@@ -880,7 +880,7 @@ static BOOL DoSaveFile(LPCWSTR wszSaveFileName, WPARAM format)
     EDITSTREAM stream;
     LRESULT ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hFile = CreateFileW(wszSaveFileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 #else
     hFile = CreateFileW(wszSaveFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -910,7 +910,7 @@ static BOOL DoSaveFile(LPCWSTR wszSaveFileName, WPARAM format)
 
     ret = SendMessageW(hEditorWnd, EM_STREAMOUT, format, (LPARAM)&stream);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetEndOfFile(hFile);
 #endif
     CloseHandle(hFile);
@@ -2377,7 +2377,7 @@ static LRESULT OnCommand( HWND hWnd, WPARAM wParam, LPARAM lParam)
         tr.chrg.cpMax = nLen;
         tr.lpstrText = data;
         SendMessageW(hwndEditor, EM_GETTEXTRANGE, 0, (LPARAM)&tr);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         data[tr.chrg.cpMax - tr.chrg.cpMin] = UNICODE_NULL;
 #endif
         MessageBoxW(NULL, data, L"Wine Wordpad", MB_OK);

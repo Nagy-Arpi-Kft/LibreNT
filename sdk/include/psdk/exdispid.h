@@ -172,7 +172,7 @@
 #define DISPID_EXPAND                25
 #define DISPID_UNSELECTALL           26
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DISPID_SEARCHSTART           1
 #define DISPID_SEARCHCOMPLETE        2
 #define DISPID_SEARCHABORT           3

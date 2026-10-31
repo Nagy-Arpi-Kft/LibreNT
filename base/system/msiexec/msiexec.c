@@ -411,7 +411,7 @@ static int custom_action_server(const WCHAR *arg)
 {
     GUID guid, *thread_guid;
     DWORD64 thread64;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR buffer[48];
     USHORT process_machine, native_machine;
     BOOL is_64bit = sizeof(void *) == 8;
@@ -432,7 +432,7 @@ static int custom_action_server(const WCHAR *arg)
         return 1;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_64bit && IsWow64Process2(GetCurrentProcess(), &process_machine, &native_machine) &&
         nt->FileHeader.Machine != native_machine)
         swprintf(buffer, ARRAY_SIZE(buffer), L"\\\\.\\pipe\\msica_%x_64_%04x", client_pid, nt->FileHeader.Machine);
@@ -449,7 +449,7 @@ static int custom_action_server(const WCHAR *arg)
     /* We need this to unmarshal streams, and some apps expect it to be present. */
     CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX);
 #endif
 

@@ -1,5 +1,5 @@
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "X86 Multiprocessor Hardware Abstraction Layer"
-#define REACTOS_STR_INTERNAL_NAME     "halx86mp"
-#define REACTOS_STR_ORIGINAL_FILENAME "halx86mp.dll"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "X86 Multiprocessor Hardware Abstraction Layer"
+#define LIBRENT_STR_INTERNAL_NAME     "halx86mp"
+#define LIBRENT_STR_ORIGINAL_FILENAME "halx86mp.dll"
+#include <librent/version.rc>

@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Generate Windows-compatible kernel dumps
  * COPYRIGHT:       Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -11,7 +11,7 @@
 #include <ntddstor.h>
 #define NDEBUG
 #include <debug.h>
-#include <reactos/drivers/dumpstor.h>
+#include <librent/drivers/dumpstor.h>
 #ifdef _WIN64
 #include <nvs/nt/mmkernel.h>
 #endif
@@ -701,7 +701,7 @@ BOOLEAN NTAPI KdpInitializeCrashDump(_In_ HANDLE DumpFileHandle)
     RtlZeroMemory(&KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage));
     KdpCrashDumpState.Storage.BytesPerSector = SizeInfo.BytesPerSector;
     KdpCrashDumpInitializationStage = "querying the storage dump interface";
-    Status = KdpSendDeviceIoControl(StorageDevice, IOCTL_REACTOS_STORAGE_GET_DUMP_INTERFACE, &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage), &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage));
+    Status = KdpSendDeviceIoControl(StorageDevice, IOCTL_LIBRENT_STORAGE_GET_DUMP_INTERFACE, &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage), &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage));
     if (!NT_SUCCESS(Status))
         goto Failure;
 
@@ -1314,7 +1314,7 @@ BOOLEAN NTAPI KdpInitializeDedicatedCrashDump(_In_ PFILE_OBJECT BootFileObject)
     RtlZeroMemory(&KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage));
     KdpCrashDumpState.Storage.BytesPerSector = Geometry.BytesPerSector;
     KdpCrashDumpInitializationStage = "querying the storage dump interface";
-    Status = KdpSendDeviceIoControl(SystemDevice, IOCTL_REACTOS_STORAGE_GET_DUMP_INTERFACE, &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage), &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage));
+    Status = KdpSendDeviceIoControl(SystemDevice, IOCTL_LIBRENT_STORAGE_GET_DUMP_INTERFACE, &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage), &KdpCrashDumpState.Storage, sizeof(KdpCrashDumpState.Storage));
     if (!NT_SUCCESS(Status))
         goto Failure;
 
@@ -1510,7 +1510,7 @@ NTSTATUS NTAPI KdpWriteCrashDump(VOID)
         goto Exit;
     }
 
-    RtlCopyMemory(KdpCrashDumpState.Header->Comment, "ReactOS crash dump", sizeof("ReactOS crash dump"));
+    RtlCopyMemory(KdpCrashDumpState.Header->Comment, "LibreNT crash dump", sizeof("LibreNT crash dump"));
 
     if (KdpCrashDumpState.DumpType != DUMP_TYPE_FULL)
     {
@@ -1872,7 +1872,7 @@ NTSTATUS NTAPI KdpWriteLiveKernelDump(_In_ PSYSDBG_LIVEDUMP_CONTROL Control, _In
     Header->BugCheckParameter3 = Control->BugCheckParam3;
     Header->BugCheckParameter4 = Control->BugCheckParam4;
     Header->Attributes.LiveDumpGeneratedDump = TRUE;
-    RtlCopyMemory(Header->Comment, "ReactOS live kernel dump", sizeof("ReactOS live kernel dump"));
+    RtlCopyMemory(Header->Comment, "LibreNT live kernel dump", sizeof("LibreNT live kernel dump"));
 
     /* Live dumps carry only the in-use pages: kernel-space ones by default,
      * user-space ones as well when the caller asked for them */

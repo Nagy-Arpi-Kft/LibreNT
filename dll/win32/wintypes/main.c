@@ -21,7 +21,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(wintypes);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static const struct
 {
     const WCHAR *name;
@@ -147,7 +147,7 @@ DEFINE_IINSPECTABLE(api_information_statics, IApiInformationStatics, struct api_
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsTypePresent(
         IApiInformationStatics *iface, HSTRING type_name, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, value %p.\n", iface, debugstr_hstring(type_name), value);
 #else
     FIXME("iface %p, type_name %s, value %p stub!\n", iface, debugstr_hstring(type_name), value);
@@ -156,7 +156,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsTypePresent(
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_type_present(type_name);
     return S_OK;
 #else
@@ -167,7 +167,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsTypePresent(
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsMethodPresent(
         IApiInformationStatics *iface, HSTRING type_name, HSTRING method_name, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, method_name %s, value %p.\n", iface,
             debugstr_hstring(type_name), debugstr_hstring(method_name), value);
 #else
@@ -178,7 +178,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsMethodPresent(
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_method_present(type_name, method_name, FALSE, 0);
     return S_OK;
 #else
@@ -191,7 +191,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsMethodPresentWithArit
         IApiInformationStatics *iface, HSTRING type_name, HSTRING method_name,
         UINT32 input_parameter_count, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, method_name %s, input_parameter_count %u, value %p.\n",
             iface, debugstr_hstring(type_name), debugstr_hstring(method_name),
             input_parameter_count, value);
@@ -204,7 +204,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsMethodPresentWithArit
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_method_present(type_name, method_name, TRUE, input_parameter_count);
     return S_OK;
 #else
@@ -215,7 +215,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsMethodPresentWithArit
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsEventPresent(
         IApiInformationStatics *iface, HSTRING type_name, HSTRING event_name, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, event_name %s, value %p.\n", iface,
             debugstr_hstring(type_name), debugstr_hstring(event_name), value);
 #else
@@ -226,7 +226,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsEventPresent(
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_event_present(type_name, event_name);
     return S_OK;
 #else
@@ -237,7 +237,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsEventPresent(
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsPropertyPresent(
         IApiInformationStatics *iface, HSTRING type_name, HSTRING property_name, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, property_name %s, value %p.\n", iface,
             debugstr_hstring(type_name), debugstr_hstring(property_name), value);
 #else
@@ -248,7 +248,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsPropertyPresent(
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_property_present(type_name, property_name, FALSE, FALSE);
     return S_OK;
 #else
@@ -260,7 +260,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsReadOnlyPropertyPrese
         IApiInformationStatics *iface, HSTRING type_name, HSTRING property_name,
         BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, property_name %s, value %p.\n", iface,
             debugstr_hstring(type_name), debugstr_hstring(property_name), value);
 #else
@@ -271,7 +271,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsReadOnlyPropertyPrese
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_property_present(type_name, property_name, TRUE, FALSE);
     return S_OK;
 #else
@@ -282,7 +282,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsReadOnlyPropertyPrese
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsWriteablePropertyPresent(
         IApiInformationStatics *iface, HSTRING type_name, HSTRING property_name, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, type_name %s, property_name %s, value %p.\n", iface,
             debugstr_hstring(type_name), debugstr_hstring(property_name), value);
 #else
@@ -293,7 +293,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsWriteablePropertyPres
     if (!type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_property_present(type_name, property_name, FALSE, TRUE);
     return S_OK;
 #else
@@ -304,7 +304,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsWriteablePropertyPres
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsEnumNamedValuePresent(
         IApiInformationStatics *iface, HSTRING enum_type_name, HSTRING value_name, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, enum_type_name %s, value_name %s, value %p.\n", iface,
             debugstr_hstring(enum_type_name), debugstr_hstring(value_name), value);
 #else
@@ -315,7 +315,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsEnumNamedValuePresent
     if (!enum_type_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_enum_value_present(enum_type_name, value_name);
     return S_OK;
 #else
@@ -326,7 +326,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsEnumNamedValuePresent
 static HRESULT STDMETHODCALLTYPE api_information_statics_IsApiContractPresentByMajor(
         IApiInformationStatics *iface, HSTRING contract_name, UINT16 major_version, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, contract_name %s, major_version %u, value %p.\n", iface,
             debugstr_hstring(contract_name), major_version, value);
 #else
@@ -337,7 +337,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsApiContractPresentByM
     if (!contract_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_contract_present(contract_name, major_version, 0);
     return S_OK;
 #else
@@ -350,7 +350,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsApiContractPresentByM
         IApiInformationStatics *iface, HSTRING contract_name, UINT16 major_version,
         UINT16 minor_version, BOOLEAN *value)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, contract_name %s, major_version %u, minor_version %u, value %p.\n", iface,
             debugstr_hstring(contract_name), major_version, minor_version, value);
 #else
@@ -361,7 +361,7 @@ static HRESULT STDMETHODCALLTYPE api_information_statics_IsApiContractPresentByM
     if (!contract_name)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *value = metadata_contract_present(contract_name, major_version, minor_version);
     return S_OK;
 #else
@@ -1898,7 +1898,7 @@ HRESULT WINAPI DllGetActivationFactory(HSTRING classid, IActivationFactory **fac
         IActivationFactory_AddRef((*factory = &property_value_statics.IActivationFactory_iface));
     if (!wcscmp(buffer, L"Windows.Foundation.Collections.PropertySet"))
         IActivationFactory_AddRef((*factory = property_set_factory));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!wcscmp(buffer, L"Windows.Foundation.Collections.ValueSet"))
         IActivationFactory_AddRef((*factory = value_set_factory));
 #endif
@@ -1913,7 +1913,7 @@ HRESULT WINAPI DllGetActivationFactory(HSTRING classid, IActivationFactory **fac
 
 HRESULT WINAPI RoIsApiContractMajorVersionPresent(const WCHAR *name, UINT16 major, BOOL *result)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HSTRING_HEADER header;
     HSTRING contract;
 
@@ -1935,7 +1935,7 @@ HRESULT WINAPI RoResolveNamespace(HSTRING name, HSTRING windowsMetaDataDir,
                                   DWORD *metaDataFilePathsCount, HSTRING **metaDataFilePaths,
                                   DWORD *subNamespacesCount, HSTRING **subNamespaces)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("name %s, windowsMetaDataDir %s, metaDataFilePaths %p, subNamespaces %p.\n",
             debugstr_hstring(name), debugstr_hstring(windowsMetaDataDir),
             metaDataFilePaths, subNamespaces);

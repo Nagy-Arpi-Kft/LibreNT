@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT diskbench
+ * PROJECT:     LibreNT diskbench
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Unbuffered disk read/write benchmark
  * COPYRIGHT:   Copyright 2026 LiberNT Project
@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <reactos/storage_read_benchmark.h>
+#include <librent/storage_read_benchmark.h>
 
 #define DEFAULT_FILE_MB 64
 #define RANDOM_OPS      2048

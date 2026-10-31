@@ -20,35 +20,35 @@ list(REMOVE_DUPLICATES _ci_files)
 foreach(_ci_file IN LISTS _ci_files)
     string(APPEND _ci_inputs "${_ci_file}\n")
 endforeach()
-file(GENERATE OUTPUT "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-$<CONFIG>.txt" CONTENT "${_ci_inputs}")
+file(GENERATE OUTPUT "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-$<CONFIG>.txt" CONTENT "${_ci_inputs}")
 get_property(_ci_optional_files GLOBAL PROPERTY CI_SYSTEM_OPTIONAL_FILES)
 set(_ci_optional_inputs "")
 foreach(_ci_file IN LISTS _ci_optional_files)
     string(APPEND _ci_optional_inputs "${_ci_file}\n")
 endforeach()
-file(GENERATE OUTPUT "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional-$<CONFIG>.txt" CONTENT "${_ci_optional_inputs}")
+file(GENERATE OUTPUT "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional-$<CONFIG>.txt" CONTENT "${_ci_optional_inputs}")
 add_custom_command(
-    OUTPUT "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional.stamp" "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional.always"
+    OUTPUT "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional.stamp" "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional.always"
     COMMAND ${CMAKE_COMMAND} -DMODE=stamp
-        -DOPTIONAL=${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional-$<CONFIG>.txt
-        -DOUTPUT=${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional.stamp
-        -P ${REACTOS_SOURCE_DIR}/sdk/cmake/optional_files.cmake
+        -DOPTIONAL=${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional-$<CONFIG>.txt
+        -DOUTPUT=${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional.stamp
+        -P ${LIBRENT_SOURCE_DIR}/sdk/cmake/optional_files.cmake
     VERBATIM)
-set_source_files_properties("${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional.always" PROPERTIES SYMBOLIC TRUE)
+set_source_files_properties("${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional.always" PROPERTIES SYMBOLIC TRUE)
 add_custom_command(
-    OUTPUT "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog.h"
-    COMMAND "${CI_PYTHON_EXECUTABLE}" "${REACTOS_SOURCE_DIR}/sdk/lib/ci/catalog.py"
-        "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-$<CONFIG>.txt"
-        "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog.h"
-        "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional-$<CONFIG>.txt"
-    DEPENDS ${_ci_files} "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-$<CONFIG>.txt" "${REACTOS_SOURCE_DIR}/sdk/lib/ci/catalog.py"
-        "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog-optional.stamp"
+    OUTPUT "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog.h"
+    COMMAND "${CI_PYTHON_EXECUTABLE}" "${LIBRENT_SOURCE_DIR}/sdk/lib/ci/catalog.py"
+        "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-$<CONFIG>.txt"
+        "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog.h"
+        "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional-$<CONFIG>.txt"
+    DEPENDS ${_ci_files} "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-$<CONFIG>.txt" "${LIBRENT_SOURCE_DIR}/sdk/lib/ci/catalog.py"
+        "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog-optional.stamp"
     COMMENT "Cataloging system images for code integrity"
     VERBATIM)
-add_custom_target(ci_catalog DEPENDS "${REACTOS_BINARY_DIR}/sdk/lib/ci/catalog.h")
+add_custom_target(ci_catalog DEPENDS "${LIBRENT_BINARY_DIR}/sdk/lib/ci/catalog.h")
 foreach(_ci_kernel ntoskrnl ntkrnlmp nvs_neutral)
     if(TARGET ${_ci_kernel})
         add_dependencies(${_ci_kernel} ci_catalog)
-        target_include_directories(${_ci_kernel} PRIVATE "${REACTOS_BINARY_DIR}/sdk/lib/ci")
+        target_include_directories(${_ci_kernel} PRIVATE "${LIBRENT_BINARY_DIR}/sdk/lib/ci")
     endif()
 endforeach()

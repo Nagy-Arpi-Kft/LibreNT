@@ -146,7 +146,7 @@ static HRESULT _node_get_tagname(struct node *node, BSTR *p)
 
     if (node->type == XMLELEMTYPE_ELEMENT || node->type == XMLELEMTYPE_PI)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!node->name || !*node->name)
         {
             *p = NULL;
@@ -725,7 +725,7 @@ static void parse_context_cleanup(struct parse_context *c)
 }
 
 static HRESULT xmlelementcollection_create(struct node *node, IXMLElementCollection **ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT xmlattributecollection_create(struct node *node, IXMLElementCollection **ret);
 #endif
 
@@ -993,7 +993,7 @@ static HRESULT WINAPI xmlelem_removeChild(IXMLElement2 *iface, IXMLElement2 *chi
     return _node_remove_child(element->node, child->node);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI xmlelem_attributes(IXMLElement2 *iface, IXMLElementCollection **p)
 {
     xmlelem *element = impl_from_IXMLElement2(iface);
@@ -1062,7 +1062,7 @@ static HRESULT xmlelement_create(struct node *node, IXMLElement2 **ret)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /************************************************************************
  * IXMLAttribute
  */
@@ -1263,7 +1263,7 @@ typedef struct _xmlelem_collection
     struct node *node;
 
     LONG current;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL attributes;
 #endif
 } xmlelem_collection;
@@ -1374,7 +1374,7 @@ static HRESULT WINAPI xmlelem_collection_get_length(IXMLElementCollection *iface
     if (!p)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (collection->attributes)
     {
         *p = list_count(&collection->node->attributes);
@@ -1416,7 +1416,7 @@ static HRESULT WINAPI xmlelem_collection_item(IXMLElementCollection *iface, VARI
     if (V_VT(&var1) != VT_I4 || V_I4(&var1) < 0)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (collection->attributes)
     {
         struct attribute *attr;
@@ -1503,7 +1503,7 @@ static HRESULT WINAPI xmlelem_collection_IEnumVARIANT_Next(
 
     while (celt)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (collection->attributes)
         {
             struct attribute *attr;
@@ -1599,7 +1599,7 @@ static HRESULT xmlelementcollection_create(struct node *node, IXMLElementCollect
     collection->ref = 1;
     collection->node = _node_grab(node);
     collection->current = -1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     collection->attributes = FALSE;
 #endif
 
@@ -1609,7 +1609,7 @@ static HRESULT xmlelementcollection_create(struct node *node, IXMLElementCollect
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT xmlattributecollection_create(struct node *node, IXMLElementCollection **ret)
 {
     xmlelem_collection *collection;
@@ -1650,7 +1650,7 @@ typedef struct _xmldoc
     {
         BSTR name;
     } dtd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BSTR charset;
 #endif
 } xmldoc;
@@ -1714,7 +1714,7 @@ static ULONG WINAPI xmldoc_Release(IXMLDocument2 *iface)
     {
         _node_release(doc->root);
         SysFreeString(doc->dtd.name);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SysFreeString(doc->charset);
 #endif
         free(doc);
@@ -1825,7 +1825,7 @@ static HRESULT WINAPI xmldoc_get_URL(IXMLDocument2 *iface, BSTR *p)
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BSTR xmldoc_sniff_charset(IStream *stream)
 {
     static const LARGE_INTEGER zero;
@@ -1872,12 +1872,12 @@ static HRESULT xmldoc_parse(xmldoc *doc, IStream *stream, const WCHAR *url)
     struct parse_context c;
     HRESULT hr;
     VARIANT v;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BSTR charset = NULL;
 #endif
 
     if (FAILED(hr = parse_context_init(&c))) return hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!url && stream)
         charset = xmldoc_sniff_charset(stream);
 #endif
@@ -1896,13 +1896,13 @@ static HRESULT xmldoc_parse(xmldoc *doc, IStream *stream, const WCHAR *url)
     {
         WARN("Failed to parse %#lx.\n", hr);
         parse_context_cleanup(&c);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SysFreeString(charset);
 #endif
         return hr;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SysFreeString(doc->charset);
     doc->charset = charset;
 #endif
@@ -1943,7 +1943,7 @@ static HRESULT WINAPI xmldoc_get_readyState(IXMLDocument2 *iface, LONG *p)
 
 static HRESULT WINAPI xmldoc_get_charset(IXMLDocument2 *iface, BSTR *p)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     xmldoc *doc = impl_from_IXMLDocument2(iface);
 
     TRACE("%p, %p.\n", iface, p);
@@ -1978,7 +1978,7 @@ static HRESULT WINAPI xmldoc_get_doctype(IXMLDocument2 *iface, BSTR *p)
 
     if (!p) return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *p = NULL;
 #endif
     if (!doc->dtd.name)
@@ -2099,7 +2099,7 @@ static HRESULT WINAPI xmldoc_IPersistStreamInit_GetClassID(
 static HRESULT WINAPI xmldoc_IPersistStreamInit_IsDirty(
     IPersistStreamInit *iface)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)\n", iface);
     return S_FALSE;
 #else
@@ -2125,7 +2125,7 @@ static HRESULT WINAPI xmldoc_IPersistStreamInit_Save(
     IPersistStreamInit *iface, LPSTREAM pStm, BOOL fClearDirty)
 {
     FIXME("(%p, %p, %d): stub!\n", iface, pStm, fClearDirty);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pStm)
         return E_INVALIDARG;
 #endif

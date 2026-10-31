@@ -671,7 +671,7 @@ static inline int FUNC_NAME(pf_output_fp)(FUNC_NAME(puts_clbk) pf_puts, void *pu
         round_pos += radix_pos;
     else if(!flags->Precision || flags->Format=='e' || flags->Format=='E')
         round_pos++;
-#if defined(__REACTOS__) && _MSVCR_VER == 0
+#if defined(__LIBRENT__) && _MSVCR_VER == 0
     if (round_pos > 17)
         round_pos = 17;
 #endif

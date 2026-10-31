@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT ACPI Time and Alarm Control Utility
+ * PROJECT:     LibreNT ACPI Time and Alarm Control Utility
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  */
 
@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <initguid.h>
-#include <reactos/drivers/acpitime.h>
+#include <librent/drivers/acpitime.h>
 
 static
 HANDLE
@@ -20,12 +20,12 @@ AcpiTimeCtlOpenDevice(VOID)
     DWORD RequiredSize = 0;
     HANDLE Device = INVALID_HANDLE_VALUE;
 
-    DeviceInfo = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_REACTOS_ACPITIME, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+    DeviceInfo = SetupDiGetClassDevsW(&GUID_DEVINTERFACE_LIBRENT_ACPITIME, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     if (DeviceInfo == INVALID_HANDLE_VALUE)
         return INVALID_HANDLE_VALUE;
     ZeroMemory(&InterfaceData, sizeof(InterfaceData));
     InterfaceData.cbSize = sizeof(InterfaceData);
-    if (!SetupDiEnumDeviceInterfaces(DeviceInfo, NULL, &GUID_DEVINTERFACE_REACTOS_ACPITIME, 0, &InterfaceData))
+    if (!SetupDiEnumDeviceInterfaces(DeviceInfo, NULL, &GUID_DEVINTERFACE_LIBRENT_ACPITIME, 0, &InterfaceData))
         goto Cleanup;
     SetupDiGetDeviceInterfaceDetailW(DeviceInfo, &InterfaceData, NULL, 0, &RequiredSize, NULL);
     if (GetLastError() != ERROR_INSUFFICIENT_BUFFER || RequiredSize < sizeof(*DetailData))

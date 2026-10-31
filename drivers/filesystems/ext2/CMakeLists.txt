@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers
                     inc)
 
 list(APPEND SOURCE
@@ -114,7 +114,7 @@ set_module_type(ext2fs kernelmodedriver)
 add_importlibs(ext2fs ntoskrnl hal)
 add_pch(ext2fs inc/ext2fs.h SOURCE)
 
-add_cd_file(TARGET ext2fs DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET ext2fs DESTINATION librent/system32/drivers FOR all)
 add_registry_inf(ext2fs_reg.inf)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

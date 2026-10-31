@@ -2,7 +2,7 @@
  * Copyright (C) 2026 Ahmed ARIF <arif.ing@outlook.com>
  *
  * SHA-1 hash implementation for native-wimage.
- * Adapted from ReactOS sdk/lib/cryptlib/sha1.c
+ * Adapted from LibreNT sdk/lib/cryptlib/sha1.c
  * Original: Copyright 2004 Filip Navara, based on public domain code by Steve Reid.
  * LGPL-2.1-or-later
  *

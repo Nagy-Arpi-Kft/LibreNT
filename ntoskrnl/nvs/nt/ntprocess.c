@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NT Virtual Memory Subsystem
+ * PROJECT:     LibreNT NT Virtual Memory Subsystem
  * FILE:        ntoskrnl/nvs/nt/ntprocess.c
  * PURPOSE:     NT process address-space integration
  *

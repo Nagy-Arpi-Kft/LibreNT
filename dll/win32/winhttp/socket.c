@@ -52,7 +52,7 @@ static BOOL socket_query_option( struct object_header *hdr, DWORD option, void *
     case WINHTTP_OPTION_WEB_SOCKET_KEEPALIVE_INTERVAL:
         SetLastError( ERROR_INVALID_PARAMETER );
         return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WINHTTP_OPTION_WEB_SOCKET_RECEIVE_BUFFER_SIZE:
     case WINHTTP_OPTION_WEB_SOCKET_SEND_BUFFER_SIZE:
         SetLastError( ERROR_WINHTTP_INCORRECT_HANDLE_TYPE );
@@ -104,7 +104,7 @@ static BOOL socket_set_option( struct object_header *hdr, DWORD option, void *bu
         TRACE( "WINHTTP_OPTION_WEB_SOCKET_KEEPALIVE_INTERVAL %lu\n", interval);
         return TRUE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WINHTTP_OPTION_WEB_SOCKET_RECEIVE_BUFFER_SIZE:
     case WINHTTP_OPTION_WEB_SOCKET_SEND_BUFFER_SIZE:
         SetLastError( ERROR_WINHTTP_INCORRECT_HANDLE_TYPE );
@@ -1099,7 +1099,7 @@ static void socket_close_complete( struct socket *socket, DWORD ret )
     else
     {
         WINHTTP_WEB_SOCKET_ASYNC_RESULT result;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         result.AsyncResult.dwResult = 0;
 #else
         result.AsyncResult.dwResult = API_READ_DATA; /* FIXME */

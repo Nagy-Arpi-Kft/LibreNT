@@ -456,7 +456,7 @@ FxPkgFdo::QueryForDsfInterface(
     VOID
     )
 {
-// __REACTOS__ : not supported
+// __LIBRENT__ : not supported
 //     WDF_DSF_INTERFACE dsfInterface;
 //     NTSTATUS status;
 //     BOOLEAN derefQI = FALSE;

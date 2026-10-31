@@ -54,7 +54,7 @@
 #include "dde.h"
 #include "servprov.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "initguid.h"
 #endif
 #include "compobj_private.h"
@@ -255,7 +255,7 @@ static HKEY create_classes_root_hkey(DWORD access)
     attr.Length = sizeof(attr);
     attr.RootDirectory = 0;
     attr.ObjectName = &name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     attr.Attributes = OBJ_CASE_INSENSITIVE;
 #else
     attr.Attributes = 0;
@@ -308,7 +308,7 @@ LSTATUS create_classes_key( HKEY hkey, const WCHAR *name, REGSAM access, HKEY *r
     attr.Length = sizeof(attr);
     attr.RootDirectory = hkey;
     attr.ObjectName = &nameW;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     attr.Attributes = OBJ_CASE_INSENSITIVE;
 #else
     attr.Attributes = 0;
@@ -330,7 +330,7 @@ LSTATUS open_classes_key( HKEY hkey, const WCHAR *name, REGSAM access, HKEY *ret
     attr.Length = sizeof(attr);
     attr.RootDirectory = hkey;
     attr.ObjectName = &nameW;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     attr.Attributes = OBJ_CASE_INSENSITIVE;
 #else
     attr.Attributes = 0;

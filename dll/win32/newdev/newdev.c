@@ -1934,7 +1934,7 @@ ClientSideInstallW(
         goto cleanup;
     }
 
-    /* Read the data. Some is just included for compatibility with Windows right now and not yet used by ReactOS.
+    /* Read the data. Some is just included for compatibility with Windows right now and not yet used by LibreNT.
        See umpnpmgr for more details. */
     if (!ReadPipeData(hPipe, &Value, sizeof(Value)))
     {
@@ -1971,7 +1971,7 @@ ClientSideInstallW(
         goto cleanup;
     }
 
-    /* A marker selects the private ReactOS batch extension. Otherwise the
+    /* A marker selects the private LibreNT batch extension. Otherwise the
      * value is the native protocol's device-instance size in bytes. */
     if (!ReadPipeData(hPipe, &Value, sizeof(Value)))
     {

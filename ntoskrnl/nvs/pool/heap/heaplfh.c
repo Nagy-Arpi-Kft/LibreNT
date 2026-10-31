@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Pool Allocator
+ * PROJECT:     LibreNT Pool Allocator
  * FILE:        ntoskrnl/nvs/pool/heap/heaplfh.c
  * PURPOSE:     Low-fragmentation pool heap allocation
  *

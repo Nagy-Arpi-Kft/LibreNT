@@ -39,7 +39,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(dplay);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DP_CONNECTION_ADDRESS_SIZE 80
 #endif
 
@@ -469,7 +469,7 @@ HRESULT DP_HandleMessage( IDirectPlayImpl *This, void *messageBody,
     case DPMSGCMD_ENUMSESSIONSREQUEST:
       /* Reply expected */
       NS_ReplyToEnumSessionsRequest( messageBody, lplpReply, lpdwMsgSize, This );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!*lplpReply) return DPERR_OUTOFMEMORY;
 #endif
       break;
@@ -497,7 +497,7 @@ HRESULT DP_HandleMessage( IDirectPlayImpl *This, void *messageBody,
       *lpdwMsgSize = This->dp2->spData.dwSPHeaderSize + sizeof( *lpReply );
 
       *lplpReply = calloc( 1, *lpdwMsgSize );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!*lplpReply)
       {
         *lpdwMsgSize = 0;
@@ -1647,7 +1647,7 @@ static HRESULT DP_IF_CreateGroup( IDirectPlayImpl *This, void *lpMsgHdr, DPID *l
     msg.dwCurrentPlayers = 0; /* FIXME: Incorrect? */
     msg.lpData           = lpData;
     msg.dwDataSize       = dwDataSize;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpGroupName)
       msg.dpnName = *lpGroupName;
     else
@@ -2975,7 +2975,7 @@ static HRESULT DP_IF_EnumSessions( IDirectPlayImpl *This, DPSESSIONDESC2 *sdesc,
     if ( sdesc->dwSize != sizeof( DPSESSIONDESC2 ) )
         return DPERR_INVALIDPARAM;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ( flags & ~(DPENUMSESSIONS_AVAILABLE | DPENUMSESSIONS_ALL | DPENUMSESSIONS_ASYNC |
                    DPENUMSESSIONS_STOPASYNC | DPENUMSESSIONS_PASSWORDREQUIRED |
                    DPENUMSESSIONS_RETURNSTATUS) )
@@ -3028,11 +3028,11 @@ static HRESULT DP_IF_EnumSessions( IDirectPlayImpl *This, DPSESSIONDESC2 *sdesc,
 
     if ( flags & DPENUMSESSIONS_STOPASYNC )
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         BOOL running = This->dp2->hEnumSessionThread != INVALID_HANDLE_VALUE;
 #endif
         DP_KillEnumSessionThread( This );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ( running && enumsessioncb )
             enumsessioncb( NULL, &timeout, DPESC_TIMEDOUT, context );
 #endif
@@ -5122,7 +5122,7 @@ static void DP_ReadConnections( const char *searchSubKey, DWORD dwFlags,
       continue;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ( connection->addressSize < DP_CONNECTION_ADDRESS_SIZE )
       connection->addressSize = DP_CONNECTION_ADDRESS_SIZE;
 #endif
@@ -5142,7 +5142,7 @@ static void DP_ReadConnections( const char *searchSubKey, DWORD dwFlags,
       continue;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *(DWORD *)((DPADDRESS *)connection->address + 1) = connection->addressSize;
 #endif
 
@@ -5915,7 +5915,7 @@ static HRESULT WINAPI IDirectPlay4Impl_SendEx( IDirectPlay4 *iface, DPID from, D
         return DPERR_INVALIDPLAYER;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ( !DP_FindPlayer( This, to ) && !DP_FindAnyGroup( This, to ) )
     {
         LeaveCriticalSection( &This->lock );

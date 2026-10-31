@@ -415,7 +415,7 @@ static inline void *cxx_rva( const void *ptr, uintptr_t base )
 
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void * __thiscall type_info_vector_dtor(type_info * _this, unsigned int flags);
 #endif
 

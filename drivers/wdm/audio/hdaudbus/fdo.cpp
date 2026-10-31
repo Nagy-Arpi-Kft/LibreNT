@@ -990,7 +990,7 @@ Fdo_EvtDeviceD0Entry(
         val = val | INTEL_HDA_CGCTL_MISCBDCGE;
         pci_write_cfg_dword(&fdoCtx->BusInterface, INTEL_HDA_CGCTL, val);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (fdoCtx->mlcap)
             hda_update32(fdoCtx, VS_EM2, HDA_VS_EM2_DUM, HDA_VS_EM2_DUM);
 #else

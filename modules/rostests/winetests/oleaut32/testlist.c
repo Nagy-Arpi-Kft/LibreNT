@@ -4,7 +4,7 @@
 #include <windows.h>
 
 #define STANDALONE
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <oleauto.h>
 #endif
 #include "wine/test.h"

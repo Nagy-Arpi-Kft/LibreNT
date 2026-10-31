@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS VT100 emulator
+ * PROJECT:     LibreNT VT100 emulator
  * LICENSE:     GPL - See COPYING in the top level directory
  * FILE:        drivers/dd/green/keyboard.c
  * PURPOSE:     Keyboard part of green management

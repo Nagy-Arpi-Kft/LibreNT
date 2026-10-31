@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX Graphics Kernel
+ * PROJECT:     LibreNT DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Video Memory Manager (VidMm) implementation
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -59,7 +59,7 @@
 #include "presenttrace.h"
 #include "debug.h"
 #include <ndk/psfuncs.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -147,7 +147,7 @@ static VOID DxgkpVidMmQuarantineDestroyBatch(_In_ struct _DXGKVMM_DESTROY_BATCH 
 static BOOLEAN DxgkpVidMmTryCommitDestroyBatch(_In_ struct _DXGKVMM_DESTROY_BATCH *Batch);
 static NTSTATUS DxgkpVidMmCloseReadyBindingGroup(_In_ PDXGKRNL_ADAPTER Adapter, _In_ struct _DXGKVMM_OPEN_BINDING_GROUP *Group);
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 typedef struct _DXGKVMM_PROCESS_BUDGET
 {
     LIST_ENTRY Link;
@@ -249,7 +249,7 @@ static LIST_ENTRY DxgkVidMmResourceListHead;
 static LIST_ENTRY DxgkVidMmDestroyBatchListHead;
 static LIST_ENTRY DxgkVidMmHandleDataReferenceListHead;
 static LIST_ENTRY DxgkVidMmUserMappingListHead;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /* GPU retirement of destroyed allocations waits on a dedicated thread, never
  * on a system worker. DxgkVidMmDestroyBatchListLock protects the queue. */
 static LIST_ENTRY DxgkVidMmRetirementQueue;
@@ -260,7 +260,7 @@ static ULONG      DxgkVidMmAllocationHandleCookie = 0x4D4D414C; /* "LAMM" */
 static ULONG      DxgkVidMmResourceHandleCookie   = 0x4D4D4552; /* "REMM" */
 static ULONG      DxgkVidMmGlobalShareHandleCookie = 0x4D4D4753; /* "SGMM" */
 static volatile LONG DxgkVidMmNextAllocationHandle = 0;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static LIST_ENTRY DxgkVidMmProcessBudgetListHead;
 static LIST_ENTRY DxgkVidMmProcessBudgetGateListHead;
 static FAST_MUTEX DxgkVidMmProcessBudgetLock;
@@ -823,7 +823,7 @@ DxgkpVidMmEnsureGlobalsInitialized(VOID)
         ExInitializeFastMutex(&DxgkVidMmPolicyLock);
         ExInitializeFastMutex(&DxgkVidMmHandleDataReferenceListLock);
         ExInitializeFastMutex(&DxgkVidMmUserMappingListLock);
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         ExInitializeFastMutex(&DxgkVidMmProcessBudgetLock);
 #endif
         InitializeListHead(&DxgkVidMmAllocationListHead);
@@ -837,7 +837,7 @@ DxgkpVidMmEnsureGlobalsInitialized(VOID)
         InitializeListHead(&DxgkVidMmDestroyBatchListHead);
         InitializeListHead(&DxgkVidMmHandleDataReferenceListHead);
         InitializeListHead(&DxgkVidMmUserMappingListHead);
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         InitializeListHead(&DxgkVidMmProcessBudgetListHead);
         InitializeListHead(&DxgkVidMmProcessBudgetGateListHead);
         InitializeListHead(&DxgkVidMmRetirementQueue);
@@ -1041,7 +1041,7 @@ DxgkpVidMmInitializeAllocationLifetime(
     InitializeListHead(&Allocation->UserModeMappingGlobalEntry);
     Allocation->UserModeMappingRegistered = 0;
     KeInitializeMutex(&Allocation->UserModeLock, 0);
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     InitializeListHead(&Allocation->ResidencyBudgetChargeList);
 #endif
     Allocation->SubmissionResidencyPinCount = 0;
@@ -3003,7 +3003,7 @@ DxgkVidMmDereferenceAllocation(
 
 /*
  * External dxgmms2 lifetime boundary. The caller transfers one live
- * allocation reference; ReactOS keeps the object layout private and releases
+ * allocation reference; LibreNT keeps the object layout private and releases
  * that reference through the same VidMm primitive used by in-module callers.
  */
 VOID
@@ -3250,7 +3250,7 @@ DxgkVidMmValidateSharedResourceOwner(
 
 /*
  * External dxgmms2 lifetime boundary. The caller transfers one live resource
- * reference; destruction and rundown remain owned by the ReactOS VidMm
+ * reference; destruction and rundown remain owned by the LibreNT VidMm
  * reference model.
  */
 VOID
@@ -3261,7 +3261,7 @@ DxgkUnreferenceDxgResource(
     DxgkVidMmDereferenceResource(Resource);
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 NTSTATUS
 DxgkVidMmCopyResourcePresentPrivateDriverData(
     _In_ D3DKMT_HANDLE ResourceHandle,
@@ -4297,7 +4297,7 @@ DxgkpVidMmDrainResidencyReferences(
     Allocation->ImplicitResidencyReference = FALSE;
     InterlockedExchange(&Allocation->ResidencyReferenceCount, 0);
     KeReleaseMutex(&Allocation->ResidencyLock, FALSE);
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /*
      * Finalization is the last-resort close path for unpublished/quarantined
      * physical backings.  Device cleanup normally releases each process
@@ -4776,7 +4776,7 @@ DxgkpVidMmInitHostAperture(
                 Descriptor->CpuHostAperture.SizeInPages);
         return STATUS_DEVICE_CONFIGURATION_ERROR;
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (DXGK_CB_FULL(Adapter, DxgkDdiMapCpuHostAperture) == NULL ||
         DXGK_CB_FULL(Adapter, DxgkDdiUnmapCpuHostAperture) == NULL)
 #endif
@@ -5732,7 +5732,7 @@ DxgkVidMmTeardownAdapter(
 
     if (Adapter->Segments == NULL)
     {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         DxgkpVidMmReleaseAdapterBudgets(Adapter);
 #endif
         DxgkpVidMmRetireOwnerLedger(Adapter);
@@ -5767,7 +5767,7 @@ DxgkVidMmTeardownAdapter(
         }
     }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     DxgkpVidMmReleaseAdapterBudgets(Adapter);
 #endif
     DxgkpVidMmRetireOwnerLedger(Adapter);
@@ -6277,7 +6277,7 @@ DxgkpVidMmCreateAllocationTracked(
     if (Placed && Alloc->SystemMemory == NULL)
         (VOID)DxgkpVidMmZeroFillPlacement(Adapter, Alloc);
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (Placed && Device != NULL && Device->OwnerProcess != NULL)
     {
         Status = DxgkpVidMmChargeInitialPlacement(
@@ -7347,7 +7347,7 @@ DxgkpVidMmWaitForAllocationReferences(
     return STATUS_IO_TIMEOUT;
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static VOID
 DxgkpVidMmRetireBatch(
     _In_ PDXGKVMM_DESTROY_BATCH Batch)
@@ -7731,7 +7731,7 @@ DxgkpVidMmDestroyAllocationList(
         *KmdTransactionHeld = FALSE;
     }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* Unpublish synchronously, but wait for GPU retirement outside the
      * caller's miniport and GDI locks. */
     if (DxgkpVidMmQueueRetirement(Batch))
@@ -8305,8 +8305,8 @@ C_ASSERT(sizeof(D3DKMT_CREATEALLOCATIONFLAGS) == sizeof(UINT));
 #define DXGKP_CA_STANDARD_REQUIRED_MASK     (DXGKP_CA_FLAG_CREATE_SHARED | DXGKP_CA_FLAG_CROSS_ADAPTER | DXGKP_CA_FLAG_STANDARD_ALLOCATION)
 #define DXGKP_CA_STANDARD_SOURCE_MASK       (DXGKP_CA_FLAG_EXISTING_SYSMEM | DXGKP_CA_FLAG_EXISTING_SECTION)
 
-#ifndef REACTOS_WDDM_TARGET_LEVEL
-#define REACTOS_WDDM_TARGET_LEVEL DXGK_CAPS_CORE_LEVEL_WDDM_2_0
+#ifndef LIBRENT_WDDM_TARGET_LEVEL
+#define LIBRENT_WDDM_TARGET_LEVEL DXGK_CAPS_CORE_LEVEL_WDDM_2_0
 #endif
 
 static UINT
@@ -8342,7 +8342,7 @@ DxgkpVidMmEffectiveWddmLevel(
         Adapter->MiniportContext->InitData.s.Version);
     if (MiniportLevel == 0)
         return 0;
-    return min(MiniportLevel, (ULONG)REACTOS_WDDM_TARGET_LEVEL);
+    return min(MiniportLevel, (ULONG)LIBRENT_WDDM_TARGET_LEVEL);
 }
 
 static NTSTATUS
@@ -8940,7 +8940,7 @@ DxgkpCreateAllocationCaptured(
         return STATUS_INVALID_PARAMETER;
     }
     if (InfoVersion == DxgkpAllocationInfoVersion2 &&
-        REACTOS_WDDM_TARGET_LEVEL < DXGK_CAPS_CORE_LEVEL_WDDM_1_1)
+        LIBRENT_WDDM_TARGET_LEVEL < DXGK_CAPS_CORE_LEVEL_WDDM_1_1)
     {
         return STATUS_NOT_SUPPORTED;
     }
@@ -8951,7 +8951,7 @@ DxgkpCreateAllocationCaptured(
 
     Status = DxgkpValidateCreateAllocationFlags(
         &pCreateAllocation->Flags,
-        REACTOS_WDDM_TARGET_LEVEL,
+        LIBRENT_WDDM_TARGET_LEVEL,
         FALSE,
         &StandardAllocation);
     if (!NT_SUCCESS(Status))
@@ -8962,11 +8962,11 @@ DxgkpCreateAllocationCaptured(
         Status = InfoVersion == DxgkpAllocationInfoVersion2 ?
             DxgkpValidateAllocationInfo2(
                 &pCreateAllocation->pAllocationInfo2[i],
-                REACTOS_WDDM_TARGET_LEVEL,
+                LIBRENT_WDDM_TARGET_LEVEL,
                 FALSE) :
             DxgkpValidateAllocationInfo(
                 &pCreateAllocation->pAllocationInfo[i],
-                REACTOS_WDDM_TARGET_LEVEL,
+                LIBRENT_WDDM_TARGET_LEVEL,
                 FALSE);
         if (!NT_SUCCESS(Status))
             return Status;
@@ -9547,13 +9547,13 @@ DxgkpCreateAllocationWithAccessModeVariant(
     if (InfoVersion != DxgkpAllocationInfoVersion1 && InfoVersion != DxgkpAllocationInfoVersion2)
         return STATUS_INVALID_PARAMETER;
     if (InfoVersion == DxgkpAllocationInfoVersion2 &&
-        REACTOS_WDDM_TARGET_LEVEL < DXGK_CAPS_CORE_LEVEL_WDDM_1_1)
+        LIBRENT_WDDM_TARGET_LEVEL < DXGK_CAPS_CORE_LEVEL_WDDM_1_1)
     {
         return STATUS_NOT_SUPPORTED;
     }
     Status = DxgkpValidateCreateAllocationFlags(
         &Captured.Flags,
-        REACTOS_WDDM_TARGET_LEVEL,
+        LIBRENT_WDDM_TARGET_LEVEL,
         FALSE,
         &StandardAllocation);
     if (!NT_SUCCESS(Status))
@@ -9601,11 +9601,11 @@ DxgkpCreateAllocationWithAccessModeVariant(
         Status = InfoVersion == DxgkpAllocationInfoVersion2 ?
             DxgkpValidateAllocationInfo2(
                 &Captured.pAllocationInfo2[i],
-                REACTOS_WDDM_TARGET_LEVEL,
+                LIBRENT_WDDM_TARGET_LEVEL,
                 FALSE) :
             DxgkpValidateAllocationInfo(
                 &Captured.pAllocationInfo[i],
-                REACTOS_WDDM_TARGET_LEVEL,
+                LIBRENT_WDDM_TARGET_LEVEL,
                 FALSE);
         if (!NT_SUCCESS(Status))
             goto Cleanup;
@@ -10186,7 +10186,7 @@ DxgkpVidMmReleaseSegmentPlacement(
     DxgkpVidMmNotifyResidency(Allocation, FALSE);
     (VOID)DxgkpVidMmUnmapUserMappings(Allocation, FALSE);
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     DxgkpVidMmReleaseAllAllocationBudgetCharges(Allocation);
 #endif
 
@@ -10794,7 +10794,7 @@ DxgkpVidMmQueryDeviceResidencyReferenceCountLocked(
     return Count;
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static ULONG
 DxgkpVidMmQueryProcessResidencyReferenceCountLocked(
     _In_ PDXGKVMM_ALLOCATION Allocation,
@@ -10950,7 +10950,7 @@ DxgkVidMmReleaseDeviceResidencyReference(
     _Out_ PBOOLEAN OutReachedZero)
 {
     BOOLEAN Released;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     NTSTATUS BudgetStatus;
 #endif
 
@@ -10961,7 +10961,7 @@ DxgkVidMmReleaseDeviceResidencyReference(
     if (!NT_SUCCESS(DxgkpVidMmLockResidencyForExternalOperation(Allocation)))
         return FALSE;
     Released = DxgkpVidMmReleaseDeviceResidencyReferenceLocked(Allocation, Device, OutReachedZero);
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (Released && Device != NULL && Device->OwnerProcess != NULL)
     {
         BudgetStatus = DxgkpVidMmReleaseProcessBudgetReferences(
@@ -11012,7 +11012,7 @@ DxgkVidMmReleaseAllDeviceResidencyReferences(
         ASSERT(References >= 0);
         ReleasedReferences++;
     }
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (ReleasedReferences != 0 &&
         Device != NULL &&
         Device->OwnerProcess != NULL)
@@ -11395,7 +11395,7 @@ CleanupLock:
     return Status;
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 NTSTATUS
 DxgkVidMmInvalidateAllocationCache(
     _In_ PDXGKRNL_ADAPTER Adapter,
@@ -11490,7 +11490,7 @@ DxgkVidMmOfferAllocation(
     return Status;
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 NTSTATUS
 DxgkVidMmReclaimReferencedAllocation3(
     _In_ PDXGKVMM_ALLOCATION Allocation,
@@ -11565,7 +11565,7 @@ DxgkVidMmReclaimReferencedAllocation(
     _In_ PDXGKVMM_ALLOCATION Allocation,
     _Out_ PBOOLEAN Discarded)
 {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
     ULONG Result;
     NTSTATUS Status;
 
@@ -11657,7 +11657,7 @@ DxgkVidMmReclaimAllocation(
     return Status;
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 #define DXGKP_UPDATE_PROPERTY_MASK_WDDM_2_1   0x00000007UL
 #define DXGKP_UPDATE_PROPERTY_FLAGS_WDDM_2_1  0x00000001UL
 
@@ -12412,7 +12412,7 @@ DxgkpVidMmMakeResidentOwned(
 
     if (Placed)
     {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         if (!DeferAperturePaging &&
             Allocation->Device != NULL &&
             Allocation->Device->OwnerProcess != NULL)
@@ -12523,7 +12523,7 @@ DxgkpVidMmMakeResidentOwned(
         Status = STATUS_NO_MEMORY;
         goto Cleanup;
     }
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (!DeferAperturePaging &&
         Allocation->Device != NULL &&
         Allocation->Device->OwnerProcess != NULL)
@@ -12582,7 +12582,7 @@ typedef struct _DXGKP_VIDMM_BATCH_ENTRY
     BOOLEAN ReferencesAcquired;
     BOOLEAN WasResident;
     BOOLEAN PlacementOwned;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     ULONG ProcessReferenceCount;
     PDXGKVMM_PROCESS_BUDGET_CHARGE BudgetChargeCandidate;
     BOOLEAN BudgetReferencesAcquired;
@@ -12649,7 +12649,7 @@ DxgkpVidMmBuildSortedBatchEntries(
     return UniqueCount;
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static PDXGKVMM_PROCESS_BUDGET_CHARGE
 DxgkpVidMmFindAllocationBudgetChargeLocked(
     _In_ PDXGKVMM_ALLOCATION Allocation,
@@ -13048,7 +13048,7 @@ DxgkVidMmMakeResidentBatch(
     DXGKP_VIDMM_BATCH_ENTRY *Entries = NULL;
     DXGKRNL_PAGING_OP *PagingOperations = NULL;
     PDXGKVMM_ALLOCATION *PagingAllocations = NULL;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     PDXGKVMM_PROCESS_BUDGET BudgetRecord = NULL;
 #endif
     ULONG OwnerToken;
@@ -13085,7 +13085,7 @@ DxgkVidMmMakeResidentBatch(
         return STATUS_INVALID_PARAMETER;
     }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (DxgkpVidMmEffectiveWddmLevel(Adapter) <
         DXGK_CAPS_CORE_LEVEL_WDDM_2_0)
     {
@@ -13152,7 +13152,7 @@ DxgkVidMmMakeResidentBatch(
         if (NT_SUCCESS(Status))
         {
             Entries[EntryIndex].ReferencesAcquired = TRUE;
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
             Entries[EntryIndex].ProcessReferenceCount =
                 DxgkpVidMmQueryProcessResidencyReferenceCountLocked(
                     Allocation,
@@ -13200,7 +13200,7 @@ DxgkVidMmMakeResidentBatch(
             PagingOperationCount++;
     }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     Status = DxgkpVidMmChargeMakeResidentBatch(
                  BudgetRecord,
                  Entries,
@@ -13301,7 +13301,7 @@ DxgkVidMmMakeResidentBatch(
     goto Cleanup;
 
 Rollback:
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (BudgetRecord != NULL && Entries != NULL)
     {
         DxgkpVidMmRollbackMakeResidentBudget(
@@ -13337,7 +13337,7 @@ Cleanup:
         ExFreePoolWithTag(PagingAllocations, TAG_VIDMM_ALLOC);
     if (Entries != NULL)
         ExFreePoolWithTag(Entries, TAG_VIDMM_ALLOC);
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (BudgetRecord != NULL)
         DxgkpVidMmReleaseProcessBudget(BudgetRecord);
 #endif
@@ -13581,7 +13581,7 @@ DxgkVidMmEvictBatch(
 
             ASSERT(Released);
         }
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         if (Device != NULL && Device->OwnerProcess != NULL)
         {
             NTSTATUS BudgetStatus =
@@ -14961,7 +14961,7 @@ DxgkVidMmFillAllocationListEntry(
     DxgkVidMmDereferenceAllocation(Allocation);
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static NTSTATUS
 DxgkpVidMmCleanAllocationForSubmissionLockedImpl(
     _In_ PDXGKVMM_ALLOCATION Allocation,
@@ -15127,7 +15127,7 @@ DxgkVidMmAcquireSubmissionResidencyPinExImpl(
         Status = STATUS_GRAPHICS_INVALID_ALLOCATION_USAGE;
     else
     {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         if (CpuDirty)
         {
             Status = DxgkpVidMmCleanAllocationForSubmissionLocked(
@@ -16661,7 +16661,7 @@ DxgkVidMmCleanupAdapterAllocations(
         DxgkpVidMmCleanupAllocations(Adapter, NULL);
 }
 
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static ULONG
 DxgkpVidMmBudgetGroupIndex(
     _In_ D3DKMT_MEMORY_SEGMENT_GROUP Group)
@@ -17292,7 +17292,7 @@ DxgkVidMmSetProcessReservation(
     _In_ D3DKMT_MEMORY_SEGMENT_GROUP Group,
     _In_ UINT64 Reservation)
 {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     PDXGKVMM_PROCESS_BUDGET Record;
     PLIST_ENTRY Entry;
     ULONGLONG OtherReservations = 0;
@@ -17354,7 +17354,7 @@ VOID
 DxgkVidMmReleaseProcessReservations(
     _In_ PEPROCESS Process)
 {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     PDXGKVMM_PROCESS_BUDGET_GATE Gate;
     LIST_ENTRY Removed;
     PLIST_ENTRY Entry;
@@ -17419,7 +17419,7 @@ DxgkVidMmQueryProcessBudget(
     _Out_ UINT64 *CurrentReservation,
     _Out_ UINT64 *AvailableForReservation)
 {
-#if defined(REACTOS_WDDM_TARGET_LEVEL) && (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if defined(LIBRENT_WDDM_TARGET_LEVEL) && (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     PDXGKVMM_PROCESS_BUDGET Record;
     PLIST_ENTRY Entry;
     ULONGLONG OtherReservations = 0;

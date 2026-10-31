@@ -29,7 +29,7 @@ static ULONG TrapDisplayY;
  * The early_uart.h provides EarlyUartPutc/EarlyUartPuts/EarlyUartPutHex
  * that use the platform-detected UART address.
  */
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 
 /*
  * Trap UART output macros - use the runtime-detected early UART.
@@ -166,7 +166,7 @@ TrapDisplayDumpContext(
     if (!TrapDisplayBegin())
         return;
 
-    TrapDisplayPuts(" ReactOS FreeLDR ARM64 ", TRAP_DISPLAY_HEADER_ATTR);
+    TrapDisplayPuts(" LibreNT FreeLDR ARM64 ", TRAP_DISPLAY_HEADER_ATTR);
     TrapDisplayPuts(Title, TRAP_DISPLAY_HEADER_ATTR);
     TrapDisplayPutChar('\n', TRAP_DISPLAY_ATTR);
 

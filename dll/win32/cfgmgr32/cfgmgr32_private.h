@@ -28,7 +28,7 @@
 #include "winuser.h"
 
 #include "cfgmgr32.h"
-#if defined(__REACTOS__) && (WINVER < _WIN32_WINNT_WIN7)
+#if defined(__LIBRENT__) && (WINVER < _WIN32_WINNT_WIN7)
 #define CM_GETIDLIST_FILTER_TRANSPORTRELATIONS 0x00000080
 #define CM_GETIDLIST_FILTER_PRESENT            0x00000100
 #define CM_GETIDLIST_FILTER_CLASS              0x00000200
@@ -72,7 +72,7 @@ struct property
 
 extern LSTATUS init_property( struct property *prop, const DEVPROPKEY *key, DEVPROPTYPE *type, void *buffer, DWORD *size, BOOL binary );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern DEVINST CfgmgrDevInstFromId( const WCHAR *id );
 extern BOOL CfgmgrIdFromDevInst( DEVINST node, WCHAR *id, ULONG len );
 extern BOOL CfgmgrIsKernelDevNodeProperty( ULONG property );
@@ -97,7 +97,7 @@ static inline const char *debugstr_device_interface( const struct device_interfa
 
 typedef LSTATUS (*enum_objects_cb)( HKEY hkey, const void *object, const WCHAR *path, UINT path_len, void *context );
 extern LSTATUS enum_device_interfaces( BOOL all, enum_objects_cb callback, void *context );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern LSTATUS enum_device_interfaces_filtered( BOOL all, const GUID *class_guid, const WCHAR *instance_id,
                                                 enum_objects_cb callback, void *context );
 #endif

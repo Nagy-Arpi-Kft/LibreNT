@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Storport Driver
+ * PROJECT:     LibreNT Storport Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Storport driver common header file
  * COPYRIGHT:   Copyright 2017 Eric Kohl (eric.kohl@reactos.org)
@@ -22,8 +22,8 @@
 #include <ntdddisk.h>
 #include <mountdev.h>
 #include <wdmguid.h>
-#include <reactos/drivers/dumpstor.h>
-#include <reactos/drivers/dumpscsi.h>
+#include <librent/drivers/dumpstor.h>
+#include <librent/drivers/dumpscsi.h>
 
 /* Memory Tags */
 #define TAG_GLOBAL_DATA     'DGtS'

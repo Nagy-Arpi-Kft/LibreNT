@@ -25,7 +25,7 @@
 #include "config.h"
 
 #include <sys/types.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <dlfcn.h>
 #else
 #include <stdarg.h>
@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #endif
 
-#if defined(HAVE_FT2BUILD_H) || defined(__REACTOS__)
+#if defined(HAVE_FT2BUILD_H) || defined(__LIBRENT__)
 #include <ft2build.h>
 #include FT_GLYPH_H
 #include FT_FREETYPE_H
@@ -49,11 +49,11 @@
 
 #include "dwrite_private.h"
 
-#if defined(SONAME_LIBFREETYPE) || defined(__REACTOS__)
+#if defined(SONAME_LIBFREETYPE) || defined(__LIBRENT__)
 
 WINE_DEFAULT_DEBUG_CHANNEL(dwrite);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void FT_Message(const char *format, ...)
 {
     char buffer[1024];
@@ -89,7 +89,7 @@ typedef struct
     FT_Int patch;
 } FT_Version_t;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define pFT_Activate_Size FT_Activate_Size
 #define pFT_Done_Face FT_Done_Face
 #define pFT_Done_FreeType FT_Done_FreeType
@@ -187,10 +187,10 @@ static NTSTATUS process_attach(void *args)
 {
     FT_Version_t FT_Version;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitializeCriticalSection(&library_cs);
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ft_handle = dlopen(SONAME_LIBFREETYPE, RTLD_NOW);
     if (!ft_handle)
     {
@@ -234,7 +234,7 @@ static NTSTATUS process_attach(void *args)
     if (pFT_Init_FreeType(&library) != 0)
     {
         ERR("Can't init FreeType library\n");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         dlclose(ft_handle);
         ft_handle = NULL;
 #else
@@ -247,7 +247,7 @@ static NTSTATUS process_attach(void *args)
     TRACE("FreeType version is %d.%d.%d\n", FT_Version.major, FT_Version.minor, FT_Version.patch);
     return STATUS_SUCCESS;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 sym_not_found:
     WINE_MESSAGE("Wine cannot find certain functions that it needs from FreeType library.\n");
     dlclose(ft_handle);
@@ -258,11 +258,11 @@ sym_not_found:
 
 static NTSTATUS process_detach(void *args)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&library_cs);
 #endif
     pFT_Done_FreeType(library);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     library = NULL;
     LeaveCriticalSection(&library_cs);
     DeleteCriticalSection(&library_cs);
@@ -276,11 +276,11 @@ static NTSTATUS create_font_object(void *args)
     FT_Face face = NULL;
     FT_Error fterror;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&library_cs);
 #endif
     fterror = pFT_New_Memory_Face(library, params->data, params->size, params->index, &face);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&library_cs);
 #endif
     if (fterror != FT_Err_Ok)
@@ -297,11 +297,11 @@ static NTSTATUS create_font_object(void *args)
 static NTSTATUS release_font_object(void *args)
 {
     struct release_font_object_params *params = args;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EnterCriticalSection(&library_cs);
 #endif
     pFT_Done_Face(FaceFromObject(params->object));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LeaveCriticalSection(&library_cs);
 #endif
     return STATUS_SUCCESS;
@@ -861,7 +861,7 @@ static NTSTATUS get_glyph_advance(void *args)
     return STATUS_SUCCESS;
 }
 
-#else /* SONAME_LIBFREETYPE || __REACTOS__ */
+#else /* SONAME_LIBFREETYPE || __LIBRENT__ */
 
 static NTSTATUS process_attach(void *args)
 {
@@ -920,9 +920,9 @@ static NTSTATUS get_design_glyph_metrics(void *args)
     return STATUS_NOT_IMPLEMENTED;
 }
 
-#endif /* SONAME_LIBFREETYPE || __REACTOS__ */
+#endif /* SONAME_LIBFREETYPE || __LIBRENT__ */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS dwrite_backend_call(enum font_backend_funcs func, void *params)
 {
     static NTSTATUS (*const funcs[])(void *) =
@@ -1201,4 +1201,4 @@ const unixlib_entry_t __wine_unix_call_wow64_funcs[] =
 C_ASSERT( ARRAYSIZE(__wine_unix_call_wow64_funcs) == unix_funcs_count );
 
 #endif  /* _WIN64 */
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

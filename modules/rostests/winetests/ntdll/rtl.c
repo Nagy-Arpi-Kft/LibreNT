@@ -33,7 +33,7 @@
 #include "in6addr.h"
 #include "inaddr.h"
 #include "ip2string.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "ddk/ntifs.h"
 #else
 #define FASTCALL __fastcall
@@ -45,7 +45,7 @@ RtlCompareMemoryUlong(
     _In_ SIZE_T Length,
     _In_ ULONG Pattern
 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 typedef struct _GENERATE_NAME_CONTEXT
 {
@@ -152,7 +152,7 @@ static NTSTATUS  (WINAPI *pRtlRetrieveNtUserPfn)( const UINT64 **client_procsA,
                                                   const UINT64 **client_procsW,
                                                   const UINT64 **client_workers );
 static NTSTATUS  (WINAPI *pRtlResetNtUserPfn)(void);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static NTSTATUS  (WINAPI *pRtlGenerate8dot3Name)(const UNICODE_STRING *, BOOLEAN,
                                               GENERATE_NAME_CONTEXT *, UNICODE_STRING *);
 #endif
@@ -207,7 +207,7 @@ static void InitFunctionPtrs(void)
         pRtlInitializeNtUserPfn = (void *)GetProcAddress(hntdll, "RtlInitializeNtUserPfn");
         pRtlRetrieveNtUserPfn = (void *)GetProcAddress(hntdll, "RtlRetrieveNtUserPfn");
         pRtlResetNtUserPfn = (void *)GetProcAddress(hntdll, "RtlResetNtUserPfn");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         pRtlGenerate8dot3Name = (void *)GetProcAddress(hntdll, "RtlGenerate8dot3Name");
 #endif
     }
@@ -230,7 +230,7 @@ static void test_RtlQueryProcessDebugInformation(void)
     ok( buffer != NULL, "RtlCreateQueryDebugBuffer returned NULL" );
 
     status = RtlQueryProcessDebugInformation( GetCurrentThreadId(), PDI_HEAPS | PDI_HEAP_BLOCKS, buffer );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( status == (GetNTVersion() >= _WIN32_WINNT_VISTA ? STATUS_INVALID_CID : STATUS_INVALID_PARAMETER), "RtlQueryProcessDebugInformation returned %lx\n", status );
 #else
     ok( status == STATUS_INVALID_CID, "RtlQueryProcessDebugInformation returned %lx\n", status );
@@ -379,7 +379,7 @@ static void test_RtlFillMemory(void)
 static void test_RtlFillMemoryUlong(void)
 {
   ULONG val = ('x' << 24) | ('x' << 16) | ('x' << 8) | 'x';
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   static const ULONG patterns[] = {0, 0x01234567, 0xffffffff};
   ULONG expected[ARRAY_SIZE(dest_aligned_block)];
   unsigned int pattern, count, i;
@@ -394,19 +394,19 @@ static void test_RtlFillMemoryUlong(void)
    * didn't write past the end (the remainder of the string should match)
    */
   LFILL(0); CMP("This is a test!");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   LFILL(1); CMP("This is a test!");
   LFILL(2); CMP("This is a test!");
   LFILL(3); CMP("This is a test!");
 #endif
   LFILL(4); CMP("xxxx is a test!");
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   LFILL(5); CMP("xxxx is a test!");
   LFILL(6); CMP("xxxx is a test!");
   LFILL(7); CMP("xxxx is a test!");
 #endif
   LFILL(8); CMP("xxxxxxxxa test!");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   LFILL(12); CMP("xxxxxxxxxxxxst!");
 
   for (pattern = 0; pattern < ARRAY_SIZE(patterns); ++pattern)
@@ -482,7 +482,7 @@ static void test_RtlByteSwap(void)
             "ntdll.RtlUlongByteSwap() returns %#lx\n", lresult );
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* On older Windows versions, RtlUlonglongByteSwap has a broken calling convention! */
     RTL_OSVERSIONINFOEXW verInfo = { sizeof(verInfo) };
     RtlGetVersion(&verInfo);
@@ -513,13 +513,13 @@ static void test_RtlUniform(void)
     ULONG expected;
     ULONG result;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_reactos() && (GetNTVersion() < _WIN32_WINNT_VISTA))
     {
         skip("Skipping tests for RtlUniform, because it's broken on Windows 2003\n");
         return;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     /*
      * According to the documentation RtlUniform is using D.H. Lehmer's 1948
@@ -3560,17 +3560,17 @@ static void test_DbgPrint(void)
     test_dbg_print_except = FALSE;
     test_dbg_print_except_ret = (LONG)EXCEPTION_EXECUTE_HANDLER;
     status = DbgPrint( "test_DbgPrint: %s", "Hello World" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(status == (GetNTVersion() >= _WIN32_WINNT_VISTA ? 0 : 1), "DbgPrint returned %lx\n", status );
 #else
     ok( !status, "DbgPrint returned %lx\n", status );
 #endif
     ok( !test_dbg_print_except, "DBG_PRINTEXCEPTION_C received\n" );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_reactos())
     {
-        skip("DbgPrint with a debugger attached is broken on ReactOS\n");
+        skip("DbgPrint with a debugger attached is broken on LibreNT\n");
         return;
     }
 #endif
@@ -3866,7 +3866,7 @@ static void test_RtlValidSecurityDescriptor(void)
     free(sd);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_RtlValidRelativeSecurityDescriptor(void)
 {
     struct
@@ -3918,7 +3918,7 @@ static void test_RtlFindExportedRoutineByName(void)
 
 static void test_RtlGetDeviceFamilyInfoEnum(void)
 {
-#if !defined(__REACTOS__) || _WIN32_WINNT >= _WIN32_WINNT_WIN10
+#if !defined(__LIBRENT__) || _WIN32_WINNT >= _WIN32_WINNT_WIN10
     ULONGLONG version;
     DWORD family, form;
 
@@ -4263,7 +4263,7 @@ static void test_user_procs(void)
     ok( !memcmp( ptrs, ptr_A, size_A ), "pointers changed by init\n" );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL valid_short_name(const UNICODE_STRING *name)
 {
     unsigned int i, length, dot;
@@ -4391,7 +4391,7 @@ static void test_RtlGenerate8dot3Name(void)
 START_TEST(rtl)
 {
     InitFunctionPtrs();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_RtlGenerate8dot3Name();
 #endif
 
@@ -4438,7 +4438,7 @@ START_TEST(rtl)
     test_RtlFirstFreeAce();
     test_RtlInitializeSid();
     test_RtlValidSecurityDescriptor();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_RtlValidRelativeSecurityDescriptor();
 #endif
     test_RtlFindExportedRoutineByName();

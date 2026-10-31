@@ -1,7 +1,7 @@
 /*
- * PROJECT:     ReactOS DirectShow capture
+ * PROJECT:     LibreNT DirectShow capture
  * LICENSE:     LGPL-2.1-or-later
- * PURPOSE:     ReactOS backend for Wine qcap capture calls
+ * PURPOSE:     LibreNT backend for Wine qcap capture calls
  */
 
 #include "qcap_private.h"

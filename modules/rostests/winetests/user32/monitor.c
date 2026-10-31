@@ -30,7 +30,7 @@
 #include "wingdi.h"
 #include "winuser.h"
 #include "winreg.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 #include "ddk/d3dkmthk.h"
@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "devpropdef.h"
 #else
 
@@ -1897,7 +1897,7 @@ static void test_EnumDisplayMonitors(void)
 
 static void check_device_path(const WCHAR *device_path, const LUID *adapter_id, DWORD id)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     skip("FIXME: check_device_path() cannot be built until we add new functions to setupapi\n");
 #else
     BYTE iface_detail_buffer[sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W) + 256 * sizeof(WCHAR)];
@@ -1960,7 +1960,7 @@ static void check_preferred_mode(const DISPLAYCONFIG_TARGET_PREFERRED_MODE *mode
 
     dm.dmSize = sizeof(dm);
     bret = EnumDisplaySettingsW(gdi_device_name, ENUM_CURRENT_SETTINGS, &dm);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bret || broken(GetLastError() == ERROR_INVALID_PARAMETER) /* Win8 */, "got error %lu.\n", GetLastError());
 #else
     ok(bret, "got error %lu.\n", GetLastError());
@@ -2020,7 +2020,7 @@ static void test_QueryDisplayConfig_result(UINT32 flags,
         source_name.header.id = pi[i].sourceInfo.id;
         source_name.viewGdiDeviceName[0] = '\0';
         ret = pDisplayConfigGetDeviceInfo(&source_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!ret || broken(ret == ERROR_GEN_FAILURE) /* Win8 */, "Expected 0, got %ld\n", ret);
         if (ret != ERROR_GEN_FAILURE)
             ok(source_name.viewGdiDeviceName[0] != '\0', "Expected GDI device name, got empty string\n");
@@ -2044,7 +2044,7 @@ static void test_QueryDisplayConfig_result(UINT32 flags,
         target_name.header.id = pi[i].targetInfo.id;
         target_name.monitorDevicePath[0] = '\0';
         ret = pDisplayConfigGetDeviceInfo(&target_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!ret || broken(ret == ERROR_GEN_FAILURE) /* Win8 */, "Expected 0, got %ld\n", ret);
 #else
         ok(!ret, "Expected 0, got %ld\n", ret);
@@ -2057,7 +2057,7 @@ static void test_QueryDisplayConfig_result(UINT32 flags,
         preferred_mode.header.id = pi[i].targetInfo.id;
         preferred_mode.width = preferred_mode.height = 0;
         ret = pDisplayConfigGetDeviceInfo(&preferred_mode.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!ret || broken(ret == ERROR_GEN_FAILURE) /* Win8 */, "Expected 0, got %ld\n", ret);
         if (!ret)
             ok(preferred_mode.width > 0 && preferred_mode.height > 0, "Expected non-zero height/width, got %ux%u\n",
@@ -2075,7 +2075,7 @@ static void test_QueryDisplayConfig_result(UINT32 flags,
         adapter_name.header.adapterId = pi[i].sourceInfo.adapterId;
         adapter_name.adapterDevicePath[0] = '\0';
         ret = pDisplayConfigGetDeviceInfo(&adapter_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(!ret || broken(ret == ERROR_GEN_FAILURE) /* Win8 */, "Expected 0, got %ld\n", ret);
         if (!ret)
             ok(adapter_name.adapterDevicePath[0] != '\0', "Expected adapter device path, got empty string\n");
@@ -2356,7 +2356,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     source_name.header.type = 0xFFFF;
     source_name.header.size = sizeof(source_name.header);
     ret = pDisplayConfigGetDeviceInfo(&source_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2365,7 +2365,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     source_name.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
     source_name.header.size = sizeof(source_name.header);
     ret = pDisplayConfigGetDeviceInfo(&source_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2374,7 +2374,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     source_name.header.type = 0xFFFF;
     source_name.header.size = sizeof(source_name);
     ret = pDisplayConfigGetDeviceInfo(&source_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2383,7 +2383,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     source_name.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
     source_name.header.size = sizeof(source_name) - 1;
     ret = pDisplayConfigGetDeviceInfo(&source_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2400,7 +2400,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     target_name.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME;
     target_name.header.size = sizeof(target_name) - 1;
     ret = pDisplayConfigGetDeviceInfo(&target_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2417,7 +2417,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     preferred_mode.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_PREFERRED_MODE;
     preferred_mode.header.size = sizeof(preferred_mode) - 1;
     ret = pDisplayConfigGetDeviceInfo(&preferred_mode.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2434,7 +2434,7 @@ static void test_DisplayConfigGetDeviceInfo(void)
     adapter_name.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_ADAPTER_NAME;
     adapter_name.header.size = sizeof(adapter_name) - 1;
     ret = pDisplayConfigGetDeviceInfo(&adapter_name.header);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ret == ERROR_INVALID_PARAMETER || ret == ERROR_GEN_FAILURE /* Win7 */, "got %ld\n", ret);
 #else
     ok(ret == ERROR_INVALID_PARAMETER, "got %ld\n", ret);
@@ -2639,7 +2639,7 @@ static void test_handles(void)
 #define check_display_dc(a, b, c) _check_display_dc(__LINE__, a, b, c)
 static void _check_display_dc(INT line, HDC hdc, const DEVMODEA *dm, BOOL allow_todo)
 {
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     unsigned char buffer[sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * 256] = {0};
 #else
     unsigned char buffer[FIELD_OFFSET(BITMAPINFO, bmiColors[256])] = {0};
@@ -2693,7 +2693,7 @@ static void _check_display_dc(INT line, HDC hdc, const DEVMODEA *dm, BOOL allow_
     bmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     value = GetDIBits(hdc, hbmp, 0, 0, NULL, (LPBITMAPINFO)bmi, DIB_RGB_COLORS);
     ok(value, "GetDIBits failed, error %#lx.\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(bmi->bmiHeader.biCompression == BI_BITFIELDS || broken(bmi->bmiHeader.biCompression == BI_RGB) /* WS03 */, "Got unexpected biCompression %lu.\n", bmi->bmiHeader.biCompression);
 #else
     ok(bmi->bmiHeader.biCompression == BI_BITFIELDS, "Got unexpected biCompression %lu.\n", bmi->bmiHeader.biCompression);
@@ -2733,7 +2733,7 @@ static void test_display_dc(void)
     BITMAP bitmap;
     BOOL ret;
     LONG res;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT display_bpp;
 
     hdc = GetDC(0);
@@ -2772,7 +2772,7 @@ static void test_display_dc(void)
         hbitmap = CreateBitmap(dm.dmPelsWidth, dm.dmPelsHeight, 1, bpps[i], NULL);
         ok(!!hbitmap, "CreateBitmap failed, error %ld.\n", GetLastError());
         old_hbitmap = SelectObject(mem_dc, hbitmap);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (bpps[i] != 1 && bpps[i] != display_bpp)
 #else
         if (bpps[i] != 1 && bpps[i] != 32)
@@ -2807,7 +2807,7 @@ static void test_display_dc(void)
         ok(!!old_hbitmap, "Failed to select bitmap.\n");
 
         value = GetDeviceCaps(mem_dc, BITSPIXEL);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(value == display_bpp, "Expected %d, got %d.\n", display_bpp, value);
 #else
         ok(value == 32, "Expected 32, got %d.\n", value);
@@ -2863,7 +2863,7 @@ static void test_display_dc(void)
 
             value = GetDeviceCaps(hdc, NUMCOLORS);
             if (bpps[i] > 8 || (bpps[i] == 8 && LOBYTE(LOWORD(GetVersion())) >= 6))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 ok(value == -1 || broken(value == 20) /* Vista */, "Expected -1, got %d.\n", value);
 #else
                 ok(value == -1, "Expected -1, got %d.\n", value);
@@ -3183,7 +3183,7 @@ static void test_fullscreen(int argc, char **argv)
     CloseHandle(event1);
 }
 
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
 static void get_monitor_dpi_scale( HMONITOR monitor, int *min, int *cur, int *max )
 {
     DISPLAYCONFIG_GET_SOURCE_DPI_SCALE req = {.header = {.type = DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_DPI_SCALE, .size = sizeof(req)}};
@@ -3241,7 +3241,7 @@ static void set_monitor_dpi_scale( HMONITOR monitor, int scale )
     status = D3DKMTCloseAdapter( &close_desc );
     ok( !status, "D3DKMTCloseAdapter returned %#lx\n", status );
 }
-#endif // __REACTOS__ || DLL_EXPORT_VERSION >= 0x600
+#endif // __LIBRENT__ || DLL_EXPORT_VERSION >= 0x600
 
 struct monitor_info
 {
@@ -3250,7 +3250,7 @@ struct monitor_info
     RECT rect;
 };
 
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
 static BOOL CALLBACK enum_monitor_rect( HMONITOR handle, HDC hdc, RECT *rect, LPARAM lparam )
 {
     struct monitor_info *info = (struct monitor_info *)lparam;
@@ -3664,7 +3664,7 @@ static void test_monitor_dpi_awareness( const struct monitor_info *infos, UINT c
     DestroyWindow( unaware_hwnd );
     flush_events();
 }
-#endif // __REACTOS__ || DLL_EXPORT_VERSION >= 0x600
+#endif // __LIBRENT__ || DLL_EXPORT_VERSION >= 0x600
 
 static BOOL CALLBACK enum_monitor_infos( HMONITOR handle, HDC hdc, RECT *rect, LPARAM lparam )
 {
@@ -3840,7 +3840,7 @@ static void test_monitor_dpi(void)
     ChangeDisplaySettingsExW( NULL, NULL, 0, 0, NULL );
     pSetThreadDpiAwarenessContext( old_ctx );
 
-#if !defined(__REACTOS__) || DLL_EXPORT_VERSION >= 0x600
+#if !defined(__LIBRENT__) || DLL_EXPORT_VERSION >= 0x600
     for (i = 0; i < count; i++)
     {
         int min = 0, max = 0, cur = 0;
@@ -3859,7 +3859,7 @@ static void test_monitor_dpi(void)
         test_monitor_dpi_awareness( infos, count, max, system_dpi, infos + i, phys_infos + i, is_virtual );
         set_monitor_dpi_scale( infos[i].handle, cur );
     }
-#endif // __REACTOS__ || DLL_EXPORT_VERSION >= 0x600
+#endif // __LIBRENT__ || DLL_EXPORT_VERSION >= 0x600
 
     ChangeDisplaySettingsExW( NULL, NULL, 0, 0, NULL );
 }

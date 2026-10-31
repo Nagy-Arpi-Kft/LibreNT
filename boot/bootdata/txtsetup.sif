@@ -1,6 +1,6 @@
 [Version]
 Signature = "$Windows NT$"
-;Signature = "$ReactOS$"
+;Signature = "$LibreNT$"
 
 [SystemTrees]
 Windows = "\"
@@ -56,8 +56,6 @@ GENERIC_HID_DEVICE = hidusb
 ROOT\SWENUM = swenum
 
 [HardwareIdsDatabase.x86]
-*PNP0A00 = isapnp
-PCI\CC_0601 = isapnp
 PCI\CC_0101 = pciide
 PCI\CC_0104 = pciide
 PCI\CC_0105 = pciide
@@ -68,8 +66,6 @@ PCI\CC_0106 = pciide
 *nEC1F00 = inport,{4D36E96F-E325-11CE-BFC1-08002BE10318}
 
 [HardwareIdsDatabase.amd64]
-*PNP0A00 = isapnp
-PCI\CC_0601 = isapnp
 PCI\CC_0101 = pciide
 PCI\CC_0104 = pciide
 PCI\CC_0105 = pciide
@@ -83,12 +79,6 @@ PCI\CC_0106 = pciide
 acpi = acpi.sys
 pci = pci.sys
 rp1 = rp1.sys
-
-[BootBusExtenders.Load.x86]
-isapnp = isapnp.sys
-
-[BootBusExtenders.Load.amd64]
-isapnp = isapnp.sys
 
 [InputDevicesSupport.Load]
 usbehci = usbehci.sys
@@ -581,7 +571,7 @@ AddReg = registry.inf,AddReg
 AddReg = comreg.inf,AddReg
 
 [Strings]
-cdname      = "LiberNT Installation Media"
-productname = "LiberNT"
+cdname      = "LibreNT Installation Media"
+productname = "LibreNT"
 
 ; EOF

@@ -31,9 +31,9 @@ STRINGTABLE
     13 "Eksik özellik için ağ sürücüsü"
     14 "Şuradan özellik:"
     15 "%s içeren dizini seçiniz."
-#ifdef __REACTOS__
-    34 "LiberNT Yükleyicisi Paketi"
-    35 "LiberNT Installer Patch"
+#ifdef __LIBRENT__
+    34 "LibreNT Yükleyicisi Paketi"
+    35 "LibreNT Installer Patch"
     36 "Yükle" //FIXME: add accel
     37 "Onar" //FIXME: add accel
     38 "Kaldır" //FIXME: add accel

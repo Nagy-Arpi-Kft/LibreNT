@@ -48,8 +48,8 @@
 #include <ui/rosctrls.h>
 #include <ui/rosdlgs.h>
 #include <shellutils.h>
-#include <reactos/trayicons.h>
-#include <reactos/colorscheme.h>
+#include <librent/trayicons.h>
+#include <librent/colorscheme.h>
 
 #include "tmschema.h"
 #include "resource.h"

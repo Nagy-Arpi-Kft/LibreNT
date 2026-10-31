@@ -1,5 +1,5 @@
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 add_executable(bcrypt_winetest bcrypt.c testlist.c)
 target_compile_definitions(bcrypt_winetest PRIVATE USE_WINE_TODOS)
 set_module_type(bcrypt_winetest win32cui)

@@ -40,8 +40,8 @@ __in PUNICODE_STRING RegistryPath
 	//  Default to NonPagedPoolNx for non paged pool allocations where supported.
 	//
 
-#ifndef __REACTOS__
-	// FIXME: disabled for now, since it's unimplemented in ReactOS
+#ifndef __LIBRENT__
+	// FIXME: disabled for now, since it's unimplemented in LibreNT
 	ExInitializeDriverRuntime(DrvRtPoolNxOptIn);
 #endif
 

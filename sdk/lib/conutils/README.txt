@@ -1,4 +1,4 @@
-The ReactOS Console Utilities Library v0.2
+The LibreNT Console Utilities Library v0.2
 ==========================================
 
 LICENSE:    GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
@@ -12,8 +12,8 @@ CREDITS:    Thanks to the many people who originally wrote the code that finally
 INTRODUCTION
 ~-~-~-~-~-~-
 
-This library contains common functions used in many places inside the ReactOS
-console utilities and the ReactOS Command-Line Interpreter. Most of these
+This library contains common functions used in many places inside the LibreNT
+console utilities and the LibreNT Command-Line Interpreter. Most of these
 functions are related with internationalisation and the problem of correctly
 displaying Unicode text on the console. Besides those, helpful functions for
 retrieving strings and messages from application resources are provided,

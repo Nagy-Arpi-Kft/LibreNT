@@ -1,4 +1,4 @@
-/* ComboBox Control Test for ReactOS.
+/* ComboBox Control Test for LibreNT.
 
 * This is a test program. Not made to be fast, small
 * easy to mantain, or portable.

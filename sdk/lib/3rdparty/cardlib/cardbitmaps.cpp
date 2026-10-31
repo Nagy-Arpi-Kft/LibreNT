@@ -7,7 +7,7 @@
 
 #include "cardlib.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #pragma comment( lib, "..\\CardLib\\cards16.lib" )
 
 extern "C" HINSTANCE WINAPI LoadLibrary16( PSTR );
@@ -100,7 +100,7 @@ void LoadCardBitmaps(void)
 
         FreeLibrary(hCardDll);
     }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     //Else, Win9X
     else
     {

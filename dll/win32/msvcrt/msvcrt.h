@@ -227,7 +227,7 @@ extern BOOL initial_locale;
 extern WORD *MSVCRT__pwctype;
 
 void msvcrt_set_errno(int);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void msvcrt_arch_setfp(unsigned int *cw, unsigned int cw_mask, unsigned int *sw, unsigned int sw_mask);
 #endif
 #if _MSVCR_VER >= 80

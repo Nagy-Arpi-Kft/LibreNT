@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Build System
+# PROJECT:     LibreNT Build System
 # PURPOSE:     Build the ARM64EC user-mode runtime used by FEX
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -8,9 +8,9 @@
 # an explicit manifest selects the secondary ABI targets, and the generated PE
 # files can be validated before they are added to the ISO.
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/arm64ec_targets.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/arm64ec_targets.cmake")
 
-set(ARM64EC_BINARY_DIR "${REACTOS_BINARY_DIR}/_fex_arm64ec")
+set(ARM64EC_BINARY_DIR "${LIBRENT_BINARY_DIR}/_fex_arm64ec")
 set(MESA_ARM64EC_LLVM_ROOT "" CACHE PATH "Prebuilt Windows ARM64EC LLVM installation for Mesa")
 set(MESA_ARM64EC_LLVM_LICENSE_FILE "" CACHE FILEPATH "License file for prebuilt Windows ARM64EC LLVM")
 set(ARM64EC_RUNTIME_BUILD_MODULES
@@ -50,7 +50,7 @@ function(_arm64ec_get_target_file _target _output)
         endif()
     endif()
 
-    file(RELATIVE_PATH _relative_dir "${REACTOS_BINARY_DIR}" "${_binary_dir}")
+    file(RELATIVE_PATH _relative_dir "${LIBRENT_BINARY_DIR}" "${_binary_dir}")
     set(${_output} "${ARM64EC_BINARY_DIR}/${_relative_dir}/${_prefix}${_output_name}${_suffix}" PARENT_SCOPE)
 endfunction()
 
@@ -73,11 +73,11 @@ if(TARGET mesa_gallium)
     list(APPEND ARM64EC_RUNTIME_VALIDATION_FILES "${_arm64ec_mesa_file}")
 endif()
 
-get_filename_component(_fex_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${REACTOS_SOURCE_DIR}")
+get_filename_component(_fex_toolchain "${CMAKE_TOOLCHAIN_FILE}" ABSOLUTE BASE_DIR "${LIBRENT_SOURCE_DIR}")
 if(HOST_TOOLS_DIR)
     set(_arm64ec_host_tools_dir "${HOST_TOOLS_DIR}")
 else()
-    set(_arm64ec_host_tools_dir "${REACTOS_BINARY_DIR}/host-tools/bin")
+    set(_arm64ec_host_tools_dir "${LIBRENT_BINARY_DIR}/host-tools/bin")
 endif()
 
 set(_fex_common_cmake_args
@@ -93,11 +93,11 @@ set(_fex_common_cmake_args
     -DKD_DEBUGGER:STRING=NONE
     -DOPTIMIZE:STRING=${OPTIMIZE}
     -DPCH:BOOL=${PCH}
-    -DREACTOS_CLANG_LLVM_MINGW_ROOT:PATH=${REACTOS_CLANG_LLVM_MINGW_ROOT}
-    -DREACTOS_LIBCXX_ROOT:PATH=${REACTOS_LIBCXX_ROOT}
-    -DREACTOS_GRAPHICS_DRIVER_MODEL:STRING=${REACTOS_GRAPHICS_DRIVER_MODEL}
-    -DREACTOS_TARGET_NT:STRING=${REACTOS_TARGET_NT}
-    -DREACTOS_WDDM_LEVEL:STRING=${REACTOS_WDDM_LEVEL}
+    -DLIBRENT_CLANG_LLVM_MINGW_ROOT:PATH=${LIBRENT_CLANG_LLVM_MINGW_ROOT}
+    -DLIBRENT_LIBCXX_ROOT:PATH=${LIBRENT_LIBCXX_ROOT}
+    -DLIBRENT_GRAPHICS_DRIVER_MODEL:STRING=${LIBRENT_GRAPHICS_DRIVER_MODEL}
+    -DLIBRENT_TARGET_NT:STRING=${LIBRENT_TARGET_NT}
+    -DLIBRENT_WDDM_LEVEL:STRING=${LIBRENT_WDDM_LEVEL}
     -DROSCONFIG_PROFILE:STRING=generic
     -DROSCONFIG_SKIP_OVERRIDES:BOOL=ON
     -DSEPARATE_DBG:BOOL=${SEPARATE_DBG}
@@ -108,7 +108,7 @@ set(_arm64ec_cmake_args
     -DARCH:STRING=arm64
     -DARM64EC_RUNTIME:BOOL=ON
     -DNVS:BOOL=ON
-    -DARM64EC_NATIVE_BINARY_DIR:PATH=${REACTOS_BINARY_DIR}
+    -DARM64EC_NATIVE_BINARY_DIR:PATH=${LIBRENT_BINARY_DIR}
     ${_fex_common_cmake_args})
 
 if(TARGET mesa_gallium)
@@ -127,13 +127,13 @@ endif()
 
 function(_fex_add_nested_configure _name _binary_dir _arguments)
     string(JOIN "\n" _configure_signature ${${_arguments}})
-    set(_signature_file "${REACTOS_BINARY_DIR}/CMakeFiles/${_name}-configure.txt")
-    set(_configure_stamp "${REACTOS_BINARY_DIR}/CMakeFiles/${_name}-configure.stamp")
+    set(_signature_file "${LIBRENT_BINARY_DIR}/CMakeFiles/${_name}-configure.txt")
+    set(_configure_stamp "${LIBRENT_BINARY_DIR}/CMakeFiles/${_name}-configure.stamp")
     file(GENERATE OUTPUT "${_signature_file}" CONTENT "${_configure_signature}\n")
 
     add_custom_command(
         OUTPUT "${_configure_stamp}"
-        COMMAND ${CMAKE_COMMAND} -S "${REACTOS_SOURCE_DIR}" -B "${_binary_dir}" -G "${CMAKE_GENERATOR}" ${${_arguments}}
+        COMMAND ${CMAKE_COMMAND} -S "${LIBRENT_SOURCE_DIR}" -B "${_binary_dir}" -G "${CMAKE_GENERATOR}" ${${_arguments}}
         COMMAND ${CMAKE_COMMAND} -E touch "${_configure_stamp}"
         BYPRODUCTS "${_binary_dir}/build.ninja"
         DEPENDS "${_signature_file}"
@@ -152,10 +152,10 @@ add_dependencies(fex_arm64ec_configure asm)
 
 set(_arm64ec_validate)
 if(VALIDATE_COMPAT_BINARIES)
-    find_program(FEX_LLVM_READOBJ llvm-readobj HINTS "${REACTOS_CLANG_LLVM_MINGW_ROOT}/bin" REQUIRED)
+    find_program(FEX_LLVM_READOBJ llvm-readobj HINTS "${LIBRENT_CLANG_LLVM_MINGW_ROOT}/bin" REQUIRED)
     set(_arm64ec_validate COMMAND ${CMAKE_COMMAND}
         -DLLVM_READOBJ:FILEPATH=${FEX_LLVM_READOBJ}
-        -P "${REACTOS_SOURCE_DIR}/sdk/cmake/arm64ec-validate.cmake" -- ${ARM64EC_RUNTIME_VALIDATION_FILES})
+        -P "${LIBRENT_SOURCE_DIR}/sdk/cmake/arm64ec-validate.cmake" -- ${ARM64EC_RUNTIME_VALIDATION_FILES})
 endif()
 
 list(LENGTH ARM64EC_RUNTIME_BUILD_MODULES _arm64ec_target_count)
@@ -165,7 +165,7 @@ else()
     set(_arm64ec_heal)
 endif()
 
-include("${REACTOS_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
+include("${LIBRENT_SOURCE_DIR}/sdk/cmake/nested-build.cmake")
 
 set(_arm64ec_sdk_library_targets)
 foreach(_library IN LISTS FEX_SDK_LIBRARIES)
@@ -180,7 +180,7 @@ endforeach()
 
 add_custom_target(fex_arm64ec_runtime ALL
     ${_arm64ec_heal}
-    COMMAND ${REACTOS_NESTED_BUILD} "${ARM64EC_BINARY_DIR}" --target ${ARM64EC_RUNTIME_BUILD_MODULES} ${_arm64ec_sdk_library_targets} chpe
+    COMMAND ${LIBRENT_NESTED_BUILD} "${ARM64EC_BINARY_DIR}" --target ${ARM64EC_RUNTIME_BUILD_MODULES} ${_arm64ec_sdk_library_targets} chpe
     ${_arm64ec_validate}
     BYPRODUCTS ${ARM64EC_RUNTIME_VALIDATION_FILES}
     COMMENT "Building ${_arm64ec_target_count} ARM64EC FEX runtime DLLs"
@@ -207,12 +207,12 @@ foreach(_target IN LISTS ARM64EC_RUNTIME_MODULES ARM64EC_RUNTIME_AUXILIARY_MODUL
         set(_arm64x_file "${_binary_dir}/arm64x/${_name}")
         add_custom_command(
             OUTPUT "${_arm64x_file}"
-            COMMAND "${ARM64X_PYTHON_EXECUTABLE}" "${REACTOS_SOURCE_DIR}/sdk/tools/arm64x_link.py"
+            COMMAND "${ARM64X_PYTHON_EXECUTABLE}" "${LIBRENT_SOURCE_DIR}/sdk/tools/arm64x_link.py"
                 --ninja "${CMAKE_MAKE_PROGRAM}"
-                --native-dir "${REACTOS_BINARY_DIR}" --native-target "${_relative_file}"
+                --native-dir "${LIBRENT_BINARY_DIR}" --native-target "${_relative_file}"
                 --ec-dir "${ARM64EC_BINARY_DIR}" --ec-target "${_relative_file}"
                 --output "${_arm64x_file}"
-            DEPENDS ${_target} "${_ec_file}" "${REACTOS_SOURCE_DIR}/sdk/tools/arm64x_link.py"
+            DEPENDS ${_target} "${_ec_file}" "${LIBRENT_SOURCE_DIR}/sdk/tools/arm64x_link.py"
             COMMENT "Linking ARM64X ${_name}"
             VERBATIM)
         set_target_properties(${_target} PROPERTIES ARM64X_FILE "${_arm64x_file}")
@@ -229,24 +229,24 @@ add_dependencies(preinstall_partition arm64x_runtime)
 
 if(_arm64ec_system_files)
     add_cd_file(TARGET fex_arm64ec_runtime FILE ${_arm64ec_system_files}
-        DESTINATION reactos/system32 FOR all)
+        DESTINATION librent/system32 FOR all)
     set_property(GLOBAL APPEND PROPERTY CI_SYSTEM_FILES ${_arm64ec_system_files})
 endif()
 
 if(TARGET mesa_gallium)
-    set(_mesa_native_dir "${REACTOS_BINARY_DIR}/dll/opengl/mesa_gallium/mesa-source/cmake-build")
+    set(_mesa_native_dir "${LIBRENT_BINARY_DIR}/dll/opengl/mesa_gallium/mesa-source/cmake-build")
     set(_mesa_ec_dir "${ARM64EC_BINARY_DIR}/dll/opengl/mesa_gallium/mesa-source/cmake-build")
     set(_mesa_target "src/gallium/targets/wgl/mesa_gallium.dll")
     set(_mesa_arm64x_file "${_mesa_native_dir}/arm64x/mesa_gallium.dll")
     add_custom_command(
         OUTPUT "${_mesa_arm64x_file}"
-        COMMAND "${ARM64X_PYTHON_EXECUTABLE}" "${REACTOS_SOURCE_DIR}/sdk/tools/arm64x_link.py"
+        COMMAND "${ARM64X_PYTHON_EXECUTABLE}" "${LIBRENT_SOURCE_DIR}/sdk/tools/arm64x_link.py"
             --ninja "${CMAKE_MAKE_PROGRAM}"
             --native-dir "${_mesa_native_dir}" --native-target "${_mesa_target}"
             --ec-dir "${_mesa_ec_dir}" --ec-target "${_mesa_target}"
             --output "${_mesa_arm64x_file}"
         DEPENDS mesa_gallium_build "${_mesa_native_dir}/${_mesa_target}" "${_arm64ec_mesa_file}"
-            "${REACTOS_SOURCE_DIR}/sdk/tools/arm64x_link.py"
+            "${LIBRENT_SOURCE_DIR}/sdk/tools/arm64x_link.py"
         COMMENT "Linking ARM64X mesa_gallium.dll"
         VERBATIM)
     add_custom_target(arm64x_mesa_gallium DEPENDS "${_mesa_arm64x_file}")

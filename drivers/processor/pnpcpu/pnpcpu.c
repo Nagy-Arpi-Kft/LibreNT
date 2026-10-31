@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT ACPI Processor Module Driver
+ * PROJECT:     LibreNT ACPI Processor Module Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ACPI0007 topology and processor power capability discovery
  */
@@ -7,7 +7,7 @@
 #include "pnpcpu.h"
 
 #ifdef _M_ARM64
-#include <reactos/arm64/acpi.h>
+#include <librent/arm64/acpi.h>
 #define PNPCPU_ARM64_MPIDR_AFFINITY_MASK 0xFF00FFFFFFULL
 #define PNPCPU_ARM64_GICC_ENABLED 0x00000001
 #endif

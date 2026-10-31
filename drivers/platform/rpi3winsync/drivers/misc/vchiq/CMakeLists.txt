@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS
+# PROJECT:     LibreNT
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the Raspberry Pi VCHIQ kernel driver
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -19,8 +19,8 @@ add_library(vchiq MODULE ${VCHIQ_SOURCE})
 set_module_type(vchiq kmdfdriver)
 
 target_include_directories(vchiq BEFORE PRIVATE
-    ${_rpi3winsync_root}/reactos-compat/vchiq
-    ${_rpi3winsync_root}/reactos-compat
+    ${_rpi3winsync_root}/librent-compat/vchiq
+    ${_rpi3winsync_root}/librent-compat
     ${_rpi3winsync_root}/drivers/mailbox/bcm2836
     ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -36,8 +36,8 @@ endif()
 target_link_libraries(vchiq ntoskrnl_vista libcntpr ${PSEH_LIB})
 add_importlibs(vchiq ntoskrnl hal)
 
-add_cd_file(TARGET vchiq DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET vchiq DESTINATION librent/system32/drivers FOR all)
 
-add_driver_inf(vchiq "${_rpi3winsync_root}/reactos-compat/vchiq/vchiq.inf")
+add_driver_inf(vchiq "${_rpi3winsync_root}/librent-compat/vchiq/vchiq.inf")
 
 set_target_properties(vchiq PROPERTIES FOLDER "Drivers/Platform/Raspberry Pi 3")

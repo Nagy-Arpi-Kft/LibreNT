@@ -1669,7 +1669,7 @@ static void test_nonole_clipboard(void)
     ok(fmt.ptd == NULL, "ptd %p\n", fmt.ptd);
     ok(fmt.dwAspect == DVASPECT_CONTENT, "aspect %lx\n", fmt.dwAspect);
     ok(fmt.lindex == -1, "lindex %ld\n", fmt.lindex);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(fmt.tymed == (TYMED_ISTREAM | TYMED_HGLOBAL), "tymed %lx\n", fmt.tymed);
 #else
     todo_wine ok(fmt.tymed == (TYMED_ISTREAM | TYMED_HGLOBAL), "tymed %lx\n", fmt.tymed);

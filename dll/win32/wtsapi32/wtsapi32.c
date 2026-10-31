@@ -16,14 +16,14 @@
  */
 
 #include "ntstatus.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #endif
 #include <stdarg.h>
 #include <stdlib.h>
 #include "windef.h"
 #include "winbase.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/winternl.h"
 #else
 #include "winternl.h"
@@ -31,7 +31,7 @@
 #include "winnls.h"
 #include "lmcons.h"
 #include "wtsapi32.h"
-#include <reactos/wtssession.h>
+#include <librent/wtssession.h>
 #include "wine/debug.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(wtsapi);
@@ -186,7 +186,7 @@ BOOL WINAPI WTSEnumerateProcessesExW(HANDLE server, DWORD *level, DWORD session_
                 TOKEN_USER *user = (TOKEN_USER *)buffer;
                 DWORD size;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (GetTokenInformation(token, TokenUser, buffer, sizeof(buffer), &size))
                 {
                     info[count].pUserSid = p;
@@ -351,7 +351,7 @@ BOOL WINAPI WTSEnumerateSessionsA(HANDLE server, DWORD reserved, DWORD version,
             ERR("WideCharToMultiByte failed.\n");
             WTSFreeMemory(*session_info);
             WTSFreeMemory(infoW);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *session_info = NULL;
             *count = 0;
             return FALSE;
@@ -367,7 +367,7 @@ BOOL WINAPI WTSEnumerateSessionsA(HANDLE server, DWORD reserved, DWORD version,
 /************************************************************
  *                WTSEnumerateEnumerateSessionsW  (WTSAPI32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL WINAPI WTSEnumerateSessionsW(HANDLE server, DWORD reserved, DWORD version,
         PWTS_SESSION_INFOW *session_info, DWORD *count)
 {

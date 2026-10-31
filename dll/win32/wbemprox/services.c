@@ -217,7 +217,7 @@ static HRESULT queue_async( struct async_header *async )
 struct wbem_services
 {
     IWbemServices IWbemServices_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IClientSecurity IClientSecurity_iface;
 #endif
     LONG refs;
@@ -281,7 +281,7 @@ static HRESULT WINAPI wbem_services_QueryInterface(
     }
     else if ( IsEqualGUID( riid, &IID_IClientSecurity ) )
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *ppvObject = &ws->IClientSecurity_iface;
 #else
         *ppvObject = &client_security;
@@ -297,7 +297,7 @@ static HRESULT WINAPI wbem_services_QueryInterface(
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline struct wbem_services *services_from_IClientSecurity( IClientSecurity *iface )
 {
     return CONTAINING_RECORD( iface, struct wbem_services, IClientSecurity_iface );
@@ -401,7 +401,7 @@ void free_path( struct path *path )
     free( path );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT convert_path_filter( struct path *path )
 {
     const WCHAR *p = path->filter, *end = path->filter + path->filter_len;
@@ -558,7 +558,7 @@ HRESULT parse_path( const WCHAR *str, struct path **ret )
         return WBEM_E_INVALID_OBJECT_PATH;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (path->filter && convert_path_filter( path ) != S_OK)
     {
         free_path( path );
@@ -617,7 +617,7 @@ HRESULT get_object( enum wbm_namespace ns, const WCHAR *object_path, IWbemClassO
     if (hr != S_OK)
     {
         free_path( path );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (hr == WBEM_E_INVALID_QUERY) hr = WBEM_E_INVALID_PARAMETER;
 #endif
         return hr;
@@ -1105,7 +1105,7 @@ HRESULT WbemServices_create( const WCHAR *namespace, IWbemContext *context, LPVO
     if (!(ws = calloc( 1, sizeof(*ws) ))) return E_OUTOFMEMORY;
 
     ws->IWbemServices_iface.lpVtbl = &wbem_services_vtbl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ws->IClientSecurity_iface.lpVtbl = &services_security_vtbl;
 #endif
     ws->refs      = 1;
@@ -1133,7 +1133,7 @@ struct wbem_context
     IWbemContext IWbemContext_iface;
     LONG refs;
     struct list values;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct list *cursor;
     BOOL enumerating;
 #endif
@@ -1243,7 +1243,7 @@ static HRESULT WINAPI wbem_context_GetNames(
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI wbem_context_BeginEnumeration(
     IWbemContext *iface,
     LONG flags )
@@ -1416,7 +1416,7 @@ static HRESULT WINAPI wbem_context_DeleteValue(
 static HRESULT WINAPI wbem_context_DeleteAll(
     IWbemContext *iface )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct wbem_context *context = impl_from_IWbemContext( iface );
 
     TRACE( "%p\n", iface );
@@ -1462,7 +1462,7 @@ HRESULT WbemContext_create( void **obj, REFIID riid )
     context->IWbemContext_iface.lpVtbl = &wbem_context_vtbl;
     context->refs = 1;
     list_init(&context->values);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     context->cursor = NULL;
     context->enumerating = FALSE;
 #endif

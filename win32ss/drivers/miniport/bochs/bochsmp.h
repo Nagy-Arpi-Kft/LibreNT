@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Bochs graphics card driver
+ * PROJECT:     LibreNT Bochs graphics card driver
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Bochs graphics card driver
  * COPYRIGHT:   Copyright 2022 Hervé Poussineau <hpoussin@reactos.org>
@@ -14,7 +14,7 @@
 #include <video.h>
 #include <devioctl.h>
 #include <section_attribs.h>
-#include <reactos/loader_framebuffer.h>
+#include <librent/loader_framebuffer.h>
 
 #define VBE_EDID_SIZE                        0x80
 

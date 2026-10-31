@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS NT CRT library
+ * PROJECT:     LibreNT NT CRT library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Implementation of _wcsupr
  * COPYRIGHT:   Copyright 2025 Timo Kreuzer <timo.kreuzer@reactos.org>

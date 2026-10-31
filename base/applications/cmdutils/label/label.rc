@@ -4,10 +4,10 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_STR_FILE_DESCRIPTION    "LiberNT Label Command"
-#define REACTOS_STR_INTERNAL_NAME       "label"
-#define REACTOS_STR_ORIGINAL_FILENAME   "label.exe"
-#include <reactos/version.rc>
+#define LIBRENT_STR_FILE_DESCRIPTION    "LibreNT Label Command"
+#define LIBRENT_STR_INTERNAL_NAME       "label"
+#define LIBRENT_STR_ORIGINAL_FILENAME   "label.exe"
+#include <librent/version.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

@@ -3,7 +3,7 @@ Third-Party UEFI DXE Drivers for HTTP/network boot
 
 The binary drivers under the per-architecture subdirectories (amd64/
 today; other architectures may be added the same way) are NOT part of
-the ReactOS project. They are third-party firmware components
+the LibreNT project. They are third-party firmware components
 redistributed here to enable network boot on hardware whose built-in
 UEFI firmware does not include them. They are the generic EDK2 network
 protocol stack; the only current consumer is the LattePanda Mu HTTP boot

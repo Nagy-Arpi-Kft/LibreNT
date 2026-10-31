@@ -20,7 +20,7 @@
 #include <objbase.h>
 #include <wine/commctrl.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ole2.h>
 
 #define WM_KEYF1 0x004d

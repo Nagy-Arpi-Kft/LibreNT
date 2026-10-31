@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Win32 Base API
+ * PROJECT:         LibreNT Win32 Base API
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            dll/win32/kernel32/client/pathansi.c
  * PURPOSE:         Handles path APIs

@@ -1,10 +1,10 @@
 
 # vista.c enforces _WIN32_WINNT == _WIN32_WINNT_VISTA via #error.
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 add_definitions(-D_WIN32_WINNT=0x600 -DWINVER=0x600)
 
 add_definitions(-D_KERNEL32_)
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys ..)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys ..)
 spec2def(kernel32_vista.dll kernel32_vista.spec ADD_IMPORTLIB)
 
 list(APPEND SOURCE
@@ -60,4 +60,4 @@ set_module_type(kernel32_vista win32dll ENTRYPOINT DllMain 12)
 target_link_libraries(kernel32_vista kernel32_vista_static kernel32_shared)
 add_importlibs(kernel32_vista kernel32 ntdll_vista ntdll)
 add_dependencies(kernel32_vista psdk)
-add_cd_file(TARGET kernel32_vista DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET kernel32_vista DESTINATION librent/system32 FOR all)

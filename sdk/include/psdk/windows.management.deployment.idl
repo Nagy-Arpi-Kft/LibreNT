@@ -278,7 +278,7 @@ namespace Windows.Management.Deployment {
 
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 namespace Windows.Management.Deployment {
     interface IPackageVolume;
 

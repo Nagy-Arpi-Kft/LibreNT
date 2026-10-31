@@ -1586,7 +1586,7 @@ STDMETHODIMP CMiniportWaveStreamCMI::SetState(KSSTATE NewState)
 				KeReleaseMutex(&Miniport->mutex, false);
 				break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			case KSSTATE_STOP_AC3_VALUE:
 #else
 			case KSSTATE_STOP_AC3:

@@ -3,7 +3,7 @@
   SPDX-License-Identifier: GPL-3.0-or-later
   Copyright (C) 2026 Ahmed ARIF
 
-  This TTX file is the preferred source form for the ReactOS caption-symbol
+  This TTX file is the preferred source form for the LibreNT caption-symbol
   replacement font. Compile it with fontTools ttx to produce segmdl2.ttf.
 -->
 <ttFont sfntVersion="\x00\x01\x00\x00" ttLibVersion="4.63">
@@ -334,7 +334,7 @@
       Regular
     </namerecord>
     <namerecord nameID="3" platformID="1" platEncID="0" langID="0x0" unicode="True">
-      ReactOS Segoe MDL2 Assets Replacement 1.0
+      LibreNT Segoe MDL2 Assets Replacement 1.0
     </namerecord>
     <namerecord nameID="4" platformID="1" platEncID="0" langID="0x0" unicode="True">
       Segoe MDL2 Assets
@@ -346,7 +346,7 @@
       SegoeMDL2Assets
     </namerecord>
     <namerecord nameID="8" platformID="1" platEncID="0" langID="0x0" unicode="True">
-      ReactOS Project
+      LibreNT Project
     </namerecord>
     <namerecord nameID="9" platformID="1" platEncID="0" langID="0x0" unicode="True">
       Ahmed ARIF
@@ -367,7 +367,7 @@
       Regular
     </namerecord>
     <namerecord nameID="3" platformID="3" platEncID="1" langID="0x409">
-      ReactOS Segoe MDL2 Assets Replacement 1.0
+      LibreNT Segoe MDL2 Assets Replacement 1.0
     </namerecord>
     <namerecord nameID="4" platformID="3" platEncID="1" langID="0x409">
       Segoe MDL2 Assets
@@ -379,7 +379,7 @@
       SegoeMDL2Assets
     </namerecord>
     <namerecord nameID="8" platformID="3" platEncID="1" langID="0x409">
-      ReactOS Project
+      LibreNT Project
     </namerecord>
     <namerecord nameID="9" platformID="3" platEncID="1" langID="0x409">
       Ahmed ARIF

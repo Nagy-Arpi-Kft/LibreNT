@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define STATUS_PENDING ((DWORD)0x00000103)
 #endif
 
@@ -738,7 +738,7 @@ static HRESULT WINAPI WshCollection_Invoke(IWshCollection *iface, DISPID dispIdM
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const struct
 {
     const WCHAR *name;

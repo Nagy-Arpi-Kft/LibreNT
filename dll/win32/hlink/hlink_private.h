@@ -17,7 +17,7 @@
  */
 
 #include <stdarg.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wchar.h>
 #endif
 
@@ -38,13 +38,13 @@ static inline LPWSTR hlink_co_strdupW(LPCWSTR str)
     LPWSTR ret = NULL;
 
     if(str) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SIZE_T size;
 #else
         DWORD size;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         size = wcslen(str);
         if (size >= ~(SIZE_T)0 / sizeof(WCHAR)) return NULL;
         size = (size + 1) * sizeof(WCHAR);
@@ -52,7 +52,7 @@ static inline LPWSTR hlink_co_strdupW(LPCWSTR str)
         size = (lstrlenW(str)+1)*sizeof(WCHAR);
 #endif
         ret = CoTaskMemAlloc(size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ret) memcpy(ret, str, size);
 #else
         memcpy(ret, str, size);

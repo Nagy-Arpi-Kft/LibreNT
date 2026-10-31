@@ -36,6 +36,6 @@ EditCustomBootLinux(
 #endif /* _M_IX86 || _M_AMD64 */
 
 VOID
-EditCustomBootReactOS(
+EditCustomBootLibreNT(
     IN OUT OperatingSystemItem* OperatingSystem,
     IN BOOLEAN IsSetup);

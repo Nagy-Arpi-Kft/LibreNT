@@ -29,7 +29,7 @@
 
 typedef LONG NTSTATUS;	/* same as in ntdef.h / winternl.h */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef UNW_FLAG_NHANDLER
 #define UNW_FLAG_NHANDLER 0x0
 #endif

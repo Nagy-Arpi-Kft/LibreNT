@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/amd64/t_tlb.c
  * PURPOSE:     AMD64 translation lookaside buffer regression tests
  *

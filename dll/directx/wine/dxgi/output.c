@@ -64,7 +64,7 @@ static HRESULT dxgi_output_find_closest_matching_mode(struct dxgi_output *output
     if (mode->format_id == WINED3DFMT_UNKNOWN && !device)
         return DXGI_ERROR_INVALID_CALL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     wined3d_mutex_lock();
     if (mode->format_id == WINED3DFMT_UNKNOWN)
     {
@@ -378,7 +378,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_FindClosestMatchingMode(IDXGIOutput
 
 static HRESULT STDMETHODCALLTYPE dxgi_output_WaitForVBlank(IDXGIOutput6 *iface)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct dxgi_output *output = impl_from_IDXGIOutput6(iface);
 
     TRACE("iface %p.\n", iface);
@@ -433,7 +433,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_GetGammaControlCapabilities(IDXGIOu
 
     if (!gamma_caps)
         return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!wined3d_output_is_exclusively_owned(impl_from_IDXGIOutput6(iface)->wined3d_output))
         return DXGI_ERROR_INVALID_CALL;
 #endif
@@ -470,7 +470,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_SetGammaControl(IDXGIOutput6 *iface
 
     TRACE("iface %p, gamma_control %p.\n", iface, gamma_control);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!gamma_control)
         return E_INVALIDARG;
     if (!wined3d_output_is_exclusively_owned(output->wined3d_output))
@@ -501,7 +501,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_SetGammaControl(IDXGIOutput6 *iface
 static HRESULT STDMETHODCALLTYPE dxgi_output_GetGammaControl(IDXGIOutput6 *iface,
         DXGI_GAMMA_CONTROL *gamma_control)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct dxgi_output *output = impl_from_IDXGIOutput6(iface);
     struct wined3d_gamma_ramp ramp;
     unsigned int i;
@@ -602,7 +602,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_GetDisplaySurfaceData1(IDXGIOutput6
 static HRESULT STDMETHODCALLTYPE dxgi_output_DuplicateOutput(IDXGIOutput6 *iface,
         IUnknown *device, IDXGIOutputDuplication **output_duplication)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("iface %p, device %p, output_duplication %p.\n", iface, device, output_duplication);
 
     return dxgi_output_duplication_create((IDXGIOutput *)iface, device, output_duplication);
@@ -627,7 +627,7 @@ static BOOL STDMETHODCALLTYPE dxgi_output_SupportsOverlays(IDXGIOutput6 *iface)
 static HRESULT STDMETHODCALLTYPE dxgi_output_CheckOverlaySupport(IDXGIOutput6 *iface,
         DXGI_FORMAT format, IUnknown *device, UINT *flags)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct dxgi_output *output = impl_from_IDXGIOutput6(iface);
     struct wined3d_adapter_identifier adapter_id = {0};
     LUID luid;
@@ -669,7 +669,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_DuplicateOutput1(IDXGIOutput6 *ifac
         IUnknown *device, UINT flags, UINT format_count, const DXGI_FORMAT *formats,
         IDXGIOutputDuplication **output_duplication)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT i;
 
     TRACE("iface %p, device %p, flags %#x, format_count %u, formats %p, output_duplication %p.\n",
@@ -703,7 +703,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_GetDesc1(IDXGIOutput6 *iface,
     struct wined3d_display_mode mode;
     HRESULT hr;
 
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     TRACE("iface %p, desc %p.\n", iface, desc);
 #else
     FIXME("iface %p, desc %p semi-stub!\n", iface, desc);
@@ -756,7 +756,7 @@ static HRESULT STDMETHODCALLTYPE dxgi_output_GetDesc1(IDXGIOutput6 *iface,
     desc->MinLuminance = 0.f;
     desc->MaxLuminance = 0.f;
     desc->MaxFullFrameLuminance = 0.f;
-#if defined(__REACTOS__) && defined(REACTOS_DXGI_D3DKMT_ADAPTER_ORDER)
+#if defined(__LIBRENT__) && defined(LIBRENT_DXGI_D3DKMT_ADAPTER_ORDER)
     dxgi_get_wddm_output_color(wined3d_desc.device_name, desc);
 #endif
 

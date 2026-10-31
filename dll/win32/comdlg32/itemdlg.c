@@ -471,7 +471,7 @@ static void set_current_filter(FileDialogImpl *This, LPCWSTR str)
 
 static BOOL set_file_name(FileDialogImpl *This, LPCWSTR str)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPWSTR filename = str ? StrDupW(str) : NULL;
 
     if (str && !filename) return FALSE;
@@ -479,13 +479,13 @@ static BOOL set_file_name(FileDialogImpl *This, LPCWSTR str)
     if(This->set_filename)
         LocalFree(This->set_filename);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     This->set_filename = filename;
 #else
     This->set_filename = str ? StrDupW(str) : NULL;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (filename && wcspbrk(filename, L"*?"))
         set_current_filter(This, filename);
 #else
@@ -503,7 +503,7 @@ static void fill_filename_from_selection(FileDialogImpl *This)
     HRESULT hr;
     DWORD item_count;
     UINT valid_count;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SIZE_T len_total;
     UINT i;
 #else
@@ -517,7 +517,7 @@ static void fill_filename_from_selection(FileDialogImpl *This)
     if(FAILED(hr) || !item_count)
         return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)item_count > ~(SIZE_T)0 / sizeof(*names)) return;
     names = malloc(item_count*sizeof(*names));
     if (!names) return;
@@ -538,26 +538,26 @@ static void fill_filename_from_selection(FileDialogImpl *This)
             if(SUCCEEDED(hr) &&
                (( (This->options & FOS_PICKFOLDERS) && !(attr & SFGAO_FOLDER)) ||
                 (!(This->options & FOS_PICKFOLDERS) &&  (attr & SFGAO_FOLDER))))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 IShellItem_Release(psi);
 #endif
                 continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             }
 #endif
 
             hr = IShellItem_GetDisplayName(psi, (This->options & FOS_PICKFOLDERS) ? SIGDN_FILESYSPATH : SIGDN_PARENTRELATIVEPARSING, &names[valid_count]);
             if(SUCCEEDED(hr))
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 SIZE_T name_length = (SIZE_T)lstrlenW(names[valid_count]) + 3;
 
 #else
                 len_total += lstrlenW(names[valid_count]) + 3;
 #endif
                 valid_count++;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (name_length > ~(SIZE_T)0 / sizeof(WCHAR) - len_total)
                 {
                     IShellItem_Release(psi);
@@ -573,7 +573,7 @@ static void fill_filename_from_selection(FileDialogImpl *This)
     if(valid_count == 1)
     {
         set_file_name(This, names[0]);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         CoTaskMemFree(names[0]);
 #endif
     }
@@ -582,7 +582,7 @@ static void fill_filename_from_selection(FileDialogImpl *This)
         LPWSTR string = malloc(sizeof(WCHAR)*len_total);
         LPWSTR cur_point = string;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!string) goto done;
 #endif
         for(i = 0; i < valid_count; i++)
@@ -593,7 +593,7 @@ static void fill_filename_from_selection(FileDialogImpl *This)
             cur_point += lstrlenW(file);
             *cur_point++ = '\"';
             *cur_point++ = ' ';
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
             CoTaskMemFree(file);
 #endif
         }
@@ -603,7 +603,7 @@ static void fill_filename_from_selection(FileDialogImpl *This)
         free(string);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     for (i = 0; i < valid_count; i++) CoTaskMemFree(names[i]);
 #endif
@@ -1532,7 +1532,7 @@ static void ctrl_container_reparent(FileDialogImpl *This, HWND parent)
         wndstyle |= WS_POPUP;
         SetWindowLongW(This->cctrls_hwnd, GWL_STYLE, wndstyle);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetParent(This->cctrls_hwnd, HWND_MESSAGE);
 #else
         SetParent(This->cctrls_hwnd, NULL);

@@ -27,4 +27,4 @@ add_idl_reg_scripts(msdaps registry
     row_server.idl)
 target_link_libraries(msdaps uuid wine ${PSEH_LIB})
 add_importlibs(msdaps rpcrt4 ole32 oleaut32 advapi32 msvcrt kernel32 ntdll)
-add_cd_file(TARGET msdaps DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msdaps DESTINATION librent/system32 FOR all)

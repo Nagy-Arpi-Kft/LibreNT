@@ -75,7 +75,7 @@ typedef struct __nfs41_readdir_cookie {
 typedef struct __nfs41_write_verf {
     unsigned char   verf[NFS4_VERIFIER_SIZE];
     unsigned char   expected[NFS4_VERIFIER_SIZE];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t committed;
 #else
     enum stable_how4 committed;
@@ -148,7 +148,7 @@ typedef struct __stateid4 {
 typedef struct __open_delegation4 {
     stateid4 stateid;
     nfsace4 permissions;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     uint32_t type;
 #else
     enum open_delegation_type4 type;

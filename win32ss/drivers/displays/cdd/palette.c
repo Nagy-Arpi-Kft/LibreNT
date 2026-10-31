@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Canonical Display Driver (cdd.dll)
+ * PROJECT:     LibreNT Canonical Display Driver (cdd.dll)
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Palette support (only relevant at <= 8bpp).
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>

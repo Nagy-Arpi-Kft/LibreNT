@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS
+# PROJECT:     LibreNT
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the unchanged Raspberry Pi Windows mini-UART driver sources
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -29,8 +29,8 @@ set_module_type(pi_miniuart kmdfdriver)
 
 get_filename_component(_rpi3winsync_root "${CMAKE_CURRENT_SOURCE_DIR}/../../../.." ABSOLUTE)
 target_include_directories(pi_miniuart BEFORE PRIVATE
-    ${_rpi3winsync_root}/reactos-compat/miniuart
-    ${_rpi3winsync_root}/reactos-compat
+    ${_rpi3winsync_root}/librent-compat/miniuart
+    ${_rpi3winsync_root}/librent-compat
     ${_rpi3winsync_root}/drivers/mailbox/bcm2836
     ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -47,8 +47,8 @@ endif()
 target_link_libraries(pi_miniuart ntoskrnl_vista rtlver libcntpr ${PSEH_LIB})
 add_importlibs(pi_miniuart hal ntoskrnl wmilib)
 
-add_cd_file(TARGET pi_miniuart DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET pi_miniuart DESTINATION librent/system32/drivers FOR all)
 
-add_driver_inf(pi_miniuart "${_rpi3winsync_root}/reactos-compat/miniuart/pi_miniuart.inf")
+add_driver_inf(pi_miniuart "${_rpi3winsync_root}/librent-compat/miniuart/pi_miniuart.inf")
 
 set_target_properties(pi_miniuart PROPERTIES FOLDER "Drivers/Platform/Raspberry Pi 3")

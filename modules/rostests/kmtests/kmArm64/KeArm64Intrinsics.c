@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT kernel-mode tests
+ * PROJECT:     LibreNT kernel-mode tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ARM64 intrinsics: system registers, barriers, interlocked
  *
@@ -9,7 +9,7 @@
  */
 
 #include <kmt_test.h>
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 
 VOID Test_KeArm64Intrinsics(VOID);
 

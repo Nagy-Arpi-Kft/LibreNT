@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT WoW64 layer
+ * PROJECT:     LibreNT WoW64 layer
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
- * PURPOSE:     Thunks for ReactOS syscalls that have no Wine counterpart
+ * PURPOSE:     Thunks for LibreNT syscalls that have no Wine counterpart
  * COPYRIGHT:   Copyright 2026 LiberNT Team
  *
  * Wine's wow64 only provides thunks for the syscalls its own ntdll
  * implements.  This file adds thunks for the remaining entries of the
- * ReactOS syscall table (ntoskrnl/include/sysfuncs.h), so that the WoW64
+ * LibreNT syscall table (ntoskrnl/include/sysfuncs.h), so that the WoW64
  * layer is never the reason a 32-bit syscall behaves differently from its
  * 64-bit counterpart.  It also provides real implementations for the five
  * syscalls Wine stubs out with a raised exception (ALL_SYSCALL_STUBS).
@@ -26,7 +26,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(wow);
 
 /**********************************************************************
- * Types not present in the Wine headers.  Layouts follow the ReactOS
+ * Types not present in the Wine headers.  Layouts follow the LibreNT
  * NDK (sdk/include/ndk); the *32 variants are the i386 layouts.
  */
 
@@ -307,7 +307,7 @@ typedef struct
 
 /**********************************************************************
  * Syscall prototypes not present in the Wine headers.  Signatures
- * follow the ReactOS NDK; enums are declared as ULONG and opaque
+ * follow the LibreNT NDK; enums are declared as ULONG and opaque
  * flat structures as void pointers.
  */
 
@@ -1175,7 +1175,7 @@ NTSTATUS WINAPI wow64_NtGetPlugPlayEvent( UINT *args )
     status = NtGetPlugPlayEvent( reserved1, reserved2, event, size );
     if (!status && event->TotalSize >= sizeof(*event))
     {
-        /* the payload union is flat for all event categories ReactOS
+        /* the payload union is flat for all event categories LibreNT
            generates; pointer-bearing payloads would need extra handling */
         event32->EventGuid = event->EventGuid;
         event32->EventCategory = event->EventCategory;

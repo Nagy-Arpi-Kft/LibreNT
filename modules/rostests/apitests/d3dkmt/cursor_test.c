@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM mouse-path tests (software cursor vs the scan-out present)
  * COPYRIGHT:   Copyright 2026 LiberNT WDDM Team
@@ -16,7 +16,7 @@
  * Everything here is portable: the frame counter comes from the public
  * D3DKMTQueryStatistics (D3DKMT_QUERYSTATISTICS_VIDPNSOURCE.Frame, "both by Blt
  * and Flip"), and the throughput/latency checks use plain user32. The same
- * binary is meant to run on Windows 11 ARM64 as the reference and on ReactOS as
+ * binary is meant to run on Windows 11 ARM64 as the reference and on LibreNT as
  * the subject; a host that does not implement the statistics query still runs
  * the throughput and latency tests.
  */

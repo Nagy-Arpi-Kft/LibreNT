@@ -1,5 +1,5 @@
 /*
- *  ReactOS
+ *  LibreNT
  *
  *  regdump.h
  *

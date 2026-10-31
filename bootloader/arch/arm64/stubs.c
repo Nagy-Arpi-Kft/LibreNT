@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT FreeLoader
+ * PROJECT:     LibreNT FreeLoader
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Minimal ARM64 stubs for the UEFI FreeLoader link
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -36,20 +36,20 @@ __rdtsc(void)
 #endif
 
 #if !defined(_MSC_VER) || defined(__clang__)
-static void __reactos_debugbreak_impl(void)
+static void __librent_debugbreak_impl(void)
 {
     __asm__ volatile("brk #0");
 }
 
-void __debugbreak(void) __attribute__((alias("__reactos_debugbreak_impl")));
+void __debugbreak(void) __attribute__((alias("__librent_debugbreak_impl")));
 
-static void __reactos_fastfail_impl(unsigned int code)
+static void __librent_fastfail_impl(unsigned int code)
 {
     (void)code;
     for (;;) { __asm__ volatile("wfi"); }
 }
 
-void __fastfail(unsigned int code) __attribute__((alias("__reactos_fastfail_impl")));
+void __fastfail(unsigned int code) __attribute__((alias("__librent_fastfail_impl")));
 #endif
 
 void DbgBreakPoint(void)

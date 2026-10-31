@@ -33,14 +33,14 @@ typedef struct _EXT2_FLPFLUSH_CONTEXT {
 
 } EXT2_FLPFLUSH_CONTEXT, *PEXT2_FLPFLUSH_CONTEXT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
 #endif
 Ext2FloppyFlush(IN PVOID Parameter);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -67,7 +67,7 @@ Ext2DeferWrite(IN PEXT2_IRP_CONTEXT, PIRP Irp);
 
 /* FUNCTIONS *************************************************************/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -114,7 +114,7 @@ Ext2FloppyFlush(IN PVOID Parameter)
     Ext2FreePool(Parameter, EXT2_FLPFLUSH_MAGIC);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 VOID NTAPI
 #else
 VOID
@@ -789,7 +789,7 @@ Ext2WriteFile(IN PEXT2_IRP_CONTEXT IrpContext)
     BOOLEAN             PagingIoResourceAcquired = FALSE;
 
     BOOLEAN             bDeferred = FALSE;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     BOOLEAN             UpdateFileValidSize = FALSE;
 #endif
     BOOLEAN             FileSizesChanged = FALSE;

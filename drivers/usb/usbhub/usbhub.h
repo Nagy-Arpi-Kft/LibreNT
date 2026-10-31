@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS USB Hub Driver
+ * PROJECT:     LibreNT USB Hub Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     USBHub declarations
  * COPYRIGHT:   Copyright 2017 Vadim Galyant <vgal@rambler.ru>
@@ -22,7 +22,7 @@
 #include <usbdlib.h>
 #include <ks.h>
 #include <drivers/usbport/usbmport.h>
-#include <reactos/drivers/dumpstor.h>
+#include <librent/drivers/dumpstor.h>
 
 #define USB_HUB_TAG 'BUHU'
 

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Win32 Base API
+ * PROJECT:     LibreNT Win32 Base API
  * LICENSE:     GPL-3.0-only (https://spdx.org/licenses/GPL-3.0-only)
  * PURPOSE:     Application restart registration support
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -41,7 +41,7 @@ BaseGetRestartMappingName(
 {
     NTSTATUS Status;
 
-    Status = RtlStringCchPrintfW(Name, Count, L"ReactOS.ApplicationRestart.%lu", ProcessId);
+    Status = RtlStringCchPrintfW(Name, Count, L"LibreNT.ApplicationRestart.%lu", ProcessId);
     return NT_SUCCESS(Status) ? S_OK : HRESULT_FROM_NT(Status);
 }
 

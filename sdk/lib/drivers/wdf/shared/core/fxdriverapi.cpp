@@ -304,7 +304,7 @@ WDFEXPORT(WdfDriverCreate)(
             *Driver = hDriver;
         }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (FX_TELEMETRY_ENABLED(g_TelemetryProvider, pFxDriverGlobals)) {
             FxAutoString imageName;
 
@@ -332,7 +332,7 @@ WDFEXPORT(WdfDriverCreate)(
                                     imageName.m_UnicodeString.Buffer,
                                     pVersionStr);
         }
-#endif // __REACTOS__
+#endif // __LIBRENT__
     }
     else {
         if (pDriver != NULL) {

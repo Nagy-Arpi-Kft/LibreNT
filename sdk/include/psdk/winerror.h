@@ -195,7 +195,7 @@
 #define SCODE_SEVERITY(sc)      (((sc) >> 31) & 0x1)
 
 #define __HRESULT_FROM_WIN32(x)   ((HRESULT)(x) > 0 ? ((HRESULT) (((x) & 0x0000FFFF) | (FACILITY_WIN32 << 16) | 0x80000000)) : (HRESULT)(x) )
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #if defined(RC_INVOKED) || defined(__midl)
 #define HRESULT_FROM_WIN32(x) __HRESULT_FROM_WIN32(x)
 #elif defined(__cplusplus)
@@ -213,7 +213,7 @@ static __inline long __ros_hresult_from_win32(unsigned long x)
 #define HRESULT_FROM_WIN32(x) __HRESULT_FROM_WIN32(x)
 #endif
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #ifndef _HRESULT_DEFINED
 #define _HRESULT_DEFINED
 #if !defined(__LP64__) && !defined(WINE_NO_LONG_TYPES)
@@ -226,7 +226,7 @@ static inline HRESULT HRESULT_FROM_WIN32(unsigned int x)
 {
     return (HRESULT)x > 0 ? ((HRESULT) ((x & 0x0000FFFF) | (FACILITY_WIN32 << 16) | 0x80000000)) : (HRESULT)x;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 #define FACILITY_NT_BIT         0x10000000
 #define HRESULT_FROM_NT(x)      ((HRESULT) ((x) | FACILITY_NT_BIT))
 
@@ -2699,7 +2699,7 @@ static inline HRESULT HRESULT_FROM_WIN32(unsigned int x)
 #define DNS_STATUS_FQDN                                    9557
 #define DNS_STATUS_DOTTED_NAME                             9558
 #define DNS_STATUS_SINGLE_PART_NAME                        9559
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DNS_STATUS_PACKET_UNSECURE                         DNS_ERROR_UNSECURE_PACKET
 #define DNS_ERROR_NO_MEMORY                                ERROR_OUTOFMEMORY
 #define DNS_ERROR_INVALID_NAME                             ERROR_INVALID_NAME
@@ -2845,7 +2845,7 @@ static inline HRESULT HRESULT_FROM_WIN32(unsigned int x)
  * All Windows Sockets error constants are biased by WSABASEERR from
  * the "normal"
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WSABASEERR                 10000L
 #else
 #define WSABASEERR                 10000
@@ -5054,7 +5054,7 @@ static inline HRESULT HRESULT_FROM_WIN32(unsigned int x)
 #define WER_E_INSUFFICIENT_CONSENT                         _HRESULT_TYPEDEF_(0x801B8006)
 #define WER_E_TOO_HEAVY                                    _HRESULT_TYPEDEF_(0x801B8007)
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define FILTER_HRESULT_FROM_FLT_NTSTATUS(x) (ASSERT((x & 0xfff0000) == 0x001c0000),(HRESULT)(((x) & 0x8000FFFF) | (FACILITY_USERMODE_FILTER_MANAGER << 16)))
 #endif
 #define ERROR_FLT_IO_COMPLETE                              _HRESULT_TYPEDEF_(0x001F0001)

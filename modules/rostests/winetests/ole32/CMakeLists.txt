@@ -1,7 +1,7 @@
 
 add_definitions(-DUSE_WINE_TODOS)
 
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 spec2def(ole32_testlib.dll testlib.spec)
 
 add_library(ole32_testlib MODULE testlib.c ${CMAKE_CURRENT_BINARY_DIR}/ole32_testlib.def)

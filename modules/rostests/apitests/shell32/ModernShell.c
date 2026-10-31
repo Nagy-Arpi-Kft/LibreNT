@@ -1,4 +1,4 @@
-/* ReactOS API tests. LGPL-2.1-or-later. */
+/* LibreNT API tests. LGPL-2.1-or-later. */
 #define COBJMACROS
 #include <apitest.h>
 #include <shlobj.h>
@@ -8,14 +8,14 @@ static void test_association_queries(IApplicationAssociationRegistration *regist
 {
     WCHAR extension[80], app[80], classes_path[160], choice_path[256], caps_path[160];
     HKEY classes = NULL, choice = NULL, caps = NULL, apps = NULL, associations = NULL;
-    const WCHAR progid[] = L"ReactOS.AssociationTest.ProgId";
-    const WCHAR override[] = L"ReactOS.AssociationTest.Override";
+    const WCHAR progid[] = L"LibreNT.AssociationTest.ProgId";
+    const WCHAR override[] = L"LibreNT.AssociationTest.Override";
     WCHAR *value;
     BOOL is_default;
     HRESULT hr;
     LONG ret;
-    wsprintfW(extension, L".ReactOS.AssociationTest.%lu", GetCurrentProcessId());
-    wsprintfW(app, L"ReactOS.AssociationTest.%lu", GetCurrentProcessId());
+    wsprintfW(extension, L".LibreNT.AssociationTest.%lu", GetCurrentProcessId());
+    wsprintfW(app, L"LibreNT.AssociationTest.%lu", GetCurrentProcessId());
     wsprintfW(classes_path, L"Software\\Classes\\%s", extension);
     wsprintfW(choice_path, L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\%s\\UserChoice", extension);
     wsprintfW(caps_path, L"Software\\%s\\Capabilities", app);
@@ -136,7 +136,7 @@ START_TEST(ModernShell)
         ok(hr == E_INVALIDARG && !path, "empty extension: %#lx, %p\n", hr, path);
         path = (void *)0xdeadbeef;
         hr = IApplicationAssociationRegistration_QueryCurrentDefault(registration,
-                L".ReactOS.Nonexistent.Association.9D351", AT_FILEEXTENSION, AL_EFFECTIVE, &path);
+                L".LibreNT.Nonexistent.Association.9D351", AT_FILEEXTENSION, AL_EFFECTIVE, &path);
         ok(hr == HRESULT_FROM_WIN32(ERROR_NO_ASSOCIATION) && !path,
            "absent association: %#lx, %p\n", hr, path);
         test_association_queries(registration);

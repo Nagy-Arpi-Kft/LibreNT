@@ -1284,7 +1284,7 @@ HRESULT WINAPI SafeArrayDestroyData(SAFEARRAY *psa)
       psa->pvData = NULL;
     }
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
       psa->fFeatures &= ~FADF_CREATEVECTOR;
       psa->pvData = NULL;

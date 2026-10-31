@@ -3415,7 +3415,7 @@ static void checkElementStatus(const CERT_TRUST_STATUS *expected,
          "%s[%ld], element [%ld,%ld]: expected error %08lx, got %08lx\n",
          testName, testIndex, chainIndex, elementIndex, expected->dwErrorStatus,
          got->dwErrorStatus);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else todo_wine_if ((todo & TODO_ERROR) && !broken((got->dwErrorStatus & ~ignore->dwErrorStatus) == (expected->dwErrorStatus & ~ignore->dwErrorStatus)))
 #else
     else todo_wine_if (todo & TODO_ERROR)
@@ -3432,7 +3432,7 @@ static void checkElementStatus(const CERT_TRUST_STATUS *expected,
          "%s[%ld], element [%ld,%ld]: expected info %08lx, got %08lx\n",
          testName, testIndex, chainIndex, elementIndex, expected->dwInfoStatus,
          got->dwInfoStatus);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else todo_wine_if ((todo & TODO_INFO) && !broken((got->dwInfoStatus & ~ignore->dwInfoStatus) == (expected->dwInfoStatus & ~ignore->dwInfoStatus)))
 #else
     else todo_wine_if (todo & TODO_INFO)
@@ -3480,7 +3480,7 @@ static void checkChainStatus(PCCERT_CHAIN_CONTEXT chain,
     ok(chain->cChain == chainStatus->cChain,
      "%s[%ld]: expected %ld simple chains, got %ld\n", testName, testIndex,
      chainStatus->cChain, chain->cChain);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     todo_wine_if (todo & TODO_ERROR && chain->TrustStatus.dwErrorStatus != chainStatus->status.dwErrorStatus && !broken((chain->TrustStatus.dwErrorStatus & ~chainStatus->statusToIgnore.dwErrorStatus) == (chainStatus->status.dwErrorStatus & ~chainStatus->statusToIgnore.dwErrorStatus)))
 #else
     todo_wine_if (todo & TODO_ERROR &&
@@ -3496,7 +3496,7 @@ static void checkChainStatus(PCCERT_CHAIN_CONTEXT chain,
          "root certificate is available.\n",
          testName, testIndex, chainStatus->status.dwErrorStatus,
          chain->TrustStatus.dwErrorStatus, CERT_TRUST_IS_UNTRUSTED_ROOT);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     todo_wine_if (todo & TODO_INFO && chain->TrustStatus.dwInfoStatus != chainStatus->status.dwInfoStatus && !broken((chain->TrustStatus.dwInfoStatus & ~chainStatus->statusToIgnore.dwInfoStatus) == (chainStatus->status.dwInfoStatus & ~chainStatus->statusToIgnore.dwInfoStatus)))
 #else
     todo_wine_if (todo & TODO_INFO &&

@@ -52,7 +52,7 @@ OSLoadingMethods[] =
     {"Windows"     , MenuNTOptions, LoadAndBootWindows},
     {"Windows2003" , MenuNTOptions, LoadAndBootWindows},
     {"WindowsVista", MenuNTOptions, LoadAndBootWindows},
-    {"ReactOSSetup", MenuNTOptions, LoadReactOSSetup},
+    {"ReactOSSetup", MenuNTOptions, LoadLibreNTSetup},
 };
 
 #if (defined(_M_IX86) || defined(_M_AMD64)) && !defined(UEFIBOOT)
@@ -89,7 +89,7 @@ WarnDeprecated(
         "\n"
         "%s\n"
         "\n"
-        "Should you need assistance, please contact ReactOS developers\n"
+        "Should you need assistance, please contact LibreNT developers\n"
         "on the official ReactOS Mattermost server <chat.reactos.org>.",
         msgString);
 }

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Public Core Audio session surface over the shared registry
@@ -221,7 +221,7 @@ static void TestProxyContract(void)
 
     if (ChannelVolume)
     {
-        float Levels[REACTOS_AUDIO_SESSION_MAX_CHANNELS];
+        float Levels[LIBRENT_AUDIO_SESSION_MAX_CHANNELS];
         UINT32 Channels = 0;
         UINT32 i;
 

@@ -16,7 +16,7 @@
  * along with WinBtrfs.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include "shellext.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <windows.h>
 #include <winternl.h>
 #else
@@ -26,7 +26,7 @@
 #include <ndk/iofuncs.h>
 #endif
 #include "iconoverlay.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"

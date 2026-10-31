@@ -673,7 +673,7 @@ static void wined3d_device_gl_create_dummy_textures(struct wined3d_device_gl *de
         gl_info->gl_ops.gl.p_glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textures->tex_2d_ms);
         GL_EXTCALL(glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 1, GL_RGBA8, 1, 1, GL_TRUE));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (gl_info->supported[EXT_TEXTURE_ARRAY])
         {
 #endif
@@ -681,14 +681,14 @@ static void wined3d_device_gl_create_dummy_textures(struct wined3d_device_gl *de
             TRACE("Dummy multisample array texture given name %u.\n", textures->tex_2d_ms_array);
             gl_info->gl_ops.gl.p_glBindTexture(GL_TEXTURE_2D_MULTISAMPLE_ARRAY, textures->tex_2d_ms_array);
             GL_EXTCALL(glTexImage3DMultisample(GL_TEXTURE_2D_MULTISAMPLE_ARRAY, 1, GL_RGBA8, 1, 1, 1, GL_TRUE));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
 
         if (gl_info->supported[ARB_CLEAR_TEXTURE])
         {
             GL_EXTCALL(glClearTexImage(textures->tex_2d_ms, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &color));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (textures->tex_2d_ms_array)
 #endif
                 GL_EXTCALL(glClearTexImage(textures->tex_2d_ms_array, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &color));

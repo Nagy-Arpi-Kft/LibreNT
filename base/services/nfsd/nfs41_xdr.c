@@ -3565,7 +3565,7 @@ static const op_table_entry g_op_table[] = {
     { encode_op_destroy_clientid, decode_op_destroy_clientid }, /* OP_DESTROY_CLIENTID = 57 */
     { encode_op_reclaim_complete, decode_op_reclaim_complete }, /* OP_RECLAIM_COMPLETE = 58 */
 };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const uint32_t g_op_table_size = (sizeof(g_op_table) / sizeof(g_op_table[0]));
 #else
 static const uint32_t g_op_table_size = ARRAYSIZE(g_op_table);

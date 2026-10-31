@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Display Control Panel
+ * PROJECT:     LibreNT Display Control Panel
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Ukrainian resource file
  * TRANSLATORS: Copyright 2006-2008 Artem Reznikov <temarez@yandex.ru>
@@ -87,7 +87,7 @@ CAPTION "Додаткове оформлення"
 FONT 8, "MS Shell Dlg"
 BEGIN
     CONTROL "", IDC_APPEARANCE_PREVIEW, "PreviewWndClass", WS_VISIBLE | WS_BORDER, 7, 7, 232, 120
-    LTEXT "Якщо ви виберете тему, що відрізняється від класичної LiberNT, вона замінить наведені нижче параметри, крім деяких старих програм.", IDC_ADVAPPEARANCE_DISCLAIMER, 7, 133, 232, 30, BS_MULTILINE
+    LTEXT "Якщо ви виберете тему, що відрізняється від класичної LibreNT, вона замінить наведені нижче параметри, крім деяких старих програм.", IDC_ADVAPPEARANCE_DISCLAIMER, 7, 133, 232, 30, BS_MULTILINE
     LTEXT "Елемент", 8, 5, 160, 50, 9//FIXME: add accel. I used "&Елемент" for the backport
     COMBOBOX IDC_ADVAPPEARANCE_ELEMENT, 5, 170, 130, 90, CBS_DROPDOWNLIST |
              CBS_HASSTRINGS | CBS_SORT | WS_VSCROLL | WS_TABSTOP

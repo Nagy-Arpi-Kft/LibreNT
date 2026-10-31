@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Console Utilities Library
+ * PROJECT:     LibreNT Console Utilities Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Console/terminal screen management.
  * COPYRIGHT:   Copyright 2017-2018 ReactOS Team

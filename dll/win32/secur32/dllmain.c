@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            lib/secur32/lsa.c
  * PURPOSE:         Client-side LSA functions
  * UPDATE HISTORY:
@@ -18,7 +18,7 @@ HANDLE Secur32Heap;
 
 /* FUNCTIONS *****************************************************************/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 // See sspi.c
 extern void SECUR32_freeProviders(void);
 #endif
@@ -41,7 +41,7 @@ DllMain(HINSTANCE hInstance,
             break;
 
         case DLL_PROCESS_DETACH:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             SECUR32_freeProviders();
 #endif
             LsapCloseLsaPort();

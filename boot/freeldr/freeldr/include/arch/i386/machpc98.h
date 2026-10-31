@@ -75,9 +75,9 @@ BOOLEAN Pc98VideoIsPaletteFixed(VOID);
 VOID Pc98VideoSetPaletteColor(UCHAR Color, UCHAR Red, UCHAR Green, UCHAR Blue);
 VOID Pc98VideoGetPaletteColor(UCHAR Color, UCHAR* Red, UCHAR* Green, UCHAR* Blue);
 VOID Pc98VideoSync(VOID);
-VOID Pc98VideoPrepareForReactOS(VOID);
+VOID Pc98VideoPrepareForLibreNT(VOID);
 
-VOID Pc98PrepareForReactOS(VOID);
+VOID Pc98PrepareForLibreNT(VOID);
 TIMEINFO* Pc98GetTime(VOID);
 BOOLEAN Pc98InitializeBootDevices(VOID);
 

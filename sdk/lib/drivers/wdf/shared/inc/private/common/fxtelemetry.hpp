@@ -40,7 +40,7 @@ Notes:
 extern "C" {
 #endif
 
-// TRACELOGGING_DECLARE_PROVIDER(g_TelemetryProvider); __REACTOS__
+// TRACELOGGING_DECLARE_PROVIDER(g_TelemetryProvider); __LIBRENT__
 
 #define FX_TELEMETRY_ENABLED(TraceHandle, Globals)                \
     (TraceHandle && IsDriverTelemetryContextInitialized(Globals))     \

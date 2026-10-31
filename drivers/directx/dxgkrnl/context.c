@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX Graphics Kernel
+ * PROJECT:     LibreNT DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM GPU device and context lifecycle management
  * COPYRIGHT:   Copyright 2024 LiberNT Team
@@ -397,7 +397,7 @@ DxgkDeviceSetExecutionState(
         DxgkSyncObjectCancelDeviceWaits(Device, STATUS_DEVICE_REMOVED, TRUE);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static BOOLEAN
 DxgkpDeviceSetFaultExecutionState(
     _In_ PDXGKRNL_DEVICE Device,
@@ -944,7 +944,7 @@ DxgkAcquireProcessRecord(
                        &Candidate->GlobalProcessListEntry);
         ExReleaseFastMutex(&DxgkProcessListLock);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         Status = DxgkGpuVaCreateProcess(Adapter, Candidate);
         if (!NT_SUCCESS(Status))
         {
@@ -1053,7 +1053,7 @@ DxgkDereferenceProcessRecord(
          * New openers pin it and wait, so CreateProcess cannot overlap this
          * DestroyProcess for the same (process, adapter) identity.
          */
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
         DxgkGpuVaDestroyProcess(ProcessRecord->Adapter, ProcessRecord);
 #endif
 
@@ -1416,7 +1416,7 @@ DxgkpEnsureBaseNamedObjectsDirectory(VOID)
 
     /* Native WDDM miniports may publish permanent synchronization objects
      * from their system-context CreateContext path.  That path runs before
-     * basesrv creates the session-zero namespace during ReactOS boot. */
+     * basesrv creates the session-zero namespace during LibreNT boot. */
     InitializeObjectAttributes(&ObjectAttributes,
                                (PUNICODE_STRING)&DirectoryName,
                                OBJ_CASE_INSENSITIVE | OBJ_OPENIF |
@@ -1541,7 +1541,7 @@ DxgkCreatePagingSystemContext(
     WorkTerminal.TerminalStatus = STATUS_DEVICE_REMOVED;
     DxgkDeviceWorkCoreInitializeLedger(&Device->WorkLedger, &WorkTerminal);
     DxgkSyncWaitCoreInitializeRegistry(&Device->SyncWaitRegistry);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     KeInitializeSpinLock(&Device->PageFaultLock);
 #endif
     DxgkPresentLimitCoreInitialize(&Device->PresentLimit,
@@ -1603,7 +1603,7 @@ DxgkCreatePagingSystemContext(
     RtlZeroMemory(&CreateDeviceArg, sizeof(CreateDeviceArg));
     CreateDeviceArg.hDevice = NULL;
     CreateDeviceArg.Flags.SystemDevice = 1;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     CreateDeviceArg.hKmdProcess = ProcessRecord->hMiniportProcess;
 #endif
     Status = DXGK_CB_FULL(Adapter, DxgkDdiCreateDevice)(
@@ -1632,7 +1632,7 @@ DxgkCreatePagingSystemContext(
     RtlZeroMemory(&CreateDeviceArg, sizeof(CreateDeviceArg));
     CreateDeviceArg.hDevice = NULL;
     CreateDeviceArg.Flags.SystemDevice = 1;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     CreateDeviceArg.hKmdProcess = ProcessRecord->hMiniportProcess;
 #endif
     Status = DXGK_CB_FULL(Adapter, DxgkDdiCreateDevice)(
@@ -2109,7 +2109,7 @@ DxgkpCreateDevice(
     WorkTerminal.TerminalStatus = STATUS_DEVICE_REMOVED;
     DxgkDeviceWorkCoreInitializeLedger(&Device->WorkLedger, &WorkTerminal);
     DxgkSyncWaitCoreInitializeRegistry(&Device->SyncWaitRegistry);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     KeInitializeSpinLock(&Device->PageFaultLock);
 #endif
     DxgkPresentLimitCoreInitialize(&Device->PresentLimit, DXGKRNL_DEFAULT_QUEUED_PRESENT_LIMIT);
@@ -2140,7 +2140,7 @@ DxgkpCreateDevice(
     /* UMD D3DKMT flags are not bit-compatible with the KMD device flags. */
     CreateDeviceArg.Flags.Value         = 0;
     CreateDeviceArg.Flags.GdiDevice     = GdiDevice;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     CreateDeviceArg.hKmdProcess         = Device->ProcessRecord->hMiniportProcess;
 #endif
 
@@ -2597,7 +2597,7 @@ DxgkpCreateContextCaptured(
     Context->NodeOrdinal    = pCreateContext->NodeOrdinal;
     Context->EngineAffinity = pCreateContext->EngineAffinity;
     Context->SchedulingPriority = 0;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     Context->InProcessSchedulingPriority = 0;
 #endif
     Context->ReferenceCount = 1;
@@ -2953,7 +2953,7 @@ DxgkCreateContextVirtual(
     Context->NodeOrdinal = pCreateContext->NodeOrdinal;
     Context->EngineAffinity = pCreateContext->EngineAffinity;
     Context->SchedulingPriority = 0;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     Context->InProcessSchedulingPriority = 0;
 #endif
     Context->VirtualAddressing = TRUE;

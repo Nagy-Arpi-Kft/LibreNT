@@ -147,7 +147,7 @@ static void get_descriptors(HWND hdlg, ps_struct_t *ps_struct)
         /* Get the icon here.  If dwDrawAspect & DVASCPECT_ICON call GetData(CF_METAFILEPICT), otherwise
            native calls OleGetIconFromClass(obj_desc->clsid) */
         GlobalUnlock(stg.hGlobal);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ReleaseStgMedium(&stg);
 #else
         GlobalFree(stg.hGlobal);
@@ -167,7 +167,7 @@ static void get_descriptors(HWND hdlg, ps_struct_t *ps_struct)
         if(obj_desc->dwFullUserTypeName)
             ps_struct->link_type_name = wcsdup((WCHAR*)((char*)obj_desc + obj_desc->dwFullUserTypeName));
         GlobalUnlock(stg.hGlobal);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ReleaseStgMedium(&stg);
 #else
         GlobalFree(stg.hGlobal);
@@ -432,12 +432,12 @@ static void update_result_text(HWND hdlg, const ps_struct_t *ps_struct)
         /* FIXME handle %s in ResultText. Sub appname if IDS_PS_PASTE_OBJECT{_AS_ICON}.  Else sub appropriate type name */
         size_t result_txt_len = lstrlenW(pent->lpstrResultText);
         ptrdiff_t offs = (char*)ptr - (char*)resource_txt;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (result_txt_len > ~(size_t)0 / sizeof(WCHAR) - wcslen(resource_txt) + 1)
             return;
 #endif
         result_txt = malloc((wcslen(resource_txt) + result_txt_len - 1) * sizeof(WCHAR));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!result_txt)
             return;
 #endif

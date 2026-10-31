@@ -1,15 +1,15 @@
 #ifndef __NTDDK_EX__H__
 #define __NTDDK_EX__H__
 
-//#ifndef USE_REACTOS_DDK
+//#ifndef USE_LIBRENT_DDK
 #ifdef ASSERT
 #undef ASSERT
 #define ASSERT(x) ((void)0)
 #endif //ASSERT
-//#endif //USE_REACTOS_DDK
+//#endif //USE_LIBRENT_DDK
 
 
-#if !defined(FILE_CHARACTERISTIC_PNP_DEVICE) || defined(USE_REACTOS_DDK) // DDK 2003
+#if !defined(FILE_CHARACTERISTIC_PNP_DEVICE) || defined(USE_LIBRENT_DDK) // DDK 2003
 
 #ifndef FILE_CHARACTERISTIC_PNP_DEVICE
 #define FILE_CHARACTERISTIC_PNP_DEVICE  0x00000800
@@ -46,7 +46,7 @@ typedef enum _SYSTEM_INFORMATION_CLASS {
     SystemUnloadGdiDriverInformation,
     SystemTimeAdjustmentInformation,
     SystemSummaryMemoryInformation,
-#ifndef USE_REACTOS_DDK
+#ifndef USE_LIBRENT_DDK
     SystemNextEventIdInformation,
     SystemEventIdsInformation,
     SystemCrashDumpInformation,
@@ -54,7 +54,7 @@ typedef enum _SYSTEM_INFORMATION_CLASS {
     SystemMirrorMemoryInformation,
     SystemPerformanceTraceInformation,
     SystemObsolete0,
-#endif // USE_REACTOS_DDK
+#endif // USE_LIBRENT_DDK
     SystemExceptionInformation,
     SystemCrashDumpStateInformation,
     SystemKernelDebuggerInformation,
@@ -64,17 +64,17 @@ typedef enum _SYSTEM_INFORMATION_CLASS {
     SystemPrioritySeperation,
     SystemPlugPlayBusInformation,
     SystemDockInformation,
-#ifdef USE_REACTOS_DDK
+#ifdef USE_LIBRENT_DDK
     SystemPowerInformationNative,
 #elif defined IRP_MN_START_DEVICE
     SystemPowerInformationInfo,
 #else
     SystemPowerInformation,
-#endif // USE_REACTOS_DDK
+#endif // USE_LIBRENT_DDK
     SystemProcessorSpeedInformation,
     SystemCurrentTimeZoneInformation,
     SystemLookasideInformation,
-#ifdef USE_REACTOS_DDK
+#ifdef USE_LIBRENT_DDK
     SystemTimeSlipNotification,
     SystemSessionCreate,
     SystemSessionDetach,
@@ -128,10 +128,10 @@ typedef enum _SYSTEM_INFORMATION_CLASS {
     SystemPrefetchPathInformation,
     SystemVerifierFaultsInformation,
     MaxSystemInfoClass,
-#endif // USE_REACTOS_DDK
+#endif // USE_LIBRENT_DDK
 } SYSTEM_INFORMATION_CLASS;
 
-#endif // !defined(FILE_CHARACTERISTIC_PNP_DEVICE) || defined(USE_REACTOS_DDK)
+#endif // !defined(FILE_CHARACTERISTIC_PNP_DEVICE) || defined(USE_LIBRENT_DDK)
 
 
 NTSYSAPI
@@ -188,9 +188,9 @@ typedef struct _SYSTEM_MODULE_INFORMATION
 } SYSTEM_MODULE_INFORMATION, *PSYSTEM_MODULE_INFORMATION;
 
 typedef unsigned short  WORD;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef unsigned int    BOOL;
-#endif //__REACTOS__
+#endif //__LIBRENT__
 typedef unsigned long   DWORD;
 typedef unsigned char   BYTE;
 
@@ -523,7 +523,7 @@ typedef struct _KTHREAD_HDR {
 */
 } KTHREAD_HDR, *PKTHREAD_HDR;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct _IMAGE_DOS_HEADER {      // DOS .EXE header
     WORD   e_magic;                     // Magic number
     WORD   e_cblp;                      // Bytes on last page of file

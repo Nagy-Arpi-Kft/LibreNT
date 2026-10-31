@@ -21,18 +21,18 @@
 #include "private.h"
 
 #include "wine/debug.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winuser.h"
 #include "wine/list.h"
 
-#define MEDIA_SESSION_CLASS L"LiberNTMediaSession"
-#define MEDIA_SESSION_STATUS L"LiberNTMediaStatus"
-#define MEDIA_SESSION_TICK L"LiberNTMediaTick"
+#define MEDIA_SESSION_CLASS L"LibreNTMediaSession"
+#define MEDIA_SESSION_STATUS L"LibreNTMediaStatus"
+#define MEDIA_SESSION_TICK L"LibreNTMediaTick"
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(mediacontrol);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static EventRegistrationToken dummy_token = {.value = 0xdeadbeef};
 #endif
 
@@ -334,7 +334,7 @@ struct display_updater
     LONG ref;
 
     MediaPlaybackType playback_type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HWND session;
     struct music_properties *music;
 #endif
@@ -381,7 +381,7 @@ static ULONG WINAPI display_updater_Release( ISystemMediaTransportControlsDispla
 
     TRACE( "iface %p decreasing refcount to %lu.\n", iface, ref );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ref)
     {
         if (impl->music) IMusicDisplayProperties_Release( &impl->music->IMusicDisplayProperties_iface );
@@ -393,7 +393,7 @@ static ULONG WINAPI display_updater_Release( ISystemMediaTransportControlsDispla
     return ref;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void display_updater_publish( struct display_updater *impl )
 {
     const WCHAR *title = L"", *artist = L"";
@@ -478,13 +478,13 @@ static HRESULT WINAPI display_updater_put_Thumbnail( ISystemMediaTransportContro
 static HRESULT WINAPI display_updater_get_MusicProperties( ISystemMediaTransportControlsDisplayUpdater *iface, IMusicDisplayProperties **value )
 {
     struct music_properties *impl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct display_updater *updater = impl_from_ISystemMediaTransportControlsDisplayUpdater( iface );
 #endif
 
     TRACE( "iface %p, value %p\n", iface, value );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (updater->music)
     {
         *value = &updater->music->IMusicDisplayProperties_iface;
@@ -498,7 +498,7 @@ static HRESULT WINAPI display_updater_get_MusicProperties( ISystemMediaTransport
     impl->IMusicDisplayProperties2_iface.lpVtbl = &music_properties2_vtbl;
     impl->ref = 1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     updater->music = impl;
     IMusicDisplayProperties_AddRef( &impl->IMusicDisplayProperties_iface );
 #endif
@@ -528,7 +528,7 @@ static HRESULT WINAPI display_updater_CopyFromFileAsync( ISystemMediaTransportCo
 
 static HRESULT WINAPI display_updater_ClearAll( ISystemMediaTransportControlsDisplayUpdater *iface )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct display_updater *impl = impl_from_ISystemMediaTransportControlsDisplayUpdater( iface );
 
     TRACE( "iface %p\n", iface );
@@ -549,7 +549,7 @@ static HRESULT WINAPI display_updater_ClearAll( ISystemMediaTransportControlsDis
 
 static HRESULT WINAPI display_updater_Update( ISystemMediaTransportControlsDisplayUpdater *iface )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE( "iface %p\n", iface );
     display_updater_publish( impl_from_ISystemMediaTransportControlsDisplayUpdater( iface ) );
 #else
@@ -595,7 +595,7 @@ struct media_control
     boolean is_previous_enabled;
     boolean is_next_enabled;
     boolean is_enabled;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HWND session;
     struct list button_handlers;
     struct display_updater *updater;
@@ -607,7 +607,7 @@ static inline struct media_control *impl_from_ISystemMediaTransportControls( ISy
     return CONTAINING_RECORD( iface, struct media_control, ISystemMediaTransportControls_iface );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static CRITICAL_SECTION session_cs;
 static CRITICAL_SECTION_DEBUG session_cs_debug =
 {
@@ -916,7 +916,7 @@ static ULONG WINAPI media_control_Release( ISystemMediaTransportControls *iface 
 
     TRACE( "iface %p decreasing refcount to %lu.\n", iface, ref );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ref)
     {
         session_destroy( impl );
@@ -963,7 +963,7 @@ static HRESULT WINAPI media_control_put_PlaybackStatus( ISystemMediaTransportCon
     TRACE( "iface %p, value %d\n", iface, value );
 
     if (value < MediaPlaybackStatus_Closed || value > MediaPlaybackStatus_Paused) return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (impl->media_playback_status != value)
     {
         impl->media_playback_status = value;
@@ -978,7 +978,7 @@ static HRESULT WINAPI media_control_put_PlaybackStatus( ISystemMediaTransportCon
 static HRESULT WINAPI media_control_get_DisplayUpdater( ISystemMediaTransportControls *iface, ISystemMediaTransportControlsDisplayUpdater **value )
 {
     struct display_updater *impl;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct media_control *control = impl_from_ISystemMediaTransportControls( iface );
 
     TRACE( "iface %p, value %p\n", iface, value );
@@ -997,7 +997,7 @@ static HRESULT WINAPI media_control_get_DisplayUpdater( ISystemMediaTransportCon
 
     impl->ISystemMediaTransportControlsDisplayUpdater_iface.lpVtbl = &display_updater_vtbl;
     impl->ref = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     impl->session = control->session;
     control->updater = impl;
     ISystemMediaTransportControlsDisplayUpdater_AddRef( &impl->ISystemMediaTransportControlsDisplayUpdater_iface );
@@ -1031,7 +1031,7 @@ static HRESULT WINAPI media_control_put_IsEnabled( ISystemMediaTransportControls
     TRACE( "iface %p, value %d\n", iface, value );
 
     impl->is_enabled = value;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     session_update( impl, value );
 #endif
     return S_OK;
@@ -1200,7 +1200,7 @@ static HRESULT WINAPI media_control_put_IsChannelDownEnabled( ISystemMediaTransp
 static HRESULT WINAPI media_control_add_ButtonPressed( ISystemMediaTransportControls *iface,
     ITypedEventHandler_SystemMediaTransportControls_SystemMediaTransportControlsButtonPressedEventArgs *handler, EventRegistrationToken *token )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct media_control *impl = impl_from_ISystemMediaTransportControls( iface );
     struct button_handler *entry;
 
@@ -1226,7 +1226,7 @@ static HRESULT WINAPI media_control_add_ButtonPressed( ISystemMediaTransportCont
 
 static HRESULT WINAPI media_control_remove_ButtonPressed( ISystemMediaTransportControls *iface, EventRegistrationToken token )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct media_control *impl = impl_from_ISystemMediaTransportControls( iface );
     struct button_handler *entry;
     BOOL found = FALSE;
@@ -1321,7 +1321,7 @@ static HRESULT WINAPI media_control_statics_GetForWindow( ISystemMediaTransportC
     impl->ISystemMediaTransportControls_iface.lpVtbl = &media_control_vtbl;
     impl->ref = 2;
     impl->window = window;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     session_create( impl );
 #endif
 

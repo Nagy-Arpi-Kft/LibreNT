@@ -26,7 +26,7 @@
 #include "wine/debug.h"
 
 #include "errorrep.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "winver.h"
 #include "rpc.h"
 #include <stdio.h>
@@ -103,7 +103,7 @@ BOOL WINAPI AddERExcludedApplicationA(LPCSTR lpAppFileName)
 /*************************************************************************
  * ReportFault  [FAULTREP.@]
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void report_fault_version(const WCHAR *path, WCHAR *text, DWORD size)
 {
     VS_FIXEDFILEINFO *info;

@@ -136,7 +136,7 @@ DWORD EMFDRV_CreateBrushIndirect( PHYSDEV dev, HBRUSH hBrush )
     case BS_DIBPATTERN:
       {
         EMRCREATEDIBPATTERNBRUSHPT *emr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         char buffer[sizeof(BITMAPINFO) + 255 * sizeof(RGBQUAD)]; // ros
 #else
         char buffer[FIELD_OFFSET( BITMAPINFO, bmiColors[256] )];
@@ -467,12 +467,12 @@ found:
 COLORREF EMFDRV_SetDCBrushColor( PHYSDEV dev, COLORREF color )
 {
     EMFDRV_PDEVICE *physDev = get_emf_physdev( dev );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DC *dc = get_physdev_dc( dev );
 #endif
     EMRSELECTOBJECT emr;
     DWORD index;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetCurrentObject( dev->hdc, OBJ_BRUSH ) != GetStockObject( DC_BRUSH )) return color;
 #else
     if (dc->hBrush != GetStockObject( DC_BRUSH )) return color;
@@ -493,13 +493,13 @@ COLORREF EMFDRV_SetDCBrushColor( PHYSDEV dev, COLORREF color )
 COLORREF EMFDRV_SetDCPenColor( PHYSDEV dev, COLORREF color )
 {
     EMFDRV_PDEVICE *physDev = get_emf_physdev( dev );
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DC *dc = get_physdev_dc( dev );
 #endif
     EMRSELECTOBJECT emr;
     DWORD index;
     LOGPEN logpen = { PS_SOLID, { 0, 0 }, color };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetCurrentObject( dev->hdc, OBJ_PEN ) != GetStockObject( DC_PEN )) return color;
 #else
     if (dc->hPen != GetStockObject( DC_PEN )) return color;

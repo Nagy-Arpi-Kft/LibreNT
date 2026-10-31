@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <reactos/dwmprof.h>
-#include <reactos/dwmpresenttracenames.h>
+#include <librent/dwmprof.h>
+#include <librent/dwmpresenttracenames.h>
 #include "profile.h"
 
 #define PROFILE_FRAME_CAPACITY 131072

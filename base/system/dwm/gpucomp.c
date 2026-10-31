@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Desktop Window Manager
+ * PROJECT:     LibreNT Desktop Window Manager
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GPU-accelerated compositor effects
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -12,8 +12,8 @@
 #include <GL/glext.h>
 #include <wine/wglext.h>
 
-#include <reactos/dwmframe.h>
-#include <reactos/dwmgpuinterop.h>
+#include <librent/dwmframe.h>
+#include <librent/dwmgpuinterop.h>
 
 #include "gpucomp.h"
 #include "framebuttons.h"

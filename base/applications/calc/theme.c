@@ -1,5 +1,5 @@
 /*
- * ReactOS Calc (Theming support)
+ * LibreNT Calc (Theming support)
  *
  * Copyright 2007-2017, Carlo Bramini
  *

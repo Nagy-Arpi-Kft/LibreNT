@@ -45,7 +45,7 @@
 #include <user32.h>
 #define WIN32_LEAN_AND_MEAN
 #include <usp10.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <immdev.h>
 #define ImmGetCompositionStringW    IMM_FN(ImmGetCompositionStringW)
 #define ImmGetCompositionWindow     IMM_FN(ImmGetCompositionWindow)
@@ -109,7 +109,7 @@ typedef struct
 	HFONT font;			/* NULL means standard system font */
 	INT x_offset;			/* scroll offset	for multi lines this is in pixels
 								for single lines it's in characters */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD dwCaretWidth;
 #endif
 	INT line_height;		/* height of a screen line in pixels */
@@ -156,7 +156,7 @@ typedef struct
 	 * IME Data
 	 */
 	UINT ime_status;
-#ifndef __REACTOS__ /* Rely on the composition window */
+#ifndef __LIBRENT__ /* Rely on the composition window */
 	UINT composition_len;   /* length of composition, 0 == no composition */
 	int composition_start;  /* the character position for the composition */
 #endif
@@ -251,8 +251,8 @@ static HBRUSH EDIT_NotifyCtlColor(EDITSTATE *es, HDC hdc)
 		msg = WM_CTLCOLOREDIT;
 
 	/* why do we notify to es->hwndParent, and we send this one to GetParent()? */
-#ifdef __REACTOS__
-        /* ReactOS r54259 */
+#ifdef __LIBRENT__
+        /* LibreNT r54259 */
         hbrush = GetControlBrush(es->hwndSelf, hdc, msg);
 #else
         hbrush = (HBRUSH)SendMessageW(GetParent(es->hwndSelf), msg, (WPARAM)hdc, (LPARAM)es->hwndSelf);
@@ -363,8 +363,8 @@ static INT EDIT_CallWordBreakProc(EDITSTATE *es, INT start, INT index, INT count
 
 		countA = WideCharToMultiByte(CP_ACP, 0, es->text + start, count, NULL, 0, NULL, NULL);
 		textA = HeapAlloc(GetProcessHeap(), 0, countA);
-#ifdef __REACTOS__
-		/* ReactOS r33503 */
+#ifdef __LIBRENT__
+		/* LibreNT r33503 */
 		if (textA == NULL) return 0;
 #endif
 		WideCharToMultiByte(CP_ACP, 0, es->text + start, count, textA, countA, NULL, NULL);
@@ -428,8 +428,8 @@ static SCRIPT_STRING_ANALYSIS EDIT_UpdateUniscribeData_linedef(EDITSTATE *es, HD
 		tabdef.iTabOrigin = 0;
 
 		hr = ScriptStringAnalyse(udc, &es->text[index], line_def->net_length,
-#ifdef __REACTOS__
-                                         /* ReactOS r57679 */
+#ifdef __LIBRENT__
+                                         /* LibreNT r57679 */
                                          (3*line_def->net_length/2+16), -1,
 #else
                                          (1.5*line_def->net_length+16), -1,
@@ -469,15 +469,15 @@ static SCRIPT_STRING_ANALYSIS EDIT_UpdateUniscribeData(EDITSTATE *es, HDC dc, IN
 				old_font = SelectObject(udc, es->font);
 
 			if (es->style & ES_PASSWORD)
-#ifdef __REACTOS__
-				/* ReactOS r57677 */
+#ifdef __LIBRENT__
+				/* LibreNT r57677 */
 				ScriptStringAnalyse(udc, &es->password_char, length, (3*length/2+16), -1, SSA_LINK|SSA_FALLBACK|SSA_GLYPHS|SSA_PASSWORD, -1, NULL, NULL, NULL, NULL, NULL, &es->ssa);
 #else
 				ScriptStringAnalyse(udc, &es->password_char, length, (1.5*length+16), -1, SSA_LINK|SSA_FALLBACK|SSA_GLYPHS|SSA_PASSWORD, -1, NULL, NULL, NULL, NULL, NULL, &es->ssa);
 #endif
 			else
-#ifdef __REACTOS__
-				/* ReactOS r57677 */
+#ifdef __LIBRENT__
+				/* LibreNT r57677 */
 				ScriptStringAnalyse(udc, es->text, length, (3*length/2+16), -1, SSA_LINK|SSA_FALLBACK|SSA_GLYPHS, -1, NULL, NULL, NULL, NULL, NULL, &es->ssa);
 #else
 				ScriptStringAnalyse(udc, es->text, length, (1.5*length+16), -1, SSA_LINK|SSA_FALLBACK|SSA_GLYPHS, -1, NULL, NULL, NULL, NULL, NULL, &es->ssa);
@@ -579,8 +579,8 @@ static void EDIT_BuildLineDefs_ML(EDITSTATE *es, INT istart, INT iend, INT delta
 				/* The buffer has been expanded, create a new line and
 				   insert it into the link list */
 				LINEDEF *new_line = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(LINEDEF));
-#ifdef __REACTOS__
-				/* ReactOS r33509 */
+#ifdef __LIBRENT__
+				/* LibreNT r33509 */
 				if (new_line == NULL)
 					break;
 #endif
@@ -821,7 +821,7 @@ static void EDIT_BuildLineDefs_ML(EDITSTATE *es, INT istart, INT iend, INT delta
 		if ((es->style & ES_CENTER) || (es->style & ES_RIGHT))
 			rc.left = es->format_rect.left;
 		else
-#ifdef __REACTOS__ /* CORE-11475 */
+#ifdef __LIBRENT__ /* CORE-11475 */
 			rc.left = (short)LOWORD(EDIT_EM_PosFromChar(es, nstart_index, FALSE));
 #else
                         rc.left = LOWORD(EDIT_EM_PosFromChar(es, nstart_index, FALSE));
@@ -1297,9 +1297,9 @@ static void EDIT_LockBuffer(EDITSTATE *es)
 {
 	if (!es->text) {
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* FIXME: What is this ? */
-	    CHAR *textA = NULL; // ReactOS Hacked! r45670
+	    CHAR *textA = NULL; // LibreNT Hacked! r45670
 	    //UINT countA = 0;
 
 	    if(es->hloc32W)
@@ -1316,7 +1316,7 @@ static void EDIT_LockBuffer(EDITSTATE *es)
 		return;
 	    }
 
-	    if (textA) //// ReactOS
+	    if (textA) //// LibreNT
 	    {
 #else
 	    if(!es->hloc32W) return;
@@ -1872,7 +1872,7 @@ static LRESULT EDIT_EM_Scroll(EDITSTATE *es, INT action)
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void EDIT_ImmSetCompositionWindow(EDITSTATE *es, POINT pt)
 {
     COMPOSITIONFORM CompForm;
@@ -1909,7 +1909,7 @@ static void EDIT_SetCaretPos(EDITSTATE *es, INT pos,
 			     BOOL after_wrap)
 {
 	LRESULT res = EDIT_EM_PosFromChar(es, pos, after_wrap);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HKL hKL = GetKeyboardLayout(0);
     POINT pt = { (short)LOWORD(res), (short)HIWORD(res) };
     HWND hwnd = es->hwndSelf;
@@ -2284,7 +2284,7 @@ static INT EDIT_PaintText(EDITSTATE *es, HDC dc, INT x, INT y, INT line, INT col
 	BkColor = GetBkColor(dc);
 	TextColor = GetTextColor(dc);
 	if (rev) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (TRUE)
 #else
 	        if (es->composition_len == 0)
@@ -2313,7 +2313,7 @@ static INT EDIT_PaintText(EDITSTATE *es, HDC dc, INT x, INT y, INT line, INT col
 		ret = size.cx;
 	}
 	if (rev) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (TRUE)
 #else
 		if (es->composition_len == 0)
@@ -2927,7 +2927,7 @@ static void EDIT_EM_SetHandle(EDITSTATE *es, HLOCAL hloc)
 		return;
 	}
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (es->text)
 #endif
 	EDIT_UnlockBuffer(es, TRUE);
@@ -3164,8 +3164,8 @@ static BOOL EDIT_EM_SetTabStops(EDITSTATE *es, INT count, const INT *tabs)
 		es->tabs = NULL;
 	else {
 		es->tabs = HeapAlloc(GetProcessHeap(), 0, count * sizeof(INT));
-#ifdef __REACTOS__
-        /* ReactOS r33503 */
+#ifdef __LIBRENT__
+        /* LibreNT r33503 */
         if (es->tabs == NULL)
         {
             es->tabs_count = 0;
@@ -3216,8 +3216,8 @@ static BOOL EDIT_EM_Undo(EDITSTATE *es)
 	ulength = strlenW(es->undo_text);
 
 	utext = HeapAlloc(GetProcessHeap(), 0, (ulength + 1) * sizeof(WCHAR));
-#ifdef __REACTOS__
-	/* ReactOS r33503 */
+#ifdef __LIBRENT__
+	/* LibreNT r33503 */
 	if (utext == NULL) 
 		return FALSE;
 #endif
@@ -3363,7 +3363,7 @@ static LRESULT EDIT_WM_Char(EDITSTATE *es, WCHAR c)
 {
         BOOL control;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if (es->bCaptureState)
 		return 0;
 #endif
@@ -3521,8 +3521,8 @@ static void EDIT_WM_ContextMenu(EDITSTATE *es, INT x, INT y)
         {
             RECT rc;
             /* Windows places the menu at the edit's center in this case */
-#ifdef __REACTOS__
-            /* ReactOS r55202 */
+#ifdef __LIBRENT__
+            /* LibreNT r55202 */
             GetClientRect(es->hwndSelf, &rc);
             MapWindowPoints(es->hwndSelf, 0, (POINT *)&rc, 2);
 #else
@@ -3754,8 +3754,8 @@ static LRESULT EDIT_WM_KeyDown(EDITSTATE *es, INT key)
             if ((es->style & ES_MULTILINE) && EDIT_IsInsideDialog(es))
                 SendMessageW(es->hwndParent, WM_NEXTDLGCTL, shift, 0);
             break;
-#ifdef __REACTOS__
-        /* ReactOS CORE-1419 */
+#ifdef __LIBRENT__
+        /* LibreNT CORE-1419 */
         case VK_BACK:
             if (control)
             {
@@ -3775,7 +3775,7 @@ static LRESULT EDIT_WM_KeyDown(EDITSTATE *es, INT key)
  */
 static LRESULT EDIT_WM_KillFocus(EDITSTATE *es)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	HWND hCombo;
 	LONG lStyles;
 
@@ -3850,7 +3850,7 @@ static LRESULT EDIT_WM_LButtonDown(EDITSTATE *es, DWORD keys, INT x, INT y)
 	INT e;
 	BOOL after_wrap;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	HWND hwnd = es->hwndSelf;
 	BOOL hide_caret;
 
@@ -3862,7 +3862,7 @@ static LRESULT EDIT_WM_LButtonDown(EDITSTATE *es, DWORD keys, INT x, INT y)
 #endif
 	es->bCaptureState = TRUE;
 	SetCapture(es->hwndSelf);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if ((EDITSTATE *)GetWindowLongPtrW(hwnd, 0) != es) return 0;
 	hide_caret = !(es->style & ES_MULTILINE) && (es->flags & EF_FOCUSED);
 	if (hide_caret) hide_caret = HideCaret(hwnd);
@@ -3871,11 +3871,11 @@ static LRESULT EDIT_WM_LButtonDown(EDITSTATE *es, DWORD keys, INT x, INT y)
 	EDIT_ConfinePoint(es, &x, &y);
 	e = EDIT_CharFromPos(es, x, y, &after_wrap);
 	EDIT_EM_SetSel(es, (keys & MK_SHIFT) ? es->selection_start : e, e, after_wrap);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if ((EDITSTATE *)GetWindowLongPtrW(hwnd, 0) != es) return 0;
 #endif
 	EDIT_EM_ScrollCaret(es);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if ((EDITSTATE *)GetWindowLongPtrW(hwnd, 0) != es) return 0;
 	if (hide_caret && (es->flags & EF_FOCUSED))
 	{
@@ -4077,7 +4077,7 @@ static void EDIT_WM_SetFocus(EDITSTATE *es)
             ReleaseDC(es->hwndSelf, hdc);
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SystemParametersInfo(SPI_GETCARETWIDTH, 0, &es->dwCaretWidth, 0);
     CreateCaret(es->hwndSelf, NULL, es->dwCaretWidth, es->line_height);
 #else
@@ -4164,7 +4164,7 @@ static void EDIT_WM_SetFont(EDITSTATE *es, HFONT font, BOOL redraw)
 		EDIT_UpdateText(es, NULL, TRUE);
 	if (es->flags & EF_FOCUSED) {
 		DestroyCaret();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		CreateCaret(es->hwndSelf, NULL, es->dwCaretWidth, es->line_height);
 #else
 		CreateCaret(es->hwndSelf, 0, 1, es->line_height);
@@ -4173,7 +4173,7 @@ static void EDIT_WM_SetFont(EDITSTATE *es, HFONT font, BOOL redraw)
 				 es->flags & EF_AFTER_WRAP);
 		ShowCaret(es->hwndSelf);
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IS_IME_HKL(GetKeyboardLayout(0)))
     {
         LOGFONTW lf;
@@ -4296,7 +4296,7 @@ static LRESULT  EDIT_WM_StyleChanged ( EDITSTATE *es, WPARAM which, const STYLES
                 /* Only a subset of changes can be applied after the control
                  * has been created.
                  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 style_change_mask = ES_UPPERCASE | ES_LOWERCASE |
                                     ES_NUMBER | ES_LEFT | ES_RIGHT | ES_CENTER;
 #else
@@ -4682,7 +4682,7 @@ static void EDIT_GetCompositionStr(HIMC hIMC, LPARAM CompFlag, EDITSTATE *es)
         }
     }
 
-#ifndef __REACTOS__ /* We don't use internal composition string. Rely on the composition window */
+#ifndef __LIBRENT__ /* We don't use internal composition string. Rely on the composition window */
     /* check for change in composition start */
     if (es->selection_end < es->composition_start)
         es->composition_start = es->selection_end;
@@ -4727,7 +4727,7 @@ static void EDIT_GetResultStr(HIMC hIMC, EDITSTATE *es)
     ImmGetCompositionStringW(hIMC, GCS_RESULTSTR, lpResultStr, buflen);
     lpResultStr[buflen/sizeof(WCHAR)] = 0;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* check for change in composition start */
     if (es->selection_end < es->composition_start)
         es->composition_start = es->selection_end;
@@ -4747,7 +4747,7 @@ static void EDIT_ImeComposition(HWND hwnd, LPARAM CompFlag, EDITSTATE *es)
     HIMC hIMC;
     int cursor;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (es->selection_start != es->selection_end)
         EDIT_EM_ReplaceSel(es, TRUE, empty_stringW, TRUE, TRUE);
 #else
@@ -4771,7 +4771,7 @@ static void EDIT_ImeComposition(HWND hwnd, LPARAM CompFlag, EDITSTATE *es)
     {
         if (CompFlag & GCS_COMPSTR)
             EDIT_GetCompositionStr(hIMC, CompFlag, es);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         cursor = 0;
 #else
         cursor = ImmGetCompositionStringW(hIMC, GCS_CURSORPOS, 0, 0);
@@ -5000,8 +5000,8 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 {
 	EDITSTATE *es = (EDITSTATE *)GetWindowLongPtrW( hwnd, 0 );
 	LRESULT result = 0;
-#ifdef __REACTOS__
-    /* ReactOS r50219 */
+#ifdef __LIBRENT__
+    /* LibreNT r50219 */
     PWND pWnd;
 
     pWnd = ValidateHwnd(hwnd);
@@ -5284,7 +5284,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 
 	case WM_NCDESTROY:
 		result = EDIT_WM_NCDestroy(es);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		NtUserSetWindowFNID(hwnd, FNID_DESTROY);
 #endif
 		es = NULL;
@@ -5315,7 +5315,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		break;
 
         case WM_IME_CHAR:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	        /* Rely on DefWindowProc */
             result = DefWindowProcT(hwnd, msg, wParam, lParam, unicode);
             break;
@@ -5515,7 +5515,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		break;
 
 	case WM_VSCROLL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         SCROLLINFO si;
 
@@ -5564,7 +5564,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 
 	/* IME messages to make the edit control IME aware */
 	case WM_IME_SETCONTEXT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             HKL hKL = GetKeyboardLayout(0);
 
@@ -5592,7 +5592,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		break;
 
 	case WM_IME_STARTCOMPOSITION:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         {
             HKL hKL = GetKeyboardLayout(0);
 
@@ -5616,7 +5616,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		break;
 
 	case WM_IME_ENDCOMPOSITION:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         result = DefWindowProcT(hwnd, msg, wParam, lParam, unicode);
 #else
                 if (es->composition_len > 0)
@@ -5632,13 +5632,13 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		break;
 
 	case WM_IME_SELECT:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		result = DefWindowProcT(hwnd, msg, wParam, lParam, unicode);
 #endif
 		break;
 
 	case WM_IME_CONTROL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		result = DefWindowProcT(hwnd, msg, wParam, lParam, unicode);
 #endif
 		break;
@@ -5669,8 +5669,8 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		break;
 	}
 
-#ifdef __REACTOS__
-        /* ReactOS: check GetWindowLong in case es has been destroyed during processing */
+#ifdef __LIBRENT__
+        /* LibreNT: check GetWindowLong in case es has been destroyed during processing */
         if (IsWindow(hwnd) && es && msg != EM_GETHANDLE && (EDITSTATE *)GetWindowLongPtrW(hwnd, 0) == es)
 #else
         if (IsWindow(hwnd) && es && msg != EM_GETHANDLE)
@@ -5682,7 +5682,7 @@ LRESULT WINAPI EditWndProc_common( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	return result;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 /*********************************************************************
  *
@@ -5702,7 +5702,7 @@ LRESULT WINAPI EditWndProcW(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return EditWndProc_common(hWnd, uMsg, wParam, lParam, TRUE);
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /*********************************************************************
  * edit class descriptor
@@ -5712,7 +5712,7 @@ const struct builtin_class_descr EDIT_builtin_class =
 {
     editW,                /* name */
     CS_DBLCLKS | CS_PARENTDC,   /* style */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     EditWndProcA,         /* procA */
     EditWndProcW,         /* procW */
 #else

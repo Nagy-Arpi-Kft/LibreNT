@@ -14,12 +14,12 @@ list(APPEND SOURCE
     utils.c
     view.c)
 
-if(REACTOS_USE_WDDM)
+if(LIBRENT_USE_WDDM)
     remove_definitions(-DDXGKDDI_INTERFACE_VERSION=0x1052)
     add_definitions(-DDXGKDDI_INTERFACE_VERSION=0x11007)
     list(APPEND SOURCE native.cpp native_on12.cpp)
     set_source_files_properties(native.cpp PROPERTIES
-        INCLUDE_DIRECTORIES "${REACTOS_SOURCE_DIR}/sdk/include/ddk;${REACTOS_SOURCE_DIR}/sdk/include/psdk")
+        INCLUDE_DIRECTORIES "${LIBRENT_SOURCE_DIR}/sdk/include/ddk;${LIBRENT_SOURCE_DIR}/sdk/include/psdk")
     set_source_files_properties(native_on12.cpp PROPERTIES
         COMPILE_DEFINITIONS "WIDL_EXPLICIT_AGGREGATE_RETURNS")
 endif()
@@ -32,15 +32,15 @@ add_library(d3d11 MODULE
 
 set_module_type(d3d11 win32dll)
 target_compile_definitions(d3d11 PRIVATE __WINESRC__)
-if(REACTOS_USE_WDDM)
-    target_compile_definitions(d3d11 PRIVATE REACTOS_D3D11_NATIVE_UMD)
+if(LIBRENT_USE_WDDM)
+    target_compile_definitions(d3d11 PRIVATE LIBRENT_D3D11_NATIVE_UMD)
     target_link_libraries(d3d11 cpprt)
     add_importlibs(d3d11 win32u user32)
 endif()
 target_link_libraries(d3d11 vkd3d_shader dx10guid uuid wine)
 add_importlibs(d3d11 dxgi d3dwine gdi32 msvcrt kernel32 ntdll)
 add_dependencies(d3d11 d3d_idl_headers wineheaders)
-add_cd_file(TARGET d3d11 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET d3d11 DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(d3d11)
 
 if(MSVC)

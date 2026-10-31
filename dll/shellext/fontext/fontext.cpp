@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Font Shell Extension
+ * PROJECT:     LibreNT Font Shell Extension
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Shell extension entry point
  * COPYRIGHT:   Copyright 2019,2020 Mark Jansen <mark.jansen@reactos.org>
@@ -525,7 +525,7 @@ HRESULT DeleteFontFiles(HWND hwnd, IDataObject* pDataObj)
 
 HRESULT DoDeleteFontFiles(HWND hwnd, IDataObject* pDataObj)
 {
-    CStringW title(MAKEINTRESOURCEW(IDS_REACTOS_FONTS_FOLDER));
+    CStringW title(MAKEINTRESOURCEW(IDS_LIBRENT_FONTS_FOLDER));
     CStringW msg(MAKEINTRESOURCEW(IDS_CONFIRM_DELETE_FONT));
     if (MessageBoxW(hwnd, msg, title, MB_YESNOCANCEL | MB_ICONWARNING) != IDYES)
         return S_FALSE;

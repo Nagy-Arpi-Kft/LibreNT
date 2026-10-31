@@ -28,14 +28,14 @@
 #ifndef _DOSFSCK_H
 #define _DOSFSCK_H
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stddef.h>
 #endif
 #include <stdint.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef _WIN32
 
 typedef unsigned int __u32;
@@ -63,7 +63,7 @@ typedef unsigned __int64 __u64;
 
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "endian_compat.h"
 #else
 #ifndef offsetof
@@ -79,7 +79,7 @@ typedef unsigned __int64 __u64;
 
 #define FAT_STATE_DIRTY 0x01
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(push, 1)
 #endif
 
@@ -175,7 +175,7 @@ typedef struct {
     uint32_t size;		/* file size (in bytes) */
 } __attribute__ ((packed)) DIR_ENT;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(pop)
 #endif
 
@@ -214,7 +214,7 @@ typedef struct {
     char *label;
 } DOS_FS;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 extern int interactive, rw, list, verbose, test, write_immed;
 extern int atari_format;
 extern unsigned n_files;

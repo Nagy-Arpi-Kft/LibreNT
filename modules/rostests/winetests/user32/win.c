@@ -35,7 +35,7 @@
 
 #include "wine/test.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #undef wait_child_process
 #define wait_child_process(pi) wait_child_process_(__FILE__, __LINE__)((pi)->hProcess)
 #endif
@@ -46,7 +46,7 @@
 
 #define LONG_PTR INT_PTR
 #define ULONG_PTR UINT_PTR
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Not in Windows SDK, but is in Wine headers */
 #define DCX_USESTYLE 0x00010000
 #endif
@@ -914,7 +914,7 @@ static void test_thread_exit_destroy(void)
     SetLastError( 0xdeadbeef );
     tmp = SetParent( child1, adopter );
     ok( tmp == 0, "SetParent returned %p\n", tmp );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
@@ -922,7 +922,7 @@ static void test_thread_exit_destroy(void)
     SetLastError( 0xdeadbeef );
     tmp = SetParent( child3, adopter );
     ok( tmp == 0, "SetParent returned %p\n", tmp );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
@@ -948,7 +948,7 @@ static void test_thread_exit_destroy(void)
 
     child = CreateWindowExA( 0, "ToolWindowClass", "Tool window 1", WS_CHILD,
                              0, 0, 100, 100, child1, 0, 0, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_INVALID_PARAMETER /* MSVC test builds return child, GCC test builds don't on Windows */
         || broken(child && GetLastError() == ERROR_SUCCESS) /* WS03 */,
         "CreateWindowExA returned %p %lu\n", child, GetLastError() );
@@ -978,13 +978,13 @@ static void test_thread_exit_destroy(void)
     SetLastError( 0xdeadbeef );
     ret = SetWindowPos( child2, HWND_TOPMOST, 0, 0, 100, 100, SWP_NOSIZE|SWP_NOMOVE );
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( !ret || broken(ret) /* WS03 */, "SetWindowPos succeeded\n" );
 #else
     ok( !ret, "SetWindowPos succeeded\n" );
 #endif
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "SetWindowPos returned error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_INVALID_PARAMETER, "SetWindowPos returned error %lu\n", GetLastError() );
@@ -992,13 +992,13 @@ static void test_thread_exit_destroy(void)
     SetLastError( 0xdeadbeef );
     ret = SetWindowPos( child2, 0, 10, 10, 200, 200, SWP_NOZORDER | SWP_NOACTIVATE );
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( !ret || broken(ret) /* WS03 */, "SetWindowPos succeeded\n" );
 #else
     ok( !ret, "SetWindowPos succeeded\n" );
 #endif
     todo_wine
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "SetWindowPos returned error %lu\n", GetLastError() );
 #else
     ok( GetLastError() == ERROR_INVALID_PARAMETER, "SetWindowPos returned error %lu\n", GetLastError() );
@@ -2988,9 +2988,9 @@ static void test_icons(void)
     HWND hwnd;
     BOOL ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() <= _WIN32_WINNT_WS03) {
-        skip("test_icons() crashes on Windows Server 2003 and ReactOS.\n");
+        skip("test_icons() crashes on Windows Server 2003 and LibreNT.\n");
         return;
     }
 #endif
@@ -6459,7 +6459,7 @@ static void test_csparentdc(void)
         {{0, 0, 40, 40}, {-20, -20, 130, 130}, {0, 0, 40, 40}}, {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}},
         {{0, 0, 40, 40}, {-40, -40, 110, 110}, {0, 0, 40, 40}}, {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}},
    };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    const struct parentdc_test test1_win8 = 
    {
         {{0, 0, 166, 150}, {0, 0, 166, 150}, {0, 0, 166, 150}}, nothing_todo,
@@ -6474,7 +6474,7 @@ static void test_csparentdc(void)
         {{0, 0, 40, 40}, {-20, -20, 30, 30}, {0, 0, 30, 30}}, {{0, 0, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
         {{0, 0, 40, 40}, {-40, -40, 10, 10}, {0, 0, 10, 10}}, {{0, 0, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
    };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    const struct parentdc_test test2_win8 = 
    {
         {{0, 0, 166, 150}, {0, 0, 50, 50}, {0, 0, 50, 50}}, nothing_todo,
@@ -6489,7 +6489,7 @@ static void test_csparentdc(void)
         {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, nothing_todo,
         {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, nothing_todo,
    };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    const struct parentdc_test test3_win8 = 
    {
         {{0, 0, 166, 150}, {0, 0, 10, 10}, {0, 0, 10, 10}}, nothing_todo,
@@ -6504,7 +6504,7 @@ static void test_csparentdc(void)
         {{0, 0, 40, 40}, {20, 20, 30, 30}, {20, 20, 30, 30}}, nothing_todo,
         {{0, 0, 40, 40}, {0, 0, 10, 10}, {0, 0, 10, 10}}, nothing_todo,
    };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    const struct parentdc_test test4_win8 = 
    {
         {{0, 0, 166, 150}, {40, 40, 50, 50}, {40, 40, 50, 50}}, nothing_todo,
@@ -6519,7 +6519,7 @@ static void test_csparentdc(void)
         {{0, 0, 40, 40}, {-20, -20, 130, 130}, {0, 0, 40, 40}}, {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}},
         {{0, 0, 40, 40}, {-20, -20, 20, 20}, {0, 0, 20, 20}}, {{0, 0, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}},
    };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    const struct parentdc_test test5_win8 = 
    {
         {{0, 0, 166, 150}, {20, 20, 60, 60}, {20, 20, 60, 60}}, nothing_todo,
@@ -6541,7 +6541,7 @@ static void test_csparentdc(void)
         {{0, 0, 40, 40}, {-20, -20, 130, 130}, {0, 0, 40, 40}}, {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}},
         {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, nothing_todo,
    };
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
    const struct parentdc_test test7_win8 = 
    {
         {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, nothing_todo,
@@ -6597,7 +6597,7 @@ static void test_csparentdc(void)
    zero_parentdc_test(&test_answer);
    InvalidateRect(hwndMain, NULL, TRUE);
    flush_events( TRUE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The parentdc_ok macro breaks if/else staements without braces */
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         parentdc_ok(test1_win8, test_answer);
@@ -6613,7 +6613,7 @@ static void test_csparentdc(void)
    SetRect(&rc, 0, 0, 50, 50);
    InvalidateRect(hwndMain, &rc, TRUE);
    flush_events( TRUE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The parentdc_ok macro breaks if/else staements without braces */
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         parentdc_ok(test2_win8, test_answer);
@@ -6629,7 +6629,7 @@ static void test_csparentdc(void)
    SetRect(&rc, 0, 0, 10, 10);
    InvalidateRect(hwndMain, &rc, TRUE);
    flush_events( TRUE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The parentdc_ok macro breaks if/else staements without braces */
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         parentdc_ok(test3_win8, test_answer);
@@ -6645,7 +6645,7 @@ static void test_csparentdc(void)
    SetRect(&rc, 40, 40, 50, 50);
    InvalidateRect(hwndMain, &rc, TRUE);
    flush_events( TRUE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The parentdc_ok macro breaks if/else staements without braces */
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         parentdc_ok(test4_win8, test_answer);
@@ -6661,7 +6661,7 @@ static void test_csparentdc(void)
    SetRect(&rc, 20, 20, 60, 60);
    InvalidateRect(hwndMain, &rc, TRUE);
    flush_events( TRUE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The parentdc_ok macro breaks if/else staements without braces */
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         parentdc_ok(test5_win8, test_answer);
@@ -6683,7 +6683,7 @@ static void test_csparentdc(void)
    SetRect(&rc, -5, -5, 65, 65);
    InvalidateRect(hwnd1, &rc, TRUE);
    flush_events( TRUE );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* The parentdc_ok macro breaks if/else staements without braces */
     if (GetNTVersion() >= _WIN32_WINNT_WIN8) {
         parentdc_ok(test7_win8, test_answer);
@@ -8927,9 +8927,9 @@ static void test_gettext(void)
     }
 
     /* GetWindowText doesn't crash */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_reactos()) {
-        ok(FALSE, "FIXME: These tests crash on ReactOS!\n");
+        ok(FALSE, "FIXME: These tests crash on LibreNT!\n");
     } else {
 #endif
     r = GetWindowTextA( hwnd, (LPSTR)0x10, 0x1000 );
@@ -8949,7 +8949,7 @@ static void test_gettext(void)
     ok( r == 0, "GetWindowText should return zero (%lld)\n", (long long)r );
     r = GetWindowTextW( hwnd, (LPWSTR)0x1000, 0xff000000);
     ok( r == 0, "GetWindowText should return zero (%lld)\n", (long long)r );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -9673,9 +9673,9 @@ static void test_layered_window(void)
 
     ret = pSetLayeredWindowAttributes( hwnd, 0, 255, LWA_ALPHA );
     ok( ret, "SetLayeredWindowAttributes should succeed on layered window\n" );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_reactos()) {
-        ok(FALSE, "FIXME: This hangs on ReactOS!\n");
+        ok(FALSE, "FIXME: This hangs on LibreNT!\n");
     } else {
 #endif
     while (GetMessageA(&msg, 0, 0, 0))
@@ -9685,7 +9685,7 @@ static void test_layered_window(void)
         if (msg.message == WM_PAINT && msg.hwnd == child)
             break;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -13843,7 +13843,7 @@ static LRESULT WINAPI ncdestroy_test_proc( HWND hwnd, UINT msg, WPARAM wp, LPARA
         SetLastError( 0xdeadbeef );
         parent = SetParent( hwnd, hwndMain );
         ok( parent == 0, "SetParent returned %p\n", parent );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( GetLastError() == ERROR_INVALID_PARAMETER || broken(GetLastError() == 0xdeadbeef) /* WS03 */, "got error %lu\n", GetLastError() );
 #else
         ok( GetLastError() == ERROR_INVALID_PARAMETER, "got error %lu\n", GetLastError() );
@@ -13865,7 +13865,7 @@ static LRESULT WINAPI ncdestroy_test_proc( HWND hwnd, UINT msg, WPARAM wp, LPARA
 
         child = CreateWindowExA( 0, "ToolWindowClass", "Tool window 1", WS_CHILD,
                                  0, 0, 100, 100, hwnd, 0, 0, NULL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok( GetLastError() == ERROR_INVALID_PARAMETER /* MSVC test builds return child, GCC test builds don't on Windows */
             || broken(child && GetLastError() == ERROR_SUCCESS) /* WS03 */,
             "CreateWindowExA returned %p %lu\n", child, GetLastError() );

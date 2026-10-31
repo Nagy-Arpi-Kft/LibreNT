@@ -103,9 +103,9 @@ if(ARCH STREQUAL "arm64" AND NOT CMAKE_C_COMPILER_ID STREQUAL "Clang")
     if(NOT MSVC_ARM64_NEON_HEADER)
         message(FATAL_ERROR "arm64_neon.h was not found next to ${CMAKE_C_COMPILER} or in INCLUDE")
     endif()
-    file(CONFIGURE OUTPUT ${REACTOS_BINARY_DIR}/sdk/include/arm64_neon.h CONTENT
+    file(CONFIGURE OUTPUT ${LIBRENT_BINARY_DIR}/sdk/include/arm64_neon.h CONTENT
         "#ifndef _VCRUNTIME_DISABLED_WARNINGS\n#define _VCRUNTIME_DISABLED_WARNINGS 4514 4820\n#endif\n#include \"${MSVC_ARM64_NEON_HEADER}\"\n")
-    file(CONFIGURE OUTPUT ${REACTOS_BINARY_DIR}/sdk/include/arm_neon.h CONTENT "#include <arm64_neon.h>\n")
+    file(CONFIGURE OUTPUT ${LIBRENT_BINARY_DIR}/sdk/include/arm_neon.h CONTENT "#include <arm64_neon.h>\n")
 endif()
 
 # Generate Warnings Level 3
@@ -311,7 +311,7 @@ function(set_image_base MODULE IMAGE_BASE)
 endfunction()
 
 function(set_module_type_toolchain MODULE TYPE)
-    # Set the PE image version numbers from the NT OS version ReactOS is based on
+    # Set the PE image version numbers from the NT OS version LibreNT is based on
     target_link_options(${MODULE} PRIVATE "/VERSION:5.01")
 
     if((TYPE STREQUAL win32dll) OR (TYPE STREQUAL win32ocx) OR (TYPE STREQUAL cpl))
@@ -636,7 +636,7 @@ function(CreateBootSectorTarget _target_name _asm_file _binary_file _base_addres
 
     add_custom_command(
         OUTPUT ${_temp_file}
-        COMMAND ${CMAKE_C_COMPILER} /nologo ${_no_std_includes_flag} /I${REACTOS_SOURCE_DIR}/sdk/include/asm /I${REACTOS_BINARY_DIR}/sdk/include/asm ${_includes} ${_defines} /D__ASM__ /D_USE_ML /EP /c ${_asm_file} > ${_temp_file}
+        COMMAND ${CMAKE_C_COMPILER} /nologo ${_no_std_includes_flag} /I${LIBRENT_SOURCE_DIR}/sdk/include/asm /I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_includes} ${_defines} /D__ASM__ /D_USE_ML /EP /c ${_asm_file} > ${_temp_file}
         DEPENDS ${_asm_file})
 
     set(_asm16_command ${CMAKE_ASM16_COMPILER} /nologo ${_quiet_flag} /Cp /Fo${_object_file} /c /Ta ${_temp_file})
@@ -679,13 +679,13 @@ macro(add_asm_files _target)
                 endif()
             endforeach()
             if(ARCH STREQUAL "arm64")
-                set(_asm_preprocess_command cl /nologo /X /I${REACTOS_SOURCE_DIR}/sdk/include/asm /I${REACTOS_BINARY_DIR}/sdk/include/asm ${_directory_includes} ${_source_file_defines} ${_directory_defines} /D__ASM__ /FI${REACTOS_SOURCE_DIR}/sdk/include/ndk/asm.h /EP /c)
+                set(_asm_preprocess_command cl /nologo /X /I${LIBRENT_SOURCE_DIR}/sdk/include/asm /I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_directory_includes} ${_source_file_defines} ${_directory_defines} /D__ASM__ /FI${LIBRENT_SOURCE_DIR}/sdk/include/ndk/asm.h /EP /c)
                 set(_gas_file ${CMAKE_CURRENT_BINARY_DIR}/asm/${_source_file_base_name}_${_target}.gas)
                 if((CMAKE_GENERATOR MATCHES "Ninja") AND (CMAKE_C_COMPILER_ID STREQUAL "MSVC") AND (MSVC_VERSION GREATER_EQUAL 1927) AND NOT (CMAKE_VERSION VERSION_LESS 3.19))
                     add_custom_command(
                         OUTPUT ${_preprocessed_asm_file}
                         COMMAND ${_asm_preprocess_command} /sourceDependencies ${_gas_file}.json ${_source_file_full_path} > ${_gas_file}
-                        COMMAND ${CMAKE_COMMAND} -DJSON=${_gas_file}.json -DOUTPUT=${_preprocessed_asm_file} -DDEPFILE=${_preprocessed_asm_file}.d -P ${REACTOS_SOURCE_DIR}/sdk/cmake/msvc_sourcedeps.cmake
+                        COMMAND ${CMAKE_COMMAND} -DJSON=${_gas_file}.json -DOUTPUT=${_preprocessed_asm_file} -DDEPFILE=${_preprocessed_asm_file}.d -P ${LIBRENT_SOURCE_DIR}/sdk/cmake/msvc_sourcedeps.cmake
                         COMMAND native-gas2armasm ${_gas_file} -o ${_preprocessed_asm_file}
                         DEPENDS ${_source_file_full_path} native-gas2armasm
                         DEPFILE ${_preprocessed_asm_file}.d)
@@ -697,12 +697,12 @@ macro(add_asm_files _target)
                         DEPENDS ${_source_file_full_path} native-gas2armasm)
                 endif()
             else()
-                set(_asm_preprocess_command cl /nologo /X /I${REACTOS_SOURCE_DIR}/sdk/include/asm /I${REACTOS_BINARY_DIR}/sdk/include/asm ${_directory_includes} ${_source_file_defines} ${_directory_defines} /D__ASM__ /D_USE_ML /EP /c)
+                set(_asm_preprocess_command cl /nologo /X /I${LIBRENT_SOURCE_DIR}/sdk/include/asm /I${LIBRENT_BINARY_DIR}/sdk/include/asm ${_directory_includes} ${_source_file_defines} ${_directory_defines} /D__ASM__ /D_USE_ML /EP /c)
                 if((CMAKE_GENERATOR MATCHES "Ninja") AND (CMAKE_C_COMPILER_ID STREQUAL "MSVC") AND (MSVC_VERSION GREATER_EQUAL 1927) AND NOT (CMAKE_VERSION VERSION_LESS 3.19))
                     add_custom_command(
                         OUTPUT ${_preprocessed_asm_file}
                         COMMAND ${_asm_preprocess_command} /sourceDependencies ${_preprocessed_asm_file}.json ${_source_file_full_path} > ${_preprocessed_asm_file}
-                        COMMAND ${CMAKE_COMMAND} -DJSON=${_preprocessed_asm_file}.json -DOUTPUT=${_preprocessed_asm_file} -DDEPFILE=${_preprocessed_asm_file}.d -P ${REACTOS_SOURCE_DIR}/sdk/cmake/msvc_sourcedeps.cmake
+                        COMMAND ${CMAKE_COMMAND} -DJSON=${_preprocessed_asm_file}.json -DOUTPUT=${_preprocessed_asm_file} -DDEPFILE=${_preprocessed_asm_file}.d -P ${LIBRENT_SOURCE_DIR}/sdk/cmake/msvc_sourcedeps.cmake
                         DEPENDS ${_source_file_full_path}
                         DEPFILE ${_preprocessed_asm_file}.d)
                 else()

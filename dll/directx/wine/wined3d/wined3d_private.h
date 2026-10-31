@@ -3410,7 +3410,7 @@ struct wined3d_texture
     unsigned int lod;
     uint32_t flags;
     DWORD update_map_binding;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     enum wined3d_yuv_color_space yuv_color_space;
 #endif
 
@@ -3483,7 +3483,7 @@ struct wined3d_texture
         } clear_value;
 
         void *user_memory;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         struct wined3d_planar_memory_desc planar_memory;
 #endif
     } *sub_resources;
@@ -3707,7 +3707,7 @@ struct wined3d_cs
     DWORD thread_id;
     BOOL serialize_commands;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct wined3d_cs_queue *queue;
 #else
     struct wined3d_cs_queue queue[WINED3D_CS_QUEUE_COUNT];
@@ -3856,7 +3856,7 @@ void wined3d_device_context_push_constants(struct wined3d_device_context *contex
 static inline void wined3d_resource_reference(struct wined3d_resource *resource)
 {
     const struct wined3d_cs *cs = resource->device->cs;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     resource->access_time = cs->queue ? cs->queue[WINED3D_CS_QUEUE_DEFAULT].head : 0;
 #else
     resource->access_time = cs->queue[WINED3D_CS_QUEUE_DEFAULT].head;
@@ -4041,7 +4041,7 @@ struct wined3d_shader_resource_view
 
 void wined3d_shader_resource_view_cleanup(struct wined3d_shader_resource_view *view);
 void wined3d_shader_resource_view_destroy(struct wined3d_shader_resource_view *view);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT wined3d_shader_resource_view_init(struct wined3d_shader_resource_view *view,
         const struct wined3d_view_desc *desc, struct wined3d_resource *resource,
         void *parent, const struct wined3d_parent_ops *parent_ops);
@@ -4147,7 +4147,7 @@ struct wined3d_swapchain
     struct wined3d_swapchain_state state;
     HWND win_handle;
     HDC dc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL composition;
     BOOL premultiplied_alpha;
     POINT composition_offset;
@@ -5136,7 +5136,7 @@ static inline bool wined3d_map_persistent(void)
 
 extern CRITICAL_SECTION wined3d_command_cs;
 
-#if defined(__REACTOS__) && defined(REACTOS_WINE_WDDM)
+#if defined(__LIBRENT__) && defined(LIBRENT_WINE_WDDM)
 void wined3d_get_wddm_adapter_identifier(D3DKMT_HANDLE kmt_adapter,
         struct wined3d_adapter_identifier *identifier);
 #endif

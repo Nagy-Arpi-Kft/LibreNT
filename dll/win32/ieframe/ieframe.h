@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma once
 #endif
 
@@ -40,7 +40,7 @@
 #include "htiface.h"
 #include "shdeprecated.h"
 #include "docobjectservice.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "objsafe.h"
 #include "perhist.h"
 #include "urlhist.h"
@@ -67,7 +67,7 @@ typedef struct {
     ITargetFrame2  ITargetFrame2_iface;
     ITargetFramePriv2 ITargetFramePriv2_iface;
     IWebBrowserPriv2IE9 IWebBrowserPriv2IE9_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IWebBrowserPriv IWebBrowserPriv_iface;
     ISecMgrCacheSeedTarget ISecMgrCacheSeedTarget_iface;
 #endif
@@ -196,7 +196,7 @@ struct WebBrowser {
     IOleCommandTarget        IOleCommandTarget_iface;
     IServiceProvider         IServiceProvider_iface;
     IDataObject              IDataObject_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IPersistPropertyBag      IPersistPropertyBag_iface;
     IObjectSafety            IObjectSafety_iface;
     ITargetEmbedding         ITargetEmbedding_iface;
@@ -210,7 +210,7 @@ struct WebBrowser {
     LONG ref;
 
     INT version;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD view_mode;
     DWORD folder_flags;
     DWORD dispatch_safety;
@@ -276,7 +276,7 @@ void WebBrowser_OleObject_Init(WebBrowser*);
 void WebBrowser_ViewObject_Init(WebBrowser*);
 void WebBrowser_Persist_Init(WebBrowser*);
 void WebBrowser_ClassInfo_Init(WebBrowser*);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void WebBrowser_Ext_Init(WebBrowser*);
 void WebBrowser_Ext_InitNew(WebBrowser*);
 HRESULT WebBrowser_Ext_LoadStream(WebBrowser*,IStream*);
@@ -338,7 +338,7 @@ DWORD release_extern_ref(InternetExplorer*,BOOL);
 void register_iewindow_class(void);
 void unregister_iewindow_class(void);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define TID_LIST \
     XCLSID(WebBrowser) \
     XCLSID(WebBrowser_V1) \
@@ -363,7 +363,7 @@ TID_LIST
 HRESULT get_typeinfo(tid_t,ITypeInfo**);
 
 HRESULT WINAPI CUrlHistory_Create(IClassFactory*,IUnknown*,REFIID,void**);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI ShellUIHelper_Create(IClassFactory*,IUnknown*,REFIID,void**);
 HRESULT WINAPI URLSearchHook_Create(IClassFactory*,IUnknown*,REFIID,void**);
 #endif

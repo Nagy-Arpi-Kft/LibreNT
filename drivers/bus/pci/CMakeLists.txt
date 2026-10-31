@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers)
 
 list(APPEND SOURCE
     arb.c
@@ -17,4 +17,4 @@ set_module_type(pci kernelmodedriver)
 target_link_libraries(pci wdmguid)
 add_importlibs(pci ntoskrnl hal)
 add_pch(pci pci.h SOURCE)
-add_cd_file(TARGET pci DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET pci DESTINATION librent/system32/drivers NO_CAB FOR all)

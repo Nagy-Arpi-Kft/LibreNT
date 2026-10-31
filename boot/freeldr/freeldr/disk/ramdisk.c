@@ -24,7 +24,7 @@
 
 #if defined(__GNUC__)
 extern VOID
-AddReactOSArcDiskInfo(
+AddLibreNTArcDiskInfo(
     _In_ PCSTR ArcName,
     _In_opt_ PGUID GptDiskGuid,
     _In_ ULONG Signature,
@@ -32,7 +32,7 @@ AddReactOSArcDiskInfo(
     _In_ BOOLEAN ValidPartitionTable) __attribute__((weak));
 #elif defined(_MSC_VER)
 VOID
-AddReactOSArcDiskInfoStub(
+AddLibreNTArcDiskInfoStub(
     _In_ PCSTR ArcName,
     _In_opt_ PGUID GptDiskGuid,
     _In_ ULONG Signature,
@@ -47,9 +47,9 @@ AddReactOSArcDiskInfoStub(
 }
 
 #if defined(_M_IX86)
-#pragma comment(linker, "/alternatename:_AddReactOSArcDiskInfo=_AddReactOSArcDiskInfoStub")
+#pragma comment(linker, "/alternatename:_AddLibreNTArcDiskInfo=_AddLibreNTArcDiskInfoStub")
 #else
-#pragma comment(linker, "/alternatename:AddReactOSArcDiskInfo=AddReactOSArcDiskInfoStub")
+#pragma comment(linker, "/alternatename:AddLibreNTArcDiskInfo=AddLibreNTArcDiskInfoStub")
 #endif
 #endif
 
@@ -235,9 +235,9 @@ RamDiskRegisterArcDevice(VOID)
         return;
     }
 
-    if (AddReactOSArcDiskInfo)
+    if (AddLibreNTArcDiskInfo)
     {
-        AddReactOSArcDiskInfo("ramdisk(0)", NULL, Signature, Checksum, ValidPartition);
+        AddLibreNTArcDiskInfo("ramdisk(0)", NULL, Signature, Checksum, ValidPartition);
     }
     ArcRegistered = TRUE;
 }

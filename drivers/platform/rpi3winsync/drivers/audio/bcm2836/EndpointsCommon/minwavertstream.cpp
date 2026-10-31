@@ -949,7 +949,7 @@ Return Value:
 
     ASSERT((ULONG *)(m_PwmAudioConfig.DmaPacketLinkInfo[packetIndex].LinkPtr));
     *((ULONG *)(m_PwmAudioConfig.DmaPacketLinkInfo[packetIndex].LinkPtr)) = m_PwmAudioConfig.DmaPacketLinkInfo[packetIndex].LinkValue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     KeMemoryBarrier();
 #endif
 

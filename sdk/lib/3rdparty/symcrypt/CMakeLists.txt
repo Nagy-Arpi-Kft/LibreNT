@@ -185,7 +185,7 @@ elseif(MSVC AND ARCH STREQUAL "amd64")
         lib/amd64/sha2common_asm.symcryptasm
         scripts/symcryptasm_processor.py)
     set(SYMCRYPT_MASM_CPU AMD64)
-    set(SYMCRYPT_MASM_FLAGS /I${REACTOS_SOURCE_DIR}/sdk/lib/ucrt/inc)
+    set(SYMCRYPT_MASM_FLAGS /I${LIBRENT_SOURCE_DIR}/sdk/lib/ucrt/inc)
 endif()
 
 foreach(_file ${SYMCRYPT_MASM_SOURCE})

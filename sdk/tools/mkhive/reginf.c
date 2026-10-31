@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2003, 2006 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS hive maker
+ * PROJECT:         LibreNT hive maker
  * FILE:            tools/mkhive/reginf.c
  * PURPOSE:         Inf file import code
  * PROGRAMMERS:     Eric Kohl

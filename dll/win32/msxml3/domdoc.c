@@ -275,7 +275,7 @@ static HRESULT domdoc_load_from_stream(domdoc *doc, ISequentialStream *stream)
     if (!node)
     {
         ERR("Failed to parse xml\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return FAILED(hr) ? hr : E_FAIL;
 #else
         return E_FAIL;
@@ -599,14 +599,14 @@ static HRESULT WINAPI domdoc_hasChildNodes(IXMLDOMDocument3 *iface, VARIANT_BOOL
 
 static HRESULT WINAPI domdoc_get_ownerDocument(IXMLDOMDocument3 *iface, IXMLDOMDocument **owner)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     domdoc *doc = impl_from_IXMLDOMDocument3(iface);
     HRESULT hr;
 #endif
 
     TRACE("%p, %p.\n", iface, owner);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = return_null_node((IXMLDOMNode **)owner);
     if (hr == S_FALSE && doc->node->properties->version == MSXML4)
         hr = S_OK;
@@ -1281,7 +1281,7 @@ static HRESULT WINAPI domdoc_load(IXMLDOMDocument3 *iface, VARIANT source, VARIA
                 }
                 SafeArrayGetUBound(psa, 1, &len);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (memchr(str, 0, len + 1))
                 {
                     SafeArrayUnaccessData(psa);
@@ -1355,7 +1355,7 @@ static HRESULT WINAPI domdoc_load(IXMLDOMDocument3 *iface, VARIANT source, VARIA
             hr = doc->error = domdoc_load_from_stream(doc, stream);
             if (hr == S_OK)
                 *result = VARIANT_TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (FAILED(hr))
                 hr = S_FALSE;
 #endif
@@ -1366,7 +1366,7 @@ static HRESULT WINAPI domdoc_load(IXMLDOMDocument3 *iface, VARIANT source, VARIA
         FIXME("unsupported IUnknown type (%#lx) (%p)\n", hr, V_UNKNOWN(&source)->lpVtbl);
         break;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case VT_ARRAY|VT_UI2:
         return E_INVALIDARG;
 #endif
@@ -2476,7 +2476,7 @@ HRESULT dom_document_create(MSXML_VERSION version, void **obj)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT dom_freethreaded_document_create(MSXML_VERSION version, void **obj)
 {
     struct domnode *node;

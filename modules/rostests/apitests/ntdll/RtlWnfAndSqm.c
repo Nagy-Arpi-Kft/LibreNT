@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-only (https://spdx.org/licenses/GPL-3.0-only)
  * PURPOSE:     ABI contract tests for RtlFlushHeaps, the WNF Rtl layer and WinSqm
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -93,7 +93,7 @@ Test_WnfReportsFailure(void)
     NTSTATUS Status;
 
     /*
-     * ReactOS has no WNF provider. These must report failure: a success return
+     * LibreNT has no WNF provider. These must report failure: a success return
      * would tell the caller a subscription exists and leave it waiting for
      * notifications that can never arrive.
      */
@@ -104,14 +104,14 @@ Test_WnfReportsFailure(void)
            "RtlQueryWnfStateData must not claim success without a WNF provider, got 0x%08lx\n",
            Status);
         /* Windows leaves the stamp untouched when the state name is invalid;
-         * ReactOS initialises it so the caller never reads uninitialised data. */
-        if (IsReactOS())
+         * LibreNT initialises it so the caller never reads uninitialised data. */
+        if (IsLibreNT())
             ok(ChangeStamp == 0, "the change stamp must be initialised, got 0x%08lx\n", ChangeStamp);
         else
             trace("Windows left the change stamp at 0x%08lx\n", ChangeStamp);
     }
 
-    if (pRtlSubscribeWnfStateChangeNotification && IsReactOS())
+    if (pRtlSubscribeWnfStateChangeNotification && IsLibreNT())
     {
         _SEH2_TRY
         {
@@ -125,14 +125,14 @@ Test_WnfReportsFailure(void)
         }
         _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
         {
-            ok(!IsReactOS(),
+            ok(!IsLibreNT(),
                "RtlSubscribeWnfStateChangeNotification without a callback raised 0x%08lx\n",
                _SEH2_GetExceptionCode());
         }
         _SEH2_END;
     }
 
-    if (pRtlUnsubscribeWnfNotificationWaitForCompletion && IsReactOS())
+    if (pRtlUnsubscribeWnfNotificationWaitForCompletion && IsLibreNT())
     {
         _SEH2_TRY
         {
@@ -143,7 +143,7 @@ Test_WnfReportsFailure(void)
         _SEH2_EXCEPT(EXCEPTION_EXECUTE_HANDLER)
         {
             /* Windows dereferences the subscription without checking it. */
-            ok(!IsReactOS(),
+            ok(!IsLibreNT(),
                "RtlUnsubscribeWnfNotificationWaitForCompletion(NULL) raised 0x%08lx\n",
                _SEH2_GetExceptionCode());
         }
@@ -193,7 +193,7 @@ Test_ArityStackBalance(void)
             pWinSqmSetDWORD64(NULL, 1, 0x100000002ULL);
         if (pRtlQueryWnfStateData)
             pRtlQueryWnfStateData(&ChangeStamp, 0, NULL, NULL, NULL, 0);
-        if (pRtlSubscribeWnfStateChangeNotification && IsReactOS())
+        if (pRtlSubscribeWnfStateChangeNotification && IsLibreNT())
             pRtlSubscribeWnfStateChangeNotification(&Subscription, 0, 0, NULL, NULL, NULL, 0, 0, 0);
     }
 

@@ -19,7 +19,7 @@
  */
 #include "wine/unicode.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define get_char_typeW(x) iswctype((x) >> 8, (x) & 0xFF)
 #endif
 extern unsigned int wine_decompose( WCHAR ch, WCHAR *dst, unsigned int dstlen );

@@ -1,5 +1,5 @@
 /*
- *  ReactOS Application MDI Child Window
+ *  LibreNT Application MDI Child Window
  *
  *  childwnd.c
  *

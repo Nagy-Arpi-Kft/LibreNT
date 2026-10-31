@@ -982,7 +982,7 @@ HRESULT CDECL wined3d_texture_update_desc(struct wined3d_texture *texture,
     return WINED3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT CDECL wined3d_texture_set_planar_memory(struct wined3d_texture *texture,
         unsigned int sub_resource_idx, const struct wined3d_planar_memory_desc *desc,
         BOOL synchronize)
@@ -1717,7 +1717,7 @@ HRESULT CDECL wined3d_device_context_blt(struct wined3d_device_context *context,
     return WINED3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT CDECL wined3d_texture_set_yuv_color_space(struct wined3d_texture *texture,
         enum wined3d_yuv_color_space color_space)
 {
@@ -2315,7 +2315,7 @@ HRESULT wined3d_texture_no3d_init(struct wined3d_texture *texture_no3d, struct w
         const struct wined3d_resource_desc *desc, unsigned int layer_count, unsigned int level_count,
         uint32_t flags, void *parent, const struct wined3d_parent_ops *parent_ops)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int sub_resource_count, i;
     HRESULT hr;
 #endif
@@ -2325,7 +2325,7 @@ HRESULT wined3d_texture_no3d_init(struct wined3d_texture *texture_no3d, struct w
             texture_no3d, device, desc, layer_count,
             level_count, flags, parent, parent_ops);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (FAILED(hr = wined3d_texture_init(texture_no3d, desc, layer_count, level_count, flags, device, parent, parent_ops, &texture_no3d[1], &wined3d_texture_no3d_ops)))
         return hr;
 

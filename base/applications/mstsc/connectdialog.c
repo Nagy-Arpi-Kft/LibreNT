@@ -1270,7 +1270,7 @@ DlgProc(HWND hDlg,
 
                     txtRc.left = bmpRc.right / 4;
                     txtRc.top = txtRc.bottom - 5;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     txtRc.right = bmpRc.right * 4 / 5;
 #else
                     txtRc.right = bmpRc.right * 3 / 4;

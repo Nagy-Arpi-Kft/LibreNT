@@ -1441,7 +1441,7 @@ static NTSTATUS fdo_ioctl( DEVICE_OBJECT *device, IRP *irp )
         break;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (status == STATUS_PENDING) return status;
 #endif
     irp->IoStatus.Status = status;

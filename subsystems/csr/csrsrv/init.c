@@ -1,10 +1,10 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Client/Server Runtime SubSystem
+ * PROJECT:         LibreNT Client/Server Runtime SubSystem
  * FILE:            subsystems/win32/csrsrv/init.c
  * PURPOSE:         CSR Server DLL Initialization
  * PROGRAMMERS:     Alex Ionescu (alex@relsoft.net)
- *                  ReactOS Portable Systems Group
+ *                  LibreNT Portable Systems Group
  */
 
 /* INCLUDES *******************************************************************/
@@ -31,7 +31,7 @@ PCSR_THREAD CsrSbApiRequestThreadPtr;
 HANDLE CsrSmApiPort = NULL;
 HANDLE hSbApiPort = NULL;
 HANDLE CsrApiPort = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOLEAN CsrWindowsControl;
 ULONG CsrSubSystemType; // Known as SessionFirstProcessImageType in Windows 7+
 #endif
@@ -588,7 +588,7 @@ CsrParseServerCommandLine(IN ULONG ArgumentCount,
     /* Set the Defaults */
     CsrTotalPerProcessDataLength = 0;
     CsrObjectDirectory = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CsrWindowsControl = FALSE;
     CsrSubSystemType = IMAGE_SUBSYSTEM_UNKNOWN;
 #endif
@@ -658,7 +658,7 @@ CsrParseServerCommandLine(IN ULONG ArgumentCount,
         }
         else if (_stricmp(ParameterName, "SubSystemType") == 0)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             /* Well-known subsystems, specified by names */
             if (_stricmp(ParameterValue, "windows") == 0)
             {
@@ -764,7 +764,7 @@ CsrParseServerCommandLine(IN ULONG ArgumentCount,
         }
         else if (_stricmp(ParameterName, "Windows") == 0)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             CsrWindowsControl = (_stricmp(ParameterValue, "On") == 0);
 #else
             /* Ignored */
@@ -1116,7 +1116,7 @@ CsrServerInitialization(IN ULONG ArgumentCount,
         return Status;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (CsrSubSystemType != IMAGE_SUBSYSTEM_UNKNOWN)
     {
 #endif
@@ -1132,7 +1132,7 @@ CsrServerInitialization(IN ULONG ArgumentCount,
     /* We're all set! Connect to SM! */
     Status = SmConnectToSm(&CsrSbApiPortName,
                            CsrSbApiPort,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                            CsrSubSystemType,
 #else
                            IMAGE_SUBSYSTEM_WINDOWS_GUI,
@@ -1144,7 +1144,7 @@ CsrServerInitialization(IN ULONG ArgumentCount,
                 __FUNCTION__, Status);
         return Status;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 

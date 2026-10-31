@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:   See COPYING in the top level directory
- * PROJECT:     ReactOS kernel
+ * PROJECT:     LibreNT kernel
  * PURPOSE:     Windows
  * PROGRAMER:   Casper S. Hornstrup (chorns@users.sourceforge.net)
  *              Katayama Hirofumi MZ (katayama.hirofumi.mz@gmail.com)
@@ -452,7 +452,7 @@ done:
 
    if (gpqForeground && (!gpqForeground->spwndActive || Wnd == gpqForeground->spwndActive))
    {
-      /* ReactOS can pass WndTo = NULL to co_IntSetForegroundWindow and returns FALSE. */
+      /* LibreNT can pass WndTo = NULL to co_IntSetForegroundWindow and returns FALSE. */
       //ERR("WinPosActivateOtherWindow Set FG 0x%p hWnd %p\n", WndTo, WndTo ? UserHMGetHandle(WndTo) : NULL);
       if (co_IntSetForegroundWindow(WndTo))
       {
@@ -2431,7 +2431,7 @@ co_WinPosBatchApply(PWINPOS_ENTRY Entry)
                         /*
                          * Check if we have these specific windows style bits set/reset.
                          * FIXME: There may be other combinations of styles that need this handling as well.
-                         * This fixes the ReactOS Calculator buttons disappearing in CORE-16827.
+                         * This fixes the LibreNT Calculator buttons disappearing in CORE-16827.
                          */
                         if ((Window->style & WS_CLIPSIBLINGS) && !(Window->style & (WS_POPUP | WS_CLIPCHILDREN | WS_SIZEBOX)))
                         {

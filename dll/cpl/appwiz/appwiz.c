@@ -1,7 +1,7 @@
 /*
- * PROJECT:                 ReactOS Software Control Panel
+ * PROJECT:                 LibreNT Software Control Panel
  * FILE:                    dll/cpl/appwiz/appwiz.c
- * PURPOSE:                 ReactOS Software Control Panel
+ * PURPOSE:                 LibreNT Software Control Panel
  * PROGRAMMERS:             Gero Kuehn (reactos.filter@gkware.com)
  *                          Dmitry Chapyshev (dmitry@reactos.org)
  */

@@ -1,5 +1,5 @@
 #
-# PROJECT:     LiberNT Ralink RT2800 USB Native 802.11 Miniport
+# PROJECT:     LibreNT Ralink RT2800 USB Native 802.11 Miniport
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     RT2870/RT2770 USB Native Wi-Fi miniport build rules
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -19,14 +19,14 @@ list(APPEND SOURCE
     oid.c
     rt2800usb.h)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/drivers/rsna_supplicant)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/rsna_supplicant)
 
 add_library(rt2800usb MODULE ${SOURCE} rt2800usb.rc)
 set_module_type(rt2800usb kernelmodedriver)
 target_link_libraries(rt2800usb rsna_supplicant)
 add_importlibs(rt2800usb ndis ntoskrnl hal usbd)
-add_cd_file(TARGET rt2800usb DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET rt2800usb DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(rt2800usb netrt2800usb.inf)
 
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/rt2870.bin DESTINATION reactos/system32/drivers/ralink NO_CAB FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/LICENCE.ralink-firmware.txt DESTINATION reactos/3rdParty NO_CAB FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/rt2870.bin DESTINATION librent/system32/drivers/ralink NO_CAB FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/LICENCE.ralink-firmware.txt DESTINATION librent/3rdParty NO_CAB FOR all)

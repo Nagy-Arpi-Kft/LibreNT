@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL
+ * PROJECT:         LibreNT HAL
  * LICENSE:         BSD - See COPYING.ARM in the top level directory
  * FILE:            hal/halarm64/include/hal.h
  * PURPOSE:         ARM64 HAL private header
@@ -13,9 +13,9 @@
 #include <halfuncs.h>
 #include <ndk/iofuncs.h>
 #include <ndk/kefuncs.h>
-#include <reactos/hal/acpi_pci.h>
-#include <reactos/hal/acpi_cstate.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/hal/acpi_pci.h>
+#include <librent/hal/acpi_cstate.h>
+#include <librent/drivers/acpi/acpi.h>
 #include <bugcodes.h>
 #include <halacpip.h>
 #include <halirq.h>

@@ -715,7 +715,7 @@ static ULONG WINAPI cost_manager_Release(
     return INetworkListManager_Release( &mgr->INetworkListManager_iface );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD default_route_interface( NET_IFINDEX *index )
 {
     MIB_IPFORWARD_TABLE2 *table;

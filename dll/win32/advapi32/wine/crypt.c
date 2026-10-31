@@ -24,7 +24,7 @@
  *  - Thread-safing
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <advapi32.h>
 #include <stdlib.h>
 #define ARRAY_SIZE(x) _countof(x)
@@ -43,7 +43,7 @@
 #include "wine/debug.h"
 #include "wine/exception.h"
 #include "winternl.h"
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 WINE_DEFAULT_DEBUG_CHANNEL(crypt);
 

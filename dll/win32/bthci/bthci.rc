@@ -5,13 +5,13 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "Bluetooth Class Installer"
-#define REACTOS_STR_INTERNAL_NAME     "bthci"
-#define REACTOS_STR_ORIGINAL_FILENAME "bthci.dll"
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "Bluetooth Class Installer"
+#define LIBRENT_STR_INTERNAL_NAME     "bthci"
+#define LIBRENT_STR_ORIGINAL_FILENAME "bthci.dll"
 
-#include <reactos/version.rc>
-#include <reactos/manifest_dll.rc>
+#include <librent/version.rc>
+#include <librent/manifest_dll.rc>
 
 IDI_BLUETOOTH ICON "resources/bluetooth.ico"
 

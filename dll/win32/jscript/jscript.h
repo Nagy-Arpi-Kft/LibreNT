@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma once
 #endif
 
@@ -29,7 +29,7 @@
 #include "windef.h"
 #include "winbase.h"
 #include "winuser.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <winnls.h>
 #endif
 #include "ole2.h"
@@ -85,7 +85,7 @@ HRESULT get_dispatch_typeinfo(ITypeInfo**);
  * of execution.
  */
 #define DISPATCH_JSCRIPT_CALLEREXECSSOURCE  0x8000
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DISPATCH_JSCRIPT_NOPROPERTYGET      0x2000
 #define DISPATCH_JSCRIPT_INTERNAL_MASK      (DISPATCH_JSCRIPT_CALLEREXECSSOURCE|DISPATCH_JSCRIPT_NOPROPERTYGET)
 #else

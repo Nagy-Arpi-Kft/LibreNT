@@ -48,7 +48,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(dinput);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL hid_write_report( HANDLE device, void *buffer, DWORD length )
 {
     OVERLAPPED ovl = {0};

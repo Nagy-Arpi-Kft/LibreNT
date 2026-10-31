@@ -24,14 +24,14 @@
 #include "wined3d_gl.h"
 #include "wined3d_vk.h"
 
-#ifdef __REACTOS__
-#include "reactos/undocuser.h"
+#ifdef __LIBRENT__
+#include "librent/undocuser.h"
 #endif
 
 WINE_DEFAULT_DEBUG_CHANNEL(d3d);
 WINE_DECLARE_DEBUG_CHANNEL(d3d_perf);
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
 static BOOL set_window_present_rect(HWND hwnd, UINT x, UINT y, UINT width, UINT height)
 {
     RECT rect = {x, y, x + width, y + height};
@@ -244,7 +244,7 @@ void CDECL wined3d_swapchain_set_window(struct wined3d_swapchain *swapchain, HWN
         WARN("Failed to retrieve device context, trying swapchain backup.\n");
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void CDECL wined3d_swapchain_set_composition(struct wined3d_swapchain *swapchain,
         BOOL composition, BOOL premultiplied_alpha, int offset_x, int offset_y,
         const RECT *clip_rect)
@@ -294,7 +294,7 @@ HRESULT CDECL wined3d_swapchain_present(struct wined3d_swapchain *swapchain,
 
     if (!dst_rect)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!desc->windowed || swapchain->composition)
 #else
         if (!desc->windowed)
@@ -475,7 +475,7 @@ HRESULT CDECL wined3d_swapchain_get_gamma_ramp(const struct wined3d_swapchain *s
     return wined3d_output_get_gamma_ramp(output, ramp);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL swapchain_composition_rects(const struct wined3d_swapchain *swapchain,
         RECT *source_rect, RECT *draw_rect)
 {
@@ -530,7 +530,7 @@ static void swapchain_blit_gdi(struct wined3d_swapchain *swapchain,
     if (!once++)
         FIXME("Using GDI present.\n");
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (swapchain->composition && !swapchain_composition_rects(swapchain, &source_rect, &draw_rect))
         return;
 #endif
@@ -566,7 +566,7 @@ static void swapchain_blit_gdi(struct wined3d_swapchain *swapchain,
 
     TRACE("Created source DC %p, bitmap %p for backbuffer %p.\n", src_dc, bitmap, back_buffer);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (swapchain->composition && swapchain->premultiplied_alpha)
     {
         BLENDFUNCTION blend = {AC_SRC_OVER, 0, 255, AC_SRC_ALPHA};
@@ -744,7 +744,7 @@ static void swapchain_gl_present(struct wined3d_swapchain *swapchain,
 
     pixel_format = &wined3d_adapter_gl(swapchain->device->adapter)->pixel_formats[context_gl->pixel_format - 1];
     if (
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             (swapchain->composition && pixel_format->swap_method != WGL_SWAP_COPY_ARB) ||
 #endif
             context_gl->dc == wined3d_device_gl(swapchain->device)->backup_dc
@@ -761,7 +761,7 @@ static void swapchain_gl_present(struct wined3d_swapchain *swapchain,
 
         wined3d_texture_load_location(back_buffer, 0, context, back_buffer->resource.draw_binding);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (swapchain->composition)
         {
             RECT composition_source_rect = *src_rect;
@@ -1454,7 +1454,7 @@ static void swapchain_gdi_frontbuffer_updated(struct wined3d_swapchain *swapchai
     /* Front buffer coordinates are screen coordinates. Map them to the
      * destination window if not fullscreened. */
     if (swapchain->state.desc.windowed
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             && !swapchain->composition
 #endif
             )
@@ -1467,7 +1467,7 @@ static void swapchain_gdi_frontbuffer_updated(struct wined3d_swapchain *swapchai
     IntersectRect(&draw_rect, &draw_rect, &swapchain->front_buffer_update);
     source_rect = draw_rect;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (swapchain->composition)
     {
         OffsetRect(&draw_rect, swapchain->composition_offset.x,
@@ -1513,7 +1513,7 @@ static void swapchain_gdi_frontbuffer_updated(struct wined3d_swapchain *swapchai
                 src_dc, draw_rect.left, draw_rect.top, SRCCOPY);
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
 #endif
     SetRectEmpty(&swapchain->front_buffer_update);
@@ -1531,7 +1531,7 @@ static void swapchain_gdi_present(struct wined3d_swapchain *swapchain,
     front = &swapchain->front_buffer->dc_info[0];
     back = &swapchain->back_buffers[0]->dc_info[0];
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (swapchain->state.desc.swap_effect == WINED3D_SWAP_EFFECT_FLIP_SEQUENTIAL)
     {
         /* Our CPU composition path exposes a stable buffer zero to DXGI. Keep
@@ -1562,10 +1562,10 @@ static void swapchain_gdi_present(struct wined3d_swapchain *swapchain,
     swapchain->back_buffers[0]->resource.heap_pointer = heap_pointer;
     swapchain->back_buffers[0]->resource.heap_memory = heap_memory;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 present:
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     SetRect(&swapchain->front_buffer_update, 0, 0,
             swapchain->front_buffer->resource.width,
             swapchain->front_buffer->resource.height);
@@ -1584,7 +1584,7 @@ static const struct wined3d_swapchain_ops swapchain_no3d_ops =
     swapchain_gdi_frontbuffer_updated,
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void swapchain_null_present(struct wined3d_swapchain *swapchain,
         const RECT *src_rect, const RECT *dst_rect, unsigned int swap_interval, uint32_t flags)
 {
@@ -1765,7 +1765,7 @@ static HRESULT swapchain_create_texture(struct wined3d_swapchain *swapchain,
     texture_desc.multisample_type = swapchain_desc->multisample_type;
     texture_desc.multisample_quality = swapchain_desc->multisample_quality;
     texture_desc.usage = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!depth && (device->wined3d->flags & WINED3D_NO3D) && !(device->wined3d->flags & WINED3D_NULL_DRIVER))
 #else
     if (!depth && (device->wined3d->flags & WINED3D_NO3D))
@@ -1830,7 +1830,7 @@ static HRESULT wined3d_swapchain_init(struct wined3d_swapchain *swapchain, struc
 
     if (desc->swap_effect != WINED3D_SWAP_EFFECT_DISCARD
             && desc->swap_effect != WINED3D_SWAP_EFFECT_SEQUENTIAL
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             && desc->swap_effect != WINED3D_SWAP_EFFECT_FLIP_DISCARD
             && desc->swap_effect != WINED3D_SWAP_EFFECT_FLIP_SEQUENTIAL
 #endif
@@ -2019,7 +2019,7 @@ HRESULT wined3d_swapchain_no3d_init(struct wined3d_swapchain *swapchain_no3d, st
     TRACE("swapchain_no3d %p, device %p, desc %p, state_parent %p, parent %p, parent_ops %p.\n",
             swapchain_no3d, device, desc, state_parent, parent, parent_ops);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (device->wined3d->flags & WINED3D_NULL_DRIVER)
         return wined3d_swapchain_init(swapchain_no3d, device, desc, state_parent, parent, parent_ops,
                 &swapchain_null_ops);
@@ -2408,7 +2408,7 @@ static HRESULT wined3d_swapchain_state_set_display_mode(struct wined3d_swapchain
     return WINED3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void wined3d_swapchain_state_refresh_fullscreen(struct wined3d_swapchain_state *state,
         HWND window, int x, int y, int width, int height);
 #endif
@@ -2422,7 +2422,7 @@ HRESULT CDECL wined3d_swapchain_state_resize_target(struct wined3d_swapchain_sta
     int x, y, width, height;
     HWND window;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     bool refresh = false;
 #endif
 
@@ -2461,7 +2461,7 @@ HRESULT CDECL wined3d_swapchain_state_resize_target(struct wined3d_swapchain_sta
         {
             TRACE("Update saved window state.\n");
             state->original_window_rect = window_rect;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             refresh = !!(state->desc.flags & WINED3D_SWAPCHAIN_DXGI_WINDOW_STYLE);
 #endif
         }
@@ -2492,7 +2492,7 @@ HRESULT CDECL wined3d_swapchain_state_resize_target(struct wined3d_swapchain_sta
 
     wined3d_mutex_unlock();
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (refresh)
     {
         wined3d_swapchain_state_refresh_fullscreen(state, window, x, y, width, height);
@@ -2504,7 +2504,7 @@ HRESULT CDECL wined3d_swapchain_state_resize_target(struct wined3d_swapchain_sta
     return WINED3D_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG fullscreen_style(LONG style, uint32_t flags)
 {
     if (flags & WINED3D_SWAPCHAIN_DXGI_WINDOW_STYLE)
@@ -2626,7 +2626,7 @@ static void set_window_state(struct wined3d_window_state *s)
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void wined3d_swapchain_state_refresh_fullscreen(struct wined3d_swapchain_state *state,
         HWND window, int x, int y, int width, int height)
 {
@@ -2668,7 +2668,7 @@ HRESULT wined3d_swapchain_state_setup_fullscreen(struct wined3d_swapchain_state 
         return WINED3DERR_NOTAVAILABLE;
     }
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     set_window_present_rect(window, x, y, width, height);
 #endif
 
@@ -2690,7 +2690,7 @@ HRESULT wined3d_swapchain_state_setup_fullscreen(struct wined3d_swapchain_state 
     s->flags = SWP_FRAMECHANGED | SWP_NOACTIVATE;
     if (state->desc.flags & WINED3D_SWAPCHAIN_NO_WINDOW_CHANGES)
         s->flags |= SWP_NOZORDER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (!(state->desc.flags & WINED3D_SWAPCHAIN_DXGI_WINDOW_STYLE))
 #else
     else
@@ -2700,7 +2700,7 @@ HRESULT wined3d_swapchain_state_setup_fullscreen(struct wined3d_swapchain_state 
     state->style = GetWindowLongW(window, GWL_STYLE);
     state->exstyle = GetWindowLongW(window, GWL_EXSTYLE);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     s->style = fullscreen_style(state->style, state->desc.flags);
     s->exstyle = fullscreen_exstyle(state->exstyle, state->desc.flags);
 #else
@@ -2724,7 +2724,7 @@ void wined3d_swapchain_state_restore_from_fullscreen(struct wined3d_swapchain_st
     struct wined3d_window_state *s;
     LONG style, exstyle;
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
     set_window_present_rect(window, 0, 0, 0, 0);
 #endif
 
@@ -2767,7 +2767,7 @@ void wined3d_swapchain_state_restore_from_fullscreen(struct wined3d_swapchain_st
      * fullscreen phase. Some applications change it before calling Reset()
      * when switching between windowed and fullscreen modes (HL2), some
      * depend on the original style (Eve Online). */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     s->set_style = style == fullscreen_style(state->style, state->desc.flags)
             && exstyle == fullscreen_exstyle(state->exstyle, state->desc.flags);
 #else
@@ -2876,7 +2876,7 @@ HRESULT CDECL wined3d_swapchain_state_set_fullscreen(struct wined3d_swapchain_st
             HWND window = state->device_window;
             BOOL filter;
 
-#if !defined(__REACTOS__) || defined(REACTOS_WINE_WDDM)
+#if !defined(__LIBRENT__) || defined(LIBRENT_WINE_WDDM)
             set_window_present_rect(state->device_window, output_desc.desktop_rect.left,
                     output_desc.desktop_rect.top, width, height);
 #endif

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS win32 kernel mode subsystem
+ * PROJECT:     LibreNT win32 kernel mode subsystem
  * LICENSE:     GPL-2.1-or-later (https://spdx.org/licenses/GPL-2.1-or-later)
  * PURPOSE:     Utility functions
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>

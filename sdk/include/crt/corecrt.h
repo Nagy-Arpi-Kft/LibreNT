@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT headers
+ * PROJECT:     LibreNT CRT headers
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Declarations used throughout the CoreCRT library.
  * COPYRIGHT:   Copyright (c) Microsoft Corporation. All rights reserved.
@@ -204,7 +204,7 @@ typedef struct localeinfo_struct
 /*
  * Newer MinGW-w64/libstdc++ headers unconditionally import quick_exit and
  * at_quick_exit into namespace std for C++11+. Their stdlib.h only declares
- * them when building against UCRT, but ReactOS also provides msvcrt-side
+ * them when building against UCRT, but LibreNT also provides msvcrt-side
  * implementations. Declare them here so GCC 15 C++ headers compile cleanly.
  */
 #ifndef _CRT_QUICK_EXIT_DEFINED

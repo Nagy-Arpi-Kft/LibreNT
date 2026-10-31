@@ -4,7 +4,7 @@
 /*
  * Small, platform-neutral subset of the NT type system used by ntfslib.
  *
- * ReactOS builds continue to get these definitions from ntdef.h/ntifs.h.
+ * LibreNT builds continue to get these definitions from ntdef.h/ntifs.h.
  * Native hosts define NTFSLIB_PORTABLE and use this header instead. Keep
  * WCHAR at 16 bits: it represents UTF-16 code units stored on NTFS, not the
  * host C library's idea of wchar_t.
@@ -112,7 +112,7 @@ typedef struct _RTL_BITMAP
 } RTL_BITMAP, *PRTL_BITMAP;
 
 /*
- * This structure is retained for the ReactOS-facing compatibility API. New
+ * This structure is retained for the LibreNT-facing compatibility API. New
  * portable consumers should use NtfsDirectoryEntry/NtfsDirectoryReadNext.
  */
 typedef struct _FILE_BOTH_DIR_INFORMATION

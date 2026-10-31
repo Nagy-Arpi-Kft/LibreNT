@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS ARM64EC runtime
+# PROJECT:     LibreNT ARM64EC runtime
 # PURPOSE:     Native NTDLL bridge exports for emulated AMD64 imports
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>

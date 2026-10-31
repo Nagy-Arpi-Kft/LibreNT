@@ -7562,7 +7562,7 @@ static int CALLBACK get_char_width_proc(const LOGFONTA *lf,
     float f;
     ABC abc;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!strcmp(lf->lfFaceName, "Segoe UI Emoji  ")) // Fails on Vista x64 testbot
     {
         win_skip("broken font: %s\n", lf->lfFaceName);
@@ -7870,9 +7870,9 @@ START_TEST(font)
     test_logfont();
     test_bitmap_font();
     test_outline_font();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (is_reactos())
-        skip("FIXME: ReactOS does not support bitmap (raster) fonts at this time\n");
+        skip("FIXME: LibreNT does not support bitmap (raster) fonts at this time\n");
     else
         test_bitmap_font_metrics();
 #else

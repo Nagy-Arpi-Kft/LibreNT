@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  *	file type mapping
  *	(HKEY_CLASSES_ROOT - Stuff)
@@ -459,7 +459,7 @@ BOOL HCR_GetFolderAttributes(LPCITEMIDLIST pidlFolder, LPDWORD pdwAttributes)
 
     return TRUE;
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  *	file type mapping
  *	(HKEY_CLASSES_ROOT - Stuff)
@@ -496,7 +496,7 @@ BOOL HCR_GetFolderAttributes(LPCITEMIDLIST pidlFolder, LPDWORD pdwAttributes)
 #include <shlwapi.h>
 #include <wine/debug.h>
 #include <wine/unicode.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <strsafe.h>
 #endif
 
@@ -656,7 +656,7 @@ BOOL HCR_GetDefaultVerbW( HKEY hkeyClass, LPCWSTR szVerb, LPWSTR szDest, DWORD l
         }
 
         /* and then just use the first verb on Windows >= 2000 */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!RegOpenKeyExW(hkeyClass, L"shell", 0, KEY_READ, &hkey))
         {
             if (!RegEnumKeyW(hkey, 0, szDest, len) && *szDest)
@@ -822,7 +822,7 @@ BOOL HCR_GetIconA(LPCSTR szClass, LPSTR szDest, LPCSTR szName, DWORD len, int* p
 	return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL HCU_GetIconW(LPCWSTR szClass, LPWSTR szDest, LPCWSTR szName, DWORD len, int* picon_idx)
 {
     HKEY hkey;
@@ -886,14 +886,14 @@ BOOL HCR_GetClassNameW(REFIID riid, LPWSTR szDest, DWORD len)
 	HKEY	hkey;
 	BOOL ret = FALSE;
 	DWORD buflen = len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WCHAR szName[100];
         LPOLESTR pStr;
 #endif
 
  	szDest[0] = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (StringFromCLSID(riid, &pStr) == S_OK)
         {
             DWORD dwLen = buflen * sizeof(WCHAR);
@@ -929,7 +929,7 @@ BOOL HCR_GetClassNameW(REFIID riid, LPWSTR szDest, DWORD len)
 	    if(LoadStringW(shell32_hInstance, IDS_MYCOMPUTER, szDest, buflen))
 	      ret = TRUE;
 	  }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           else if (IsEqualIID(riid, &CLSID_MyDocuments))
           {
               if(LoadStringW(shell32_hInstance, IDS_PERSONAL, szDest, buflen))
@@ -960,14 +960,14 @@ BOOL HCR_GetClassNameA(REFIID riid, LPSTR szDest, DWORD len)
 {	HKEY	hkey;
 	BOOL ret = FALSE;
 	DWORD buflen = len;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         CHAR szName[100];
         LPOLESTR pStr;
 #endif
 
 	szDest[0] = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (StringFromCLSID(riid, &pStr) == S_OK)
         {
             DWORD dwLen = buflen * sizeof(CHAR);
@@ -1003,7 +1003,7 @@ BOOL HCR_GetClassNameA(REFIID riid, LPSTR szDest, DWORD len)
 	    if(LoadStringA(shell32_hInstance, IDS_MYCOMPUTER, szDest, buflen))
 	      ret = TRUE;
 	  }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           else if (IsEqualIID(riid, &CLSID_MyDocuments))
           {
               if(LoadStringA(shell32_hInstance, IDS_PERSONAL, szDest, buflen))
@@ -1075,7 +1075,7 @@ BOOL HCR_GetFolderAttributes(LPCITEMIDLIST pidlFolder, LPDWORD pdwAttributes)
     }
     
     lResult = RegOpenKeyExW(HKEY_CLASSES_ROOT, wszShellFolderKey, 0, KEY_READ, &hSFKey);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lResult != ERROR_SUCCESS)
     {
         ERR("Cannot open key: %ls\n", wszShellFolderKey);
@@ -1117,4 +1117,4 @@ BOOL HCR_GetFolderAttributes(LPCITEMIDLIST pidlFolder, LPDWORD pdwAttributes)
 
     return TRUE;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

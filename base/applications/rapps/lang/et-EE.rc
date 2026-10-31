@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Applications Manager
+ * PROJECT:     LibreNT Applications Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Estonian resource file
  * TRANSLATOR:  Copyright 2018 Joann Mõndresku <joannmondresku@gmail.com>
@@ -168,10 +168,10 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APPTITLE "ReactOS'i Rakenduste Haldur"
+    IDS_APPTITLE "LibreNT'i Rakenduste Haldur"
     IDS_APP_AUTHORS "Copyright 2009 Dmitry Chapyshev"
-    IDS_WELCOME_TITLE "Tere tulemast ReactOS'i Rakenduste Haldurisse!"
-    IDS_WELCOME_TEXT "Vali vasakult teema, siis vali paremalt rakendusi mida soovid installida või desinstallida.\nReactOS'i veebileht: "
+    IDS_WELCOME_TITLE "Tere tulemast LibreNT'i Rakenduste Haldurisse!"
+    IDS_WELCOME_TEXT "Vali vasakult teema, siis vali paremalt rakendusi mida soovid installida või desinstallida.\nLibreNT'i veebileht: "
     IDS_WELCOME_URL "https://reactos.org"
 
     IDS_APPWIZ_TITLE "Add/Remove Programs"

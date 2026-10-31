@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM Null/Software GPU Miniport
+ * PROJECT:     LibreNT WDDM Null/Software GPU Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     DriverEntry and core DDI callbacks for softgpu.sys.
  *              Implements a configurable WDDM ABI miniport with a
@@ -75,11 +75,11 @@
 #define DXGKDDI_INTERFACE_VERSION_WDDM3_2 0x11007
 #endif
 
-#ifndef REACTOS_WDDM_TARGET_LEVEL
-#define REACTOS_WDDM_TARGET_LEVEL 2000
+#ifndef LIBRENT_WDDM_TARGET_LEVEL
+#define LIBRENT_WDDM_TARGET_LEVEL 2000
 #endif
-#ifndef REACTOS_WDDM_TARGET_INTERFACE_VERSION
-#define REACTOS_WDDM_TARGET_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_0
+#ifndef LIBRENT_WDDM_TARGET_INTERFACE_VERSION
+#define LIBRENT_WDDM_TARGET_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_0
 #endif
 
 /*
@@ -89,65 +89,65 @@
  * Optional feature families remain independently negotiated and may be
  * disabled even when their declaration tail is present.
  */
-#if (REACTOS_WDDM_TARGET_LEVEL < 2000)
-#define SOFTGPU_DECLARED_INTERFACE_VERSION REACTOS_WDDM_TARGET_INTERFACE_VERSION
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 2000)
+#define SOFTGPU_DECLARED_INTERFACE_VERSION LIBRENT_WDDM_TARGET_INTERFACE_VERSION
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2100)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_0
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2200)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2200)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_1
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2300)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2300)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_2
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2400)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2400)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_3
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2500)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2500)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_4
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2600)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2600)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_5
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2700)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2700)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_6
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2800)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2800)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_7
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2900)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2900)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_8
-#elif (REACTOS_WDDM_TARGET_LEVEL < 3000)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 3000)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM2_9
-#elif (REACTOS_WDDM_TARGET_LEVEL < 3100)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 3100)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM3_0
-#elif (REACTOS_WDDM_TARGET_LEVEL < 3200)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 3200)
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM3_1
 #else
 #define SOFTGPU_DECLARED_INTERFACE_VERSION DXGKDDI_INTERFACE_VERSION_WDDM3_2
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL < 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 1200)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv1_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 1300)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 1300)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv1_2_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2000)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2000)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv1_3_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2100)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2100)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2200)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2200)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_1_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2300)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2300)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_2_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2400)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2400)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_3_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2500)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2500)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_4_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2600)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2600)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_5_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2700)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2700)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_6_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2800)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2800)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_7_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 2900)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 2900)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_8_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 3000)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 3000)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv2_9_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 3100)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 3100)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv3_0_ENUM
-#elif (REACTOS_WDDM_TARGET_LEVEL < 3200)
+#elif (LIBRENT_WDDM_TARGET_LEVEL < 3200)
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv3_1_ENUM
 #else
 #define SOFTGPU_DECLARED_WDDM_VERSION DXGKDDI_WDDMv3_2_ENUM
@@ -359,7 +359,7 @@ DriverEntry(
     InitData.DxgkDdiQueryChildRelations             = SoftGpuDdiQueryChildRelations;
     InitData.DxgkDdiQueryChildStatus                = SoftGpuDdiQueryChildStatus;
     InitData.DxgkDdiQueryDeviceDescriptor           = SoftGpuDdiQueryDeviceDescriptor;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     InitData.DxgkDdiGetNodeMetadata                 = SoftGpuDdiGetNodeMetadata;
 #endif
 
@@ -420,14 +420,14 @@ DriverEntry(
 
     /* --- Interrupt control ----------------------------------------------- */
     InitData.DxgkDdiControlInterrupt                = SoftGpuDdiControlInterrupt;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
     InitData.DxgkDdiControlInterrupt2               = SoftGpuDdiControlInterrupt2;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2600)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2600)
     InitData.DxgkDdiCollectDiagnosticInfo           =
         SoftGpuDdiCollectDiagnosticInfo;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2700)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2700)
     InitData.DxgkDdiControlInterrupt3               = SoftGpuDdiControlInterrupt3;
 #endif
 
@@ -445,7 +445,7 @@ DriverEntry(
      * periodic-frame, MPO, post-composition, or advanced display-control
      * features, so their callbacks remain NULL and their capability bits zero.
      */
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     InitData.DxgkDdiCreateProcess                   = SoftGpuDdiCreateProcess;
     InitData.DxgkDdiDestroyProcess                  = SoftGpuDdiDestroyProcess;
     InitData.DxgkDdiGetRootPageTableSize            = SoftGpuDdiGetRootPageTableSize;
@@ -454,19 +454,19 @@ DriverEntry(
     InitData.DxgkDdiUnmapCpuHostAperture           = SoftGpuDdiUnmapCpuHostAperture;
     InitData.DxgkDdiSubmitCommandVirtual           = SoftGpuDdiSubmitCommandVirtual;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
     InitData.DxgkDdiValidateUpdateAllocationProperty =
         SoftGpuDdiValidateUpdateAllocationProperty;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
     InitData.DxgkDdiSetTimingsFromVidPn =
         SoftGpuDdiSetTimingsFromVidPn;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000) || \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000) || \
     defined(SOFTGPU_PLATFORM_PRIVATE_ESCAPE)
     InitData.DxgkDdiEscape                         = SoftGpuDdiEscape;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     InitData.DxgkDdiCreateCpuEvent                 =
         SoftGpuDdiCreateCpuEvent;
     InitData.DxgkDdiDestroyCpuEvent                =
@@ -546,7 +546,7 @@ SoftGpuDdiAddDevice(
     KeInitializeEvent(&Device->ShadowPresentInterfaceZeroEvent,
                       NotificationEvent,
                       TRUE);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     KeInitializeEvent(&Device->FeatureInterfaceZeroEvent,
                       NotificationEvent,
                       TRUE);
@@ -632,7 +632,7 @@ SoftGpuShadowPresentInterfaceDereference(
     KeReleaseSpinLock(&Device->ShadowPresentInterfaceLock, OldIrql);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
 static const GUID SoftGpuWddmFeatureInterfaceGuid =
 {
     0x94bb3993, 0xc6c3, 0x4da7,
@@ -855,7 +855,7 @@ SoftGpuDdiQueryInterface(
         return STATUS_SUCCESS;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     if (RtlEqualMemory(QueryInterface->InterfaceType,
                        &SoftGpuWddmFeatureInterfaceGuid,
                        sizeof(SoftGpuWddmFeatureInterfaceGuid)))
@@ -1242,7 +1242,7 @@ SoftGpuDdiStartDevice(
                   min((SIZE_T)DxgkInterface->Size,
                       sizeof(Device->DxgkInterface)));
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     /*
      * Feature negotiation can reenter DxgkDdiQueryInterface while this
      * StartDevice call is still active. Open only that provider gate here;
@@ -1254,7 +1254,7 @@ SoftGpuDdiStartDevice(
     KeReleaseSpinLock(&Device->FenceLock, OldIrql);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     {
         BOOLEAN FeatureStateResolved = FALSE;
 
@@ -1266,7 +1266,7 @@ SoftGpuDdiStartDevice(
                     sizeof(DxgkInterface->DxgkCbSignalEvent) &&
             DxgkInterface->DxgkCbSignalEvent != NULL)
         {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
             InterlockedExchange(
                 &Device->FeatureNegotiationActive, 1);
             if (DxgkInterface->Size >=
@@ -1327,7 +1327,7 @@ SoftGpuDdiStartDevice(
                 &Device->FeatureNegotiationActive, 0);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL < 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL < 3200)
             if (!FeatureStateResolved &&
                 DxgkInterface->Size >=
                     FIELD_OFFSET(DXGK_INTERFACE,
@@ -1461,7 +1461,7 @@ SoftGpuDdiStopDevice(
      * closed, remove queued work and wait for any running callback to return. */
     KeAcquireSpinLock(&Device->FenceLock, &OldIrql);
     Device->Stopped = 1;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     Device->FeatureInterfaceQueriesOpen = 0;
     Device->FeatureNegotiationActive = 0;
 #endif
@@ -1482,7 +1482,7 @@ SoftGpuDdiStopDevice(
                   FALSE,
                   NULL);
     }
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     if (InterlockedCompareExchange(
             &Device->FeatureInterfaceReferences, 0, 0) != 0)
     {
@@ -1608,7 +1608,7 @@ SoftGpuDdiGetNodeMetadata(
     RtlZeroMemory(GetNodeMetadata, sizeof(*GetNodeMetadata));
     SoftGpuPlatformFillNodeMetadata(NodeOrdinalAndAdapterIndex & 0xFFFF,
                                     GetNodeMetadata);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     GetNodeMetadata->GpuMmuSupported = SOFTGPU_GPUMMU_END_TO_END;
     GetNodeMetadata->IoMmuSupported = FALSE;
 #endif
@@ -1691,7 +1691,7 @@ SoftGpuDdiQueryAdapterInfo(
         }
         return STATUS_SUCCESS;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     case DXGKQAITYPE_GPUMMUCAPS:
     {
         /*
@@ -1851,7 +1851,7 @@ SoftGpuDdiQueryAdapterInfo(
         return STATUS_SUCCESS;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     case DXGKQAITYPE_QUERYSEGMENT4:
     {
         /* WDDM 2.0 flavour: stride-addressed descriptor array. */
@@ -1889,7 +1889,7 @@ SoftGpuDdiQueryAdapterInfo(
     }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     case DXGKQAITYPE_QUERYSEGMENT3:
     {
         /* WDDM 2.x flavour of QUERYSEGMENT (distinct descriptor layout). */
@@ -1952,7 +1952,7 @@ SoftGpuDdiCreateDevice(
         return STATUS_INVALID_PARAMETER;
     }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     Process = (PSOFTGPU_PROCESS)CreateDevice->hKmdProcess;
     if ((!CreateDevice->Flags.SystemDevice && Process == NULL) ||
         (Process != NULL &&
@@ -2018,7 +2018,7 @@ SoftGpuDdiDestroyDevice(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
 NTSTATUS
 APIENTRY
 SoftGpuDdiCreateCpuEvent(
@@ -2179,7 +2179,7 @@ SoftGpuDdiEscape(
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL < 3000) && \
+#if (LIBRENT_WDDM_TARGET_LEVEL < 3000) && \
     defined(SOFTGPU_PLATFORM_PRIVATE_ESCAPE)
 NTSTATUS
 APIENTRY
@@ -2616,7 +2616,7 @@ SoftGpuDdiDestroyAllocation(
     return STATUS_SUCCESS;
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 NTSTATUS
 APIENTRY
 SoftGpuDdiValidateUpdateAllocationProperty(
@@ -2763,7 +2763,7 @@ SoftGpuDdiOpenAllocation(
     Device = KmdDevice->Adapter;
     if (Device == NULL || Device->Magic != SOFTGPU_DEVICE_MAGIC)
         return STATUS_INVALID_HANDLE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (KmdDevice->Process == NULL ||
         KmdDevice->Process->Magic != SOFTGPU_PROCESS_MAGIC ||
         KmdDevice->Process->Adapter != Device)
@@ -2922,7 +2922,7 @@ SoftGpuDdiCloseAllocation(
     Device = KmdDevice->Adapter;
     if (Device == NULL || Device->Magic != SOFTGPU_DEVICE_MAGIC)
         return STATUS_INVALID_HANDLE;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (KmdDevice->Process == NULL ||
         KmdDevice->Process->Magic != SOFTGPU_PROCESS_MAGIC ||
         KmdDevice->Process->Adapter != Device)
@@ -3178,7 +3178,7 @@ SoftGpuDdiControlInterrupt(
                    : DXGK_INTERRUPT_DISABLE);
 }
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 NTSTATUS
 APIENTRY
 SoftGpuDdiControlInterrupt2(
@@ -3199,7 +3199,7 @@ SoftGpuDdiControlInterrupt2(
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2600)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2600)
 NTSTATUS
 APIENTRY
 SoftGpuDdiCollectDiagnosticInfo(
@@ -3243,7 +3243,7 @@ SoftGpuDdiCollectDiagnosticInfo(
             break;
 
         case DXGK_DI_BLACKSCREEN:
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2700)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2700)
             Bucket = "softgpu_blackscreen";
             Description = "softgpu_scanout_failure_state";
             BucketSize = sizeof("softgpu_blackscreen") - 1;
@@ -3284,7 +3284,7 @@ SoftGpuDdiCollectDiagnosticInfo(
     RtlZeroMemory(&Payload, sizeof(Payload));
     Payload.Size = sizeof(Payload);
     Payload.Version = SOFTGPU_DIAGNOSTIC_PAYLOAD_VERSION;
-    Payload.TargetLevel = REACTOS_WDDM_TARGET_LEVEL;
+    Payload.TargetLevel = LIBRENT_WDDM_TARGET_LEVEL;
     Payload.Type = CollectDiagnosticInfo->Type;
     Payload.AdapterContextAvailable = (Device != NULL);
     RtlCopyMemory(CollectDiagnosticInfo->pBuffer, &Payload, sizeof(Payload));
@@ -3293,7 +3293,7 @@ SoftGpuDdiCollectDiagnosticInfo(
 }
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2700)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2700)
 NTSTATUS
 APIENTRY
 SoftGpuDdiControlInterrupt3(

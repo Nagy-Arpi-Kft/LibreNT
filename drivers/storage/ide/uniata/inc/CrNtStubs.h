@@ -17,7 +17,7 @@ KeTestSpinLock,(
     SpinLock
     ))
 
-#ifndef USE_REACTOS_DDK
+#ifndef USE_LIBRENT_DDK
 
 CROSSNT_DECL(
 LONG,
@@ -72,7 +72,7 @@ InterlockedCompareExchange,(
 #define CrNtInterlockedExchangeAdd     InterlockedExchangeAdd
 #define CrNtInterlockedCompareExchange InterlockedCompareExchange
 
-#endif // !USE_REACTOS_DDK
+#endif // !USE_LIBRENT_DDK
 
 CROSSNT_DECL_EX("HAL.DLL",
 KIRQL,__stdcall,

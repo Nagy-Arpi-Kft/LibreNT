@@ -29,7 +29,7 @@
 #include "winbase.h"
 
 #include "wine/list.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "wine/unixlib.h"
 #endif
 

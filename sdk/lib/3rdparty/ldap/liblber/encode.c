@@ -95,7 +95,7 @@ ber_prepend_len( unsigned char *ptr, ber_len_t len )
 
 	*--ptr = (unsigned char) len & 0xffU;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	if ( len >= 0x80 ) {
 		*--ptr = (unsigned char) (len >> 8) & 0xffU;
 		if ( len > 0x7fffU ) {
@@ -199,7 +199,7 @@ ber_put_int_or_enum(
 		if ( unum < 0x80 )	/* top bit at *ptr is sign bit */
 			break;
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	while ( sign && (ber_len_t) (&data[sizeof(data) - 1] - ptr) < sizeof(ber_int_t) ) {
 		*ptr-- = sign;
 	}
@@ -351,7 +351,7 @@ ber_put_boolean(
 	if ( tag == LBER_DEFAULT )
 		tag = LBER_BOOLEAN;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	data[sizeof(data) - 1] = (unsigned char) boolval == 1 ? 0xff : 0;
 #else
 	data[sizeof(data) - 1] = boolval ? 0xff : 0;
@@ -597,7 +597,7 @@ ber_printf( BerElement *ber, LDAP_CONST char *fmt, ... )
 			rc = ber_put_string( ber, s, ber->ber_tag );
 			break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 		case 'B':
 			s = va_arg( ap, char * );
 			len = va_arg( ap, ber_len_t );

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS KernelBase
+ * PROJECT:     LibreNT KernelBase
  * PURPOSE:     Volume information query by handle
  *
  * Copyright 1993 Erik Bos

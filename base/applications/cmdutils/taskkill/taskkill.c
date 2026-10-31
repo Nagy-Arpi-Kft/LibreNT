@@ -18,7 +18,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* ReactOS extensions copyright 2020 He Yang and 2025 Hermès Bélusca-Maïto. */
 #endif
 
@@ -27,7 +27,7 @@
 #include <tlhelp32.h>
 #include <wine/debug.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define wcsicmp _wcsicmp
 #endif
 
@@ -56,13 +56,13 @@ struct pid_close_info
     BOOL found;
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 unsigned int* pkill_list;
 DWORD pkill_size;
 DWORD self_pid;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static PWCHAR opList[] = {L"f", L"im", L"pid", L"?", L"t"};
 
@@ -74,7 +74,7 @@ static PWCHAR opList[] = {L"f", L"im", L"pid", L"?", L"t"};
 #define OP_PARAM_HELP 3
 #define OP_PARAM_TERMINATE_CHILD 4
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 static int taskkill_vprintfW(const WCHAR *msg, va_list va_args)
 {
@@ -198,7 +198,7 @@ static BOOL enumerate_processes(void)
 
 static void mark_task_process(const WCHAR *str, int *status_code)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     DWORD self_pid = GetCurrentProcessId();
 #endif
     const WCHAR *p = str;
@@ -233,7 +233,7 @@ static void mark_task_process(const WCHAR *str, int *status_code)
             taskkill_message(STRING_SELF_TERMINATION);
             *status_code = 1;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         else
         {
             pkill_list[pkill_size++] = i;
@@ -252,7 +252,7 @@ static void mark_task_process(const WCHAR *str, int *status_code)
                 taskkill_message(STRING_SELF_TERMINATION);
                 *status_code = 1;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else
             {
                 pkill_list[pkill_size++] = i;
@@ -263,7 +263,7 @@ static void mark_task_process(const WCHAR *str, int *status_code)
         }
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     // Cannot find any process matching the PID or name
     if (pkill_size == 0)
     {
@@ -271,7 +271,7 @@ static void mark_task_process(const WCHAR *str, int *status_code)
 not_found:
     taskkill_message_printfW(STRING_SEARCH_FAILED, str);
     *status_code = 128;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 }
@@ -289,12 +289,12 @@ static void taskkill_message_print_process(int msg, unsigned int index)
     taskkill_message_printfW(msg, pid_str);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /*
  * Below is the Wine method of terminating child processes.
  * Its problem is that it doesn't terminate them in either a parent-to-children
  * or children-to-parent relationship, but instead in the order in which they
- * appear in the process list. This differs from Windows' (or ReactOS) method.
+ * appear in the process list. This differs from Windows' (or LibreNT) method.
  * Wine's termination ordering can cause problems in scenarii where e.g. a
  * parent process could re-spawn killed children processes, or, where it is
  * of interest to kill the parent process first and then its children.
@@ -303,12 +303,12 @@ static void taskkill_message_print_process(int msg, unsigned int index)
  * obtained from the system, is such that any child process P[j] of a given
  * parent process P[i] is enumerated *AFTER* its parent (i.e. i < j).
  *
- * Because of these facts, the ReactOS method is employed instead.
+ * Because of these facts, the LibreNT method is employed instead.
  * Note however that the Wine method (below) has been adapted for
- * ease of usage and comparison with that of ReactOS.
+ * ease of usage and comparison with that of LibreNT.
  */
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static BOOL find_parent(unsigned int process_index, unsigned int *parent_index)
 {
     DWORD parent_id = process_list[process_index].p.th32ParentProcessID;
@@ -336,7 +336,7 @@ static void mark_child_processes(void)
     {
         if (process_list[i].matched)
             continue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         // Prevent self-termination if we are in the process tree
         if (process_list[i].p.th32ProcessID == self_pid)
             continue;
@@ -348,7 +348,7 @@ static void mark_child_processes(void)
             {
                 WINE_TRACE("Adding child %04lx.\n", process_list[i].p.th32ProcessID);
                 process_list[i].matched = TRUE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 pkill_list[pkill_size++] = i;
 #endif
                 break;
@@ -357,7 +357,7 @@ static void mark_child_processes(void)
     }
 }
 
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 /* The implemented task enumeration and termination behavior does not
  * exactly match native behavior. On Windows:
@@ -373,7 +373,7 @@ static void mark_child_processes(void)
  *
  * A PID of zero causes taskkill to warn about the inability to terminate
  * system processes. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL get_pid_creation_time(DWORD pid, FILETIME *time)
 {
     HANDLE process;
@@ -472,7 +472,7 @@ static void mark_child_processes(void)
     }
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 static int send_close_messages(void)
 {
     const WCHAR *process_name;
@@ -480,14 +480,14 @@ static int send_close_messages(void)
     unsigned int i;
     int status_code = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD index;
     for (index = 0; index < pkill_size; ++index)
 #else
     for (i = 0; i < process_count; i++)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         i = pkill_list[index];
 #else
         if (!process_list[i].matched)
@@ -523,14 +523,14 @@ static int terminate_processes(void)
     HANDLE process;
     DWORD pid;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD index;
     for (index = 0; index < pkill_size; ++index)
 #else
     for (i = 0; i < process_count; i++)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         i = pkill_list[index];
 #else
         if (!process_list[i].matched)
@@ -548,7 +548,7 @@ static int terminate_processes(void)
         }
         if (!TerminateProcess(process, 1))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (kill_child_processes)
                 taskkill_message_printfW(STRING_TERM_CHILD_FAILED, pid, process_list[i].p.th32ParentProcessID);
             else
@@ -595,7 +595,7 @@ static BOOL add_to_task_list(WCHAR *name)
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static int get_argument_type(WCHAR* argument)
 {
@@ -818,7 +818,7 @@ static BOOL process_arguments(int argc, WCHAR *argv[])
     return TRUE;
 }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 int __cdecl wmain(int argc, WCHAR *argv[])
 {
@@ -834,7 +834,7 @@ int __cdecl wmain(int argc, WCHAR *argv[])
         return 1;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pkill_list = malloc(process_count * sizeof(unsigned int*));
     if (!pkill_list)
         return 1;

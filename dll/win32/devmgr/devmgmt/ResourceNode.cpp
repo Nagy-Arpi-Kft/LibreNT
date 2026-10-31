@@ -1,5 +1,5 @@
 /*
-* PROJECT:     ReactOS Device Manager
+* PROJECT:     LibreNT Device Manager
 * LICENSE:     GPL - See COPYING in the top level directory
 * FILE:        dll/win32/devmgr/devmgmt/ResourceNode.cpp
 * PURPOSE:     Class object for

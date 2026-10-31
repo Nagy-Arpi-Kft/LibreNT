@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Setup Library
+ * PROJECT:         LibreNT Setup Library
  * FILE:            base/setup/lib/spapisup.h
  * PURPOSE:         Interfacing with Setup* API support functions
  * PROGRAMMERS:     Hermes Belusca-Maito (hermes.belusca@sfr.fr)
@@ -9,7 +9,7 @@
 #pragma once
 
 /* Make setupapi.h to not define the API as exports to the DLL */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define _SETUPAPI_
 #endif
 

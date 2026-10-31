@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/io/iomgr/device.c
  * PURPOSE:         Device Object Management, including Notifications and Queues.
@@ -2211,7 +2211,7 @@ IoGetDeviceNumaNode(
     if (IopGetDeviceNode(PhysicalDeviceObject) == NULL)
         return STATUS_INVALID_PARAMETER;
 
-    /* ReactOS currently models a single NUMA node. */
+    /* LibreNT currently models a single NUMA node. */
     *NodeNumber = 0;
     return STATUS_SUCCESS;
 }

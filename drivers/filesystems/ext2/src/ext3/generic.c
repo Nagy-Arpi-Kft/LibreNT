@@ -10,7 +10,7 @@
 /* INCLUDES *****************************************************************/
 
 #include "ext2fs.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "linux/ext4.h"
 #else
 #include "linux\ext4.h"
@@ -862,7 +862,7 @@ Ext2ZeroBuffer( IN PEXT2_IRP_CONTEXT    IrpContext,
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define SIZE_256K 0x40000
 
 BOOLEAN

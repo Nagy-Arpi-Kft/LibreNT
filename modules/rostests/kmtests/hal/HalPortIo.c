@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel-Mode Tests
+ * PROJECT:     LibreNT Kernel-Mode Tests
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Tests for string I/O intrinsic functions
  * COPYRIGHT:   Copyright 2025 Dmitry Borisov <di.sean@protonmail.com>

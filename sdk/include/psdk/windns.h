@@ -105,7 +105,7 @@ typedef _Return_type_success_(return == 0) DWORD DNS_STATUS;
 #define DNS_ATMA_MAX_ADDR_LENGTH 20
 
 #define DNS_ADDR_MAX_SOCKADDR_LENGTH 32
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define DNS_MAX_NAME_LENGTH 255
 #define DNS_MAX_NAME_BUFFER_LENGTH 256
 #endif
@@ -136,7 +136,7 @@ typedef enum {
   DnsConfigFullHostName_W,
   DnsConfigFullHostName_A,
   DnsConfigFullHostName_UTF8,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DnsConfigDnsServersUnspec = 4144,
   DnsConfigDnsServersIpv4,
   DnsConfigDnsServersIpv6

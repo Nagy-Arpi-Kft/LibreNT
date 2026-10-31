@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Feature-disabled graphics IOMMU export boundary
  */
@@ -7,7 +7,7 @@
 #include "dxgkrnl_private.h"
 
 /*
- * ReactOS exposes the kernel IOMMU interface shape, but no platform provider
+ * LibreNT exposes the kernel IOMMU interface shape, but no platform provider
  * currently owns a DMA-remapping domain for a graphics adapter. Mapping must
  * therefore fail explicitly; an identity mapping would defeat isolation and
  * falsely advertise successful DMA translation.
@@ -44,7 +44,7 @@ SysMmMapIommuRange(
     return STATUS_NOT_SUPPORTED;
 }
 
-/* The failed map boundary above cannot leave a ReactOS-owned mapping. */
+/* The failed map boundary above cannot leave a LibreNT-owned mapping. */
 VOID
 CDECL
 SysMmUnmapIommuContiguousRange(

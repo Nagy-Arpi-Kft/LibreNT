@@ -48,7 +48,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(shell);
 extern INT WINAPI SHStringFromGUIDW(REFGUID guid, LPWSTR lpszDest, INT cchMax);  /* shlwapi.24 */
 static HRESULT WINAPI ShellImageDataFactory_Constructor(IUnknown *outer, REFIID riid, void **obj);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const CLSID CLSID_ShellImageDataFactory =
     {0x66e4e4fb, 0xf385, 0x4dd0, {0x8d, 0x74, 0xa2, 0xef, 0xd1, 0xbc, 0x61, 0x78}};
 #endif
@@ -57,7 +57,7 @@ static const CLSID CLSID_ShellImageDataFactory =
  * Default ClassFactory types
  */
 typedef HRESULT (CALLBACK *LPFNCREATEINSTANCE)(IUnknown* pUnkOuter, REFIID riid, LPVOID* ppvObject);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 static IClassFactory * IDefClF_fnConstructor(LPFNCREATEINSTANCE lpfnCI, PLONG pcRefDll, REFIID riidInst);
 
 /* this table contains all CLSIDs of shell32 objects */
@@ -96,7 +96,7 @@ static const struct {
 	{&CLSID_EnumerableObjectCollection, EnumerableObjectCollection_Constructor},
 	{NULL, NULL}
 };
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 /*************************************************************************
  * SHCoCreateInstance [SHELL32.102]
@@ -114,7 +114,7 @@ static const struct {
  * SEE ALSO
  *     CoCreateInstance, SHLoadOLE
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 HRESULT WINAPI SHCoCreateInstance(
 	LPCWSTR aclsid,
 	const CLSID *clsid,
@@ -352,9 +352,9 @@ HRESULT WINAPI SHExtCoCreateInstance(LPCWSTR aclsid, const CLSID *clsid, IUnknow
 {
     return SH32_ExtCoCreateInstance(aclsid, clsid, outer, CLSCTX_INPROC_SERVER, riid, obj);
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*************************************************************************
  * DllGetClassObject     [SHELL32.@]
  * SHDllGetClassObject   [SHELL32.128]
@@ -390,7 +390,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID iid, LPVOID *ppv)
 	TRACE("-- pointer to class factory: %p\n",*ppv);
 	return hres;
 }
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 /*************************************************************************
  * SHCLSIDFromString				[SHELL32.147]
@@ -463,7 +463,7 @@ HRESULT WINAPI SHGetMalloc(LPMALLOC *lpmal)
  *     CoTaskMemAlloc, SHLoadOLE
  */
 LPVOID WINAPI SHAlloc(
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     SIZE_T len)
 #else
     DWORD len)
@@ -498,7 +498,7 @@ void WINAPI SHFree(LPVOID pv)
 /*************************************************************************
  * SHGetDesktopFolder			[SHELL32.@]
  */
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 HRESULT WINAPI SHGetDesktopFolder(IShellFolder **psf)
 {
 	HRESULT	hres;
@@ -513,7 +513,7 @@ HRESULT WINAPI SHGetDesktopFolder(IShellFolder **psf)
 	TRACE("-- %p->(%p) 0x%08lx\n", psf, *psf, hres);
 	return hres;
 }
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 /**************************************************************************
  * Default ClassFactory Implementation
  *
@@ -525,7 +525,7 @@ HRESULT WINAPI SHGetDesktopFolder(IShellFolder **psf)
  *  When the CreateInstance of the cf is called the callback is executed.
  */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 typedef struct
 {
     IClassFactory               IClassFactory_iface;
@@ -677,7 +677,7 @@ HRESULT WINAPI SHCreateDefClassObject(
 	*ppv = pcf;
 	return S_OK;
 }
-#endif /* !__REACTOS__ */
+#endif /* !__LIBRENT__ */
 
 /*************************************************************************
  *  DragAcceptFiles		[SHELL32.@]
@@ -1507,7 +1507,7 @@ HRESULT WINAPI ShellImageDataFactory_Constructor(IUnknown *outer, REFIID riid, v
     return IShellImageDataFactory_QueryInterface(&ShellImageDataFactory, riid, obj);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     IClassFactory IClassFactory_iface;
@@ -1613,4 +1613,4 @@ HRESULT WINAPI WineShell32_GetClassObject(REFCLSID clsid, REFIID riid, void **ob
     IClassFactory_Release(&factory->IClassFactory_iface);
     return hr;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

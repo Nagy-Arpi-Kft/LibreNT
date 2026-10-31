@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS IMM32
+ * PROJECT:     LibreNT IMM32
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Implementing composition strings of IMM32
  * COPYRIGHT:   Copyright 1998 Patrik Stridvall
@@ -219,7 +219,7 @@ static DWORD CS_DoPrivate(HIMC hIMC, const COMPOSITIONSTRING *pCS, PVOID pBuffer
     if (!CtfImmIsGuidMapEnable(hIMC) || pCS->dwPrivateSize < sizeof(COMPSTR_PRIVATE))
         return IMM_ERROR_GENERAL;
 
-    /* Check boundary #1 (ReactOS only) */
+    /* Check boundary #1 (LibreNT only) */
     DWORD dwPrivateOffset = pCS->dwPrivateOffset;
     if (dwPrivateOffset >= pCS->dwSize || dwPrivateOffset + pCS->dwPrivateSize > pCS->dwSize)
         return IMM_ERROR_GENERAL;
@@ -228,7 +228,7 @@ static DWORD CS_DoPrivate(HIMC hIMC, const COMPOSITIONSTRING *pCS, PVOID pBuffer
     const COMPSTR_PRIVATE *pPrivate = (const COMPSTR_PRIVATE *)(pbCS + dwPrivateOffset);
     DWORD dwLen = pPrivate->dwLen, dwOffset = pPrivate->dwOffset;
 
-    /* Check boundary #2 (ReactOS only) */
+    /* Check boundary #2 (LibreNT only) */
     if (dwPrivateOffset + dwOffset > pCS->dwPrivateSize ||
         dwPrivateOffset + dwOffset + dwLen > pCS->dwPrivateSize)
     {

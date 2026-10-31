@@ -27,5 +27,5 @@ target_link_libraries(wuapi uuid wine wine_dll_canunload wine_dll_register wugui
 add_importlibs(wuapi ole32 advapi32 msvcrt kernel32 ntdll)
 add_dependencies(wuapi stdole2) # wuapi_tlb.tlb needs stdole2.tlb
 add_pch(wuapi precomp.h SOURCE)
-add_cd_file(TARGET wuapi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET wuapi DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(wuapi) # CORE-5743: No CONST_VTABLE

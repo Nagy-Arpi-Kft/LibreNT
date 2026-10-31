@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/wmi/guidobj.c
  * PURPOSE:         I/O Windows Management Instrumentation (WMI) Support

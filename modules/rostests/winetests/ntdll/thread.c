@@ -103,7 +103,7 @@ static void test_dbg_hidden_thread_creation(void)
     ps_attr.Attributes[0].ValuePtr = path;
     ps_attr.TotalLength = sizeof(ps_attr);
 
-#if !defined (__REACTOS__) || (DLL_EXPORT_VERSION >= 0x601)
+#if !defined (__LIBRENT__) || (DLL_EXPORT_VERSION >= 0x601)
     status = RtlCreateProcessParametersEx( &params, &imageW, NULL, NULL,
                                            NULL, NULL, NULL, NULL,
                                            NULL, NULL, PROCESS_PARAMS_FLAG_NORMALIZED );

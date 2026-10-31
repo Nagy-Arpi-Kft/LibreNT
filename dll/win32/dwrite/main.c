@@ -47,7 +47,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD reason, LPVOID reserved)
     case DLL_PROCESS_ATTACH:
         dwrite_module = hinstDLL;
         DisableThreadLibraryCalls( hinstDLL );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         UNIX_CALL(process_attach, NULL);
 #else
         if (!__wine_init_unix_call())

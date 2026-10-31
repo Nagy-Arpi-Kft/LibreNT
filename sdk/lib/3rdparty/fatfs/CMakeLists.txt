@@ -3,5 +3,5 @@ add_library(fatfs STATIC
     ffunicode.c)
 
 target_include_directories(fatfs PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_compile_definitions(fatfs PUBLIC FF_USE_REACTOS_TYPES)
+target_compile_definitions(fatfs PUBLIC FF_USE_LIBRENT_TYPES)
 add_dependencies(fatfs xdk)

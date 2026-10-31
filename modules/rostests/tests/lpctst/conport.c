@@ -1,5 +1,5 @@
 /*
- * reactos/apps/lpc/conport.c
+ * librent/apps/lpc/conport.c
  *
  * To be run in a real WNT 4.0 system with
  * "\SmApiPort" as argument. Do not try to

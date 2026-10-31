@@ -1,8 +1,8 @@
 
 spec2def(libxslt.dll libxslt.spec ADD_IMPORTLIB)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/libxslt
-                    ${REACTOS_SOURCE_DIR}/sdk/lib/3rdparty/libwin-iconv)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/libxslt
+                    ${LIBRENT_SOURCE_DIR}/sdk/lib/3rdparty/libwin-iconv)
 
 add_definitions(
     -DHAVE_CONFIG_H
@@ -53,4 +53,4 @@ if(NOT MSVC)
 endif()
 
 add_pch(libxslt precomp.h SOURCE)
-add_cd_file(TARGET libxslt DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET libxslt DESTINATION librent/system32 FOR all)

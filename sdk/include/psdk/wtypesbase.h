@@ -2,7 +2,7 @@
 #define _WTYPESBASE_H_
 #pragma once
 
-/* ReactOS exposes the COM base types through the generated wtypes.h header.
+/* LibreNT exposes the COM base types through the generated wtypes.h header.
  * Provide the lighter Windows SDK entry point without forcing windows.h. */
 #ifndef COM_NO_WINDOWS_H
 #define COM_NO_WINDOWS_H

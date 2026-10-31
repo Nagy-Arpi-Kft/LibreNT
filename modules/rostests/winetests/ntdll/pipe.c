@@ -30,7 +30,7 @@
 #include "wine/test.h"
 #include "winternl.h"
 #include "winioctl.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Wine's headers aren't compatible */
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
@@ -130,7 +130,7 @@ static BOOL init_func_ptrs(void)
     loadfunc(NtQueryVolumeInformationFile)
     loadfunc(NtSetInformationFile)
     loadfunc(NtCancelIoFile)
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     loadfunc(NtCancelSynchronousIoFile)
 #endif
     loadfunc(RtlInitUnicodeString)
@@ -142,7 +142,7 @@ static BOOL init_func_ptrs(void)
     pOpenThread = (void *)GetProcAddress(module, "OpenThread");
     pQueueUserAPC = (void *)GetProcAddress(module, "QueueUserAPC");
     pIsWow64Process = (void *)GetProcAddress(module, "IsWow64Process");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pNtCancelSynchronousIoFile = (void *)GetProcAddress(module, "NtCancelSynchronousIoFile");
 #endif
     return TRUE;
@@ -691,13 +691,13 @@ static void test_cancelsynchronousio(void)
     IO_STATUS_BLOCK iosb;
     struct synchronousio_thread_args ctx;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (pNtCancelSynchronousIoFile == NULL)
     {
         win_skip("NtCancelSynchronousIoFile not available\n");
         return;
     }
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     /* bogus values */
     res = pNtCancelSynchronousIoFile((HANDLE)0xdeadbeef, NULL, &iosb);
@@ -2971,7 +2971,7 @@ static void subtest_pipe_name(const struct pipe_name_test *pnt)
     UNICODE_STRING name;
     NTSTATUS status;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((GetNTVersion() < _WIN32_WINNT_VISTA) && (wcscmp(pnt->name, L"\\Device\\NamedPipe\\\\") == 0))
     {
         win_skip("Skipping subtest_pipe_name for '%ls' on Windows 2003\n", pnt->name);
@@ -3133,7 +3133,7 @@ static void test_async_cancel_on_handle_close(void)
             ok(io.Status == 0xcccccccc, "got %#lx.\n", io.Status);
 
             if (other_process && tests[i].apc_context && !tests[i].event)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 todo_if((GetNTVersion() < _WIN32_WINNT_VISTA) && !tests[i].event && !tests[i].apc && tests[i].apc_context)
 #endif
                 test_queued_completion(port, &io, STATUS_CANCELLED, 0);
@@ -3238,7 +3238,7 @@ START_TEST(pipe)
     test_volume_info();
     test_file_info();
     test_security_info();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (GetNTVersion() < _WIN32_WINNT_VISTA)
         win_skip("Skipping empty name pipe tests on Windows 2003.\n");
     else

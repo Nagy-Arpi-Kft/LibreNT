@@ -1415,7 +1415,7 @@ NET_API_STATUS
 SetUserInfo(SAM_HANDLE UserHandle,
             LPBYTE UserInfo,
             DWORD Level,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             BOOL NewAccount,
 #endif
             PDWORD parm_err)
@@ -2195,7 +2195,7 @@ SetUserInfo(SAM_HANDLE UserHandle,
     if (ApiStatus != NERR_Success)
         goto done;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (NewAccount && (UserAllInfo.WhichFields & USER_ALL_USERACCOUNTCONTROL) &&
         !(UserAllInfo.UserAccountControl & (USER_TEMP_DUPLICATE_ACCOUNT | USER_NORMAL_ACCOUNT |
           USER_INTERDOMAIN_TRUST_ACCOUNT | USER_WORKSTATION_TRUST_ACCOUNT | USER_SERVER_TRUST_ACCOUNT)))
@@ -2365,7 +2365,7 @@ NetUserAdd(LPCWSTR servername,
     ApiStatus = SetUserInfo(UserHandle,
                             bufptr,
                             level,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             TRUE,
 #endif
                             parm_err);
@@ -4151,7 +4151,7 @@ NetUserSetInfo(LPCWSTR servername,
     ApiStatus = SetUserInfo(UserHandle,
                             buf,
                             level,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                             FALSE,
 #endif
                             parm_err);

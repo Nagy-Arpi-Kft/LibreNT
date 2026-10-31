@@ -73,7 +73,7 @@ static WCHAR *reg_data_to_wchar(DWORD type, const BYTE *src, DWORD size_bytes)
             swprintf(buffer, zero_x_dword + 1, L"0x%x", *(DWORD *)src);
             break;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case REG_QWORD:
         {
             const int zero_x_qword = 18;

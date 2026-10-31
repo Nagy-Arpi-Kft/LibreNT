@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       GPL, see COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            drivers/base/kdgdb/kdcom.c
  * PURPOSE:         COM port functions for the kernel debugger.
  */
@@ -14,7 +14,7 @@
 #include <cportlib/cportlib.h>
 #include <cportlib/uartinfo.h>
 #if defined(_M_ARM64)
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 #endif
 
 /* GLOBALS ********************************************************************/

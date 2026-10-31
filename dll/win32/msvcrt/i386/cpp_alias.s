@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS msvcrt.dll
+ * PROJECT:     LibreNT msvcrt.dll
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     x86 C++ MSVC aliases for cpp.c
  * COPYRIGHT:   Copyright 2014-2024 Wine team

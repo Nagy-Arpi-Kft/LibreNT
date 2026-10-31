@@ -8,7 +8,7 @@ Local integration changes:
 - Build the portable C implementation, with performance measurement disabled.
 - Use `uintptr_t` and `intptr_t` for pointer arithmetic on Windows LLP64 targets.
 - Use the compiler's `_WIN32` platform definition consistently.
-- Include the intrinsic declarations required by the ReactOS CRT headers.
+- Include the intrinsic declarations required by the LibreNT CRT headers.
 - Clear terminated decoder context pointers and release outstanding contexts
   when a failed decode is destroyed.
 - Bound bitstream prefetch to an optional stream size and reject consumption

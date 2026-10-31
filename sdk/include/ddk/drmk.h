@@ -1,5 +1,5 @@
 /*
-    ReactOS Kernel Streaming
+    LibreNT Kernel Streaming
     Digital Rights Management
 
     Author: Andrew Greenwood

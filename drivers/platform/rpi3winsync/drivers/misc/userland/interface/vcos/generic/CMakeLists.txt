@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS
+# PROJECT:     LibreNT
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Build the Raspberry Pi VCOS kernel support library
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -20,7 +20,7 @@ target_include_directories(vcos_win32_kern_generic PRIVATE
     ${_vchiq_userland_root}/interface/vcos
     ${_vchiq_userland_root}/interface/vcos/win32
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${REACTOS_SOURCE_DIR}/sdk/include/wdf/kmdf/1.17)
+    ${LIBRENT_SOURCE_DIR}/sdk/include/wdf/kmdf/1.17)
 target_compile_definitions(vcos_win32_kern_generic PRIVATE
     UNICODE
     _UNICODE

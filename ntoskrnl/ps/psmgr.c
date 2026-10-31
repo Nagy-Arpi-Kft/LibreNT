@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ps/psmgr.c
  * PURPOSE:         Process Manager: Initialization Code
@@ -10,7 +10,7 @@
 
 #include <ntoskrnl.h>
 #if defined(_M_ARM64)
-#include <reactos/chpe.h>
+#include <librent/chpe.h>
 #endif
 #define NDEBUG
 #include <debug.h>

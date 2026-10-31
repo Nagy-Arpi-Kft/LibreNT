@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SMP boot analyzer / TUI for ReactOS ARM64.
+SMP boot analyzer / TUI for LibreNT ARM64.
 
 Parses the kernel serial log (default /tmp/freeldr_arm64.log) produced by an
 instrumented SMP boot and surfaces the KPIs needed to understand SMP stalls:
@@ -289,7 +289,7 @@ def run_curses(path, stall):
             if 0 <= y < h:
                 scr.addnstr(y, x, s, max(0, w - x - 1), attr)
 
-        put(0, 0, "ReactOS SMP Analyzer  —  %s" % path, curses.A_BOLD)
+        put(0, 0, "LibreNT SMP Analyzer  —  %s" % path, curses.A_BOLD)
         put(0, max(0, w - 22), "q=quit", curses.A_DIM)
         put(1, 0, "status: ", curses.A_BOLD)
         put(1, 8, "%-9s %s" % (status, detail), scol | curses.A_BOLD)
@@ -347,7 +347,7 @@ def run_curses(path, stall):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="ReactOS ARM64 SMP boot analyzer / TUI")
+    ap = argparse.ArgumentParser(description="LibreNT ARM64 SMP boot analyzer / TUI")
     ap.add_argument("-f", "--file", default=DEFAULT_LOG, help="serial log path")
     ap.add_argument("--once", action="store_true", help="parse current log, print summary, exit")
     ap.add_argument("--stall", type=float, default=8.0, help="seconds of silence => STALLED")

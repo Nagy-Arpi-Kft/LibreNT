@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * FILE:             subsys/system/dhcp/api.c
  * PURPOSE:          DHCP client api handlers
  * PROGRAMMER:       arty
@@ -9,7 +9,7 @@
 #include <rosdhcp.h>
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 static CRITICAL_SECTION ApiCriticalSection;
 

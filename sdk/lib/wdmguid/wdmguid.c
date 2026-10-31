@@ -32,7 +32,7 @@ DEFINE_GUID(GUID_DEVINTERFACE_MONITOR,
 
 /*
  * ACPI/PCI device interface. Mirrored from
- * <reactos/drivers/acpi/acpipci.h> here to give every driver that links
+ * <librent/drivers/acpi/acpipci.h> here to give every driver that links
  * wdmguid a real definition of GUID_ACPI_PCI_INTERFACE. Without this,
  * release builds (-O2/-O3) strip the DECLSPEC_SELECTANY storage emitted
  * by DEFINE_GUID in each consumer and the link fails with
@@ -45,8 +45,8 @@ DEFINE_GUID(GUID_ACPI_PCI_INTERFACE,
 DEFINE_GUID(GUID_ACPI_SYSTEM_INTERFACE,
   0x4B4B1E0FL, 0x4EBF, 0x46A7, 0x92, 0xA5, 0xDB, 0x27, 0xD3, 0xB9, 0xB6, 0xA1);
 
-/* ReactOS TPM 2.0 device interface from tpm2.h. */
-DEFINE_GUID(GUID_DEVINTERFACE_REACTOS_TPM2,
+/* LibreNT TPM 2.0 device interface from tpm2.h. */
+DEFINE_GUID(GUID_DEVINTERFACE_LIBRENT_TPM2,
   0xC43A14B0L, 0x914F, 0x4D3C, 0x9F, 0x1A, 0x16, 0xB9, 0xE6, 0x0D, 0x79, 0xBC);
 
 /* EOF */

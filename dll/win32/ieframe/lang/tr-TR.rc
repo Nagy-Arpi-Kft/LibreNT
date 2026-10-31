@@ -74,7 +74,7 @@ FONT 8, "MS Shell Dlg"
 {
     LTEXT "Internet Explorer'de açmak istediğiniz URL'yi belirtiniz.",-1, 35,5,160,25
     LTEXT "Aç:", -1, 5, 32, 30, 15
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ICON IDC_PAGEICO, IDC_PAGEICO, 2, 5, 21, 20, SS_ICON
 #endif
     EDITTEXT IDC_BROWSE_OPEN_URL, 35, 30, 160, 13
@@ -82,7 +82,7 @@ FONT 8, "MS Shell Dlg"
     PUSHBUTTON "İptal", IDCANCEL, 145, 50, 50, 14
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 STRINGTABLE
 {
     IDS_INTSHCUT_OPEN           "&Open"

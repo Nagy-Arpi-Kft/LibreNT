@@ -2332,7 +2332,7 @@ static const struct
     UINT  len;
 } test_data[] =
 {
-#if defined(__REACTOS__) && defined(_MSC_VER) && _MSVC_VER < 1930
+#if defined(__LIBRENT__) && defined(_MSC_VER) && _MSVC_VER < 1930
     { "foo", {0}, 3 },                 /* 0 */
     { "foo", {0}, 4 },
     { "foo\0bar", {0}, 7 },

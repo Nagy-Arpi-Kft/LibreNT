@@ -1,5 +1,5 @@
 /*
- * PROJECT:     PAINT for ReactOS
+ * PROJECT:     PAINT for LibreNT
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     Croatian resource file
  * TRANSLATOR:  Copyright 2026 Ivan Ivo <ivan.ivo4445@gmail.com>
@@ -238,7 +238,7 @@ STRINGTABLE
 BEGIN
     IDS_PROGRAMNAME "Paint"
     IDS_WINDOWTITLE "%s - Paint"
-    IDS_INFOTITLE "Paint za LiberNT"
+    IDS_INFOTITLE "Paint za LibreNT"
     IDS_INFOTEXT "Dostupno pod GNU Lesser General Public License (LGPL, vidi www.gnu.org)"
     IDS_SAVEPROMPTTEXT "Želite li spremiti promjene u %s?"
     IDS_DEFAULTFILENAME "Bez naziva"

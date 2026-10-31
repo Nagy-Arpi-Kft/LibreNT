@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT ITE IT8613E Sensor Provider
+ * PROJECT:     LibreNT ITE IT8613E Sensor Provider
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  * LICENSE:     GPL-3.0-or-later
  * PURPOSE:     Read-only voltage monitoring for the LattePanda Mu
@@ -7,7 +7,7 @@
 
 #include <ntddk.h>
 #include <initguid.h>
-#include <reactos/drivers/sensorprovider.h>
+#include <librent/drivers/sensorprovider.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -56,7 +56,7 @@ typedef struct _IT8613_DEVICE_EXTENSION
     USHORT HwmIndexPort;
     UCHAR VinMask;
     UCHAR ChannelCount;
-    UCHAR Channels[REACTOS_SENSOR_PROVIDER_MAX_CHANNELS];
+    UCHAR Channels[LIBRENT_SENSOR_PROVIDER_MAX_CHANNELS];
     BOOLEAN Started;
 } IT8613_DEVICE_EXTENSION, *PIT8613_DEVICE_EXTENSION;
 
@@ -68,17 +68,17 @@ static const GUID It8613ProviderId =
 
 static const IT8613_CHANNEL_TEMPLATE It8613ChannelTemplates[] =
 {
-    {0, REACTOS_SENSOR_CHANNEL_FLAG_READ_ONLY, 11000, 0,
+    {0, LIBRENT_SENSOR_CHANNEL_FLAG_READ_ONLY, 11000, 0,
      {0x00F01C21, 0xF5E6, 0x40FC, {0xA5, 0x9B, 0xE8, 0xF3, 0xF0, 0x09, 0x7E, 0x66}}, L"VCCCORE"},
-    {1, REACTOS_SENSOR_CHANNEL_FLAG_READ_ONLY, 11000, 0,
+    {1, LIBRENT_SENSOR_CHANNEL_FLAG_READ_ONLY, 11000, 0,
      {0xD0240722, 0xE0AF, 0x467E, {0x85, 0x41, 0x7A, 0x52, 0x98, 0x67, 0xC5, 0xC7}}, L"VCCMEM"},
-    {2, REACTOS_SENSOR_CHANNEL_FLAG_READ_ONLY, 17500, 100000,
+    {2, LIBRENT_SENSOR_CHANNEL_FLAG_READ_ONLY, 17500, 100000,
      {0xE936D182, 0x0E34, 0x491D, {0x9B, 0xA1, 0x26, 0x52, 0xB5, 0x6E, 0x54, 0x04}}, L"3.3V"},
-    {4, REACTOS_SENSOR_CHANNEL_FLAG_READ_ONLY, 92500, 0,
+    {4, LIBRENT_SENSOR_CHANNEL_FLAG_READ_ONLY, 92500, 0,
      {0x1E59E8E8, 0x4D20, 0x4E03, {0x97, 0x22, 0x6C, 0xB1, 0x33, 0xDB, 0xB4, 0x86}}, L"VDC"},
-    {5, REACTOS_SENSOR_CHANNEL_FLAG_READ_ONLY, 17600, 0,
+    {5, LIBRENT_SENSOR_CHANNEL_FLAG_READ_ONLY, 17600, 0,
      {0x4B2211B5, 0xAF5A, 0x473A, {0x90, 0xD7, 0xA6, 0x34, 0x45, 0x86, 0x1F, 0x74}}, L"VCCGT"},
-    {7, REACTOS_SENSOR_CHANNEL_FLAG_READ_ONLY | REACTOS_SENSOR_CHANNEL_FLAG_INTERNAL, 22000, 0,
+    {7, LIBRENT_SENSOR_CHANNEL_FLAG_READ_ONLY | LIBRENT_SENSOR_CHANNEL_FLAG_INTERNAL, 22000, 0,
      {0xABBFD503, 0xCC00, 0x4781, {0x90, 0xDD, 0x7B, 0xC6, 0x41, 0x3F, 0x24, 0xA2}}, L"VSB3V"}
 };
 
@@ -334,10 +334,10 @@ static
 NTSTATUS
 It8613QueryProvider(
     _In_ PIT8613_DEVICE_EXTENSION DeviceExtension,
-    _Out_ PREACTOS_SENSOR_PROVIDER_INFORMATION Information)
+    _Out_ PLIBRENT_SENSOR_PROVIDER_INFORMATION Information)
 {
     const IT8613_CHANNEL_TEMPLATE *Template;
-    PREACTOS_SENSOR_CHANNEL_INFORMATION Channel;
+    PLIBRENT_SENSOR_CHANNEL_INFORMATION Channel;
     KIRQL OldIrql;
     ULONG Index;
 
@@ -348,10 +348,10 @@ It8613QueryProvider(
         KeReleaseSpinLock(&DeviceExtension->PortLock, OldIrql);
         return STATUS_DEVICE_NOT_READY;
     }
-    Information->Version = REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION;
+    Information->Version = LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION;
     Information->Size = sizeof(*Information);
     Information->ProviderId = It8613ProviderId;
-    Information->Flags = REACTOS_SENSOR_PROVIDER_FLAG_READ_ONLY;
+    Information->Flags = LIBRENT_SENSOR_PROVIDER_FLAG_READ_ONLY;
     Information->ChannelCount = DeviceExtension->ChannelCount;
     It8613CopyString(Information->Manufacturer, RTL_NUMBER_OF(Information->Manufacturer), L"ITE");
     It8613CopyString(Information->Model, RTL_NUMBER_OF(Information->Model), L"IT8613E Hardware Monitor");
@@ -362,8 +362,8 @@ It8613QueryProvider(
             continue;
         Channel = &Information->Channels[Index];
         Channel->SensorId = Template->SensorId;
-        Channel->Type = REACTOS_SENSOR_TYPE_VOLTAGE;
-        Channel->Unit = REACTOS_SENSOR_UNIT_MICROVOLTS;
+        Channel->Type = LIBRENT_SENSOR_TYPE_VOLTAGE;
+        Channel->Unit = LIBRENT_SENSOR_UNIT_MICROVOLTS;
         Channel->Flags = Template->Flags;
         Channel->Resolution = Template->MicrovoltsPerCount;
         It8613CopyString(Channel->Name, RTL_NUMBER_OF(Channel->Name), Template->Name);
@@ -376,8 +376,8 @@ static
 NTSTATUS
 It8613ReadChannel(
     _In_ PIT8613_DEVICE_EXTENSION DeviceExtension,
-    _In_ PREACTOS_SENSOR_READ_INPUT Input,
-    _Out_ PREACTOS_SENSOR_READING Reading)
+    _In_ PLIBRENT_SENSOR_READ_INPUT Input,
+    _Out_ PLIBRENT_SENSOR_READING Reading)
 {
     const IT8613_CHANNEL_TEMPLATE *Template;
     LARGE_INTEGER Timestamp;
@@ -385,7 +385,7 @@ It8613ReadChannel(
     UCHAR Vin;
     UCHAR RawValue;
 
-    if (Input->Version != REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION || Input->Size < sizeof(*Input) || Input->Reserved != 0)
+    if (Input->Version != LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION || Input->Size < sizeof(*Input) || Input->Reserved != 0)
         return STATUS_INVALID_PARAMETER;
     KeAcquireSpinLock(&DeviceExtension->PortLock, &OldIrql);
     if (!DeviceExtension->Started)
@@ -409,11 +409,11 @@ It8613ReadChannel(
     KeReleaseSpinLock(&DeviceExtension->PortLock, OldIrql);
     KeQuerySystemTime(&Timestamp);
     RtlZeroMemory(Reading, sizeof(*Reading));
-    Reading->Version = REACTOS_SENSOR_PROVIDER_INTERFACE_VERSION;
+    Reading->Version = LIBRENT_SENSOR_PROVIDER_INTERFACE_VERSION;
     Reading->Size = sizeof(*Reading);
     Reading->SensorId = Template->SensorId;
-    Reading->Type = REACTOS_SENSOR_TYPE_VOLTAGE;
-    Reading->Unit = REACTOS_SENSOR_UNIT_MICROVOLTS;
+    Reading->Type = LIBRENT_SENSOR_TYPE_VOLTAGE;
+    Reading->Unit = LIBRENT_SENSOR_UNIT_MICROVOLTS;
     Reading->Flags = Template->Flags;
     Reading->RawValue = RawValue;
     Reading->Value = (LONGLONG)RawValue * Template->MicrovoltsPerCount + Template->MicrovoltOffset;
@@ -449,7 +449,7 @@ It8613DeviceControl(
 {
     PIT8613_DEVICE_EXTENSION DeviceExtension = DeviceObject->DeviceExtension;
     PIO_STACK_LOCATION Stack = IoGetCurrentIrpStackLocation(Irp);
-    REACTOS_SENSOR_READ_INPUT Input;
+    LIBRENT_SENSOR_READ_INPUT Input;
     NTSTATUS Status;
     ULONG_PTR Information = 0;
 
@@ -458,28 +458,28 @@ It8613DeviceControl(
         goto Complete;
     switch (Stack->Parameters.DeviceIoControl.IoControlCode)
     {
-        case IOCTL_REACTOS_SENSOR_QUERY_PROVIDER:
-            if (Stack->Parameters.DeviceIoControl.OutputBufferLength < sizeof(REACTOS_SENSOR_PROVIDER_INFORMATION))
+        case IOCTL_LIBRENT_SENSOR_QUERY_PROVIDER:
+            if (Stack->Parameters.DeviceIoControl.OutputBufferLength < sizeof(LIBRENT_SENSOR_PROVIDER_INFORMATION))
                 Status = STATUS_BUFFER_TOO_SMALL;
             else
             {
-                Status = It8613QueryProvider(DeviceExtension, (PREACTOS_SENSOR_PROVIDER_INFORMATION)Irp->AssociatedIrp.SystemBuffer);
+                Status = It8613QueryProvider(DeviceExtension, (PLIBRENT_SENSOR_PROVIDER_INFORMATION)Irp->AssociatedIrp.SystemBuffer);
                 if (NT_SUCCESS(Status))
-                    Information = sizeof(REACTOS_SENSOR_PROVIDER_INFORMATION);
+                    Information = sizeof(LIBRENT_SENSOR_PROVIDER_INFORMATION);
             }
             break;
 
-        case IOCTL_REACTOS_SENSOR_READ_CHANNEL:
+        case IOCTL_LIBRENT_SENSOR_READ_CHANNEL:
             if (Stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(Input))
                 Status = STATUS_BUFFER_TOO_SMALL;
-            else if (Stack->Parameters.DeviceIoControl.OutputBufferLength < sizeof(REACTOS_SENSOR_READING))
+            else if (Stack->Parameters.DeviceIoControl.OutputBufferLength < sizeof(LIBRENT_SENSOR_READING))
                 Status = STATUS_BUFFER_TOO_SMALL;
             else
             {
-                Input = *(PREACTOS_SENSOR_READ_INPUT)Irp->AssociatedIrp.SystemBuffer;
-                Status = It8613ReadChannel(DeviceExtension, &Input, (PREACTOS_SENSOR_READING)Irp->AssociatedIrp.SystemBuffer);
+                Input = *(PLIBRENT_SENSOR_READ_INPUT)Irp->AssociatedIrp.SystemBuffer;
+                Status = It8613ReadChannel(DeviceExtension, &Input, (PLIBRENT_SENSOR_READING)Irp->AssociatedIrp.SystemBuffer);
                 if (NT_SUCCESS(Status))
-                    Information = sizeof(REACTOS_SENSOR_READING);
+                    Information = sizeof(LIBRENT_SENSOR_READING);
             }
             break;
 
@@ -594,7 +594,7 @@ It8613AddDevice(
     DeviceExtension->PhysicalDevice = PhysicalDeviceObject;
     IoInitializeRemoveLock(&DeviceExtension->RemoveLock, IT8613_TAG, 0, 0);
     KeInitializeSpinLock(&DeviceExtension->PortLock);
-    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_REACTOS_SENSOR_PROVIDER, NULL, &DeviceExtension->InterfaceName);
+    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_LIBRENT_SENSOR_PROVIDER, NULL, &DeviceExtension->InterfaceName);
     if (!NT_SUCCESS(Status))
     {
         IoDeleteDevice(DeviceObject);

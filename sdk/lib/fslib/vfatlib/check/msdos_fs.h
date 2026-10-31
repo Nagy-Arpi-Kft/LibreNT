@@ -20,7 +20,7 @@
 #ifndef _MSDOS_FS_H
 #define _MSDOS_FS_H
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <stdint.h>
 #endif
 
@@ -47,7 +47,7 @@
 #define MSDOS_DOT ".          "		/* ".", padded to MSDOS_NAME chars */
 #define MSDOS_DOTDOT "..         "	/* "..", padded to MSDOS_NAME chars */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(push, 1)
 #endif
 
@@ -64,7 +64,7 @@ struct msdos_dir_entry {
     uint32_t size;		/* file size (in bytes) */
 } __attribute__ ((packed));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #pragma pack(pop)
 #endif
 

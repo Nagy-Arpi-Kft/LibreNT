@@ -18,7 +18,7 @@
 #include "shellext.h"
 #include "balance.h"
 #include "resource.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "../btrfsioctl.h"
 #else
 #include "btrfsioctl.h"
@@ -26,7 +26,7 @@
 #include <shlobj.h>
 #include <uxtheme.h>
 #include <stdio.h>
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include <strsafe.h>
 #include <winternl.h>
 #else
@@ -80,7 +80,7 @@ void BtrfsBalance::StartBalance(HWND hwndDlg) {
 
     GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     t = L"\""s + modfn + L"\",StartBalance "s + fn + L" "s;
 #else
     t = wstring(L"\"") + modfn + wstring(L"\",StartBalance ") + fn + wstring(L" ");
@@ -150,7 +150,7 @@ void BtrfsBalance::PauseBalance(HWND hwndDlg) {
 
     GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     t = L"\""s + modfn + L"\",PauseBalance " + fn;
 #else
     t = wstring(L"\"") + modfn + wstring(L"\",PauseBalance ") + fn;
@@ -180,7 +180,7 @@ void BtrfsBalance::StopBalance(HWND hwndDlg) {
 
     GetModuleFileNameW(module, modfn, sizeof(modfn) / sizeof(WCHAR));
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     t = L"\""s + modfn + L"\",StopBalance " + fn;
 #else
     t = wstring(L"\"") + modfn + wstring(L"\",StopBalance ") + fn;

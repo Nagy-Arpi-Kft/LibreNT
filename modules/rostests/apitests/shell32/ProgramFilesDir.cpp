@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API tests
+ * PROJECT:     LibreNT API tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Tests that the Program Files locations agree with the system drive
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>

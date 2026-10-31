@@ -27,7 +27,7 @@
 #include "wine/debug.h"
 #include "wine/list.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "initguid.h"
 #else
 #include "cguid.h"
@@ -46,7 +46,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(mmdevapi);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 DEFINE_GUID(GUID_NULL,0,0,0,0,0,0,0,0,0,0,0);
 #endif
 
@@ -453,7 +453,7 @@ static HRESULT set_driver_prop_value(GUID *id, const EDataFlow flow, const PROPE
     params.buffer_size = &size;
 
     while (1) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         reactos_mmdevapi_call(get_prop_value, &params);
 #else
         __wine_unix_call(drvs.module_unixlib, get_prop_value, &params);
@@ -780,7 +780,7 @@ HRESULT load_driver_devices(EDataFlow flow)
     do {
         free(params.endpoints);
         params.endpoints = malloc(params.size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         reactos_mmdevapi_call(get_endpoint_ids, &params);
 #else
         __wine_unix_call(drvs.module_unixlib, get_endpoint_ids, &params);
@@ -804,7 +804,7 @@ HRESULT load_driver_devices(EDataFlow flow)
 
         get_device_guid( flow, dev_name, &guid );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         state = params.endpoints[i].state;
 #else
         state = DEVICE_STATE_ACTIVE;
@@ -820,7 +820,7 @@ end:
     return params.result;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void reactos_refresh_devices(EDataFlow flow)
 {
     if (!drvs.module && !reactos_ensure_driver())
@@ -1288,7 +1288,7 @@ static HRESULT WINAPI MMDevEnum_EnumAudioEndpoints(IMMDeviceEnumerator *iface, E
         return E_INVALIDARG;
     if (mask & ~DEVICE_STATEMASK_ALL)
         return E_INVALIDARG;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     reactos_refresh_devices(flow);
 #endif
     return MMDevCol_Create(devices, flow, mask);
@@ -1314,7 +1314,7 @@ static HRESULT WINAPI MMDevEnum_GetDefaultAudioEndpoint(IMMDeviceEnumerator *ifa
 
     *device = NULL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     reactos_refresh_devices(flow);
 #endif
 

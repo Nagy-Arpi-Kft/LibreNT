@@ -17,7 +17,7 @@ extern PEXT2_GLOBAL Ext2Global;
 
 /* DEFINITIONS *************************************************************/
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -27,7 +27,7 @@ Ext2ReadWriteBlockSyncCompletionRoutine (
     IN PIRP Irp,
     IN PVOID Context    );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -38,7 +38,7 @@ Ext2ReadWriteBlockAsyncCompletionRoutine (
     IN PVOID Context    );
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -160,7 +160,7 @@ Ext2GetUserBuffer (IN PIRP Irp )
     }
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -197,7 +197,7 @@ Ext2ReadWriteBlockSyncCompletionRoutine (
     return STATUS_MORE_PROCESSING_REQUIRED;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS
@@ -661,7 +661,7 @@ Ext2DiskIoControl (
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSTATUS NTAPI
 #else
 NTSTATUS

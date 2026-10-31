@@ -79,7 +79,7 @@
 
 /*! [Begin] no source code translation  */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define ACPI_FLUSH_CPU_CACHE()
 
 /*
@@ -96,7 +96,7 @@
 
 #endif
 
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 
 #if defined(ACPI_APPLICATION) || !defined(_M_AMD64)
 #define ACPI_FLUSH_CPU_CACHE()
@@ -134,7 +134,7 @@
     (Pnd) = pending; \
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /*! [End] no source code translation !*/
 

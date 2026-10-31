@@ -67,7 +67,7 @@ public:
 		LPCMINVOKECOMMANDINFO lpcmi);
 
 	STDMETHODIMP GetCommandString(
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 		UINT			idCmd,
 #else
 		UINT_PTR		idCmd,

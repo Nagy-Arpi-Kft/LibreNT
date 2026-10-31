@@ -1034,7 +1034,7 @@ PixelFormat apply_image_attributes(const GpImageAttributes *attributes, LPBYTE d
     return fmt;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct bitmap_sample
 {
     RECT bounds;
@@ -1084,14 +1084,14 @@ static BOOL get_bitmap_sample_row(const struct bitmap_sample *sample, INT y,
 /* Given a bitmap and its source rectangle, find the smallest rectangle in the
  * bitmap that contains all the pixels we may need to draw it. */
 static void get_bitmap_sample_size(InterpolationMode interpolation, WrapMode wrap,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GpBitmap* bitmap, DOUBLE srcx, DOUBLE srcy, DOUBLE srcwidth, DOUBLE srcheight,
 #else
     GpBitmap* bitmap, REAL srcx, REAL srcy, REAL srcwidth, REAL srcheight,
 #endif
     GpRect *rect)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DOUBLE left, top, right, bottom;
 #else
     INT left, top, right, bottom;
@@ -1104,7 +1104,7 @@ static void get_bitmap_sample_size(InterpolationMode interpolation, WrapMode wra
     /* FIXME: Include a greater range for the prefilter? */
     case InterpolationModeBicubic:
     case InterpolationModeBilinear:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         left = floor(srcx);
         top = floor(srcy);
         right = ceil(srcx+srcwidth);
@@ -1118,7 +1118,7 @@ static void get_bitmap_sample_size(InterpolationMode interpolation, WrapMode wra
         break;
     case InterpolationModeNearestNeighbor:
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         left = floor(srcx);
         top = floor(srcy);
         right = floor(srcx+srcwidth);
@@ -1172,13 +1172,13 @@ static void get_bitmap_sample_size(InterpolationMode interpolation, WrapMode wra
 }
 
 static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT width,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     UINT height, DOUBLE x, DOUBLE y, GDIPCONST GpImageAttributes *attributes)
 #else
     UINT height, INT x, INT y, GDIPCONST GpImageAttributes *attributes)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!isfinite(x) || !isfinite(y)) return attributes->outside_color;
 
 #endif
@@ -1190,7 +1190,7 @@ static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT wi
     else
     {
         /* Tiling. Make sure co-ordinates are positive as it simplifies the math. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         x = fmod(x, width * 2.0);
         y = fmod(y, height * 2.0);
         if (x < 0) x += width * 2.0;
@@ -1204,7 +1204,7 @@ static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT wi
 
         if (attributes->wrap & WrapModeTileFlipX)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (x < width)
                 x = fmod(x, width);
 #else
@@ -1212,14 +1212,14 @@ static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT wi
                 x = x % width;
 #endif
             else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 x = width - 1 - fmod(x, width);
 #else
                 x = width - 1 - x % width;
 #endif
         }
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             x = fmod(x, width);
 #else
             x = x % width;
@@ -1227,7 +1227,7 @@ static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT wi
 
         if (attributes->wrap & WrapModeTileFlipY)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (y < height)
                 y = fmod(y, height);
 #else
@@ -1235,14 +1235,14 @@ static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT wi
                 y = y % height;
 #endif
             else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 y = height - 1 - fmod(y, height);
 #else
                 y = height - 1 - y % height;
 #endif
         }
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             y = fmod(y, height);
 #else
             y = y % height;
@@ -1255,7 +1255,7 @@ static ARGB sample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT wi
         return 0xffcd0084;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ((DWORD*)(bits))[(INT)(x - src_rect->X) + (INT)(y - src_rect->Y) * src_rect->Width];
 #else
     return ((DWORD*)(bits))[(x - src_rect->X) + (y - src_rect->Y) * src_rect->Width];
@@ -1277,7 +1277,7 @@ static ARGB resample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT 
     case InterpolationModeBilinear:
     {
         REAL leftxf, topyf;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DOUBLE leftx, rightx, topy, bottomy;
 #else
         INT leftx, rightx, topy, bottomy;
@@ -1287,7 +1287,7 @@ static ARGB resample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT 
         float x_offset;
 
         leftxf = floorf(point->X);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         leftx = leftxf;
         rightx = ceilf(point->X);
 #else
@@ -1295,7 +1295,7 @@ static ARGB resample_bitmap_pixel(GDIPCONST GpRect *src_rect, LPBYTE bits, UINT 
         rightx = (INT)ceilf(point->X);
 #endif
         topyf = floorf(point->Y);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         topy = topyf;
         bottomy = ceilf(point->Y);
 #else
@@ -2380,7 +2380,7 @@ typedef struct _GraphicsContainerItem {
 
 static GpStatus init_container(GraphicsContainerItem** container,
         GDIPCONST GpGraphics* graphics, GraphicsContainerType type){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static LONG next_container_id;
 #endif
     GpStatus sts;
@@ -2389,7 +2389,7 @@ static GpStatus init_container(GraphicsContainerItem** container,
     if(!(*container))
         return OutOfMemory;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     (*container)->contid = InterlockedIncrement(&next_container_id);
 #else
     (*container)->contid = graphics->contid + 1;
@@ -2490,7 +2490,7 @@ static GpStatus get_graphics_bounds(GpGraphics* graphics, GpRectF* rect)
     return stat;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* SmoothingModeAntiAlias uses an 8-by-4 coverage filter. */
 #define ANTIALIAS_SCALE_X 8
 #define ANTIALIAS_SCALE_Y 4
@@ -3022,7 +3022,7 @@ GpStatus WINGDIPAPI GdipCreateStreamOnFile(GDIPCONST WCHAR * filename,
 GpStatus WINGDIPAPI GdipDeleteGraphics(GpGraphics *graphics)
 {
     GraphicsContainerItem *cont, *next;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GpStatus stat = Ok;
 #else
     GpStatus stat;
@@ -3035,11 +3035,11 @@ GpStatus WINGDIPAPI GdipDeleteGraphics(GpGraphics *graphics)
     assert(graphics->hdc_refs == 0);
 
     if (is_metafile_graphics(graphics))
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     {
 #endif
         stat = METAFILE_GraphicsDeleted((GpMetafile*)graphics->image);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (stat != Ok)
             return stat;
     }
@@ -3070,7 +3070,7 @@ GpStatus WINGDIPAPI GdipDeleteGraphics(GpGraphics *graphics)
 
     free(graphics);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return stat;
 #else
     return Ok;
@@ -3594,7 +3594,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
      DrawImageAbort callback, VOID * callbackData)
 {
     GpPointF ptf[4];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GpPointF world_points[3];
 #endif
     POINT pti[4];
@@ -3649,7 +3649,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
     ptf[3].Y = ptf[2].Y + ptf[1].Y - ptf[0].Y;
     if (!srcwidth || !srcheight || (ptf[3].X == ptf[0].X && ptf[3].Y == ptf[0].Y))
         return Ok;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memcpy(world_points, ptf, sizeof(world_points));
 #endif
     gdip_transform_points(graphics, WineCoordinateSpaceGdiDevice, CoordinateSpaceWorld, ptf, 4);
@@ -3678,7 +3678,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 
         if (ptf[1].Y != ptf[0].Y || ptf[2].X != ptf[0].X ||
             ptf[1].X - ptf[0].X != srcwidth || ptf[2].Y - ptf[0].Y != srcheight ||
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ptf[0].X != floorf(ptf[0].X) || ptf[0].Y != floorf(ptf[0].Y) ||
             srcx != floorf(srcx) || srcy != floorf(srcy) ||
 #endif
@@ -3700,7 +3700,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
             BitmapData lockeddata;
             InterpolationMode interpolation = graphics->interpolation;
             PixelOffsetMode offset_mode = graphics->pixeloffset;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             REAL pixel_offset = offset_mode == PixelOffsetModeHalf ||
                                 offset_mode == PixelOffsetModeHighQuality ? 0.5f : 0.0f;
             HRGN coverage_rgn = NULL;
@@ -3721,7 +3721,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
                 if (dst_area.bottom < pti[i].y) dst_area.bottom = pti[i].y;
             }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (do_resampling)
             {
                 for (i=0; i<4; i++)
@@ -3748,7 +3748,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 
             if (do_resampling)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 GpMatrix dst_to_src, world_to_device;
                 REAL m11, m12, m21, m22, mdx, mdy, coverage_offset = 0.5f - pixel_offset;
                 DOUBLE left = 0, top = 0, right = 0, bottom = 0;
@@ -3828,7 +3828,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
                 if (!found) return Ok;
 #endif
                 get_bitmap_sample_size(interpolation, imageAttributes->wrap,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     bitmap, left, top, right - left, bottom - top, &src_area);
 #else
                     bitmap, srcx, srcy, srcwidth, srcheight, &src_area);
@@ -3882,13 +3882,13 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 
             if (do_resampling)
             {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 GpMatrix dst_to_src;
                 REAL m11, m12, m21, m22, mdx, mdy;
                 REAL x_dx, x_dy, y_dx, y_dy;
 #endif
                 ARGB *dst_color;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 RGNDATA *coverage = NULL;
 #else
                 GpPointF src_pointf_row, src_pointf;
@@ -3911,7 +3911,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 #endif
 
                 dst_stride = sizeof(ARGB) * (dst_area.right - dst_area.left);
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                 x_dx = dst_to_src.matrix[0];
                 x_dy = dst_to_src.matrix[1];
                 y_dx = dst_to_src.matrix[2];
@@ -3935,7 +3935,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
                 }
                 dst_color = (ARGB*)(dst_data);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (graphics->compmode == CompositingModeSourceCopy)
                 {
                     if (dst_height > (MAXDWORD - sizeof(RGNDATAHEADER)) / sizeof(RECT))
@@ -3959,7 +3959,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 #endif
                 /* Calculate top left point of transformed image.
                    It would be used as reference point for adding */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 for (y = dst_area.top; y < dst_area.bottom; y++)
 #else
                 src_pointf_row.X = dst_to_src.matrix[4] +
@@ -3971,7 +3971,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
                      y++, src_pointf_row.X += y_dx, src_pointf_row.Y += y_dy)
 #endif
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     RECT row;
                     DOUBLE sample_x, sample_y;
                     if (!get_bitmap_sample_row(&sampling, y, &row, &sample_x, &sample_y)) continue;
@@ -3982,7 +3982,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
                          x++, src_pointf.X += x_dx, src_pointf.Y += x_dy)
 #endif
                     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         if (interpolation == InterpolationModeNearestNeighbor)
                             *dst_color = sample_bitmap_pixel(&src_area, src_data, bitmap->width, bitmap->height,
                                 floor(sample_x + 0.5 - pixel_offset), floor(sample_y + 0.5 - pixel_offset), imageAttributes);
@@ -3996,12 +3996,12 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
                             *dst_color = resample_bitmap_pixel(&src_area, src_data, bitmap->width, bitmap->height, &src_pointf,
 #endif
                                                                imageAttributes, interpolation, offset_mode);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                         }
 #endif
                         dst_color++;
                     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
                     if (coverage && row.right > row.left)
                     {
@@ -4050,13 +4050,13 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 
             gdi_transform_acquire(graphics);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             stat = alpha_blend_pixels_hrgn(graphics, dst_area.left, dst_area.top,
 #else
             stat = alpha_blend_pixels(graphics, dst_area.left, dst_area.top,
 #endif
                 dst_data, dst_area.right - dst_area.left, dst_area.bottom - dst_area.top, dst_stride,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 coverage_rgn, lockeddata.PixelFormat);
 #else
                 lockeddata.PixelFormat);
@@ -4064,7 +4064,7 @@ GpStatus WINGDIPAPI GdipDrawImagePointsRect(GpGraphics *graphics, GpImage *image
 
             gdi_transform_release(graphics);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 image_done:
             if (coverage_rgn) DeleteObject(coverage_rgn);
 #endif
@@ -4777,7 +4777,7 @@ static GpStatus SOFTWARE_GdipDrawPath(GpGraphics *graphics, GpPen *pen, GpPath *
     REAL flatness=1.0;
 
     /* Check if the final pen thickness in pixels is too thin. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!antialiasing_enabled(graphics) && pen->unit == UnitPixel)
 #else
     if (pen->unit == UnitPixel)
@@ -4799,7 +4799,7 @@ static GpStatus SOFTWARE_GdipDrawPath(GpGraphics *graphics, GpPen *pen, GpPath *
         if (stat != Ok)
             return stat;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!antialiasing_enabled(graphics) &&
 #else
         if (
@@ -4882,7 +4882,7 @@ GpStatus WINGDIPAPI GdipDrawPath(GpGraphics *graphics, GpPen *pen, GpPath *path)
 
     if (is_metafile_graphics(graphics))
         retval = METAFILE_DrawPath((GpMetafile*)graphics->image, pen, path);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (antialiasing_enabled(graphics) || !has_gdi_dc(graphics) ||
              graphics->alpha_hdc || !brush_can_fill_path(pen->brush, FALSE))
 #else
@@ -5239,7 +5239,7 @@ GpStatus WINGDIPAPI GdipFillPath(GpGraphics *graphics, GpBrush *brush, GpPath *p
     if (is_metafile_graphics(graphics))
         return METAFILE_FillPath((GpMetafile*)graphics->image, brush, path);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (antialiasing_enabled(graphics))
         stat = antialias_fill_path(graphics, brush, path);
     else
@@ -6761,7 +6761,7 @@ GpStatus WINGDIPAPI GdipMeasureCharacterRanges(GpGraphics* graphics,
     scaled_rect.Y = (layoutRect->Y + offsety) * args.rel_height;
     scaled_rect.Width = layoutRect->Width * args.rel_width;
     scaled_rect.Height = layoutRect->Height * args.rel_height;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (scaled_rect.Width == 0.0f &&
         (stringFormat->align == StringAlignmentCenter || stringFormat->align == StringAlignmentFar))
         scaled_rect.X -= margin_x * args.rel_width * stringFormat->align;
@@ -7114,7 +7114,7 @@ GpStatus WINGDIPAPI GdipDrawString(GpGraphics *graphics, GDIPCONST WCHAR *string
     scaled_rect.Y = 0.0;
     scaled_rect.Width = rel_width * rect->Width;
     scaled_rect.Height = rel_height * rect->Height;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (scaled_rect.Width == 0.0f && format &&
         (format->align == StringAlignmentCenter || format->align == StringAlignmentFar))
         scaled_rect.X -= margin_x * rel_width * format->align;

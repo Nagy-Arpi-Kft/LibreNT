@@ -128,7 +128,7 @@ static void test_process(DWORD curr_pid, DWORD sub_pcs_pid)
             num++;
         } while (pProcess32Next( hSnapshot, &pe ));
     }
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     ok(found == 2 || broken(found == 0) /* x86_64 */, "couldn't find self and/or sub-process in process list\n");
 #else
     ok(found == 2, "couldn't find self and/or sub-process in process list\n");
@@ -146,7 +146,7 @@ static void test_process(DWORD curr_pid, DWORD sub_pcs_pid)
             num--;
         } while (pProcess32Next( hSnapshot, &pe ));
     }
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
     ok(found == 2 || broken(found == 0) /* x86_64 */, "couldn't find self and/or sub-process in process list\n");
 #else
     ok(found == 2, "couldn't find self and/or sub-process in process list\n");

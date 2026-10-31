@@ -50,7 +50,7 @@ static void msvcrt_search_executable(const wchar_t *name, wchar_t *fullname, int
   int extension = 1;
 
   *fullname = '\0';
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
   msvcrt_set_errno(ERROR_FILE_NOT_FOUND);
 #endif
 
@@ -1245,7 +1245,7 @@ int CDECL _pclose(FILE* file)
   return i;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*********************************************************************
  *      _wsystem (MSVCRT.@)
  *

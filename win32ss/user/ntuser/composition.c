@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Win32k / Desktop Window Manager
+ * PROJECT:     LibreNT Win32k / Desktop Window Manager
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Kernel-side composition engine (DWM).
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -13,8 +13,8 @@
 #include <win32k.h>
 #include "composition.h"
 #include "dcomposition.h"
-#include <reactos/dwmframe.h>
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM)
+#include <librent/dwmframe.h>
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM)
 #include "drivers/wddm/wddm_bridge.h"
 #endif
 DBG_DEFAULT_CHANNEL(UserPainting);
@@ -282,7 +282,7 @@ IntCompositionReleaseGpuOutput(_In_ BOOL Force)
 
     if (g_DwmGpuOutputOwner.Generation != 0)
     {
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM)
         Status = WddmBridgeSetCompositorSourceOwner(
                      &g_DwmGpuOutputOwner.AdapterLuid,
                      g_DwmGpuOutputOwner.VidPnSourceId,
@@ -308,7 +308,7 @@ IntCompositionReleaseGpuOutput(_In_ BOOL Force)
 static NTSTATUS
 IntCompositionClaimGpuOutput(_In_ const DWM_GPU_OUTPUT *Request)
 {
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM)
     DWM_GPU_OUTPUT_OWNER Owner;
     NTSTATUS Status;
 
@@ -3667,7 +3667,7 @@ IntCompositionDwmSetGpuOutput(_In_ PVOID pUser)
 NTSTATUS
 IntCompositionDwmAttach(_In_ PVOID pUser)
 {
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_XPDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_XPDM)
     /* No composition on the legacy model: XPDM drivers draw direct. */
     UNREFERENCED_PARAMETER(pUser);
     return STATUS_NOT_SUPPORTED;
@@ -4113,7 +4113,7 @@ IntCompositionDwmDxSurface(_In_ PVOID pUser)
             if (Publish)
             {
                 ULONG Index;
-#if defined(REACTOS_GRAPHICS_DRIVER_MODEL_WDDM)
+#if defined(LIBRENT_GRAPHICS_DRIVER_MODEL_WDDM)
                 Status = WddmBridgeValidateSharedResourceOwner(&Request.AdapterLuid, Request.GlobalShare);
 #else
                 Status = STATUS_NOT_SUPPORTED;

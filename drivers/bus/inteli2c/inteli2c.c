@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT Intel Serial I/O I2C Driver
+ * PROJECT:     LibreNT Intel Serial I/O I2C Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Intel LPSS DesignWare I2C controller support
  */
 
 #include <ntddk.h>
 #include <initguid.h>
-#include <reactos/drivers/inteli2c.h>
+#include <librent/drivers/inteli2c.h>
 
 #define NDEBUG
 #include <debug.h>

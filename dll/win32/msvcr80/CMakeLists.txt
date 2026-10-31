@@ -1,4 +1,4 @@
-set(MSVCRT_DIR ${REACTOS_SOURCE_DIR}/dll/win32/msvcrt)
+set(MSVCRT_DIR ${LIBRENT_SOURCE_DIR}/dll/win32/msvcrt)
 set(VC80_ASSEMBLY ${WINARCH}_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9680_none_deadbeef)
 
 remove_definitions(-D_CRT_NON_CONFORMING_SWPRINTFS)
@@ -8,10 +8,10 @@ if(MSVC AND LTCG)
 endif()
 
 get_property(INCLUDE_DIRS DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
-list(REMOVE_ITEM INCLUDE_DIRS "${REACTOS_SOURCE_DIR}/sdk/include/crt")
+list(REMOVE_ITEM INCLUDE_DIRS "${LIBRENT_SOURCE_DIR}/sdk/include/crt")
 set_property(DIRECTORY . PROPERTY INCLUDE_DIRECTORIES ${INCLUDE_DIRS})
 include_directories(${MSVCRT_DIR}/include ${MSVCRT_DIR})
-include_directories(BEFORE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+include_directories(BEFORE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 
 add_definitions(
     -D_CRTIMP=
@@ -71,30 +71,22 @@ elseif(ARCH STREQUAL "arm")
     list(APPEND SOURCE ${MSVCRT_DIR}/except_arm.c)
 elseif(ARCH STREQUAL "arm64")
     list(APPEND SOURCE ${MSVCRT_DIR}/except_arm64.c)
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND SOURCE
-        ${MSVCRT_DIR}/except_riscv64.c
-        ${MSVCRT_DIR}/fpu_riscv64.c)
-elseif(ARCH STREQUAL "ppc")
-    list(APPEND SOURCE
-        ${MSVCRT_DIR}/except_ppc.c
-        ${MSVCRT_DIR}/fpu_ppc.c)
 endif()
 
 if(MSVC)
     add_compile_options(/wd4090 /wd4146 /wd4164 /wd4267 /wd4723)
     if(ARCH STREQUAL "i386")
         list(APPEND ASM_SOURCE
-            ${REACTOS_SOURCE_DIR}/dll/win32/msvcr90/i386/cpp_vtables.s
+            ${LIBRENT_SOURCE_DIR}/dll/win32/msvcr90/i386/cpp_vtables.s
             ${MSVCRT_DIR}/i386/except_i386_asm.s)
     elseif(ARCH STREQUAL "amd64")
         add_compile_options(/wd4334)
         list(APPEND ASM_SOURCE
-            ${REACTOS_SOURCE_DIR}/dll/win32/msvcr90/amd64/cpp_vtables.s
+            ${LIBRENT_SOURCE_DIR}/dll/win32/msvcr90/amd64/cpp_vtables.s
             ${MSVCRT_DIR}/amd64/except_x86_64.s)
     elseif(ARCH STREQUAL "arm64")
         list(APPEND ASM_SOURCE
-            ${REACTOS_SOURCE_DIR}/dll/win32/msvcr90/arm64/cpp_vtables.s
+            ${LIBRENT_SOURCE_DIR}/dll/win32/msvcr90/arm64/cpp_vtables.s
             ${MSVCRT_DIR}/arm64/except_arm64.s)
     endif()
 endif()
@@ -123,8 +115,8 @@ target_link_libraries(msvcr80 crtmath dbgrpt vcruntime wine chkstk ${PSEH_LIB})
 add_importlibs(msvcr80 kernel32 kernel32_vista ntdll)
 add_delay_importlibs(msvcr80 user32 advapi32)
 add_dependencies(msvcr80 psdk asm)
-add_cd_file(TARGET msvcr80 DESTINATION reactos/winsxs/${VC80_ASSEMBLY} FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${VC80_ASSEMBLY}.manifest DESTINATION reactos/winsxs/manifests FOR all)
+add_cd_file(TARGET msvcr80 DESTINATION librent/winsxs/${VC80_ASSEMBLY} FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/${VC80_ASSEMBLY}.manifest DESTINATION librent/winsxs/manifests FOR all)
 
 add_library(msvcr80_implib EXCLUDE_FROM_ALL
     ${MSVCRT_DIR}/iob.c

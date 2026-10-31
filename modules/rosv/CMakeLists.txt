@@ -43,6 +43,6 @@ add_library(rosv MODULE ${ROSV_SOURCES})
 target_include_directories(rosv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set_module_type(rosv kernelmodedriver)
 add_importlibs(rosv netio ntoskrnl hal)
-add_cd_file(TARGET rosv DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET rosv DESTINATION librent/system32/drivers FOR all)
 
 add_subdirectory(tools)

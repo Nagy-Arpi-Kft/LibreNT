@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM DirectX Graphics Kernel
+ * PROJECT:     LibreNT WDDM DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GPU command buffer / DMA submission
  * COPYRIGHT:   Copyright 2024-2026 LiberNT WDDM Team
@@ -758,7 +758,7 @@ DxgkpCaptureRedirectedBltPresent(
     }
 
     TokenOffset = FIELD_OFFSET(D3DKMT_PRESENT, PresentHistoryToken);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     UnionOffset = 16;
 #else
     UnionOffset = 8;

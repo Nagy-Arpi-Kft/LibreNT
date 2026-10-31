@@ -25,7 +25,7 @@
 #include "ctxtcall.h"
 #include "oleauto.h"
 #include "dde.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "comcat.h"
 #endif
 #include "winternl.h"
@@ -129,7 +129,7 @@ struct registered_class
     DWORD flags;
     unsigned int cookie;
     unsigned int rpcss_cookie;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL suspended;
     BOOL used;
 #endif
@@ -146,7 +146,7 @@ static CRITICAL_SECTION_DEBUG registered_classes_cs_debug =
 };
 static CRITICAL_SECTION registered_classes_cs = { &registered_classes_cs_debug, -1, 0, 0, 0, 0 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 IUnknown * com_get_registered_class_object_ex(const struct apartment *apt, REFCLSID rclsid, DWORD clscontext,
         BOOL include_suspended, BOOL *suspended)
 #else
@@ -155,7 +155,7 @@ IUnknown * com_get_registered_class_object(const struct apartment *apt, REFCLSID
 {
     struct registered_class *cur;
     IUnknown *object = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     unsigned int revoke_cookie = 0;
     BOOL revoke = FALSE;
 
@@ -170,7 +170,7 @@ IUnknown * com_get_registered_class_object(const struct apartment *apt, REFCLSID
             (clscontext & cur->clscontext) &&
             IsEqualGUID(&cur->clsid, rclsid))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (cur->used)
                 continue;
             if (cur->suspended && !include_suspended)
@@ -195,14 +195,14 @@ IUnknown * com_get_registered_class_object(const struct apartment *apt, REFCLSID
 
     LeaveCriticalSection(&registered_classes_cs);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (revoke)
         rpc_revoke_local_server(revoke_cookie);
 #endif
     return object;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 IUnknown * com_get_registered_class_object(const struct apartment *apt, REFCLSID rclsid, DWORD clscontext)
 {
     return com_get_registered_class_object_ex(apt, rclsid, clscontext, FALSE, NULL);
@@ -270,7 +270,7 @@ static HKEY create_classes_root_hkey(DWORD access)
     attr.Length = sizeof(attr);
     attr.RootDirectory = 0;
     attr.ObjectName = &name;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     attr.Attributes = OBJ_CASE_INSENSITIVE;
 #else
     attr.Attributes = 0;
@@ -295,7 +295,7 @@ static HKEY create_classes_root_hkey(DWORD access)
 
 static HKEY get_classes_root_hkey(HKEY hkey, REGSAM access);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 LSTATUS create_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKEY *retkey)
 #else
 static LSTATUS create_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKEY *retkey)
@@ -310,7 +310,7 @@ static LSTATUS create_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, H
     attr.Length = sizeof(attr);
     attr.RootDirectory = hkey;
     attr.ObjectName = &nameW;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     attr.Attributes = OBJ_CASE_INSENSITIVE;
 #else
     attr.Attributes = 0;
@@ -342,7 +342,7 @@ static HKEY get_classes_root_hkey(HKEY hkey, REGSAM access)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 LSTATUS open_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKEY *retkey)
 #else
 static LSTATUS open_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKEY *retkey)
@@ -351,7 +351,7 @@ static LSTATUS open_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKE
     OBJECT_ATTRIBUTES attr;
     UNICODE_STRING nameW;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (hkey == HKEY_CLASSES_ROOT)
     {
         WCHAR *user_name;
@@ -376,7 +376,7 @@ static LSTATUS open_classes_key(HKEY hkey, const WCHAR *name, REGSAM access, HKE
     attr.Length = sizeof(attr);
     attr.RootDirectory = hkey;
     attr.ObjectName = &nameW;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     attr.Attributes = OBJ_CASE_INSENSITIVE;
 #else
     attr.Attributes = 0;
@@ -397,7 +397,7 @@ HRESULT open_key_for_clsid(REFCLSID clsid, const WCHAR *keyname, REGSAM access, 
 
     lstrcpyW(path, clsidW);
     StringFromGUID2(clsid, path + lstrlenW(clsidW), CHARS_IN_GUID);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (keyname)
     {
         WCHAR *full_path;
@@ -553,7 +553,7 @@ static ULONG WINAPI global_options_Release(IGlobalOptions *iface)
     return refcount;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ULONG_PTR get_global_option(GLOBALOPT_PROPERTIES property)
 {
     return (ULONG_PTR)InterlockedCompareExchangePointer((void **)&global_options[property], NULL, NULL);
@@ -663,7 +663,7 @@ static const IClassFactoryVtbl global_options_factory_vtbl =
 
 static IClassFactory global_options_factory = { &global_options_factory_vtbl };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const IClassFactoryVtbl comcat_factory_vtbl =
 {
     class_factory_QueryInterface,
@@ -1112,7 +1112,7 @@ HRESULT WINAPI CoCreateGuid(GUID *guid)
     return HRESULT_FROM_WIN32(status);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 DWORD com_default_imp_level = RPC_C_IMP_LEVEL_IDENTIFY;
 static LONG com_security_initialized;
 
@@ -1257,7 +1257,7 @@ HRESULT WINAPI CoInitializeSecurity(PSECURITY_DESCRIPTOR sd, LONG cAuthSvc,
         SOLE_AUTHENTICATION_SERVICE *asAuthSvc, void *reserved1, DWORD authn_level,
         DWORD imp_level, void *reserved2, DWORD capabilities, void *reserved3)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p, %ld, %p, %p, %ld, %ld, %p, %ld, %p\n", sd, cAuthSvc, asAuthSvc, reserved1, authn_level,
           imp_level, reserved2, capabilities, reserved3);
 
@@ -1573,7 +1573,7 @@ static BOOL guid_from_string(LPCWSTR s, GUID *id)
     return FALSE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT clsid_from_progid_reg(LPCOLESTR progid, CLSID *clsid, BOOL *found)
 {
     WCHAR buf2[CHARS_IN_GUID];
@@ -1752,7 +1752,7 @@ HRESULT WINAPI CLSIDFromString(LPCOLESTR str, LPCLSID clsid)
     if (!clsid)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CLSID saved_id = *clsid;
     BOOL found;
 #endif
@@ -1760,7 +1760,7 @@ HRESULT WINAPI CLSIDFromString(LPCOLESTR str, LPCLSID clsid)
     if (guid_from_string(str, clsid))
         return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hr = clsid_from_progid_reg(str, &tmp_id, &found);
     if (SUCCEEDED(hr))
         *clsid = tmp_id;
@@ -1870,14 +1870,14 @@ HRESULT WINAPI DECLSPEC_HOTPATCH CoGetInstanceFromFile(COSERVERINFO *server_info
     IUnknown *obj = NULL;
     CLSID clsid;
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD i;
 #endif
 
     if (!count || !results)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     for (i = 0; i < count; i++)
         if (results[i].pItf) return E_INVALIDARG;
 #endif
@@ -2225,7 +2225,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH CoGetClassObject(REFCLSID rclsid, DWORD clscont
 {
     TRACE("%s, %#lx, %s\n", debugstr_guid(rclsid), clscontext, debugstr_guid(riid));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (clscontext & CLSCTX_APPCONTAINER)
         return E_INVALIDARG;
 #endif
@@ -2299,7 +2299,7 @@ HRESULT WINAPI CoRegisterInitializeSpy(IInitializeSpy *spy, ULARGE_INTEGER *cook
 
     hr = IInitializeSpy_QueryInterface(spy, &IID_IInitializeSpy, (void **)&spy);
     if (FAILED(hr))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         cookie->QuadPart = ~(ULONGLONG)0;
         return hr;
@@ -2446,7 +2446,7 @@ HRESULT WINAPI CoWaitForMultipleHandles(DWORD flags, DWORD timeout, ULONG handle
 
                 /* call message filter */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (apt->filter && tlsdata->pending_call_count_client)
 #else
                 if (apt->filter)
@@ -2958,7 +2958,7 @@ static HRESULT WINAPI thread_context_callback_ContextCallback(IContextCallback *
         return hr;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!apt->multi_threaded && context == mta_context)
     {
         IComThreadingInfo *cti = NULL;
@@ -3535,7 +3535,7 @@ HRESULT WINAPI CoRegisterClassObject(REFCLSID rclsid, IUnknown *object, DWORD cl
      * First, check if the class is already registered.
      * If it is, this should cause an error.
      */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((found_object = com_get_registered_class_object_ex(apt, rclsid, clscontext, TRUE, NULL)))
 #else
     if ((found_object = com_get_registered_class_object(apt, rclsid, clscontext)))
@@ -3567,7 +3567,7 @@ HRESULT WINAPI CoRegisterClassObject(REFCLSID rclsid, IUnknown *object, DWORD cl
     newclass->apartment_id = apt->oxid;
     newclass->clscontext = clscontext;
     newclass->flags = flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     newclass->suspended = !!(flags & REGCLS_SUSPENDED);
 #endif
 
@@ -3606,7 +3606,7 @@ static void com_revoke_class_object(struct registered_class *entry)
 {
     list_remove(&entry->entry);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((entry->clscontext & CLSCTX_LOCAL_SERVER) && !entry->used)
 #else
     if (entry->clscontext & CLSCTX_LOCAL_SERVER)
@@ -3656,7 +3656,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH CoRevokeClassObject(DWORD cookie)
     HRESULT hr = E_INVALIDARG;
     struct registered_class *cur;
     struct apartment *apt;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     IUnknown *object = NULL;
 #endif
 
@@ -3677,7 +3677,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH CoRevokeClassObject(DWORD cookie)
 
         if (cur->apartment_id == apt->oxid)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             object = cur->object;
             IUnknown_AddRef(object);
 #endif
@@ -3694,7 +3694,7 @@ HRESULT WINAPI DECLSPEC_HOTPATCH CoRevokeClassObject(DWORD cookie)
     }
 
     LeaveCriticalSection(&registered_classes_cs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (object)
     {
         CoDisconnectObject(object, 0);
@@ -3736,7 +3736,7 @@ ULONG WINAPI CoReleaseServerProcess(void)
     EnterCriticalSection(&registered_classes_cs);
 
     refs = --com_server_process_refcount;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!refs)
     {
         struct registered_class *cur;
@@ -3912,7 +3912,7 @@ BOOL WINAPI CoIsHandlerConnected(IUnknown *object)
  */
 HRESULT WINAPI CoSuspendClassObjects(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct registered_class *cur;
 
     TRACE("\n");
@@ -3933,7 +3933,7 @@ HRESULT WINAPI CoSuspendClassObjects(void)
  */
 HRESULT WINAPI CoResumeClassObjects(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct registered_class *cur;
 
     TRACE("\n");
@@ -4056,7 +4056,7 @@ HRESULT WINAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **obj)
 
     if (IsEqualCLSID(rclsid, &CLSID_GlobalOptions))
         return IClassFactory_QueryInterface(&global_options_factory, riid, obj);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (IsEqualCLSID(rclsid, &CLSID_StdComponentCategoriesMgr))
         return IClassFactory_QueryInterface(&comcat_factory, riid, obj);
 #endif

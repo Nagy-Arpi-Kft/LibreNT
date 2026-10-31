@@ -10,5 +10,5 @@ add_library(usbasix MODULE
 
 set_module_type(usbasix kernelmodedriver)
 add_importlibs(usbasix ndis ntoskrnl hal usbd)
-add_cd_file(TARGET usbasix DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET usbasix DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(usbasix usbasix.inf)

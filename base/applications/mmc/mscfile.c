@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS MMC
+ * PROJECT:     LibreNT MMC
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     .msc file parser
  * COPYRIGHT:   Copyright 2026 Whindmar Saksit <whindsaks@proton.me>

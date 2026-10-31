@@ -70,7 +70,7 @@ typedef struct tagTrackerWindowInfo
   BOOL       escPressed;
   HWND       curTargetHWND;	/* window the mouse is hovering over */
   IDropTarget* curDragTarget;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   HWND       accepterHWND;
 #endif
   POINTL     curMousePos;       /* current position of the mouse in screen coordinates */
@@ -285,7 +285,7 @@ static inline BOOL is_droptarget(HWND hwnd)
     return get_droptarget_handle(hwnd) != 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline BOOL is_acceptfiles(HWND hwnd)
 {
     return !!(GetWindowLong(hwnd, GWL_EXSTYLE) & WS_EX_ACCEPTFILES);
@@ -772,7 +772,7 @@ HRESULT WINAPI DoDragDrop (
   trackerInfo.escPressed        = FALSE;
   trackerInfo.curTargetHWND     = 0;
   trackerInfo.curDragTarget     = 0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   trackerInfo.accepterHWND      = NULL;
 #endif
 
@@ -1928,7 +1928,7 @@ HRESULT WINAPI OleSetMenuDescriptor(
     }
     else  /* Want to uninstall dispatching code */
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ( OLEMenu_IsHookInstalled( GetCurrentThreadId() ) &&
              !OLEMenu_UnInstallHooks( GetCurrentThreadId() ) )
             return E_FAIL;
@@ -2196,7 +2196,7 @@ static LRESULT WINAPI OLEDD_DragTrackerWindowProc(
   return DefWindowProcW (hwnd, uMsg, wParam, lParam);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT WINAPI DefaultDragEnter(HWND hwndTarget,
                                        IDataObject* pDataObj,
                                        DWORD grfKeyState,
@@ -2265,13 +2265,13 @@ static HRESULT WINAPI DefaultDrop(HWND hwndAccepter,
 static void drag_enter( TrackerWindowInfo *info, HWND new_target )
 {
     HRESULT hr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD dwEffect = *info->pdwEffect;
 #endif
 
     info->curTargetHWND = new_target;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info->accepterHWND = NULL;
     while (new_target && !is_droptarget( new_target ))
     {
@@ -2314,7 +2314,7 @@ static void drag_enter( TrackerWindowInfo *info, HWND new_target )
             IDropTarget_Release( info->curDragTarget );
             info->curDragTarget = NULL;
             info->curTargetHWND = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             info->accepterHWND = NULL;
 #endif
         }
@@ -2349,7 +2349,7 @@ static void drag_end( TrackerWindowInfo *info )
         IDropTarget_Release( info->curDragTarget );
         info->curDragTarget = NULL;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (info->accepterHWND)
     {
         if (info->returnValue == DRAGDROP_S_DROP &&
@@ -2380,7 +2380,7 @@ static HRESULT give_feedback( TrackerWindowInfo *info )
     int res;
     HCURSOR cur;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (info->curDragTarget == NULL && info->accepterHWND == NULL)
         *info->pdwEffect = DROPEFFECT_NONE;
 #else
@@ -2452,7 +2452,7 @@ static void OLEDD_TrackStateChange(TrackerWindowInfo* trackerInfo)
       trackerInfo->curDragTarget = NULL;
       trackerInfo->curTargetHWND = NULL;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     trackerInfo->accepterHWND = NULL;
 #endif
 
@@ -2474,7 +2474,7 @@ static void OLEDD_TrackStateChange(TrackerWindowInfo* trackerInfo)
                            trackerInfo->pdwEffect);
       *trackerInfo->pdwEffect &= trackerInfo->dwOKEffect;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (trackerInfo->accepterHWND)
     {
       *trackerInfo->pdwEffect = trackerInfo->dwOKEffect;
@@ -3020,7 +3020,7 @@ HRESULT WINAPI OleCreateFromDataEx(IDataObject *data, REFIID iid, DWORD flags,
           data, debugstr_guid(iid), flags, renderopt, num_cache_fmts, adv_flags, cache_fmts,
           sink, conns, client_site, stg, obj);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         IEnumFORMATETC *enum_fmt;
         FORMATETC fmt;

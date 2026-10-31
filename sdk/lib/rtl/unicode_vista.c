@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:         See COPYING in the top level directory
- * PROJECT:           ReactOS system libraries
+ * PROJECT:           LibreNT system libraries
  * PURPOSE:           Unicode Conversion Routines
  * FILE:              lib/rtl/unicode_vista.c
  * PROGRAMMER:        Alex Ionescu (alex@relsoft.net)

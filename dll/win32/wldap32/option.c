@@ -111,7 +111,7 @@ ULONG CDECL ldap_get_optionA( LDAP *ld, int option, void *value )
         char *host;
 
         ret = ldap_get_optionW( ld, option, &hostW );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ret && !hostW)
         {
             *(char **)value = NULL;
@@ -254,14 +254,14 @@ ULONG CDECL ldap_get_optionW( LDAP *ld, int option, void *value )
     case WLDAP32_LDAP_OPT_DESC:
     case WLDAP32_LDAP_OPT_ERROR_NUMBER:
     case WLDAP32_LDAP_OPT_PROTOCOL_VERSION:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     case WLDAP32_LDAP_OPT_REFERRALS:
 #endif
     case WLDAP32_LDAP_OPT_SIZELIMIT:
     case WLDAP32_LDAP_OPT_TIMELIMIT:
         return map_error( ldap_get_option( CTX(ld), option, value ) );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WLDAP32_LDAP_OPT_REFERRALS:
     {
         int on;
@@ -279,7 +279,7 @@ ULONG CDECL ldap_get_optionW( LDAP *ld, int option, void *value )
         WCHAR *hostW;
         char *host;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ld->ld_host)
         {
             *(WCHAR **)value = NULL;
@@ -503,7 +503,7 @@ static BOOL is_supported_server_ctrls( LDAP *ld, LDAPControl **ctrls )
     return supported == user_count;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static char *uri_without_ssl( const char *uri )
 {
     char *copy, *ret, *p, *tok, *next;
@@ -656,7 +656,7 @@ ULONG CDECL ldap_set_optionW( LDAP *ld, int option, void *value )
         if (turn_on)
             new_uri = strreplace( uri, "ldap://", "ldaps://" );
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             new_uri = uri_without_ssl( uri );
 #else
             new_uri = strreplace( uri, "ldaps://", "ldap://" );
@@ -678,7 +678,7 @@ ULONG CDECL ldap_set_optionW( LDAP *ld, int option, void *value )
 
         ret = ldap_set_option( CTX(ld), LDAP_OPT_HOST_NAME, host );
         free( host );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!ret)
         {
             WCHAR *copy = wcsdup( *hostW );

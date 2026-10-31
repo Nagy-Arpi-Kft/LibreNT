@@ -1,5 +1,5 @@
 /*
- *  ReactOS About Dialog Box
+ *  LibreNT About Dialog Box
  *
  *  about.h
  *

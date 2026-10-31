@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS USB Hub Driver
+ * PROJECT:     LibreNT USB Hub Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     USBHub I/O control functions
  * COPYRIGHT:   Copyright 2017 Vadim Galyant <vgal@rambler.ru>
@@ -58,7 +58,7 @@ static NTSTATUS USBH_GetDumpInterface(_In_ PUSBHUB_PORT_PDO_EXTENSION PortExtens
     }
 
     Interface->DeviceHandle = PortExtension->DeviceHandle;
-    return USBH_ForwardDumpInterfaceRequest(PortExtension, IOCTL_INTERNAL_REACTOS_USB_GET_DUMP_INTERFACE, Interface);
+    return USBH_ForwardDumpInterfaceRequest(PortExtension, IOCTL_INTERNAL_LIBRENT_USB_GET_DUMP_INTERFACE, Interface);
 }
 
 static NTSTATUS USBH_GetKeyboardInterface(_In_ PUSBHUB_PORT_PDO_EXTENSION PortExtension, _Inout_ PROS_USB_KEYBOARD_INTERFACE Interface)
@@ -67,7 +67,7 @@ static NTSTATUS USBH_GetKeyboardInterface(_In_ PUSBHUB_PORT_PDO_EXTENSION PortEx
         return STATUS_INVALID_PARAMETER;
 
     Interface->DeviceHandle = PortExtension->DeviceHandle;
-    return USBH_ForwardDumpInterfaceRequest(PortExtension, IOCTL_INTERNAL_REACTOS_USB_GET_KEYBOARD_INTERFACE, Interface);
+    return USBH_ForwardDumpInterfaceRequest(PortExtension, IOCTL_INTERNAL_LIBRENT_USB_GET_KEYBOARD_INTERFACE, Interface);
 }
 
 static
@@ -1905,11 +1905,11 @@ USBH_PdoInternalControl(IN PUSBHUB_PORT_PDO_EXTENSION PortExtension,
 
     switch (ControlCode)
     {
-        case IOCTL_INTERNAL_REACTOS_USB_GET_DUMP_INTERFACE:
+        case IOCTL_INTERNAL_LIBRENT_USB_GET_DUMP_INTERFACE:
             Status = USBH_GetDumpInterface(PortExtension, IoStack->Parameters.Others.Argument1);
             break;
 
-        case IOCTL_INTERNAL_REACTOS_USB_GET_KEYBOARD_INTERFACE:
+        case IOCTL_INTERNAL_LIBRENT_USB_GET_KEYBOARD_INTERFACE:
             Status = USBH_GetKeyboardInterface(PortExtension, IoStack->Parameters.Others.Argument1);
             break;
 

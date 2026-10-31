@@ -30,12 +30,12 @@
 
 #include "windef.h"
 #include "winbase.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/ntgdi.h"
 #else
 #include "ntgdi.h"
 #endif
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "ntuser.h"
 #endif
 #include "winerror.h"
@@ -50,7 +50,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(uniscribe);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 #define NtUserGetSysColor GetSysColor
 #endif
@@ -791,7 +791,7 @@ static inline BOOL set_cache_glyph_widths(SCRIPT_CACHE *psc, WORD glyph, ABC *ab
 static HRESULT init_script_cache(const HDC hdc, SCRIPT_CACHE *psc)
 {
     ScriptCache *sc;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ScriptCache *new_sc;
 #endif
     unsigned size;
@@ -832,7 +832,7 @@ static HRESULT init_script_cache(const HDC hdc, SCRIPT_CACHE *psc)
     if (size)
     {
         sc->otm = malloc(size);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!sc->otm)
         {
             free(sc);
@@ -840,7 +840,7 @@ static HRESULT init_script_cache(const HDC hdc, SCRIPT_CACHE *psc)
         }
 #endif
         sc->otm->otmSize = size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!GetOutlineTextMetricsW(hdc, size, sc->otm))
         {
             free(sc->otm);
@@ -854,7 +854,7 @@ static HRESULT init_script_cache(const HDC hdc, SCRIPT_CACHE *psc)
     sc->sfnt = (NtGdiGetFontData(hdc, MS_MAKE_TAG('h','e','a','d'), 0, NULL, 0) != GDI_ERROR);
     if (!set_cache_font_properties(hdc, sc))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(sc->otm);
 #endif
         free(sc);
@@ -862,35 +862,35 @@ static HRESULT init_script_cache(const HDC hdc, SCRIPT_CACHE *psc)
     }
     sc->lf = lf;
     sc->refcount = 1;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     new_sc = sc;
 #else
     *psc = sc;
 #endif
 
     EnterCriticalSection(&cs_script_cache);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     list_add_head(&script_cache_list, &new_sc->entry);
 #else
     list_add_head(&script_cache_list, &sc->entry);
 #endif
     LIST_FOR_EACH_ENTRY(sc, &script_cache_list, ScriptCache, entry)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (sc != new_sc && !memcmp(&sc->lf, &lf, sizeof(lf)))
 #else
         if (sc != *psc && !memcmp(&sc->lf, &lf, sizeof(lf)))
 #endif
         {
             /* Another thread won the race. Use their cache instead of ours */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             list_remove(&new_sc->entry);
 #else
             list_remove(&sc->entry);
 #endif
             sc->refcount++;
             LeaveCriticalSection(&cs_script_cache);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             free(new_sc->otm);
             free(new_sc);
 #else
@@ -901,7 +901,7 @@ static HRESULT init_script_cache(const HDC hdc, SCRIPT_CACHE *psc)
         }
     }
     LeaveCriticalSection(&cs_script_cache);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     *psc = new_sc;
     sc = new_sc;
 #endif
@@ -3056,7 +3056,7 @@ HRESULT WINAPI ScriptBreak(const WCHAR *chars, int count, const SCRIPT_ANALYSIS 
     if (count < 0 || !la) return E_INVALIDARG;
     if (count == 0) return E_FAIL;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return BREAK_line(chars, count, sa, la);
 #else
     BREAK_line(chars, count, sa, la);
@@ -3255,7 +3255,7 @@ HRESULT WINAPI ScriptShapeOpenType( HDC hdc, SCRIPT_CACHE *psc,
             return hr;
         }
         SHAPE_ApplyDefaultOpentypeFeatures(hdc, (ScriptCache *)*psc, psa, pwOutGlyphs, pcGlyphs, cMaxGlyphs, cChars, pwLogClust);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = SHAPE_CharGlyphProp(hdc, (ScriptCache *)*psc, psa, pwcChars, cChars, pwOutGlyphs, *pcGlyphs, pwLogClust, pCharProps, pOutGlyphProps);
         if (FAILED(hr))
         {
@@ -4135,7 +4135,7 @@ HRESULT WINAPI ScriptGetFontAlternateGlyphs( HDC hdc, SCRIPT_CACHE *sc, SCRIPT_A
     return E_NOTIMPL;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL usp10_script_tag_matches(const SCRIPT_ANALYSIS *psa, OPENTYPE_TAG tag)
 {
     if (!psa)

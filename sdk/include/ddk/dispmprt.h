@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Display Driver Model
+ * PROJECT:     LibreNT Display Driver Model
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     WDDM display miniport driver public interface header
  * COPYRIGHT:   Copyright 2024 ReactOS WDDM Team
@@ -34,7 +34,7 @@
 /*
  * d3dukmdt.h (pulled in transitively via d3dkmddi.h → d3dkmdt.h → d3dukmdt.h)
  * uses UINT before any kernel header defines that type.  windef.h supplies it
- * via minwindef.h.  This is safe in kernel mode — other ReactOS kernel drivers
+ * via minwindef.h.  This is safe in kernel mode — other LibreNT kernel drivers
  * use the same pattern (see dxgkrnl_private.h).
  */
 #include <windef.h>
@@ -2664,7 +2664,7 @@ C_ASSERT(sizeof(DXGKRNL_INTERFACE) == 0x124);
 /*
  * SAL-decorated aliases used by the public WDK function-type declarations.
  * They intentionally carry no runtime state; keeping the canonical names lets
- * unmodified display miniports compile against the ReactOS DDK.
+ * unmodified display miniports compile against the LibreNT DDK.
  */
 typedef _In_ CONST PDEVICE_OBJECT IN_CONST_PDEVICE_OBJECT;
 typedef _Inout_ PLINKED_DEVICE INOUT_PLINKED_DEVICE;
@@ -2684,7 +2684,7 @@ typedef struct _KMDDOD_INITIALIZATION_DATA  KMDDOD_INITIALIZATION_DATA;
 typedef struct _KMDDOD_INITIALIZATION_DATA *PKMDDOD_INITIALIZATION_DATA;
 
 /* Public Displib API. Native miniports resolve its private dxgkrnl target at
- * runtime; ReactOS also retains a direct dxgkrnl compatibility export. */
+ * runtime; LibreNT also retains a direct dxgkrnl compatibility export. */
 NTSTATUS
 APIENTRY
 DxgkInitializeDisplayOnlyDriver(

@@ -458,7 +458,7 @@ BOOLEAN RetryTransferPacket(PTRANSFER_PACKET Pkt)
     PCLASS_PRIVATE_FDO_DATA fdoData = fdoExtension->PrivateFdoData;
     PCDB pCdb = SrbGetCdb(Pkt->Srb);
 
-#if !defined(__REACTOS__) && NTDDI_VERSION >= NTDDI_WINBLUE
+#if !defined(__LIBRENT__) && NTDDI_VERSION >= NTDDI_WINBLUE
     if(ClasspIsThinProvisioningError((PSCSI_REQUEST_BLOCK)Pkt->Srb) &&
         (pCdb != NULL) && IS_SCSIOP_READWRITE(pCdb->CDB10.OperationCode)) {
 
@@ -620,7 +620,7 @@ VOID TransferPacketQueueRetryDpc(PTRANSFER_PACKET Pkt)
 
 
 VOID
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 TransferPacketRetryTimerDpc(   IN PKDPC Dpc,
                                     IN PVOID DeferredContext,
                                     IN PVOID SystemArgument1,

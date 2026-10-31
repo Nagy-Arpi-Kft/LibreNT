@@ -69,7 +69,7 @@ extern LARGE_INTEGER FatMagic86400000;
 
 #define FAT_RESERVE_MDL_SIZE    16
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 __volatile extern PMDL FatReserveMdl;
 #else
 extern __volatile PMDL FatReserveMdl;
@@ -234,7 +234,7 @@ extern LONG FatDebugTraceIndent;
     }                                                       \
 }
 
-#if !defined(__REACTOS__) || defined(_MSC_VER)
+#if !defined(__LIBRENT__) || defined(_MSC_VER)
 #define DebugDump(STR,LEVEL,PTR) {                          \
     __pragma(warning(push))                                 \
     __pragma(warning(disable:4210))                         \

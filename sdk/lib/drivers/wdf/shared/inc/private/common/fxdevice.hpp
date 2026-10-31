@@ -1799,7 +1799,7 @@ public:
         VOID
         )
     {
-        // LogDeviceStartTelemetryEvent(GetDriverGlobals(), this); __REACTOS__ : no-op
+        // LogDeviceStartTelemetryEvent(GetDriverGlobals(), this); __LIBRENT__ : no-op
     }
 
     virtual

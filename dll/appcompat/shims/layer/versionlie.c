@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS 'Layers' Shim library
+ * PROJECT:     LibreNT 'Layers' Shim library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Version lie shims
  * COPYRIGHT:   Copyright 2016,2017 Mark Jansen <mark.jansen@reactos.org>

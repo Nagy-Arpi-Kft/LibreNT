@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Linux Subsystem
+ * PROJECT:     LibreNT Linux Subsystem
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Linux IPv4 and IPv6 sockets on AFD endpoints
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -10,7 +10,7 @@
 #define _INC_WINDOWS
 #include <winsock2.h>
 #include <tdi.h>
-#include <reactos/drivers/afd/shared.h>
+#include <librent/drivers/afd/shared.h>
 
 #define NDEBUG
 #include <debug.h>

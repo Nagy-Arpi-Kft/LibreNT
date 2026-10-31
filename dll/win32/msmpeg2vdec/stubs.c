@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Media Foundation decoders
+ * PROJECT:     LibreNT Media Foundation decoders
  * FILE:        dll/win32/msmpeg2vdec/stubs.c
  * PURPOSE:     Entry points of a build without FFmpeg
  *

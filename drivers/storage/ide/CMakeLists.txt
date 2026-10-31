@@ -1,7 +1,6 @@
-if(ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64" OR ARCH STREQUAL "ppc")
+if(ARCH STREQUAL "i386" OR ARCH STREQUAL "amd64")
     add_subdirectory(atapi)
-    # PowerPC PReP machines wire their PATA channels to ISA legacy ports.
-    if((ARCH STREQUAL "i386" AND NOT ENABLE_UNIATA) OR ARCH STREQUAL "ppc")
+    if(ARCH STREQUAL "i386" AND NOT ENABLE_UNIATA)
         add_subdirectory(legide)
     endif()
     add_subdirectory(pciide)

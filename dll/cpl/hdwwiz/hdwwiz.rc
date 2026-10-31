@@ -6,12 +6,12 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT Hardware Control Panel"
-#define REACTOS_STR_INTERNAL_NAME     "hdwwiz"
-#define REACTOS_STR_ORIGINAL_FILENAME "hdwwiz.cpl"
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT Hardware Control Panel"
+#define LIBRENT_STR_INTERNAL_NAME     "hdwwiz"
+#define LIBRENT_STR_ORIGINAL_FILENAME "hdwwiz.cpl"
 
-#include <reactos/version.rc>
+#include <librent/version.rc>
 
 IDI_CPLICON ICON "resources/applet.ico"
 IDI_WARNINGICON ICON "resources/warning.ico"
@@ -20,7 +20,7 @@ IDI_SEARCHICON ICON "resources/search.ico"
 IDB_WATERMARK BITMAP "resources/watermark.bmp"
 IDB_HEADER BITMAP "resources/header.bmp"
 
-#include <reactos/manifest_hosted.rc>
+#include <librent/manifest_hosted.rc>
 
 /* UTF-8 */
 #pragma code_page(65001)

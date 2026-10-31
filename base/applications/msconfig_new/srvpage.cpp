@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Applications
+ * PROJECT:     LibreNT Applications
  * LICENSE:     LGPL - See COPYING in the top level directory
  * FILE:        base/applications/msconfig_new/srvpage.cpp
  * PURPOSE:     Services page message handler
@@ -248,11 +248,11 @@ static void AddService(SC_HANDLE hSCManager, LPENUM_SERVICE_STATUS_PROCESS Servi
 #endif
     }
 
-    // ...and display or not the Microsoft / ReactOS services.
+    // ...and display or not the Microsoft / LibreNT services.
     BOOL bContinue = TRUE;
     if (bHideOSVendorServices)
     {
-        if (FindSubStrI(lpszVendor, bIsWindows ? IDS_MICROSOFT : IDS_REACTOS))
+        if (FindSubStrI(lpszVendor, bIsWindows ? IDS_MICROSOFT : IDS_LIBRENT))
             bContinue = FALSE;
     }
 
@@ -460,7 +460,7 @@ RequiredServicesDisablingDialogWndProc(HWND hDlg,
             size_t itemLength = 0;
             LPWSTR szItem = NULL, szNewItem = NULL;
 
-            szOSVendor = (bIsWindows ? IDS_WINDOWS : IDS_REACTOS);
+            szOSVendor = (bIsWindows ? IDS_WINDOWS : IDS_LIBRENT);
 
             itemLength = GetWindowTextLength(GetDlgItem(hDlg, IDC_STATIC_REQSVCSDIS_INFO)) + 1;
             szItem     = (LPWSTR)MemAlloc(0, itemLength * sizeof(WCHAR));
@@ -641,7 +641,7 @@ ServicesPageWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             //
             // Correctly display message strings.
             //
-            LPCWSTR szOSVendor = (bIsWindows ? IDS_MICROSOFT : IDS_REACTOS);
+            LPCWSTR szOSVendor = (bIsWindows ? IDS_MICROSOFT : IDS_LIBRENT);
 
             size_t itemLength = 0;
             LPWSTR szItem = NULL, szNewItem = NULL;

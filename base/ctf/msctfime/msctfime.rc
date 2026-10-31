@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS msctfime.ime
+ * PROJECT:     LibreNT msctfime.ime
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Resource of msctfime.ime
  * COPYRIGHT:   Copyright 2023 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>
@@ -12,15 +12,15 @@
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
-#define REACTOS_VERSION_DLL
-#define REACTOS_FILETYPE              VFT_DRV
-#define REACTOS_FILESUBTYPE           VFT2_DRV_INPUTMETHOD
-#define REACTOS_STR_FILE_DESCRIPTION  "LiberNT msctfime.ime"
-#define REACTOS_STR_INTERNAL_NAME     "msctfime"
-#define REACTOS_STR_ORIGINAL_FILENAME "msctfime.ime"
-#include <reactos/version.rc>
+#define LIBRENT_VERSION_DLL
+#define LIBRENT_FILETYPE              VFT_DRV
+#define LIBRENT_FILESUBTYPE           VFT2_DRV_INPUTMETHOD
+#define LIBRENT_STR_FILE_DESCRIPTION  "LibreNT msctfime.ime"
+#define LIBRENT_STR_INTERNAL_NAME     "msctfime"
+#define LIBRENT_STR_ORIGINAL_FILENAME "msctfime.ime"
+#include <librent/version.rc>
 
-#include <reactos/manifest_hosted.rc>
+#include <librent/manifest_hosted.rc>
 
 /* Icons */
 IDI_UNICODE ICON  "res/unicode.ico"

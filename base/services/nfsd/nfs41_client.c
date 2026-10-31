@@ -285,7 +285,7 @@ static int adapter_valid(
     /* must have an address */
     if (addr->PhysicalAddressLength == 0)
         return 0;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     /* must support ip */
     return addr->Ipv4Enabled || addr->Ipv6Enabled;
 #else

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Generic Framebuffer Boot Video Driver
+ * PROJECT:     LibreNT Generic Framebuffer Boot Video Driver
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  *              or MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Main file

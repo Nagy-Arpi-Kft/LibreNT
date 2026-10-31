@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Tests
+ * PROJECT:     LibreNT Tests
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     Lightweight testing routines, based on an updated version of wine/test.h
  * COPYRIGHT:   Copyright 2025 Hermès Bélusca-Maïto <hermes.belusca-maito@reactos.org>

@@ -3466,7 +3466,7 @@ void CDECL wined3d_device_apply_stateblock(struct wined3d_device *device,
                                 state->rs[WINED3D_RS_ENABLEADAPTIVETESSELLATION]);
                     break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 case WINED3D_RS_POINTSIZE:
                     if (state->rs[idx] == WINED3D_RESZ_CODE)
                     {

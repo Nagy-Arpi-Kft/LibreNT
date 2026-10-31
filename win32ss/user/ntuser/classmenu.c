@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS Win32k subsystem
+ * PROJECT:          LibreNT Win32k subsystem
  * PURPOSE:          Window class menu names
  * FILE:             win32ss/user/ntuser/classmenu.c
  * PROGRAMER:        Thomas Weidenmueller <w3seek@reactos.com>

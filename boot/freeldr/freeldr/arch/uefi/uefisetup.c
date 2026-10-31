@@ -9,7 +9,7 @@
 
 #include <debug.h>
 #if defined(_M_ARM64)
-#include <reactos/arm64/early_uart.h>
+#include <librent/arm64/early_uart.h>
 #endif
 DBG_DEFAULT_CHANNEL(WARNING);
 #if DBG
@@ -58,7 +58,7 @@ MachInit(const char *CmdLine)
     MachVtbl.VideoGetPaletteColor = UefiVideoGetPaletteColor;
     MachVtbl.VideoSync = UefiVideoSync;
     MachVtbl.Beep = UefiPcBeep;
-    MachVtbl.PrepareForReactOS = UefiPrepareForReactOS;
+    MachVtbl.PrepareForLibreNT = UefiPrepareForLibreNT;
     MachVtbl.GetMemoryMap = UefiMemGetMemoryMap;
     MachVtbl.GetExtendedBIOSData = UefiGetExtendedBIOSData;
     MachVtbl.GetFloppyCount = UefiGetFloppyCount;

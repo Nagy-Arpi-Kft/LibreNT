@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/fmifs)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/fmifs)
 
 add_executable(format format.c format.rc)
 set_module_type(format win32cui UNICODE)
@@ -9,4 +9,4 @@ if(MSVC AND ARCH STREQUAL "i386")
     add_importlibs(format ntdll) # For _allmul
 endif()
 set_target_properties(format PROPERTIES SUFFIX ".com")
-add_cd_file(TARGET format DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET format DESTINATION librent/system32 FOR all)

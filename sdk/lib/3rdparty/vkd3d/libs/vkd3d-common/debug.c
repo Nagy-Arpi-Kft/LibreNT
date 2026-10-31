@@ -169,7 +169,7 @@ static void vkd3d_dbg_voutput(const char *fmt, va_list args)
     if (log_callback)
         log_callback(fmt, args);
     else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         vfprintf(__iob_func() + 2, fmt, args);
 #else
         vfprintf(stderr, fmt, args);

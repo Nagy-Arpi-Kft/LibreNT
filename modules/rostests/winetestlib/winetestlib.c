@@ -1,7 +1,7 @@
 #define STANDALONE
 #include <wine/test.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void winetest_wait_child_process_info(const PROCESS_INFORMATION *info)
 {
     DWORD ret;

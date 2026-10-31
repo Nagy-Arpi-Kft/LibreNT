@@ -1,4 +1,4 @@
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /*
  *                 Shell basics
  *
@@ -1219,7 +1219,7 @@ HRESULT WINAPI SHCreateDataObject(PCIDLIST_ABSOLUTE pidl_folder, UINT count, PCU
     FIXME("%p %d %p %p %s %p: stub\n", pidl_folder, count, pidl_array, object, debugstr_guid(riid), ppv);
     return E_NOTIMPL;
 }
-#else /* __REACTOS__ */
+#else /* __LIBRENT__ */
 /*
  *                 Shell basics
  *
@@ -1264,8 +1264,8 @@ HRESULT WINAPI SHCreateDataObject(PCIDLIST_ABSOLUTE pidl_folder, UINT count, PCU
 #include <wine/debug.h>
 #include <wine/unicode.h>
 
-#include <reactos/version.h>
-#include <reactos/buildno.h>
+#include <librent/version.h>
+#include <librent/buildno.h>
 
 WINE_DEFAULT_DEBUG_CHANNEL(shell);
 
@@ -2207,7 +2207,7 @@ VOID WINAPI Printers_UnregisterWindow(HANDLE hClassPidl, HWND hwnd)
 typedef struct
 {
     LPCWSTR  szApp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPCWSTR  szOSVersion;
 #endif
     LPCWSTR  szOtherStuff;
@@ -2314,7 +2314,7 @@ INT_PTR CALLBACK AboutAuthorsDlgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM
  */
 static INT_PTR CALLBACK AboutDlgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
     static DWORD   cxLogoBmp;
     static DWORD   cyLogoBmp, cyLineBmp;
@@ -2336,7 +2336,7 @@ static INT_PTR CALLBACK AboutDlgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM
                 WCHAR szAuthorsText[20];
 
                 // Preload the ROS bitmap
-                hLogoBmp = (HBITMAP)LoadImage(shell32_hInstance, MAKEINTRESOURCE(IDB_REACTOS), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
+                hLogoBmp = (HBITMAP)LoadImage(shell32_hInstance, MAKEINTRESOURCE(IDB_LIBRENT), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
                 hLineBmp = (HBITMAP)LoadImage(shell32_hInstance, MAKEINTRESOURCE(IDB_LINEBAR), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
 
                 if (hLogoBmp && hLineBmp)
@@ -2519,7 +2519,7 @@ static INT_PTR CALLBACK AboutDlgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM
             break;
     }
 
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
     return 0;
 }
@@ -2565,7 +2565,7 @@ BOOL WINAPI ShellAboutW( HWND hWnd, LPCWSTR szApp, LPCWSTR szOtherStuff,
     HRSRC hRes;
     DLGTEMPLATE *DlgTemplate;
     BOOL bRet;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR szVersionString[256];
     WCHAR szFormat[256];
 #endif
@@ -2581,14 +2581,14 @@ BOOL WINAPI ShellAboutW( HWND hWnd, LPCWSTR szApp, LPCWSTR szOtherStuff,
     if(!DlgTemplate)
         return FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     /* Output the version OS kernel strings */
     LoadStringW(shell32_hInstance, IDS_ABOUT_VERSION_STRING, szFormat, _countof(szFormat));
     StringCchPrintfW(szVersionString, _countof(szVersionString), szFormat, KERNEL_VERSION_STR, KERNEL_VERSION_BUILD_STR);
 #endif
 
     info.szApp        = szApp;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     info.szOSVersion  = szVersionString;
 #endif
     info.szOtherStuff = szOtherStuff;
@@ -2615,4 +2615,4 @@ HRESULT WINAPI SHLoadNonloadedIconOverlayIdentifiers( VOID )
     FIXME("stub\n");
     return S_OK;
 }
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */

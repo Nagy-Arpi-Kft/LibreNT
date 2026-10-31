@@ -2,11 +2,11 @@
 #include <math.h>
 #include <commctrl.h>
 #include <windowsx.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 #include <shellframe.h>
 #include <winioctl.h>
 #include <ntddvdeo.h>
-#include <reactos/rddm/rxgkmonitor.h>
+#include <librent/rddm/rxgkmonitor.h>
 
 static VOID TfyW11Position(HWND hwndOwner, const RECT *prcAnchor, SIZE size, BOOL bCenter, POINT *ppt);
 static VOID TrayNotifCenter_Open(HWND hwndCalendar);
@@ -1066,7 +1066,7 @@ TfyFlyoutEditSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
     return DefSubclassProc(hWnd, uMsg, wParam, lParam);
 }
 
-#define TFY_CAL_KEY       L"Software\\ReactOS\\Explorer\\Calendar"
+#define TFY_CAL_KEY       L"Software\\LibreNT\\Explorer\\Calendar"
 #define TFY_CAL_MAXEVENTS 64
 #define TFY_CAL_DATA      6144
 #define TFY_CAL_EDIT_ID   111
@@ -3979,10 +3979,10 @@ HWND TrayMedia_FindSession(BOOL *pbPlaying)
     BOOL bBestPlaying = FALSE;
     DWORD dwBestTick = 0;
 
-    while ((hwnd = FindWindowExW(HWND_MESSAGE, hwnd, L"LiberNTMediaSession", NULL)) != NULL)
+    while ((hwnd = FindWindowExW(HWND_MESSAGE, hwnd, L"LibreNTMediaSession", NULL)) != NULL)
     {
-        ULONG_PTR Status = (ULONG_PTR)GetPropW(hwnd, L"LiberNTMediaStatus");
-        DWORD dwTick = (DWORD)(ULONG_PTR)GetPropW(hwnd, L"LiberNTMediaTick");
+        ULONG_PTR Status = (ULONG_PTR)GetPropW(hwnd, L"LibreNTMediaStatus");
+        DWORD dwTick = (DWORD)(ULONG_PTR)GetPropW(hwnd, L"LibreNTMediaTick");
         BOOL bPlaying = (Status == 4);
 
         if (!Status)
@@ -6818,7 +6818,7 @@ public:
         DWORD dwValue = 0, cb = sizeof(dwValue), dwType = 0;
         BOOL bAirplane = FALSE;
         *pbWifiRestore = TRUE;
-        if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\ReactOS\\Explorer", 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
+        if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\LibreNT\\Explorer", 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
             return FALSE;
         if (RegQueryValueExW(hKey, L"AirplaneMode", NULL, &dwType, (LPBYTE)&dwValue, &cb) == ERROR_SUCCESS && dwType == REG_DWORD)
             bAirplane = (dwValue != 0);
@@ -6833,7 +6833,7 @@ public:
     {
         HKEY hKey;
         DWORD dwValue;
-        if (RegCreateKeyExW(HKEY_CURRENT_USER, L"Software\\ReactOS\\Explorer", 0, NULL, 0,
+        if (RegCreateKeyExW(HKEY_CURRENT_USER, L"Software\\LibreNT\\Explorer", 0, NULL, 0,
                             KEY_SET_VALUE, NULL, &hKey, NULL) != ERROR_SUCCESS)
             return;
         dwValue = bAirplane ? 1 : 0;

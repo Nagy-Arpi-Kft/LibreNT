@@ -31,7 +31,7 @@
 #define expectf(expected, got) expectf_((expected), (got), 0.001)
 
 static GpStatus (WINAPI *pGdipGraphicsSetAbort)(GpGraphics*,GdiplusAbort*);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static GpStatus (WINAPI *pGdipDrawImageFX)(GpGraphics*, GpImage*, GpRectF*, GpMatrix*, CGpEffect*, GpImageAttributes*, GpUnit);
 #endif
 
@@ -1320,7 +1320,7 @@ static void test_GdipDrawImageFX(void)
     BYTE buff[400];
     HDC hdc;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!pGdipDrawImageFX)
     {
         win_skip("GdipDrawImageFX() is not supported.\n");
@@ -5250,7 +5250,7 @@ static void test_alpha_hdc(void)
     DeleteDC(hdc);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void test_draw_path_smoothing_hdc(void)
 {
     const GpPointF points[] = {{4.0, 5.0}, {27.0, 20.0}};
@@ -7618,7 +7618,7 @@ START_TEST(graphics)
     if (_controlfp_s) _controlfp_s(0, 0, 0x0008001e);
 
     pGdipGraphicsSetAbort = (void*)GetProcAddress(gdiplus_mod, "GdipGraphicsSetAbort");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     pGdipDrawImageFX = (void*)GetProcAddress(gdiplus_mod, "GdipDrawImageFX");
 #endif
 
@@ -7690,7 +7690,7 @@ START_TEST(graphics)
     test_get_set_textrenderinghint();
     test_getdc_scaled();
     test_alpha_hdc();
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     test_draw_path_smoothing_hdc();
 #endif
     test_bitmapfromgraphics();

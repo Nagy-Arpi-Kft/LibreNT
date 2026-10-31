@@ -1,5 +1,5 @@
 /*
- * PROJECT:         LiberNT Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * FILE:            ntoskrnl/ke/arm64/boot.c
  * PURPOSE:         Kernel entry stubs for ARM64
@@ -8,7 +8,7 @@
 
 #include <ntoskrnl.h>
 #include <ntstrsafe.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/drivers/acpi/acpi.h>
 #define NDEBUG
 #include <debug.h>
 #include <arm64pl011.h>

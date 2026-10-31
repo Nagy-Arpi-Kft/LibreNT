@@ -1606,7 +1606,7 @@
     case TT_SBIT_TABLE_TYPE_EBLC:
     case TT_SBIT_TABLE_TYPE_CBLC:
       {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         TT_SBitDecoderRec *decoder = malloc(sizeof(*decoder));
         if (!decoder)
         {
@@ -1629,7 +1629,7 @@
                     ( load_flags & FT_LOAD_BITMAP_METRICS_ONLY ) != 0 );
           tt_sbit_decoder_done( decoder );
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free(decoder);
 #endif
       }

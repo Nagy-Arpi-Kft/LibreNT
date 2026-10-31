@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell Extensions
+ * PROJECT:     LibreNT Shell Extensions
  * LICENSE:     LGPL - See COPYING in the top level directory
  * FILE:        dll/shellext/devcpux/processor.c
  * PURPOSE:

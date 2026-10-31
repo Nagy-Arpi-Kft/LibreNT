@@ -1242,7 +1242,7 @@ static void test_char_from_pos(void)
     }
     for (i = mid; i <= hi; i++) {
        ret = LOWORD(SendMessageA(hwEdit, EM_CHARFROMPOS, 0, i));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        ok(1 == ret || broken(0 == ret) /* Vista */, "%d/%d/%d: expected 0 or 1 got %d\n", mid, i, hi, ret);
 #else
        ok(1 == ret, "%d/%d/%d: expected 1 got %d\n", mid, i, hi, ret);
@@ -1265,7 +1265,7 @@ static void test_char_from_pos(void)
     }
     for (i = mid; i <= hi; i++) {
        ret = LOWORD(SendMessageA(hwEdit, EM_CHARFROMPOS, 0, i));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
        ok(1 == ret || broken(0 == ret) /* Vista */, "%d/%d/%d: expected 0 or 1 got %d\n", mid, i, hi, ret);
 #else
        ok(1 == ret, "%d/%d/%d: expected 1 got %d\n", mid, i, hi, ret);

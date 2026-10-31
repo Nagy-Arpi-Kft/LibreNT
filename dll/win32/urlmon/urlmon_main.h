@@ -33,7 +33,7 @@
 
 #include "wine/list.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <stdlib.h>
 #include <string.h>
 
@@ -88,10 +88,10 @@ IInternetProtocolInfo *get_protocol_info(LPCWSTR);
 HRESULT get_protocol_handler(IUri*,CLSID*,IClassFactory**);
 IInternetProtocol *get_mime_filter(LPCWSTR);
 BOOL is_registered_protocol(LPCWSTR);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 BOOL is_direct_builtin_protocol(IUri*);
-#ifdef __REACTOS__
-extern const GUID SID_LiberNTStartNotImplemented;
+#ifdef __LIBRENT__
+extern const GUID SID_LibreNTStartNotImplemented;
 #endif
 #endif
 HRESULT register_namespace(IClassFactory*,REFIID,LPCWSTR,BOOL);
@@ -177,7 +177,7 @@ struct ProtocolVtbl {
 #define FLAG_RESULT_REPORTED          0x0020
 #define FLAG_ERROR                    0x0040
 #define FLAG_SYNC_READ                0x0080
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define FLAG_NO_CONNECT_STATUS        0x0100
 #endif
 
@@ -223,7 +223,7 @@ typedef struct {
     BOOL reported_result;
     BOOL reported_mime;
     DWORD pi;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     BOOL redirecting;
     BOOL url_binding;
     BOOL terminated;

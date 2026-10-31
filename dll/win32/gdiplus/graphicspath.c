@@ -1670,12 +1670,12 @@ GpStatus WINGDIPAPI GdipGetPathWorldBounds(GpPath* path, GpRectF* bounds,
     }
 
     if(pen){
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         REAL scale = 1.0;
 
 #endif
         path_width = pen->width / 2.0;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (matrix)
         {
             scale = (hypotf(matrix->matrix[0] + matrix->matrix[3],
@@ -1687,14 +1687,14 @@ GpStatus WINGDIPAPI GdipGetPathWorldBounds(GpPath* path, GpRectF* bounds,
 #endif
 
         if(count > 2)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             path_width = max(path_width, pen->width * pen->miterlimit * scale / 2.0);
 #else
             path_width = max(path_width,  pen->width * pen->miterlimit / 2.0);
 #endif
         /* FIXME: this should probably also check for the startcap */
         if(pen->endcap & LineCapNoAnchor)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             path_width = max(path_width, pen->width * (2.0 * scale + 0.2));
 #else
             path_width = max(path_width,  pen->width * 2.2);
@@ -2052,7 +2052,7 @@ static void add_bevel_point(const GpPointF *endpoint, const GpPointF *nextpoint,
         endpoint->Y + bevel_dy, PathPointTypeLine);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL add_round_joint(const GpPointF *p1, const GpPointF *p2, const GpPointF *p3,
     REAL pen_width, path_list_node_t **last_point)
 {
@@ -2122,7 +2122,7 @@ static void widen_joint(const GpPointF *p1, const GpPointF *p2, const GpPointF *
 {
     switch (pen->join)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case LineJoinRound:
         if ((p2->X - p1->X) * (p3->Y - p1->Y) > (p2->Y - p1->Y) * (p3->X - p1->X) &&
             add_round_joint(p1, p2, p3, pen_width, last_point))
@@ -2858,7 +2858,7 @@ GpStatus WINGDIPAPI GdipWidenPath(GpPath *path, GpPen *pen, GpMatrix *matrix,
         if (pen->dashcap != DashCapFlat)
             FIXME("unimplemented dash cap %d\n", pen->dashcap);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         if (pen->join == LineJoinRound)
             FIXME("unimplemented line join %d\n", pen->join);
 #endif

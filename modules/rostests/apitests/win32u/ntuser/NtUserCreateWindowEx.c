@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS api tests
+ * PROJECT:         LibreNT api tests
  * LICENSE:         GPL - See COPYING in the top level directory
  * PURPOSE:         Test for NtUserCreateWindowEx
  */
@@ -138,7 +138,7 @@ START_TEST(NtUserCreateWindowEx)
     TEST(NtUserGetWOWClass(hinst, &ver_cls) != NtUserGetWOWClass(hinst, &cls));    TEST(atom2 != 0);
     TEST(atom == atom2 && (atom | atom2) != 0);
 
-    if (!IsReactOS())
+    if (!IsLibreNT())
     {
         skip("NtUserCreateWindowEx takes the NT10 17-parameter form\n");
     }
@@ -231,7 +231,7 @@ START_TEST(NtUserCreateWindowEx)
     TEST(res.hbrBackground == wclex2.hbrBackground);
     TEST(res.hIconSm == wclex2.hIconSm);
 
-    if (!IsReactOS())
+    if (!IsLibreNT())
     {
         skip("NtUserCreateWindowEx takes the NT10 17-parameter form\n");
     }

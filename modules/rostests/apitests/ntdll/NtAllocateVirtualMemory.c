@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS API Tests
+ * PROJECT:     LibreNT API Tests
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Test for NtAllocateVirtualMemory
  * COPYRIGHT:   Copyright 2011 Thomas Faber <thomas.faber@reactos.org>
@@ -731,7 +731,7 @@ CheckSomeDefaultAddresses(VOID)
                                          PAGE_READWRITE);
         if (NT_SUCCESS(Status))
         {
-            trace("Below 0x00400000 is available, as on ReactOS and Windows S03\n");
+            trace("Below 0x00400000 is available, as on LibreNT and Windows S03\n");
             // 0x003F0000, 64k: Free.
             ok_ntstatus(Status, STATUS_SUCCESS);
             Status = NtFreeVirtualMemory(NtCurrentProcess(), &BaseAddress, &Size, MEM_RELEASE);
@@ -747,7 +747,7 @@ CheckSomeDefaultAddresses(VOID)
 
         /* Reserve memory at 0x00400000:
          * Windows NT legacy default DLL image base,
-         * (ReactOS and) Windows 95 new default executable image base */
+         * (LibreNT and) Windows 95 new default executable image base */
         BaseAddress = UlongToPtr(0x00400000);
         Size = 0x1000;
         Status = NtAllocateVirtualMemory(NtCurrentProcess(),

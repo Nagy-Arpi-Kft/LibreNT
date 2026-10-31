@@ -500,7 +500,7 @@ static void test_fontfamily (void)
     expect (Ok, stat);
     expect (0, lstrcmpiW(itsName, L"Tahoma"));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!is_reactos() && (GetNTVersion() < _WIN32_WINNT_WIN7))
     {
         win_skip("Skipping test that crashes on Windows 2003 / Vista\n");
@@ -511,7 +511,7 @@ static void test_fontfamily (void)
     /* Crashes on Windows XP SP2 and Vista */
     stat = GdipGetFamilyName (family, NULL, LANG_NEUTRAL);
     expect (Ok, stat);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 

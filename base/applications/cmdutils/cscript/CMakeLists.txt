@@ -1,6 +1,6 @@
 
 add_definitions(-DCSCRIPT_BUILD)
-set(wscript_folder ${REACTOS_SOURCE_DIR}/base/applications/cmdutils/wscript)
+set(wscript_folder ${LIBRENT_SOURCE_DIR}/base/applications/cmdutils/wscript)
 include_directories(${wscript_folder})
 
 list(APPEND SOURCE
@@ -19,7 +19,7 @@ add_delay_importlibs(cscript shlwapi)
 add_importlibs(cscript shell32 oleaut32 ole32 advapi32 user32 msvcrt kernel32 ntdll)
 add_dependencies(cscript stdole2 cscript_idlheader)
 add_pch(cscript ${wscript_folder}/precomp.h SOURCE)
-add_cd_file(TARGET cscript DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET cscript DESTINATION librent/system32 FOR all)
 set_wine_module_FIXME(cscript) # CORE-5743: No ARRAY_SIZE macro
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")

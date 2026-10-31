@@ -35,7 +35,7 @@
 #include <process.h>
 #include <errno.h>
 #include <locale.h>
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <ntndk.h>
 #else
 #include <winternl.h>

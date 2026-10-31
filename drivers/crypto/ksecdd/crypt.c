@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel Security Support Provider Interface Driver
+ * PROJECT:     LibreNT Kernel Security Support Provider Interface Driver
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Encryption and decryption support for ksecdd
  * COPYRIGHT:   Copyright 2014-2020 Timo Kreuzer <timo.kreuzer@reactos.org>

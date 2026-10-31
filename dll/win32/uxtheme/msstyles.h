@@ -95,7 +95,7 @@ void MSSTYLES_CloseThemeFile(PTHEME_FILE tf);
 HRESULT MSSTYLES_SetActiveTheme(PTHEME_FILE tf, BOOL setMetrics);
 BOOL MSSTYLES_ReapplyActiveThemeMetrics(void);
 PTHEME_CLASS MSSTYLES_OpenThemeClass(LPCWSTR pszAppName, LPCWSTR pszClassList, UINT dpi);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PTHEME_CLASS MSSTYLES_OpenThemeClassForApp(LPCWSTR pszAppName, LPCWSTR pszDefaultAppName,
                                            LPCWSTR pszClassList, UINT dpi);
 PTHEME_CLASS MSSTYLES_OpenThemeClassFromFile(PTHEME_FILE tf, LPCWSTR pszAppName,
@@ -113,11 +113,11 @@ PTHEME_PARTSTATE MSSTYLES_FindPartState(PTHEME_CLASS tc, int iPartId, int iState
 PTHEME_PROPERTY MSSTYLES_FindProperty(PTHEME_CLASS tc, int iPartId, int iStateId, int iPropertyPrimitive, int iPropertyId);
 PTHEME_PROPERTY MSSTYLES_FindMetric(PTHEME_CLASS tc, int iPropertyPrimitive, int iPropertyId);
 HBITMAP MSSTYLES_LoadBitmap(PTHEME_CLASS tc, LPCWSTR lpFilename, BOOL* hasAlpha, BOOL *hasDefaultTransparentColour);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 extern CRITICAL_SECTION MSSTYLES_ImageLock;
 #endif
 
-#if defined(__REACTOS__) && defined(ENABLE_PNG_SUPPORT)
+#if defined(__LIBRENT__) && defined(ENABLE_PNG_SUPPORT)
 EXTERN_C BOOL MSSTYLES_TryLoadPng(HINSTANCE theme, LPCWSTR file, LPCWSTR type,
                                   HBITMAP *bitmap);
 EXTERN_C BOOL prepare_png_alpha(HBITMAP bitmap, BOOL *has_alpha);
@@ -135,7 +135,7 @@ HRESULT MSSTYLES_GetPropertyMargins(PTHEME_PROPERTY tp, RECT *prc, MARGINS *pMar
 
 void UXINI_CloseINI(PUXINI_FILE uf);
 PUXINI_FILE UXINI_LoadINI(HMODULE hTheme, const WCHAR *name) __WINE_DEALLOC(UXINI_CloseINI);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 PUXINI_FILE UXINI_LoadINIFile(LPCWSTR lpFileName) __WINE_DEALLOC(UXINI_CloseINI);
 INT UXINI_GetLine(PUXINI_FILE uf, LPCWSTR lpPos, LPWSTR lpLine, DWORD cchLine);
 #endif

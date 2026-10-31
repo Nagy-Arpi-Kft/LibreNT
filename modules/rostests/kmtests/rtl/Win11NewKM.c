@@ -1,11 +1,11 @@
 /*
- * PROJECT:         LiberNT kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Kernel-Mode Test Suite for Win11-parity Rtl exports (kmwin11new)
  *
  * These cover the first priority batch of formerly-stubbed Win11 ntoskrnl Rtl
  * exports now implemented for ARM64. The same binary is run against the Win11
- * ARM64 reference kernel (ground truth) and against ReactOS.
+ * ARM64 reference kernel (ground truth) and against LibreNT.
  */
 
 #include <kmt_test.h>

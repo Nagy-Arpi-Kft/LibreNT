@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/nvs/core/t_ntfile.c
  * PURPOSE:     NT memory-backed file I/O host-native tests
  *

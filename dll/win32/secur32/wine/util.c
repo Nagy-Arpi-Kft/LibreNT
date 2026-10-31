@@ -86,7 +86,7 @@ typedef struct
     unsigned char digest[16];
 } MD4_CTX;
 
-#ifndef __REACTOS__ // See hmac_md5.h
+#ifndef __LIBRENT__ // See hmac_md5.h
 /* And now the same with a different memory layout. */
 typedef struct
 {
@@ -100,7 +100,7 @@ typedef struct
 VOID WINAPI MD4Init( MD4_CTX *ctx );
 VOID WINAPI MD4Update( MD4_CTX *ctx, const unsigned char *buf, unsigned int len );
 VOID WINAPI MD4Final( MD4_CTX *ctx );
-#ifndef __REACTOS__ // See hmac_md5.h
+#ifndef __LIBRENT__ // See hmac_md5.h
 VOID WINAPI MD5Init( MD5_CTX *ctx );
 VOID WINAPI MD5Update( MD5_CTX *ctx, const unsigned char *buf, unsigned int len );
 VOID WINAPI MD5Final( MD5_CTX *ctx );

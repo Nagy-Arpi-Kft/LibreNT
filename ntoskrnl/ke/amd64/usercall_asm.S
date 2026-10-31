@@ -1,7 +1,7 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
- * PURPOSE:     ReactOS AMD64 user mode callback helper
+ * PURPOSE:     LibreNT AMD64 user mode callback helper
  * COPYRIGHT:   Timo Kreuzer (timo.kreuzer@reactos.org)
  */
 

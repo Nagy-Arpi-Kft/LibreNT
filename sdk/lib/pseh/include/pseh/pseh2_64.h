@@ -68,7 +68,7 @@ __asm__(
 #define EMIT_PRAGMA_(params) \
     _Pragma( STRINGIFY(params) )
 #define EMIT_PRAGMA(type,line) \
-    EMIT_PRAGMA_(REACTOS seh(type,line))
+    EMIT_PRAGMA_(LIBRENT seh(type,line))
 
 #define _SEH3$_EMIT_DEFS_AND_PRAGMA__(Line, Type)                                   \
     /* Emit assembler constants with line number to be individual */                \

@@ -1,5 +1,5 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/win32ss/printing/include)
+include_directories(${LIBRENT_SOURCE_DIR}/win32ss/printing/include)
 
 list(APPEND SOURCE
     AlignRpcPtr.c

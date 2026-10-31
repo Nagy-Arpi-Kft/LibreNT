@@ -894,7 +894,7 @@ static inline IEnumSTATSTGImpl *impl_from_IEnumSTATSTG(IEnumSTATSTG *iface)
 
 static void IEnumSTATSTGImpl_Destroy(IEnumSTATSTGImpl* This)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   InterlockedDecrement(&This->parentStorage->enumRef);
 #endif
   IStorage_Release(&This->parentStorage->IStorage_iface);
@@ -1205,7 +1205,7 @@ static IEnumSTATSTGImpl* IEnumSTATSTGImpl_Construct(
      */
     newEnumeration->parentStorage = parentStorage;
     IStorage_AddRef(&newEnumeration->parentStorage->IStorage_iface);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InterlockedIncrement(&newEnumeration->parentStorage->enumRef);
 #endif
 
@@ -1288,7 +1288,7 @@ static ULONG WINAPI StorageBaseImpl_AddRef(
 
   TRACE("%p, refcount %lu.\n", iface, ref);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return ref - This->enumRef;
 #else
   return ref;
@@ -1320,12 +1320,12 @@ static ULONG WINAPI StorageBaseImpl_Release(
      * using virtual functions to implement the destructor.
      */
     StorageBaseImpl_Destroy(This);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return 0;
 #endif
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   return ref - This->enumRef;
 #else
   return ref;
@@ -5909,7 +5909,7 @@ static void TransactedSnapshotImpl_DestroyTemporaryCopy(
 }
 
 /* Make a copy of our edited tree that we can use in the parent. */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT TransactedSnapshotImpl_CopyTree(TransactedSnapshotImpl* This, BOOL overwrite)
 #else
 static HRESULT TransactedSnapshotImpl_CopyTree(TransactedSnapshotImpl* This)
@@ -5941,7 +5941,7 @@ static HRESULT TransactedSnapshotImpl_CopyTree(TransactedSnapshotImpl* This)
          !TransactedSnapshotImpl_MadeCopy(This, entry->data.rightChild) &&
          !TransactedSnapshotImpl_MadeCopy(This, entry->data.dirRootEntry)))
       entry->newTransactedParentEntry = entry->transactedParentEntry;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (overwrite && entry->transactedParentEntry != DIRENTRY_NULL)
     {
       DirEntry newData;
@@ -6092,7 +6092,7 @@ static HRESULT WINAPI TransactedSnapshotImpl_Commit(
     if (!root_entry->read)
       goto end;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (grfCommitFlags & STGC_OVERWRITE)
     {
       for (i=0; i<This->entries_size; i++)
@@ -6168,7 +6168,7 @@ static HRESULT WINAPI TransactedSnapshotImpl_Commit(
             entry->dirty = FALSE;
             entry->transactedParentEntry = entry->newTransactedParentEntry;
           }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           else if ((grfCommitFlags & STGC_OVERWRITE) && entry->read && entry->dirty)
           {
             entry->dirty = FALSE;
@@ -6810,7 +6810,7 @@ static HRESULT WINAPI TransactedSharedImpl_Commit(
     if (SUCCEEDED(hr))
       hr = StorageBaseImpl_ReadDirEntry(&This->scratch->base, This->scratch->base.storageDirEntry, &src_data);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hr) && (grfCommitFlags & STGC_OVERWRITE))
     {
       hr = StorageBaseImpl_ReadDirEntry(This->transactedParent, This->transactedParent->storageDirEntry, &dst_data);
@@ -8642,7 +8642,7 @@ static HRESULT create_storagefile(
   }
 
   /* in direct mode, can only use SHARE_EXCLUSIVE */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!(grfMode & STGM_TRANSACTED) && (STGM_SHARE_MODE(grfMode) != STGM_SHARE_EXCLUSIVE) &&
       !((grfMode & STGM_DIRECT_SWMR) && STGM_SHARE_MODE(grfMode) == STGM_SHARE_DENY_WRITE))
 #else
@@ -9339,7 +9339,7 @@ static HRESULT STREAM_ReadString( IStream *stm, LPWSTR *string )
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT STREAM_WriteClipFormat( IStream *stm, CLIPFORMAT cf )
 {
     DWORD data[2];
@@ -9442,7 +9442,7 @@ static HRESULT STORAGE_ReadCompObjStrings( LPSTORAGE pstg, LPWSTR *user_type, LP
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT STORAGE_WriteCompObj( LPSTORAGE pstg, CLSID *clsid,
     LPCWSTR lpszUserType, CLIPFORMAT cf, LPCWSTR szProgIDName )
 #else
@@ -9460,7 +9460,7 @@ static HRESULT STORAGE_WriteCompObj( LPSTORAGE pstg, CLSID *clsid,
        { 0xF4, 0x39, 0xB2, 0x71, 0x00, 0x00, 0x00, 0x00,
          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("%p %s %s %x %s\n", pstg, debugstr_guid(clsid),
            debugstr_w(lpszUserType), cf, debugstr_w(szProgIDName));
 #else
@@ -9470,7 +9470,7 @@ static HRESULT STORAGE_WriteCompObj( LPSTORAGE pstg, CLSID *clsid,
 #endif
 
     /*  Create a CompObj stream */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     r = IStorage_CreateStream(pstg, L"\1CompObj",
         STGM_CREATE | STGM_READWRITE | STGM_SHARE_EXCLUSIVE, 0, 0, &pstm );
 #else
@@ -9488,7 +9488,7 @@ static HRESULT STORAGE_WriteCompObj( LPSTORAGE pstg, CLSID *clsid,
 
     if( SUCCEEDED( r ) )
         r = STREAM_WriteString( pstm, lpszUserType );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( SUCCEEDED( r ) )
         r = STREAM_WriteClipFormat( pstm, cf );
 #else
@@ -9508,7 +9508,7 @@ static HRESULT STORAGE_WriteCompObj( LPSTORAGE pstg, CLSID *clsid,
 /***********************************************************************
  *               WriteFmtUserTypeStg (OLE32.@)
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT WINAPI WriteFmtUserTypeStg(
 	  LPSTORAGE pstg, CLIPFORMAT cf, LPOLESTR lpszUserType)
 {
@@ -9593,7 +9593,7 @@ HRESULT WINAPI ReadFmtUserTypeStg (LPSTORAGE pstg, CLIPFORMAT* pcf, LPOLESTR* lp
     DWORD count;
     LPWSTR szProgIDName = NULL, szCLSIDName = NULL, szOleTypeName = NULL;
     CLSID clsid;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CLIPFORMAT cf = 0;
 #endif
 
@@ -9618,7 +9618,7 @@ HRESULT WINAPI ReadFmtUserTypeStg (LPSTORAGE pstg, CLIPFORMAT* pcf, LPOLESTR* lp
     if( FAILED( r ) )
         goto end;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     r = STREAM_ReadClipFormat( stm, &cf );
 #else
     r = STREAM_ReadString( stm, &szOleTypeName );
@@ -9635,7 +9635,7 @@ HRESULT WINAPI ReadFmtUserTypeStg (LPSTORAGE pstg, CLIPFORMAT* pcf, LPOLESTR* lp
         goto end;
 
     /* ok, success... now we just need to store what we found */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if( pcf )
         *pcf = cf;
 #else

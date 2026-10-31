@@ -100,4 +100,4 @@ add_importlibs(msi advapi32 advapi32_vista cabinet comctl32 gdi32 ole32 oleaut32
     ntdll)
 
 add_pch(msi precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET msi DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET msi DESTINATION librent/system32 FOR all)

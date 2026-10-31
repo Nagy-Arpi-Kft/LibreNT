@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/mmcc/nvs/amd64/CMakeLists.txt
 # PURPOSE:     AMD64 memory manager host-test build configuration
 #

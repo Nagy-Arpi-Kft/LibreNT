@@ -332,7 +332,7 @@ BOOL WINAPI CryptSIPRetrieveSubjectGuid
 
     TRACE("file magic = 0x%02x%02x%02x%02x\n", hdr[0], hdr[1], hdr[2], hdr[3]);
     /* As everything is in place now we start looking at the file header */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!memcmp(hdr, &dosHdr, sizeof(dosHdr)))
     {
         IMAGE_DOS_HEADER dos;
@@ -714,7 +714,7 @@ BOOL WINAPI CryptSIPCreateIndirectData(SIP_SUBJECTINFO* pSubjectInfo, DWORD* pcb
         SetLastError(ERROR_INVALID_PARAMETER);
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!(sip = CRYPT_GetCachedSIP(pSubjectInfo->pgSubjectType)) &&
         CRYPT_LoadSIP(pSubjectInfo->pgSubjectType))
         sip = CRYPT_GetCachedSIP(pSubjectInfo->pgSubjectType);
@@ -804,7 +804,7 @@ BOOL WINAPI CryptSIPVerifyIndirectData(SIP_SUBJECTINFO* pSubjectInfo,
  */
 BOOL WINAPI CryptSIPRetrieveSubjectGuidForCatalogFile(LPCWSTR filename, HANDLE handle, GUID *subject)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const GUID peGUID = { 0xC689AAB8, 0x8E78, 0x11D0, { 0x8C,0x47,0x00,0xC0,0x4F,0xC2,0x95,0xEE }};
     static const GUID cabGUID = { 0xC689AABA, 0x8E78, 0x11D0, { 0x8C,0x47,0x00,0xC0,0x4F,0xC2,0x95,0xEE }};
     static const GUID flatGUID = { 0xDE351A42, 0x8E59, 0x11D0, { 0x8C,0x47,0x00,0xC0,0x4F,0xC2,0x95,0xEE }};

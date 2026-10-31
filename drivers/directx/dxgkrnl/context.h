@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS DirectX Graphics Kernel
+ * PROJECT:     LibreNT DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     WDDM device/context lifecycle — private declarations
  * COPYRIGHT:   Copyright 2024 ReactOS Team

@@ -9,7 +9,7 @@ add_executable(d3d11_winetest
     testlist.c)
 target_compile_definitions(d3d11_winetest PRIVATE WINETEST_WAIT_CHILD_PROCESS_INFO)
 
-target_include_directories(d3d11_winetest BEFORE PRIVATE ${REACTOS_SOURCE_DIR}/sdk/include/wine)
+target_include_directories(d3d11_winetest BEFORE PRIVATE ${LIBRENT_SOURCE_DIR}/sdk/include/wine)
 target_link_libraries(d3d11_winetest dx10guid uuid)
 set_module_type(d3d11_winetest win32cui)
 add_dependencies(d3d11_winetest d3d_idl_headers)

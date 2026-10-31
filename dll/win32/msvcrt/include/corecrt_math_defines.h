@@ -8,7 +8,7 @@
 #ifndef _MATH_DEFINES_DEFINED
 #define _MATH_DEFINES_DEFINED
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "corecrt.h"
 #else
 #include <corecrt.h>

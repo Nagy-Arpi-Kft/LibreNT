@@ -582,7 +582,7 @@ BOOL WINAPI InternetInitializeAutoProxyDll(DWORD dwReserved)
  *     FALSE on failure
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef ERROR_WINHTTP_AUTODETECTION_FAILED
 #define ERROR_WINHTTP_AUTODETECTION_FAILED (INTERNET_ERROR_BASE + 180)
 #endif
@@ -647,7 +647,7 @@ static void FreeProxyInfo( proxyinfo_t *lpwpi )
     free(lpwpi->proxyUsername);
     free(lpwpi->proxyPassword);
     free(lpwpi->autoconf_url);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     lpwpi->proxy = lpwpi->proxyBypass = lpwpi->proxyUsername = lpwpi->proxyPassword = lpwpi->autoconf_url = NULL;
 #endif
 }
@@ -662,7 +662,7 @@ static void free_global_proxy( void )
     LeaveCriticalSection( &WININET_cs );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG parse_proxy_url( proxyinfo_t *info, const WCHAR *url )
 #else
 static BOOL parse_proxy_url( proxyinfo_t *info, const WCHAR *url )
@@ -674,27 +674,27 @@ static BOOL parse_proxy_url( proxyinfo_t *info, const WCHAR *url )
     uc.dwUserNameLength = 1;
     uc.dwPasswordLength = 1;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!InternetCrackUrlW( url, 0, 0, &uc )) return GetLastError();
 #else
     if (!InternetCrackUrlW( url, 0, 0, &uc )) return FALSE;
 #endif
     if (!uc.dwHostNameLength)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(info->proxy = wcsdup( url ))) return ERROR_OUTOFMEMORY;
 #else
         if (!(info->proxy = wcsdup( url ))) return FALSE;
 #endif
         info->proxyUsername = NULL;
         info->proxyPassword = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ERROR_SUCCESS;
 #else
         return TRUE;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (uc.dwHostNameLength > INT_MAX ||
         (size_t)uc.dwHostNameLength > (size_t)-1 / sizeof(WCHAR) - 12) return ERROR_OUTOFMEMORY;
     if (!(info->proxy = malloc( ((size_t)uc.dwHostNameLength + 12) * sizeof(WCHAR) )))
@@ -708,7 +708,7 @@ static BOOL parse_proxy_url( proxyinfo_t *info, const WCHAR *url )
     else if (!(info->proxyUsername = strndupW( uc.lpszUserName, uc.dwUserNameLength )))
     {
         free( info->proxy );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         info->proxy = NULL;
         return ERROR_OUTOFMEMORY;
 #else
@@ -720,14 +720,14 @@ static BOOL parse_proxy_url( proxyinfo_t *info, const WCHAR *url )
     {
         free( info->proxyUsername );
         free( info->proxy );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         info->proxyUsername = info->proxy = NULL;
         return ERROR_OUTOFMEMORY;
 #else
         return FALSE;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ERROR_SUCCESS;
 #else
     return TRUE;
@@ -746,7 +746,7 @@ static WCHAR *get_http_proxy( const WCHAR *proxy )
     if (!end) end = p + wcslen( p );
 
     ret = malloc( (end - p + 1) * sizeof(WCHAR) );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret)
         return NULL;
 #endif
@@ -758,12 +758,12 @@ static WCHAR *get_http_proxy( const WCHAR *proxy )
 static LONG connection_settings_read( const connection_settings *settings, DWORD *pos, DWORD size, WCHAR **str)
 {
     int len, wlen;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG res;
 #endif
 
     *str = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (*pos > size || size - *pos < sizeof(len))
     {
         *pos = size;
@@ -771,30 +771,30 @@ static LONG connection_settings_read( const connection_settings *settings, DWORD
     if (*pos + sizeof(int) >= size)
 #endif
         return ERROR_SUCCESS;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
     memcpy( &len, settings->data + *pos, sizeof(int) );
     *pos += sizeof(int);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (len < 0 || len > size - *pos)
 #else
     if (*pos + len >= size)
 #endif
     {
         *pos = size;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ERROR_INVALID_DATA;
 #else
         return ERROR_SUCCESS;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!len) return ERROR_SUCCESS;
 #endif
     wlen = MultiByteToWideChar( CP_UTF8, 0, (const char *)settings->data + *pos, len, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!wlen) return GetLastError();
     if ((size_t)wlen >= (size_t)-1 / sizeof(WCHAR)) return ERROR_OUTOFMEMORY;
     *str = malloc( ((size_t)wlen + 1) * sizeof(WCHAR) );
@@ -803,7 +803,7 @@ static LONG connection_settings_read( const connection_settings *settings, DWORD
     if (wlen)
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *pos = size;
         return ERROR_OUTOFMEMORY;
 #else
@@ -818,7 +818,7 @@ static LONG connection_settings_read( const connection_settings *settings, DWORD
         *pos += len;
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!MultiByteToWideChar( CP_UTF8, 0, (const char *)settings->data + *pos, len, *str, wlen ))
     {
         res = GetLastError();
@@ -838,13 +838,13 @@ static LONG load_connection_settings( HKEY key, const WCHAR *connection, proxyin
     DWORD type, pos, size = 0;
     LONG res;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     memset(lpwpi, 0, sizeof(*lpwpi));
 #endif
     while ((res = RegQueryValueExW( key, connection, NULL, &type, (BYTE*)settings, &size )) == ERROR_MORE_DATA ||
             (!res && !settings))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         connection_settings *new_settings;
 
         if (!size) break;
@@ -860,7 +860,7 @@ static LONG load_connection_settings( HKEY key, const WCHAR *connection, proxyin
         settings = new_settings;
     }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     memset(lpwpi, 0, sizeof(*lpwpi));
 #endif
     if (res || type != REG_BINARY || size < FIELD_OFFSET( connection_settings, data ))
@@ -887,7 +887,7 @@ static LONG load_connection_settings( HKEY key, const WCHAR *connection, proxyin
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG load_proxy_string( HKEY key, const WCHAR *name, DWORD size, WCHAR **value )
 {
     WCHAR *buffer;
@@ -933,25 +933,25 @@ static LONG INTERNET_LoadProxySettings( proxyinfo_t *lpwpi )
     if ((ret = RegOpenKeyW( HKEY_CURRENT_USER, szInternetSettings, &key )))
         return ret;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!RegOpenKeyW( key, L"Connections", &con ))
 #else
     if (!(ret = RegOpenKeyW( key, L"Connections", &con )))
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = load_connection_settings( con, L"DefaultConnectionSettings", lpwpi );
 #else
         load_connection_settings( con, L"DefaultConnectionSettings", lpwpi );
 #endif
         RegCloseKey( con );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (ret) goto failed;
 #endif
     }
 
     len = sizeof(DWORD);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (RegQueryValueExW( key, L"ProxyEnable", NULL, &type, (BYTE *)&val, &len ) ||
         type != REG_DWORD || len != sizeof(val))
 #else
@@ -978,7 +978,7 @@ static LONG INTERNET_LoadProxySettings( proxyinfo_t *lpwpi )
     /* figure out how much memory the proxy setting takes */
     if (!RegQueryValueExW( key, L"ProxyServer", NULL, &type, NULL, &len ) && len && (type == REG_SZ))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = load_proxy_string(key, L"ProxyServer", len, &lpwpi->proxy);
         if (ret) goto failed;
 #else
@@ -1009,7 +1009,7 @@ static LONG INTERNET_LoadProxySettings( proxyinfo_t *lpwpi )
 
     if (!RegQueryValueExW( key, L"ProxyOverride", NULL, &type, NULL, &len ) && len && (type == REG_SZ))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = load_proxy_string(key, L"ProxyOverride", len, &lpwpi->proxyBypass);
         if (ret) goto failed;
 #else
@@ -1035,7 +1035,7 @@ static LONG INTERNET_LoadProxySettings( proxyinfo_t *lpwpi )
 
     if (!RegQueryValueExW( key, L"AutoConfigURL", NULL, &type, NULL, &len ) && len && (type == REG_SZ))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = load_proxy_string(key, L"AutoConfigURL", len, &lpwpi->autoconf_url);
         if (ret) goto failed;
 #else
@@ -1051,7 +1051,7 @@ static LONG INTERNET_LoadProxySettings( proxyinfo_t *lpwpi )
 
 #endif
         lpwpi->flags |= PROXY_TYPE_AUTO_PROXY_URL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         free( lpwpi->autoconf_url );
         lpwpi->autoconf_url = autoconf_url;
 #endif
@@ -1060,7 +1060,7 @@ static LONG INTERNET_LoadProxySettings( proxyinfo_t *lpwpi )
 
     RegCloseKey( key );
     return ERROR_SUCCESS;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 failed:
     RegCloseKey(key);
@@ -1069,13 +1069,13 @@ failed:
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG init_global_proxy(void)
 #else
 static void init_global_proxy(void)
 #endif
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     const WCHAR *envproxy, *envbypass;
     proxyinfo_t proxy = {0}, env = {0};
     LONG res = ERROR_SUCCESS;
@@ -1086,7 +1086,7 @@ static void init_global_proxy(void)
     EnterCriticalSection( &WININET_cs );
     if (global_proxy.flags) goto done;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     res = INTERNET_LoadProxySettings(&proxy);
     if (res && res != ERROR_FILE_NOT_FOUND && res != ERROR_PATH_NOT_FOUND) goto done;
     if (!(proxy.flags & PROXY_TYPE_PROXY) && (envproxy = _wgetenv(L"http_proxy")))
@@ -1105,7 +1105,7 @@ static void init_global_proxy(void)
     else
 #endif
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         res = parse_proxy_url(&env, envproxy);
         if (res == ERROR_OUTOFMEMORY) goto done;
         if (!res)
@@ -1135,7 +1135,7 @@ static void init_global_proxy(void)
         WARN("failed to parse http_proxy value %s\n", debugstr_w(envproxy));
 #endif
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     FreeProxyInfo(&global_proxy);
     global_proxy = proxy;
     memset(&proxy, 0, sizeof(proxy));
@@ -1143,12 +1143,12 @@ static void init_global_proxy(void)
 #endif
 
 done:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     FreeProxyInfo(&env);
     FreeProxyInfo(&proxy);
 #endif
     LeaveCriticalSection( &WININET_cs );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return res;
 #endif
 }
@@ -1160,19 +1160,19 @@ done:
  */
 static LONG INTERNET_GetProxySettings( proxyinfo_t *lpwpi )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LONG res = ERROR_SUCCESS;
 #else
     init_global_proxy();
 #endif
 
     memset(lpwpi, 0, sizeof(*lpwpi));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((res = init_global_proxy())) return res;
 #endif
     EnterCriticalSection( &WININET_cs );
     lpwpi->flags = global_proxy.flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     lpwpi->proxy = global_proxy.proxy ? wcsdup( global_proxy.proxy ) : NULL;
     lpwpi->proxyBypass = global_proxy.proxyBypass ? wcsdup( global_proxy.proxyBypass ) : NULL;
     lpwpi->proxyUsername = global_proxy.proxyUsername ? wcsdup( global_proxy.proxyUsername ) : NULL;
@@ -1187,7 +1187,7 @@ static LONG INTERNET_GetProxySettings( proxyinfo_t *lpwpi )
     lpwpi->proxyPassword = wcsdup( global_proxy.proxyPassword );
 #endif
     LeaveCriticalSection( &WININET_cs );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (res)
         FreeProxyInfo(lpwpi);
     return res;
@@ -1199,18 +1199,18 @@ static LONG INTERNET_GetProxySettings( proxyinfo_t *lpwpi )
 /***********************************************************************
  *           INTERNET_ConfigureProxy
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD INTERNET_ConfigureProxy( appinfo_t *lpwai )
 #else
 static BOOL INTERNET_ConfigureProxy( appinfo_t *lpwai )
 #endif
 {
     proxyinfo_t wpi;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD res;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((res = INTERNET_GetProxySettings( &wpi )))
         return res;
 #else
@@ -1222,7 +1222,7 @@ static BOOL INTERNET_ConfigureProxy( appinfo_t *lpwai )
     {
         TRACE("http proxy = %s bypass = %s\n", debugstr_w(wpi.proxy), debugstr_w(wpi.proxyBypass));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!wpi.proxy)
         {
             FreeProxyInfo(&wpi);
@@ -1231,7 +1231,7 @@ static BOOL INTERNET_ConfigureProxy( appinfo_t *lpwai )
 #endif
         lpwai->accessType    = INTERNET_OPEN_TYPE_PROXY;
         lpwai->proxy         = get_http_proxy( wpi.proxy );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!lpwai->proxy)
         {
             FreeProxyInfo(&wpi);
@@ -1242,7 +1242,7 @@ static BOOL INTERNET_ConfigureProxy( appinfo_t *lpwai )
         lpwai->proxyUsername = wpi.proxyUsername;
         lpwai->proxyPassword = wpi.proxyPassword;
         free( wpi.proxy );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ERROR_SUCCESS;
 #else
         return TRUE;
@@ -1251,7 +1251,7 @@ static BOOL INTERNET_ConfigureProxy( appinfo_t *lpwai )
 
     lpwai->accessType = INTERNET_OPEN_TYPE_DIRECT;
     FreeProxyInfo(&wpi);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ERROR_SUCCESS;
 #else
     return FALSE;
@@ -1321,7 +1321,7 @@ static void dump_INTERNET_FLAGS(DWORD dwFlags)
  * Close internet handle
  *
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 struct synced_url
 {
     struct list entry;
@@ -1340,7 +1340,7 @@ static VOID APPINFO_Destroy(object_header_t *hdr)
     free(lpwai->proxyBypass);
     free(lpwai->proxyUsername);
     free(lpwai->proxyPassword);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpwai->synced_urls.next)
     {
         struct synced_url *synced, *next;
@@ -1533,7 +1533,7 @@ static DWORD APPINFO_QueryOption(object_header_t *hdr, DWORD option, void *buffe
             INTERNET_PER_CONN_OPTIONA *optionA = conA->pOptions + i;
 
             switch (optionW->dwOption) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case INTERNET_PER_CONN_FLAGS_UI:
 #endif
             case INTERNET_PER_CONN_FLAGS:
@@ -1587,7 +1587,7 @@ static DWORD APPINFO_QueryOption(object_header_t *hdr, DWORD option, void *buffe
         }
 
         LeaveCriticalSection(&WININET_cs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         GlobalFree(url);
 #endif
         return res;
@@ -1623,11 +1623,11 @@ static DWORD APPINFO_SetOption(object_header_t *hdr, DWORD option, void *buf, DW
                 global_proxy.proxy = wcsdup(option->Value.pszValue);
                 break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case INTERNET_PER_CONN_FLAGS_UI:
 #endif
             case INTERNET_PER_CONN_FLAGS:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if(option->Value.dwValue & ~(PROXY_TYPE_PROXY | PROXY_TYPE_DIRECT |
                                              PROXY_TYPE_AUTO_PROXY_URL | PROXY_TYPE_AUTO_DETECT))
 #else
@@ -1635,7 +1635,7 @@ static DWORD APPINFO_SetOption(object_header_t *hdr, DWORD option, void *buf, DW
 #endif
                     FIXME("Unhandled flags: 0x%lx\n", option->Value.dwValue);
                 global_proxy.flags = option->Value.dwValue;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if ((global_proxy.flags & (PROXY_TYPE_PROXY | PROXY_TYPE_DIRECT)) ==
                     (PROXY_TYPE_PROXY | PROXY_TYPE_DIRECT))
                     global_proxy.flags &= ~PROXY_TYPE_PROXY;
@@ -1700,7 +1700,7 @@ HINTERNET WINAPI InternetOpenW(LPCWSTR lpszAgent, DWORD dwAccessType,
     LPCWSTR lpszProxy, LPCWSTR lpszProxyBypass, DWORD dwFlags)
 {
     appinfo_t *lpwai = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD res = ERROR_OUTOFMEMORY;
 #endif
 
@@ -1737,7 +1737,7 @@ HINTERNET WINAPI InternetOpenW(LPCWSTR lpszAgent, DWORD dwAccessType,
         return NULL;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     init_winsock();
 #endif
     lpwai = alloc_object(NULL, &APPINFOVtbl, sizeof(appinfo_t));
@@ -1751,13 +1751,13 @@ HINTERNET WINAPI InternetOpenW(LPCWSTR lpszAgent, DWORD dwAccessType,
     lpwai->accessType = dwAccessType;
     lpwai->proxyUsername = NULL;
     lpwai->proxyPassword = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     InitializeSRWLock(&lpwai->synced_lock);
     list_init(&lpwai->synced_urls);
     lpwai->preconfig = dwAccessType == INTERNET_OPEN_TYPE_PRECONFIG;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     lpwai->agent = lpszAgent ? wcsdup(lpszAgent) : NULL;
     if (lpszAgent && !lpwai->agent)
         goto failed;
@@ -1765,7 +1765,7 @@ HINTERNET WINAPI InternetOpenW(LPCWSTR lpszAgent, DWORD dwAccessType,
     lpwai->agent = wcsdup(lpszAgent);
 #endif
     if(dwAccessType == INTERNET_OPEN_TYPE_PRECONFIG)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         res = INTERNET_ConfigureProxy( lpwai );
         if (res)
@@ -1776,7 +1776,7 @@ HINTERNET WINAPI InternetOpenW(LPCWSTR lpszAgent, DWORD dwAccessType,
 #endif
     else if(dwAccessType == INTERNET_OPEN_TYPE_PROXY) {
         lpwai->proxy = wcsdup(lpszProxy);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         lpwai->proxyBypass = lpszProxyBypass ? wcsdup(lpszProxyBypass) : NULL;
         if (!lpwai->proxy || (lpszProxyBypass && !lpwai->proxyBypass))
             goto failed;
@@ -1788,7 +1788,7 @@ HINTERNET WINAPI InternetOpenW(LPCWSTR lpszAgent, DWORD dwAccessType,
     TRACE("returning %p\n", lpwai);
 
     return lpwai->hdr.hInternet;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 failed:
     invalidate_handle(&lpwai->hdr);
     SetLastError(res);
@@ -1820,7 +1820,7 @@ HINTERNET WINAPI InternetOpenA(LPCSTR lpszAgent, DWORD dwAccessType,
     szProxy = strdupAtoW(lpszProxy);
     szBypass = strdupAtoW(lpszProxyBypass);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpszAgent && !szAgent) || (lpszProxy && !szProxy) || (lpszProxyBypass && !szBypass))
     {
         SetLastError(ERROR_OUTOFMEMORY);
@@ -1862,7 +1862,7 @@ BOOL WINAPI InternetGetLastResponseInfoA(LPDWORD lpdwError,
     }
     if (lpwite)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD len = strlen(lpwite->response);
 
         if (lpszBuffer == NULL || *lpdwBufferLength < len)
@@ -1870,7 +1870,7 @@ BOOL WINAPI InternetGetLastResponseInfoA(LPDWORD lpdwError,
         if (lpszBuffer == NULL || *lpdwBufferLength < strlen(lpwite->response))
 #endif
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *lpdwBufferLength = len;
 #else
             *lpdwBufferLength = strlen(lpwite->response);
@@ -1879,7 +1879,7 @@ BOOL WINAPI InternetGetLastResponseInfoA(LPDWORD lpdwError,
             return FALSE;
         }
         *lpdwError = lpwite->dwError;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (*lpdwBufferLength)
         {
             DWORD copy = min(*lpdwBufferLength, len + 1);
@@ -1930,7 +1930,7 @@ BOOL WINAPI InternetGetLastResponseInfoW(LPDWORD lpdwError,
     }
     if (lpwite)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int required_size = MultiByteToWideChar(CP_ACP, 0, lpwite->response, -1, NULL, 0);
 
         if (!required_size) return FALSE;
@@ -1940,7 +1940,7 @@ BOOL WINAPI InternetGetLastResponseInfoW(LPDWORD lpdwError,
         if (lpszBuffer == NULL || *lpdwBufferLength < required_size)
 #endif
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             *lpdwBufferLength = required_size - 1;
 #else
             *lpdwBufferLength = required_size;
@@ -1949,7 +1949,7 @@ BOOL WINAPI InternetGetLastResponseInfoW(LPDWORD lpdwError,
             return FALSE;
         }
         *lpdwError = lpwite->dwError;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         required_size = MultiByteToWideChar(CP_ACP, 0, lpwite->response, -1, lpszBuffer, required_size);
         if (!required_size) return FALSE;
         *lpdwBufferLength = required_size - 1;
@@ -2198,7 +2198,7 @@ HINTERNET WINAPI InternetConnectA(HINTERNET hInternet,
     DWORD dwService, DWORD dwFlags, DWORD_PTR dwContext)
 {
     HINTERNET rc = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPWSTR szServerName = NULL;
     LPWSTR szUserName = NULL;
     LPWSTR szPassword = NULL;
@@ -2209,7 +2209,7 @@ HINTERNET WINAPI InternetConnectA(HINTERNET hInternet,
     LPWSTR szPassword;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (lpszServerName && !(szServerName = strdupAtoW(lpszServerName))) goto done;
     if (lpszUserName && !(szUserName = strdupAtoW(lpszUserName))) goto done;
     if (lpszPassword && !(szPassword = strdupAtoW(lpszPassword))) goto done;
@@ -2222,21 +2222,21 @@ HINTERNET WINAPI InternetConnectA(HINTERNET hInternet,
     rc = InternetConnectW(hInternet, szServerName, nServerPort,
         szUserName, szPassword, dwService, dwFlags, dwContext);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     error = GetLastError();
 #endif
     free(szServerName);
     free(szUserName);
     free(szPassword);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!rc) SetLastError(error);
 #endif
     return rc;
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL INTERNET_FindNextFile(HINTERNET, void *, BOOL);
 
 #endif
@@ -2252,7 +2252,7 @@ static BOOL INTERNET_FindNextFile(HINTERNET, void *, BOOL);
  */
 BOOL WINAPI InternetFindNextFileA(HINTERNET hFind, LPVOID lpvFindData)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return INTERNET_FindNextFile(hFind, lpvFindData, FALSE);
 #else
     BOOL ret;
@@ -2276,7 +2276,7 @@ BOOL WINAPI InternetFindNextFileA(HINTERNET hFind, LPVOID lpvFindData)
  *
  */
 BOOL WINAPI InternetFindNextFileW(HINTERNET hFind, LPVOID lpvFindData)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 {
     return INTERNET_FindNextFile(hFind, lpvFindData, TRUE);
 }
@@ -2297,7 +2297,7 @@ static BOOL INTERNET_FindNextFile(HINTERNET hFind, void *lpvFindData, BOOL unico
     }
 
     if(hdr->vtbl->FindNextFileW) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         res = lpvFindData ? hdr->vtbl->FindNextFileW(hdr, lpvFindData, unicode) : ERROR_INVALID_PARAMETER;
 #else
         res = hdr->vtbl->FindNextFileW(hdr, lpvFindData);
@@ -2367,7 +2367,7 @@ static BOOL set_url_component(WCHAR **component, DWORD *component_length, const 
     return TRUE;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void decode_url_component(WCHAR *component, DWORD *component_length)
 {
     if (!component || !*component_length)
@@ -2433,7 +2433,7 @@ BOOL WINAPI InternetCrackUrlA(const char *url, DWORD url_length, DWORD flags, UR
     URL_COMPONENTSW comp;
     WCHAR *url_w = NULL;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error;
 #endif
 
@@ -2460,7 +2460,7 @@ BOOL WINAPI InternetCrackUrlA(const char *url, DWORD url_length, DWORD flags, UR
                                   &comp.lpszExtraInfo, &comp.dwExtraInfoLength, &extra);
 
     if(ret && !(url_w = strndupAtoW(url, url_length ? url_length : -1, &url_length))) {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         SetLastError(ERROR_OUTOFMEMORY);
 #endif
         ret = FALSE;
@@ -2491,7 +2491,7 @@ BOOL WINAPI InternetCrackUrlA(const char *url, DWORD url_length, DWORD flags, UR
                   debugstr_an(ret_comp->lpszExtraInfo, ret_comp->dwExtraInfoLength));
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     error = GetLastError();
 #endif
     free(host);
@@ -2501,7 +2501,7 @@ BOOL WINAPI InternetCrackUrlA(const char *url, DWORD url_length, DWORD flags, UR
     free(scheme);
     free(extra);
     free(url_w);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret) SetLastError(error);
 #endif
     return ret;
@@ -2579,7 +2579,7 @@ BOOL WINAPI InternetCrackUrlW(const WCHAR *lpszUrl, DWORD dwUrlLength, DWORD dwF
         return FALSE;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((lpUC->lpszScheme && !lpUC->dwSchemeLength) ||
         (lpUC->lpszHostName && !lpUC->dwHostNameLength) ||
         (lpUC->lpszUserName && !lpUC->dwUserNameLength) ||
@@ -2605,7 +2605,7 @@ BOOL WINAPI InternetCrackUrlW(const WCHAR *lpszUrl, DWORD dwUrlLength, DWORD dwF
 
     if (dwFlags & ICU_DECODE)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         WCHAR *buffers[6] = { lpUC->lpszScheme, lpUC->lpszHostName, lpUC->lpszUserName,
                               lpUC->lpszPassword, lpUC->lpszUrlPath, lpUC->lpszExtraInfo };
 
@@ -2788,7 +2788,7 @@ BOOL WINAPI InternetCrackUrlW(const WCHAR *lpszUrl, DWORD dwUrlLength, DWORD dwF
                 }
                 else
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (lpUC->nScheme == INTERNET_SCHEME_HTTP && lpszPort == lpszHost)
                     {
                         SetLastError(ERROR_INTERNET_INVALID_URL);
@@ -3417,7 +3417,7 @@ static WCHAR *build_wpad_url( const char *hostname, const struct addrinfo *ai )
 static WCHAR *detect_proxy_autoconfig_url_dns(void)
 {
     char *fqdn, *domain, *p;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *ret = NULL;
 #else
     WCHAR *ret;
@@ -3474,7 +3474,7 @@ static WCHAR *get_proxy_autoconfig_url(void)
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LONG connected_state = INTERNET_STATE_CONNECTED;
 
 #endif
@@ -3497,14 +3497,14 @@ static DWORD query_global_option(DWORD option, void *buffer, DWORD *size, BOOL u
         return ERROR_SUCCESS;
 
     case INTERNET_OPTION_CONNECTED_STATE:
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         FIXME("INTERNET_OPTION_CONNECTED_STATE: semi-stub\n");
 #endif
 
         if (*size < sizeof(ULONG))
             return ERROR_INSUFFICIENT_BUFFER;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         *(ULONG*)buffer = (ULONG)InterlockedCompareExchange(&connected_state, 0, 0);
 #else
         *(ULONG*)buffer = INTERNET_STATE_CONNECTED;
@@ -3515,7 +3515,7 @@ static DWORD query_global_option(DWORD option, void *buffer, DWORD *size, BOOL u
 
     case INTERNET_OPTION_PROXY: {
         appinfo_t ai;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD ret;
 #else
         BOOL ret;
@@ -3523,7 +3523,7 @@ static DWORD query_global_option(DWORD option, void *buffer, DWORD *size, BOOL u
 
         TRACE("Getting global proxy info\n");
         memset(&ai, 0, sizeof(appinfo_t));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ret = INTERNET_ConfigureProxy(&ai);
         if (ret)
             return ret;
@@ -3602,7 +3602,7 @@ static DWORD query_global_option(DWORD option, void *buffer, DWORD *size, BOOL u
             INTERNET_PER_CONN_OPTIONA *optionA = conA->pOptions + i;
 
             switch (optionW->dwOption) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case INTERNET_PER_CONN_FLAGS_UI:
 #endif
             case INTERNET_PER_CONN_FLAGS:
@@ -4134,7 +4134,7 @@ BOOL WINAPI InternetSetOptionW(HINTERNET hInternet, DWORD dwOption,
         free_authorization_cache();
         break;
     case INTERNET_OPTION_CONNECTED_STATE:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         INTERNET_CONNECTED_INFO *info = lpBuffer;
 
@@ -4247,11 +4247,11 @@ BOOL WINAPI InternetSetOptionW(HINTERNET hInternet, DWORD dwOption,
                 pi.proxy = wcsdup(option->Value.pszValue);
                 break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case INTERNET_PER_CONN_FLAGS_UI:
 #endif
             case INTERNET_PER_CONN_FLAGS:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if(option->Value.dwValue & ~(PROXY_TYPE_PROXY | PROXY_TYPE_DIRECT |
                                              PROXY_TYPE_AUTO_PROXY_URL | PROXY_TYPE_AUTO_DETECT))
 #else
@@ -4321,7 +4321,7 @@ BOOL WINAPI InternetSetOptionW(HINTERNET hInternet, DWORD dwOption,
 BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
                            LPVOID lpBuffer, DWORD dwBufferLength)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     LPVOID wbuffer = NULL;
     DWORD wlen, error = ERROR_OUTOFMEMORY;
 #else
@@ -4341,7 +4341,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
 
         proxlen = MultiByteToWideChar( CP_ACP, 0, pi->lpszProxy, -1, NULL, 0);
         prbylen= MultiByteToWideChar( CP_ACP, 0, pi->lpszProxyBypass, -1, NULL, 0);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (proxlen > (MAXDWORD - sizeof(*piw)) / sizeof(WCHAR) ||
             prbylen > (MAXDWORD - sizeof(*piw)) / sizeof(WCHAR) - proxlen)
             goto failed;
@@ -4355,7 +4355,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
         piw = (LPINTERNET_PROXY_INFOW) wbuffer;
         piw->dwAccessType = pi->dwAccessType;
         prox = (LPWSTR) &piw[1];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         prby = &prox[proxlen];
         if ((pi->lpszProxy && (!proxlen || !MultiByteToWideChar( CP_ACP, 0, pi->lpszProxy, -1, prox, proxlen))) ||
             (pi->lpszProxyBypass && (!prbylen || !MultiByteToWideChar( CP_ACP, 0, pi->lpszProxyBypass, -1, prby, prbylen))))
@@ -4380,7 +4380,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
     case INTERNET_OPTION_PROXY_USERNAME:
     case INTERNET_OPTION_PROXY_PASSWORD:
         wlen = MultiByteToWideChar( CP_ACP, 0, lpBuffer, -1, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!wlen) return FALSE;
         if (wlen > MAXDWORD / sizeof(WCHAR)) goto failed;
         if (!(wbuffer = malloc( (size_t)wlen * sizeof(WCHAR) ))) goto failed;
@@ -4400,7 +4400,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
         INTERNET_PER_CONN_OPTION_LISTW *listW;
         INTERNET_PER_CONN_OPTION_LISTA *listA = lpBuffer;
         wlen = sizeof(INTERNET_PER_CONN_OPTION_LISTW);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wbuffer = calloc( 1, wlen );
         if (!wbuffer) goto failed;
 #else
@@ -4412,7 +4412,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
         if (listA->pszConnection)
         {
             wlen = MultiByteToWideChar( CP_ACP, 0, listA->pszConnection, -1, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (!wlen)
             {
                 error = GetLastError();
@@ -4432,11 +4432,11 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
         }
         else
             listW->pszConnection = NULL;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         listW->dwOptionCount = listA->dwOptionCount;
 #endif
         listW->dwOptionError = listA->dwOptionError;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         listW->pOptions = calloc( listA->dwOptionCount, sizeof(INTERNET_PER_CONN_OPTIONW) );
         if (listA->dwOptionCount && !listW->pOptions) goto failed;
         listW->dwOptionCount = listA->dwOptionCount;
@@ -4459,7 +4459,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
                 if (optA->Value.pszValue)
                 {
                     wlen = MultiByteToWideChar( CP_ACP, 0, optA->Value.pszValue, -1, NULL, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if (!wlen)
                     {
                         error = GetLastError();
@@ -4481,7 +4481,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
                     optW->Value.pszValue = NULL;
                 break;
             case INTERNET_PER_CONN_AUTODISCOVERY_FLAGS:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             case INTERNET_PER_CONN_FLAGS_UI:
 #endif
             case INTERNET_PER_CONN_FLAGS:
@@ -4497,7 +4497,7 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
                 break;
             }
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         wlen = sizeof(*listW);
 #endif
         }
@@ -4508,11 +4508,11 @@ BOOL WINAPI InternetSetOptionA(HINTERNET hInternet, DWORD dwOption,
     }
 
     r = InternetSetOptionW(hInternet,dwOption, wbuffer, wlen);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     goto done;
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 failed:
     SetLastError(error);
     r = FALSE;
@@ -4542,7 +4542,7 @@ done:
                 }
             }
             free( list->pOptions );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             free( list->pszConnection );
 #endif
         }
@@ -4915,7 +4915,7 @@ BOOL WINAPI InternetCheckConnectionW( LPCWSTR lpszUrl, DWORD dwFlags, DWORD dwRe
 
       len = WideCharToMultiByte(CP_UNIXCP, 0, host, host_len, NULL, 0, NULL, NULL);
       command = malloc(strlen(ping) + len + strlen(redirect) + 1);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
       if (!command)
       {
           INTERNET_SetLastError(ERROR_OUTOFMEMORY);
@@ -4988,7 +4988,7 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
     URL_COMPONENTSW urlComponents = { sizeof(urlComponents) };
     WCHAR *host, *user = NULL, *pass = NULL, *path;
     HINTERNET client = NULL, client1 = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     object_header_t *session = NULL, *request = NULL;
 #endif
     DWORD res;
@@ -5018,7 +5018,7 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
     if(urlComponents.dwPasswordLength)
         pass = strndupW(urlComponents.lpszPassword, urlComponents.dwPasswordLength);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((urlComponents.dwHostNameLength && !host) || (urlComponents.dwUrlPathLength && !path) ||
         (urlComponents.dwUserNameLength && !user) || (urlComponents.dwPasswordLength && !pass))
     {
@@ -5033,7 +5033,7 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
 			     user, pass, dwFlags, dwContext, INET_OPENURL);
 	if(client == NULL)
 	    break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         session = get_handle_object(client);
         if (!session)
         {
@@ -5043,7 +5043,7 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
 #endif
 	client1 = FtpOpenFileW(client, path, GENERIC_READ, dwFlags, dwContext);
 	if(client1 == NULL) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             res = GetLastError();
             if (res != ERROR_IO_PENDING) InternetCloseHandle(client);
             INTERNET_SetLastError(res);
@@ -5067,7 +5067,7 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
             INTERNET_SetLastError(res);
 	    break;
         }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         session = get_handle_object(client);
         if (!session)
         {
@@ -5078,16 +5078,16 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
 
         client1 = HttpOpenRequestW(client, NULL, path, NULL, NULL, accept, dwFlags, dwContext);
 	if(client1 == NULL) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             res = GetLastError();
 #endif
 	    InternetCloseHandle(client);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             INTERNET_SetLastError(res);
 #endif
 	    break;
 	}
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         request = get_handle_object(client1);
         if (!request)
         {
@@ -5136,7 +5136,7 @@ static HINTERNET INTERNET_InternetOpenUrlW(appinfo_t *hIC, LPCWSTR lpszUrl,
 	break;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     res = GetLastError();
 #endif
@@ -5146,7 +5146,7 @@ done:
     free(path);
     free(user);
     free(pass);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (request) WININET_Release(request);
     if (session) WININET_Release(session);
     if (!client1) INTERNET_SetLastError(res);
@@ -5174,20 +5174,20 @@ typedef struct {
 static void AsyncInternetOpenUrlProc(task_header_t *hdr)
 {
     open_url_task_t *task = (open_url_task_t*)hdr;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HINTERNET handle;
     DWORD error;
 #endif
 
     TRACE("%p\n", task->hdr.hdr);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     handle = INTERNET_InternetOpenUrlW((appinfo_t*)task->hdr.hdr, task->url, task->headers,
 #else
     INTERNET_InternetOpenUrlW((appinfo_t*)task->hdr.hdr, task->url, task->headers,
 #endif
             task->headers_len, task->flags, task->context);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!handle && (error = GetLastError()) != ERROR_IO_PENDING)
     {
         INTERNET_ASYNC_RESULT result;
@@ -5213,7 +5213,7 @@ HINTERNET WINAPI InternetOpenUrlW(HINTERNET hInternet, LPCWSTR lpszUrl,
 {
     HINTERNET ret = NULL;
     appinfo_t *hIC = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error;
 #endif
 
@@ -5238,12 +5238,12 @@ HINTERNET WINAPI InternetOpenUrlW(HINTERNET hInternet, LPCWSTR lpszUrl,
     
     if (hIC->hdr.dwFlags & INTERNET_FLAG_ASYNC) {
 	open_url_task_t *task;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         DWORD res;
 #endif
 
         task = alloc_async_task(&hIC->hdr, AsyncInternetOpenUrlProc, sizeof(*task));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!task)
         {
             SetLastError(ERROR_OUTOFMEMORY);
@@ -5252,7 +5252,7 @@ HINTERNET WINAPI InternetOpenUrlW(HINTERNET hInternet, LPCWSTR lpszUrl,
         task->hdr.destroy = FreeInternetOpenUrlTask;
 #endif
         task->url = wcsdup(lpszUrl);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (lpszHeaders)
         {
             size_t len = dwHeadersLength == ~0u ? wcslen(lpszHeaders) : dwHeadersLength;
@@ -5278,7 +5278,7 @@ HINTERNET WINAPI InternetOpenUrlW(HINTERNET hInternet, LPCWSTR lpszUrl,
         task->flags = dwFlags;
         task->context = dwContext;
 	
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         res = INTERNET_AsyncCall(&task->hdr);
         SetLastError(res);
 #else
@@ -5290,13 +5290,13 @@ HINTERNET WINAPI InternetOpenUrlW(HINTERNET hInternet, LPCWSTR lpszUrl,
     }
     
   lend:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     error = GetLastError();
 #endif
     if( hIC )
         WININET_Release( &hIC->hdr );
     TRACE(" %p <--\n", ret);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!ret) SetLastError(error);
 #endif
     
@@ -5317,7 +5317,7 @@ HINTERNET WINAPI InternetOpenUrlA(HINTERNET hInternet, LPCSTR lpszUrl,
     HINTERNET rc = NULL;
     LPWSTR szUrl = NULL;
     WCHAR *headers = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error;
 #endif
 
@@ -5331,7 +5331,7 @@ HINTERNET WINAPI InternetOpenUrlA(HINTERNET hInternet, LPCSTR lpszUrl,
 
     if(lpszHeaders) {
         headers = strndupAtoW(lpszHeaders, dwHeadersLength, &dwHeadersLength);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if(!headers) goto done;
 #else
         if(!headers) {
@@ -5343,13 +5343,13 @@ HINTERNET WINAPI InternetOpenUrlA(HINTERNET hInternet, LPCSTR lpszUrl,
     
     rc = InternetOpenUrlW(hInternet, szUrl, headers, dwHeadersLength, dwFlags, dwContext);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 done:
     error = GetLastError();
 #endif
     free(szUrl);
     free(headers);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!rc) SetLastError(error);
 #endif
     return rc;
@@ -5406,11 +5406,11 @@ void INTERNET_SetLastError(DWORD dwError)
  */
 DWORD INTERNET_GetLastError(void)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD error = GetLastError();
 #endif
     LPWITHREADERROR lpwite = TlsGetValue(g_dwTlsErrIndex);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpwite)
     {
         SetLastError(error);
@@ -5440,7 +5440,7 @@ static DWORD CALLBACK INTERNET_WorkerThreadFunc(LPVOID lpvParam)
     TRACE("\n");
 
     task->proc(task);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free_async_task(task);
 #else
     WININET_Release(task->hdr);
@@ -5459,7 +5459,7 @@ void *alloc_async_task(object_header_t *hdr, async_task_proc_t proc, size_t size
 {
     task_header_t *task;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     task = calloc(1, size);
 #else
     task = malloc(size);
@@ -5472,7 +5472,7 @@ void *alloc_async_task(object_header_t *hdr, async_task_proc_t proc, size_t size
     return task;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 void free_async_task(task_header_t *task)
 {
     if (task->destroy)
@@ -5499,14 +5499,14 @@ DWORD INTERNET_AsyncCall(task_header_t *task)
     bSuccess = QueueUserWorkItem(INTERNET_WorkerThreadFunc, task, WT_EXECUTELONGFUNCTION);
     if (!bSuccess)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         free_async_task(task);
 #else
         free(task);
 #endif
         return ERROR_INTERNET_ASYNC_THREAD_FAILED;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return ERROR_IO_PENDING;
 #else
     return ERROR_SUCCESS;
@@ -5526,7 +5526,7 @@ LPSTR INTERNET_GetResponseBuffer(void)
     if (!lpwite)
         lpwite = INTERNET_AllocThreadError();
     TRACE("\n");
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!lpwite)
     {
         SetLastError(ERROR_OUTOFMEMORY);
@@ -6312,7 +6312,7 @@ DWORD WINAPI ShowClientAuthCerts(HWND parent)
     return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static char *download_autoconfig_script(const WCHAR *url, DWORD *size)
 {
     HINTERNET session, request;
@@ -6419,7 +6419,7 @@ WCHAR *INTERNET_GetAutoConfigProxy(const WCHAR *url, const WCHAR *host)
 }
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static struct synced_url *find_session_synced_url(appinfo_t *appinfo, const WCHAR *url)
 {
     struct synced_url *synced;

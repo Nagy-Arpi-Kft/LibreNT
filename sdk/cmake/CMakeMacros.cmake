@@ -3,7 +3,7 @@ function(add_dependency_node _node)
     if(GENERATE_DEPENDENCY_GRAPH)
         get_target_property(_type ${_node} TYPE)
         if(_type MATCHES SHARED_LIBRARY|MODULE_LIBRARY OR ${_node} MATCHES ntoskrnl)
-            file(APPEND ${REACTOS_BINARY_DIR}/dependencies.graphml "    <node id=\"${_node}\"/>\n")
+            file(APPEND ${LIBRENT_BINARY_DIR}/dependencies.graphml "    <node id=\"${_node}\"/>\n")
         endif()
      endif()
 endfunction()
@@ -12,21 +12,21 @@ function(add_dependency_edge _source _target)
     if(GENERATE_DEPENDENCY_GRAPH)
         get_target_property(_type ${_source} TYPE)
         if(_type MATCHES SHARED_LIBRARY|MODULE_LIBRARY)
-            file(APPEND ${REACTOS_BINARY_DIR}/dependencies.graphml "    <edge source=\"${_source}\" target=\"${_target}\"/>\n")
+            file(APPEND ${LIBRENT_BINARY_DIR}/dependencies.graphml "    <edge source=\"${_source}\" target=\"${_target}\"/>\n")
         endif()
     endif()
 endfunction()
 
 function(add_dependency_header)
     if(GENERATE_DEPENDENCY_GRAPH)
-        file(WRITE ${REACTOS_BINARY_DIR}/dependencies.graphml "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<graphml>\n  <graph id=\"ReactOS dependencies\" edgedefault=\"directed\">\n")
+        file(WRITE ${LIBRENT_BINARY_DIR}/dependencies.graphml "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<graphml>\n  <graph id=\"LibreNT dependencies\" edgedefault=\"directed\">\n")
     endif()
 endfunction()
 
 function(add_dependency_footer)
     if(GENERATE_DEPENDENCY_GRAPH)
         add_dependency_node(ntdll)
-        file(APPEND ${REACTOS_BINARY_DIR}/dependencies.graphml "  </graph>\n</graphml>\n")
+        file(APPEND ${LIBRENT_BINARY_DIR}/dependencies.graphml "  </graph>\n</graphml>\n")
     endif()
 endfunction()
 
@@ -131,9 +131,9 @@ function(add_cd_file)
 
     # Trust exact OS build artifacts, independently of their runtime path.
     # The kernel embeds these hashes for code-integrity image policy checks.
-    if(_CD_TARGET AND NOT _CD_OPTIONAL AND _CD_DESTINATION MATCHES "^reactos/(system32|winsxs)(/|$)")
+    if(_CD_TARGET AND NOT _CD_OPTIONAL AND _CD_DESTINATION MATCHES "^librent/(system32|winsxs)(/|$)")
         if(TARGET ${_CD_TARGET})
-            get_target_property(_ci_module_type ${_CD_TARGET} REACTOS_MODULE_TYPE)
+            get_target_property(_ci_module_type ${_CD_TARGET} LIBRENT_MODULE_TYPE)
             if(_ci_module_type MATCHES "^(nativedll|win32dll|win32ocx|cpl|module)$")
                 set_property(GLOBAL APPEND PROPERTY CI_SYSTEM_TARGETS ${_CD_TARGET})
             endif()
@@ -168,9 +168,9 @@ function(add_cd_file)
     list(FIND _CD_FOR bootcd __cd)
     if(NOT __cd EQUAL -1 AND NOT _cd_for_all)
         if(_CD_NO_CAB)
-            # setup file - replace the "reactos/" directory name by the current build architecture name
+            # setup file - replace the "librent/" directory name by the current build architecture name
             # WARNING: CMake REGEXes are always case-sensitive!
-            string(REGEX REPLACE "^reactos([\\\\/]+|$)" "${ARCH}\\1" _CD_ARCH_DESTINATION "${_CD_DESTINATION}")
+            string(REGEX REPLACE "^librent([\\\\/]+|$)" "${ARCH}\\1" _CD_ARCH_DESTINATION "${_CD_DESTINATION}")
         else()
             set(_CD_ARCH_DESTINATION "${_CD_DESTINATION}")
         endif()
@@ -228,11 +228,11 @@ function(add_cd_file)
 endfunction()
 
 function(create_txtsetup_sif)
-    set(_source ${REACTOS_SOURCE_DIR}/boot/bootdata/txtsetup.sif)
+    set(_source ${LIBRENT_SOURCE_DIR}/boot/bootdata/txtsetup.sif)
     set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${_source})
 
     file(GENERATE
-         OUTPUT ${REACTOS_BINARY_DIR}/boot/bootdata/txtsetup.$<CONFIG>.sif
+         OUTPUT ${LIBRENT_BINARY_DIR}/boot/bootdata/txtsetup.$<CONFIG>.sif
          INPUT ${_source})
 endfunction()
 
@@ -252,7 +252,7 @@ endif()
     get_property(_filelist GLOBAL PROPERTY LIVECD_FILE_LIST)
     if(_filelist)
         string(REPLACE ";" "\n" _filelist "${_filelist}")
-        file(APPEND ${REACTOS_BINARY_DIR}/boot/livecd.cmake.lst "${_filelist}\n")
+        file(APPEND ${LIBRENT_BINARY_DIR}/boot/livecd.cmake.lst "${_filelist}\n")
     endif()
     unset(_filelist)
 
@@ -261,12 +261,12 @@ endif()
     get_property(_filelist GLOBAL PROPERTY LIVECD_OVERLAY_FILE_LIST)
     if(_filelist)
         string(REPLACE ";" "\n" _filelist "${_filelist}")
-        file(APPEND ${REACTOS_BINARY_DIR}/boot/livecd.cmake.lst "${_filelist}\n")
+        file(APPEND ${LIBRENT_BINARY_DIR}/boot/livecd.cmake.lst "${_filelist}\n")
     endif()
     unset(_filelist)
     file(GENERATE
-         OUTPUT ${REACTOS_BINARY_DIR}/boot/livecd.$<CONFIG>.lst
-         INPUT ${REACTOS_BINARY_DIR}/boot/livecd.cmake.lst)
+         OUTPUT ${LIBRENT_BINARY_DIR}/boot/livecd.$<CONFIG>.lst
+         INPUT ${LIBRENT_BINARY_DIR}/boot/livecd.cmake.lst)
 
     # Write the BootCD file list
     get_property(_filelist GLOBAL PROPERTY BOOTCD_FILE_LIST)
@@ -276,11 +276,11 @@ endif()
         set(_bootcd_destination_${_key} TRUE)
     endforeach()
     string(REPLACE ";" "\n" _filelist "${_filelist}")
-    file(APPEND ${REACTOS_BINARY_DIR}/boot/bootcd.cmake.lst "${_filelist}")
+    file(APPEND ${LIBRENT_BINARY_DIR}/boot/bootcd.cmake.lst "${_filelist}")
     unset(_filelist)
     # Also, append the file contents list of the LiveImage to the BootCD file list
-    file(APPEND ${REACTOS_BINARY_DIR}/boot/bootcd.cmake.lst "\n")
-    file(STRINGS ${REACTOS_BINARY_DIR}/boot/livecd.cmake.lst _filelist)
+    file(APPEND ${LIBRENT_BINARY_DIR}/boot/bootcd.cmake.lst "\n")
+    file(STRINGS ${LIBRENT_BINARY_DIR}/boot/livecd.cmake.lst _filelist)
     set(_livecd_entries "")
     foreach(_entry IN LISTS _filelist)
         string(REGEX REPLACE "=.*$" "" _destination "${_entry}")
@@ -289,17 +289,17 @@ endif()
             string(APPEND _livecd_entries "${_entry}\n")
         endif()
     endforeach()
-    file(APPEND ${REACTOS_BINARY_DIR}/boot/bootcd.cmake.lst "${_livecd_entries}")
+    file(APPEND ${LIBRENT_BINARY_DIR}/boot/bootcd.cmake.lst "${_livecd_entries}")
     unset(_livecd_entries)
     unset(_filelist)
     file(GENERATE
-         OUTPUT ${REACTOS_BINARY_DIR}/boot/bootcd.$<CONFIG>.lst
-         INPUT ${REACTOS_BINARY_DIR}/boot/bootcd.cmake.lst)
+         OUTPUT ${LIBRENT_BINARY_DIR}/boot/bootcd.$<CONFIG>.lst
+         INPUT ${LIBRENT_BINARY_DIR}/boot/bootcd.cmake.lst)
 
     get_property(_filelist GLOBAL PROPERTY PREINSTALL_FILE_LIST)
     if(_filelist)
         string(REPLACE ";" "\n" _filelist "${_filelist}")
-        file(APPEND ${REACTOS_BINARY_DIR}/boot/preinstall.cmake.lst "${_filelist}\n")
+        file(APPEND ${LIBRENT_BINARY_DIR}/boot/preinstall.cmake.lst "${_filelist}\n")
     endif()
     unset(_filelist)
 
@@ -308,12 +308,12 @@ endif()
     get_property(_filelist GLOBAL PROPERTY PREINSTALL_OVERLAY_FILE_LIST)
     if(_filelist)
         string(REPLACE ";" "\n" _filelist "${_filelist}")
-        file(APPEND ${REACTOS_BINARY_DIR}/boot/preinstall.cmake.lst "${_filelist}\n")
+        file(APPEND ${LIBRENT_BINARY_DIR}/boot/preinstall.cmake.lst "${_filelist}\n")
     endif()
     unset(_filelist)
     file(GENERATE
-         OUTPUT ${REACTOS_BINARY_DIR}/boot/preinstall.$<CONFIG>.lst
-         INPUT ${REACTOS_BINARY_DIR}/boot/preinstall.cmake.lst)
+         OUTPUT ${LIBRENT_BINARY_DIR}/boot/preinstall.$<CONFIG>.lst
+         INPUT ${LIBRENT_BINARY_DIR}/boot/preinstall.cmake.lst)
 
     foreach(_image livecd bootcd preinstall)
         string(TOUPPER "${_image}" _property)
@@ -323,10 +323,10 @@ endif()
             list(APPEND _filelist ${_livecd_filelist})
         endif()
         string(REPLACE ";" "\n" _filelist "${_filelist}")
-        file(WRITE ${REACTOS_BINARY_DIR}/boot/${_image}.optional.cmake.lst "${_filelist}\n")
+        file(WRITE ${LIBRENT_BINARY_DIR}/boot/${_image}.optional.cmake.lst "${_filelist}\n")
         file(GENERATE
-             OUTPUT ${REACTOS_BINARY_DIR}/boot/${_image}.optional.$<CONFIG>.lst
-             INPUT ${REACTOS_BINARY_DIR}/boot/${_image}.optional.cmake.lst)
+             OUTPUT ${LIBRENT_BINARY_DIR}/boot/${_image}.optional.$<CONFIG>.lst
+             INPUT ${LIBRENT_BINARY_DIR}/boot/${_image}.optional.cmake.lst)
     endforeach()
 endfunction()
 
@@ -339,7 +339,7 @@ function(add_clean_target _target)
         set(_clean_command nmake /nologo clean)
     elseif(CMAKE_GENERATOR STREQUAL "Ninja")
         set(_clean_command ninja -t clean ${_target})
-        set(_clean_working_directory ${REACTOS_BINARY_DIR})
+        set(_clean_working_directory ${LIBRENT_BINARY_DIR})
     endif()
     add_custom_target(${_target}_clean
         COMMAND ${_clean_command}
@@ -453,9 +453,9 @@ list(APPEND NATIVE_MODULE_TYPES kernel kerneldll kernelmodedriver kmdfdriver wdm
 
 # Signs a driver if it is kernelmodedriver or wdmdriver if the cert exists
 function(sign_driver_if_needed TARGET)
-    get_target_property(_type ${TARGET} REACTOS_MODULE_TYPE)
+    get_target_property(_type ${TARGET} LIBRENT_MODULE_TYPE)
     if(NOT _type)
-        message(STATUS "sign_driver_if_needed: No REACTOS_MODULE_TYPE for ${TARGET}")
+        message(STATUS "sign_driver_if_needed: No LIBRENT_MODULE_TYPE for ${TARGET}")
         return()
     endif()
     if(NOT (_type STREQUAL "kernelmodedriver" OR _type STREQUAL "wdmdriver"))
@@ -497,7 +497,7 @@ function(set_module_type MODULE TYPE)
     endif()
 
     # Set our target property
-    set_target_properties(${MODULE} PROPERTIES REACTOS_MODULE_TYPE ${TYPE})
+    set_target_properties(${MODULE} PROPERTIES LIBRENT_MODULE_TYPE ${TYPE})
 
     # Add the module to the module group list, if it is defined
     if(DEFINED CURRENT_MODULE_GROUP)
@@ -608,7 +608,7 @@ function(set_module_type MODULE TYPE)
         endif()
 
         set(_kmdf_minor ${CMAKE_MATCH_1})
-        set(_kmdf_include_dir ${REACTOS_SOURCE_DIR}/sdk/include/wdf/kmdf/${__module_KMDF_VERSION})
+        set(_kmdf_include_dir ${LIBRENT_SOURCE_DIR}/sdk/include/wdf/kmdf/${__module_KMDF_VERSION})
         if(NOT EXISTS ${_kmdf_include_dir}/wdf.h)
             message(FATAL_ERROR "KMDF ${__module_KMDF_VERSION} headers are not available for ${MODULE}")
         endif()
@@ -726,7 +726,7 @@ function(export_sdk_libraries _target _directory)
     foreach(_library IN LISTS _export_LIBRARIES)
         set(_source "$<TARGET_FILE:${_library}>")
         if(_export_FROM)
-            set(_source "${_export_FROM}/$<PATH:RELATIVE_PATH,$<TARGET_FILE:${_library}>,${REACTOS_BINARY_DIR}>")
+            set(_source "${_export_FROM}/$<PATH:RELATIVE_PATH,$<TARGET_FILE:${_library}>,${LIBRENT_BINARY_DIR}>")
         endif()
         set(_archive "${_directory}/$<TARGET_FILE_NAME:${_library}>")
         list(APPEND _commands
@@ -792,7 +792,7 @@ function(add_arm64ec_x64_source OUTPUT_VAR SOURCE_FILE)
             -isystem "${CLANG_RESOURCE_DIR}/include"
             ${_x64_includes}
             -std=gnu99
-            -ffile-prefix-map=${REACTOS_SOURCE_DIR}=
+            -ffile-prefix-map=${LIBRENT_SOURCE_DIR}=
             -ffile-prefix-map=../../=
             -fms-extensions
             -fno-strict-aliasing
@@ -923,7 +923,7 @@ function(create_registry_hives)
     add_custom_target(registry_inf DEPENDS ${_registry_inf})
     add_cd_file(TARGET registry_inf
                 FILE ${_registry_inf}
-                DESTINATION reactos
+                DESTINATION librent
                 NO_CAB FOR bootcd)
     add_cd_file(TARGET registry_inf
                 FILE ${_registry_inf}
@@ -957,7 +957,7 @@ function(create_registry_hives)
     add_custom_target(comreg_inf DEPENDS ${_comreg_inf})
     add_cd_file(TARGET comreg_inf
                 FILE ${_comreg_inf}
-                DESTINATION reactos
+                DESTINATION librent
                 NO_CAB FOR bootcd)
     add_cd_file(TARGET comreg_inf
                 FILE ${_comreg_inf}
@@ -969,10 +969,10 @@ function(create_registry_hives)
         ${_registry_inf}
         ${CMAKE_SOURCE_DIR}/boot/bootdata/livecd.inf
         ${CMAKE_SOURCE_DIR}/boot/bootdata/caroots.inf)
-    if(REACTOS_USE_XPDM AND (SARCH STREQUAL "xbox"))
+    if(LIBRENT_USE_XPDM AND (SARCH STREQUAL "xbox"))
         list(APPEND _livecd_inf_files
             ${CMAKE_SOURCE_DIR}/boot/bootdata/hiveinst_xbox.inf)
-    elseif(REACTOS_USE_XPDM AND (SARCH STREQUAL "pc98"))
+    elseif(LIBRENT_USE_XPDM AND (SARCH STREQUAL "pc98"))
         list(APPEND _livecd_inf_files
             ${CMAKE_SOURCE_DIR}/boot/bootdata/hiveinst_pc98.inf)
     else()
@@ -983,7 +983,7 @@ function(create_registry_hives)
         if(_livecd_extra_registry_inf STREQUAL "")
             continue()
         endif()
-        get_filename_component(_livecd_extra_registry_inf "${_livecd_extra_registry_inf}" ABSOLUTE BASE_DIR "${REACTOS_BINARY_DIR}")
+        get_filename_component(_livecd_extra_registry_inf "${_livecd_extra_registry_inf}" ABSOLUTE BASE_DIR "${LIBRENT_BINARY_DIR}")
         list(APPEND _livecd_inf_files ${_livecd_extra_registry_inf})
     endforeach()
     list(APPEND _livecd_inf_files ${_comreg_inf})
@@ -1018,7 +1018,7 @@ function(create_registry_hives)
              ${CMAKE_BINARY_DIR}/boot/bootdata/sam
              ${CMAKE_BINARY_DIR}/boot/bootdata/security
         TARGET livecd_hives
-        DESTINATION reactos/system32/config
+        DESTINATION librent/system32/config
         FOR livecd)
 
     # Preinstall hives (same as LiveCD but with preinstall.inf instead of livecd.inf)
@@ -1032,10 +1032,10 @@ function(create_registry_hives)
         list(APPEND _preinstall_inf_files
             ${CMAKE_SOURCE_DIR}/boot/bootdata/app_launcher.inf)
     endif()
-    if(REACTOS_USE_XPDM AND (SARCH STREQUAL "xbox"))
+    if(LIBRENT_USE_XPDM AND (SARCH STREQUAL "xbox"))
         list(APPEND _preinstall_inf_files
             ${CMAKE_SOURCE_DIR}/boot/bootdata/hiveinst_xbox.inf)
-    elseif(REACTOS_USE_XPDM AND (SARCH STREQUAL "pc98"))
+    elseif(LIBRENT_USE_XPDM AND (SARCH STREQUAL "pc98"))
         list(APPEND _preinstall_inf_files
             ${CMAKE_SOURCE_DIR}/boot/bootdata/hiveinst_pc98.inf)
     else()
@@ -1072,7 +1072,7 @@ function(create_registry_hives)
              ${CMAKE_BINARY_DIR}/boot/bootdata/preinstall/sam
              ${CMAKE_BINARY_DIR}/boot/bootdata/preinstall/security
         TARGET preinstall_hives
-        DESTINATION reactos/system32/config
+        DESTINATION librent/system32/config
         FOR preinstall)
 
     # BCD hive (for EFI-compatible platforms)
@@ -1110,7 +1110,7 @@ function(add_driver_inf _module)
     endforeach()
 
     add_custom_target(${_module}_inf_files DEPENDS ${_converted_inf_files})
-    add_cd_file(FILE ${_converted_inf_files} TARGET ${_module}_inf_files DESTINATION reactos/inf FOR all)
+    add_cd_file(FILE ${_converted_inf_files} TARGET ${_module}_inf_files DESTINATION librent/inf FOR all)
     set_property(GLOBAL APPEND PROPERTY DRIVER_INF_LIST ${_converted_inf_files})
     set_property(GLOBAL APPEND PROPERTY DRIVER_INF_TARGETS ${_module}_inf_files)
 endfunction()
@@ -1129,7 +1129,7 @@ function(add_neutral_resource_file _target _module_rc _neutral_rc)
     add_library(${_target}_mun MODULE ${_neutral_rc})
     set_module_type(${_target}_mun module UNICODE ENTRYPOINT 0)
     add_dependencies(${_target}_mun xdk)
-    add_cd_file(TARGET ${_target}_mun DESTINATION reactos/SystemResources
+    add_cd_file(TARGET ${_target}_mun DESTINATION librent/SystemResources
                 NAME_ON_CD $<TARGET_FILE_NAME:${_target}>.mun FOR all)
 endfunction()
 
@@ -1157,9 +1157,9 @@ function(add_rostests_file)
     endif()
 
     if(_ROSTESTS_TARGET)
-        add_cd_file(TARGET ${_ROSTESTS_TARGET} FILE ${_ROSTESTS_FILE} DESTINATION "reactos/bin${_ROSTESTS_SUBDIR}" NAME_ON_CD ${_ROSTESTS_NAME_ON_CD} FOR all)
+        add_cd_file(TARGET ${_ROSTESTS_TARGET} FILE ${_ROSTESTS_FILE} DESTINATION "librent/bin${_ROSTESTS_SUBDIR}" NAME_ON_CD ${_ROSTESTS_NAME_ON_CD} FOR all)
     else()
-        add_cd_file(FILE ${_ROSTESTS_FILE} DESTINATION "reactos/bin${_ROSTESTS_SUBDIR}" NAME_ON_CD ${_ROSTESTS_NAME_ON_CD} FOR all)
+        add_cd_file(FILE ${_ROSTESTS_FILE} DESTINATION "librent/bin${_ROSTESTS_SUBDIR}" NAME_ON_CD ${_ROSTESTS_NAME_ON_CD} FOR all)
     endif()
 
     if(DEFINED ENV{ROSTESTS_INSTALL})
@@ -1209,8 +1209,8 @@ function(set_target_cpp_properties _target)
     endif()
 endfunction()
 
-function(libernt_standard_disk_signature _signature)
-    string(UUID _disk NAMESPACE 354fa6e5-5e45-49af-91bf-1fd2754e470a NAME "LiberNT standard disk" TYPE SHA1)
+function(librent_standard_disk_signature _signature)
+    string(UUID _disk NAMESPACE 354fa6e5-5e45-49af-91bf-1fd2754e470a NAME "LibreNT standard disk" TYPE SHA1)
     string(SUBSTRING "${_disk}" 0 8 _value)
     set(${_signature} ${_value} PARENT_SCOPE)
 endfunction()

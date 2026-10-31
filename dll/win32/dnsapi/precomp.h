@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS System Libraries
+ * PROJECT:         LibreNT System Libraries
  * FILE:            lib/dnsapi/precomp.h
  * PURPOSE:         Win32 DNS API Library Header
  * PROGRAMMER:      Alex Ionescu (alex@relsoft.net)
@@ -21,7 +21,7 @@
 #include <winbase.h>
 #include <winnls.h>
 #include <windns.h>
-#include <reactos/windns_undoc.h>
+#include <librent/windns_undoc.h>
 #define NTOS_MODE_USER
 #include <ndk/rtlfuncs.h>
 

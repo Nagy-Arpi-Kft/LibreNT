@@ -3519,7 +3519,7 @@ HRESULT WINAPI VarCyFromR8(DOUBLE dblIn, CY* pCyOut)
 
   if (result_fpstatus & 0x9) /* Overflow | Invalid */
     return DISP_E_OVERFLOW;
-#elif defined(__REACTOS__)
+#elif defined(__LIBRENT__)
   ULONG64 bits, mant, hi, lo, low, q, rem, half;
   unsigned int exp, shift;
   BOOL neg, up;
@@ -3739,7 +3739,7 @@ HRESULT WINAPI VarCyFromUI4(ULONG ulIn, CY* pCyOut)
     return S_OK;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static unsigned char VARIANT_int_divbychar(DWORD * p, unsigned int n, unsigned char divisor);
 static unsigned char VARIANT_int_mulbychar(DWORD * p, unsigned int n, unsigned char m);
 #endif
@@ -3761,7 +3761,7 @@ static unsigned char VARIANT_int_mulbychar(DWORD * p, unsigned int n, unsigned c
  */
 HRESULT WINAPI VarCyFromDec(const DECIMAL* pdecIn, CY* pCyOut)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   DWORD n[3];
   unsigned char digit = 0;
   BOOL sticky = FALSE;

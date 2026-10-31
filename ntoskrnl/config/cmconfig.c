@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/config/cmconfig.c
  * PURPOSE:         Configuration Manager - System Configuration Routines
@@ -9,7 +9,7 @@
 /* INCLUDES ******************************************************************/
 
 #include "ntoskrnl.h"
-#include <reactos/arc/loaderblk.h>
+#include <librent/arc/loaderblk.h>
 #define NDEBUG
 #include "debug.h"
 

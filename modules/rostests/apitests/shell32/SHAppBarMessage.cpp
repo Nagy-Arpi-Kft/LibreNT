@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     LGPL-2.0-or-later (https://spdx.org/licenses/LGPL-2.0-or-later)
  * PURPOSE:     Test for SHAppBarMessage
  * COPYRIGHT:   Copyright 2020-2025 Katayama Hirofumi MZ (katayama.hirofumi.mz@gmail.com)

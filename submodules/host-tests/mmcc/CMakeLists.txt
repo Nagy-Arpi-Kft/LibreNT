@@ -1,11 +1,11 @@
-# PROJECT:     ReactOS host-native tests
+# PROJECT:     LibreNT host-native tests
 # FILE:        submodules/host-tests/mmcc/CMakeLists.txt
 # PURPOSE:     Memory and cache manager host-test configuration
 #
 # SPDX-FileCopyrightText: 2026 Ahmed ARIF
 # SPDX-License-Identifier: GPL-3.0-only
 
-set(MMCC_KERNEL_ROOT "${REACTOS_HOST_SOURCE_ROOT}/ntoskrnl")
+set(MMCC_KERNEL_ROOT "${LIBRENT_HOST_SOURCE_ROOT}/ntoskrnl")
 include_directories(${MMCC_KERNEL_ROOT} ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 add_subdirectory(nvs/core)

@@ -6,7 +6,7 @@
 #ifndef _WIMLIB_WIN32_COMMON_H
 #define _WIMLIB_WIN32_COMMON_H
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #define WIN32_NO_STATUS
 #include <windows.h>
 #include <winioctl.h>
@@ -29,7 +29,7 @@
 
 /* ntdll definitions */
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define FILE_OPENED 0x00000001
 
 typedef struct _RTLP_CURDIR_REF {
@@ -58,7 +58,7 @@ typedef struct _FILE_FS_PERSISTENT_VOLUME_INFORMATION {
 } FILE_FS_PERSISTENT_VOLUME_INFORMATION, *PFILE_FS_PERSISTENT_VOLUME_INFORMATION;
 #endif /* FSCTL_SET_PERSISTENT_VOLUME_STATE */
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifndef FSCTL_GET_OBJECT_ID
 #define FSCTL_SET_OBJECT_ID CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 38, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
 #define FSCTL_GET_OBJECT_ID CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 39, METHOD_BUFFERED, FILE_ANY_ACCESS)
@@ -115,7 +115,7 @@ VOID WINAPI CloseEncryptedFileRaw(PVOID pvContext);
 #endif
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /* ntdll functions  */
 
 NTSTATUS

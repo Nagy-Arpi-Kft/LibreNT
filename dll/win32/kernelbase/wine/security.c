@@ -35,7 +35,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(security);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTSYSAPI NTSTATUS NTAPI NtAccessCheckByType(PSECURITY_DESCRIPTOR, PSID, HANDLE, ACCESS_MASK,
                                          POBJECT_TYPE_LIST, ULONG, PGENERIC_MAPPING,
                                          PPRIVILEGE_SET, PULONG, PACCESS_MASK, PNTSTATUS);
@@ -125,7 +125,7 @@ static const WELLKNOWNSID WellKnownSids[] =
     { WinHighLabelSid, { SID_REVISION, 1, { SECURITY_MANDATORY_LABEL_AUTHORITY}, { SECURITY_MANDATORY_HIGH_RID } } },
     { WinSystemLabelSid, { SID_REVISION, 1, { SECURITY_MANDATORY_LABEL_AUTHORITY}, { SECURITY_MANDATORY_SYSTEM_RID } } },
     { WinBuiltinAnyPackageSid, { SID_REVISION, 2, { SECURITY_APP_PACKAGE_AUTHORITY }, { SECURITY_APP_PACKAGE_BASE_RID, SECURITY_BUILTIN_PACKAGE_ANY_PACKAGE } } },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { WinBuiltinIUsersSid, { SID_REVISION, 2, { SECURITY_NT_AUTHORITY }, { SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_IUSERS } } },
     { WinIUserSid, { SID_REVISION, 1, { SECURITY_NT_AUTHORITY }, { SECURITY_IUSER_RID } } },
     { WinBuiltinCryptoOperatorsSid, { SID_REVISION, 2, { SECURITY_NT_AUTHORITY }, { SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_CRYPTO_OPERATORS } } },
@@ -174,7 +174,7 @@ static const WELLKNOWNRID WellKnownRids[] =
     { WinAccountEnterpriseAdminsSid, DOMAIN_GROUP_RID_ENTERPRISE_ADMINS },
     { WinAccountPolicyAdminsSid,     DOMAIN_GROUP_RID_POLICY_ADMINS },
     { WinAccountRasAndIasServersSid, DOMAIN_ALIAS_RID_RAS_SERVERS },
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     { WinCacheablePrincipalsGroupSid, DOMAIN_ALIAS_RID_CACHEABLE_PRINCIPALS_GROUP },
     { WinNonCacheablePrincipalsGroupSid, DOMAIN_ALIAS_RID_NON_CACHEABLE_PRINCIPALS_GROUP },
     { WinAccountReadonlyControllersSid, DOMAIN_GROUP_RID_READONLY_CONTROLLERS },
@@ -269,7 +269,7 @@ BOOL WINAPI AllocateLocallyUniqueId( PLUID luid )
  */
 BOOL WINAPI CopySid( DWORD len, PSID dest, PSID source )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return set_ntstatus( RtlCopySid( len, dest, source ));
 #else
     return RtlCopySid( len, dest, source );
@@ -426,7 +426,7 @@ BOOL WINAPI GetWindowsAccountDomainSid( PSID sid, PSID domain_sid, DWORD *size )
 
     if (*GetSidSubAuthorityCount( sid ) < 4)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         SetLastError( ERROR_NON_ACCOUNT_SID );
 #else
         SetLastError( ERROR_INVALID_SID );
@@ -554,7 +554,7 @@ BOOL WINAPI IsWellKnownSid( PSID sid, WELL_KNOWN_SID_TYPE type )
             if (EqualSid(sid, (PSID)&WellKnownSids[i].Sid.Revision))
                 return TRUE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (type == WinLogonIdsSid && IsValidSid(sid) &&
         *GetSidSubAuthorityCount(sid) == SECURITY_LOGON_IDS_RID_COUNT)
     {
@@ -819,7 +819,7 @@ BOOL WINAPI ImpersonateLoggedOnUser( HANDLE token )
     BOOL ret;
     HANDLE dup;
     TOKEN_TYPE type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE( "(%p)\n", token );
 #else
     static BOOL warn = TRUE;
@@ -981,7 +981,7 @@ BOOL WINAPI SetTokenInformation( HANDLE token, TOKEN_INFORMATION_CLASS class, LP
 BOOL WINAPI ConvertToAutoInheritPrivateObjectSecurity( PSECURITY_DESCRIPTOR parent,
                                                        PSECURITY_DESCRIPTOR current,
                                                        PSECURITY_DESCRIPTOR *descr,
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                                        GUID *type, BOOLEAN is_dir,
 #else
                                                        GUID *type, BOOL is_dir,
@@ -1344,7 +1344,7 @@ BOOL WINAPI AccessCheckByType( PSECURITY_DESCRIPTOR descr, PSID sid, HANDLE toke
                                POBJECT_TYPE_LIST types, DWORD types_len, PGENERIC_MAPPING mapping,
                                PPRIVILEGE_SET priv, LPDWORD priv_len, LPDWORD granted, LPBOOL status )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     NTSTATUS access_status;
     BOOL ret = set_ntstatus( NtAccessCheckByType( descr, sid, token, access, types, types_len,
                                                 mapping, priv, priv_len, granted, &access_status ));
@@ -1637,7 +1637,7 @@ BOOL WINAPI DeriveCapabilitySidsFromName( const WCHAR *cap_name, PSID **cap_grou
     if (!(**cap_group_sids = RtlAllocateHeap( GetProcessHeap(), 0, size ))) goto done;
     if (!(**cap_sids = RtlAllocateHeap( GetProcessHeap(), 0, size ))) goto done;
     RtlInitUnicodeString( &name_us, cap_name );
-#if defined(__REACTOS__) && (DLL_EXPORT_VERSION < 0x0a00)
+#if defined(__LIBRENT__) && (DLL_EXPORT_VERSION < 0x0a00)
     status = STATUS_NOT_IMPLEMENTED;
 #else
     status = RtlDeriveCapabilitySidsFromName( &name_us, **cap_group_sids, **cap_sids );

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Winlogon
+ * PROJECT:     LibreNT Winlogon
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Romanian resource file
  * TRANSLATORS: Copyright 2011 Petru Dimitriu <petrimetri@gmail.com>
@@ -59,7 +59,7 @@ BEGIN
     IDS_PREPARETOSTANDBY "Se pregăteşte pentru starea de veghe"
     IDS_PREPARETOHIBERNATE "Se pregăteşte pentru hibernare"
     IDS_SAVEYOURSETTINGS "Se salvează setările"
-    IDS_REACTOSISSTARTINGUP "Se porneşte LiberNT"
+    IDS_REACTOSISSTARTINGUP "Se porneşte LibreNT"
     IDS_LOGGINGOFF "Logging off"
     IDS_TIMEOUTSHORTFORMAT "%02d:%02d:%02d"
     IDS_TIMEOUTLONGFORMAT "%d zile"

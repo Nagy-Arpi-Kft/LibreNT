@@ -39,11 +39,11 @@ Revision History:
   #endif
 #endif
 
-// reactos start
+// librent start
 #include <sal.h>
 #include <section_attribs.h>
 #define STDCALL __stdcall
-// reactos end
+// librent end
 
 WDF_EXTERN_C_START
 

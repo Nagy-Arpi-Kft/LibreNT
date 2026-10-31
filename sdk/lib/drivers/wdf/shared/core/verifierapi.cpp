@@ -24,7 +24,7 @@ Revision History:
 --*/
 
 #include "coreprivshared.hpp"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "../../reactos_special.h"
 #include "../../kmdf/inc/private/wdf115.h"
 #endif

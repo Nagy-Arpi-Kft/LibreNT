@@ -79,8 +79,8 @@ WINE_DEFAULT_DEBUG_CHANNEL(button);
 #define BUTTON_BTNPRESSED      0x40
 #define BUTTON_UNKNOWN2        0x20
 #define BUTTON_UNKNOWN3        0x10
-#ifdef __REACTOS__
-#define BUTTON_BMCLICK         0x100 // ReactOS Need to up to wine!
+#ifdef __LIBRENT__
+#define BUTTON_BMCLICK         0x100 // LibreNT Need to up to wine!
 #endif
 
 #define BUTTON_NOTIFY_PARENT(hWnd, code) \
@@ -143,7 +143,7 @@ const struct builtin_class_descr BUTTON_builtin_class =
 {
     buttonW,             /* name */
     CS_DBLCLKS | CS_VREDRAW | CS_HREDRAW | CS_PARENTDC, /* style  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ButtonWndProcA,      /* procA */
     ButtonWndProcW,      /* procW */
 #else
@@ -165,7 +165,7 @@ static inline void set_button_state( HWND hwnd, LONG state )
     SetWindowLongW( hwnd, STATE_GWL_OFFSET, state );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static __inline void set_ui_state( HWND hwnd, LONG flags )
 {
@@ -177,7 +177,7 @@ static __inline LONG get_ui_state( HWND hwnd )
     return GetWindowLongPtrW( hwnd, BUTTON_UISTATE_GWL_OFFSET );
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 static inline HFONT get_button_font( HWND hwnd )
 {
@@ -214,7 +214,7 @@ static inline WCHAR *get_button_text( HWND hwnd )
     return buffer;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* Retrieve the UI state for the control */
 static BOOL button_update_uistate(HWND hwnd, BOOL unicode)
 {
@@ -249,7 +249,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
     UINT btn_type = get_button_type( style );
     LONG state;
     HANDLE oldHbitmap;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #ifdef WOW64_I386_RUNTIME
     if (!IsWindow(hWnd)) return 0;
     if (uMsg == WM_NCCREATE) NtUserSetWindowFNID(hWnd, FNID_BUTTON);
@@ -309,19 +309,19 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
         if (btn_type == BS_USERBUTTON )
         {
             style = (style & ~BS_TYPEMASK) | BS_PUSHBUTTON;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             NtUserAlterWindowStyle(hWnd, BS_TYPEMASK, BS_PUSHBUTTON);
 #else
             WIN_SetStyle( hWnd, style, BS_TYPEMASK & ~style );
 #endif
         }
         set_button_state( hWnd, BST_UNCHECKED );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         button_update_uistate( hWnd, unicode );
 #endif
         return 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_NCDESTROY:
         NtUserSetWindowFNID(hWnd, FNID_DESTROY);
     case WM_DESTROY:
@@ -336,7 +336,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
             HBRUSH hBrush;
             HWND parent = GetParent(hWnd);
             if (!parent) parent = hWnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hBrush = GetControlColor( parent, hWnd, hdc, WM_CTLCOLORBTN);
 #else
             hBrush = (HBRUSH)SendMessageW(parent, WM_CTLCOLORBTN, (WPARAM)hdc, (LPARAM)hWnd);
@@ -395,9 +395,9 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
 	    break;
 	/* fall through */
     case WM_LBUTTONUP:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
-        BOOL TellParent = FALSE; //// ReactOS see note below.
+        BOOL TellParent = FALSE; //// LibreNT see note below.
 #endif
         state = get_button_state( hWnd );
         if (!(state & BUTTON_BTNPRESSED)) break;
@@ -426,14 +426,14 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
                                 (state & BST_INDETERMINATE) ? 0 : ((state & 3) + 1), 0 );
                 break;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             TellParent = TRUE; // <---- Fix CORE-10194, Notify parent after capture is released.
 #else
             ReleaseCapture();
             BUTTON_NOTIFY_PARENT(hWnd, BN_CLICKED);
 #endif
         }
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
         else
         {
             ReleaseCapture();
@@ -469,7 +469,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
     {
         /* Clear an old text here as Windows does */
 //
-// ReactOS Note :
+// LibreNT Note :
 // wine Bug: http://bugs.winehq.org/show_bug.cgi?id=25790
 // Patch: http://source.winehq.org/patches/data/70889
 // By: Alexander LAW, Replicate Windows behavior of WM_SETTEXT handler regarding WM_CTLCOLOR*
@@ -536,7 +536,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
         paint_button( hWnd, btn_type, ODA_FOCUS );
         if (style & BS_NOTIFY)
             BUTTON_NOTIFY_PARENT(hWnd, BN_SETFOCUS);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (((btn_type == BS_RADIOBUTTON) || (btn_type == BS_AUTORADIOBUTTON)) &&
             !(get_button_state(hWnd) & (BST_CHECKED | BUTTON_BTNPRESSED)))
         {
@@ -566,7 +566,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
     case BM_SETSTYLE:
         btn_type = wParam & BS_TYPEMASK;
         style = (style & ~BS_TYPEMASK) | btn_type;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         NtUserAlterWindowStyle(hWnd, BS_TYPEMASK, btn_type);
 #else
         WIN_SetStyle( hWnd, style, BS_TYPEMASK & ~style );
@@ -581,7 +581,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
         break;
 
     case BM_CLICK:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         state = get_button_state(hWnd);
         if (state & BUTTON_BMCLICK)
            break;
@@ -589,7 +589,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
 #endif
 	SendMessageW( hWnd, WM_LBUTTONDOWN, 0, 0 );
 	SendMessageW( hWnd, WM_LBUTTONUP, 0, 0 );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         state = get_button_state(hWnd);
         if (!(state & BUTTON_BMCLICK)) break;
         state &= ~BUTTON_BMCLICK;
@@ -625,7 +625,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
         state = get_button_state( hWnd );
         if ((btn_type == BS_RADIOBUTTON) || (btn_type == BS_AUTORADIOBUTTON))
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             NtUserAlterWindowStyle( hWnd, WS_TABSTOP, wParam ? WS_TABSTOP : 0 );
 #else
             if (wParam) WIN_SetStyle( hWnd, WS_TABSTOP, 0 );
@@ -656,7 +656,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
         NotifyWinEvent( EVENT_OBJECT_STATECHANGE, hWnd, OBJID_CLIENT, 0 );
         break;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WM_UPDATEUISTATE:
         if (unicode)
             DefWindowProcW(hWnd, uMsg, wParam, lParam);
@@ -678,7 +678,7 @@ LRESULT WINAPI ButtonWndProc_common(HWND hWnd, UINT uMsg,
     return 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 /***********************************************************************
  *           ButtonWndProcW
@@ -701,7 +701,7 @@ LRESULT WINAPI ButtonWndProcA(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     return ButtonWndProc_common(hWnd, uMsg, wParam, lParam, FALSE);
 }
 
-#endif /* __REACTOS__ */
+#endif /* __LIBRENT__ */
 
 /**********************************************************************
  * Convert button styles to flags used by DrawText.
@@ -788,14 +788,14 @@ static UINT BUTTON_CalcLabelRect(HWND hwnd, HDC hdc, RECT *rc)
           }
 
           if ((hFont = get_button_font( hwnd ))) hPrevFont = SelectObject( hdc, hFont );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           DrawTextW(hdc, text, -1, &r, ((dtStyle | DT_CALCRECT) & ~(DT_VCENTER | DT_BOTTOM)));
 #else
           DrawTextW(hdc, text, -1, &r, dtStyle | DT_CALCRECT);
 #endif
           if (hPrevFont) SelectObject( hdc, hPrevFont );
           HeapFree( GetProcessHeap(), 0, text );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
           if (get_ui_state(hwnd) & UISF_HIDEACCEL)
               dtStyle |= DT_HIDEPREFIX;
 #endif
@@ -851,7 +851,7 @@ static UINT BUTTON_CalcLabelRect(HWND hwnd, HDC hdc, RECT *rc)
    {
       case DT_TOP:     r.top++;  r.bottom++;  break;
       case DT_VCENTER: n = r.bottom - r.top;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                        r.top    = rc->top + ((rc->bottom - 1 - rc->top) - n) / 2;
 #else
                        r.top    = rc->top + ((rc->bottom - rc->top) - n) / 2;
@@ -919,7 +919,7 @@ static void BUTTON_DrawLabel(HWND hwnd, HDC hdc, UINT dtFlags, const RECT *rc)
          lp = (LPARAM)text;
          wp = (WPARAM)dtFlags;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
          if (dtFlags & DT_HIDEPREFIX)
              flags |= DSS_HIDEPREFIX;
 #endif
@@ -968,14 +968,14 @@ static void PB_Paint( HWND hwnd, HDC hDC, UINT action )
     if ((hFont = get_button_font( hwnd ))) SelectObject( hDC, hFont );
     parent = GetParent(hwnd);
     if (!parent) parent = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetControlColor( parent, hwnd, hDC, WM_CTLCOLORBTN);
 #else
     SendMessageW( parent, WM_CTLCOLORBTN, (WPARAM)hDC, (LPARAM)hwnd );
 #endif
 
     hrgn = set_control_clipping( hDC, &rc );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hOldPen = SelectObject(hDC, GetStockObject(DC_PEN));
     SetDCPenColor(hDC, GetSysColor(COLOR_WINDOWFRAME));
 #else
@@ -1030,13 +1030,13 @@ static void PB_Paint( HWND hwnd, HDC hDC, UINT action )
 draw_focus:
     if (action == ODA_FOCUS || (state & BST_FOCUS))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(get_ui_state(hwnd) & UISF_HIDEFOCUS))
         {
 #endif
             InflateRect( &rc, -2, -2 );
             DrawFocusRect( hDC, &rc );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
@@ -1084,7 +1084,7 @@ static void CB_Paint( HWND hwnd, HDC hDC, UINT action )
 
     parent = GetParent(hwnd);
     if (!parent) parent = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hBrush = GetControlColor(parent, hwnd, hDC, WM_CTLCOLORSTATIC);
 #else
     hBrush = (HBRUSH)SendMessageW(parent, WM_CTLCOLORSTATIC,
@@ -1179,7 +1179,7 @@ static void CB_Paint( HWND hwnd, HDC hDC, UINT action )
     /* ... and focus */
     if (action == ODA_FOCUS || (state & BST_FOCUS))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(get_ui_state(hwnd) & UISF_HIDEFOCUS))
         {
 #endif
@@ -1187,7 +1187,7 @@ static void CB_Paint( HWND hwnd, HDC hDC, UINT action )
             rtext.right++;
             IntersectRect(&rtext, &rtext, &client);
             DrawFocusRect( hDC, &rtext );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         }
 #endif
     }
@@ -1211,7 +1211,7 @@ static void BUTTON_CheckAutoRadioButton( HWND hwnd )
     do
     {
         if (!sibling) break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if ((SendMessageW(sibling, WM_GETDLGCODE, 0, 0) & (DLGC_BUTTON | DLGC_RADIOBUTTON)) == (DLGC_BUTTON | DLGC_RADIOBUTTON))
 #else
         if (SendMessageW( sibling, WM_GETDLGCODE, 0, 0 ) == (DLGC_BUTTON | DLGC_RADIOBUTTON))
@@ -1241,7 +1241,7 @@ static void GB_Paint( HWND hwnd, HDC hDC, UINT action )
     /* GroupBox acts like static control, so it sends CTLCOLORSTATIC */
     parent = GetParent(hwnd);
     if (!parent) parent = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hbr = GetControlColor(parent, hwnd, hDC, WM_CTLCOLORSTATIC);
 #else
     hbr = (HBRUSH)SendMessageW(parent, WM_CTLCOLORSTATIC, (WPARAM)hDC, (LPARAM)hwnd);
@@ -1297,7 +1297,7 @@ static void UB_Paint( HWND hwnd, HDC hDC, UINT action )
 
     parent = GetParent(hwnd);
     if (!parent) parent = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     hBrush = GetControlColor( parent, hwnd, hDC, WM_CTLCOLORBTN);
 #else
     hBrush = (HBRUSH)SendMessageW(parent, WM_CTLCOLORBTN, (WPARAM)hDC, (LPARAM)hwnd);
@@ -1308,12 +1308,12 @@ static void UB_Paint( HWND hwnd, HDC hDC, UINT action )
 
     FillRect( hDC, &rc, hBrush );
     if (action == ODA_FOCUS || (state & BST_FOCUS))
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         if (!(get_ui_state(hwnd) & UISF_HIDEFOCUS))
 #endif
             DrawFocusRect( hDC, &rc );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     }
 #endif
 
@@ -1362,7 +1362,7 @@ static void OB_Paint( HWND hwnd, HDC hDC, UINT action )
     if ((hFont = get_button_font( hwnd ))) SelectObject( hDC, hFont );
     parent = GetParent(hwnd);
     if (!parent) parent = hwnd;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     GetControlColor( parent, hwnd, hDC, WM_CTLCOLORBTN);
 #else
     SendMessageW( parent, WM_CTLCOLORBTN, (WPARAM)hDC, (LPARAM)hwnd );

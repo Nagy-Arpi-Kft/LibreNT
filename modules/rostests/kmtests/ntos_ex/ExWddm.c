@@ -1,12 +1,12 @@
 /*
- * PROJECT:         LiberNT kernel-mode tests
+ * PROJECT:         LibreNT kernel-mode tests
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Modern executive services used by WDDM class drivers
  * COPYRIGHT:       Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
  */
 
 #include <kmt_test.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/drivers/acpi/acpi.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -1001,10 +1001,10 @@ static
 VOID
 TestKsrApiSetContract(VOID)
 {
-    BOOLEAN IsReactOS;
+    BOOLEAN IsLibreNT;
 
-    IsReactOS = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
-    if (skip(IsReactOS,
+    IsLibreNT = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
+    if (skip(IsLibreNT,
              "native KSR operations reboot an external caller; import binding is covered separately\n"))
     {
         return;
@@ -1311,7 +1311,7 @@ static
 VOID
 TestModernProcessFaultState(VOID)
 {
-    BOOLEAN IsReactOS;
+    BOOLEAN IsLibreNT;
     UCHAR BeforeCounts = 0;
     UCHAR ExpectedCounts;
     ULONG BeforeFlags = 0;
@@ -1320,8 +1320,8 @@ TestModernProcessFaultState(VOID)
     ULONG ReturnLength;
     NTSTATUS Status;
 
-    IsReactOS = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
-    if (IsReactOS)
+    IsLibreNT = *(volatile ULONG *)(KI_USER_SHARED_DATA + PAGE_SIZE - sizeof(ULONG)) == 0x8eac705;
+    if (IsLibreNT)
     {
         BeforeCounts = ProcessFaultCounts(PsGetCurrentProcess());
         BeforeFlags = PsGetCurrentProcess()->Flags3;
@@ -1339,7 +1339,7 @@ TestModernProcessFaultState(VOID)
     trace("ProcessFaultInformation after returned 0x%08lx, length %lu, value 0x%08lx\n", Status, ReturnLength, FaultQuery);
     ok_eq_hex(Status, STATUS_INVALID_INFO_CLASS);
 
-    if (skip(IsReactOS, "native EPROCESS fields are intentionally opaque\n"))
+    if (skip(IsLibreNT, "native EPROCESS fields are intentionally opaque\n"))
         return;
 
     ExpectedCounts = BeforeCounts | 0x40;
@@ -1404,7 +1404,7 @@ TestModernProviderState(VOID)
 {
     static const WCHAR ExpectedLicenseData[] = L"EMPTY";
     static UNICODE_STRING LicenseName = RTL_CONSTANT_STRING(L"Kernel-MUI-Language-Allowed");
-    static UNICODE_STRING MissingLicenseName = RTL_CONSTANT_STRING(L"ReactOS-Missing-License-Value");
+    static UNICODE_STRING MissingLicenseName = RTL_CONSTANT_STRING(L"LibreNT-Missing-License-Value");
     static const UNICODE_STRING PartitionName = RTL_CONSTANT_STRING(L"\\??\\MemoryPartitionGraphics");
     UCHAR PartitionInformation[0xF0];
     OBJECT_ATTRIBUTES ObjectAttributes;

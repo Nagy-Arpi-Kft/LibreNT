@@ -34,7 +34,7 @@ Abstract:
 //  This macro just puts a nice little try-except around RtlZeroMemory
 //
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #define SafeZeroMemory(IC,AT,BYTE_COUNT) {                  \
     _SEH2_TRY {                                             \
         RtlZeroMemory( (AT), (BYTE_COUNT) );                \
@@ -241,8 +241,8 @@ Return Value:
             Status = FsRtlCheckOplock( CdGetFcbOplock(Fcb),
                                        Irp,
                                        IrpContext,
-                                       (PVOID)CdOplockComplete,/* ReactOS Change: GCC "assignment from incompatible pointer type" */
-                                       (PVOID)CdPrePostIrp );/* ReactOS Change: GCC "assignment from incompatible pointer type" */
+                                       (PVOID)CdOplockComplete,/* LibreNT Change: GCC "assignment from incompatible pointer type" */
+                                       (PVOID)CdPrePostIrp );/* LibreNT Change: GCC "assignment from incompatible pointer type" */
 
             //
             //  If the result is not STATUS_SUCCESS then the Irp was completed

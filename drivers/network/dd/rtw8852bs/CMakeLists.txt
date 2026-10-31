@@ -1,5 +1,5 @@
 #
-# PROJECT:     LiberNT Realtek RTL8852BS Native 802.11 Miniport
+# PROJECT:     LibreNT Realtek RTL8852BS Native 802.11 Miniport
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     RTL8852BS SDIO Native Wi-Fi miniport build rules
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -29,14 +29,14 @@ list(APPEND SOURCE
     reg.h
     phyreg.h)
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/drivers/rsna_supplicant)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/drivers/rsna_supplicant)
 
 add_library(rtw8852bs MODULE ${SOURCE} rtw8852bs.rc)
 set_module_type(rtw8852bs kernelmodedriver)
 target_link_libraries(rtw8852bs sdbuslib rsna_supplicant)
 add_importlibs(rtw8852bs ndis ntoskrnl hal)
-add_cd_file(TARGET rtw8852bs DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET rtw8852bs DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_driver_inf(rtw8852bs netrtw8852bs.inf)
 
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/rtw8852b_fw-2.bin DESTINATION reactos/system32/drivers/realtek NO_CAB FOR all)
-add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/LICENCE.rtlwifi_firmware.txt DESTINATION reactos/3rdParty NO_CAB FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/rtw8852b_fw-2.bin DESTINATION librent/system32/drivers/realtek NO_CAB FOR all)
+add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/fw/LICENCE.rtlwifi_firmware.txt DESTINATION librent/3rdParty NO_CAB FOR all)

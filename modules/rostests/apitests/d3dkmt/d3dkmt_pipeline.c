@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GPU submission-pipeline liveness: drives the dxgkrnl
  *              render-command escape (Render -> vidsch queue -> fence-at-
@@ -22,7 +22,7 @@
  */
 
 #include "precomp.h"
-#include <reactos/rpi5vc4_umd.h>
+#include <librent/rpi5vc4_umd.h>
 
 /* Driver-private contracts, mirrored from drivers/directx/rpi5vc4 and
  * drivers/directx/dxgkrnl (the test IS the second implementer). */

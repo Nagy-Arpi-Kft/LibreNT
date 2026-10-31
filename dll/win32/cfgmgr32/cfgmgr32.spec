@@ -275,7 +275,7 @@
 @ stub SwDeviceSetLifetime
 @ stub SwMemFree
 
-# ReactOS retains legacy Configuration Manager exports that Wine no longer exposes.
+# LibreNT retains legacy Configuration Manager exports that Wine no longer exposes.
 @ stdcall CMP_RegisterNotification(ptr ptr long ptr)
 @ stdcall CMP_UnregisterNotification(ptr)
 @ stub CM_Remove_Unmarked_Children

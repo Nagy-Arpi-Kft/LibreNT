@@ -235,9 +235,9 @@ WinLdrInitializePhase1(
      * Examples of correct options and paths:
      * CHAR BootOptions[] = "DEBUGPORT=COM1 BAUDRATE=115200";
      * CHAR SystemPartition[] = "multi(0)disk(0)rdisk(0)partition(1)";
-     * CHAR BootPath[] = "multi(0)disk(0)rdisk(0)partition(2)\\ReactOS\\";
+     * CHAR BootPath[] = "multi(0)disk(0)rdisk(0)partition(2)\\LibreNT\\";
      * --> ArcBootDevice = "multi(0)disk(0)rdisk(0)partition(2)"
-     *     SystemRoot = "\\ReactOS\\"
+     *     SystemRoot = "\\LibreNT\\"
      */
     CHAR  HalPath[] = "\\";
     CHAR  FilePath[MAX_PATH+1];
@@ -245,8 +245,8 @@ WinLdrInitializePhase1(
     PLOADER_PARAMETER_EXTENSION Extension;
 
     /* Convert BootPath to SystemRoot. Attempt to handle paths like:
-     * "multi(0)disk(0)rdisk(0)partition(2)ReactOS\\weird)name"
-     * where SystemRoot would be: "ReactOS\\weird)name" */
+     * "multi(0)disk(0)rdisk(0)partition(2)LibreNT\\weird)name"
+     * where SystemRoot would be: "LibreNT\\weird)name" */
     PCSTR SystemRoot = BootPath + strcspn(BootPath, "\\");
     PCSTR LastParen;
 
@@ -1858,7 +1858,7 @@ LoadAndBootWindowsCommon(
     Arm64PreparePageTables();
 
     /* Exit firmware services after the final loader layout is mapped. */
-    MachPrepareForReactOS();
+    MachPrepareForLibreNT();
 #elif defined(_M_RISCV64)
     /* RISC-V firmware hands the OS loader an S-mode, bare-address-space
      * context. Build and validate the complete Sv39 handoff before the
@@ -1872,7 +1872,7 @@ LoadAndBootWindowsCommon(
         return ENOEXEC;
     }
 
-    MachPrepareForReactOS();
+    MachPrepareForLibreNT();
 #elif defined(_M_PPC)
     /* Open Firmware keeps the MMU until PpcJumpToKernel; build the kernel
      * tables, HTAB and BAT values while firmware services still work. */
@@ -1885,10 +1885,10 @@ LoadAndBootWindowsCommon(
         return ENOEXEC;
     }
 
-    MachPrepareForReactOS();
+    MachPrepareForLibreNT();
 #else
     /* "Stop all motors", change videomode */
-    MachPrepareForReactOS();
+    MachPrepareForLibreNT();
 
     /* Do the machine specific initialization */
     WinLdrSetupMachineDependent(LoaderBlock);

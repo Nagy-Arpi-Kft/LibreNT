@@ -2346,7 +2346,7 @@ HRESULT CreateComponentInfo(REFCLSID clsid, IWICComponentInfo **ppIInfo)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT GetCachedComponentInfo(REFCLSID clsid, IWICComponentInfo **ppIInfo)
 {
     struct wine_rb_entry *cache_entry;

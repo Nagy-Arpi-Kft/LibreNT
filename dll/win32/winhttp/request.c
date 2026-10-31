@@ -100,7 +100,7 @@ static void reset_data_stream( struct request *request )
     request->read.pos = request->read.size = 0;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD request_recv( struct request *request, void *buf, size_t len, int flags, int *ret_len )
 {
     DWORD ret = netconn_recv( request->netconn, buf, len, flags, ret_len );
@@ -1161,7 +1161,7 @@ static DWORD query_headers( struct request *request, DWORD level, const WCHAR *n
         }
         else
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             lstrcpyW( buffer, request->status_text ? request->status_text : L"" );
 #else
             lstrcpyW( buffer, request->status_text );
@@ -1587,7 +1587,7 @@ static BOOL do_authorization( struct request *request, DWORD target, DWORD schem
         else
         {
             if (!has_auth_value) return FALSE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             username = request->username;
             password = request->password;
 #else
@@ -2187,7 +2187,7 @@ done:
     return ERROR_SUCCESS;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static void finished_reading( struct request * );
 #endif
 
@@ -2195,7 +2195,7 @@ void close_connection( struct request *request )
 {
     if (!request->netconn) return;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (request->state >= REQUEST_STATE_RESPONSE_RECEIVED &&
         !(request->flags & REQUEST_FLAG_WEBSOCKET_UPGRADE) &&
         request->data_stream == &request->netconn_stream.data_stream &&
@@ -3333,7 +3333,7 @@ done:
         request->state = REQUEST_STATE_RESPONSE_RECEIVED;
         if (request->netconn) netconn_set_timeout( request->netconn, FALSE, request->receive_timeout );
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (ret == ERROR_WINHTTP_CLIENT_AUTH_CERT_NEEDED && request->netconn)
     {
         netconn_release( request->netconn );
@@ -3703,7 +3703,7 @@ BOOL WINAPI WinHttpWriteData( HINTERNET hrequest, const void *buffer, DWORD to_w
         SetLastError( ERROR_WINHTTP_INCORRECT_HANDLE_TYPE );
         return FALSE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!request->netconn)
     {
         release_object( &request->hdr );
@@ -3777,12 +3777,12 @@ struct winhttp_request
     BOOL async;
     UINT url_codepage;
     DWORD security_flags;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     WCHAR *user_agent;
 #endif
 };
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static const WCHAR default_user_agentW[] = L"Mozilla/4.0 (compatible; Win32; WinHttp.WinHttpRequest.5)";
 #endif
 
@@ -3829,7 +3829,7 @@ static void free_request( struct winhttp_request *request )
     free( request->proxy.lpszProxyBypass );
     free( request->buffer );
     free( request->verb );
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     free( request->user_agent );
     request->user_agent = NULL;
 #endif
@@ -4238,7 +4238,7 @@ static HRESULT WINAPI winhttp_request_Open(
 
     if (!request->hsession)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (!(request->hsession = WinHttpOpen( request->user_agent ? request->user_agent : user_agentW,
                                                WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, NULL, NULL, WINHTTP_FLAG_ASYNC )))
 #else
@@ -5109,7 +5109,7 @@ static HRESULT WINAPI winhttp_request_get_Option(
         V_I4( value ) = request->security_flags;
         break;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WinHttpRequestOption_UserAgentString:
         V_VT( value ) = VT_BSTR;
         V_BSTR( value ) = SysAllocString( request->user_agent ? request->user_agent : default_user_agentW );
@@ -5146,7 +5146,7 @@ static HRESULT WINAPI winhttp_request_put_Option(
             request->disable_feature |= WINHTTP_DISABLE_REDIRECTS;
         break;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case WinHttpRequestOption_UserAgentString:
     {
         VARIANT str;

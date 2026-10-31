@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     NTFS filesystem driver
  * COPYRIGHT:   Copyright 2024 Carl Bialorucki <carl.bialorucki@reactos.org>
@@ -238,7 +238,7 @@ GetGlobalSettingsFromRegistry()
         gMftZoneReservation = 1;
     }
 
-    /* *** ReactOS Extended Options *** */
+    /* *** LibreNT Extended Options *** */
 
     /* Shows the super hidden NTFS metadata files, including $MFT and $LogFile.
      * Default is OFF (0).

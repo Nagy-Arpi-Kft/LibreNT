@@ -20,7 +20,7 @@
 
 #pragma makedep register
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 [
     helpstring("Multiple AutoComplete List Container"),
     threading(apartment),
@@ -29,7 +29,7 @@
 coclass ACLMulti { interface IACList; }
 #endif
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 [
     helpstring("Progress Dialog"),
     threading(both),
@@ -51,7 +51,7 @@ coclass CompCatCacheDaemon { interface IRunnableTask; }
 ]
 coclass DeskBarApp { interface IDeskBar; }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 [
     helpstring("Shell Folder AutoComplete List"),
     threading(apartment),

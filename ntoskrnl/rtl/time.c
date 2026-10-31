@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NT 10+ RTL multi-clock query services
  * COPYRIGHT:   Copyright 2026 Ahmed Arif <arif.ing@outlook.com>
@@ -42,7 +42,7 @@ RtlGetMultiTimePrecise(
         Returned |= 1;
     }
 
-    /* ReactOS has no hypervisor host-performance-counter provider yet. */
+    /* LibreNT has no hypervisor host-performance-counter provider yet. */
 
     if (RequestedValues & 4)
     {

@@ -447,7 +447,7 @@ static inline void exprval_set_exception(exprval_t *val, HRESULT hres)
 static inline void exprval_set_disp_ref(exprval_t *ref, IDispatch *obj, DISPID id)
 {
     ref->type = EXPRVAL_IDREF;
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     ref->u.idref.disp = obj;
     IDispatch_AddRef(obj);
 #else
@@ -1228,7 +1228,7 @@ static void set_error_value(script_ctx_t *ctx, jsval_t value)
     ei->valid_value = TRUE;
     ei->value = value;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(is_object_instance(value) && (obj = to_jsdisp(get_object(value))) && is_class(obj, JSCLASS_ERROR)) {
 #else
     if(is_object_instance(value) && (obj = to_jsdisp(get_object(value)))) {

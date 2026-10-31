@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS USB Port Driver
+ * PROJECT:     LibreNT USB Port Driver
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     USBPort plug and play functions
  * COPYRIGHT:   Copyright 2017 Vadim Galyant <vgal@rambler.ru>
@@ -2681,7 +2681,7 @@ USBPORT_LimitMessageInterrupts(IN PIO_RESOURCE_REQUIREMENTS_LIST Requirements)
                 else if (Source->u.Interrupt.MinimumVector == Source->u.Interrupt.MaximumVector)
                 {
                     /* Compatibility with the count encoding emitted by older
-                     * ReactOS bus drivers. */
+                     * LibreNT bus drivers. */
                     Granted = Source->u.Interrupt.MaximumVector;
                 }
 

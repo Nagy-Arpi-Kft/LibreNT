@@ -1,14 +1,14 @@
 /*
- * PROJECT:     LiberNT TPM 2.0 Driver
+ * PROJECT:     LibreNT TPM 2.0 Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     ACPI MSFT0101 CRB and FIFO hardware transport
  */
 
 #include <ntddk.h>
 #include <acpiioct.h>
-#include <reactos/drivers/acpi/acpi.h>
-#include <reactos/drivers/acpi/acpisystem.h>
-#include <reactos/drivers/tpm2.h>
+#include <librent/drivers/acpi/acpi.h>
+#include <librent/drivers/acpi/acpisystem.h>
+#include <librent/drivers/tpm2.h>
 
 #define NDEBUG
 #include <debug.h>
@@ -1318,7 +1318,7 @@ Tpm2AddDevice(
     }
     IoInitializeRemoveLock(&DeviceExtension->RemoveLock, TPM2_TAG, 0, 0);
     KeInitializeMutex(&DeviceExtension->CommandMutex, 0);
-    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_REACTOS_TPM2, NULL, &DeviceExtension->InterfaceName);
+    Status = IoRegisterDeviceInterface(PhysicalDeviceObject, &GUID_DEVINTERFACE_LIBRENT_TPM2, NULL, &DeviceExtension->InterfaceName);
     if (!NT_SUCCESS(Status))
     {
         IoDetachDevice(DeviceExtension->LowerDevice);

@@ -1,4 +1,4 @@
-/* ReactOS DirectWrite monitor preferences tests. LGPL-2.1-or-later. */
+/* LibreNT DirectWrite monitor preferences tests. LGPL-2.1-or-later. */
 #define COBJMACROS
 #include <stdarg.h>
 #include "windef.h"

@@ -1,10 +1,10 @@
 include_directories(
-    ${REACTOS_SOURCE_DIR}/modules/rostests/apitests/include
-    ${REACTOS_SOURCE_DIR}/dll/win32/newdev)
+    ${LIBRENT_SOURCE_DIR}/modules/rostests/apitests/include
+    ${LIBRENT_SOURCE_DIR}/dll/win32/newdev)
 
 list(APPEND SOURCE
     BatchDriverCache.c
-    ${REACTOS_SOURCE_DIR}/dll/win32/newdev/driver_cache.c
+    ${LIBRENT_SOURCE_DIR}/dll/win32/newdev/driver_cache.c
     testlist.c)
 
 add_executable(newdev_unittest ${SOURCE})

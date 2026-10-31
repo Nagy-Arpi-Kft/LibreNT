@@ -144,7 +144,7 @@ NTSTATUS WINAPI wow64_NtAdjustGroupsToken( UINT *args )
     TOKEN_GROUPS32 *prev = get_ptr( &args );
     ULONG *retlen = get_ptr( &args );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TOKEN_GROUPS *prev64;
     ULONG i, size, ret_size = 0, count_off, sid_off;
     NTSTATUS status;
@@ -429,7 +429,7 @@ NTSTATUS WINAPI wow64_NtPrivilegeCheck( UINT *args )
 }
 
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef struct
 {
     ULONG SidCount;
@@ -496,7 +496,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationToken( UINT *args )
     case TokenVirtualizationEnabled:  /* ULONG */
     case TokenUIAccess:  /* ULONG */
     case TokenIsAppContainer:  /* ULONG */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TokenSource:  /* TOKEN_SOURCE */
     case TokenSandBoxInert:  /* ULONG */
     case TokenOrigin:  /* TOKEN_ORIGIN */
@@ -504,7 +504,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationToken( UINT *args )
         /* nothing to map */
         return NtQueryInformationToken( handle, class, info, len, retlen );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TokenGroupsAndPrivileges:  /* TOKEN_GROUPS_AND_PRIVILEGES */
     {
         TOKEN_GROUPS_AND_PRIVILEGES32 *gap32 = info;
@@ -593,7 +593,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationToken( UINT *args )
 
     case TokenGroups:  /* TOKEN_GROUPS */
     case TokenLogonSid:   /* TOKEN_GROUPS */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TokenRestrictedSids:  /* TOKEN_GROUPS */
 #endif
     {
@@ -654,7 +654,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationToken( UINT *args )
         return status;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TokenBnoIsolation:
     {
         TOKEN_BNO_ISOLATION_INFORMATION32 *bno32 = info;
@@ -681,7 +681,7 @@ NTSTATUS WINAPI wow64_NtQueryInformationToken( UINT *args )
 #endif
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtQueryInformationToken: unsupported class %u\n", class );
 #else
         FIXME( "unsupported class %u\n", class );
@@ -732,7 +732,7 @@ NTSTATUS WINAPI wow64_NtSetInformationToken( UINT *args )
         else return STATUS_INFO_LENGTH_MISMATCH;
 
     case TokenSessionId:   /* ULONG */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TokenOrigin:  /* TOKEN_ORIGIN */
     case TokenVirtualizationAllowed:  /* ULONG */
     case TokenVirtualizationEnabled:  /* ULONG */
@@ -743,7 +743,7 @@ NTSTATUS WINAPI wow64_NtSetInformationToken( UINT *args )
 #endif
         return NtSetInformationToken( handle, class, ptr, len );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     case TokenOwner:  /* TOKEN_OWNER */
     case TokenPrimaryGroup:  /* TOKEN_PRIMARY_GROUP */
         if (len >= sizeof(ULONG))
@@ -766,7 +766,7 @@ NTSTATUS WINAPI wow64_NtSetInformationToken( UINT *args )
         else return STATUS_INFO_LENGTH_MISMATCH;
 
     default:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         FIXME( "wow64_NtSetInformationToken: unsupported class %u\n", class );
         return STATUS_INVALID_INFO_CLASS;
 #else

@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/kernel32/client/thread.c
  * PURPOSE:         Thread functions
  * PROGRAMMERS:     Alex Ionescu (alex.ionescu@reactos.org)
@@ -373,7 +373,7 @@ CreateRemoteThread(IN HANDLE hProcess,
         Teb->SubProcessTag = NtCurrentTeb()->SubProcessTag;
     }
 
-    /* Notify CSR for ReactOS bookkeeping. */
+    /* Notify CSR for LibreNT bookkeeping. */
     if (!BaseRunningInServerProcess)
     {
         Status = BasepNotifyCsrOfThread(hThread, &ClientId);

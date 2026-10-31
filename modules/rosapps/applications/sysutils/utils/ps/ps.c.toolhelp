@@ -1,5 +1,5 @@
 /*
- *  ReactOS ps - process list console viewer
+ *  LibreNT ps - process list console viewer
  *
  *  ps.c
  *

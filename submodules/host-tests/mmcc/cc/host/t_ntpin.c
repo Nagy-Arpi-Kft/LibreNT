@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS host-native tests
+ * PROJECT:     LibreNT host-native tests
  * FILE:        submodules/host-tests/mmcc/cc/host/t_ntpin.c
  * PURPOSE:     NT cached pinning host-native regression tests
  *

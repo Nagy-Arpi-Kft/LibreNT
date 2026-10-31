@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2004 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS seh conversion tool
+ * PROJECT:         LibreNT seh conversion tool
  * FILE:            tools/ms2ps/ms2ps.cpp
  * PURPOSE:         Conversion tool from msvc to pseh style seh
  * PROGRAMMER:      Art Yerkes

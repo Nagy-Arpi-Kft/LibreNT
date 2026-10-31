@@ -29,4 +29,4 @@ add_library(dxgmms2 MODULE
 set_module_type(dxgmms2 kernelmodedriver)
 add_importlibs(dxgmms2 ntoskrnl hal)
 add_pch(dxgmms2 dxgmms2_private.h "${SOURCE}")
-add_cd_file(TARGET dxgmms2 DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET dxgmms2 DESTINATION librent/system32/drivers FOR all)

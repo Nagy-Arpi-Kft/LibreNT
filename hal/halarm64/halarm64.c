@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS HAL (ARM64)
+ * PROJECT:         LibreNT HAL (ARM64)
  * LICENSE:         GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:         Minimal stub implementation to satisfy kernel linkage
  *                  while the real Windows 11 style ARM64 HAL is brought up.
@@ -14,9 +14,9 @@
 #include <ioaccess.h>
 #include <halfuncs.h>
 #include <halefi.h>
-#include <reactos/hal/acpi_pci.h>
-#include <reactos/hal/acpi_cstate.h>
-#include <reactos/drivers/acpi/acpi.h>
+#include <librent/hal/acpi_pci.h>
+#include <librent/hal/acpi_cstate.h>
+#include <librent/drivers/acpi/acpi.h>
 #include <halacpip.h>
 #include <halacpi_arm64.h>
 #include <bugcodes.h>

@@ -951,7 +951,7 @@ BooleanLiteral
 semicolon_opt
         : ';'
         | error                 { if(!allow_auto_semicolon(ctx)) {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                                       if(ctx->hres == JS_E_SYNTAX) ctx->hres = JS_E_MISSING_SEMICOLON;
 #endif
                                       YYABORT;} else { ctx->hres = S_OK; ctx->error_loc = -1; } }

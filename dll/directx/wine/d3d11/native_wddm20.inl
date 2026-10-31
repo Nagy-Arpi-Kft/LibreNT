@@ -1,5 +1,5 @@
 /*
- * PROJECT: ReactOS Direct3D 11 runtime
+ * PROJECT: LibreNT Direct3D 11 runtime
  * LICENSE: GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE: WDDM 2.0 argument adapters, included after the native runtime object types
  */

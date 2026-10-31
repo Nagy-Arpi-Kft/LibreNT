@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include <wine/asm.h>
 #endif
 

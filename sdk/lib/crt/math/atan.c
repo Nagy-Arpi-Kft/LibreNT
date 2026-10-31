@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS CRT library
+ * PROJECT:     LibreNT CRT library
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Portable implementation of atan()
  * COPYRIGHT:   Imported from fdlibm / FreeBSD msun (s_atan.c)

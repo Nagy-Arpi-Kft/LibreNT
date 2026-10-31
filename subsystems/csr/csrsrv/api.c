@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Client/Server Runtime SubSystem
+ * PROJECT:         LibreNT Client/Server Runtime SubSystem
  * FILE:            subsystems/win32/csrsrv/api.c
  * PURPOSE:         CSR Server DLL API LPC Implementation
  *                  "\Windows\ApiPort" port process management functions
@@ -16,7 +16,7 @@
 #include <wincon_undoc.h>
 #include <ndk/kefuncs.h>
 #include <ndk/mmfuncs.h>
-#include <reactos/subsys/csr/csrwow64.h>
+#include <librent/subsys/csr/csrwow64.h>
 
 #define NDEBUG
 #include <debug.h>

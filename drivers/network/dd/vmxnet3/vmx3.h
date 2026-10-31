@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT VMXNET3 Ethernet Driver
+ * PROJECT:     LibreNT VMXNET3 Ethernet Driver
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     VMXNET3 device interface and adapter state
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
@@ -13,7 +13,7 @@
 #include <ipifcons.h>
 
 #define NDEBUG
-#include <reactos/debug.h>
+#include <librent/debug.h>
 
 #ifndef ETH_LENGTH_OF_ADDRESS
 #define ETH_LENGTH_OF_ADDRESS 6

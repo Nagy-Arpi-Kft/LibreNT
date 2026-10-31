@@ -107,7 +107,7 @@
 @ cdecl IsAcpiPresent()
 @ cdecl LoadSettings()
 @ cdecl MachHwDetect()
-@ cdecl MachPrepareForReactOS()
+@ cdecl MachPrepareForLibreNT()
 @ cdecl MachGetExtendedBIOSData()
 @ cdecl MachVideoGetFontsFromFirmware()
 @ extern MachVtbl

@@ -3,9 +3,9 @@
  *
  * Network Programming Interface — module identifier and registration
  * instance. Thin forwarder to netiodef.h (psdk), which is the canonical
- * home for NPIID, NPI_MODULEID, and related types on ReactOS.
+ * home for NPIID, NPI_MODULEID, and related types on LibreNT.
  *
- * This file is part of the ReactOS DDK package.
+ * This file is part of the LibreNT DDK package.
  *
  * Contributors:
  *   Created for the dev-nt6-1 branch as part of the NT 5.2 -> NT 6.1 upgrade.

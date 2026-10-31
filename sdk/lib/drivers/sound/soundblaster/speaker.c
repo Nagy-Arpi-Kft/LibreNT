@@ -1,5 +1,5 @@
 /*
-    ReactOS Sound System
+    LibreNT Sound System
     Sound Blaster DSP support
     Speaker commands
 

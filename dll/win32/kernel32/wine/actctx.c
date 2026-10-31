@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/kernel32/wine/actctx.c
  * PURPOSE:         Activation contexts
  * PROGRAMMERS:     Jacek Caban for CodeWeavers
@@ -122,7 +122,7 @@ HANDLE WINAPI CreateActCtxW(PCACTCTXW pActCtx)
     return hActCtx;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  * ActivateActCtx (KERNEL32.@)
  *
@@ -204,7 +204,7 @@ BOOL WINAPI ZombifyActCtx(HANDLE hActCtx)
     }
     return TRUE;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__
 
 /***********************************************************************
  * FindActCtxSectionStringA (KERNEL32.@)
@@ -299,7 +299,7 @@ BOOL WINAPI QueryActCtxSettingsW( DWORD flags, HANDLE ctx, const WCHAR *ns, cons
     return TRUE;
 }
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 /***********************************************************************
  * QueryActCtxW (KERNEL32.@)
  *
@@ -319,4 +319,4 @@ BOOL WINAPI QueryActCtxW(DWORD dwFlags, HANDLE hActCtx, PVOID pvSubInst,
     }
     return TRUE;
 }
-#endif // !__REACTOS__
+#endif // !__LIBRENT__

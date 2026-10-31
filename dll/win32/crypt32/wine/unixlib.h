@@ -1,7 +1,7 @@
 /*
- * PROJECT:     ReactOS win32 DLLs
+ * PROJECT:     LibreNT win32 DLLs
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
- * PURPOSE:     ReactOS emulation layer for crypt32 unixlib calls
+ * PURPOSE:     LibreNT emulation layer for crypt32 unixlib calls
  * COPYRIGHT:   Copyright 2026 Timo Kreuzer <timo.kreuzer@reactos.org>
  */
 
@@ -22,7 +22,7 @@ static inline NTSTATUS __reactos_call_unix_process_detach(void* Args)
     return 0;
 }
 
-// Implemented in reactos/unixlib.c
+// Implemented in librent/unixlib.c
 NTSTATUS __reactos_call_unix_open_cert_store(void* Args);
 NTSTATUS __reactos_call_unix_close_cert_store(void* Args);
 NTSTATUS __reactos_call_unix_import_store_key(void* Args);

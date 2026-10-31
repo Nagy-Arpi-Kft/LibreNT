@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel - Vista+ APIs
+ * PROJECT:     LibreNT Kernel - Vista+ APIs
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Etw functions of Vista+
  * COPYRIGHT:   2020 Victor Perevertkin (victor.perevertkin@reactos.org)
@@ -22,7 +22,7 @@ EtwEventEnabled(
     UNREFERENCED_PARAMETER(RegHandle);
     UNREFERENCED_PARAMETER(EventDescriptor);
 
-    /* ReactOS does not yet enable kernel ETW provider sessions. */
+    /* LibreNT does not yet enable kernel ETW provider sessions. */
     return FALSE;
 }
 
@@ -38,7 +38,7 @@ EtwProviderEnabled(
     UNREFERENCED_PARAMETER(Level);
     UNREFERENCED_PARAMETER(Keyword);
 
-    /* ReactOS does not yet enable kernel ETW provider sessions. */
+    /* LibreNT does not yet enable kernel ETW provider sessions. */
     return FALSE;
 }
 
@@ -187,7 +187,7 @@ EtwRegisterClassicProvider(
      * (e.g. the Red Hat virtio-gpu WDDM DOD viogpudo.sys) turn their
      * DoTraceMessage tracing ON in response, so their otherwise-silent init
      * trace surfaces via WmiTraceMessage/EtwWrite — giving visibility into
-     * driver bring-up on ReactOS.  (Diagnostic aid; the spec was a raising stub
+     * driver bring-up on LibreNT.  (Diagnostic aid; the spec was a raising stub
      * that crashed such drivers in DriverEntry.)
      */
     UNREFERENCED_PARAMETER(ProviderGuid);

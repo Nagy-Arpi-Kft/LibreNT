@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT WDDM Null/Software GPU Miniport
+ * PROJECT:     LibreNT WDDM Null/Software GPU Miniport
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Private header for softgpu.sys — WDDM 2.0 ABI miniport with a
  *              physical/software engine and no GPU MMU, targeting QEMU STD
@@ -40,7 +40,7 @@
 #pragma once
 
 /* ---- Minimum OS version (must precede the kernel headers) --------------- *
- * Mirror dxgkrnl_private.h.  The ReactOS build targets XP (0x502) globally;
+ * Mirror dxgkrnl_private.h.  The LibreNT build targets XP (0x502) globally;
  * the WDDM2 structures in dispmprt.h are gated on NTDDI_WIN7, so raise the
  * version both here and on the command line (see CMakeLists.txt). */
 #undef  _WIN32_WINNT
@@ -63,8 +63,8 @@
  * through this driver's CMake target.  The target overrides this with the
  * selected menuconfig level.
  */
-#ifndef REACTOS_WDDM_TARGET_LEVEL
-#define REACTOS_WDDM_TARGET_LEVEL 2000
+#ifndef LIBRENT_WDDM_TARGET_LEVEL
+#define LIBRENT_WDDM_TARGET_LEVEL 2000
 #endif
 
 /* ---- Kernel / WDM headers ---------------------------------------------- */
@@ -82,7 +82,7 @@
  * argument struct, the WDDM2 DDI typedefs and the DxgkInitialize prototype.
  * It is the same header dxgkrnl is built against, guaranteeing matching ABI. */
 #include <dispmprt.h>
-#include <reactos/rddm/rxgkpresent.h>
+#include <librent/rddm/rxgkpresent.h>
 
 /* ---- Debug helpers ------------------------------------------------------- */
 #define NDEBUG
@@ -353,7 +353,7 @@ typedef struct _SOFTGPU_DEVICE
     LONG                PointerOriginX;
     LONG                PointerOriginY;
 
-    /* Optional ReactOS full-WDDM shadow-present interface. */
+    /* Optional LibreNT full-WDDM shadow-present interface. */
     KSPIN_LOCK          ShadowPresentInterfaceLock;
     volatile LONG       ShadowPresentInterfaceQueriesOpen;
     volatile LONG       ShadowPresentInterfaceReferences;
@@ -394,10 +394,10 @@ typedef struct _SOFTGPU_DEVICE
      * to DxgkDdiStartDevice (full WDDM2 dispmprt.h layout).
      */
     DXGK_INTERFACE      DxgkInterface;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
     BOOLEAN             KmdSignalCpuEventEnabled;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3200)
     /*
      * A successful feature-interface query owns one reference until the
      * consumer calls InterfaceDereference. StopDevice closes the admission
@@ -766,7 +766,7 @@ SoftGpuPlatformDestroyDevice(
     _Inout_ PSOFTGPU_KMD_DEVICE KmdDevice);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
 #define SOFTGPU_CPU_EVENT_MAGIC 0x45434753UL /* 'SGCE' */
 
 typedef struct _SOFTGPU_CPU_EVENT
@@ -847,7 +847,7 @@ APIENTRY
 SoftGpuDdiDestroyDevice(
     _In_ PVOID MiniportDeviceContext);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000)
 NTSTATUS
 APIENTRY
 SoftGpuDdiCreateCpuEvent(
@@ -861,7 +861,7 @@ SoftGpuDdiDestroyCpuEvent(
     _In_ HANDLE KmdCpuEvent);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 3000) || \
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 3000) || \
     defined(SOFTGPU_PLATFORM_PRIVATE_ESCAPE)
 NTSTATUS
 APIENTRY
@@ -958,7 +958,7 @@ SoftGpuDdiControlInterrupt(
     _In_ CONST DXGK_INTERRUPT_TYPE InterruptType,
     _In_ BOOLEAN                   EnableInterrupt);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1300)
 NTSTATUS
 APIENTRY
 SoftGpuDdiControlInterrupt2(
@@ -966,7 +966,7 @@ SoftGpuDdiControlInterrupt2(
     _In_ CONST DXGKARG_CONTROLINTERRUPT2 InterruptControl);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2600)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2600)
 NTSTATUS
 APIENTRY
 SoftGpuDdiCollectDiagnosticInfo(
@@ -974,7 +974,7 @@ SoftGpuDdiCollectDiagnosticInfo(
     INOUT_PDXGKARG_COLLECTDIAGNOSTICINFO CollectDiagnosticInfo);
 #endif
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2700)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2700)
 NTSTATUS
 APIENTRY
 SoftGpuDdiControlInterrupt3(
@@ -1092,7 +1092,7 @@ APIENTRY
 SoftGpuDdiDestroyContext(
     _In_ PVOID MiniportDeviceContext);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2100)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2100)
 NTSTATUS
 APIENTRY
 SoftGpuDdiValidateUpdateAllocationProperty(
@@ -1142,7 +1142,7 @@ SoftGpuDdiCommitVidPn(
     _In_ PVOID                      MiniportDeviceContext,
     _In_ CONST DXGKARG_COMMITVIDPN *CommitVidPn);
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2300)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2300)
 NTSTATUS
 APIENTRY
 SoftGpuDdiSetTimingsFromVidPn(

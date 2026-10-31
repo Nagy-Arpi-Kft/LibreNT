@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Tests
+ * PROJECT:     LibreNT Tests
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Calculate and print user idle time once per second by using
  *              user32!GetLastInputInfo() API and SharedUserData->LastSystemRITEventTickCount

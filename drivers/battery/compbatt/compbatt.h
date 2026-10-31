@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Composite Battery Driver
+ * PROJECT:     LibreNT Composite Battery Driver
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     Composite battery main header file
  * COPYRIGHT:   Copyright 2010 ReactOS Portable Systems Group <ros.arm@reactos.org>

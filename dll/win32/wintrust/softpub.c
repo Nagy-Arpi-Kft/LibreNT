@@ -95,7 +95,7 @@ static DWORD SOFTPUB_OpenFile(CRYPT_PROVIDER_DATA *data)
         if (data->pWintrustData->pFile->hFile != INVALID_HANDLE_VALUE)
             data->fOpenedFile = TRUE;
         else
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             err = CRYPT_E_FILE_ERROR;
 #else
             err = GetLastError();
@@ -131,7 +131,7 @@ static DWORD SOFTPUB_GetFileSubject(CRYPT_PROVIDER_DATA *data)
              * TRUST_E_SUBJECT_FORM_UNKNOWN, rather than whatever
              * CryptSIPRetrieveSubjectGuid returns.
              */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             UNREFERENCED_PARAMETER(fileSize);
             UNREFERENCED_PARAMETER(sipError);
             err = TRUST_E_SUBJECT_FORM_UNKNOWN;
@@ -871,7 +871,7 @@ static DWORD WINTRUST_VerifySigner(CRYPT_PROVIDER_DATA *data, DWORD signerIdx)
 
     if (certInfo)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         PCCERT_CONTEXT subject = NULL;
         DWORD store;
 
@@ -959,7 +959,7 @@ done:
     data->psPfns->pfnFree(attrs);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static DWORD SOFTPUB_SelectSecondarySignature(CRYPT_PROVIDER_DATA *data, DWORD index)
 {
     HCRYPTMSG msg = CryptMsgDuplicate(data->pSigState->rhSecondarySigs[index]);
@@ -990,7 +990,7 @@ HRESULT WINAPI SoftpubLoadSignature(CRYPT_PROVIDER_DATA *data)
     if (!data->padwTrustStepErrors)
         return S_FALSE;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (data->pSigState)
     {
         if (data->pSigState->fFirstAttemptMade)
@@ -1412,7 +1412,7 @@ HRESULT WINAPI SoftpubAuthenticode(CRYPT_PROVIDER_DATA *data)
         ret = TRUE;
         for (i = 0; ret && i < data->csSigners; i++)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             BYTE hash[64];
             DWORD size = sizeof(hash);
 
@@ -1439,7 +1439,7 @@ HRESULT WINAPI SoftpubAuthenticode(CRYPT_PROVIDER_DATA *data)
 
                 if (disallowed)
                 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     PCCERT_CONTEXT found = CertFindCertificateInStore(
                      disallowed, X509_ASN_ENCODING, 0, CERT_FIND_SIGNATURE_HASH,
                      &hashBlob, NULL);
@@ -1459,7 +1459,7 @@ HRESULT WINAPI SoftpubAuthenticode(CRYPT_PROVIDER_DATA *data)
                     CertCloseStore(disallowed, 0);
                 }
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (ret && !(WVT_ISINSTRUCT(WINTRUST_DATA, data->pWintrustData->cbStruct, dwProvFlags) &&
              (data->pWintrustData->dwProvFlags & WTD_HASH_ONLY_FLAG)))
 #else

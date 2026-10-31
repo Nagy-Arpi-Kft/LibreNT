@@ -23,7 +23,7 @@
 
 #include "windef.h"
 #include "winbase.h"
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 #include "wine/ntgdi.h"
 #else
 #include "ntgdi.h"
@@ -32,7 +32,7 @@
 #include "winuser.h"
 #include "winnls.h"
 #include "usp10.h"
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 #include "winternl.h"
 #endif
 
@@ -69,14 +69,14 @@ static HRESULT ContextualShape_Malayalam(HDC hdc, ScriptCache *psc, SCRIPT_ANALY
 static HRESULT ContextualShape_Khmer(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, WCHAR* pwcChars, INT cChars, WORD* pwOutGlyphs, INT* pcGlyphs, INT cMaxGlyphs, WORD *pwLogClust);
 static HRESULT ContextualShape_Mongolian(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, WCHAR* pwcChars, INT cChars, WORD* pwOutGlyphs, INT* pcGlyphs, INT cMaxGlyphs, WORD *pwLogClust);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 typedef HRESULT (*ShapeCharGlyphPropProc)( HDC , ScriptCache*, SCRIPT_ANALYSIS*, const WCHAR*, const INT, const WORD*, const INT, WORD*, SCRIPT_CHARPROP*, SCRIPT_GLYPHPROP*);
 #else
 typedef VOID (*ShapeCharGlyphPropProc)( HDC , ScriptCache*, SCRIPT_ANALYSIS*, const WCHAR*, const INT, const WORD*, const INT, WORD*, SCRIPT_CHARPROP*, SCRIPT_GLYPHPROP*);
 #endif
 
 static void ShapeCharGlyphProp_Default( ScriptCache* psc, SCRIPT_ANALYSIS* psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD* pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP* pGlyphProp);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Control( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP *pGlyphProp );
 static HRESULT ShapeCharGlyphProp_Latin( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP *pGlyphProp );
 static HRESULT ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP *pGlyphProp );
@@ -949,7 +949,7 @@ static HRESULT mark_invalid_combinations(HDC hdc, const WCHAR* pwcChars, INT cCh
     HRESULT hr = S_OK;
 
     context_type = malloc(cChars);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_type) return E_OUTOFMEMORY;
 #endif
 
@@ -1126,7 +1126,7 @@ static HRESULT ContextualShape_Arabic(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS
     load_ot_tables(hdc, psc);
 
     context_type = malloc(cChars);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_type) return E_OUTOFMEMORY;
     if ((SIZE_T)cChars > ~(SIZE_T)0 / sizeof(*context_shape))
     {
@@ -1135,7 +1135,7 @@ static HRESULT ContextualShape_Arabic(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS
     }
 #endif
     context_shape = malloc(cChars * sizeof(*context_shape));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_shape)
     {
         free(context_type);
@@ -1400,7 +1400,7 @@ static HRESULT ContextualShape_Syriac(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS
         return E_INVALIDARG;
 
     context_type = malloc(cChars);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_type) return E_OUTOFMEMORY;
     if ((SIZE_T)cChars > ~(SIZE_T)0 / sizeof(*context_shape))
     {
@@ -1409,7 +1409,7 @@ static HRESULT ContextualShape_Syriac(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS
     }
 #endif
     context_shape = malloc(cChars * sizeof(*context_shape));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_shape)
     {
         free(context_type);
@@ -1576,11 +1576,11 @@ static HRESULT ContextualShape_Phags_pa(HDC hdc, ScriptCache *psc, SCRIPT_ANALYS
     if (!psc->GSUB_Table)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / sizeof(*context_shape)) return E_OUTOFMEMORY;
 #endif
     context_shape = malloc(cChars * sizeof(*context_shape));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_shape) return E_OUTOFMEMORY;
 #endif
 
@@ -2378,7 +2378,7 @@ static HRESULT ContextualShape_Sinhala(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (3 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (3 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2453,7 +2453,7 @@ static HRESULT ContextualShape_Devanagari(HDC hdc, ScriptCache *psc, SCRIPT_ANAL
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2516,7 +2516,7 @@ static HRESULT ContextualShape_Bengali(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (2 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (2 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2587,7 +2587,7 @@ static HRESULT ContextualShape_Gurmukhi(HDC hdc, ScriptCache *psc, SCRIPT_ANALYS
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2638,7 +2638,7 @@ static HRESULT ContextualShape_Gujarati(HDC hdc, ScriptCache *psc, SCRIPT_ANALYS
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2696,7 +2696,7 @@ static HRESULT ContextualShape_Oriya(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (2 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (2 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2753,7 +2753,7 @@ static HRESULT ContextualShape_Tamil(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (2 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (2 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2810,7 +2810,7 @@ static HRESULT ContextualShape_Telugu(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (2 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (2 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2869,7 +2869,7 @@ static HRESULT ContextualShape_Kannada(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (3 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (3 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2921,7 +2921,7 @@ static HRESULT ContextualShape_Malayalam(HDC hdc, ScriptCache *psc, SCRIPT_ANALY
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (2 * sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (2 * sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -2966,7 +2966,7 @@ static HRESULT ContextualShape_Khmer(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
         return E_INVALIDARG;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / (sizeof(*input))) return E_OUTOFMEMORY;
     input = malloc(cChars * (sizeof(*input)));
     if (!input) return E_OUTOFMEMORY;
@@ -3016,11 +3016,11 @@ static HRESULT ContextualShape_Mongolian(HDC hdc, ScriptCache *psc, SCRIPT_ANALY
     if (!psc->GSUB_Table)
         return E_INVALIDARG;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if ((SIZE_T)cChars > ~(SIZE_T)0 / sizeof(*context_shape)) return E_OUTOFMEMORY;
 #endif
     context_shape = malloc(cChars * sizeof(*context_shape));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!context_shape) return E_OUTOFMEMORY;
 #endif
 
@@ -3077,14 +3077,14 @@ static void ShapeCharGlyphProp_Default( ScriptCache* psc, SCRIPT_ANALYSIS* psa, 
 
     for (i = 0; i < cGlyphs; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
 #endif
         int char_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3092,7 +3092,7 @@ static void ShapeCharGlyphProp_Default( ScriptCache* psc, SCRIPT_ANALYSIS* psa, 
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 char_count++;
 #else
                 char_index[char_count++] = k;
@@ -3102,14 +3102,14 @@ static void ShapeCharGlyphProp_Default( ScriptCache* psc, SCRIPT_ANALYSIS* psa, 
         if (char_count == 0)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (char_count ==1 && pwcChars[char_index] == 0x0020)  /* space */
 #else
         if (char_count ==1 && pwcChars[char_index[0]] == 0x0020)  /* space */
 #endif
         {
             pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_BLANK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             pCharProp[char_index].fCanGlyphAlone = 1;
 #else
             pCharProp[char_index[0]].fCanGlyphAlone = 1;
@@ -3123,7 +3123,7 @@ static void ShapeCharGlyphProp_Default( ScriptCache* psc, SCRIPT_ANALYSIS* psa, 
     UpdateClustersFromGlyphProp(cGlyphs, cChars, pwLogClust, pGlyphProp);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Latin( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Latin( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
@@ -3136,12 +3136,12 @@ static void ShapeCharGlyphProp_Latin( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS
     for (i = 0; i < cGlyphs; i++)
         if (pGlyphProp[i].sva.fZeroWidth)
             pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_NONE;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Control( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Control( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
@@ -3159,12 +3159,12 @@ static void ShapeCharGlyphProp_Control( HDC hdc, ScriptCache *psc, SCRIPT_ANALYS
         else
             pGlyphProp[i].sva.fZeroWidth = 1;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
@@ -3176,7 +3176,7 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
     BYTE *spaces;
 
     spaces = calloc(cGlyphs, sizeof(*spaces));
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!spaces) return E_OUTOFMEMORY;
 #endif
 
@@ -3207,7 +3207,7 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
 
     for (i = 0; i < cGlyphs; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
@@ -3215,7 +3215,7 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         int char_count = 0;
         BOOL isInit, isFinal;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3223,7 +3223,7 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             {
                 char_count++;
             }
@@ -3240,26 +3240,26 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
 
         if (char_count == 1)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (pwcChars[char_index] == 0x0020)  /* space */
 #else
             if (pwcChars[char_index[0]] == 0x0020)  /* space */
 #endif
             {
                 pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_ARABIC_BLANK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 pCharProp[char_index].fCanGlyphAlone = 1;
 #else
                 pCharProp[char_index[0]].fCanGlyphAlone = 1;
 #endif
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (pwcChars[char_index] == 0x0640)  /* kashida */
 #else
             else if (pwcChars[char_index[0]] == 0x0640)  /* kashida */
 #endif
                 pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_ARABIC_KASHIDA;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (pwcChars[char_index] == 0x0633)  /* SEEN */
 #else
             else if (pwcChars[char_index[0]] == 0x0633)  /* SEEN */
@@ -3274,25 +3274,25 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
             }
             else if (!isInit)
             {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 if (pwcChars[char_index] == 0x0628 ) /* BA */
 #else
                 if (pwcChars[char_index[0]] == 0x0628 ) /* BA */
 #endif
                     pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_ARABIC_BA;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 else if (pwcChars[char_index] == 0x0631 ) /* RA */
 #else
                 else if (pwcChars[char_index[0]] == 0x0631 ) /* RA */
 #endif
                     pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_ARABIC_RA;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 else if (pwcChars[char_index] == 0x0647 ) /* HA */
 #else
                 else if (pwcChars[char_index[0]] == 0x0647 ) /* HA */
 #endif
                     pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_ARABIC_HA;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 else if ((pwcChars[char_index] == 0x0627 || pwcChars[char_index] == 0x0625 || pwcChars[char_index] == 0x0623 || pwcChars[char_index] == 0x0622) ) /* alef-like */
 #else
                 else if ((pwcChars[char_index[0]] == 0x0627 || pwcChars[char_index[0]] == 0x0625 || pwcChars[char_index[0]] == 0x0623 || pwcChars[char_index[0]] == 0x0622) ) /* alef-like */
@@ -3308,7 +3308,7 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         }
         else if (char_count == 2)
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if ((pwcChars[char_index] == 0x0628 && pwcChars[char_index + 1]== 0x0631) ||  (pwcChars[char_index] == 0x0631 && pwcChars[char_index + 1]== 0x0628)) /* BA+RA */
 #else
             if ((pwcChars[char_index[0]] == 0x0628 && pwcChars[char_index[1]]== 0x0631) ||  (pwcChars[char_index[0]] == 0x0631 && pwcChars[char_index[1]]== 0x0628)) /* BA+RA */
@@ -3328,12 +3328,12 @@ static void ShapeCharGlyphProp_Arabic( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
     OpenType_GDEF_UpdateGlyphProps(psc, pwGlyphs, cGlyphs, pwLogClust, cChars, pGlyphProp);
     UpdateClustersFromGlyphProp(cGlyphs, cChars, pwLogClust, pGlyphProp);
     free(spaces);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Hebrew( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Hebrew( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
@@ -3343,14 +3343,14 @@ static void ShapeCharGlyphProp_Hebrew( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
 
     for (i = 0; i < cGlyphs; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
 #endif
         int char_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3358,7 +3358,7 @@ static void ShapeCharGlyphProp_Hebrew( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 char_count++;
 #else
                 char_index[char_count++] = k;
@@ -3370,7 +3370,7 @@ static void ShapeCharGlyphProp_Hebrew( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
         else
         {
             pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_CHARACTER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (char_count ==1 && pwcChars[char_index] == 0x0020)  /* space */
                 pCharProp[char_index].fCanGlyphAlone = 1;
 #else
@@ -3382,12 +3382,12 @@ static void ShapeCharGlyphProp_Hebrew( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSI
 
     OpenType_GDEF_UpdateGlyphProps(psc, pwGlyphs, cGlyphs, pwLogClust, cChars, pGlyphProp);
     UpdateClustersFromGlyphProp(cGlyphs, cChars, pwLogClust, pGlyphProp);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
@@ -3413,14 +3413,14 @@ static void ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
     for (i = 0; i < cGlyphs; i++)
     {
         int k;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
 #endif
         int char_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3428,7 +3428,7 @@ static void ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 char_count++;
 #else
                 char_index[char_count++] = k;
@@ -3443,7 +3443,7 @@ static void ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
         if (char_count == 0)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (char_count ==1 && pwcChars[char_index] == 0x0020)  /* space */
             pCharProp[char_index].fCanGlyphAlone = 1;
 #else
@@ -3452,7 +3452,7 @@ static void ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
 #endif
 
         /* handle Thai SARA AM (U+0E33) differently than GDEF */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (char_count == 1 && pwcChars[char_index] == 0x0e33)
 #else
         if (char_count == 1 && pwcChars[char_index[0]] == 0x0e33)
@@ -3468,12 +3468,12 @@ static void ShapeCharGlyphProp_Thai( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS 
         if (!pGlyphProp[i].sva.fClusterStart)
             pGlyphProp[i-dirL].sva.uJustification = SCRIPT_JUSTIFY_NONE;
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_None( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS* psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD* pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP* pGlyphProp)
 #else
 static void ShapeCharGlyphProp_None( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS* psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD* pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP* pGlyphProp)
@@ -3483,14 +3483,14 @@ static void ShapeCharGlyphProp_None( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS*
 
     for (i = 0; i < cGlyphs; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
 #endif
         int char_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3498,7 +3498,7 @@ static void ShapeCharGlyphProp_None( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS*
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 char_count++;
 #else
                 char_index[char_count++] = k;
@@ -3508,14 +3508,14 @@ static void ShapeCharGlyphProp_None( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS*
         if (char_count == 0)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (char_count ==1 && pwcChars[char_index] == 0x0020)  /* space */
 #else
         if (char_count ==1 && pwcChars[char_index[0]] == 0x0020)  /* space */
 #endif
         {
             pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_CHARACTER;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             pCharProp[char_index].fCanGlyphAlone = 1;
 #else
             pCharProp[char_index[0]].fCanGlyphAlone = 1;
@@ -3526,12 +3526,12 @@ static void ShapeCharGlyphProp_None( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS*
     }
     OpenType_GDEF_UpdateGlyphProps(psc, pwGlyphs, cGlyphs, pwLogClust, cChars, pGlyphProp);
     UpdateClustersFromGlyphProp(cGlyphs, cChars, pwLogClust, pGlyphProp);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Tibet( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS* psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD* pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP* pGlyphProp)
 #else
 static void ShapeCharGlyphProp_Tibet( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS* psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD* pwLogClust, SCRIPT_CHARPROP* pCharProp, SCRIPT_GLYPHPROP* pGlyphProp)
@@ -3541,14 +3541,14 @@ static void ShapeCharGlyphProp_Tibet( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS
 
     for (i = 0; i < cGlyphs; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
 #endif
         int char_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3556,7 +3556,7 @@ static void ShapeCharGlyphProp_Tibet( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 char_count++;
 #else
                 char_index[char_count++] = k;
@@ -3566,14 +3566,14 @@ static void ShapeCharGlyphProp_Tibet( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS
         if (char_count == 0)
             continue;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (char_count ==1 && pwcChars[char_index] == 0x0020)  /* space */
 #else
         if (char_count ==1 && pwcChars[char_index[0]] == 0x0020)  /* space */
 #endif
         {
             pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_BLANK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             pCharProp[char_index].fCanGlyphAlone = 1;
 #else
             pCharProp[char_index[0]].fCanGlyphAlone = 1;
@@ -3594,7 +3594,7 @@ static void ShapeCharGlyphProp_Tibet( HDC hdc, ScriptCache* psc, SCRIPT_ANALYSIS
             pGlyphProp[i].sva.fZeroWidth = 0;
         }
     }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
@@ -3606,14 +3606,14 @@ static void ShapeCharGlyphProp_BaseIndic( HDC hdc, ScriptCache *psc, SCRIPT_ANAL
     OpenType_GDEF_UpdateGlyphProps(psc, pwGlyphs, cGlyphs, pwLogClust, cChars, pGlyphProp);
     for (i = 0; i < cGlyphs; i++)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         int char_index;
 #else
         int char_index[20];
 #endif
         int char_count = 0;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         k = char_index = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
 #else
         k = USP10_FindGlyphInLogClust(pwLogClust, cChars, i);
@@ -3621,7 +3621,7 @@ static void ShapeCharGlyphProp_BaseIndic( HDC hdc, ScriptCache *psc, SCRIPT_ANAL
         if (k>=0)
         {
             for (; k < cChars && pwLogClust[k] == i; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                 char_count++;
 #else
                 char_index[char_count++] = k;
@@ -3641,14 +3641,14 @@ static void ShapeCharGlyphProp_BaseIndic( HDC hdc, ScriptCache *psc, SCRIPT_ANAL
             continue;
         }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (char_count ==1 && pwcChars[char_index] == 0x0020)  /* space */
 #else
         if (char_count ==1 && pwcChars[char_index[0]] == 0x0020)  /* space */
 #endif
         {
             pGlyphProp[i].sva.uJustification = SCRIPT_JUSTIFY_BLANK;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             pCharProp[char_index].fCanGlyphAlone = 1;
 #else
             pCharProp[char_index[0]].fCanGlyphAlone = 1;
@@ -3659,7 +3659,7 @@ static void ShapeCharGlyphProp_BaseIndic( HDC hdc, ScriptCache *psc, SCRIPT_ANAL
 
         pGlyphProp[i].sva.fClusterStart = 0;
         for (k = 0; k < char_count && !pGlyphProp[i].sva.fClusterStart; k++)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             switch (lexical(pwcChars[char_index + k]))
 #else
             switch (lexical(pwcChars[char_index[k]]))
@@ -3675,7 +3675,7 @@ static void ShapeCharGlyphProp_BaseIndic( HDC hdc, ScriptCache *psc, SCRIPT_ANAL
                 case lex_ZWJ:
                 case lex_ZWNJ:
                     /* check for dangling joiners */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
                     if ((char_index + k > 0 && pwcChars[char_index + k-1] == 0x0020) ||
                         (char_index + k+1 < cChars && pwcChars[char_index + k+1] == 0x0020))
 #else
@@ -3719,139 +3719,139 @@ static void ShapeCharGlyphProp_BaseIndic( HDC hdc, ScriptCache *psc, SCRIPT_ANAL
     UpdateClustersFromGlyphProp(cGlyphs, cChars, pwLogClust, pGlyphProp);
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Sinhala( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Sinhala( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, sinhala_lex, FALSE, FALSE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Devanagari( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Devanagari( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, devanagari_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Bengali( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Bengali( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, bengali_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Gurmukhi( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Gurmukhi( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, gurmukhi_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Gujarati( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Gujarati( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, gujarati_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Oriya( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Oriya( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, oriya_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Tamil( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Tamil( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, tamil_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Telugu( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Telugu( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, telugu_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Kannada( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Kannada( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, kannada_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Malayalam( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Malayalam( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, malayalam_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static HRESULT ShapeCharGlyphProp_Khmer( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #else
 static void ShapeCharGlyphProp_Khmer( HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp )
 #endif
 {
     ShapeCharGlyphProp_BaseIndic(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp, khmer_lex, TRUE, TRUE);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 HRESULT SHAPE_CharGlyphProp(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp)
 #else
 void SHAPE_CharGlyphProp(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const WCHAR* pwcChars, const INT cChars, const WORD* pwGlyphs, const INT cGlyphs, WORD *pwLogClust, SCRIPT_CHARPROP *pCharProp, SCRIPT_GLYPHPROP *pGlyphProp)
@@ -3860,14 +3860,14 @@ void SHAPE_CharGlyphProp(HDC hdc, ScriptCache *psc, SCRIPT_ANALYSIS *psa, const 
     load_ot_tables(hdc, psc);
 
     if (ShapingData[psa->eScript].charGlyphPropProc)
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         return ShapingData[psa->eScript].charGlyphPropProc(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp);
 #else
         ShapingData[psa->eScript].charGlyphPropProc(hdc, psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp);
 #endif
     else
         ShapeCharGlyphProp_Default(psc, psa, pwcChars, cChars, pwGlyphs, cGlyphs, pwLogClust, pCharProp, pGlyphProp);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     return S_OK;
 #endif
 }
@@ -4031,7 +4031,7 @@ HRESULT SHAPE_GetFontFeatureTags( HDC hdc, ScriptCache *psc,
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static LoadedFeature *load_single_glyph_feature(ScriptCache *psc, OPENTYPE_TAG script, OPENTYPE_TAG language,
         OPENTYPE_TAG tag, char table_type)
 {

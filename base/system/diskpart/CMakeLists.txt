@@ -1,7 +1,7 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/conutils)
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/libs/fmifs)
-include_directories(${REACTOS_SOURCE_DIR}/sdk/lib/storageutils)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/conutils)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/libs/fmifs)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/lib/storageutils)
 
 list(APPEND SOURCE
     active.c
@@ -47,7 +47,7 @@ list(APPEND SOURCE
     setid.c
     shrink.c
     uniqueid.c
-    ${REACTOS_SOURCE_DIR}/sdk/lib/storageutils/mountmgrutil.c
+    ${LIBRENT_SOURCE_DIR}/sdk/lib/storageutils/mountmgrutil.c
     diskpart.h)
 
 add_executable(diskpart ${SOURCE} diskpart.rc)
@@ -63,4 +63,4 @@ if(MSVC)
     add_importlibs(diskpart ntdll)
 endif()
 
-add_cd_file(TARGET diskpart DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET diskpart DESTINATION librent/system32 FOR all)

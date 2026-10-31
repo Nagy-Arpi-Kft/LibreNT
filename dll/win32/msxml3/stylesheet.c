@@ -206,7 +206,7 @@ static HRESULT WINAPI xsltemplate_putref_stylesheet( IXSLTemplate *iface,
         return S_OK;
     }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     {
         struct domnode *obj = get_node_obj(node);
 
@@ -437,7 +437,7 @@ static HRESULT WINAPI xslprocessor_get_input( IXSLProcessor *iface, VARIANT *inp
 {
     xslprocessor *This = impl_from_IXSLProcessor( iface );
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     TRACE("(%p)->(%p)\n", This, input);
 
     if (!input) return E_INVALIDARG;

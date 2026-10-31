@@ -33,7 +33,7 @@ FDSC *fp_root = NULL;
 
 static void put_char(char **p, unsigned char c)
 {
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     if (dos_char_to_printable(p, c))
 	return;
 #endif

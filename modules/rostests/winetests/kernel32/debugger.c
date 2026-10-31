@@ -165,7 +165,7 @@ static int _load_blackbox(unsigned int line, const char* logfile, void* blackbox
     SetLastError(0xdeadbeef);
     ret = ReadFile(hFile, blackbox, size, &read, NULL);
     ok(ret, "ReadFile failed: %ld\n", GetLastError());
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(read == size || broken(read == 0) /* WS03 */, "wrong size for '%s': read=%ld\n", logfile, read);
 #else
     ok(read == size, "wrong size for '%s': read=%ld\n", logfile, read);
@@ -970,7 +970,7 @@ static void doChild(int argc, char **argv)
     }
     else if (is_wow64)
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         static wchar_t expected_path[MAX_PATH];
         GetWindowsDirectoryW(expected_path, MAX_PATH);
         wcscat(expected_path, L"\\sysnative\\oleacc.dll");
@@ -1343,7 +1343,7 @@ static void doChildren(int argc, char **argv)
 static void test_debug_children(const char *name, DWORD flag, BOOL debug_child, BOOL pass_exception)
 {
     const char *arguments = "debugger children";
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     struct child_blackbox blackbox = {0};
 #else
     struct child_blackbox blackbox;
@@ -1423,7 +1423,7 @@ static void test_debug_children(const char *name, DWORD flag, BOOL debug_child, 
 
         /* Except for wxppro and w2008, the initial breakpoint is now somewhere else, possibly within LdrInitShimEngineDynamic,
          * It's also catching exceptions and ContinueDebugEvent(DBG_EXCEPTION_NOT_HANDLED) should not crash the child now */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         ok(ctx.ev.u.Exception.ExceptionRecord.ExceptionAddress != pDbgBreakPoint || broken(GetNTVersion() <= _WIN32_WINNT_VISTA), "ExceptionAddress == pDbgBreakPoint\n");
 #else
         ok(ctx.ev.u.Exception.ExceptionRecord.ExceptionAddress != pDbgBreakPoint, "ExceptionAddress == pDbgBreakPoint\n");
@@ -1436,7 +1436,7 @@ static void test_debug_children(const char *name, DWORD flag, BOOL debug_child, 
             ctx.ev.dwDebugEventCode = -1;
 
             next_event(&ctx, WAIT_EVENT_TIMEOUT);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             ok(ctx.ev.dwDebugEventCode != EXCEPTION_DEBUG_EVENT || broken(GetNTVersion() <= _WIN32_WINNT_WS03), "dwDebugEventCode = %ld\n", ctx.ev.dwDebugEventCode);
 #else
             ok(ctx.ev.dwDebugEventCode != EXCEPTION_DEBUG_EVENT, "dwDebugEventCode = %ld\n", ctx.ev.dwDebugEventCode);
@@ -1482,7 +1482,7 @@ static void test_debug_children(const char *name, DWORD flag, BOOL debug_child, 
     while (ctx.ev.dwDebugEventCode == LOAD_DLL_DEBUG_EVENT || ctx.ev.dwDebugEventCode == UNLOAD_DLL_DEBUG_EVENT
            || ctx.ev.dwDebugEventCode == CREATE_THREAD_DEBUG_EVENT || ctx.ev.dwDebugEventCode == EXIT_THREAD_DEBUG_EVENT);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     ok(ctx.ev.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT || broken(ctx.ev.dwDebugEventCode == EXCEPTION_DEBUG_EVENT) /* WS03 */, "dwDebugEventCode = %ld\n", ctx.ev.dwDebugEventCode);
 #else
     ok(ctx.ev.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT, "dwDebugEventCode = %ld\n", ctx.ev.dwDebugEventCode);
@@ -1778,7 +1778,7 @@ static void test_debugger(const char *argv0)
         next_event(&ctx, WAIT_EVENT_TIMEOUT);
         /* some 32-bit Windows versions report exception to the debugger */
         if (sizeof(void *) == 4 && ctx.ev.dwDebugEventCode == EXCEPTION_DEBUG_EVENT) next_event(&ctx, WAIT_EVENT_TIMEOUT);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
         ok(ctx.ev.dwDebugEventCode == EXIT_THREAD_DEBUG_EVENT || broken(ctx.ev.dwDebugEventCode == EXCEPTION_DEBUG_EVENT) /* Win8+ x64 */, "unexpected debug event %lu\n", ctx.ev.dwDebugEventCode);
 #else
         ok(ctx.ev.dwDebugEventCode == EXIT_THREAD_DEBUG_EVENT, "unexpected debug event %lu\n", ctx.ev.dwDebugEventCode);
@@ -1996,15 +1996,15 @@ static void test_debugger(const char *argv0)
             do
             {
                 next_event(&ctx, WAIT_EVENT_TIMEOUT);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
                 ok(ctx.ev.dwDebugEventCode == CREATE_THREAD_DEBUG_EVENT || broken(GetNTVersion() >= EXCEPTION_DEBUG_EVENT) /* Win8+ x64 */, "dwDebugEventCode = %ld\n", ctx.ev.dwDebugEventCode);
 #else
                 ok(ctx.ev.dwDebugEventCode == CREATE_THREAD_DEBUG_EVENT, "dwDebugEventCode = %ld\n", ctx.ev.dwDebugEventCode);
 #endif
             } while (ctx.ev.dwDebugEventCode == CREATE_THREAD_DEBUG_EVENT && ctx.ev.dwThreadId != tid);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
             ok(ctx.ev.u.CreateThread.lpStartAddress == (void*)thread_proc || broken(GetNTVersion() != _WIN32_WINNT_WIN7), "Unexpected thread's start address\n");
-#elif defined(__REACTOS__)
+#elif defined(__LIBRENT__)
             ok(ctx.ev.u.CreateThread.lpStartAddress == (void*)thread_proc || broken(GetNTVersion() <= _WIN32_WINNT_VISTA), "Unexpected thread's start address\n");
 #else
             ok(ctx.ev.u.CreateThread.lpStartAddress == (void*)thread_proc, "Unexpected thread's start address\n");
@@ -2019,7 +2019,7 @@ static void test_debugger(const char *argv0)
         ok(ret, "WriteProcessMemory failed: %lu\n", GetLastError());                            
 
         wait_for_breakpoint(&ctx);
-#if defined(__REACTOS__) && defined(_WIN64)
+#if defined(__LIBRENT__) && defined(_WIN64)
         if (GetNTVersion() < _WIN32_WINNT_WIN8)
 #endif
         check_breakpoint_exception(&ctx, thread_proc + 1);
@@ -2230,9 +2230,9 @@ static void test_debugger(const char *argv0)
 
     SetEvent(event);
 
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     if (is_reactos()) {
-        skip("This test doesn't work correctly on MSVC ReactOS.\n");
+        skip("This test doesn't work correctly on MSVC LibreNT.\n");
     } else {
 #endif
     do
@@ -2243,7 +2243,7 @@ static void test_debugger(const char *argv0)
     }
     while (ctx.ev.dwDebugEventCode != EXIT_PROCESS_DEBUG_EVENT);
     if (ctx.ev.dwDebugEventCode != EXIT_PROCESS_DEBUG_EVENT) TerminateProcess(pi.hProcess, 0);
-#if defined(__REACTOS__) && defined(_MSC_VER)
+#if defined(__LIBRENT__) && defined(_MSC_VER)
     }
 #endif
 

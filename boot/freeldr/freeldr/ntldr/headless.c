@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Boot Loader
+ * PROJECT:     LibreNT Boot Loader
  * LICENSE:     BSD - See COPYING.ARM in the top level directory
  * PURPOSE:     Provides support for Windows Emergency Management Services
  * COPYRIGHT:   Copyright 2010 ReactOS Portable Systems Group

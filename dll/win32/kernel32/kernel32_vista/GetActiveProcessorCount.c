@@ -1,6 +1,6 @@
 #include "k32_vista.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 /* _WIN32_WINNT is Vista in this directory, so the SDK hides this prototype. */
 BOOL WINAPI GetLogicalProcessorInformationEx( LOGICAL_PROCESSOR_RELATIONSHIP,
                                               SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX *,

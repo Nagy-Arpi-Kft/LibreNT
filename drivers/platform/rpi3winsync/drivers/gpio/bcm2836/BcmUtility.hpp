@@ -79,7 +79,7 @@ class BITFIELD_ARRAY {
 
 public:
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     template <unsigned int U_BITS_PER_ELEMENT, unsigned int U_ELEMS_PER_STORAGE>
     struct _ELEM_INDEX {
         explicit _ELEM_INDEX (unsigned int Index) :

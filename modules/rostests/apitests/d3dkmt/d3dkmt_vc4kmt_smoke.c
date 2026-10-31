@@ -1,13 +1,13 @@
 /*
- * PROJECT:     LiberNT D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     vc4kmt UMD winsys smoke: route v3dsmoke Phase A through the
  *              reusable VC4 D3DKMT wrapper.
  */
 
 #include "precomp.h"
-#include <reactos/vc4kmt.h>
-#include <reactos/vc4cle.h>
+#include <librent/vc4kmt.h>
+#include <librent/vc4cle.h>
 
 START_TEST(vc4kmt_smoke)
 {

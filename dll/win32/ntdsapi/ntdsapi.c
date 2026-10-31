@@ -297,7 +297,7 @@ DWORD WINAPI DsCrackNamesW(HANDLE handle, DS_NAME_FLAGS flags, DS_NAME_FORMAT of
     FIXME("(%p %u %u %u %lu %p %p stub\n", handle, flags, offered, desired, num, names, result);
     return ERROR_CALL_NOT_IMPLEMENTED;
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 static BOOL is_rdn_space(WCHAR c)
 {

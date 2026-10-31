@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       GPL, see COPYING in the top level directory
- * PROJECT:         ReactOS kernel
+ * PROJECT:         LibreNT kernel
  * FILE:            drivers/base/kdcom/kdcom.c
  * PURPOSE:         COM port functions for the kernel debugger.
  * PROGRAMMER:      Timo Kreuzer (timo.kreuzer@reactos.org)
@@ -15,7 +15,7 @@
 
 #include <cportlib/cportlib.h>
 #include <cportlib/uartinfo.h>
-#include <reactos/drivers/bootvid/bootvid.h>
+#include <librent/drivers/bootvid/bootvid.h>
 
 /* GLOBALS ********************************************************************/
 

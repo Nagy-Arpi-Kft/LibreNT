@@ -1,6 +1,6 @@
 
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl)
-add_rpc_files(server ${REACTOS_SOURCE_DIR}/sdk/include/reactos/idl/winspool.idl)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl)
+add_rpc_files(server ${LIBRENT_SOURCE_DIR}/sdk/include/librent/idl/winspool.idl)
 
 spec2def(spoolsv.exe spoolsv.spec ADD_IMPORTLIB)
 
@@ -40,4 +40,4 @@ target_link_libraries(spoolsv wine)
 add_delay_importlibs(spoolsv spoolss)
 add_importlibs(spoolsv advapi32 rpcrt4 msvcrt kernel32 ntdll)
 add_pch(spoolsv precomp.h SOURCE)
-add_cd_file(TARGET spoolsv DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET spoolsv DESTINATION librent/system32 FOR all)

@@ -2046,10 +2046,10 @@ NtGdiGetFontFileData(
     _In_ SIZE_T cjBuf);
 
 /*
- * NtGdiGetFontFileInfo uses PFONT_FILE_INFO, which is available to ReactOS
+ * NtGdiGetFontFileInfo uses PFONT_FILE_INFO, which is available to LibreNT
  * internally but remains gated by target version for SDK consumers.
  */
-#if ((_WIN32_WINNT >= _WIN32_WINNT_WIN7) || defined(__REACTOS__)) && defined(_FONT_FILE_INFO_DEFINED)
+#if ((_WIN32_WINNT >= _WIN32_WINNT_WIN7) || defined(__LIBRENT__)) && defined(_FONT_FILE_INFO_DEFINED)
 __kernel_entry
 W32KAPI
 DWORD
@@ -2060,7 +2060,7 @@ NtGdiGetFontFileInfo(
     _Out_writes_bytes_(cjSize) PFONT_FILE_INFO pffi,
     _In_ SIZE_T cjSize,
     _Out_opt_ PSIZE_T pcjActualSize);
-#endif /* ((_WIN32_WINNT >= _WIN32_WINNT_WIN7) || __REACTOS__) && _FONT_FILE_INFO_DEFINED */
+#endif /* ((_WIN32_WINNT >= _WIN32_WINNT_WIN7) || __LIBRENT__) && _FONT_FILE_INFO_DEFINED */
 
 __kernel_entry
 W32KAPI
@@ -3041,7 +3041,7 @@ NtGdiGetFontUnicodeRanges(
 
 #ifdef LANGPACK
 /*
- * ReactOS implements the pre-Win7 NtGdiGetRealizationInfo (3 args).
+ * LibreNT implements the pre-Win7 NtGdiGetRealizationInfo (3 args).
  * The Win7+ variant uses PFONT_REALIZATION_INFO which is not defined.
  * Always use the pre-Win7 declaration.
  */
@@ -3924,7 +3924,7 @@ NtGdiGetCurrentDpiInfo(
 #endif /* PRIVATE_DWM_INTERFACE */
 
 
-/* ReactOS Display Driver Model */
+/* LibreNT Display Driver Model */
 __kernel_entry
 W32KAPI
 BOOLEAN
@@ -4311,7 +4311,7 @@ APIENTRY
 NtGdiDdDDIWaitForSynchronizationObject(
     _In_ const D3DKMT_WAITFORSYNCHRONIZATIONOBJECT* unnamedParam1);
 
-/* WDDM 2.0 D3DKMT additions (ReactOS) */
+/* WDDM 2.0 D3DKMT additions (LibreNT) */
 __kernel_entry
 W32KAPI
 NTSTATUS
@@ -4495,7 +4495,7 @@ NtGdiDdDDICheckVidPnExclusiveOwnership(
 
 /*
  * WDDM 1.2 / 2.0 adapter-enumeration and allocation/keyed-mutex/overlay
- * additions (ReactOS).  Argument structures are referenced by tag so this
+ * additions (LibreNT).  Argument structures are referenced by tag so this
  * header still compiles in translation units built below the matching
  * DXGKDDI_INTERFACE_VERSION; the tags unify with the full types where present.
  */
@@ -4636,7 +4636,7 @@ NtGdiDdDDICheckSharedResourceAccess(
 
 
 /*
- * WDDM 2.x extended D3DKMT additions (ReactOS contract stubs).  Argument
+ * WDDM 2.x extended D3DKMT additions (LibreNT contract stubs).  Argument
  * structures referenced by tag so this header compiles below the matching
  * DXGKDDI_INTERFACE_VERSION.
  */
@@ -4954,7 +4954,7 @@ NtGdiDdDDICheckMultiPlaneOverlaySupport(
     _Inout_ struct _D3DKMT_CHECKMULTIPLANEOVERLAYSUPPORT* unnamedParam1);
 
 
-/* WDDM 2.x extended additions, batch 2 (ReactOS contract stubs). */
+/* WDDM 2.x extended additions, batch 2 (LibreNT contract stubs). */
 struct _D3DKMT_ENUMADAPTERS3;
 struct _D3DKMT_ACQUIREKEYEDMUTEX2;
 struct _D3DKMT_CREATEKEYEDMUTEX2;

@@ -85,7 +85,7 @@
  *        on or off. (marked with "JPP 19980708")
  *
  *    07-Dec-1998 (Eric Kohl)
- *        First ReactOS release.
+ *        First LibreNT release.
  *        Extended length of commandline buffers to 512.
  *
  *    13-Dec-1998 (Eric Kohl)
@@ -114,7 +114,7 @@
  *        Restore window title after program/batch execution
  *
  *    03-Feb-2001 (Eric Kohl)
- *        Workaround because argc[0] is NULL under ReactOS
+ *        Workaround because argc[0] is NULL under LibreNT
  *
  *    23-Feb-2001 (Carl Nettelblad <cnettel@hem.passagen.se>)
  *        %envvar% replacement conflicted with for.
@@ -142,8 +142,8 @@
  */
 
 #include "precomp.h"
-#include <reactos/buildno.h>
-#include <reactos/version.h>
+#include <librent/buildno.h>
+#include <librent/version.h>
 
 typedef NTSTATUS (WINAPI *NtQueryInformationProcessProc)(HANDLE, PROCESSINFOCLASS,
                                                           PVOID, ULONG, PULONG);
@@ -999,7 +999,7 @@ GetEnvVarOrSpecial(LPCTSTR varName)
     else if (_tcsicmp(varName, _T("HIGHESTNUMANODENUMBER")) == 0)
     {
         ULONG NumaNodeNumber = 0;
-        /* Not declared in ReactOS winbase.h yet; kernel32 exports it since Win2003 */
+        /* Not declared in LibreNT winbase.h yet; kernel32 exports it since Win2003 */
         BOOL WINAPI GetNumaHighestNodeNumber(PULONG HighestNodeNumber);
         GetNumaHighestNodeNumber(&NumaNodeNumber);
         _itot(NumaNodeNumber, ret, 10);
@@ -1174,7 +1174,7 @@ GetEnhancedVar(
     }
 
     /* Next step is to change the path to fix letter case (e.g.
-     * C:\ReAcToS -> C:\ReactOS) and, if requested with the S modifier,
+     * C:\LIBRENT -> C:\LibreNT) and, if requested with the S modifier,
      * replace long filenames with short. */
 
     In = FullPath;
@@ -2182,7 +2182,7 @@ Initialize(VOID)
     /* Get version information */
     InitOSVersion();
 
-    /* Some people like to run ReactOS cmd.exe on Win98, it helps in the
+    /* Some people like to run LibreNT cmd.exe on Win98, it helps in the
      * build process. So don't link implicitly against ntdll.dll, load it
      * dynamically instead */
     NtDllModule = GetModuleHandle(TEXT("ntdll.dll"));
@@ -2360,7 +2360,7 @@ Initialize(VOID)
         if (HasInfoLine())
             ConOutChar('\n');
 
-        ConOutResPrintf(STRING_REACTOS_VERSION,
+        ConOutResPrintf(STRING_LIBRENT_VERSION,
                         _T(KERNEL_VERSION_STR),
                         _T(KERNEL_VERSION_BUILD_STR));
         ConOutResPrintf(STRING_CMD_COPYRIGHT, _T(COPYRIGHT_YEAR));

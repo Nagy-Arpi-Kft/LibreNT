@@ -44,7 +44,7 @@ Revision History:
 
 WDF_EXTERN_C_START
 
-#ifndef STDCALL // __REACTOS__
+#ifndef STDCALL // __LIBRENT__
 #define STDCALL __stdcall
 #endif
 

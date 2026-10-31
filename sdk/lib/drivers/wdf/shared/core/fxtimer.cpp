@@ -160,7 +160,7 @@ FxTimer::Initialize(
     //
 
 #if (FX_CORE_MODE == FX_CORE_KERNEL_MODE)
-    // __REACTOS__ Ex timers are not supported
+    // __LIBRENT__ Ex timers are not supported
     // if (pFxDriverGlobals->IsVersionGreaterThanOrEqualTo(1,13)) {
     //     status = m_Timer.InitializeEx(this, FxTimer::_FxTimerExtCallbackThunk, m_Period,
     //                                   m_TolerableDelay, m_UseHighResolutionTimer);

@@ -102,7 +102,7 @@ static HRESULT get_corversion(LPWSTR version, DWORD size)
     return hr;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL get_module_clr_version(LPWSTR version, DWORD size)
 {
     WCHAR path[MAX_PATH], *file, *dir;
@@ -148,7 +148,7 @@ HRESULT WINAPI GetCachePath(ASM_CACHE_FLAGS dwCacheFlags, LPWSTR pwzCachePath,
     {
         case ASM_CACHE_ZAP:
         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             hr = get_module_clr_version(version, MAX_PATH) ? S_OK : get_corversion(version, MAX_PATH);
 #else
             hr = get_corversion(version, MAX_PATH);

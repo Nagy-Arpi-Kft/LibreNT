@@ -438,7 +438,7 @@ static HRESULT WINAPI async_inspectable_GetIids( IAsyncOperation_IInspectable *i
 
 static HRESULT WINAPI async_inspectable_GetRuntimeClassName( IAsyncOperation_IInspectable *iface, HSTRING *class_name )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const WCHAR radios_nameW[] =
         L"Windows.Foundation.IAsyncOperation`1<Windows.Foundation.Collections.IVectorView`1<Windows.Devices.Radios.Radio>>";
     struct async_inspectable *impl = impl_from_IAsyncOperation_IInspectable( iface );

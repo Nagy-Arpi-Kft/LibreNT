@@ -396,7 +396,7 @@ validate_tile_binning_config(VALIDATE_ARGS)
 	 */
 	tile_alloc_size += 1024 * 1024;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	/* The tile allocation is GPU output, so keep it outside the command
 	 * buffer's CPU-written prefix. */
 	exec->tile_bo = drm_gem_cma_create_uninitialized(dev,
@@ -411,7 +411,7 @@ validate_tile_binning_config(VALIDATE_ARGS)
 	list_addtail(&to_vc4_bo(&exec->tile_bo->base)->unref_head,
 		     &exec->unref_list);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 	/* The TSDA must be zero and visible to V3D before submission.  It lives
 	 * outside the generic command-prefix cache clean, so clean this small
 	 * range explicitly without touching the GPU-written allocation pool. */

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:     NTFS filesystem driver
  * COPYRIGHT:   Copyright 2024 Justin Miller <justin.miller@reactos.org>

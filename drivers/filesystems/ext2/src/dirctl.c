@@ -89,7 +89,7 @@ Ext2ProcessEntry(
 
     ULONG InfoLength = 0;
     ULONG NameLength = 0;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     ULONG dwBytes = 0;
 #endif
     LONGLONG FileSize = 0;

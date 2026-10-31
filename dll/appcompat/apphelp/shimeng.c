@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Application compatibility module
+ * PROJECT:     LibreNT Application compatibility module
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Shim engine core
  * COPYRIGHT:   Copyright 2015-2019 Mark Jansen (mark.jansen@reactos.org)
@@ -1525,7 +1525,7 @@ BOOL WINAPI SE_DynamicShim(LPCWSTR ProcessImage, HSDB hsdb, PVOID pQueryResult, 
 {
     if (g_bShimEngInitialized)
     {
-        SHIMENG_MSG("ReactOS HACK(CORE-13283): ShimEng already initialized!\n");
+        SHIMENG_MSG("LibreNT HACK(CORE-13283): ShimEng already initialized!\n");
         return TRUE;
     }
 

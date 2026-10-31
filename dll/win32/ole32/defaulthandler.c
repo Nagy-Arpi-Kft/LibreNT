@@ -90,7 +90,7 @@ struct DefaultHandler
   IRunnableObject   IRunnableObject_iface;
   IAdviseSink       IAdviseSink_iface;
   IPersistStorage   IPersistStorage_iface;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   IMarshal          IMarshal_iface;
   IUnknown         *marshal_inner;
 #endif
@@ -130,7 +130,7 @@ struct DefaultHandler
 
   /* IOleObject delegate */
   IOleObject *pOleDelegate;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   IUnknown *pUnkDelegate;
 #endif
   /* IPersistStorage delegate */
@@ -206,7 +206,7 @@ static inline void end_object_call(DefaultHandler *This)
         DefaultHandler_Stop( This );
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL ole_running(DefaultHandler *This)
 {
     if (!object_is_running(This))
@@ -281,7 +281,7 @@ static HRESULT WINAPI DefaultHandler_NDIUnknown_QueryInterface(
     if (FAILED(hr)) FIXME("interface %s not implemented by data cache\n", debugstr_guid(riid));
     return hr;
   }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   else if (IsEqualIID(&IID_IMarshal, riid) && This->marshal_inner)
     *ppvObject = &This->IMarshal_iface;
 #endif
@@ -405,7 +405,7 @@ static HRESULT WINAPI DefaultHandler_SetClientSite(
 
   TRACE("(%p, %p)\n", iface, pClientSite);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (object_is_running(This) && This->pOleDelegate)
 #else
   if (object_is_running(This))
@@ -476,7 +476,7 @@ static HRESULT WINAPI DefaultHandler_SetHostNames(
 	debugstr_w(szContainerApp),
 	debugstr_w(szContainerObj));
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (object_is_running(This) && This->pOleDelegate)
 #else
   if (object_is_running(This))
@@ -511,7 +511,7 @@ static HRESULT WINAPI DefaultHandler_SetHostNames(
 
 static void release_delegates(DefaultHandler *This)
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (This->pUnkDelegate)
     {
         IUnknown_Release(This->pUnkDelegate);
@@ -551,7 +551,7 @@ static void DefaultHandler_Stop(DefaultHandler *This)
     IOleCacheControl_Release( cache_ctrl );
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (This->pOleDelegate)
 #endif
   IOleObject_Unadvise(This->pOleDelegate, This->dwAdvConn);
@@ -583,7 +583,7 @@ static HRESULT WINAPI DefaultHandler_Close(
   if (!object_is_running(This))
     return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   hr = S_OK;
   if (ole_running(This))
   {
@@ -619,7 +619,7 @@ static HRESULT WINAPI DefaultHandler_SetMoniker(
 
   TRACE("%p, %ld, %p.\n", iface, dwWhichMoniker, pmk);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -651,7 +651,7 @@ static HRESULT WINAPI DefaultHandler_GetMoniker(
 
   TRACE("%p, %ld, %ld, %p.\n", iface, dwAssign, dwWhichMoniker, ppmk);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -695,7 +695,7 @@ static HRESULT WINAPI DefaultHandler_InitFromData(
 
   TRACE("%p, %p, %d, %ld.\n", iface, pDataObject, fCreation, dwReserved);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -727,7 +727,7 @@ static HRESULT WINAPI DefaultHandler_GetClipboardData(
 
   TRACE("%p, %ld, %p.\n", iface, dwReserved, ppDataObject);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -785,7 +785,7 @@ static HRESULT WINAPI DefaultHandler_EnumVerbs(
 
   TRACE("(%p, %p)\n", iface, ppEnumOleVerb);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -812,7 +812,7 @@ static HRESULT WINAPI DefaultHandler_Update(
 
     if (!object_is_running(This))
     {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         hr = IRunnableObject_Run(&This->IRunnableObject_iface, NULL);
         if (FAILED(hr))
             return hr;
@@ -845,7 +845,7 @@ static HRESULT WINAPI DefaultHandler_IsUpToDate(
     HRESULT hr = OLE_E_NOTRUNNING;
     TRACE("(%p)\n", iface);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (ole_running(This))
 #else
     if (object_is_running(This))
@@ -875,7 +875,7 @@ static HRESULT WINAPI DefaultHandler_GetUserClassID(
 
   TRACE("(%p, %p)\n", iface, pClsid);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -912,7 +912,7 @@ static HRESULT WINAPI DefaultHandler_GetUserType(
   HRESULT hr;
 
   TRACE("%p, %ld, %p.\n", iface, dwFormOfType, pszUserType);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -924,7 +924,7 @@ static HRESULT WINAPI DefaultHandler_GetUserType(
     return hr;
   }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   hr = OleRegGetUserType(&This->clsid, dwFormOfType, pszUserType);
   if (FAILED(hr) && pszUserType)
   {
@@ -958,7 +958,7 @@ static HRESULT WINAPI DefaultHandler_SetExtent(
 
   TRACE("%p, %lx, (%ld x %ld))\n", iface, dwDrawAspect, psizel->cx, psizel->cy);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -993,7 +993,7 @@ static HRESULT WINAPI DefaultHandler_GetExtent(
 
   TRACE("%p, %lx, %p.\n", iface, dwDrawAspect, psizel);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -1132,7 +1132,7 @@ static HRESULT WINAPI DefaultHandler_GetMiscStatus(
 
   TRACE("%p, %lx, %p.\n", iface, dwAspect, pdwStatus);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -1168,7 +1168,7 @@ static HRESULT WINAPI DefaultHandler_SetColorScheme(
 
   TRACE("(%p, %p))\n", iface, pLogpal);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (ole_running(This))
 #else
   if (object_is_running(This))
@@ -1262,7 +1262,7 @@ static HRESULT WINAPI DefaultHandler_GetData(
 
   if (hres == S_OK) return hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (data_running( This ))
 #else
   if (object_is_running( This ))
@@ -1323,7 +1323,7 @@ static HRESULT WINAPI DefaultHandler_QueryGetData(
 
   if (hres == S_OK) return hres;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (data_running( This ))
 #else
   if (object_is_running( This ))
@@ -1359,7 +1359,7 @@ static HRESULT WINAPI DefaultHandler_GetCanonicalFormatEtc(
 
   TRACE("(%p, %p, %p)\n", iface, pformatetcIn, pformatetcOut);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!data_running( This ))
 #else
   if (!object_is_running( This ))
@@ -1454,7 +1454,7 @@ static HRESULT WINAPI DefaultHandler_DAdvise(
   if (!This->dataAdviseHolder)
   {
     hres = CreateDataAdviseHolder(&This->dataAdviseHolder);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (SUCCEEDED(hres) && data_running( This ))
 #else
     if (SUCCEEDED(hres) && object_is_running( This ))
@@ -1606,7 +1606,7 @@ static HRESULT WINAPI DefaultHandler_Run(
   if (object_is_running(This))
     return S_OK;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   release_delegates(This);
 
   hr = CoCreateInstance(&This->clsid, NULL, CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER,
@@ -1902,7 +1902,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_GetClassID(
 
     TRACE("(%p)->(%p)\n", iface, clsid);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(ps_running(This))
 #else
     if(object_is_running(This))
@@ -1933,7 +1933,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_IsDirty(
     hr = IPersistStorage_IsDirty(This->dataCache_PersistStg);
     if(hr != S_FALSE) return hr;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(ps_running(This))
 #else
     if(object_is_running(This))
@@ -2024,7 +2024,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_InitNew(
 
     hr = IPersistStorage_InitNew(This->dataCache_PersistStg, pStg);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hr) && ps_running(This))
 #else
     if(SUCCEEDED(hr) && object_is_running(This))
@@ -2064,7 +2064,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_Load(
     if(SUCCEEDED(hr))
         hr = IPersistStorage_Load(This->dataCache_PersistStg, pStg);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hr) && ps_running(This))
 #else
     if(SUCCEEDED(hr) && object_is_running(This))
@@ -2100,7 +2100,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_Save(
     TRACE("(%p)->(%p, %d)\n", iface, pStgSave, fSameAsLoad);
 
     hr = IPersistStorage_Save(This->dataCache_PersistStg, pStgSave, fSameAsLoad);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hr) && ps_running(This))
 #else
     if(SUCCEEDED(hr) && object_is_running(This))
@@ -2130,7 +2130,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_SaveCompleted(
 
     hr = IPersistStorage_SaveCompleted(This->dataCache_PersistStg, pStgNew);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hr) && ps_running(This))
 #else
     if(SUCCEEDED(hr) && object_is_running(This))
@@ -2167,7 +2167,7 @@ static HRESULT WINAPI DefaultHandler_IPersistStorage_HandsOffStorage(
 
     hr = IPersistStorage_HandsOffStorage(This->dataCache_PersistStg);
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if(SUCCEEDED(hr) && ps_running(This))
 #else
     if(SUCCEEDED(hr) && object_is_running(This))
@@ -2281,7 +2281,7 @@ static const IPersistStorageVtbl DefaultHandler_IPersistStorage_VTable =
 /*********************************************************
  * Methods implementation for the DefaultHandler class.
  */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static inline DefaultHandler *impl_from_IMarshal( IMarshal *iface )
 {
     return CONTAINING_RECORD(iface, DefaultHandler, IMarshal_iface);
@@ -2424,7 +2424,7 @@ static DefaultHandler* DefaultHandler_Construct(
   This->IRunnableObject_iface.lpVtbl = &DefaultHandler_IRunnableObject_VTable;
   This->IAdviseSink_iface.lpVtbl = &DefaultHandler_IAdviseSink_VTable;
   This->IPersistStorage_iface.lpVtbl = &DefaultHandler_IPersistStorage_VTable;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   This->IMarshal_iface.lpVtbl = &DefaultHandler_IMarshal_VTable;
   This->marshal_inner = NULL;
 #endif
@@ -2481,7 +2481,7 @@ static DefaultHandler* DefaultHandler_Construct(
   This->containerApp = NULL;
   This->containerObj = NULL;
   This->pOleDelegate = NULL;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   This->pUnkDelegate = NULL;
 #endif
   This->pPSDelegate = NULL;
@@ -2492,7 +2492,7 @@ static DefaultHandler* DefaultHandler_Construct(
   This->dwAdvConn = 0;
   This->storage = NULL;
   This->storage_state = storage_state_uninitialised;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   if (!This->inproc_server && FAILED(CoGetStdMarshalEx(This->outerUnknown, SMEXF_HANDLER, &This->marshal_inner)))
     This->marshal_inner = NULL;
 #endif
@@ -2536,7 +2536,7 @@ static void DefaultHandler_Destroy(
 
   /* release delegates */
   DefaultHandler_Stop(This);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
   release_delegates(This);
   if (This->marshal_inner)
   {

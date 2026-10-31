@@ -34,7 +34,7 @@ ber_get_option(
 	void	*outvalue)
 {
 	const BerElement *ber;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	const Sockbuf *sb;
 #endif
 
@@ -79,7 +79,7 @@ ber_get_option(
 	}
 
 	ber = item;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	sb = item;
 #endif
 
@@ -130,7 +130,7 @@ ber_set_option(
 	LDAP_CONST void	*invalue)
 {
 	BerElement *ber;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	Sockbuf *sb;
 #endif
 
@@ -200,7 +200,7 @@ ber_set_option(
 	}
 
 	ber = item;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	sb = item;
 #endif
 

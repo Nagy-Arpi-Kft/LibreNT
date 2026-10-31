@@ -1,5 +1,5 @@
 
-remove_definitions(-D_WIN32_WINNT=${REACTOS_TARGET_NT} -DWINVER=${REACTOS_TARGET_NT})
+remove_definitions(-D_WIN32_WINNT=${LIBRENT_TARGET_NT} -DWINVER=${LIBRENT_TARGET_NT})
 
 list(APPEND SOURCE
     data.c
@@ -28,6 +28,6 @@ endif()
 set_module_type(disk kernelmodedriver)
 target_link_libraries(disk ntoskrnl_vista libcntpr wdmguid)
 add_importlibs(disk classpnp ntoskrnl hal)
-add_cd_file(TARGET disk DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET disk DESTINATION librent/system32/drivers NO_CAB FOR all)
 add_registry_inf(disk_reg.inf)
 add_driver_inf(disk disk.inf)

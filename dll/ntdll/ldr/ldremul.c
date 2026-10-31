@@ -1,12 +1,12 @@
 /*
- * PROJECT:     LiberNT NT Library
+ * PROJECT:     LibreNT NT Library
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Start a native emulation host beside a foreign process image
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif.ing@outlook.com>
  */
 
 #include <ntdll.h>
-#include <reactos/emulation.h>
+#include <librent/emulation.h>
 
 #define NDEBUG
 #include <debug.h>

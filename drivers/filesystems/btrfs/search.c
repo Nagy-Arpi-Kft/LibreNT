@@ -42,12 +42,12 @@ extern PDRIVER_OBJECT drvobj;
 
 typedef void (*pnp_callback)(PUNICODE_STRING devpath);
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 // not in mingw yet
 #ifndef _MSC_VER
 DEFINE_GUID(GUID_IO_VOLUME_FVE_STATUS_CHANGE, 0x062998b2, 0xee1f, 0x4b6a, 0xb8, 0x57, 0xe7, 0x6c, 0xbb, 0xe9, 0xa6, 0xda);
 #endif
-#endif // __REACTOS__
+#endif // __LIBRENT__
 
 extern PDEVICE_OBJECT master_devobj;
 

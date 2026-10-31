@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT Display Driver Model - Win32k/dxgkrnl Bridge
+ * PROJECT:     LibreNT Display Driver Model - Win32k/dxgkrnl Bridge
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     NtGdiDdDDI* -> D3DKMT* thin adapter layer
  * COPYRIGHT:   Copyright 2025 LiberNT Contributors
@@ -31,7 +31,7 @@
  *
  * WHY THIS FILE EXISTS
  * --------------------
- * The existing d3dkmt.c dispatches through the REACTOS_WIN32K_DXGKRNL_INTERFACE
+ * The existing d3dkmt.c dispatches through the LIBRENT_WIN32K_DXGKRNL_INTERFACE
  * callback table.  That table is populated at runtime by DxStartupDxgkInt().
  * The private interface is negotiated at bridge startup, then this file
  * installs explicit NtGdiDdDDI* -> D3DKMT* forwarding functions.  Each
@@ -58,7 +58,7 @@
 #include <windef.h>
 #include "wddm_bridge.h"
 #include <d3dkmthk.h>
-#include <reactos/rddm/rxgkinterface.h>
+#include <librent/rddm/rxgkinterface.h>
 #define NDEBUG
 #include <debug.h>
 
@@ -133,7 +133,7 @@ NTSTATUS APIENTRY D3DKMTOfferAllocations(CONST D3DKMT_OFFERALLOCATIONS *pData);
 NTSTATUS APIENTRY D3DKMTReclaimAllocations(CONST D3DKMT_RECLAIMALLOCATIONS *pData);
 NTSTATUS APIENTRY D3DKMTSetVidPnSourceOwner1(CONST D3DKMT_SETVIDPNSOURCEOWNER1 *pData);
 NTSTATUS APIENTRY D3DKMTWaitForVerticalBlankEvent2(CONST D3DKMT_WAITFORVERTICALBLANKEVENT2 *pData);
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 NTSTATUS APIENTRY D3DKMTGetDWMVerticalBlankEvent(CONST D3DKMT_GETVERTICALBLANKEVENT *pData);
 NTSTATUS APIENTRY D3DKMTSetSyncRefreshCountWaitTarget(CONST D3DKMT_SETSYNCREFRESHCOUNTWAITTARGET *pData);
 #endif
@@ -164,7 +164,7 @@ NTSTATUS APIENTRY D3DKMTSubmitCommand(CONST D3DKMT_SUBMITCOMMAND *pData);
  * ==========================================================================
  *  Bridge adapter functions
  *  (type-safe forwarders; suitable for insertion into
- *   REACTOS_WIN32K_DXGKRNL_INTERFACE as function pointers)
+ *   LIBRENT_WIN32K_DXGKRNL_INTERFACE as function pointers)
  * ==========================================================================
  */
 
@@ -536,7 +536,7 @@ DEFINE_DXG_BRIDGE_FORWARDER(DxgBridgeWaitForVerticalBlankEvent2,
                             _In_,
                             CONST D3DKMT_WAITFORVERTICALBLANKEVENT2)
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
 DEFINE_DXG_BRIDGE_FORWARDER(DxgBridgeGetDwmVerticalBlankEvent,
                             D3DKMTGetDWMVerticalBlankEvent,
                             _In_,
@@ -679,11 +679,11 @@ DEFINE_DXG_BRIDGE_FORWARDER(DxgBridgeOpenResource,
  */
 VOID
 WddmBridgeInitCallbacks(
-    _Out_ PREACTOS_WIN32K_DXGKRNL_INTERFACE Interface)
+    _Out_ PLIBRENT_WIN32K_DXGKRNL_INTERFACE Interface)
 {
     NTSTATUS Status;
     ULONG InterfaceVersion;
-    REACTOS_WIN32K_DXGKRNL_INTERFACE ProviderInterface;
+    LIBRENT_WIN32K_DXGKRNL_INTERFACE ProviderInterface;
 
     if (Interface == NULL)
         return;
@@ -762,7 +762,7 @@ WddmBridgeInitCallbacks(
     Interface->RxgkIntPfnSetDisplayMode = DxgBridgeSetDisplayMode;
     Interface->RxgkIntPfnSetDisplayPrivateDriverFormat = DxgBridgeSetDisplayPrivateDriverFormat;
     Interface->RxgkIntPfnUnlock = DxgBridgeUnlock;
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1200)
     Interface->RxgkIntPfnEnumAdapters = DxgBridgeEnumAdapters;
     Interface->RxgkIntPfnOpenAdapterFromLuid = DxgBridgeOpenAdapterFromLuid;
     Interface->RxgkIntPfnOfferAllocations = DxgBridgeOfferAllocations;
@@ -779,14 +779,14 @@ WddmBridgeInitCallbacks(
             DxgBridgeSetSyncRefreshCountWaitTarget;
     }
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
     Interface->RxgkIntPfnCreateSynchronizationObject2 = DxgBridgeCreateSynchronizationObject2;
     Interface->RxgkIntPfnWaitForSynchronizationObject2 = DxgBridgeWaitForSynchronizationObject2;
     Interface->RxgkIntPfnSignalSynchronizationObject2 = DxgBridgeSignalSynchronizationObject2;
 #endif
 
     /* WDDM 2.0 additions */
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (ProviderInterface.RxgkIntPfnMakeResident != NULL)
         Interface->RxgkIntPfnMakeResident = DxgBridgeMakeResident;
     if (ProviderInterface.RxgkIntPfnEvict != NULL)
@@ -822,15 +822,15 @@ WddmBridgeInitCallbacks(
         Interface->RxgkIntPfnSubmitCommand = DxgBridgeSubmitCommand;
     }
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
     if (InterfaceVersion >= DXGKRNL_INTERFACE_VERSION_3)
         Interface->RxgkIntPfnCreateAllocation2 = DxgBridgeCreateAllocation2;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2200)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2200)
     if (InterfaceVersion >= DXGKRNL_INTERFACE_VERSION_4)
         Interface->RxgkIntPfnGetAllocationPriority = DxgBridgeGetAllocationPriority;
 #endif
-#if (REACTOS_WDDM_TARGET_LEVEL >= 1105)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 1105)
     if (InterfaceVersion >= DXGKRNL_INTERFACE_VERSION_5)
         Interface->RxgkIntPfnOpenSynchronizationObject = DxgBridgeOpenSynchronizationObject;
 #endif

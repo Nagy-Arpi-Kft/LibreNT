@@ -1,6 +1,6 @@
 
 include_directories(
-    ${REACTOS_SOURCE_DIR}/sdk/include/reactos/drivers/fltmgr
+    ${LIBRENT_SOURCE_DIR}/sdk/include/librent/drivers/fltmgr
     includes)
 
 add_definitions(-DEX_LEGACY_PUSH_LOCKS)
@@ -35,4 +35,4 @@ set_module_type(fltmgr kernelmodedriver)
 target_link_libraries(fltmgr ${PSEH_LIB})
 add_importlibs(fltmgr ntoskrnl hal)
 add_pch(fltmgr fltmgr.h SOURCE)
-add_cd_file(TARGET fltmgr DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET fltmgr DESTINATION librent/system32/drivers NO_CAB FOR all)

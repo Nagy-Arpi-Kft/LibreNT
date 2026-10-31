@@ -105,7 +105,7 @@ STDMETHODIMP_(ULONG) CVfdShExt::Release()
 		return m_cRefCnt;
 	}
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	delete this;
 #endif
 

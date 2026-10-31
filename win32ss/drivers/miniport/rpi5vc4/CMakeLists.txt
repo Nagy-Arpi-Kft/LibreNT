@@ -1,4 +1,4 @@
-# PROJECT:     ReactOS Raspberry Pi 5 framebuffer miniport
+# PROJECT:     LibreNT Raspberry Pi 5 framebuffer miniport
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Raspberry Pi 5 VC4 miniport build rules
 # COPYRIGHT:   Copyright 2026 Ahmed Arif <arif193@gmail.com>
@@ -19,7 +19,7 @@ add_library(rpi5vc4 MODULE ${SOURCE} rpi5vc4.rc)
 set_module_type(rpi5vc4 kernelmodedriver)
 add_importlibs(rpi5vc4 ntoskrnl videoprt)
 target_link_libraries(rpi5vc4 libcntpr)
-add_cd_file(TARGET rpi5vc4 DESTINATION reactos/system32/drivers FOR all)
+add_cd_file(TARGET rpi5vc4 DESTINATION librent/system32/drivers FOR all)
 set(RPI5VC4_OPENGL_ICD rpi5vc4ogl.dll)
 if(TARGET mesa_gallium AND NOT RPI5VC4_MESA_V3D_ICD)
     set(RPI5VC4_OPENGL_ICD mesa_gallium.dll)

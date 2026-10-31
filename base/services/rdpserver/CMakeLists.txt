@@ -1,4 +1,4 @@
-# PROJECT:     LiberNT RDP console server
+# PROJECT:     LibreNT RDP console server
 # LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
 # PURPOSE:     Stage a MinGW build of the RDP console server into the images
 # COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>
@@ -27,9 +27,9 @@ foreach(_file IN LISTS _rdpserver_files _rdpserver_modules _rdpserver_licenses)
     endif()
 endforeach()
 
-add_cd_file(FILE ${_rdpserver_files} DESTINATION reactos/system32/rdpserver FOR livecd preinstall)
-add_cd_file(FILE ${_rdpserver_modules} DESTINATION reactos/system32/rdpserver/ossl-modules FOR livecd preinstall)
-add_cd_file(FILE ${_rdpserver_licenses} DESTINATION reactos/system32/rdpserver/licenses FOR livecd preinstall)
+add_cd_file(FILE ${_rdpserver_files} DESTINATION librent/system32/rdpserver FOR livecd preinstall)
+add_cd_file(FILE ${_rdpserver_modules} DESTINATION librent/system32/rdpserver/ossl-modules FOR livecd preinstall)
+add_cd_file(FILE ${_rdpserver_licenses} DESTINATION librent/system32/rdpserver/licenses FOR livecd preinstall)
 
 # The in-tree configuration keeps the server disabled. Credentials and the TLS
 # key pair belong to a private directory outside the source tree.
@@ -47,6 +47,6 @@ else()
 endif()
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
     ${_rdpserver_files} ${_rdpserver_modules} ${_rdpserver_licenses} ${_rdpserver_config})
-add_cd_file(FILE ${_rdpserver_config} DESTINATION reactos/system32/rdpserver FOR livecd preinstall)
+add_cd_file(FILE ${_rdpserver_config} DESTINATION librent/system32/rdpserver FOR livecd preinstall)
 
 add_registry_inf(rdpserver_reg.inf)

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel ARM64
+ * PROJECT:     LibreNT Kernel ARM64
  * LICENSE:     GPL-2.0-or-later
  * PURPOSE:     ARM64 PE/COFF exception unwinding (kernel)
  * COPYRIGHT:   Unwind-code interpreter ported from the Wine project

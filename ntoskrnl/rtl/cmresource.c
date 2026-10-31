@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Kernel
+ * PROJECT:     LibreNT Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     Encode and decode assigned memory and I/O resources
  * COPYRIGHT:   Copyright 2026 Ahmed ARIF <arif193@gmail.com>

@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Font Shell Extension
+ * PROJECT:     LibreNT Font Shell Extension
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Fonts folder view callback implementation
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ (katayama.hirofumi.mz@gmail.com)

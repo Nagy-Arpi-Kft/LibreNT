@@ -33,7 +33,7 @@ extern "C" {
 #include "ac97reg.h"
 #include "debug.h"
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 
 PVOID
 operator new (

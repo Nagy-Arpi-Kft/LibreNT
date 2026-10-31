@@ -1,7 +1,7 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
  * PROJECT:         Security Account Manager (SAM) Server
- * FILE:            reactos/dll/win32/samsrv/display.c
+ * FILE:            librent/dll/win32/samsrv/display.c
  * PURPOSE:         Display cache
  *
  * PROGRAMMERS:     Eric Kohl

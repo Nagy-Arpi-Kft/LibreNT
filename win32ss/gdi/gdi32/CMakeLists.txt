@@ -5,7 +5,7 @@ add_definitions(-DLANGPACK)
 
 include_directories(
     include
-    ${REACTOS_SOURCE_DIR}/win32ss/include)
+    ${LIBRENT_SOURCE_DIR}/win32ss/include)
 
 add_definitions(-DLANGPACK)
 spec2def(gdi32.dll gdi32.spec ADD_IMPORTLIB)
@@ -71,4 +71,4 @@ target_link_libraries(gdi32
 add_importlibs(gdi32 user32 advapi32 msvcrt kernel32 ntdll)
 add_pch(gdi32 include/precomp.h SOURCE)
 add_dependencies(gdi32 psdk)
-add_cd_file(TARGET gdi32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET gdi32 DESTINATION librent/system32 FOR all)

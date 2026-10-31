@@ -21,7 +21,7 @@
 
 #include <exposeenums2managed.h>
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 FLAGS TAG(AnalogVideoStandard)
 {
     AnalogVideo_None        = 0x00000000,
@@ -65,7 +65,7 @@ ENUM16 TAG(TunerInputType)
     TunerInputAntenna
 } TunerInputType;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 ENUM16 TAG(TVAudioMode)
 {
     AMTVAUDIO_MODE_MONO     = 0x0001,

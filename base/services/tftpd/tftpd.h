@@ -137,7 +137,7 @@ struct data1
 struct data2
 {
     WSADATA wsaData;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     home homes[MAX_SERVERS];
 #else
     home homes[8];

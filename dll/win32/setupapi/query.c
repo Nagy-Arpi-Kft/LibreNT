@@ -31,7 +31,7 @@
 #include "wine/debug.h"
 #include "setupapi_private.h"
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 WINE_DEFAULT_DEBUG_CHANNEL(setupapi);
 #endif
 
@@ -351,7 +351,7 @@ BOOL WINAPI SetupGetSourceFileLocationA( HINF hinf, PINFCONTEXT context, PCSTR f
     ret = TRUE;
 
  done:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HeapFree( GetProcessHeap(), 0, filenameW );
 #else
     free( filenameW );
@@ -556,7 +556,7 @@ BOOL WINAPI SetupGetTargetPathA( HINF hinf, PINFCONTEXT context, PCSTR section, 
     ret = TRUE;
 
  done:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     HeapFree( GetProcessHeap(), 0, sectionW );
 #else
     free( sectionW );
@@ -690,7 +690,7 @@ BOOL WINAPI SetupQueryInfOriginalFileInformationW(
     if (inf_name) inf_name++;
     else inf_name = inf_path;
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     if (!SETUPAPI_GetOriginalInfName(inf_path, OriginalFileInfo->OriginalInfName,
                                      ARRAY_SIZE(OriginalFileInfo->OriginalInfName)))
         lstrcpyW(OriginalFileInfo->OriginalInfName, inf_name);

@@ -2388,7 +2388,7 @@ Return Value:
 IO_COMPLETION_ROUTINE CdSyncCompletionRoutine;
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdSyncCompletionRoutine (
     PDEVICE_OBJECT DeviceObject,
     PIRP Irp,
@@ -2607,7 +2607,7 @@ Return Value:
             //  Make sure we don't try and read past end of the last track.
             //
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             if (Vcb->CdromToc) {
 #endif
             TrackData = &Vcb->CdromToc->TrackData[(Vcb->CdromToc->LastTrack - Vcb->CdromToc->FirstTrack + 1)];
@@ -2620,7 +2620,7 @@ Return Value:
 
                 Blocks = CD_SEC_CHUNK_BLOCKS;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             } else {
                 // HACK!!!!!!!! Might cause reads to overrun the end of the partition, no idea what consequences that can have.
                 Blocks = CD_SEC_CHUNK_BLOCKS;
@@ -3434,7 +3434,7 @@ Return Value:
 //
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdMultiSyncCompletionRoutine (
     PDEVICE_OBJECT DeviceObject,
     PIRP Irp,
@@ -3522,7 +3522,7 @@ Return Value:
 //
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdMultiAsyncCompletionRoutine (
     PDEVICE_OBJECT DeviceObject,
     PIRP Irp,
@@ -3642,7 +3642,7 @@ Return Value:
 //
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdSingleSyncCompletionRoutine (
     PDEVICE_OBJECT DeviceObject,
     PIRP Irp,
@@ -3706,7 +3706,7 @@ Return Value:
 //
 
 NTSTATUS
-NTAPI /* ReactOS Change: GCC Does not support STDCALL by default */
+NTAPI /* LibreNT Change: GCC Does not support STDCALL by default */
 CdSingleAsyncCompletionRoutine (
     PDEVICE_OBJECT DeviceObject,
     PIRP Irp,

@@ -142,7 +142,7 @@ static HRESULT WINAPI bluetoothdevice_statics_FromBluetoothAddressAsync( IBlueto
 
 static HRESULT WINAPI bluetoothdevice_statics_GetDeviceSelector( IBluetoothDeviceStatics *iface, HSTRING *value )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const WCHAR selectorW[] = L"System.Devices.DevObjectType:=5 AND "
                                      L"System.Devices.Aep.ProtocolId:=\"{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}\" AND "
                                      L"(System.Devices.Aep.IsPaired:=System.StructuredQueryType.Boolean#True OR "
@@ -604,7 +604,7 @@ static HRESULT WINAPI bluetoothledevice_statics_FromBluetoothAddressAsync( IBlue
 
 static HRESULT WINAPI bluetoothledevice_statics_GetDeviceSelector( IBluetoothLEDeviceStatics *iface, HSTRING *result )
 {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     static const WCHAR selectorW[] = L"System.Devices.DevObjectType:=5 AND "
                                      L"System.Devices.Aep.ProtocolId:=\"{BB7BB05E-5972-42B5-94FC-76EAA7084D49}\" AND "
                                      L"(System.Devices.Aep.IsPaired:=System.StructuredQueryType.Boolean#True OR "

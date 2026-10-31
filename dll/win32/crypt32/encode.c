@@ -1119,7 +1119,7 @@ static BOOL WINAPI CRYPT_AsnEncodeNameValue(DWORD dwCertEncodingType,
     return ret;
 }
 
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL WINAPI CRYPT_AsnEncodeOrCopyUnicodeNameValue(
  DWORD dwCertEncodingType, LPCSTR lpszStructType, const void *pvStructInfo,
  DWORD dwFlags, PCRYPT_ENCODE_PARA pEncodePara, BYTE *pbEncoded,
@@ -1172,7 +1172,7 @@ static BOOL CRYPT_AsnEncodeRdnAttr(DWORD dwCertEncodingType,
 {
     DWORD bytesNeeded = 0, lenBytes, size;
     BOOL ret;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     CERT_RDN_ATTR inferred;
 
     if (nameValueEncodeFunc == CRYPT_AsnEncodeOrCopyUnicodeNameValue &&
@@ -4005,7 +4005,7 @@ static BOOL WINAPI CRYPT_AsnEncodeEnhancedKeyUsage(DWORD dwCertEncodingType,
     __ENDTRY
     return ret;
 }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 static BOOL WINAPI CRYPT_AsnEncodeKeyUsageRestriction(DWORD dwCertEncodingType,
  LPCSTR lpszStructType, const void *pvStructInfo, DWORD dwFlags,
  PCRYPT_ENCODE_PARA pEncodePara, BYTE *pbEncoded, DWORD *pcbEncoded)
@@ -4895,7 +4895,7 @@ static CryptEncodeObjectExFunc CRYPT_GetBuiltinEncoder(DWORD dwCertEncodingType,
         case LOWORD(X509_ENHANCED_KEY_USAGE):
             encodeFunc = CRYPT_AsnEncodeEnhancedKeyUsage;
             break;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         case LOWORD(X509_KEY_USAGE_RESTRICTION):
             encodeFunc = CRYPT_AsnEncodeKeyUsageRestriction;
             break;
@@ -4987,7 +4987,7 @@ static CryptEncodeObjectExFunc CRYPT_GetBuiltinEncoder(DWORD dwCertEncodingType,
         encodeFunc = CRYPT_AsnEncodeCertPolicyConstraints;
     else if (!strcmp(lpszStructType, szOID_ENHANCED_KEY_USAGE))
         encodeFunc = CRYPT_AsnEncodeEnhancedKeyUsage;
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     else if (!strcmp(lpszStructType, szOID_KEY_USAGE_RESTRICTION))
         encodeFunc = CRYPT_AsnEncodeKeyUsageRestriction;
 #endif

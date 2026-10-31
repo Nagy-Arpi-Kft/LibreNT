@@ -2,7 +2,7 @@
 add_subdirectory(kernel32_vista)
 
 add_definitions(-D_KERNEL32_)
-include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/subsys)
+include_directories(${LIBRENT_SOURCE_DIR}/sdk/include/librent/subsys)
 spec2def(kernel32.dll kernel32.spec ADD_IMPORTLIB)
 
 # Shared between kernel32 and kernel32_vista
@@ -154,16 +154,6 @@ elseif(ARCH STREQUAL "arm64")
         list(APPEND SOURCE
             client/arm64/unwind.c)
     endif()
-elseif(ARCH STREQUAL "riscv64")
-    list(APPEND SOURCE
-        client/riscv64/emuwork.c
-        client/riscv64/fiber.c
-        client/riscv64/unwind.c)
-elseif(ARCH STREQUAL "ppc")
-    list(APPEND SOURCE
-        client/ppc/emuwork.c
-        client/ppc/fiber.c
-        client/nounwind.c)
 endif()
 
 add_asm_files(kernel32_asm ${ASM_SOURCE})
@@ -192,7 +182,7 @@ if(CLANG_NATIVE_SEH AND CMAKE_C_COMPILER_ID STREQUAL "Clang" AND NOT USE_DUMMY_P
     set_property(SOURCE client/except.c APPEND PROPERTY COMPILE_OPTIONS -Xclang -fasync-exceptions)
 endif()
 add_dependencies(kernel32 psdk errcodes asm)
-add_cd_file(TARGET kernel32 DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET kernel32 DESTINATION librent/system32 FOR all)
 
 if(WOW64_I386_RUNTIME AND ARCH STREQUAL "i386")
     target_compile_definitions(kernel32 PRIVATE WOW64_I386_RUNTIME)

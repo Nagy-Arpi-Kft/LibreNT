@@ -466,7 +466,7 @@ void CRegTreeOptions::AddItemsFromRegistry(HKEY hKey, HTREEITEM hParent, HTREEIT
                 tvi.pszText = Temp;
             else
                 tvi.pszText = Name;
-#ifdef __REACTOS__ // Grayed is a ROS extension
+#ifdef __LIBRENT__ // Grayed is a ROS extension
             DWORD grayed = GetRegDWORD(hItemKey, L"Grayed", DWORD(FALSE));
             if (grayed)
             {

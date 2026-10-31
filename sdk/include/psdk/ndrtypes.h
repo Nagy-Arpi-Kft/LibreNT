@@ -205,7 +205,7 @@ typedef enum
 
     FC_UNUSED2, /* 0x3a */
     FC_UNUSED3, /* 0x3b */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     FC_SYSTEM_HANDLE,
 #else
     FC_UNUSED4, /* 0x3c */

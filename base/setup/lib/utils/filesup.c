@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Setup Library
+ * PROJECT:     LibreNT Setup Library
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     File support functions.
  * COPYRIGHT:   Casper S. Hornstrup (chorns@users.sourceforge.net)
@@ -545,7 +545,7 @@ SetupMoveFile(
          */
         if (Status != STATUS_NOT_SAME_DEVICE || !(Flags & MOVEFILE_COPY_ALLOWED))
         {
-            /* ReactOS hack! To be removed once all FSD have proper renaming support
+            /* LibreNT hack! To be removed once all FSD have proper renaming support
              * Just leave status to error and leave
              */
             if (Status == STATUS_NOT_IMPLEMENTED)

@@ -4390,7 +4390,7 @@ Return Value:
                                         0,
                                         *IoFileObjectType,
                                         KernelMode,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                         &FileToMarkBad,
 #else
                                         (PVOID *)&FileToMarkBad,
@@ -5858,7 +5858,7 @@ Return Value:
                                         0,
                                         *IoFileObjectType,
                                         Irp->RequestorMode,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                         &FileObject,
 #else
                                         (PVOID *)&FileObject,
@@ -7458,7 +7458,7 @@ Return Value:
                                             0,
                                             *IoFileObjectType,
                                             UserMode,
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
                                             &DasdFileObject,
 #else
                                             (PVOID *)&DasdFileObject,

@@ -88,7 +88,7 @@ static void COMDLG32_FR_HandleWMCommand(HWND hDlgWnd, COMDLG32_FR_Data *pData, i
 {
 	DWORD flag;
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
 	pData->user_fr.fra->Flags &= ~FR_MASK;	/* Clear return flags */
 	if(pData->fr.Flags & FR_WINE_REPLACE)	/* Replace always goes down... */
 		pData->user_fr.fra->Flags |= FR_DOWN;
@@ -101,7 +101,7 @@ static void COMDLG32_FR_HandleWMCommand(HWND hDlgWnd, COMDLG32_FR_Data *pData, i
 		case IDOK: /* Find Next */
 			if(GetDlgItemTextA(hDlgWnd, edt1, pData->fr.lpstrFindWhat, pData->fr.wFindWhatLen) > 0)
                         {
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				pData->user_fr.fra->Flags &= ~FR_MASK;	/* Clear return flags */
 				if(pData->fr.Flags & FR_WINE_REPLACE)	/* Replace always goes down... */
 					pData->user_fr.fra->Flags |= FR_DOWN;
@@ -122,7 +122,7 @@ static void COMDLG32_FR_HandleWMCommand(HWND hDlgWnd, COMDLG32_FR_Data *pData, i
 			break;
 
 		case IDCANCEL:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			pData->user_fr.fra->Flags &= ~FR_MASK;	/* Clear return flags */
 			if(pData->fr.Flags & FR_WINE_REPLACE)	/* Replace always goes down... */
 				pData->user_fr.fra->Flags |= FR_DOWN;
@@ -144,7 +144,7 @@ Replace:
                         {
 				pData->fr.lpstrReplaceWith[0] = 0; /* In case the next GetDlgItemText Fails */
 				GetDlgItemTextA(hDlgWnd, edt2, pData->fr.lpstrReplaceWith, pData->fr.wReplaceWithLen);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 				pData->user_fr.fra->Flags &= ~FR_MASK;	/* Clear return flags */
 				if(pData->fr.Flags & FR_WINE_REPLACE)	/* Replace always goes down... */
 					pData->user_fr.fra->Flags |= FR_DOWN;
@@ -169,7 +169,7 @@ Replace:
 			break;
 
 		case pshHelp:
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 			pData->user_fr.fra->Flags &= ~FR_MASK;	/* Clear return flags */
 			if(pData->fr.Flags & FR_WINE_REPLACE)	/* Replace always goes down... */
 				pData->user_fr.fra->Flags |= FR_DOWN;

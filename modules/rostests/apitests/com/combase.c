@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS API Tests
+ * PROJECT:         LibreNT API Tests
  * LICENSE:         MIT (https://spdx.org/licenses/MIT)
  * PURPOSE:         COM interface test for prnfldr server
  * COPYRIGHT:       Copyright 2025 Carl Bialorucki <carl.bialorucki@reactos.org>

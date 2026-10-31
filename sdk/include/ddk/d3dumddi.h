@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS SDK
+ * PROJECT:     LibreNT SDK
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Direct3D user-mode display driver interface (UMD DDI)
  * COPYRIGHT:   Copyright 2026 ReactOS WDDM Team

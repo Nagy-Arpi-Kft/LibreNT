@@ -9,4 +9,4 @@ add_library(usbdwc2 MODULE
 set_module_type(usbdwc2 kernelmodedriver)
 add_importlibs(usbdwc2 usbport usbd hal ntoskrnl)
 add_pch(usbdwc2 usbdwc2.h usbdwc2.c)
-add_cd_file(TARGET usbdwc2 DESTINATION reactos/system32/drivers NO_CAB FOR all)
+add_cd_file(TARGET usbdwc2 DESTINATION librent/system32/drivers NO_CAB FOR all)

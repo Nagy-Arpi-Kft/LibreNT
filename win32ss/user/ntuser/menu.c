@@ -1,13 +1,13 @@
 /*
  * COPYRIGHT:        See COPYING in the top level directory
- * PROJECT:          ReactOS kernel
+ * PROJECT:          LibreNT kernel
  * PURPOSE:          Menus
  * FILE:             win32ss/user/ntuser/menu.c
  * PROGRAMER:        Thomas Weidenmueller (w3seek@users.sourceforge.net)
  */
 
 #include <win32k.h>
-#include <reactos/dwmframe.h>
+#include <librent/dwmframe.h>
 DBG_DEFAULT_CHANNEL(UserMenu);
 
 /* INTERNAL ******************************************************************/
@@ -4536,11 +4536,11 @@ static INT FASTCALL MENU_TrackMenu(PMENU pmenu, UINT wFlags, INT x, INT y,
             }
             else
             {
-                /* ReactOS Checks */
+                /* LibreNT Checks */
                 if (!VerifyWnd(mt.OwnerWnd)                            ||
                     !ValidateHwndNoErr(mt.CurrentMenu->hWnd)           ||
                      //pti->MessageQueue->QF_flags & QF_ACTIVATIONCHANGE || // See CORE-17338
-                     capture_win != IntGetCapture() ) // Should not happen, but this is ReactOS...
+                     capture_win != IntGetCapture() ) // Should not happen, but this is LibreNT...
                 {
                    ErrorExit = TRUE; // Do not wait on dead windows, now win test_capture_4 works.
                    break;

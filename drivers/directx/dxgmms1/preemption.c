@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX GPU Memory Manager and Scheduler
+ * PROJECT:     LibreNT DirectX GPU Memory Manager and Scheduler
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GPU preemption and Timeout Detection & Recovery (TDR).
  * COPYRIGHT:   Copyright 2024 LiberNT Team
@@ -31,7 +31,7 @@
  *   } DXGKARG_PREEMPTCOMMAND;
  *
  *   This structure is forward-declared in dispmprt.h but not yet fully
- *   defined in the ReactOS DDK headers; we provide the definition locally.
+ *   defined in the LibreNT DDK headers; we provide the definition locally.
  *
  * WORK ITEM PATTERN
  *   DxgkMmsTdrDpcRoutine and DxgkMmsPreemptionTimeout run at DISPATCH_LEVEL

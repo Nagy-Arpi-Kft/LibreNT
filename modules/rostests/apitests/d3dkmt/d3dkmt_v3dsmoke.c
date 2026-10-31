@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS D3DKMT API Tests
+ * PROJECT:     LibreNT D3DKMT API Tests
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     v3dsmoke Phase A (UMD track Stage 1 groundwork): the first
  *              UMD-shaped submission — create an allocation in the VRAM
@@ -24,8 +24,8 @@
  */
 
 #include "precomp.h"
-#include <reactos/rpi5vc4_umd.h>
-#include <reactos/vc4cle.h>
+#include <librent/rpi5vc4_umd.h>
+#include <librent/vc4cle.h>
 
 #define SMOKE_DMA_PACKET_MAGIC       0x52355644u
 #define SMOKE_DMA_OP_V3D_JOB         2

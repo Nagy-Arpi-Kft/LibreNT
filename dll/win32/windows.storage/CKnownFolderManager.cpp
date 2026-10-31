@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Shell
+ * PROJECT:     LibreNT Shell
  * LICENSE:     LGPL-2.1-or-later
  * PURPOSE:     Known-folder COM access to the shell's folder table
  */

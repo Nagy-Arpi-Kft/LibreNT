@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Sound Recorder
+ * PROJECT:     LibreNT Sound Recorder
  * LICENSE:     GPL-2.0-or-later (https://spdx.org/licenses/GPL-2.0-or-later)
  * PURPOSE:     Chinese (Traditional) resource file
  * TRANSLATORS: Copyright 2011 Elton Chung <elton328@gmail.com>
@@ -8,7 +8,7 @@
 
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 
-IDC_REACTOS_SNDREC32 ACCELERATORS
+IDC_LIBRENT_SNDREC32 ACCELERATORS
 BEGIN
     "?", IDM_ABOUT, ASCII, ALT
     "/", IDM_ABOUT, ASCII, ALT
@@ -61,7 +61,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE "錄音機"
-    IDC_REACTOS_SNDREC32 "REACTOS_SNDREC32"
+    IDC_LIBRENT_SNDREC32 "LIBRENT_SNDREC32"
 END
 
 STRINGTABLE

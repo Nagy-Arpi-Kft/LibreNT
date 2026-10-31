@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS api tests
+ * PROJECT:     LibreNT api tests
  * LICENSE:     GPL-2.0+ (https://spdx.org/licenses/GPL-2.0+)
  * PURPOSE:     Test for GetCharWidth... functions
  * COPYRIGHT:   Copyright 2026 Katayama Hirofumi MZ (katayama.hirofumi.mz@gmail.com)
@@ -135,7 +135,7 @@ static void Test_CharWidthI(HDC hDC)
     ok_int(ret, TRUE);
     ok_err(0xBEEFCAFE);
 
-#if 0 // These tests take time in ReactOS
+#if 0 // These tests take time in LibreNT
     INT count = 0x2710000 / sizeof(INT);
     PINT pn = malloc((count + 1) * sizeof(INT));
     PWORD pw = malloc((count + 1) * sizeof(WORD));

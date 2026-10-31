@@ -149,7 +149,7 @@ DWORD WINAPI fileTransfer(void *param)
 {
     BackgroundCopyManagerImpl *qmgr = &globalMgr;
     HANDLE events[2];
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
     DWORD timeout = INFINITE;
 #endif
 
@@ -162,7 +162,7 @@ DWORD WINAPI fileTransfer(void *param)
         BOOL haveJob = FALSE;
 
         /* Check if it's the stop_event */
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         if (WaitForMultipleObjects(2, events, FALSE, timeout) == WAIT_OBJECT_0)
 #else
         if (WaitForMultipleObjects(2, events, FALSE, INFINITE) == WAIT_OBJECT_0)
@@ -180,7 +180,7 @@ DWORD WINAPI fileTransfer(void *param)
            this thread ever deletes them so we don't need to worry about jobs
            magically disappearing from the list.  */
         EnterCriticalSection(&qmgr->cs);
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
         timeout = INFINITE;
 #endif
 
@@ -196,7 +196,7 @@ DWORD WINAPI fileTransfer(void *param)
                 haveJob = TRUE;
                 break;
             }
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
             else if (job->state == BG_JOB_STATE_TRANSIENT_ERROR)
             {
                 ULONGLONG now = GetTickCount64();

@@ -66,7 +66,7 @@ add_idl_reg_scripts(explorerframe registry browseui_classes.idl)
 target_link_libraries(explorerframe shellbars shellfind shellframe uuid wine wine_dll_register cpprt atl_classes)
 add_importlibs(explorerframe uxtheme shdocvw shlwapi shell32 comctl32 gdiplus dwmapi propsys version gdi32 ole32 oleaut32 user32 advapi32 mpr msvcrt kernel32 ntdll)
 add_pch(explorerframe precomp.h "${PCH_SKIP_SOURCE}")
-add_cd_file(TARGET explorerframe DESTINATION reactos/system32 FOR all)
+add_cd_file(TARGET explorerframe DESTINATION librent/system32 FOR all)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     target_compile_options(explorerframe PRIVATE -Wno-unused-but-set-variable)

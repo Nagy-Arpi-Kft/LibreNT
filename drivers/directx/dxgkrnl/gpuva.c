@@ -1,5 +1,5 @@
 /*
- * PROJECT:     LiberNT DirectX Graphics Kernel
+ * PROJECT:     LibreNT DirectX Graphics Kernel
  * LICENSE:     GPL-3.0-or-later (https://spdx.org/licenses/GPL-3.0-or-later)
  * PURPOSE:     GPU Virtual Address Space Management (WDDM 2.0)
  * COPYRIGHT:   Copyright 2024 LiberNT WDDM Team
@@ -3102,7 +3102,7 @@ GpuVaOperationSpan(
 
 /* PROCESS LIFECYCLE **********************************************************/
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 static BOOLEAN
 DxgkpGpuVaProcessDdiTableAvailable(
     _In_ PDXGKRNL_ADAPTER Adapter)
@@ -3140,7 +3140,7 @@ DxgkGpuVaCreateProcess(
     /* Adapter/process ownership exists at every selected driver-model level. */
     Process->Adapter = Adapter;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* Initialize the WDDM 2.0 GPU VA space. */
     InitializeListHead(&Process->GpuVaRangeList);
     InitializeListHead(&Process->GpuVaPinList);
@@ -3245,7 +3245,7 @@ DxgkGpuVaDestroyProcess(
     if (Process == NULL)
         return;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     /* Free all GPU VA ranges. */
     ExAcquireFastMutex(&Process->GpuVaLock);
     {
@@ -5464,7 +5464,7 @@ DxgkGpuVaApplyUpdate(
 
 /* ROOT PAGE TABLE ************************************************************/
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
 /*
  * GpuVaNodeOwnsGpuMmuPageTables
  *
@@ -5516,7 +5516,7 @@ DxgkGpuVaQueryNodeGpuMmuSupport(
     *Supported = Metadata.GpuMmuSupported ? TRUE : FALSE;
     return STATUS_SUCCESS;
 }
-#endif /* REACTOS_WDDM_TARGET_LEVEL >= 2000 */
+#endif /* LIBRENT_WDDM_TARGET_LEVEL >= 2000 */
 
 /* The caller owns the context stream. Process root placement is read under
  * GpuVaLock; roots live until process teardown. */
@@ -5526,7 +5526,7 @@ DxgkGpuVaRootPageTableNeedsUpdate(
     _In_ PDXGKRNL_PROCESS Process,
     _In_ PDXGKRNL_CONTEXT Context)
 {
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     BOOLEAN Changed;
 
     PAGED_CODE();
@@ -5573,7 +5573,7 @@ DxgkGpuVaSetRootPageTable(
     if (InterlockedCompareExchange(&Context->Device->ExecutionState, 0, 0) != D3DKMT_DEVICEEXECUTION_ACTIVE)
         return STATUS_DEVICE_REMOVED;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (!DxgkGpuVaRootPageTableNeedsUpdate(Adapter, Process, Context))
         return STATUS_SUCCESS;
 
@@ -5670,7 +5670,7 @@ DxgkGpuVaGetRootPageTableSize(
 {
     PAGED_CODE();
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (Adapter != NULL &&
         DXGK_CB_FULL(Adapter, DxgkDdiGetRootPageTableSize) != NULL)
     {
@@ -5894,7 +5894,7 @@ DxgkGpuVaMapCpuHostAperture(
     if (Adapter == NULL)
         return STATUS_INVALID_PARAMETER;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (DXGK_CB_FULL(Adapter, DxgkDdiMapCpuHostAperture) != NULL)
     {
         DXGKARG_MAPCPUHOSTAPERTURE Args;
@@ -5946,7 +5946,7 @@ DxgkGpuVaUnmapCpuHostAperture(
     if (Adapter == NULL)
         return STATUS_INVALID_PARAMETER;
 
-#if (REACTOS_WDDM_TARGET_LEVEL >= 2000)
+#if (LIBRENT_WDDM_TARGET_LEVEL >= 2000)
     if (DXGK_CB_FULL(Adapter, DxgkDdiUnmapCpuHostAperture) != NULL)
     {
         DXGKARG_UNMAPCPUHOSTAPERTURE Args;

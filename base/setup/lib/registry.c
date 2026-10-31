@@ -1,5 +1,5 @@
 /*
- *  ReactOS kernel
+ *  LibreNT kernel
  *  Copyright (C) 2003 ReactOS Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  */
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS Setup Library
+ * PROJECT:         LibreNT Setup Library
  * FILE:            base/setup/lib/registry.c
  * PURPOSE:         Registry creation functions
  * PROGRAMMERS:     ...
@@ -38,7 +38,7 @@
 #include <debug.h>
 
 
-// #ifdef __REACTOS__
+// #ifdef __LIBRENT__
 #if 1 // FIXME: Disable if setupapi.h is included in the code...
 #define FLG_ADDREG_BINVALUETYPE           0x00000001
 #define FLG_ADDREG_NOCLOBBER              0x00000002
@@ -777,7 +777,7 @@ RegInitializeRegistry(
                          0,
                          NULL,
                     // FIXME: Using REG_OPTION_VOLATILE works OK on Windows,
-                    // but I need to check whether it works OK on ReactOS too.
+                    // but I need to check whether it works OK on LibreNT too.
                          REG_OPTION_NON_VOLATILE, // REG_OPTION_VOLATILE,
                          &Disposition);
     if (!NT_SUCCESS(Status))
@@ -801,7 +801,7 @@ RegInitializeRegistry(
                          0,
                          NULL,
                     // FIXME: Using REG_OPTION_VOLATILE works OK on Windows,
-                    // but I need to check whether it works OK on ReactOS too.
+                    // but I need to check whether it works OK on LibreNT too.
                          REG_OPTION_NON_VOLATILE, // REG_OPTION_VOLATILE,
                          &Disposition);
     if (!NT_SUCCESS(Status))
@@ -860,7 +860,7 @@ RegInitializeRegistry(
                                  0,
                                  NULL,
                             // FIXME: Using REG_OPTION_VOLATILE works OK on Windows,
-                            // but I need to check whether it works OK on ReactOS too.
+                            // but I need to check whether it works OK on LibreNT too.
                                  REG_OPTION_NON_VOLATILE, // REG_OPTION_VOLATILE,
                                  &Disposition);
             if (!NT_SUCCESS(Status))

@@ -310,7 +310,7 @@ SymCryptMontgomeryPointScalarMul(
     PSYMCRYPT_MODULUS     pmMod;
     PSYMCRYPT_MODELEMENT  peX1, peZ1, peA24, peX2, peZ2, peX3, peZ3, peTemp1, peTemp2, peResult;
     UINT32                i, nBytes, nDigits, cond, newcond, nCommon;
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     PBYTE                 pBegin;
     SIZE_T                cbAllScratch;
 #endif
@@ -341,7 +341,7 @@ SymCryptMontgomeryPointScalarMul(
 
     SYMCRYPT_ASSERT( cbScratch >= 6 * nBytes + nCommon );
 
-#ifndef __REACTOS__
+#ifndef __LIBRENT__
     cbAllScratch = cbScratch;
     pBegin = pbScratch;
 #endif

@@ -1,7 +1,7 @@
 /*
- * PROJECT:         ReactOS msgina.dll
+ * PROJECT:         LibreNT msgina.dll
  * FILE:            dll/win32/msgina/gui.c
- * PURPOSE:         ReactOS Logon GINA DLL
+ * PURPOSE:         LibreNT Logon GINA DLL
  * PROGRAMMERS:     Hervé Poussineau (hpoussin@reactos.org)
  *                  Katayama Hirofumi MZ (katayama.hirofumi.mz@gmail.com)
  *                  Ahmed ARIF <arif.ing@outlook.com>
@@ -10,7 +10,7 @@
 #include "msgina.h"
 
 #include <wingdi.h>
-#include <reactos/bootstatus.h>
+#include <librent/bootstatus.h>
 #include <ndk/exfuncs.h>
 #include "logonui.h"
 

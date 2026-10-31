@@ -274,7 +274,7 @@ Return Value:
 //
 
 VOID
-#ifdef __REACTOS__
+#ifdef __LIBRENT__
 NTAPI
 #endif
 FatAddToWorkque (

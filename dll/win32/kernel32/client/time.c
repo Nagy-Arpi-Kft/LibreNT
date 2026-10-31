@@ -1,6 +1,6 @@
 /*
  * COPYRIGHT:       See COPYING in the top level directory
- * PROJECT:         ReactOS system libraries
+ * PROJECT:         LibreNT system libraries
  * FILE:            dll/win32/kernel32/client/time.c
  * PURPOSE:         Time conversion functions
  * PROGRAMMER:      Ariadne
@@ -12,7 +12,7 @@
 /* INCLUDES *******************************************************************/
 
 #include <k32.h>
-#include <reactos/precisetime.h>
+#include <librent/precisetime.h>
 
 #define NDEBUG
 #include <debug.h>

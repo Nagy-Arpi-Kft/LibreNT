@@ -1,5 +1,5 @@
 /*
- * PROJECT:     ReactOS Sound Volume Control
+ * PROJECT:     LibreNT Sound Volume Control
  * LICENSE:     LGPL-2.1-or-later (https://spdx.org/licenses/LGPL-2.1-or-later)
  * PURPOSE:     Main volume adjustment dialog
  * COPYRIGHT:   Copyright 2004-2005 Thomas Weidenmueller <w3seek@reactos.com>

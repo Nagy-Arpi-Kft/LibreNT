@@ -1,5 +1,5 @@
 /*
- * PROJECT:         ReactOS Kernel
+ * PROJECT:         LibreNT Kernel
  * LICENSE:         GPL - See COPYING in the top level directory
  * FILE:            ntoskrnl/ob/obinit.c
  * PURPOSE:         Handles Object Manager Initialization and Shutdown
@@ -11,7 +11,7 @@
 /* INCLUDES ******************************************************************/
 
 #include <ntoskrnl.h>
-#include <reactos/unaligned.h>
+#include <librent/unaligned.h>
 #define NDEBUG
 #include <debug.h>
 

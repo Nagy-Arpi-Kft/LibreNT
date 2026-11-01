@@ -9,6 +9,17 @@
 
 ---
 
+## Project requirements (hard constraints)
+
+These are non-negotiable project requirements, not gap-analysis findings, and they govern how every other section of this document should be read:
+
+- **Hardware floor: any UEFI-capable system.** LibreNT must run on every UEFI-supported machine — PC and laptop first and foremost, but the requirement is "UEFI firmware present," not a specific vendor/chipset/year cutoff. In practice this means roughly 2010+ x86-64 hardware (UEFI became near-universal on new PCs starting ~2011-2012) and any UEFI-capable ARM64 board. Legacy BIOS-only systems are explicitly out of scope.
+- **Software floor: Windows 7 compatibility, not Vista/XP.** Any application that ran on real Windows 7 must be able to run on LibreNT. This is a strictly *lower* bound than "Windows 11 feature parity" (§1-§14 above are about matching *Windows 11*, which is a much higher bar) — it means the Win32 API surface, binary/ABI compatibility, and application-facing behavior must not regress below what a real Windows 7 install offered, even in areas where Windows 11 itself has moved on. Pre-Windows-7 (XP/Vista-era-only) compatibility shims and quirks are explicitly NOT required and were intentionally removed (see the 2026-10-31 rebrand commit).
+- **Current project phase: internal test builds.** The project is currently producing early, internal-use-only test builds, not public releases. Features whose only purpose is securing a multi-user, managed, or internet-facing deployment are deliberately deprioritized right now (Credential Provider / modern logon, TPM-backed features, VBS/HVCI/BitLocker/Defender, enterprise management — see §1, §2, §14) in favor of work that affects whether the OS is usable at all on real/virtual hardware. These areas remain real gaps and are not being removed from this document, just intentionally sequenced later.
+- **Current priority: display & 3D.** Given the above, the active development focus is making real GPU drivers and a working DirectX stack possible (§3, and the ReactX/legacy-DirectX layer referenced there) — this is the current bottleneck for the OS being usable beyond a basic framebuffer console, and takes priority over the identity/security work in §1-§2 for the time being.
+
+---
+
 ## 0. Build & boot status
 
 Unlike §1-§14, which were produced by static source inspection, this section reflects actual build-and-boot testing (QEMU 11.1.0 + OVMF UEFI firmware, amd64, 2048 MB RAM, 256 MB FAT32 boot ramdisk).

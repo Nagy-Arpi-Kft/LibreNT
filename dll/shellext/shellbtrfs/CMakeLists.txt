@@ -15,7 +15,7 @@ list(APPEND SOURCE
     main.cpp
     mountmgr_local.cpp
     propsheet.cpp
-    reactos.cpp
+    librent.cpp
     recv.cpp
     scrub.cpp
     send.cpp

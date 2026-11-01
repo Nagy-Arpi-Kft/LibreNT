@@ -54,7 +54,7 @@ list(APPEND SOURCE
     ${MSVCRT_DIR}/time.c
     ${MSVCRT_DIR}/undname.c
     ${MSVCRT_DIR}/wcs.c
-    ${MSVCRT_DIR}/reactos/system.cpp)
+    ${MSVCRT_DIR}/librent/system.cpp)
 
 if(ARCH STREQUAL "i386")
     add_definitions(

@@ -718,7 +718,16 @@ PopHiberOpenFile(
     if (!NT_SUCCESS(Status))
         return Status;
 
-    AllocationSize.QuadPart = (LONGLONG)Size;
+    //
+    //  Request no upfront allocation here - the target volume may be far
+    //  too small for the full hibernation file size (e.g. a boot ramdisk),
+    //  and asking the filesystem to grow a file to an oversized value in
+    //  one shot can be a far more expensive/fragile operation than growing
+    //  it incrementally. We check the volume's actual free space below,
+    //  before ever asking for the real Size, and fail cleanly with
+    //  STATUS_DISK_FULL (which our caller already retries later) instead.
+    //
+    AllocationSize.QuadPart = 0;
     InitializeObjectAttributes(&ObjectAttributes, &Path, OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE, NULL, NULL);
     Status = ZwCreateFile(&PopHiber.FileHandle,
                           FILE_GENERIC_READ | FILE_GENERIC_WRITE | DELETE,
@@ -736,6 +745,17 @@ PopHiberOpenFile(
     {
         PopHiber.FileHandle = NULL;
         return Status;
+    }
+
+    Status = ZwQueryVolumeInformationFile(PopHiber.FileHandle, &IoStatus, &SizeInfo, sizeof(SizeInfo), FileFsSizeInformation);
+    if (!NT_SUCCESS(Status))
+        goto Failure;
+
+    if (Size > (ULONG64)SizeInfo.AvailableAllocationUnits.QuadPart *
+               SizeInfo.SectorsPerAllocationUnit * SizeInfo.BytesPerSector)
+    {
+        Status = STATUS_DISK_FULL;
+        goto Failure;
     }
 
     EndOfFile.EndOfFile.QuadPart = (LONGLONG)Size;
@@ -767,10 +787,6 @@ PopHiberOpenFile(
 
     Status = ObReferenceObjectByHandle(PopHiber.FileHandle, FILE_WRITE_DATA, IoFileObjectType, KernelMode,
                                        (PVOID *)&PopHiber.FileObject, NULL);
-    if (!NT_SUCCESS(Status))
-        goto Failure;
-
-    Status = ZwQueryVolumeInformationFile(PopHiber.FileHandle, &IoStatus, &SizeInfo, sizeof(SizeInfo), FileFsSizeInformation);
     if (!NT_SUCCESS(Status))
         goto Failure;
 

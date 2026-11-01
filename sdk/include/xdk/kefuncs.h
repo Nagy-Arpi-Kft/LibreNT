@@ -10,16 +10,12 @@ $include(x86/ke.h)
 $include(amd64/ke.h)
 #elif defined(_M_IA64)
 $include(ia64/ke.h)
-#elif defined(_M_PPC)
-$include(ppc/ke.h)
 #elif defined(_M_MIPS)
 $include(mips/ke.h)
 #elif defined(_M_ARM)
 $include(arm/ke.h)
 #elif defined(_M_ARM64)
 $include(arm64/ke.h)
-#elif defined(_M_RISCV64)
-$include(riscv64/ke.h)
 #else
 #error Unknown Architecture
 #endif

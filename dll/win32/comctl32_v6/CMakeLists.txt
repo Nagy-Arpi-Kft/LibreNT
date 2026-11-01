@@ -44,7 +44,7 @@ list(APPEND SOURCE
     ${COMCTL32_COMMON_DIR}/trackbar.c
     ${COMCTL32_COMMON_DIR}/treeview.c
     ${COMCTL32_COMMON_DIR}/updown.c
-    ${COMCTL32_COMMON_DIR}/reactos.c
+    ${COMCTL32_COMMON_DIR}/librent.c
     ${COMCTL32_COMMON_DIR}/stubs.c)
 
 set_source_files_properties(

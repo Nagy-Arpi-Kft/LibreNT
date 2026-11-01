@@ -6,7 +6,7 @@
  */
 
 #include "kdnet.h"
-#include <librent/riscv64/fdtlib.h>
+#include <librent/fdtlib.h>
 #include <kdfdt.h>
 
 #define KDNET_DBG2_SIGNATURE        0x32474244

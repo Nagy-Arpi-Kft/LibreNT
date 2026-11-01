@@ -675,6 +675,25 @@ Arguments:
 
     FAT_ENUMERATION_CONTEXT Context;
 
+    //
+    //  FatLookupFatEntry() repins Context.Bcb to a new page every time the
+    //  scan crosses a Fat page boundary (see its FatIndexBitSize == 32/16
+    //  cases), so Context.Bcb changes repeatedly *inside* the _SEH2_TRY body
+    //  below, well after PSEH's try-scope entry point.  If an exception is
+    //  raised later in the same iteration (e.g. STATUS_FILE_CORRUPT_ERROR for
+    //  a broken Fat32 chain), the abnormal-termination path reaches the
+    //  _SEH2_FINALLY via an out-of-line funclet that only has the stack image
+    //  of our locals to go on.  A non-volatile PBCB is not guaranteed to have
+    //  been spilled to its stack slot at every point inside the loop, so the
+    //  finally could unpin a stale (already-unpinned-and-recycled) Bcb
+    //  instead of the one actually pinned when the exception hit - a
+    //  use-after-free that can corrupt unrelated pool allocations.  Mirror
+    //  the authoritative value into a _SEH2_VOLATILE shadow so the finally
+    //  always observes the correct, current Bcb.
+    //
+
+    PBCB _SEH2_VOLATILE UnwindBcb = NULL;
+
     PAGED_CODE();
 
     Vcb = FcbOrDcb->Vcb;
@@ -833,6 +852,14 @@ Arguments:
             //
 
             FatLookupFatEntry( IrpContext, Vcb, FatEntry, (PULONG)&FatEntry, &Context );
+
+            //
+            //  Keep the volatile shadow current immediately after every call
+            //  that may have repinned Context.Bcb, and before any of the
+            //  raises below can fire for this iteration.
+            //
+
+            UnwindBcb = Context.Bcb;
 
             PriorLbo = CurrentLbo;
             CurrentLbo = FatGetLboFromIndex( Vcb, FatEntry );
@@ -1066,10 +1093,12 @@ Arguments:
 
         //
         //  We are done reading the Fat, so unpin the last page of fat
-        //  that is hanging around
+        //  that is hanging around.  Use the volatile shadow, not
+        //  Context.Bcb directly - see the comment on UnwindBcb's
+        //  declaration for why.
         //
 
-        FatUnpinBcb( IrpContext, Context.Bcb );
+        FatUnpinBcb( IrpContext, UnwindBcb );
 
         DebugTrace(-1, Dbg, "FatLookupFileAllocation -> (VOID)\n", 0);
     } _SEH2_END;
@@ -1817,6 +1846,9 @@ Arguments:
     PFAT_WINDOW Window;
     BOOLEAN Wait = FALSE;
     BOOLEAN Result = TRUE;
+    BOOLEAN _SEH2_VOLATILE NotFoundBranchHoldsChangeBitMap = FALSE;
+    BOOLEAN _SEH2_VOLATILE EnteredNotFoundBranch = FALSE;
+    BOOLEAN _SEH2_VOLATILE EnteredExactMatchBranch = FALSE;
 
     PAGED_CODE();
 
@@ -2077,6 +2109,7 @@ Arguments:
                         0,
                         FatGetLboFromIndex( Vcb, StartingCluster ),
                         *ByteCount);
+        EnteredExactMatchBranch = TRUE;
         _SEH2_TRY {
 
             //
@@ -2095,8 +2128,14 @@ Arguments:
             //  If the allocate clusters failed, remove the run from the Mcb,
             //  unreserve the clusters, and reset the free cluster count.
             //
+            //  NOTE: guard with EnteredExactMatchBranch - see the matching
+            //  note in the "not found" branch's finally below for why this
+            //  finally can otherwise be spuriously invoked for an unrelated
+            //  raise (e.g. the immediate STATUS_DISK_FULL raise near the top
+            //  of this routine) that never actually entered this try block.
+            //
 
-            if (_SEH2_AbnormalTermination()) {
+            if (EnteredExactMatchBranch && _SEH2_AbnormalTermination()) {
 
                 FatRemoveMcbEntry( Vcb, Mcb, 0, *ByteCount );
 
@@ -2120,7 +2159,11 @@ Arguments:
                 FatUnlockFreeClusterBitMap( Vcb );
             }
 
-            ExReleaseResourceLite(&Vcb->ChangeBitMapResource);
+            if (EnteredExactMatchBranch) {
+
+                ExReleaseResourceLite(&Vcb->ChangeBitMapResource);
+                EnteredExactMatchBranch = FALSE;
+            }
         } _SEH2_END;
 
     } else {
@@ -2150,7 +2193,10 @@ Arguments:
 
         FatUnlockFreeClusterBitMap(Vcb);
         ExReleaseResourceLite(&Vcb->ChangeBitMapResource);
+        NotFoundBranchHoldsChangeBitMap = FALSE;
         ExAcquireResourceExclusiveLite(&Vcb->ChangeBitMapResource, TRUE);
+        NotFoundBranchHoldsChangeBitMap = TRUE;
+        EnteredNotFoundBranch = TRUE;
         FatLockFreeClusterBitMap(Vcb);
         LockedBitMap = TRUE;
 
@@ -2496,13 +2542,29 @@ Arguments:
 
             DebugUnwind( FatAllocateDiskSpace );
 
-            ExReleaseResourceLite(&Vcb->ChangeBitMapResource);
+            //
+            //  NOTE: this finally can be invoked by the SEH unwinder even when
+            //  this specific try block (the "could not find one contiguous
+            //  run" branch) was never actually entered - e.g. when an earlier,
+            //  unrelated raise (such as the immediate STATUS_DISK_FULL raise
+            //  near the top of this routine, which happens outside of any try
+            //  block and has already released ChangeBitMapResource itself)
+            //  propagates past this point.  Only release here if WE are the
+            //  ones who are actually holding the resource.
+            //
+
+            if (NotFoundBranchHoldsChangeBitMap) {
+
+                ExReleaseResourceLite(&Vcb->ChangeBitMapResource);
+                NotFoundBranchHoldsChangeBitMap = FALSE;
+            }
 
             //
-            //  Is there any unwinding to do?
+            //  Is there any unwinding to do?  (Only meaningful if we actually
+            //  entered this try block - see note above.)
             //
 
-            if ( _SEH2_AbnormalTermination() || (FALSE == Result)) {
+            if ( EnteredNotFoundBranch && (_SEH2_AbnormalTermination() || (FALSE == Result))) {
 
                 //
                 //  Flag to the caller that they're getting nothing

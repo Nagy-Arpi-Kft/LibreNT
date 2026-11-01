@@ -10,7 +10,7 @@ list(APPEND SOURCE
     capturegraph.c
     filewriter.c
     qcap_main.c
-    reactos.c
+    librent.c
     smartteefilter.c
     vfwcapture.c)
 

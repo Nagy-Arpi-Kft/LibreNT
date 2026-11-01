@@ -1792,8 +1792,6 @@ RtlUnwindEx(
     _In_ struct _CONTEXT *ContextRecord,
     _In_opt_ PUNWIND_HISTORY_TABLE HistoryTable);
 
-#elif defined(_PPC_)
-$include(ppc/ketypes.h)
 #elif defined(_ALPHA_)
 #define CONTEXT_ALPHA    0x20000
 #define CONTEXT_CONTROL    (CONTEXT_ALPHA|1L)
@@ -2490,8 +2488,6 @@ typedef struct _DISPATCHER_CONTEXT {
     BOOLEAN ControlPcIsUnwound;
     PBYTE  NonVolatileRegisters;
 } DISPATCHER_CONTEXT, *PDISPATCHER_CONTEXT;
-#elif defined(_M_RISCV64)
-$include(riscv64/ketypes.h)
 #else
 #error "undefined processor type"
 #endif

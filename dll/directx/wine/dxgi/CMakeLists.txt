@@ -20,7 +20,7 @@ list(APPEND SOURCE
     utils.c)
 
 if(DXGI_USE_D3DKMT_ADAPTER_ORDER)
-    list(APPEND SOURCE reactos.c)
+    list(APPEND SOURCE librent.c)
 endif()
 
 add_library(dxgi MODULE

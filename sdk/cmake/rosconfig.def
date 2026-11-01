@@ -328,8 +328,7 @@ config MESA_GALLIUM_FROM_SOURCE
 config ENABLE_MESA_LLVMPIPE
     prompt "LLVMpipe OpenGL and Lavapipe Vulkan"
     type bool
-    default n
-    depends TOOLCHAIN=clang
+    default y
     depends ARCH=amd64 || ARCH=arm64
     help
       Package the LLVMpipe OpenGL ICD (mesa_llvmpipe.dll, the software

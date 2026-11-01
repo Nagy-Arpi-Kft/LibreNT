@@ -1,11 +1,29 @@
 # Windows 11 Compatibility Gaps
 
-**Status as of:** 2026-10-27
+**Status as of:** 2026-11-01
 **Scope:** This document inventories missing or incomplete *features and subsystems* relative to real Windows 11 (NT10), for amd64/arm64, roughly 2015+ hardware. It is written for engineers deciding what to build next.
 
-**Out of scope:** Licensing/legal concerns, and specific bugs in code that already exists (those are tracked elsewhere). A component rated "present" here may still have bugs; this document only judges presence/completeness of the feature itself.
+**Out of scope:** Licensing/legal concerns, and specific bugs in code that already exists (those are tracked elsewhere). A component rated "present" here may still have bugs; this document only judges presence/completeness of the feature itself. §0 below is the one deliberate exception: it tracks the boot-level engineering status itself, since "does it even start" is a precondition for every other row in this document meaning anything in practice.
 
 **Method:** Targeted `grep`/`find` across the tree, cross-checked against actual file contents (not just names/paths) to distinguish real implementations from named stubs. Every claim below cites the evidence path(s) used. Gap size is a qualitative judgment: *none* (parity), *small*, *medium*, *large*, *total* (nothing found).
+
+---
+
+## 0. Build & boot status
+
+Unlike §1-§14, which were produced by static source inspection, this section reflects actual build-and-boot testing (QEMU 11.1.0 + OVMF UEFI firmware, amd64, 2048 MB RAM, 256 MB FAT32 boot ramdisk).
+
+**Current status: boots successfully end-to-end.** A clean build now reaches `SMSS` → `win32k`/GDI/USER32 initialization → running user-mode services (confirmed via `diagdata`, the audio/power subsystems, etc.) with no crashes, assertions, or hangs. This was not true as of 2026-10-31; two boot-blocking defects were found and fixed to get here (commit `ee8e79fc35b`):
+
+| Defect | Where | Symptom | Fix |
+|---|---|---|---|
+| Double-release of `Vcb->ChangeBitMapResource` | `drivers/filesystems/fastfat/allocsup.c`, `FatAllocateDiskSpace` | STOP 0x7F (`UNEXPECTED_KERNEL_MODE_TRAP`) on an unrelated, later file-system operation, minutes/seconds after the real cause | An exception raised before entering either of two later, non-nested `_SEH2_TRY/_SEH2_FINALLY` blocks could still spuriously invoke one of their `_SEH2_FINALLY` bodies during unwind (an SEH-unwinder mistargeting hazard specific to this function's shape: several sequential, non-nested try/finally regions in one oversized routine). Each such finally now only releases/cleans up if its own branch was actually entered, tracked via a `_SEH2_VOLATILE` guard flag |
+| Hibernation file sized against total RAM, not target volume | `ntoskrnl/po/hiber.c`, `PopHiberOpenFile`/`PopHiberReserve` | Boot hang (no crash, no further output) during early Po-subsystem init, triggered by the defect above | `PopHiberReserve` computed the hibernation file size as 40% of physical RAM with no regard for the boot volume's actual free space (819 MB requested on a 256 MB ramdisk). `PopHiberOpenFile` now creates the file with no upfront allocation, checks the volume's free space via `FileFsSizeInformation`, and returns `STATUS_DISK_FULL` cleanly up front (already retried later by `PopHiberInitializeWorker`) instead of ever attempting the oversized grow |
+
+**Known non-blocking rough edges observed during this same boot:**
+- Boot-console font fails to load (`FreeType: tt_face_load_name: invalid 'name' table` → `Could not initialize the FreeType boot console font`, `drivers/base/bootvid/framebuf/bootvid.c:685`). Crash/boot diagnostics are serial-log-only until this is fixed; there's no on-screen text console during early boot.
+- No real WDDM display driver is available under plain QEMU (`Didn't find a suitable PDEV`, `win32ss/gdi/ntgdi/dclife.c:717`); the session falls back to `BasicDisplay`. This is expected given §3's WDDM scheduler quarantine, not a regression.
+- A one-time `EX: Work Queue Deadlock detected` message during Po-subsystem init (`ntoskrnl/ex/work.c:393`) that self-recovers (3 dynamic threads queued) — not yet root-caused, did not block boot in testing.
 
 ---
 
